@@ -23,7 +23,14 @@ class BackorderService extends AbstractBizonylatSzetbontasService
         // kategória nélkül a kapcsoló nem jelent semmit – beállított kategória nélküli
         // nominkeszlet nem kapcsolhatja ki a minimumot minden termékre
         $ignoreminkeszlet = $nominkeszlet && $nominkeszletkat && $t->isInTermekKategoria($nominkeszletkat);
-        return ($v ?: $t)->getAvailableStock(null, null, $biz->getId(), true, $ignoreminkeszlet);
+        return ($v ?: $t)->getAvailableStock(
+            datum: null,
+            raktarid: null,
+            kivevebiz: $biz->getId(),
+            clamp: true,
+            ignoreminkeszlet: $ignoreminkeszlet,
+            ignorefoglalas: false
+        );
     }
 
     /**

@@ -368,10 +368,16 @@ class termekController extends \mkwhelpers\MattableController
 
     private function getIdList($parameter): array
     {
-        return array_values(array_unique(array_filter(array_map(
-            'intval',
-            $this->params->getArrayRequestParam($parameter)
-        ))));
+        return array_values(
+            array_unique(
+                array_filter(
+                    array_map(
+                        'intval',
+                        $this->params->getArrayRequestParam($parameter)
+                    )
+                )
+            )
+        );
     }
 
     private function getValtozatNev(TermekValtozat $valtozat)
@@ -1015,7 +1021,7 @@ class termekController extends \mkwhelpers\MattableController
      */
     protected function afterSave($o, $parancs = null)
     {
-        \Services\MinBoltiKeszletService::clearCache();
+        \Services\KeszletService::clearCache();
         if ($this->kaphatolett) {
             $tec = new termekertesitoController();
             $tec->sendErtesito($o);

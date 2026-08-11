@@ -80,8 +80,16 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         }
 
         $oszlopok = [
-            'termek_id', 'termekvaltozat_id', 'cikkszam', 'vonalkod', 'termeknev',
-            'ertek1', 'ertek2', 'keszlet', 'masikkeszlet', 'minkeszlet',
+            'termek_id',
+            'termekvaltozat_id',
+            'cikkszam',
+            'vonalkod',
+            'termeknev',
+            'ertek1',
+            'ertek2',
+            'keszlet',
+            'masikkeszlet',
+            'minkeszlet',
         ];
         $rsm = new ResultSetMapping();
         foreach ($oszlopok as $oszlop) {
@@ -95,7 +103,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' t.nev AS termeknev, _xx.ertek1 AS ertek1, _xx.ertek2 AS ertek2,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'raktar') . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . \Services\MinBoltiKeszletService::getMinKeszletSql(
+            . ' ' . \Services\KeszletService::getMinKeszletSql(
                 '_xx.termek_id',
                 't.minboltikeszlet',
                 '_xx.id',
@@ -111,7 +119,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . " t.nev AS termeknev, '' AS ertek1, '' AS ertek2,"
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'raktar') . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . \Services\MinBoltiKeszletService::getMinKeszletSql('t.id', 't.minboltikeszlet', '', '', 'raktar')
+            . ' ' . \Services\KeszletService::getMinKeszletSql('t.id', 't.minboltikeszlet', '', '', 'raktar')
             . ' AS minkeszlet'
             . ' FROM termek t'
             . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)';

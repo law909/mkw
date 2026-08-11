@@ -20,7 +20,7 @@ use Entities\TermekValtozatMinboltikeszlet;
  * Statikus, mert entitásmetódusból is hívjuk, ahol nincs hova injektálni – ugyanezért nyúl
  * az entitás a \mkw\store::isFoglalas()-hoz.
  */
-class MinBoltiKeszletService
+class KeszletService
 {
 
     /** [raktarid][termekid] => érték|null – kérésen belüli cache */

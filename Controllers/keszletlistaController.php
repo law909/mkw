@@ -149,7 +149,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $minkeszletszamit = $this->params->getBoolRequestParam('minkeszletszamit');
         if ($minkeszletszamit) {
             $this->minkeszletstr = 'Min.készlet számít';
-            $minexpr = \Services\MinBoltiKeszletService::getMinKeszletSql(
+            $minexpr = \Services\KeszletService::getMinKeszletSql(
                 '_xx.termek_id',
                 't.minboltikeszlet',
                 '_xx.id',
@@ -189,11 +189,13 @@ class keszletlistaController extends \mkwhelpers\MattableController
             $rsm
         );
 
-        $q->setParameters(array_merge_recursive(
-            $filter->getQueryParameters('p'),
-            $termekfilter->getQueryParameters('r'),
-            $mkparams
-        ));
+        $q->setParameters(
+            array_merge_recursive(
+                $filter->getQueryParameters('p'),
+                $termekfilter->getQueryParameters('r'),
+                $mkparams
+            )
+        );
         $d = $q->getScalarResult();
 
         $nettobrutto = $this->params->getStringRequestParam('nettobrutto');

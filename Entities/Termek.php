@@ -3412,7 +3412,7 @@ class Termek
 
     public function calcMinboltikeszlet($raktarid = null)
     {
-        return \Services\MinBoltiKeszletService::getMinKeszlet($this, null, $raktarid);
+        return \Services\KeszletService::getMinKeszlet($this, null, $raktarid);
     }
 
     /**
@@ -3435,7 +3435,7 @@ class Termek
         $ignoreminkeszlet = false,
         $ignorefoglalas = false
     ) {
-        return \Services\MinBoltiKeszletService::calcAvailableStock(
+        return \Services\KeszletService::calcAvailableStock(
             $this,
             null,
             $datum,

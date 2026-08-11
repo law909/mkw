@@ -133,6 +133,7 @@ class boltieladasController extends \mkwhelpers\Controller
      * egyébként kész tételsort adunk vissza (mode + html).
      *
      * @param Termek $termek
+     *
      * @return array
      */
     private function termekResponse($termek)
@@ -175,6 +176,7 @@ class boltieladasController extends \mkwhelpers\Controller
      *
      * @param Termek $termek
      * @param TermekValtozat|null $valtozat
+     *
      * @return string
      */
     private function renderTetelRow($termek, $valtozat)
@@ -201,7 +203,7 @@ class boltieladasController extends \mkwhelpers\Controller
         // minimum a raktár saját értékével jön le, lásd \Services\MinBoltiKeszletService.
         $raktar = $this->getDefaultRaktar();
         $raktarid = $raktar ? $raktar->getId() : null;
-        $keszlet = ($valtozat ?: $termek)->getAvailableStock(null, $raktarid);
+        $keszlet = ($valtozat ?: $termek)->getAvailableStock(datum: null, raktarid: $raktarid);
 
         $view = $this->createView('boltieladastetel.tpl');
         $view->setVar('termekid', $termek->getId());

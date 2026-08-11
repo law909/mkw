@@ -159,7 +159,7 @@ class bizonylatposController extends \mkwhelpers\Controller
         }
         $cikkszam = ($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam();
 
-        $keszlet = ($valtozat ?: $termek)->getAvailableStock(null, $raktar?->getId());
+        $keszlet = ($valtozat ?: $termek)->getAvailableStock(datum: null, raktarid: $raktar?->getId());
 
         $view = $this->createView('bizonylattetelposkarb.tpl');
         $view->setVar('tetelid', \mkw\store::createUID());

@@ -393,7 +393,7 @@ class TermekValtozat
         $ignoreminkeszlet = false,
         $ignorefoglalas = false
     ) {
-        return \Services\MinBoltiKeszletService::calcAvailableStock(
+        return \Services\KeszletService::calcAvailableStock(
             $this->getTermek(),
             $this,
             $datum,
@@ -998,7 +998,7 @@ class TermekValtozat
 
     public function calcMinboltikeszlet($raktarid = null)
     {
-        return \Services\MinBoltiKeszletService::getMinKeszlet($this->getTermek(), $this, $raktarid);
+        return \Services\KeszletService::getMinKeszlet($this->getTermek(), $this, $raktarid);
     }
 
     /**
