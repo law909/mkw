@@ -1403,142 +1403,65 @@ class termekController extends \mkwhelpers\MattableController
         echo json_encode($ret);
     }
 
+    /**
+     * Egy termék adatai a bizonylattétel-sor kitöltéséhez – ezt kapja az autocomplete és az
+     * xlsx/csv alapú tételimport is, hogy a kétféle úton azonos mezők kerüljenek a sorba.
+     *
+     * @param \Entities\Termek $termek
+     * @param int $valtozatid a kód alapján beazonosított változat, ha volt ilyen
+     */
+    public function getBizonylattetelAdat($termek, $valtozatid = 0)
+    {
+        $ret = [
+            'value' => $termek->getKiirtnev() ?: $termek->getNev(),
+            'id' => $termek->getId(),
+            'kellegyediazonosito' => (bool)$termek->getKellegyediazonosito(),
+            'valtozat' => $valtozatid,
+            'me' => $termek->getMekodId(),
+            'cikkszam' => $termek->getCikkszam(),
+            'vtsz' => $termek->getVtszId(),
+            'afa' => $termek->getAfaId(),
+            'afakulcs' => $termek->getAfa()->getErtek(),
+            'kozepeskepurl' => $termek->getKepurlMedium(),
+            'kiskepurl' => $termek->getKepurlSmall(),
+            'kepurl400' => $termek->getKepurl400(),
+            'kepurl2000' => $termek->getKepurl2000(),
+            'kepurl' => $termek->getKepUrlLarge(),
+            'slug' => $termek->getSlug(),
+            'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $termek->getSlug()]),
+            'mainurl' => \mkw\store::getConfigValue('mainurl'),
+            'nemlathato' => (!$termek->getXLathato() || $termek->getInaktiv() || $termek->getNemkaphato()),
+            'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+            'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $termek->getId()])
+        ];
+        if (\mkw\store::isSuperzoneB2B()) {
+            $ret['label'] = $termek->getCikkszam() . ' ' . $termek->getNev();
+        }
+        return $ret;
+    }
+
     public function getBizonylattetelSelectList()
     {
         $ret = [];
         if (!\mkw\store::isTermekAutocomplete()) {
-            $termekid = $this->params->getIntRequestParam('id');
             /** @var \Entities\Termek $termek */
-            $termek = \mkw\store::getEm()->getRepository(Termek::class)->find($termekid);
+            $termek = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('id'));
             if ($termek) {
-                $ret = [
-                    'value' => $termek->getNev(),
-                    'id' => $termek->getId(),
-                    'kellegyediazonosito' => (bool)$termek->getKellegyediazonosito(),
-                    'me' => $termek->getMekodId(),
-                    'cikkszam' => $termek->getCikkszam(),
-                    'vtsz' => $termek->getVtszId(),
-                    'afa' => $termek->getAfaId(),
-                    'afakulcs' => $termek->getAfa()->getErtek(),
-                    'kozepeskepurl' => $termek->getKepurlMedium(),
-                    'kiskepurl' => $termek->getKepurlSmall(),
-                    'kepurl' => $termek->getKepurlLarge(),
-                    'kepurl400' => $termek->getKepurl400(),
-                    'kepurl2000' => $termek->getKepurl2000(),
-                    'slug' => $termek->getSlug(),
-                    'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $termek->getSlug()]),
-                    'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                    'nemlathato' => (!$termek->getXLathato() || $termek->getInaktiv() || $termek->getNemkaphato()),
-                    'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                    'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $termek->getId()])
-                ];
-                if ($termek->getKiirtnev()) {
-                    $ret['value'] = $termek->getKiirtnev();
-                }
+                $ret = $this->getBizonylattetelAdat($termek);
+                unset($ret['valtozat']);
             }
         } else {
             $term = trim($this->params->getStringRequestParam('term'));
             if ($term) {
-                $r = \mkw\store::getEm()->getRepository(Termek::class);
-                $res = $r->getBizonylattetelLista($term);
+                $res = \mkw\store::getEm()->getRepository(Termek::class)->getBizonylattetelLista($term);
                 $termekidk = [];
                 foreach ($res as $_t) {
                     $termekidk[] = $_t->getId();
                 }
                 $valtozatmatch = \mkw\store::getEm()->getRepository(TermekValtozat::class)
                     ->getCikkszamMatchMap($termekidk, $term);
-                switch (true) {
-                    case \mkw\store::isMindentkapni():
-                        foreach ($res as $r) {
-                            $x = [
-                                'value' => $r->getNev(),
-                                'id' => $r->getId(),
-                                'kellegyediazonosito' => (bool)$r->getKellegyediazonosito(),
-                                'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
-                                'me' => $r->getMekodId(),
-                                'cikkszam' => $r->getCikkszam(),
-                                'vtsz' => $r->getVtszId(),
-                                'afa' => $r->getAfaId(),
-                                'afakulcs' => $r->getAfa()->getErtek(),
-                                'kozepeskepurl' => $r->getKepurlMedium(),
-                                'kiskepurl' => $r->getKepurlSmall(),
-                                'kepurl400' => $r->getKepurl400(),
-                                'kepurl2000' => $r->getKepurl2000(),
-                                'kepurl' => $r->getKepUrlLarge(),
-                                'slug' => $r->getSlug(),
-                                'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
-                                'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                                'nemlathato' => (!$r->getXLathato() || $r->getInaktiv() || $r->getNemkaphato()),
-                                'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                                'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
-                            ];
-                            if ($r->getKiirtnev()) {
-                                $x['value'] = $r->getKiirtnev();
-                            }
-                            $ret[] = $x;
-                        }
-                        break;
-                    case \mkw\store::isSuperzoneB2B():
-                        foreach ($res as $r) {
-                            $x = [
-                                'value' => $r->getNev(),
-                                'label' => $r->getCikkszam() . ' ' . $r->getNev(),
-                                'id' => $r->getId(),
-                                'kellegyediazonosito' => (bool)$r->getKellegyediazonosito(),
-                                'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
-                                'me' => $r->getMekodId(),
-                                'cikkszam' => $r->getCikkszam(),
-                                'vtsz' => $r->getVtszId(),
-                                'afa' => $r->getAfaId(),
-                                'afakulcs' => $r->getAfa()->getErtek(),
-                                'kozepeskepurl' => $r->getKepurlMedium(),
-                                'kiskepurl' => $r->getKepurlSmall(),
-                                'kepurl400' => $r->getKepurl400(),
-                                'kepurl2000' => $r->getKepurl2000(),
-                                'kepurl' => $r->getKepUrlLarge(),
-                                'slug' => $r->getSlug(),
-                                'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
-                                'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                                'nemlathato' => (!$r->getXLathato() || $r->getInaktiv() || $r->getNemkaphato()),
-                                'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                                'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
-                            ];
-                            if ($r->getKiirtnev()) {
-                                $x['value'] = $r->getKiirtnev();
-                            }
-                            $ret[] = $x;
-                        }
-                        break;
-                    default:
-                        foreach ($res as $r) {
-                            $x = [
-                                'value' => $r->getNev(),
-                                'id' => $r->getId(),
-                                'kellegyediazonosito' => (bool)$r->getKellegyediazonosito(),
-                                'valtozat' => ($valtozatmatch[$r->getId()] ?? 0),
-                                'me' => $r->getMekodId(),
-                                'cikkszam' => $r->getCikkszam(),
-                                'vtsz' => $r->getVtszId(),
-                                'afa' => $r->getAfaId(),
-                                'afakulcs' => $r->getAfa()->getErtek(),
-                                'kozepeskepurl' => $r->getKepurlMedium(),
-                                'kiskepurl' => $r->getKepurlSmall(),
-                                'kepurl400' => $r->getKepurl400(),
-                                'kepurl2000' => $r->getKepurl2000(),
-                                'kepurl' => $r->getKepUrlLarge(),
-                                'slug' => $r->getSlug(),
-                                'link' => \mkw\store::getRouter()->generate('showtermek', \mkw\store::getConfigValue('mainurl'), ['slug' => $r->getSlug()]),
-                                'mainurl' => \mkw\store::getConfigValue('mainurl'),
-                                'nemlathato' => (!$r->getXLathato() || $r->getInaktiv() || $r->getNemkaphato()),
-                                'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
-                                'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $r->getId()])
-                            ];
-                            if ($r->getKiirtnev()) {
-                                $x['value'] = $r->getKiirtnev();
-                            }
-                            $ret[] = $x;
-                        }
-                        break;
+                foreach ($res as $r) {
+                    $ret[] = $this->getBizonylattetelAdat($r, ($valtozatmatch[$r->getId()] ?? 0));
                 }
             }
         }

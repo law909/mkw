@@ -506,6 +506,10 @@ $router->map('GET', '/admin/bizonylattetel/getemptyrow', 'bizonylattetelControll
 $router->map('GET', '/admin/bizonylattetel/getquickemptyrow', 'bizonylattetelController#getquickemptyrow', 'adminbizonylattetelgetquickemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylattetel/save', 'bizonylattetelController#save', 'adminbizonylattetelsave');
+    $router->map('POST', '/admin/bizonylattetel/importxlsx', 'bizonylattetelController#importXlsx', 'adminbizonylattetelimportxlsx');
+    if (\mkw\store::isSuperzoneB2B()) {
+        $router->map('POST', '/admin/bizonylattetel/importfcmoto', 'bizonylattetelController#importFcMoto', 'adminbizonylattetelimportfcmoto');
+    }
 }
 $router->map('GET', '/admin/bizonylattetel/gettermeklist', 'termekController#getBizonylattetelSelectList', 'adminbizonylattetelgettermeklist');
 $router->map('GET', '/admin/bizonylattetel/valtozatlist', 'bizonylattetelController#valtozathtmllist', 'adminvaltozatlist');

@@ -9,6 +9,7 @@ use Entities\Partner;
 use Entities\Termek;
 use Entities\TermekValtozat;
 use Entities\Valutanem;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class bizonylattetelController extends \mkwhelpers\MattableController
 {
@@ -229,6 +230,170 @@ class bizonylattetelController extends \mkwhelpers\MattableController
                 $this->params->getNumRequestParam('mennyiseg', 0)
             )
         );
+    }
+
+    /**
+     * A minkeszletlistaController::exportBizonylat() formátumú xlsx sorai tételnek.
+     * Oszlopok: A=termék id, B=változat id, C=cikkszám, D=vonalkód, E=mennyiség.
+     */
+    public function importXlsx()
+    {
+        $file = $this->getUploadedFile();
+        if (!$file) {
+            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
+            return;
+        }
+
+        try {
+            $reader = IOFactory::createReader(IOFactory::identify($file));
+            $reader->setReadDataOnly(true);
+            $sheet = $reader->load($file)->getActiveSheet();
+        } catch (\Exception $e) {
+            \unlink($file);
+            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható táblázatként.')]);
+            return;
+        }
+
+        $tetelek = [];
+        $hibak = [];
+        $maxrow = (int)$sheet->getHighestRow();
+        for ($row = 1; $row <= $maxrow; ++$row) {
+            $termekid = (int)$sheet->getCell('A' . $row)->getValue();
+            $valtozatid = (int)$sheet->getCell('B' . $row)->getValue();
+            $cikkszam = trim((string)$sheet->getCell('C' . $row)->getValue());
+            $vonalkod = trim((string)$sheet->getCell('D' . $row)->getValue());
+            $mennyiseg = (float)$sheet->getCell('E' . $row)->getValue();
+            if (!$termekid && ($cikkszam === '') && ($vonalkod === '')) {
+                continue;
+            }
+
+            $talalat = $this->findTermek($termekid, $valtozatid, $cikkszam, $vonalkod);
+            if (!$talalat) {
+                // a fejlécsor is ide fut be, azt nem jelentjük hibaként
+                if ($row > 1) {
+                    $hibak[] = sprintf(t('%d. sor: nem azonosítható termék (%s)'), $row, trim($cikkszam . ' ' . $vonalkod));
+                }
+                continue;
+            }
+            $tetelek[] = $this->tetelAdat($talalat, $mennyiseg);
+        }
+        \unlink($file);
+
+        echo json_encode(['ok' => true, 'tetelek' => $tetelek, 'hibak' => $hibak]);
+    }
+
+    /**
+     * FC-Moto rendelés csv sorai tételnek. Oszlopok pontosvesszővel:
+     * barcode;supplierArticleNumber;productTitle;productQuantity – az azonosítás vonalkód alapján megy.
+     */
+    public function importFcMoto()
+    {
+        $file = $this->getUploadedFile();
+        if (!$file) {
+            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
+            return;
+        }
+
+        $handle = fopen($file, 'r');
+        if (!$handle) {
+            \unlink($file);
+            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható.')]);
+            return;
+        }
+
+        $tetelek = [];
+        $hibak = [];
+        $row = 0;
+        while (($sor = fgetcsv($handle, 0, ';')) !== false) {
+            $row++;
+            $vonalkod = trim((string)($sor[0] ?? ''));
+            if ($vonalkod === '') {
+                continue;
+            }
+            $mennyiseg = (float)str_replace(',', '.', (string)($sor[3] ?? ''));
+
+            $talalat = $this->findTermek(0, 0, '', $vonalkod);
+            if (!$talalat) {
+                if ($row > 1) {
+                    $hibak[] = sprintf(t('%d. sor: nincs ilyen vonalkódú termék (%s)'), $row, $vonalkod);
+                }
+                continue;
+            }
+            $tetelek[] = $this->tetelAdat($talalat, $mennyiseg);
+        }
+        fclose($handle);
+        \unlink($file);
+
+        echo json_encode(['ok' => true, 'tetelek' => $tetelek, 'hibak' => $hibak]);
+    }
+
+    /**
+     * A feltöltött fájl a storage-ba mentve, vagy null. A hívó törli.
+     *
+     * @return string|null
+     */
+    private function getUploadedFile()
+    {
+        if (empty($_FILES['toimport']['tmp_name']) || !is_uploaded_file($_FILES['toimport']['tmp_name'])) {
+            return null;
+        }
+        $file = \mkw\store::storagePath(uniqid('tetelimport-') . '-' . basename($_FILES['toimport']['name']));
+        if (!move_uploaded_file($_FILES['toimport']['tmp_name'], $file)) {
+            return null;
+        }
+        return $file;
+    }
+
+    /**
+     * Egy importsor termék+változat azonosítása. Sorrend: id, cikkszám, vonalkód – és mindegyiknél
+     * előbb a változat, mert az a pontosabb találat.
+     *
+     * @return array{0: Termek, 1: TermekValtozat|null}|null
+     */
+    private function findTermek($termekid, $valtozatid, $cikkszam, $vonalkod)
+    {
+        if ($termekid) {
+            /** @var Termek|null $termek */
+            $termek = $this->getRepo(Termek::class)->find($termekid);
+            if (!$termek) {
+                return null;
+            }
+            /** @var TermekValtozat|null $valtozat */
+            $valtozat = $valtozatid ? $this->getRepo(TermekValtozat::class)->find($valtozatid) : null;
+            if ($valtozat && (!$valtozat->getTermek() || ($valtozat->getTermek()->getId() != $termek->getId()))) {
+                $valtozat = null;
+            }
+            return [$termek, $valtozat];
+        }
+
+        foreach ([['cikkszam', $cikkszam], ['vonalkod', $vonalkod]] as [$mezo, $ertek]) {
+            if ($ertek === '') {
+                continue;
+            }
+            /** @var TermekValtozat|null $valtozat */
+            $valtozat = $this->getRepo(TermekValtozat::class)->findOneBy([$mezo => $ertek]);
+            if ($valtozat && $valtozat->getTermek()) {
+                return [$valtozat->getTermek(), $valtozat];
+            }
+            /** @var Termek|null $termek */
+            $termek = $this->getRepo(Termek::class)->findOneBy([$mezo => $ertek]);
+            if ($termek) {
+                return [$termek, null];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param array{0: Termek, 1: TermekValtozat|null} $talalat
+     */
+    private function tetelAdat($talalat, $mennyiseg)
+    {
+        [$termek, $valtozat] = $talalat;
+        $adat = (new termekController())->getBizonylattetelAdat($termek, $valtozat ? $valtozat->getId() : 0);
+        // a nem pozitív mennyiséget a kliens a szokásos alapértelmezéssel tölti ki
+        $adat['mennyiseg'] = $mennyiseg > 0 ? $mennyiseg : 0;
+        return $adat;
     }
 
     public function valtozathtmllist()

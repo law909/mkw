@@ -441,6 +441,15 @@
                         <div class="js-posvaltozatvalaszto bizonylatpos-valtozatvalaszto"></div>
                     </div>
                 {else}
+                    {if (!$quick)}
+                        <div class="bizonylattetel-importsor">
+                            <a class="js-tetelimportbutton" href="#">{at('Tételek betöltése xlsx-ből')}</a>
+                            {if ($maintheme === 'superzoneb2b')}
+                                <a class="js-fcmotoimportbutton" href="#">{at('FC-Moto rendelés')}</a>
+                            {/if}
+                            <span class="js-tetelimportuzenet"></span>
+                        </div>
+                    {/if}
                     <div>
                         {foreach $egyed.tetelek as $tetel}
                             {include 'bizonylattetelkarb.tpl'}

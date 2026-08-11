@@ -81,6 +81,16 @@ body {
     font-weight: bold;
 }
 
+/* Fájlból való tételfelvitel a bizonylat karbon (bizonylathelper.js). */
+.bizonylattetel-importsor {
+    margin-bottom: 5px;
+}
+
+.bizonylattetel-importhiba {
+    color: #cc0000;
+    margin-left: 5px;
+}
+
 /* Leltár felvételi lista vonalkódos rögzítése (leltarfelvetel.js). */
 .leltarfelvetel-tetelek {
     width: 100%;

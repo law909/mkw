@@ -695,6 +695,46 @@ let bizonylathelper = function ($) {
         };
     }
 
+    // Egy termék adatainak beírása egy tételsorba. A listás választás és a fájlból való
+    // tételimport is ezen az egy úton megy, hogy a két módon azonos sor keletkezzen.
+    function fillTetelTermek(sorid, termek, selvaltozat) {
+        let vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
+            afa = $('select[name="tetelafa_' + sorid + '"]'),
+            valtozatplace = $('#ValtozatPlaceholder' + sorid),
+            partneredit = $('#PartnerEdit'),
+            kepsor;
+        if (partneredit.data('afa')) {
+            termek.afa = partneredit.data('afa');
+            termek.afakulcs = partneredit.data('afakulcs');
+        }
+        setNoCalcArak(true);
+        valtozatplace.empty();
+        $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
+        $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
+        $('select[name="tetelme_' + sorid + '"]').val(termek.me);
+        if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
+            $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
+        }
+        setEgyediAzonositoMezo(sorid, termek.kellegyediazonosito);
+        vtsz.val(termek.vtsz);
+        vtsz.change();
+        afa.val(termek.afa);
+        afa.change();
+        kepsor = $('.js-termekpicturerow_' + sorid);
+        $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
+        $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
+        $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
+        $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
+        if (termek.valtozat) {  // cikkszam alapjan beazonositott konkret valtozat
+            selvaltozat = termek.valtozat;
+        }
+        loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
+        if (termek.valtozat) {  // valtozat select kitoltese + valtozat ar betoltese
+            $('select[name="tetelvaltozat_' + sorid + '"]').val(termek.valtozat).change();
+        }
+        jelolUnasDefaultTetelek();
+    }
+
     function termekAutocompleteConfig() {
         return {
             minLength: 4,
@@ -704,46 +744,124 @@ let bizonylathelper = function ($) {
                 let termek = ui.item;
                 if (termek) {
                     let $this = $(this),
-                        sorid = $this.attr('name').split('_')[1],
-                        vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
-                        afa = $('select[name="tetelafa_' + sorid + '"]'),
-                        selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
-                        valtozatplace = $('#ValtozatPlaceholder' + sorid),
-                        partneredit = $('#PartnerEdit');
-                    if (partneredit.data('afa')) {
-                        termek.afa = partneredit.data('afa');
-                        termek.afakulcs = partneredit.data('afakulcs');
-                    }
-                    setNoCalcArak(true);
-                    valtozatplace.empty();
+                        sorid = $this.attr('name').split('_')[1];
                     $this.siblings().val(termek.id);
-                    $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
-                    $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
-                    $('select[name="tetelme_' + sorid + '"]').val(termek.me);
-                    if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
-                        $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
-                    }
-                    setEgyediAzonositoMezo(sorid, termek.kellegyediazonosito);
-                    vtsz.val(termek.vtsz);
-                    vtsz.change();
-                    afa.val(termek.afa);
-                    afa.change();
-                    kepsor = $('.js-termekpicturerow_' + sorid);
-                    $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
-                    $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
-                    $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
-                    $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
-                    if (termek.valtozat) {  // cikkszam alapjan beazonositott konkret valtozat
-                        selvaltozat = termek.valtozat;
-                    }
-                    loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
-                    if (termek.valtozat) {  // valtozat select kitoltese + valtozat ar betoltese
-                        $('select[name="tetelvaltozat_' + sorid + '"]').val(termek.valtozat).change();
-                    }
-                    jelolUnasDefaultTetelek();
+                    fillTetelTermek(sorid, termek, $('select[name="tetelvaltozat_' + sorid + '"]').val());
                 }
             }
         };
+    }
+
+    function aktualisPartner() {
+        return isPartnerAutocomplete() ? $('.js-partnerid').val() : $('#PartnerEdit option:selected').val();
+    }
+
+    // Egy üres tételsor beszúrása a "+" gombbal azonos módon; a sor azonosítóját adja vissza.
+    function ujTetelSor(bizonylattipus) {
+        let sorid = '';
+        $.ajax({
+            async: false,
+            url: '/admin/bizonylattetel/getemptyrow',
+            data: {
+                type: bizonylattipus,
+                partner: aktualisPartner()
+            },
+            type: 'GET',
+            success: function (data) {
+                let $ujgomb = $('.js-tetelnewbutton'),
+                    $sor = $(data);
+                $('.js-bizonylatosszesito').before($sor);
+                sorid = $sor.filter('[id^="teteltable_"]').attr('id').split('_')[1];
+                $('.js-tetelnewbutton,.js-teteldelbutton').button();
+                $('.js-termekselect').autocomplete(termekAutocompleteConfig())
+                    .autocompleteRenderer(termekAutocompleteRenderer);
+                $ujgomb.remove();
+            }
+        });
+        return sorid;
+    }
+
+    // A fájlból beazonosított termékek felvitele – soronként egy tétel, ugyanazokkal a
+    // lépésekkel, mint kézi rögzítéskor (üres sor, termék, mennyiség, árszámítás).
+    function importTetelek(bizonylattipus, tetelek) {
+        tetelek.forEach(function (termek) {
+            let sorid = ujTetelSor(bizonylattipus);
+            if (!sorid) {
+                return;
+            }
+            $('input[name="teteltermeknev_' + sorid + '"]').val(termek.value);
+            $('input[name="teteltermek_' + sorid + '"]').val(termek.id);
+            fillTetelTermek(sorid, termek, termek.valtozat);
+            if (termek.mennyiseg > 0) {
+                $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.mennyiseg);
+            }
+            $('input[name="tetelmennyiseg_' + sorid + '"]').change();
+        });
+        calcOsszesen();
+    }
+
+    // Fájlfeltöltés a tételimporthoz. A file input a formon kívül él, hogy a bizonylat
+    // mentésekor ne kerüljön bele a beküldött adatok közé.
+    // A tételimport rejtett fájlmezője a body-n él, nem a formon: így a bizonylat mentésekor
+    // nem kerül a beküldött adatok közé. A gombok csak az url-t és a fajtát állítják rajta.
+    function initTetelImport(bizonylattipus, dialogcenter) {
+        let $file = $('.js-tetelimportfile');
+        if ($file.length) {
+            return $file;
+        }
+        $file = $('<input type="file" class="js-tetelimportfile">').css('display', 'none').appendTo('body');
+
+        let uzen = function (szoveg, hiba) {
+            $('.js-tetelimportuzenet').text(szoveg).toggleClass('bizonylattetel-importhiba', !!hiba);
+        };
+
+        $file.on('change', function () {
+            if (!this.files || !this.files.length) {
+                return;
+            }
+            let fd = new FormData();
+            fd.append('toimport', this.files[0]);
+            uzen('', false);
+            $.ajax({
+                url: $file.data('url'),
+                type: 'POST',
+                data: fd,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (res) {
+                    if (!res || !res.ok) {
+                        uzen((res && res.error) ? res.error : 'A fájl feldolgozása nem sikerült.', true);
+                        return;
+                    }
+                    let tetelek = res.tetelek || [],
+                        hibak = res.hibak || [];
+                    importTetelek(bizonylattipus, tetelek);
+                    uzen(tetelek.length + ' tétel betöltve, ' + hibak.length + ' sor nem azonosítható.', false);
+                    if (hibak.length) {
+                        dialogcenter.html('<div>' + hibak.join('<br>') + '</div>').dialog({
+                            title: 'Nem azonosítható sorok',
+                            resizable: true,
+                            width: 600,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    uzen('A fájl feltöltése nem sikerült.', true);
+                }
+            });
+        });
+        return $file;
+    }
+
+    function tetelImportFile($file, url, accept) {
+        $file.attr('accept', accept).data('url', url).val('').trigger('click');
     }
 
     function quicksetTermekAr(sorId) {
@@ -1402,11 +1520,7 @@ let bizonylathelper = function ($) {
                     .on('change', '.js-termekselectreal', function (e) {
                         let $this = $(this),
                             sorid = $this.attr('name').split('_')[1],
-                            vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
-                            afa = $('select[name="tetelafa_' + sorid + '"]'),
-                            selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val(),
-                            valtozatplace = $('#ValtozatPlaceholder' + sorid),
-                            partneredit = $('#PartnerEdit');
+                            selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val();
                         $.ajax({
                             method: 'GET',
                             url: '/admin/bizonylattetel/gettermeklist',
@@ -1416,40 +1530,26 @@ let bizonylathelper = function ($) {
                             success: function (data) {
                                 let termek = JSON.parse(data);
                                 if (termek) {
-                                    if (partneredit.data('afa')) {
-                                        termek.afa = partneredit.data('afa');
-                                        termek.afakulcs = partneredit.data('afakulcs');
-                                    }
-                                    setNoCalcArak(true);
-                                    valtozatplace.empty();
-                                    $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
-                                    $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
-                                    $('select[name="tetelme_' + sorid + '"]').val(termek.me);
-                                    if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
-                                        $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
-                                    }
-                                    setEgyediAzonositoMezo(sorid, termek.kellegyediazonosito);
-                                    vtsz.val(termek.vtsz);
-                                    vtsz.change();
-                                    afa.val(termek.afa);
-                                    afa.change();
-                                    kepsor = $('.js-termekpicturerow_' + sorid);
-                                    $('.js-toflyout', kepsor).attr('href', termek.mainurl + termek.kepurl);
-                                    $('.js-toflyout img', kepsor).attr('src', termek.mainurl + termek.kiskepurl);
-                                    $('.js-termeklink', kepsor).attr('href', termek.link).html(termek.link);
-                                    $('.js-kartonlink', kepsor).attr('href', termek.kartonurl);
-                                    loadValtozatList(termek.id, sorid, selvaltozat, valtozatplace);
-                                    jelolUnasDefaultTetelek();
+                                    fillTetelTermek(sorid, termek, selvaltozat);
                                 }
                             }
                         });
+                    })
+                    .on('click', '.js-tetelimportbutton', function (e) {
+                        e.preventDefault();
+                        tetelImportFile(initTetelImport(bizonylattipus, dialogcenter), '/admin/bizonylattetel/importxlsx', '.xlsx,.xls');
+                    })
+                    .on('click', '.js-fcmotoimportbutton', function (e) {
+                        e.preventDefault();
+                        tetelImportFile(initTetelImport(bizonylattipus, dialogcenter), '/admin/bizonylattetel/importfcmoto', '.csv,.txt');
                     });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocompleteRenderer(termekAutocompleteRenderer);
                 jelolUnasDefaultTetelek();
 
-                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email').button();
+                $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email,' +
+                    '.js-tetelimportbutton,.js-fcmotoimportbutton').button();
 
                 $('.js-inheritbizonylat').each(function () {
                     let $this = $(this);
