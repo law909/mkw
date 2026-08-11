@@ -34,23 +34,30 @@
         <tr>
             <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{at('Termék')}:</label></td>
             {if ($setup.termekautocomplete)}
+                {* A választó a már mentett tételen is ott van, hogy a termék cserélhető legyen.
+                   Stornón nem: a stornó tételnek az eredetit kell tükröznie. *}
                 <td colspan="5">
-                    {if ($tetel.oper === 'add')}
+                    {if ($tetel.oper === 'storno')}
+                        {$tetel.termeknev}
+                    {else}
                         <input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}"
                                class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
-                    {else}
-                        {$tetel.termeknev}
                     {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
                 </td>
             {else}
                 <td colspan="5">
-                    <select class="js-termekselectreal js-termekid" name="teteltermek_{$tetel.id}">
-                        <option value="">{t('válasszon')}</option>
-                        {foreach $tetel.termeklist as $_termekadat}
-                            <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption}</option>
-                        {/foreach}
-                    </select>
+                    {if ($tetel.oper === 'storno')}
+                        {$tetel.termeknev}
+                        <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
+                    {else}
+                        <select class="js-termekselectreal js-termekid" name="teteltermek_{$tetel.id}">
+                            <option value="">{t('válasszon')}</option>
+                            {foreach $tetel.termeklist as $_termekadat}
+                                <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/if}
                 </td>
             {/if}
         </tr>

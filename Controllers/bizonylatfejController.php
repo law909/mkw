@@ -1107,11 +1107,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                             $tetel = $this->getEm()->getRepository(Bizonylattetel::class)->find($tetelid);
                             if ($tetel) {
                                 $tetel->setPersistentData();
+                                $termekcsere = $termek && $tetel->getTermekId() && ($tetel->getTermekId() != $termek->getId());
                                 if ($termek) {
                                     $tetel->setTermek($termek);
                                 }
                                 if ($termekvaltozat) {
                                     $tetel->setTermekvaltozat($termekvaltozat);
+                                } elseif ($termekcsere) {
+                                    // változat nélküli termékre cserélve a változatválasztó el sem
+                                    // jön a formról, a régi termék változata pedig nem maradhat itt
+                                    $tetel->setTermekvaltozat(null);
                                 }
                                 $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
 
