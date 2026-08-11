@@ -912,8 +912,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $rsm->addScalarResult('ertek2', 'ertek2');
                 $rsm->addScalarResult('vonalkod', 'vonalkod');
 
+                // a partneradatok bizonylatonkénti pillanatképek, csoportonként több is lehet: a MAX ad belőlük egy fix címkét
                 $q = $this->_em->createNativeQuery(
-                    'SELECT bf.partner_id,bf.partnernev,bf.partnerirszam,bf.partnervaros,bf.partnerutca,bf.partnerhazszam,'
+                    'SELECT bf.partner_id,MAX(bf.partnernev) AS partnernev,MAX(bf.partnerirszam) AS partnerirszam,'
+                    . ' MAX(bf.partnervaros) AS partnervaros,MAX(bf.partnerutca) AS partnerutca,'
+                    . ' MAX(bf.partnerhazszam) AS partnerhazszam,'
                     . ' bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
@@ -924,7 +927,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                     . $arsavsql
                     . $this->getFilterString($filter)
                     . ' GROUP BY bf.partner_id,bt.termek_id,bt.termekvaltozat_id'
-                    . ' ORDER BY bf.partnernev,bf.partner_id,t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ',tv.ertek1,tv.ertek2'
+                    . ' ORDER BY partnernev,bf.partner_id,t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ',tv.ertek1,tv.ertek2'
                     ,
                     $rsm
                 );
@@ -942,8 +945,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $rsm->addScalarResult('ertek', 'ertek');
 
                 $q = $this->_em->createNativeQuery(
-                    'SELECT bf.uzletkoto_id,bf.uzletkotonev,bf.partner_id,bf.partnernev,bf.partnerirszam,'
-                    . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
+                    'SELECT bf.uzletkoto_id,MAX(bf.uzletkotonev) AS uzletkotonev,bf.partner_id,'
+                    . 'MAX(bf.partnernev) AS partnernev,MAX(bf.partnerirszam) AS partnerirszam,'
+                    . 'MAX(bf.partnervaros) AS partnervaros,MAX(bf.partnerutca) AS partnerutca,'
+                    . 'MAX(bf.partnerhazszam) AS partnerhazszam,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
@@ -952,7 +957,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                     . $arsavsql
                     . $this->getFilterString($filter)
                     . ' GROUP BY bf.uzletkoto_id,bf.partner_id'
-                    . ' ORDER BY bf.uzletkoto_id,bf.uzletkotonev,bf.partnernev,bf.partner_id'
+                    . ' ORDER BY bf.uzletkoto_id,uzletkotonev,partnernev,bf.partner_id'
                     ,
                     $rsm
                 );
