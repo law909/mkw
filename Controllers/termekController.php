@@ -2256,6 +2256,27 @@ class termekController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
+    /**
+     * A minimum készletek karbantartó Excelje. Kijelölés nélkül a teljes törzs – a minimum
+     * készlet megadása jellemzően pont az egész készletre megy.
+     */
+    public function minKeszletExport()
+    {
+        $ids = array_filter(explode(',', $this->params->getStringRequestParam('ids')));
+        $excel = (new \Services\MinKeszletExcelService())->export($ids);
+
+        $filepath = \mkw\store::storagePath(uniqid('minkeszlet') . '.xlsx');
+        IOFactory::createWriter($excel, 'Xlsx')->save($filepath);
+
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . filesize($filepath));
+        header('Content-Disposition: attachment; filename=' . $filepath);
+
+        readfile($filepath);
+        \unlink($filepath);
+    }
+
     public function setTermekcsoport()
     {
         $ids = $this->params->getArrayRequestParam('ids');

@@ -7,6 +7,10 @@ $router->map('GET', '/admin', 'adminController#view', 'adminview');
 $router->map('GET', '/admin/view', 'adminController#view', 'adminview2');
 $router->map('GET', '/admin/raktarkeszletnullazo/view', 'raktarkeszletnullazoController#view', 'adminraktarkeszletnullazoview');
 $router->map('POST', '/admin/raktarkeszletnullazo/process', 'raktarkeszletnullazoController#process', 'adminraktarkeszletnullazoprocess');
+$router->map('GET', '/admin/minkeszletimport/view', 'minkeszletimportController#view', 'adminminkeszletimportview');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/minkeszletimport/import', 'minkeszletimportController#import', 'adminminkeszletimportimport');
+}
 $router->map('GET', '/admin/fixlocale', 'fixlocaleController#run', 'adminfixlocale');
 $router->map('GET', '/admin/hiba', 'errortestController#run', 'adminhiba');
 
@@ -911,6 +915,7 @@ $router->map('GET', '/admin/termek/fcmotoexport', 'termekController#fcmotoexport
 $router->map('GET', '/admin/termek/gs1export', 'termekController#gs1export', 'admintermekgs1export');
 $router->map('GET', '/admin/termek/colorexport', 'termekController#colorexport', 'admintermekcolorexport');
 $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszamosexport', 'admintermekcikkszamosexport');
+$router->map('GET', '/admin/termek/minkeszletexport', 'termekController#minKeszletExport', 'admintermekminkeszletexport');
 $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
 $router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
 if (!\mkw\store::isClosed()) {

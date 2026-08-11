@@ -23,6 +23,7 @@ class TermekRepository extends \mkwhelpers\Repository
             'gs1export' => 'GS1 export',
             'colorexport' => 'Szín export',
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
+            'minkeszletexport' => 'Minimum készlet export',
             'tcsset' => 'Termékcsoport módosítás',
             'kategoriaset' => 'Termék kategória módosítás',
             'leirastisztitas' => 'Leírás tisztítása',

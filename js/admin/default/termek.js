@@ -876,14 +876,17 @@ $(document).ready(function () {
 
         $('.mattable-batchbtn').on('click', function (e) {
             var cbs,
+                batch,
                 tomb = [];
             e.preventDefault();
             cbs = $('.js-egyedcheckbox:checked');
-            if (cbs.length) {
+            batch = $('.mattable-batchselect').val();
+            // a minimum készlet export kijelölés nélkül a teljes törzsre megy
+            if (cbs.length || (batch === 'minkeszletexport')) {
                 cbs.closest('tr').each(function (index, elem) {
                     tomb.push($(elem).data('egyedid'));
                 });
-                switch ($('.mattable-batchselect').val()) {
+                switch (batch) {
                     case 'arexport':
                         href = '/admin/termek/arexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
@@ -952,6 +955,20 @@ $(document).ready(function () {
                     case 'cikkszamosexport':
                         href = '/admin/termek/cikkszamosexport?ids=' + tomb.join(',');
                         dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Bezár': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
+                    case 'minkeszletexport':
+                        href = '/admin/termek/minkeszletexport?ids=' + tomb.join(',');
+                        dialogcenter.html('<a href="' + href + '" target="_blank">Letöltés</a>'
+                            + (tomb.length ? '' : ' (a teljes terméktörzs)')).dialog({
                             resizable: false,
                             height: 140,
                             modal: true,

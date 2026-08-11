@@ -1338,6 +1338,16 @@ if ($DBVersion < '0114') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0114');
 }
+
+if ($DBVersion < '0115') {
+    // Minimum készlet import az "Egyéb műveletek" (9) csoportba, a többi feltöltés mellé
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "Minimum készlet import", "/admin/minkeszletimport/view", "/admin/minkeszletimport", 90, 1, 550, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/minkeszletimport/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0115');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
