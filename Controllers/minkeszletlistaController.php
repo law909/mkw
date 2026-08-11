@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  *
  * Egy adott raktárban, egy adott napon megmutatja azokat a termékeket/változatokat, amelyek
  * készlete a **raktárra vonatkozó** minimum alatt van (a feloldási létrát lásd
- * \Services\MinBoltiKeszletService). Kiírja a készletet, a minimumig hiányzó mennyiséget, és egy
+ * \Services\KeszletService). Kiírja a készletet, a minimumig hiányzó mennyiséget, és egy
  * másik, megadott raktárban lévő készletet – hogy látszódjon, van-e honnan átmozgatni.
  *
  * Három kimenet: képernyős nézet, Excel export, és egy szűkebb Excel, amiből bizonylat készíthető

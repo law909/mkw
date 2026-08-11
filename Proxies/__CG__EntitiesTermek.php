@@ -246,17 +246,6 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getEgyediazonositoKeszlet($valtozatid = NULL, $term = '', $raktarid = NULL, $limit = 0)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEgyediazonositoKeszlet', [$valtozatid, $term, $raktarid, $limit]);
-
-        return parent::getEgyediazonositoKeszlet($valtozatid, $term, $raktarid, $limit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getFoglaltMennyiseg($kivevebiz = NULL, $datum = NULL, $raktarid = NULL)
     {
 

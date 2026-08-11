@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Termék raktáranként megadott min. bolti készlete – a `termek.minboltikeszlet` globális
  * oszlop raktáras párja. Sor csak ott van, ahol az admin ténylegesen megadott értéket;
- * a hiányzó sor a globális oszlopra esik vissza (lásd \Services\MinBoltiKeszletService).
+ * a hiányzó sor a globális oszlopra esik vissza (lásd \Services\KeszletService).
  *
  * Szándékosan nincs inverz OneToMany a Termek-en: minden olvasás a kötegelt service-en
  * megy, a törlést a DB-szintű cascade intézi.

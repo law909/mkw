@@ -4,9 +4,8 @@ namespace Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Query\ResultSetMapping;
 use mkw\store;
-use mkwhelpers\FilterDescriptor;
+use Services\KeszletService;
 
 /**
  * @ORM\Entity(repositoryClass="Entities\TermekValtozatRepository")
@@ -22,9 +21,6 @@ use mkwhelpers\FilterDescriptor;
  */
 class TermekValtozat
 {
-
-    private $keszletinfo = false;
-    private $foglalasinfo = false;
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -230,160 +226,26 @@ class TermekValtozat
         $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
-
-        $this->keszletinfo = false;
-        $this->foglalasinfo = false;
-    }
-
-    protected function calcKeszletInfo($datum = null, $raktarid = null)
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
-        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
-
-        if (!$datum) {
-            $datum = new \DateTime();
-        }
-
-        $filter = new FilterDescriptor();
-        $filter->addFilter('bt.termekvaltozat_id', '=', $this->getId());
-        $filter->addFilter('bt.mozgat', '=', 1);
-        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-        if ($datum) {
-            $filter->addFilter('bf.teljesites', '<=', $datum);
-        }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
-
-        $q = \mkw\store::getEm()->createNativeQuery(
-            'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
-            . ' FROM bizonylattetel bt'
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $filter->getFilterString()
-            ,
-            $rsm
-        );
-
-        $q->setParameters($filter->getQueryParameters());
-        $d = $q->getScalarResult();
-
-        $k = $d[0]['mennyiseg'];
-        if (is_null($k)) {
-            $k = 0;
-        }
-        $db = $d[0]['mozgasdb'];
-        if (is_null($db)) {
-            $db = 0;
-        }
-
-        /*
-        $k = 0;
-        $db = 0;
-        /** @var \Entities\Bizonylattetel $bt */
-        /*
-        foreach($this->bizonylattetelek as $bt) {
-            if ($bt->getMozgat() && (!$bt->getRontott()) && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
-                $k += ($bt->getMennyiseg() * $bt->getIrany());
-                $db++;
-            }
-        }
-        */
-        $this->keszletinfo = ['keszlet' => $k, 'mozgasdb' => $db];
-        return $this->keszletinfo;
-    }
-
-    protected function calcFoglalasInfo($kivevebiz = null, $datum = null, $raktarid = null)
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
-        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
-
-        if (!$datum) {
-            $datum = new \DateTime();
-        }
-
-        $filter = new FilterDescriptor();
-        $filter->addFilter('bt.termekvaltozat_id', '=', $this->getId());
-        $filter->addFilter('bt.foglal', '=', 1);
-        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-        if ($datum) {
-            $filter->addFilter('bf.teljesites', '<=', $datum);
-        }
-        $filter->addFilter('bf.bizonylattipus_id', 'IN', ['megrendeles', 'webshopbiz']);
-        if ($kivevebiz) {
-            $filter->addFilter('bf.id', '<>', $kivevebiz);
-        }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
-
-        $q = \mkw\store::getEm()->createNativeQuery(
-            'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
-            . ' FROM bizonylattetel bt'
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $filter->getFilterString()
-            ,
-            $rsm
-        );
-
-        $q->setParameters($filter->getQueryParameters());
-        $d = $q->getScalarResult();
-
-        $k = $d[0]['mennyiseg'] * -1;
-        $db = $d[0]['mozgasdb'];
-
-        $this->foglalasinfo = ['foglalas' => $k, 'mozgasdb' => $db];
-        return $this->foglalasinfo;
     }
 
     public function getMozgasDb($datum = null, $raktarid = null)
     {
-        if (!$this->keszletinfo) {
-            $this->calcKeszletInfo($datum, $raktarid);
-        }
-        $r = $this->keszletinfo['mozgasdb'];
-        // mint a getKeszlet(): a cache-t el kell dobni, különben egy másik $datum/$raktarid
-        // paraméterrel érkező következő hívás a szűretlen értéket kapná vissza
-        $this->keszletinfo = false;
-        return $r;
+        return KeszletService::getMozgasDb($this, $datum, $raktarid);
     }
 
     public function getKeszlet($datum = null, $raktarid = null, $nonegativ = false)
     {
-        if (!$this->keszletinfo) {
-            $this->calcKeszletInfo($datum, $raktarid);
-        }
-        $r = $this->keszletinfo['keszlet'];
-        $this->keszletinfo = false;
-        if ($nonegativ) {
-            if ($r < 0) {
-                $r = 0;
-            }
-        }
-        return $r;
+        return KeszletService::getKeszlet($this, $datum, $raktarid, $nonegativ);
     }
 
     public function getFoglaltMennyiseg($kivevebiz = null, $datum = null, $raktarid = null)
     {
-        if (\mkw\store::isFoglalas()) {
-            if (is_a($kivevebiz, 'Bizonylatfej')) {
-                $kivevebiz = $kivevebiz->getId();
-            }
-            $k = 0;
-            if (!$this->foglalasinfo) {
-                $this->calcFoglalasInfo($kivevebiz, $datum, $raktarid);
-            }
-            $r = $this->foglalasinfo['foglalas'];
-            $this->foglalasinfo = false;
-            return $r;
-        }
-        return 0;
+        return KeszletService::getFoglaltMennyiseg($this, $kivevebiz, $datum, $raktarid);
     }
 
     /**
      * Szabad készlet: készlet − foglalt − min. bolti készlet.
-     * A számítás egyetlen helyen él, lásd \Services\MinBoltiKeszletService::calcAvailableStock().
+     * A számítás egyetlen helyen él, lásd \Services\KeszletService::calcAvailableStock().
      */
     public function getAvailableStock(
         $datum = null,

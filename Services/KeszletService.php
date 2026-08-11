@@ -2,13 +2,19 @@
 
 namespace Services;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Bizonylatfej;
+use Entities\Termek;
 use Entities\TermekMinboltikeszlet;
+use Entities\TermekValtozat;
 use Entities\TermekValtozatMinboltikeszlet;
+use mkwhelpers\FilterDescriptor;
 
 /**
- * A polcon tartandó minimum ("min. bolti készlet") feloldása és a szabad készlet számítása.
+ * Készletszámítás: a bizonylattételekből összegzett raktárkészlet és foglalás, a polcon tartandó
+ * minimum ("min. bolti készlet") feloldása, és a háromból a szabad készlet.
  *
- * A feloldási létra – raktáras érték üti a globálisat, szinten belül a termék a változatot:
+ * A minimum feloldási létrája – raktáras érték üti a globálisat, szinten belül a termék a változatot:
  *   1. termekminboltikeszlet(termek, raktár)            – ha nem nulla
  *   2. termekvaltozatminboltikeszlet(változat, raktár)  – ha nem nulla
  *   3. termek.minboltikeszlet                           – ha nem nulla
@@ -23,11 +29,20 @@ use Entities\TermekValtozatMinboltikeszlet;
 class KeszletService
 {
 
+    /** a foglalást nyilvántartó bizonylattípusok – ugyanez a lista a BackorderService-ben */
+    private const FOGLALOTIPUSOK = ['megrendeles', 'webshopbiz'];
+
     /** [raktarid][termekid] => érték|null – kérésen belüli cache */
     private static $termekCache = [];
 
     /** [raktarid][valtozatid] => érték|null */
     private static $valtozatCache = [];
+
+    /** kulcs => ['keszlet' => …, 'mozgasdb' => …] */
+    private static $keszletCache = [];
+
+    /** kulcs => foglalt mennyiség */
+    private static $foglalasCache = [];
 
     /**
      * @param \Entities\Termek|null $termek
@@ -55,6 +70,106 @@ class KeszletService
     }
 
     /**
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     */
+    public static function getKeszlet($entity, $datum = null, $raktarid = null, $nonegativ = false)
+    {
+        $keszlet = self::calcKeszletInfo($entity, $datum, $raktarid)['keszlet'];
+        return ($nonegativ && $keszlet < 0) ? 0 : $keszlet;
+    }
+
+    /**
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     */
+    public static function getMozgasDb($entity, $datum = null, $raktarid = null)
+    {
+        return self::calcKeszletInfo($entity, $datum, $raktarid)['mozgasdb'];
+    }
+
+    private static function calcKeszletInfo($entity, $datum, $raktarid): array
+    {
+        $kulcs = self::cacheKey($entity, $datum, $raktarid);
+        if (!array_key_exists($kulcs, self::$keszletCache)) {
+            $filter = self::entityFilter($entity);
+            $filter->addFilter('bt.mozgat', '=', 1);
+            $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+            $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+            $sor = self::sumMozgas($filter);
+            self::$keszletCache[$kulcs] = [
+                'keszlet' => $sor['mennyiseg'],
+                'mozgasdb' => $sor['mozgasdb'],
+            ];
+        }
+        return self::$keszletCache[$kulcs];
+    }
+
+    /**
+     * A készlet- és a foglaláslekérdezés közös törzse: előjeles összeg és mozgásszám.
+     */
+    private static function sumMozgas(FilterDescriptor $filter): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
+
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            ,
+            $rsm
+        );
+        $q->setParameters($filter->getQueryParameters());
+        $d = $q->getScalarResult();
+
+        return [
+            'mennyiseg' => $d[0]['mennyiseg'] ?? 0,
+            'mozgasdb' => $d[0]['mozgasdb'] ?? 0,
+        ];
+    }
+
+    private static function entityFilter($entity): FilterDescriptor
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter(self::idMezo($entity), '=', $entity->getId());
+        return $filter;
+    }
+
+    /**
+     * Ismeretlen típusra inkább elhasalunk: szűrő nélkül az egész bizonylattetel tábla összegződne.
+     */
+    private static function idMezo($entity): string
+    {
+        if ($entity instanceof Termek) {
+            return 'bt.termek_id';
+        }
+        if ($entity instanceof TermekValtozat) {
+            return 'bt.termekvaltozat_id';
+        }
+        throw new \InvalidArgumentException(
+            'Termek vagy TermekValtozat kell, kapott: ' . get_debug_type($entity)
+        );
+    }
+
+    /**
+     * Az entitás azonossága a kulcs, nem az állapota – a proxy és a betöltött entitás
+     * ugyanarra a sorra ugyanazt a kulcsot adja. $datum nélkül a "most" a kérésen belül
+     * befagy; a mozgásokat író flush a BizonylattetelListener-ből üríti a cache-t.
+     */
+    private static function cacheKey($entity, ...$extra): string
+    {
+        $parts = [self::idMezo($entity), $entity->getId()];
+        foreach ($extra as $e) {
+            $parts[] = $e instanceof \DateTimeInterface ? $e->format('Y-m-d H:i:s') : (string)$e;
+        }
+        return implode('|', $parts);
+    }
+
+    /**
      * A szabad készlet egyetlen implementációja:
      * készlet − foglalt − minimum, $clamp esetén nullára vágva.
      *
@@ -75,9 +190,9 @@ class KeszletService
         if (!$o) {
             return 0;
         }
-        $keszlet = $o->getKeszlet($datum, $raktarid);
+        $keszlet = self::getKeszlet($o, $datum, $raktarid);
         if (!$ignorefoglalas) {
-            $keszlet -= $o->getFoglaltMennyiseg($kivevebiz, $datum, $raktarid);
+            $keszlet -= self::getFoglaltMennyiseg($o, $kivevebiz, $datum, $raktarid);
         }
         if (!$ignoreminkeszlet) {
             $keszlet -= self::getMinKeszlet($termek, $valtozat, $raktarid);
@@ -86,6 +201,90 @@ class KeszletService
             $keszlet = max($keszlet, 0);
         }
         return $keszlet;
+    }
+
+    /**
+     * A termék még raktáron lévő egyedi azonosítói.
+     *
+     * @param \Entities\Termek $termek
+     * @param int|null $valtozatid csak az adott változat azonosítói
+     * @param string $term LIKE szűrő az azonosítóra (autocomplete)
+     * @param int|null $raktarid csak az adott raktár készlete
+     *
+     * @return string[]
+     */
+    public static function getEgyediazonositoKeszlet($termek, $valtozatid = null, $term = '', $raktarid = null)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('azonosito', 'azonosito');
+
+        $sql = 'SELECT bt.termekegyediazonosito AS azonosito'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
+            . ' WHERE bt.termek_id = :termekid'
+            . ' AND bt.mozgat = 1'
+            . ' AND ((bt.rontott = 0) OR (bt.rontott IS NULL))'
+            . ' AND bt.termekegyediazonosito IS NOT NULL'
+            . " AND bt.termekegyediazonosito <> ''"
+            . ' AND bt.termekegyediazonosito LIKE :term';
+        $params = [
+            'termekid' => $termek->getId(),
+            'term' => '%' . $term . '%',
+        ];
+        if ($valtozatid) {
+            $sql .= ' AND bt.termekvaltozat_id = :valtozatid';
+            $params['valtozatid'] = $valtozatid;
+        }
+        if ($raktarid) {
+            $sql .= ' AND bf.raktar_id = :raktarid';
+            $params['raktarid'] = $raktarid;
+        }
+        $sql .= ' GROUP BY bt.termekegyediazonosito'
+            . ' HAVING SUM(bt.mennyiseg * bt.irany) > 0'
+            . ' ORDER BY bt.termekegyediazonosito ASC';
+
+        $q = \mkw\store::getEm()->createNativeQuery($sql, $rsm);
+        $q->setParameters($params);
+        $ret = [];
+        foreach ($q->getScalarResult() as $r) {
+            $ret[] = $r['azonosito'];
+        }
+        return $ret;
+    }
+
+    /**
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     * @param \Entities\Bizonylatfej|int|null $kivevebiz ezt a bizonylatot nem számítjuk bele
+     */
+    public static function getFoglaltMennyiseg($entity, $kivevebiz = null, $datum = null, $raktarid = null)
+    {
+        if (!\mkw\store::isFoglalas()) {
+            return 0;
+        }
+        if ($kivevebiz instanceof Bizonylatfej) {
+            $kivevebiz = $kivevebiz->getId();
+        }
+        return self::calcFoglalas($entity, $kivevebiz, $datum, $raktarid);
+    }
+
+    private static function calcFoglalas($entity, $kivevebiz, $datum, $raktarid)
+    {
+        $kulcs = self::cacheKey($entity, $kivevebiz, $datum, $raktarid);
+        if (!array_key_exists($kulcs, self::$foglalasCache)) {
+            $filter = self::entityFilter($entity);
+            $filter->addFilter('bt.foglal', '=', 1);
+            $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+            $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
+            $filter->addFilter('bf.bizonylattipus_id', 'IN', self::FOGLALOTIPUSOK);
+            if ($kivevebiz) {
+                $filter->addFilter('bf.id', '<>', $kivevebiz);
+            }
+            if ($raktarid) {
+                $filter->addFilter('bf.raktar_id', '=', $raktarid);
+            }
+            self::$foglalasCache[$kulcs] = self::sumMozgas($filter)['mennyiseg'] * -1;
+        }
+        return self::$foglalasCache[$kulcs];
     }
 
     /**
@@ -109,6 +308,16 @@ class KeszletService
     {
         self::$termekCache = [];
         self::$valtozatCache = [];
+        self::clearKeszletCache();
+    }
+
+    /**
+     * Csak a bizonylattételekből számolt részt üríti – erre a mozgásokat író flush után van szükség.
+     */
+    public static function clearKeszletCache(): void
+    {
+        self::$keszletCache = [];
+        self::$foglalasCache = [];
     }
 
     /**

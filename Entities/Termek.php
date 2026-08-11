@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use Services\KeszletService;
 use Traits\GetsFieldValue;
 
 /**
@@ -500,186 +501,12 @@ class Termek
 
     public function getKeszlet($datum = null, $raktarid = null, $nonegativ = false)
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
-        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
-
-        if (!$datum) {
-            $datum = new \DateTime();
-        }
-
-        $filter = new FilterDescriptor();
-        $filter->addFilter('bt.termek_id', '=', $this->getId());
-        $filter->addFilter('bt.mozgat', '=', 1);
-        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-        if ($datum) {
-            $filter->addFilter('bf.teljesites', '<=', $datum);
-        }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
-
-        $q = \mkw\store::getEm()->createNativeQuery(
-            'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
-            . ' FROM bizonylattetel bt'
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . $filter->getFilterString()
-            ,
-            $rsm
-        );
-
-        $q->setParameters($filter->getQueryParameters());
-        $d = $q->getScalarResult();
-
-        $k = $d[0]['mennyiseg'];
-        if (is_null($k)) {
-            $k = 0;
-        }
-        if ($nonegativ) {
-            if ($k < 0) {
-                $k = 0;
-            }
-        }
-        $db = $d[0]['mozgasdb'];
-        if (is_null($db)) {
-            $db = 0;
-        }
-
-        /*if (!$datum) {
-            $datum = new \DateTime();
-        }
-        $k = 0;
-        /** @var \Entities\Bizonylattetel $bt */
-        /*
-        foreach($this->bizonylattetelek as $bt) {
-            if ($bt->getMozgat() && (!$bt->getRontott()) && ($bt->getTeljesites() <= $datum) && (!$raktarid || ($raktarid && $raktarid == $bt->getRaktarId()))) {
-                $k += ($bt->getMennyiseg() * $bt->getIrany());
-            }
-        }
-        */
-        return $k;
-    }
-
-    /**
-     * @param int|null $valtozatid csak az adott változat azonosítói
-     * @param string $term LIKE szűrő az azonosítóra (autocomplete)
-     * @param int|null $raktarid csak az adott raktár készlete
-     * @param int $limit max. találat (0 = nincs korlát)
-     *
-     * @return string[]
-     */
-    public function getEgyediazonositoKeszlet($valtozatid = null, $term = '', $raktarid = null, $limit = 0)
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('azonosito', 'azonosito');
-
-        $sql = 'SELECT bt.termekegyediazonosito AS azonosito'
-            . ' FROM bizonylattetel bt'
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
-            . ' WHERE bt.termek_id = :termekid'
-            . ' AND bt.mozgat = 1'
-            . ' AND ((bt.rontott = 0) OR (bt.rontott IS NULL))'
-            . ' AND bt.termekegyediazonosito IS NOT NULL'
-            . " AND bt.termekegyediazonosito <> ''"
-            . ' AND bt.termekegyediazonosito LIKE :term';
-        $params = [
-            'termekid' => $this->getId(),
-            'term' => '%' . $term . '%',
-        ];
-        if ($valtozatid) {
-            $sql .= ' AND bt.termekvaltozat_id = :valtozatid';
-            $params['valtozatid'] = $valtozatid;
-        }
-        if ($raktarid) {
-            $sql .= ' AND bf.raktar_id = :raktarid';
-            $params['raktarid'] = $raktarid;
-        }
-        $sql .= ' GROUP BY bt.termekegyediazonosito'
-            . ' HAVING SUM(bt.mennyiseg * bt.irany) > 0'
-            . ' ORDER BY bt.termekegyediazonosito ASC';
-
-        $q = \mkw\store::getEm()->createNativeQuery($sql, $rsm);
-        $q->setParameters($params);
-        $ret = [];
-        foreach ($q->getScalarResult() as $r) {
-            $ret[] = $r['azonosito'];
-        }
-        return $ret;
+        return KeszletService::getKeszlet($this, $datum, $raktarid, $nonegativ);
     }
 
     public function getFoglaltMennyiseg($kivevebiz = null, $datum = null, $raktarid = null)
     {
-        if (\mkw\store::isFoglalas()) {
-            $rsm = new ResultSetMapping();
-            $rsm->addScalarResult('mennyiseg', 'mennyiseg');
-            $rsm->addScalarResult('mozgasdb', 'mozgasdb');
-
-            if (!$datum) {
-                $datum = new \DateTime();
-            }
-
-            $filter = new FilterDescriptor();
-            $filter->addFilter('bt.termek_id', '=', $this->getId());
-            $filter->addFilter('bt.foglal', '=', 1);
-            $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-            if ($datum) {
-                $filter->addFilter('bf.teljesites', '<=', $datum);
-            }
-            $filter->addFilter('bf.bizonylattipus_id', '=', 'megrendeles');
-            if ($kivevebiz) {
-                $filter->addFilter('bf.id', '<>', $kivevebiz);
-            }
-            if ($raktarid) {
-                $filter->addFilter('bf.raktar_id', '=', $raktarid);
-            }
-
-            $q = \mkw\store::getEm()->createNativeQuery(
-                'SELECT SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
-                . ' FROM bizonylattetel bt'
-                . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-                . $filter->getFilterString()
-                ,
-                $rsm
-            );
-
-            $q->setParameters($filter->getQueryParameters());
-            $d = $q->getScalarResult();
-
-            $k = $d[0]['mennyiseg'];
-            if (is_null($k)) {
-                $k = 0;
-            }
-            $k = $k * -1;
-            $db = $d[0]['mozgasdb'];
-            if (is_null($db)) {
-                $db = 0;
-            }
-
-            return $k;
-
-            /*
-            if (is_a($kivevebiz, 'Bizonylatfej')) {
-                $kivevebiz = $kivevebiz->getId();
-            }
-            $k = 0;
-            /** @var \Entities\Bizonylattetel $bt */
-            /*
-            foreach($this->bizonylattetelek as $bt) {
-                $bf = $bt->getBizonylatfej();
-                if ($bf->getBizonylattipusId() === 'megrendeles') {
-                    $nemkivetel = true;
-                    if ($kivevebiz) {
-                        $nemkivetel = $bt->getBizonylatfejId() != $kivevebiz;
-                    }
-                    if ($bt->getFoglal() && !$bt->getRontott() && ($nemkivetel)) {
-                        $k += ($bt->getMennyiseg() * $bt->getIrany());
-                    }
-                }
-            }
-            return -1 * $k;
-            */
-        }
-        return 0;
+        return KeszletService::getFoglaltMennyiseg($this, $kivevebiz, $datum, $raktarid);
     }
 
     public function toA2a($partner = null)
@@ -2981,12 +2808,30 @@ class Termek
             case \mkw\store::isMindentkapni():
                 $szallitasiido = 0;
                 if (!is_null($valtozat)) {
-                    $keszlet = $valtozat->getKeszlet() - $valtozat->getFoglaltMennyiseg($kivevebizonylat);
+                    $keszlet = KeszletService::calcAvailableStock(
+                        termek: $this,
+                        valtozat: $valtozat,
+                        datum: null,
+                        raktarid: null,
+                        kivevebiz: $kivevebizonylat,
+                        clamp: false,
+                        ignoreminkeszlet: true,
+                        ignorefoglalas: false
+                    );
                     if ((($mennyiseg === 0) && ($keszlet > 0)) || (($mennyiseg !== 0) && ($keszlet >= $mennyiseg))) {
                         $szallitasiido = 1;
                     }
                 } else {
-                    $keszlet = $this->getKeszlet() - $this->getFoglaltMennyiseg($kivevebizonylat);
+                    $keszlet = KeszletService::calcAvailableStock(
+                        termek: $this,
+                        valtozat: null,
+                        datum: null,
+                        raktarid: null,
+                        kivevebiz: $kivevebizonylat,
+                        clamp: false,
+                        ignoreminkeszlet: true,
+                        ignorefoglalas: false
+                    );
                     if ((($mennyiseg === 0) && ($keszlet > 0)) || (($mennyiseg !== 0) && ($keszlet >= $mennyiseg))) {
                         $szallitasiido = 1;
                     }
@@ -2994,10 +2839,8 @@ class Termek
                 if ($szallitasiido === 0) {
                     if ($this->szallitasiido) {
                         $szallitasiido = $this->szallitasiido;
-                    } else {
-                        if ($this->gyarto && $this->gyarto->getSzallitasiido()) {
-                            $szallitasiido = $this->gyarto->getSzallitasiido();
-                        }
+                    } elseif ($this->gyarto && $this->gyarto->getSzallitasiido()) {
+                        $szallitasiido = $this->gyarto->getSzallitasiido();
                     }
                 }
                 break;
@@ -3425,7 +3268,7 @@ class Termek
 
     /**
      * Szabad készlet: készlet − foglalt − min. bolti készlet.
-     * A számítás egyetlen helyen él, lásd \Services\MinBoltiKeszletService::calcAvailableStock().
+     * A számítás egyetlen helyen él, lásd \Services\KeszletService::calcAvailableStock().
      */
     public function getAvailableStock(
         $datum = null,

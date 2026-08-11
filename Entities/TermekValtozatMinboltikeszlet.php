@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Termékváltozat raktáranként megadott min. bolti készlete – a `termekvaltozat.minboltikeszlet`
  * globális oszlop raktáras párja. A feloldási létrában a termék raktáras értéke üti ezt,
- * lásd \Services\MinBoltiKeszletService.
+ * lásd \Services\KeszletService.
  *
  * @ORM\Entity(repositoryClass="Entities\TermekValtozatMinboltikeszletRepository")
  * @ORM\Table(name="termekvaltozatminboltikeszlet",
