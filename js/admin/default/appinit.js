@@ -55,6 +55,11 @@ $(document).ready(
             .ajaxStart(pleaseWait)
             .ajaxStop($.unblockUI)
             .ajaxError(function (e, xhr, settings, exception) {
+                // A megszakított kérés nem hiba: az autocomplete minden leütésnél lelövi az
+                // előzőt, és az oldalelhagyás is megszakítja a futó kéréseket.
+                if (exception === 'abort' || xhr.statusText === 'abort' || xhr.readyState === 0) {
+                    return;
+                }
                 alert('error in: ' + settings.url + ' \n' + 'error:\n' + exception);
             })
             // A párbeszédek tartalmát négy különböző oldal tölti be ajaxszal, ezért a
