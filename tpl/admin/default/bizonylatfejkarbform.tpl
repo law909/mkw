@@ -7,7 +7,8 @@
     <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"
           data-funnypartnermessage="{$maintheme=='superzoneb2b'}" data-tarsbiztipus="{$tarsbiztipus}"
           data-tulajaam="{if ($tulajalanyiafamentes)}1{else}0{/if}" data-magyarorszagid="{$magyarorszagid}"
-          data-unasdefaulttermek="{$unasdefaulttermek|default}">
+          data-unasdefaulttermek="{$unasdefaulttermek|default}"
+          data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
@@ -204,7 +205,7 @@
                     </tr>
                     <tr>
                         <td class="mattable-important"><label for="FizmodEdit">{at('Fizetési mód')}:</label></td>
-                        <td><select id="FizmodEdit" name="fizmod" class="mattable-important" required="required">
+                        <td><select id="FizmodEdit" name="fizmod" class="mattable-important" required="required"{if ($egyed.fizmodzarolt|default)} disabled="disabled"{/if}>
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $fizmodlist as $_mk}
                                     <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-fizhatido="{$_mk.fizhatido}"
@@ -213,6 +214,11 @@
                                             data-nincspenzmozgas="{if ($_mk.nincspenzmozgas)}1{else}0{/if}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
+                            {if ($egyed.fizmodzarolt|default)}
+                                {* a tiltott select nem küldődik be, a jelenlegi értéket rejtett mező viszi tovább *}
+                                <input type="hidden" name="fizmod" value="{$egyed.fizmod}">
+                                <div class="bizonylat-zaroltmezo">{at('A számla be van küldve a NAV-nak, a fizetési mód már nem módosítható.')}</div>
+                            {/if}
                         </td>
                         <td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
                         <td><select id="SzallitasimodEdit" name="szallitasimod"

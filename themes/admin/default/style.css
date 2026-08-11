@@ -427,3 +427,9 @@ select.tetelszamhiba,
 .unastable th {
     text-align: left;
 }
+
+/* Zárolt bizonylatmező magyarázata (pl. beküldött számla fizetési módja). */
+.bizonylat-zaroltmezo {
+    color: #884400;
+    font-size: 90%;
+}

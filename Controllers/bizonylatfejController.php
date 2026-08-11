@@ -8,6 +8,7 @@ use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
 use Entities\Bizonylatstatusznaplo;
+use Entities\Bizonylatvaltozasnaplo;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\CsomagTerminal;
@@ -540,6 +541,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['szepkartyatipusnev'] = $t->getSzepkartyatipusNev();
         $x['szepkartyakifizetve'] = $t->getSzepkartyakifizetve();
         $x['penztmozgat'] = $t->getPenztmozgat();
+        // a bizonylattípus alapértelmezése: erre áll vissza a jelölő, ha a "nincs pénzmozgás"
+        // fizetési módról váltanak vissza (a mentett érték olyankor szükségszerűen hamis)
+        $x['tipuspenztmozgat'] = (bool)$t->getBizonylattipus()?->getPenztmozgat();
         if ($this->biztipusid && $t->getBizonylattipusId() !== $this->biztipusid) {
             $x['penztmozgat'] = $this->biztipus?->getPenztmozgat();
             // Más típusú bizonylatot képezve: ha az előd bizonylatok bármelyike már
@@ -574,6 +578,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 ($t->getNaveredmeny() == 'DONE') ||
                 ($t->getNaveredmeny() == 'WAITING')
             );
+        // A beküldött (vagy beküldés alatt álló) számlán a fizetési mód átírása eltérne a már
+        // megküldött adatszolgáltatástól – arra módosító okirat való. A belőle KÉPZETT vagy
+        // stornó bizonylat viszont új, azon szabadon választható.
+        $x['fizmodzarolt'] = $x['vegleges']
+            && $t->getId()
+            && ($oper !== $this->inheritOperation)
+            && ($oper !== $this->stornoOperation);
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
@@ -2331,20 +2342,38 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    /**
+     * A bizonylat naplója: a státuszváltások és a pénzügyi mezők (fizetési mód, pénzmozgás
+     * jelölő, pénztár) változásai egy időrendi listában.
+     */
     public function getStatuszNaplo()
     {
         $bizszam = $this->params->getStringRequestParam('bizszam');
-        /** @var \Entities\Bizonylatstatusznaplo[] $naplok */
-        $naplok = $this->getRepo(Bizonylatstatusznaplo::class)->getByBizonylatfej($bizszam);
         $adat = [];
-        foreach ($naplok as $naplo) {
+        /** @var \Entities\Bizonylatstatusznaplo $naplo */
+        foreach ($this->getRepo(Bizonylatstatusznaplo::class)->getByBizonylatfej($bizszam) as $naplo) {
             $adat[] = [
+                'created' => $naplo->getCreated(),
                 'datum' => $naplo->getCreatedStr(),
                 'dolgozonev' => $naplo->getDolgozonev(),
+                'mezonev' => t('Státusz'),
                 'regi' => $naplo->getRegistatusznev(),
                 'uj' => $naplo->getUjstatusznev(),
             ];
         }
+        /** @var \Entities\Bizonylatvaltozasnaplo $naplo */
+        foreach ($this->getRepo(Bizonylatvaltozasnaplo::class)->getByBizonylatfej($bizszam) as $naplo) {
+            $adat[] = [
+                'created' => $naplo->getCreated(),
+                'datum' => $naplo->getCreatedStr(),
+                'dolgozonev' => $naplo->getDolgozonev(),
+                'mezonev' => $naplo->getMezonev(),
+                'regi' => $naplo->getRegiertek(),
+                'uj' => $naplo->getUjertek(),
+            ];
+        }
+        usort($adat, static fn($a, $b) => ($a['created'] <=> $b['created']));
+
         $view = $this->createView('bizonylatstatusznaploreszletezo.tpl');
         $view->setVar('lista', $adat);
         $view->printTemplateResult();

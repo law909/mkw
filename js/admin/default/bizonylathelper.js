@@ -11,14 +11,24 @@ let bizonylathelper = function ($) {
     // mentéskor a Bizonylatfej::setFizmod() ugyanezt teszi, itt csak előre látszik. A zárolt
     // jelölő nem megy fel a szerverre, tehát false-ként mentődik. Másik fizetési módra
     // váltva visszakapja a korábbi értékét.
-    function syncPenztmozgat() {
+    // A "nincs pénzmozgás" fizetési mód kikapcsolja és zárolja a "Pénzt mozgat" jelölőt, a
+    // visszaváltás pedig visszaadja a korábbi értéket.
+    //
+    // @param betoltes az oldal betöltésekor hívjuk-e. Ilyenkor a mentett érték nem használható
+    //        korábbi értéknek: pont azért hamis, mert a fizetési mód azzá tette. Ott a
+    //        bizonylattípus alapértelmezését őrizzük meg, különben a visszaváltás után a pipa
+    //        csendben kikapcsolva maradna, és a bizonylat nem képezne kintlévőséget.
+    function syncPenztmozgat(betoltes) {
         let penztmozgat = $('#PenztmozgatEdit');
         if (!penztmozgat.length) {
             return;
         }
         if ($('#FizmodEdit option:selected').attr('data-nincspenzmozgas') === '1') {
             if (!penztmozgat.prop('disabled')) {
-                penztmozgat.attr('data-elozoertek', penztmozgat.prop('checked') ? '1' : '0');
+                let elozo = betoltes
+                    ? ($('#mattkarb-form').data('tipuspenztmozgat') * 1 === 1)
+                    : penztmozgat.prop('checked');
+                penztmozgat.attr('data-elozoertek', elozo ? '1' : '0');
             }
             penztmozgat.prop('checked', false).prop('disabled', true);
         } else if (penztmozgat.prop('disabled')) {
@@ -1319,7 +1329,7 @@ let bizonylathelper = function ($) {
                     syncPenztmozgat();
                     syncPenztar();
                 });
-                syncPenztmozgat();   // a betöltéskor már kiválasztott fizetési módra is
+                syncPenztmozgat(true);   // a betöltéskor már kiválasztott fizetési módra is
                 syncPenztar();
                 alttab
                     .on('click', '.js-quicktetelnewbutton', function (e) {
@@ -2493,7 +2503,7 @@ let bizonylathelper = function ($) {
                         },
                         success: function (data) {
                             dialogcenter.html(data).dialog({
-                                title: 'Státusz napló',
+                                title: 'Bizonylat napló',
                                 width: 600,
                                 modal: true,
                                 buttons: {

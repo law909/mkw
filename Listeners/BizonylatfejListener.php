@@ -5,8 +5,10 @@ namespace Listeners;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Entities\Afa;
+use Entities\Bankbizonylatfej;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusznaplo;
+use Entities\Bizonylatvaltozasnaplo;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Feketelista;
@@ -23,6 +25,20 @@ use Entities\Termek;
 class BizonylatfejListener
 {
 
+    /**
+     * Az automatikusan képzett pénztárbizonylat megjegyzése. Ez különbözteti meg a kézzel
+     * rögzítettől: a kézit soha nem rontjuk magától, mert az egy ember állítása arról, hogy a
+     * pénz fizikailag mozgott.
+     */
+    private const AUTOPENZTARMEGJEGYZES = 'Automatikus pénztárbizonylat';
+
+    /** A bizonylat pénzügyi viselkedését eldöntő mezők – ezek változását naplózzuk. */
+    private const NAPLOZOTTMEZOK = [
+        'fizmod' => 'Fizetési mód',
+        'penztmozgat' => 'Kintlévőséget/tartozást képez',
+        'penztar' => 'Pénztár',
+    ];
+
     private $em;
     private $uow;
     private $bizonylatfejmd;
@@ -32,6 +48,7 @@ class BizonylatfejListener
     private $folyoszamlamd;
     private $kuponmd;
     private $bizonylatstatusznaplomd;
+    private $bizonylatvaltozasnaplomd;
 
     /**
      * @param \Entities\Bizonylatfej $bizonylat
@@ -471,17 +488,29 @@ class BizonylatfejListener
         if ($bizfej->getStornozott() || $bizfej->getRontott()) {
             return;
         }
+        // Az alábbi három ág mindegyike azt jelenti, hogy a bizonylathoz MOST nem való
+        // automatikus pénztárbizonylat. Ha korábban készült hozzá ilyen (pl. készpénzes volt,
+        // aztán átállították utalásra), azt rontani kell: különben a pénztárban ott marad egy
+        // soha be nem folyt készpénz, a bizonylat pedig kiegyenlítettnek látszik.
         if (!$bizfej->getPenztmozgat() || !$bizfej->getPartner()) {
+            $this->rontAutoPenztarBizonylat($bizfej);
             return;
         }
         $fizmod = $bizfej->getFizmod();
         if (!$fizmod || $fizmod->getTipus() !== 'P') {
+            $this->rontAutoPenztarBizonylat($bizfej);
             return;
         }
         // részletfizetési ütemezésnél nincs egyösszegű készpénzes kiegyenlítés
         if (\mkw\store::isOsztottFizmod()
             && ($bizfej->getFizetendo1() || $bizfej->getFizetendo2() || $bizfej->getFizetendo3()
                 || $bizfej->getFizetendo4() || $bizfej->getFizetendo5())) {
+            $this->rontAutoPenztarBizonylat($bizfej);
+            return;
+        }
+        // A bizonylatot már kiegyenlítette egy élő bankbizonylat: utalásról készpénzre váltva
+        // sem szabad melléképezni egy pénztárbizonylatot, mert az túlfizetést csinálna.
+        if ($this->vanEloBankKiegyenlites($bizfej)) {
             return;
         }
 
@@ -552,7 +581,7 @@ class BizonylatfejListener
         $pbfej->setPartner($bizfej->getPartner());
         $pbfej->setValutanem($bizfej->getValutanem());
         $pbfej->setArfolyam($bizfej->getArfolyam() ?: 1);
-        $pbfej->setMegjegyzes('Automatikus pénztárbizonylat');
+        $pbfej->setMegjegyzes(self::AUTOPENZTARMEGJEGYZES);
 
         $pbtetel->setJogcim($jogcim);
         $pbtetel->setHivatkozottbizonylat($bizfej->getId());
@@ -563,6 +592,47 @@ class BizonylatfejListener
         $this->uow->computeChangeSet($this->penztarbizonylatfejmd, $pbfej);
         $this->em->persist($pbtetel);
         $this->uow->computeChangeSet($this->penztarbizonylattetelmd, $pbtetel);
+    }
+
+    /**
+     * A bizonylathoz tartozó élő automatikus pénztárbizonylat rontása, mert a bizonylat kikerült
+     * a készpénzes körből (fizetési mód váltás, pénzmozgás kikapcsolása, részletfizetés).
+     * Nem törlünk: a rontott bizonylat a listán és a naplóban továbbra is látszik, csak a
+     * pénzmozgásból esik ki. Új bizonylathoz még nem tartozhat ilyen, ott a lekérdezés fölösleges.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function rontAutoPenztarBizonylat($bizfej)
+    {
+        if ($this->uow->isScheduledForInsert($bizfej)) {
+            return;
+        }
+        $regi = $this->getAutoPenztarBizonylat($bizfej);
+        // csak amit magunk képeztünk: a kézzel rögzített pénzmozgást nem írjuk felül
+        if ($regi && ($regi->getMegjegyzes() === self::AUTOPENZTARMEGJEGYZES)) {
+            $this->rontPenztarBizonylatfej($regi);
+        }
+    }
+
+    /**
+     * Van-e a bizonylatra hivatkozó, nem rontott bankbizonylat tétel – azaz kiegyenlítették-e
+     * már banki úton. A getAutoPenztarBizonylat() csak a pénztárbizonylatokat látja, ezért ezt
+     * külön kell megnézni.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return bool
+     */
+    private function vanEloBankKiegyenlites($bizfej)
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bt.hivatkozottbizonylat', '=', $bizfej->getId())
+            ->addFilter('bt.rontott', '=', false)
+            ->addFilter('rontott', '=', false);
+        return (bool)count(
+            $this->em->getRepository(Bankbizonylatfej::class)->getAllByHivatkozottBizonylat($filter)
+        );
     }
 
     /**
@@ -781,6 +851,79 @@ class BizonylatfejListener
     }
 
     /**
+     * A pénzügyileg lényeges mezők utólagos változásának naplózása. A fizetési mód, a
+     * pénzmozgás jelölő és a pénztár átállítása eddig nyomtalan volt: a bizonylat kintlévősége
+     * és a hozzá tartozó pénztárbizonylat is megváltozik tőle, de utólag nem lehetett megmondani,
+     * hogy ki és mikor nyúlt hozzá. Csak MEGLÉVŐ bizonylatra naplózunk – az új bizonylat kezdeti
+     * értékei magán a bizonylaton látszanak.
+     *
+     * @param array $updatedentities
+     */
+    private function logValtozasok($updatedentities)
+    {
+        $dolgozo = \mkw\store::getLoggedInDolgozo();
+
+        foreach ($updatedentities as $entity) {
+            if (!($entity instanceof \Entities\Bizonylatfej)) {
+                continue;
+            }
+            $changeset = $this->uow->getEntityChangeSet($entity);
+            foreach (self::NAPLOZOTTMEZOK as $mezo => $mezonev) {
+                if (!isset($changeset[$mezo])) {
+                    continue;
+                }
+                [$regi, $uj] = $changeset[$mezo];
+                if ($regi === $uj) {
+                    continue;
+                }
+                $regiszoveg = $this->naploErtek($regi);
+                $ujszoveg = $this->naploErtek($uj);
+                if ($regiszoveg === $ujszoveg) {
+                    continue;
+                }
+                $this->createValtozasNaplo($entity, $mezo, $mezonev, $regiszoveg, $ujszoveg, $dolgozo);
+            }
+        }
+    }
+
+    /**
+     * A naplózandó érték szöveges pillanatképe. Az entitásokat a nevükkel, a jelölőket
+     * igen/nem szóval írjuk ki, hogy a napló a törzsadat későbbi átnevezésétől független legyen.
+     */
+    private function naploErtek($ertek)
+    {
+        if ($ertek === null || $ertek === '') {
+            return '';
+        }
+        if (is_bool($ertek)) {
+            return $ertek ? t('igen') : t('nem');
+        }
+        if (is_object($ertek) && method_exists($ertek, 'getNev')) {
+            return (string)$ertek->getNev();
+        }
+        return (string)$ertek;
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $entity
+     * @param \Entities\Dolgozo|null $dolgozo
+     */
+    private function createValtozasNaplo($entity, $mezo, $mezonev, $regiertek, $ujertek, $dolgozo)
+    {
+        $naplo = new Bizonylatvaltozasnaplo();
+        $naplo->setBizonylatfej($entity);
+        $naplo->setCreated(new \DateTime());
+        $naplo->setDolgozo($dolgozo);
+        $naplo->setMezo($mezo);
+        $naplo->setMezonev(t($mezonev));
+        $naplo->setRegiertek($regiertek);
+        $naplo->setUjertek($ujertek);
+
+        $this->em->persist($naplo);
+        $this->uow->computeChangeSet($this->bizonylatvaltozasnaplomd, $naplo);
+    }
+
+    /**
      * @param \Entities\Bizonylatfej $entity
      * @param \Entities\Bizonylatstatusz|null $regi
      * @param \Entities\Bizonylatstatusz|null $uj
@@ -833,12 +976,16 @@ class BizonylatfejListener
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
         $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
         $this->bizonylatstatusznaplomd = $this->em->getClassMetadata(Bizonylatstatusznaplo::class);
+        $this->bizonylatvaltozasnaplomd = $this->em->getClassMetadata(Bizonylatvaltozasnaplo::class);
 
         $insertedentities = $this->uow->getScheduledEntityInsertions();
         $updatedentities = $this->uow->getScheduledEntityUpdates();
 
         // A státuszbeállítást/-változást még a bizonylat feldolgozása (recompute) előtt naplózzuk.
         $this->logStatuszValtozasok($insertedentities, $updatedentities);
+        // Ugyanígy a pénzügyi mezőkét: a recompute után a changeset már a származtatott
+        // mezőkkel is tele lenne, itt viszont pontosan az látszik, amit a felhasználó átírt.
+        $this->logValtozasok($updatedentities);
 
         $entities = array_merge(
             $insertedentities,

@@ -56,4 +56,20 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository
         return $q->getSingleScalarResult();
     }
 
+    /**
+     * Egy bizonylatra hivatkozó bankbizonylatok (a szűrő a tételre is szólhat: bt.*).
+     * A PenztarbizonylatfejRepository azonos nevű metódusának párja.
+     */
+    public function getAllByHivatkozottBizonylat($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx, bt'
+            . ' FROM Entities\Bankbizonylatfej _xx'
+            . ' LEFT JOIN _xx.bizonylattetelek bt'
+            . $this->getFilterString($filter)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
 }

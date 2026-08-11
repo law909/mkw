@@ -2,6 +2,10 @@
 
 *Készült: 2026-08-11. Kódolvasás + a galad fejlesztői adatbázison végzett, csak olvasó ellenőrzés alapján.*
 
+> **2026-08-12: a 4. pont javításai elkészültek** (az adattisztítás kivételével, az továbbra is nyitott).
+> A 3.1–3.6 alatti leírások az **eredeti, hibás** viselkedést dokumentálják; hogy mi lett belőlük,
+> azt az 5. pont foglalja össze.
+
 A kérdés: mi történik az egyenleggel és a már létrejött pénztár-/bankbizonylatokkal, ha egy pénzt mozgató
 bizonylaton **utólag** átállítják a fizetési módot (készpénzről utalásra vagy vissza).
 
@@ -190,3 +194,48 @@ a fizetési mód átírását a beküldött számlákon.
 
 Egyik javaslat sem törli a már létrejött bizonylatokat: a helyes viselkedés mindenütt a **rontás**, ami
 megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
+
+---
+
+## 5. Mi készült el (2026-08-12)
+
+| Pont | Állapot | Mit csinál most |
+|------|---------|-----------------|
+| 3.1 | **javítva** | Készpénzről utalásra/kártyára váltva a `createPenztarBizonylat()` a kilépés előtt rontja az automatikus pénztárbizonylatot. A bizonylat egyenlege megnyílik, a tartozás visszakerül a kintlévőségek közé. |
+| 3.2 | **javítva** | Ha él a bizonylatra hivatkozó, nem rontott bankbizonylat tétel, készpénzre váltva sem képződik automatikus pénztárbizonylat (`vanEloBankKiegyenlites()`). |
+| 3.3 | **javítva** | A `penztmozgat` pipa levétele ugyanazon az úton rontja az automatikus pénztárbizonylatot. |
+| 3.4 | **javítva** | A `syncPenztmozgat()` betöltéskor a bizonylattípus alapértelmezését őrzi meg korábbi értéknek, így a „nincs pénzmozgás" fizetési módról visszaváltva a pipa visszajön. |
+| 3.5 | **javítva** | Új `bizonylatvaltozasnaplo` tábla: a fizetési mód, a `penztmozgat` és a pénztár változása naplózódik (ki, mikor, miről mire). A bizonylatlista naplógombja mostantól a státuszváltásokkal együtt, időrendben mutatja. |
+| 3.6 | **javítva** | A NAV-hoz beküldött (DONE/WAITING) számlán a fizetési mód `select` tiltott; rejtett mező viszi tovább a jelenlegi értéket, és egy magyarázó sor jelzi az okát. A belőle képzett vagy stornó bizonylaton nincs zárolás. |
+| 4/2. adattisztítás | **nyitva** | Szándékosan kimaradt – a meglévő adatokhoz nem nyúltunk. |
+
+### Amire figyelni kell
+
+- **Csak az automatikus pénztárbizonylatot rontjuk.** A kézzel rögzítettet nem: az egy ember állítása
+  arról, hogy a pénz fizikailag mozgott, azt nem írhatja felül egy fizmód-átállítás. A megkülönböztetés a
+  pénztárbizonylat megjegyzésén megy (`BizonylatfejListener::AUTOPENZTARMEGJEGYZES`). Ez azt is jelenti,
+  hogy **kézi pénztárbizonylatnál a 3.1 tünete megmarad** – ott a felhasználónak kell dönteni a sorsáról.
+  Ez tudatos választás; ha inkább az kell, hogy a kézit is rontsuk, egy sor a `rontAutoPenztarBizonylat()`-ban.
+- A `koltsegszamla` típusnak **nincs** automatikus pénztárbizonylata, ezért a hozzájuk kézzel rögzített
+  (galadon 66 db) pénztárbizonylatot a javítás nem érinti.
+- A `bizonylatvaltozasnaplo` tábla új: minden telepítésen kell rá egy `./updateschema.sh`.
+  A galad és a superzoneb2b fejlesztői adatbázisán már megvan.
+
+### Hogyan lett ellenőrizve
+
+A javítások a galad fejlesztői adatbázisán, a `BO2026/000003` bizonylaton, **tranzakcióban futtatva és
+visszagörgetve** lettek próbálva (az adatbázisban nem maradt nyoma):
+
+```
+1. lepes: KESZPENZRE allitva   elo penztarbizonylat = [PENZ1B2026/000007]   egyenleg = 0
+2. lepes: UTALASRA valtva      elo penztarbizonylat = []                    egyenleg = 52990   <<< a javitas
+   naplo: [Fizetési mód: bankkártya -> KÉSZPÉNZ, Fizetési mód: KÉSZPÉNZ -> ÁTUTALÁS]
+
+3.3  penztmozgat = 0 utan      elo penztarbizonylat = []
+     naplo: [..., Kintlévőséget/tartozást képez: igen -> nem]
+3.2  elo bankbizonylat mellett keszpenzre valtva: NEM keletkezett uj penztarbizonylat
+```
+
+A 3.6 és a 3.4 böngészőben lett ellenőrizve (a NAV-eredmény, illetve a `nincspenzmozgas` jelző
+ideiglenes átállításával, utána visszaállítva): a zárolt `select` mellett a form továbbra is a helyes
+fizetési módot küldi be, a „nincs pénzmozgás"-ról visszaváltva pedig a pipa visszajön.

@@ -3,6 +3,7 @@
         <tr>
             <th>{at('Időpont')}</th>
             <th>{at('Módosította')}</th>
+            <th>{at('Mit')}</th>
             <th>{at('Erről')}</th>
             <th>{at('Erre')}</th>
         </tr>
@@ -12,12 +13,13 @@
         <tr>
             <td>{$elem.datum}</td>
             <td>{$elem.dolgozonev}</td>
+            <td>{$elem.mezonev}</td>
             <td>{$elem.regi}</td>
             <td>{$elem.uj}</td>
         </tr>
     {foreachelse}
         <tr>
-            <td colspan="4">{at('Nincs naplóbejegyzés.')}</td>
+            <td colspan="5">{at('Nincs naplóbejegyzés.')}</td>
         </tr>
     {/foreach}
     </tbody>

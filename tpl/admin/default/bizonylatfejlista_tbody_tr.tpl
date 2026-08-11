@@ -21,7 +21,7 @@
             {$_egyed.id}
         {/if}
         {if ($showbizonylatstatuszeditor)}
-            <a class="js-statusznaplobtn" href="#" data-id="{$_egyed.id}" title="{at('Státusz napló')}"><span class="ui-icon ui-icon-clipboard"></span></a>
+            <a class="js-statusznaplobtn" href="#" data-id="{$_egyed.id}" title="{at('Bizonylat napló')}"><span class="ui-icon ui-icon-clipboard"></span></a>
         {/if}
         {if (!$_egyed.hibas)}
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
