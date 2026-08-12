@@ -340,7 +340,8 @@ class leltarfejController extends \mkwhelpers\MattableController
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('leltar-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx');
+        $filename = uniqid('leltar-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -349,7 +350,7 @@ class leltarfejController extends \mkwhelpers\MattableController
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . $fileSize);
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
 

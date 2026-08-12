@@ -1944,7 +1944,8 @@ class termekController extends \mkwhelpers\MattableController
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('termekarak') . '.xlsx');
+        $filename = uniqid('termekarak') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -1953,7 +1954,7 @@ class termekController extends \mkwhelpers\MattableController
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 
@@ -2258,7 +2259,8 @@ class termekController extends \mkwhelpers\MattableController
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('cikkszamosexport') . '.xlsx');
+        $filename = uniqid('cikkszamosexport') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -2267,7 +2269,7 @@ class termekController extends \mkwhelpers\MattableController
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 
@@ -2283,13 +2285,14 @@ class termekController extends \mkwhelpers\MattableController
         $ids = array_filter(explode(',', $this->params->getStringRequestParam('ids')));
         $excel = (new \Services\MinKeszletExcelService())->export($ids);
 
-        $filepath = \mkw\store::storagePath(uniqid('minkeszlet') . '.xlsx');
+        $filename = uniqid('minkeszlet') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         IOFactory::createWriter($excel, 'Xlsx')->save($filepath);
 
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . filesize($filepath));
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
         \unlink($filepath);

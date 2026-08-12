@@ -240,15 +240,14 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     private function kuldExcel(Spreadsheet $excel, $nevprefix)
     {
         $writer = IOFactory::createWriter($excel, 'Xlsx');
-        $filepath = \mkw\store::storagePath(
-            uniqid($nevprefix . '-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx'
-        );
+        $filename = uniqid($nevprefix . '-' . \mkw\store::urlize($this->raktarnev)) . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . filesize($filepath));
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
         \unlink($filepath);

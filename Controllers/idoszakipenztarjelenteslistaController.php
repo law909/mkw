@@ -171,7 +171,8 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('idoszakipenztarjelentes') . '.xlsx');
+        $filename = uniqid('idoszakipenztarjelentes') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -180,7 +181,7 @@ class idoszakipenztarjelenteslistaController extends \mkwhelpers\MattableControl
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . $fileSize);
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
 

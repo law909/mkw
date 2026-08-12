@@ -464,7 +464,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('kintlevoseg') . '.xlsx');
+        $filename = uniqid('kintlevoseg') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -473,7 +474,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . $fileSize);
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
 

@@ -54,7 +54,8 @@ class navadatexportController extends \mkwhelpers\MattableController
 
     public function createLista()
     {
-        $filepath = \mkw\store::storagePath('navexport.xml');
+        $filename = 'nacexport.xml';
+        $filepath = \mkw\store::storagePath($filename);
 
         $handle = fopen($filepath, "wb");
 
@@ -233,7 +234,7 @@ class navadatexportController extends \mkwhelpers\MattableController
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . $fileSize);
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
     }

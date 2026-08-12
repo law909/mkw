@@ -53,7 +53,8 @@ trait PartnerExport
         }
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('partnermegjegyzes') . '.xlsx');
+        $filename = uniqid('partnermegjegyzes') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -62,7 +63,7 @@ trait PartnerExport
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 
@@ -105,7 +106,8 @@ trait PartnerExport
         }
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('partnerhirlevel') . '.xlsx');
+        $filename = uniqid('partnerhirlevel') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -114,7 +116,7 @@ trait PartnerExport
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 
@@ -172,7 +174,8 @@ trait PartnerExport
         }
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath(uniqid('mptngypartnerszamlazas') . '.xlsx');
+        $filename = uniqid('mptngypartnerszamlazas') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
         $fileSize = filesize($filepath);
@@ -181,7 +184,7 @@ trait PartnerExport
         header("Cache-Control: private");
         header("Content-Type: application/stream");
         header("Content-Length: " . $fileSize);
-        header("Content-Disposition: attachment; filename=" . $filepath);
+        header("Content-Disposition: attachment; filename=" . $filename);
 
         readfile($filepath);
 

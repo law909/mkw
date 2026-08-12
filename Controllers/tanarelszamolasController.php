@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\Emailtemplate;
 use Entities\JogaReszvetel;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
@@ -175,10 +176,11 @@ class tanarelszamolasController extends \mkwhelpers\Controller
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filepath = \mkw\store::storagePath($tanarnev . ' ' . $tolstr . '-' . $igstr . '.xlsx');
+        $filename = $tanarnev . ' ' . $tolstr . '-' . $igstr . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 
-        return $filepath;
+        return [$filepath, $filename];
     }
 
     public function refresh()
@@ -195,14 +197,14 @@ class tanarelszamolasController extends \mkwhelpers\Controller
 
     public function reszletezo()
     {
-        $filepath = $this->reszletezoExport();
+        [$filepath, $filename] = $this->reszletezoExport();
         $fileSize = filesize($filepath);
 
         // Output headers.
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . $fileSize);
-        header('Content-Disposition: attachment; filename=' . $filepath);
+        header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
 
@@ -215,14 +217,14 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
         /** @var \Entities\Dolgozo $tanar */
-        $tanar = $this->getRepo('\Entities\Dolgozo')->find($tanarid);
+        $tanar = $this->getRepo(Dolgozo::class)->find($tanarid);
         if ($tanar) {
             $tanaremail = $tanar->getEmail();
             $tanarnev = $tanar->getNev();
         }
-        $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaTanarelszamolasSablon));
+        $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaTanarelszamolasSablon));
         if ($tanaremail && $emailtpl) {
-            $filepath = $this->reszletezoExport();
+            [$filepath, $filename] = $this->reszletezoExport();
             $adat = $this->getData($tanarid);
 
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
