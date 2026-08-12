@@ -3,13 +3,17 @@
 {else}
     <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-irany="{$egyed.irany|default:0}">
         <h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
+        {if ($readonly|default)}
+            <div class="mattkarb-readonly-uzenet">{at('A bizonylat ki van nyomtatva, ezért már nem módosítható.')}</div>
+        {/if}
     </div>
     <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"
           data-funnypartnermessage="{$maintheme=='superzoneb2b'}" data-tarsbiztipus="{$tarsbiztipus}"
           data-tulajaam="{if ($tulajalanyiafamentes)}1{else}0{/if}" data-magyarorszagid="{$magyarorszagid}"
           data-unasdefaulttermek="{$unasdefaulttermek|default}"
           data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}"
-          data-eredetifizmod="{$egyed.fizmod}" data-eredetipenztmozgat="{if ($egyed.penztmozgat)}1{else}0{/if}">
+          data-eredetifizmod="{$egyed.fizmod}" data-eredetipenztmozgat="{if ($egyed.penztmozgat)}1{else}0{/if}"
+          data-readonly="{if ($readonly|default)}1{else}0{/if}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
@@ -206,7 +210,7 @@
                     </tr>
                     <tr>
                         <td class="mattable-important"><label for="FizmodEdit">{at('Fizetési mód')}:</label></td>
-                        <td><select id="FizmodEdit" name="fizmod" class="mattable-important" required="required"{if ($egyed.fizmodzarolt|default)} disabled="disabled"{/if}>
+                        <td><select id="FizmodEdit" name="fizmod" class="mattable-important" required="required">
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $fizmodlist as $_mk}
                                     <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-fizhatido="{$_mk.fizhatido}"
@@ -215,11 +219,6 @@
                                             data-nincspenzmozgas="{if ($_mk.nincspenzmozgas)}1{else}0{/if}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
-                            {if ($egyed.fizmodzarolt|default)}
-                                {* a tiltott select nem küldődik be, a jelenlegi értéket rejtett mező viszi tovább *}
-                                <input type="hidden" name="fizmod" value="{$egyed.fizmod}">
-                                <div class="bizonylat-zaroltmezo">{at('A számla be van küldve a NAV-nak, a fizetési mód már nem módosítható.')}</div>
-                            {/if}
                         </td>
                         <td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
                         <td><select id="SzallitasimodEdit" name="szallitasimod"
@@ -451,9 +450,9 @@
                 {else}
                     {if (!$quick)}
                         <div class="bizonylattetel-importsor">
-                            <a class="js-tetelimportbutton" href="#">{at('Tételek betöltése xlsx-ből')}</a>
+                            <a class="js-tetelimportbutton js-karbmodosito" href="#">{at('Tételek betöltése xlsx-ből')}</a>
                             {if ($maintheme === 'superzoneb2b')}
-                                <a class="js-fcmotoimportbutton" href="#">{at('FC-Moto rendelés')}</a>
+                                <a class="js-fcmotoimportbutton js-karbmodosito" href="#">{at('FC-Moto rendelés')}</a>
                             {/if}
                             <span class="js-tetelimportuzenet"></span>
                         </div>

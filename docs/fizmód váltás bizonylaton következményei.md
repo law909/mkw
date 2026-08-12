@@ -207,7 +207,7 @@ megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
 | 3.3 | **javítva** | A `penztmozgat` pipa levétele ugyanazt a kérdést teszi fel, és ugyanazon az úton ront. |
 | 3.4 | **javítva** | A `syncPenztmozgat()` betöltéskor a bizonylattípus alapértelmezését őrzi meg korábbi értéknek, így a „nincs pénzmozgás" fizetési módról visszaváltva a pipa visszajön. |
 | 3.5 | **javítva** | Új `bizonylatvaltozasnaplo` tábla: a fizetési mód, a `penztmozgat` és a pénztár változása naplózódik (ki, mikor, miről mire). A bizonylatlista naplógombja mostantól a státuszváltásokkal együtt, időrendben mutatja. |
-| 3.6 | **javítva** | A NAV-hoz beküldött (DONE/WAITING) számlán a fizetési mód `select` tiltott; rejtett mező viszi tovább a jelenlegi értéket, és egy magyarázó sor jelzi az okát. A belőle képzett vagy stornó bizonylaton nincs zárolás. |
+| 3.6 | **másképp megoldva** | A `vegleges` (NAV-eredmény) alapú zárolás kikerült. Helyette a karb **egészben** szerkeszthetetlen, ha a bizonylat ki van nyomtatva és a típusa `editprinted = 0` – lásd a 7. pontot. Így nem csak a fizetési mód védett, hanem minden mező. |
 | 4/2. adattisztítás | **nyitva** | Szándékosan kimaradt – a meglévő adatokhoz nem nyúltunk. |
 
 ### Amire figyelni kell
@@ -301,3 +301,49 @@ naplózva:
   `penzugyimezovaltozott` (a listener tölti)
 - `Controllers/bizonylatfejController.php` – `getKapcsolodoPenzmozgas()` végpont, a válasz átvétele
 - `js/admin/default/bizonylathelper.js` – `penzugyiMezoValtozott()`, `kerdezPenzmozgasrol()`
+
+---
+
+## 7. Csak olvasható karb (2026-08-12)
+
+A 3.6 eredetileg a NAV-eredményhez kötötte a fizetési mód zárolását. Ez két sebből vérzett: csak
+egyetlen mezőt védett, és olyan bizonylatokat is érintetlenül hagyott, amiket amúgy sem szabadna
+módosítani. Helyette a karb egésze zárható lett.
+
+**A szabály.** A bizonylat karbja szerkeszthetetlenül töltődik be, ha a bizonylat **ki van
+nyomtatva** (`nyomtatva = 1`) és a **típusa nem engedi a nyomtatás utáni szerkesztést**
+(`bizonylattipus.editprinted = 0`). A bizonylatlista eddig is csak ekkor rejtette el a szerkesztés
+linket – de a karb URL-jét beírva a form így is megnyílt és menthető volt.
+
+A képzett és a stornó bizonylat **nem** zárolt: azok új rekordok, ki kell tudni tölteni őket.
+
+**Általános, nem bizonylat-specifikus.** A `jquery.mattkarb.js` kapott egy csak olvasható
+üzemmódot, ami bármelyik karb formon használható: elég a formra tenni a `data-readonly="1"`-et
+(vagy a setupban átadni a `readonly: true`-t). Ilyenkor a widget
+
+- letiltja az összes űrlapmezőt (input, select, textarea, button) a Mégsem gomb kivételével,
+- elrejti a mentés gombot,
+- elrejti a sorfelvevő/-törlő ikonlinkeket – ezek nem űrlapmezők, de a repóban egységesen a
+  `ui-icon-circle-plus` / `ui-icon-circle-minus` ikont viselik,
+- elrejti, amit a hívó a **`js-karbmodosito`** osztállyal megjelöl (a szöveges műveleti linkeknek,
+  pl. „Tételek betöltése xlsx-ből"),
+- ráteszi a konténerre a `mattkarb-readonly` osztályt (a CSS ettől hagyja olvashatóan a tiltott
+  mezőket, nem halványítja el őket).
+
+A navigációs linkek (nyomtatás, PDF, kapcsolódó bizonylatok, termékkarton) szándékosan maradnak:
+azok nem módosítják a rekordot.
+
+**Szerveroldali kapu is van.** A `MattableController` kapott egy `isReadonly($record)` hookot
+(alapból mindig `false`), amit a `saveData()` az `edit` és a `del` ágon megnéz, és kivételt dob.
+A kliensoldali tiltás így csak kényelem: egy kézzel összerakott POST sem megy át. A `bizonylatfej`
+leszármazottja implementálja a fenti nyomtatva/editprinted szabályt.
+
+### Ellenőrzés
+
+| Eset | Eredmény |
+|------|----------|
+| `SZ2026/000001` (számla, nyomtatva=1, editprinted=0) | 86 mezőből 86 tiltva, OK gomb eltűnt, Mégsem maradt, „új tétel"/„töröl" ikonok és az importgombok elrejtve, fejlécben a magyarázat |
+| `SZ2026/000002` (számla, nyomtatva=0) | teljesen szerkeszthető, 0 tiltott mező |
+| `SZ2026/000001` + `oper=inherit` | teljesen szerkeszthető (új rekord) |
+| Kézi `POST /admin/szamlafej/save` a zárolt számlára | a `belsomegjegyzes` és a `lastmod` sem változott |
+| költségszámla (editprinted=1), nyomtatva bármi | nem zárolt |

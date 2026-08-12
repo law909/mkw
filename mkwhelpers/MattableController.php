@@ -104,6 +104,22 @@ class MattableController extends Controller
     {
     }
 
+    /**
+     * Csak olvasható-e a rekord: a karb szerkeszthetetlenül töltődik be, és a mentés is elutasítja.
+     * Alapból minden szerkeszthető, a leszármazott dönthet másképp (lásd bizonylatfejController).
+     *
+     * Csak a MEGLÉVŐ rekord módosítására (edit, del) vonatkozik – a belőle képzett vagy stornó
+     * bizonylat új rekord, azt nem korlátozza.
+     *
+     * @param object|null $record
+     *
+     * @return bool
+     */
+    protected function isReadonly($record)
+    {
+        return false;
+    }
+
     protected function saveData()
     {
         $obj = null;
@@ -123,6 +139,10 @@ class MattableController extends Controller
                     break;
                 case $this->editOperation:
                     $obj = $this->getRepo()->find($id);
+                    // a form csak olvasható állapotban is beküldhető kézzel összerakott kéréssel
+                    if ($this->isReadonly($obj)) {
+                        throw new \RuntimeException(t('A rekord nem módosítható.'));
+                    }
                     $this->getEm()->persist($this->setFields($obj, $parancs));
                     $this->getEm()->flush();
                     $this->afterSave($obj, $parancs);
@@ -130,6 +150,9 @@ class MattableController extends Controller
                 case $this->delOperation:
                     $obj = $this->getRepo()->find($id);
                     if ($obj) {
+                        if ($this->isReadonly($obj)) {
+                            throw new \RuntimeException(t('A rekord nem törölhető.'));
+                        }
                         $this->beforeRemove($obj);
                         $this->getEm()->remove($obj);
                         $this->getEm()->flush();

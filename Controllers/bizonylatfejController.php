@@ -580,13 +580,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 ($t->getNaveredmeny() == 'DONE') ||
                 ($t->getNaveredmeny() == 'WAITING')
             );
-        // A beküldött (vagy beküldés alatt álló) számlán a fizetési mód átírása eltérne a már
-        // megküldött adatszolgáltatástól – arra módosító okirat való. A belőle KÉPZETT vagy
-        // stornó bizonylat viszont új, azon szabadon választható.
-        $x['fizmodzarolt'] = $x['vegleges']
-            && $t->getId()
-            && ($oper !== $this->inheritOperation)
-            && ($oper !== $this->stornoOperation);
         if ($oper === $this->inheritOperation) {
             $x['fakekintlevoseg'] = false;
             $x['fakekifizetve'] = false;
@@ -1570,6 +1563,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController
      */
     protected $prebuiltRecord = null;
 
+    /**
+     * A kinyomtatott bizonylat nem szerkeszthető, ha a típusa nem engedi (editprinted = 0).
+     * A lista eddig is csak ekkor rejtette el a szerkesztés linket, de a karb URL-jét beírva
+     * a form így is megnyílt és menthető volt.
+     *
+     * @param \Entities\Bizonylatfej|null $record
+     */
+    protected function isReadonly($record)
+    {
+        return (bool)$record
+            && $record->getNyomtatva()
+            && !$record->getBizonylattipus()?->getEditprinted();
+    }
+
     public function viewkarb()
     {
         $this->getkarb($this->getKarbTplName());
@@ -1615,6 +1622,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         if ($mehet) {
             $egyed = $this->loadVars($record, true, $oper);
+
+            // Csak a MEGLÉVŐ bizonylat szerkesztésekor zárunk: a belőle képzett vagy stornó
+            // bizonylat új, azt szabadon ki kell tölteni.
+            $view->setVar(
+                'readonly',
+                ($oper !== $this->inheritOperation)
+                && ($oper !== $this->stornoOperation)
+                && $this->isReadonly($record)
+            );
 
             $this->biztipus->setTemplateVars($view);
 

@@ -167,8 +167,37 @@
             if (typeof setup.beforeShow === 'function') {
                 setup.beforeShow.call(this);
             }
+            // A beforeShow után jön, mert az köt fel gombokat és rajzol újra sorokat –
+            // azoknak is tiltva kell lenniük.
+            applyReadonly();
             karbContainer.show();
             $(document).scrollTop(0);
+        };
+
+        /**
+         * Csak olvasható karb. Bármelyik form szerkeszthetetlenné tehető anélkül, hogy a saját
+         * scriptje tudna róla: elég a formra tenni a data-readonly="1"-et (vagy a setupban
+         * átadni a readonly: true-t).
+         *
+         * Amit letilt:
+         *  - minden űrlapmező (input, select, textarea, button) a Mégsem gomb kivételével,
+         *  - a mentés gomb (el is tűnik),
+         *  - a sorfelvevő/-törlő ikonlinkek: ezek nem űrlapmezők, de a repóban egységesen a
+         *    ui-icon-circle-plus / -circle-minus ikont viselik,
+         *  - amit a hívó a js-karbmodosito osztállyal megjelöl (szöveges műveleti linkek).
+         *
+         * A navigációs linkek (nyomtatás, kapcsolódó bizonylatok, termékkarton) szándékosan
+         * maradnak: azok nem módosítják a rekordot.
+         */
+        var applyReadonly = function () {
+            if (!setup.readonly && $(setup.form).data('readonly') != 1) {
+                return;
+            }
+            karbContainer.addClass('mattkarb-readonly');
+            karbContainer.find('input, select, textarea, button').not(cancelbtn).prop('disabled', true);
+            $(setup.ok).hide();
+            karbContainer.find('.ui-icon-circle-plus, .ui-icon-circle-minus').closest('a').hide();
+            karbContainer.find('.js-karbmodosito').hide();
         };
 
         var initialize = function () {

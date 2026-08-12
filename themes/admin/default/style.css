@@ -428,8 +428,17 @@ select.tetelszamhiba,
     text-align: left;
 }
 
-/* Zárolt bizonylatmező magyarázata (pl. beküldött számla fizetési módja). */
-.bizonylat-zaroltmezo {
+/* Csak olvasható karb (jquery.mattkarb.js): a tiltott mezők maradjanak olvashatók. */
+.mattkarb-readonly input[disabled],
+.mattkarb-readonly select[disabled],
+.mattkarb-readonly textarea[disabled] {
+    color: #333;
+    background: #f4f4f4;
+    opacity: 1;
+}
+
+.mattkarb-readonly-uzenet {
     color: #884400;
-    font-size: 90%;
+    font-weight: bold;
+    margin: 3px 0;
 }
