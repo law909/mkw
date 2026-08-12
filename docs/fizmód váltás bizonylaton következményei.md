@@ -269,6 +269,11 @@ három válasz közül lehet választani:
 **A válasz a naplóba kerül** – „Kapcsolódó pénzmozgás: rontva" vagy „… változatlanul hagyva" –,
 a fizetési mód / jelölő változása mellé, ugyanabban az időrendi listában.
 
+A naplót a bizonylatlista sorában a **jegyzettömb ikon** (Bizonylat napló) nyitja. Ez korábban csak
+azokon a típusokon látszott, ahol a bizonylatstátusz-szerkesztő be van kapcsolva – tehát épp a
+számlán, költségszámlán, bolti eladáson **nem**. Mivel a napló már nem csak státuszváltást mutat,
+a gomb mostantól minden bizonylattípus listáján ott van.
+
 **Ha a fizetési mód nem változik, a mentés hozzá sem nyúl a pénzmozgásokhoz.** Ez a fontos
 biztonsági tulajdonság: egy megjegyzés átírása nem érinti a pénztárat.
 
