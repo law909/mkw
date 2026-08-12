@@ -1847,9 +1847,8 @@ class store
             ]
         ];
 
-        $mire = substr($mire, 0, 2);
-
         if ($mire) {
+            $mire = substr($mire, 0, 2);
             if (array_key_exists($mire, $sz)) {
                 if (array_key_exists($mit, $sz[$mire])) {
                     return $sz[$mire][$mit];
