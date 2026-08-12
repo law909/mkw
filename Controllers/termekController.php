@@ -236,6 +236,7 @@ class termekController extends \mkwhelpers\MattableController
                 $raktarnevek[$rid] ??= $sor->getRaktar()?->getNev();
             }
         }
+        uasort($raktarnevek, static fn($a, $b) => strnatcasecmp(mb_strtolower((string)$a), mb_strtolower((string)$b)));
 
         $raktarak = [];
         foreach ($raktarnevek as $rid => $nev) {

@@ -22,7 +22,7 @@
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
                 <li><a href="#SzinKepTab">{at('Szín képek')}</a></li>
             {/if}
-            <li><a href="#MinBoltiKeszletTab">{at('Min. bolti készlet')}</a></li>
+            <li><a href="#MinBoltiKeszletTab">{at('Min. készlet')}</a></li>
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
             {/if}
@@ -261,7 +261,8 @@
             <div class="matt-hseparator"></div>
             <div>
                 <label for="RovidleirasL1Edit">{at('Rövid leírás')}:</label>
-                <textarea id="RovidleirasL1Edit" name="rovidleiras_l1" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras_l1}</textarea>
+                <textarea id="RovidleirasL1Edit" name="rovidleiras_l1" cols="70"
+                          rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras_l1}</textarea>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -534,7 +535,6 @@
             {/foreach}
             <p class="mattkarb-hint">
                 {at('Üres cella: nincs beállítva, az öröklött érték él.')}
-                {at('A termék sorában megadott érték felülírja az alatta lévő változatokat ugyanabban az oszlopban, a raktár oszlopa pedig a „Minden raktár” értéket.')}
             </p>
         </div>
         {if ($setup.kapcsolodotermekek)}
@@ -590,7 +590,8 @@
                 </tr>
                 <tr>
                     <td><label for="RovidLeirasEdit">{at('Rövid leírás')}:</label></td>
-                    <td><textarea id="RovidLeirasEdit" name="rovidleiras" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras}</textarea></td>
+                    <td><textarea id="RovidLeirasEdit" name="rovidleiras" cols="70"
+                                  rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras}</textarea></td>
                 </tr>
                 <tr>
                     <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
