@@ -153,3 +153,8 @@
 .mattkarb, .mattable {
     margin-bottom: 30px;
 }
+
+/* Min. bolti készlet mátrix: sok szám oszlop egymás mellett, ezért feleakkora mezők */
+#MinBoltiKeszletTab input[type="number"] {
+    width: 5em;
+}
