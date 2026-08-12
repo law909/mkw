@@ -611,6 +611,29 @@ $(document).ready(function () {
             createMultiImageSelectable('.js-szinkepedit');
             $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton').button();
 
+            // Min. készlet mátrix tömeges kitöltése: a sor eleji gomb a sort, a felső sor gombja
+            // az oszlopot, a bal felső az egész rácsot tölti ki. A rejtett és a zárolt (változatos
+            // termék termék sora) mezőket nem bántjuk.
+            $('#MinBoltiKeszletTab').on('click', '.js-minkeszletfill', function () {
+                var $gomb = $(this),
+                    $cella = $gomb.closest('td'),
+                    ertek = $cella.find('.js-minkeszletfillvalue').val(),
+                    $tbody = $gomb.closest('table').children('tbody'),
+                    $mezok;
+                switch ($gomb.attr('data-scope')) {
+                    case 'row':
+                        $mezok = $gomb.closest('tr').find('input[name]');
+                        break;
+                    case 'col':
+                        $mezok = $tbody.children('tr').find('td:nth-child(' + ($cella.index() + 1) + ') input[name]');
+                        break;
+                    default:
+                        $mezok = $tbody.find('input[name]');
+                }
+                $mezok.not(':disabled').not('[type="hidden"]').val(ertek);
+            });
+            $('.js-minkeszletfill').button();
+
             $('#NettoEdit').on('blur', function (e) {
                 e.preventDefault();
                 getBrutto($(this), '#BruttoEdit');

@@ -495,6 +495,7 @@
                 <thead>
                 <tr>
                     <th></th>
+                    <th>{at('Kitöltés')}</th>
                     <th>{at('Minden raktár')}</th>
                     {foreach $egyed.minboltikeszletraktarak as $raktar}
                         <th>{$raktar.nev}</th>
@@ -502,9 +503,32 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr>
+                    <td>{at('Minden sor')}</td>
+                    <td>
+                        <input class="js-minkeszletfillvalue" type="number" step="any">
+                        <input class="js-minkeszletfill" type="button" data-scope="all" value="{at('Kitölt')}">
+                    </td>
+                    <td>
+                        <input class="js-minkeszletfillvalue" type="number" step="any">
+                        <input class="js-minkeszletfill" type="button" data-scope="col" value="{at('Kitölt')}">
+                    </td>
+                    {foreach $egyed.minboltikeszletraktarak as $raktar}
+                        <td>
+                            <input class="js-minkeszletfillvalue" type="number" step="any">
+                            <input class="js-minkeszletfill" type="button" data-scope="col" value="{at('Kitölt')}">
+                        </td>
+                    {/foreach}
+                </tr>
                 {foreach $egyed.minboltikeszletsorok as $sor}
                     <tr>
                         <td>{$sor.nev}</td>
+                        <td>
+                            {if (!$sor.zarolt)}
+                                <input class="js-minkeszletfillvalue" type="number" step="any">
+                                <input class="js-minkeszletfill" type="button" data-scope="row" value="{at('Kitölt')}">
+                            {/if}
+                        </td>
                         <td>
                             {if ($sor.valtozatid)}
                                 <input name="valtozatminboltikeszlet_{$sor.valtozatid}" type="number" step="any"
@@ -540,6 +564,7 @@
             <p class="mattkarb-hint">
                 {at('Üres cella: nincs beállítva, az öröklött érték él.')}
                 {at('Változatos terméknél a minimumot csak a változatokhoz lehet megadni, a termék sora nulla.')}
+                {at('A „Kitöltés" oszlop gombja az egész sort, a felső sor gombja az egész oszlopot tölti ki – a bal felső az egész rácsot.')}
             </p>
         </div>
         {if ($setup.kapcsolodotermekek)}
