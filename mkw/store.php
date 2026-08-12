@@ -359,6 +359,9 @@ class store
 
     public static function convDate($DateString)
     {
+        if (is_null($DateString)) {
+            return null;
+        }
         return str_replace('.', '-', rtrim($DateString, '.-/ '));
     }
 
