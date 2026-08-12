@@ -25,11 +25,7 @@ use Entities\Termek;
 class BizonylatfejListener
 {
 
-    /**
-     * Az automatikusan képzett pénztárbizonylat megjegyzése. Ez különbözteti meg a kézzel
-     * rögzítettől: a kézit soha nem rontjuk magától, mert az egy ember állítása arról, hogy a
-     * pénz fizikailag mozgott.
-     */
+    /** Az automatikusan képzett pénztárbizonylat megjegyzése – ettől ismerhető fel a listákon. */
     private const AUTOPENZTARMEGJEGYZES = 'Automatikus pénztárbizonylat';
 
     /** A bizonylat pénzügyi viselkedését eldöntő mezők – ezek változását naplózzuk. */
@@ -595,8 +591,11 @@ class BizonylatfejListener
     }
 
     /**
-     * A bizonylathoz tartozó élő automatikus pénztárbizonylat rontása, mert a bizonylat kikerült
-     * a készpénzes körből (fizetési mód váltás, pénzmozgás kikapcsolása, részletfizetés).
+     * A bizonylathoz tartozó élő pénztárbizonylat rontása, mert a bizonylat kikerült a készpénzes
+     * körből (fizetési mód váltás, pénzmozgás kikapcsolása, részletfizetés). A kézzel rögzítettet
+     * is: a getAutoPenztarBizonylat() elve szerint a bizonylathoz tartozó pénzmozgásból egyszerre
+     * csak egy élhet, és készpénz nélkül egy sem.
+     *
      * Nem törlünk: a rontott bizonylat a listán és a naplóban továbbra is látszik, csak a
      * pénzmozgásból esik ki. Új bizonylathoz még nem tartozhat ilyen, ott a lekérdezés fölösleges.
      *
@@ -608,8 +607,7 @@ class BizonylatfejListener
             return;
         }
         $regi = $this->getAutoPenztarBizonylat($bizfej);
-        // csak amit magunk képeztünk: a kézzel rögzített pénzmozgást nem írjuk felül
-        if ($regi && ($regi->getMegjegyzes() === self::AUTOPENZTARMEGJEGYZES)) {
+        if ($regi) {
             $this->rontPenztarBizonylatfej($regi);
         }
     }

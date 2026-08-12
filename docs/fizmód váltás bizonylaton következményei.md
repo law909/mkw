@@ -211,13 +211,13 @@ megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
 
 ### Amire figyelni kell
 
-- **Csak az automatikus pénztárbizonylatot rontjuk.** A kézzel rögzítettet nem: az egy ember állítása
-  arról, hogy a pénz fizikailag mozgott, azt nem írhatja felül egy fizmód-átállítás. A megkülönböztetés a
-  pénztárbizonylat megjegyzésén megy (`BizonylatfejListener::AUTOPENZTARMEGJEGYZES`). Ez azt is jelenti,
-  hogy **kézi pénztárbizonylatnál a 3.1 tünete megmarad** – ott a felhasználónak kell dönteni a sorsáról.
-  Ez tudatos választás; ha inkább az kell, hogy a kézit is rontsuk, egy sor a `rontAutoPenztarBizonylat()`-ban.
-- A `koltsegszamla` típusnak **nincs** automatikus pénztárbizonylata, ezért a hozzájuk kézzel rögzített
-  (galadon 66 db) pénztárbizonylatot a javítás nem érinti.
+- **A kézzel rögzített pénztárbizonylatot is rontjuk.** Ugyanaz az elv, amit a `getAutoPenztarBizonylat()`
+  eddig is követett: a bizonylathoz tartozó pénzmozgásból egyszerre csak egy élhet – készpénz nélkül pedig
+  egy sem. A rontás itt sem törlés: a bizonylat a sorszámával együtt megmarad, csak kiesik a pénzmozgásból.
+- A `koltsegszamla` típusnak **nincs** automatikus pénztárbizonylata, ezért a `createPenztarBizonylat()`
+  már a legelső feltételen kilép rá. A hozzájuk kézzel rögzített (galadon 66 db) pénztárbizonylatokat a
+  javítás **nem érinti** – csak az automatikus pénztárbizonylatot képző öt típuson (`bevet`, `boltieladas`,
+  `esetiszamla`, `keziszamla`, `szamla`) fut le a ront-ág.
 - A `bizonylatvaltozasnaplo` tábla új: minden telepítésen kell rá egy `./updateschema.sh`.
   A galad és a superzoneb2b fejlesztői adatbázisán már megvan.
 
@@ -234,6 +234,9 @@ visszagörgetve** lettek próbálva (az adatbázisban nem maradt nyoma):
 3.3  penztmozgat = 0 utan      elo penztarbizonylat = []
      naplo: [..., Kintlévőséget/tartozást képez: igen -> nem]
 3.2  elo bankbizonylat mellett keszpenzre valtva: NEM keletkezett uj penztarbizonylat
+
+kezire atirt penztarbizonylat, bankkartya -> atutalas:
+     penztarbizonylat rontott = 1, egyenleg = 52990   (a kezit is rontja)
 ```
 
 A 3.6 és a 3.4 böngészőben lett ellenőrizve (a NAV-eredmény, illetve a `nincspenzmozgas` jelző
