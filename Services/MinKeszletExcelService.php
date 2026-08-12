@@ -22,9 +22,10 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  * nullázza és figyelmeztet.
  *
  * Oszlopok: termék id, változat id, cikkszám, vonalkód, név, szín, méret, "Minden raktár",
- * majd raktáranként egy-egy oszlop. A raktároszlopokat az importáláskor a FEJLÉCBEN lévő
- * raktárnév azonosítja, nem a pozíció – így a fájl oszlopai átrendezhetők, de a raktárt
- * átnevezni két export között nem szabad.
+ * majd a nem archivált raktárak egy-egy oszlopa. A raktároszlopokat az importáláskor a FEJLÉCBEN
+ * lévő raktárnév azonosítja, nem a pozíció – így a fájl oszlopai átrendezhetők, de a raktárt
+ * átnevezni két export között nem szabad. Az import az archivált raktár nevét is felismeri:
+ * a korábbi exportok oszlopa így nem vész el (és a ráragadt érték nullázható).
  */
 class MinKeszletExcelService
 {
@@ -36,13 +37,19 @@ class MinKeszletExcelService
     private const OSZLOP_VALTOZATID = 1;
     private const OSZLOP_MINDENRAKTAR = 7;
 
-    /** @var string[] raktárnevek id szerint – nem entitás, mert az export közben ürítjük az EM-et */
+    /** @var string[] az export oszlopai: a nem archivált raktárak neve id szerint – nem entitás, mert az export közben ürítjük az EM-et */
     private $raktarak = [];
+
+    /** @var string[] minden raktár neve id szerint: az import a korábbi fájlok archivált oszlopát is felismeri */
+    private $mindenraktar = [];
 
     public function __construct()
     {
         foreach (\mkw\store::getEm()->getRepository(Raktar::class)->getAll(new FilterDescriptor(), ['nev' => 'ASC']) as $raktar) {
-            $this->raktarak[$raktar->getId()] = $raktar->getNev();
+            $this->mindenraktar[$raktar->getId()] = $raktar->getNev();
+            if (!$raktar->getArchiv()) {
+                $this->raktarak[$raktar->getId()] = $raktar->getNev();
+            }
         }
     }
 
@@ -175,7 +182,7 @@ class MinKeszletExcelService
     {
         $hibak = [];
         $nevmap = [];
-        foreach ($this->raktarak as $id => $raktarnev) {
+        foreach ($this->mindenraktar as $id => $raktarnev) {
             $nevmap[mb_strtolower(trim($raktarnev))] = $id;
         }
 
