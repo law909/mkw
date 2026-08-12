@@ -6,15 +6,29 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Egy bizonylat bizonylatstátuszának változását naplózza: ki, mikor, milyen
- * státuszról milyen státuszra állította. A státuszok nevét snapshotként is
- * eltároljuk, így ha a státusz neve később megváltozik, a napló nem változik.
+ * Egy bizonylat élettörténete: mikor, ki, mit csinált vele. Egyetlen tábla mindenre –
+ * létrehozás, mentés, nyomtatás, és a pénzügyileg lényeges mezők (fizetési mód, pénzmozgás
+ * jelölő, pénztár, státusz) változása.
  *
- * @ORM\Entity(repositoryClass="Entities\BizonylatstatusznaploRepository")
- * @ORM\Table(name="bizonylatstatusznaplo",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * Az esemény kulcsa (`esemeny`) gépi, a neve (`esemenynev`) és az értékek pillanatképként
+ * tárolódnak: a törzsadat későbbi átnevezése nem írja át a naplót. Mezőváltozásnál a régi és
+ * az új érték is kitöltött, sima eseménynél (mentés, nyomtatás) üresek.
+ *
+ * Ez váltja ki a korábbi Bizonylatstatusznaplo + Bizonylatvaltozasnaplo párost.
+ *
+ * @ORM\Entity(repositoryClass="Entities\BizonylatnaploRepository")
+ * @ORM\Table(name="bizonylatnaplo",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ *  indexes={@ORM\Index(name="bizonylatnaplo_bizonylat_idx",columns={"bizonylatfej_id","created"})})
  */
-class Bizonylatstatusznaplo
+class Bizonylatnaplo
 {
+    /** a bizonylat létrejött */
+    public const ESEMENY_LETREHOZAS = 'letrehozas';
+    /** a felhasználó mentette a bizonylatot (akkor is, ha nem változott rajta semmi) */
+    public const ESEMENY_MENTES = 'mentes';
+    /** valamelyik naplózott mező megváltozott – ilyenkor a mezo/regiertek/ujertek is kitöltött */
+    public const ESEMENY_MEZOVALTOZAS = 'mezovaltozas';
+
     /**
      * @ORM\Id @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -28,14 +42,14 @@ class Bizonylatstatusznaplo
     private $created;
 
     /**
-     * Melyik bizonylatnál történt a változás.
+     * Melyik bizonylatnál történt.
      * @ORM\ManyToOne(targetEntity="Bizonylatfej")
      * @ORM\JoinColumn(name="bizonylatfej_id",referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $bizonylatfej;
 
     /**
-     * Ki változtatta (bejelentkezett dolgozó, automatikus változásnál null).
+     * Ki csinálta (bejelentkezett dolgozó, automatikus eseménynél null).
      * @ORM\ManyToOne(targetEntity="Dolgozo")
      * @ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",nullable=true,onDelete="set null")
      */
@@ -48,30 +62,32 @@ class Bizonylatstatusznaplo
     private $dolgozonev;
 
     /**
-     * A korábbi (kiinduló) státusz.
-     * @ORM\ManyToOne(targetEntity="Bizonylatstatusz")
-     * @ORM\JoinColumn(name="registatusz_id",referencedColumnName="id",nullable=true,onDelete="set null")
+     * Az esemény gépi kulcsa (lásd az ESEMENY_* konstansokat).
+     * @ORM\Column(type="string",length=30,nullable=true)
      */
-    private $registatusz;
+    private $esemeny;
 
     /**
-     * A korábbi státusz nevének pillanatképe.
+     * Az esemény emberi neve pillanatképként – mezőváltozásnál a mező neve.
      * @ORM\Column(type="string",length=255,nullable=true)
      */
-    private $registatusznev;
+    private $esemenynev;
 
     /**
-     * Az új státusz.
-     * @ORM\ManyToOne(targetEntity="Bizonylatstatusz")
-     * @ORM\JoinColumn(name="ujstatusz_id",referencedColumnName="id",nullable=true,onDelete="set null")
+     * Mezőváltozásnál a megváltozott mező gépi neve (pl. fizmod, penztmozgat, nyomtatva).
+     * @ORM\Column(type="string",length=50,nullable=true)
      */
-    private $ujstatusz;
+    private $mezo;
 
     /**
-     * Az új státusz nevének pillanatképe.
      * @ORM\Column(type="string",length=255,nullable=true)
      */
-    private $ujstatusznev;
+    private $regiertek;
+
+    /**
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $ujertek;
 
     public function getId()
     {
@@ -151,72 +167,54 @@ class Bizonylatstatusznaplo
         $this->dolgozonev = $dolgozonev;
     }
 
-    /**
-     * @return \Entities\Bizonylatstatusz
-     */
-    public function getRegistatusz()
+    public function getEsemeny()
     {
-        return $this->registatusz;
+        return $this->esemeny;
     }
 
-    public function getRegistatuszId()
+    public function setEsemeny($esemeny)
     {
-        if ($this->registatusz) {
-            return $this->registatusz->getId();
-        }
-        return null;
+        $this->esemeny = $esemeny;
     }
 
-    public function setRegistatusz($registatusz)
+    public function getEsemenynev()
     {
-        $this->registatusz = $registatusz;
-        if ($registatusz) {
-            $this->registatusznev = $registatusz->getNev();
-        }
+        return $this->esemenynev;
     }
 
-    public function getRegistatusznev()
+    public function setEsemenynev($esemenynev)
     {
-        return $this->registatusznev;
+        $this->esemenynev = $esemenynev;
     }
 
-    public function setRegistatusznev($registatusznev)
+    public function getMezo()
     {
-        $this->registatusznev = $registatusznev;
+        return $this->mezo;
     }
 
-    /**
-     * @return \Entities\Bizonylatstatusz
-     */
-    public function getUjstatusz()
+    public function setMezo($mezo)
     {
-        return $this->ujstatusz;
+        $this->mezo = $mezo;
     }
 
-    public function getUjstatuszId()
+    public function getRegiertek()
     {
-        if ($this->ujstatusz) {
-            return $this->ujstatusz->getId();
-        }
-        return null;
+        return $this->regiertek;
     }
 
-    public function setUjstatusz($ujstatusz)
+    public function setRegiertek($regiertek)
     {
-        $this->ujstatusz = $ujstatusz;
-        if ($ujstatusz) {
-            $this->ujstatusznev = $ujstatusz->getNev();
-        }
+        $this->regiertek = $regiertek;
     }
 
-    public function getUjstatusznev()
+    public function getUjertek()
     {
-        return $this->ujstatusznev;
+        return $this->ujertek;
     }
 
-    public function setUjstatusznev($ujstatusznev)
+    public function setUjertek($ujertek)
     {
-        $this->ujstatusznev = $ujstatusznev;
+        $this->ujertek = $ujertek;
     }
 
 }

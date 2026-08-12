@@ -1274,6 +1274,21 @@ class store
         return self::getEm()->getRepository(Dolgozo::class)->find(\mkw\store::getAdminSession()->pk);
     }
 
+    /**
+     * A bejelentkezett admin felhasználó neve naplózáshoz. A SYSADMIN belépésnek nincs Dolgozo
+     * rekordja (pk = -1), ezért a nevet olyankor a munkamenetből adjuk vissza – e nélkül a
+     * naplókban üresen maradna, hogy ki csinálta.
+     */
+    public static function getLoggedInDolgozoNev()
+    {
+        $dolgozo = self::getLoggedInDolgozo();
+        if ($dolgozo) {
+            return (string)$dolgozo->getNev();
+        }
+        $lu = self::getAdminSession()->loggedinuser;
+        return (is_array($lu) && !empty($lu['name'])) ? (string)$lu['name'] : '';
+    }
+
     public static function getDefaultRaktarId()
     {
         $raktarid = self::getParameter(\mkw\consts::Raktar);

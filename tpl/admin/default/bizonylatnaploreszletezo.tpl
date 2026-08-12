@@ -13,7 +13,7 @@
         <tr>
             <td>{$elem.datum}</td>
             <td>{$elem.dolgozonev}</td>
-            <td>{$elem.mezonev}</td>
+            <td>{$elem.esemenynev}</td>
             <td>{$elem.regi}</td>
             <td>{$elem.uj}</td>
         </tr>

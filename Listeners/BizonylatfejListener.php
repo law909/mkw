@@ -8,8 +8,7 @@ use Entities\Afa;
 use Entities\Bankbizonylatfej;
 use Entities\Bankbizonylattetel;
 use Entities\Bizonylatfej;
-use Entities\Bizonylatstatusznaplo;
-use Entities\Bizonylatvaltozasnaplo;
+use Entities\Bizonylatnaplo;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Feketelista;
@@ -29,11 +28,17 @@ class BizonylatfejListener
     /** Az automatikusan képzett pénztárbizonylat megjegyzése – ettől ismerhető fel a listákon. */
     private const AUTOPENZTARMEGJEGYZES = 'Automatikus pénztárbizonylat';
 
-    /** A bizonylat pénzügyi viselkedését eldöntő mezők – ezek változását naplózzuk. */
+/**
+     * Amiknek a változását naplózzuk, mezőnév → emberi név. A nyomtatás is itt van: a
+     * setNyomtatva() a nyomtatva jelölőt írja át, tehát ugyanezen az úton naplózódik – oda-vissza,
+     * mert a "Nyomtatás visszavonása" is ezt a mezőt állítja.
+     */
     private const NAPLOZOTTMEZOK = [
+        'bizonylatstatusz' => 'Státusz',
         'fizmod' => 'Fizetési mód',
         'penztmozgat' => 'Kintlévőséget/tartozást képez',
         'penztar' => 'Pénztár',
+        'nyomtatva' => 'Nyomtatás',
     ];
 
     /**
@@ -53,8 +58,7 @@ class BizonylatfejListener
     private $bizonylattetelmd;
     private $folyoszamlamd;
     private $kuponmd;
-    private $bizonylatstatusznaplomd;
-    private $bizonylatvaltozasnaplomd;
+    private $bizonylatnaplomd;
 
     /**
      * @param \Entities\Bizonylatfej $bizonylat
@@ -867,63 +871,39 @@ class BizonylatfejListener
     }
 
     /**
-     * Naplózza a bizonylatstátusz beállítását/változását (ki, mikor, miről mire).
-     * Új bizonylatnál a kezdő státuszt rögzíti üres "miről" értékkel; meglévő
-     * bizonylatnál csak a valódi státuszváltást.
+     * A bizonylat naplója: létrehozás, és a naplózott mezők változásai (státusz, fizetési mód,
+     * pénzmozgás jelölő, pénztár, nyomtatás). A mentés eseményt a controller írja (afterSave),
+     * mert az akkor is megtörtént, ha közben egyetlen mező sem változott.
+     *
+     * A recompute ELŐTT fut: itt még pontosan az látszik, amit a felhasználó átírt, nem a
+     * származtatott mezők tömege.
      *
      * @param \Entities\Bizonylatfej[] $insertedentities
      * @param \Entities\Bizonylatfej[] $updatedentities
      */
-    private function logStatuszValtozasok($insertedentities, $updatedentities)
+    private function logNaplo($insertedentities, $updatedentities)
     {
         $dolgozo = \mkw\store::getLoggedInDolgozo();
 
-        // Új bizonylat: a kezdő státusz rögzítése, üres "miről".
         foreach ($insertedentities as $entity) {
             if (!($entity instanceof \Entities\Bizonylatfej)) {
                 continue;
             }
-            $uj = $entity->getBizonylatstatusz();
-            if (!$uj) {
-                continue;
+            $this->createNaplo($entity, Bizonylatnaplo::ESEMENY_LETREHOZAS, 'Létrehozás', '', '', '', $dolgozo);
+            // a kezdő státusz üres "miről" értékkel, hogy a napló eleje beszédes legyen
+            $statusz = $entity->getBizonylatstatusz();
+            if ($statusz) {
+                $this->createNaplo(
+                    $entity,
+                    Bizonylatnaplo::ESEMENY_MEZOVALTOZAS,
+                    self::NAPLOZOTTMEZOK['bizonylatstatusz'],
+                    'bizonylatstatusz',
+                    '',
+                    $this->naploErtek($statusz),
+                    $dolgozo
+                );
             }
-            $this->createStatuszNaplo($entity, null, $uj, $dolgozo);
         }
-
-        // Meglévő bizonylat: csak akkor, ha a státusz ténylegesen megváltozott.
-        foreach ($updatedentities as $entity) {
-            if (!($entity instanceof \Entities\Bizonylatfej)) {
-                continue;
-            }
-            $changeset = $this->uow->getEntityChangeSet($entity);
-            if (!isset($changeset['bizonylatstatusz'])) {
-                continue;
-            }
-            [$regi, $uj] = $changeset['bizonylatstatusz'];
-            if ($regi === $uj) {
-                continue;
-            }
-            $this->createStatuszNaplo(
-                $entity,
-                $regi instanceof \Entities\Bizonylatstatusz ? $regi : null,
-                $uj instanceof \Entities\Bizonylatstatusz ? $uj : null,
-                $dolgozo
-            );
-        }
-    }
-
-    /**
-     * A pénzügyileg lényeges mezők utólagos változásának naplózása. A fizetési mód, a
-     * pénzmozgás jelölő és a pénztár átállítása eddig nyomtalan volt: a bizonylat kintlévősége
-     * és a hozzá tartozó pénztárbizonylat is megváltozik tőle, de utólag nem lehetett megmondani,
-     * hogy ki és mikor nyúlt hozzá. Csak MEGLÉVŐ bizonylatra naplózunk – az új bizonylat kezdeti
-     * értékei magán a bizonylaton látszanak.
-     *
-     * @param array $updatedentities
-     */
-    private function logValtozasok($updatedentities)
-    {
-        $dolgozo = \mkw\store::getLoggedInDolgozo();
 
         foreach ($updatedentities as $entity) {
             if (!($entity instanceof \Entities\Bizonylatfej)) {
@@ -947,7 +927,15 @@ class BizonylatfejListener
                 if (in_array($mezo, self::PENZMOZGASTERINTOMEZOK, true)) {
                     $penzugyivaltozas = true;
                 }
-                $this->createValtozasNaplo($entity, $mezo, $mezonev, $regiszoveg, $ujszoveg, $dolgozo);
+                $this->createNaplo(
+                    $entity,
+                    Bizonylatnaplo::ESEMENY_MEZOVALTOZAS,
+                    $mezonev,
+                    $mezo,
+                    $regiszoveg,
+                    $ujszoveg,
+                    $dolgozo
+                );
             }
 
             // A createPenztarBizonylat() innen tudja meg, hogy egyáltalán van-e miről dönteni:
@@ -955,32 +943,17 @@ class BizonylatfejListener
             $entity->setPenzugyimezovaltozott($penzugyivaltozas);
             if ($penzugyivaltozas && $this->vanKapcsolodoPenzmozgas($entity)) {
                 // a felhasználó döntése a mentéskor feltett kérdésre – ez is a bizonylat története
-                $this->createValtozasNaplo(
+                $this->createNaplo(
                     $entity,
-                    'kapcsolodopenzmozgas',
+                    Bizonylatnaplo::ESEMENY_MEZOVALTOZAS,
                     'Kapcsolódó pénzmozgás',
+                    'kapcsolodopenzmozgas',
                     '',
                     $entity->isRontkapcsolodopenzmozgas() ? t('rontva') : t('változatlanul hagyva'),
                     $dolgozo
                 );
             }
         }
-    }
-
-    /**
-     * Van-e a bizonylathoz élő pénztár- vagy bankbizonylat. Csak akkor naplózzuk a felhasználó
-     * döntését, ha tényleg volt miről dönteni.
-     *
-     * @param \Entities\Bizonylatfej $bizfej
-     *
-     * @return bool
-     */
-    private function vanKapcsolodoPenzmozgas($bizfej)
-    {
-        if ($this->uow->isScheduledForInsert($bizfej)) {
-            return false;
-        }
-        return (bool)(count($this->getEloPenztarBizonylatok($bizfej)) + count($this->getEloBankBizonylatok($bizfej)));
     }
 
     /**
@@ -1005,40 +978,38 @@ class BizonylatfejListener
      * @param \Entities\Bizonylatfej $entity
      * @param \Entities\Dolgozo|null $dolgozo
      */
-    private function createValtozasNaplo($entity, $mezo, $mezonev, $regiertek, $ujertek, $dolgozo)
+    private function createNaplo($entity, $esemeny, $esemenynev, $mezo, $regiertek, $ujertek, $dolgozo)
     {
-        $naplo = new Bizonylatvaltozasnaplo();
+        $naplo = new Bizonylatnaplo();
         $naplo->setBizonylatfej($entity);
         $naplo->setCreated(new \DateTime());
         $naplo->setDolgozo($dolgozo);
+        // a setDolgozo csak akkor tölti a nevet, ha van Dolgozo rekord (a SYSADMIN-nak nincs)
+        $naplo->setDolgozonev(\mkw\store::getLoggedInDolgozoNev());
+        $naplo->setEsemeny($esemeny);
+        $naplo->setEsemenynev(t($esemenynev));
         $naplo->setMezo($mezo);
-        $naplo->setMezonev(t($mezonev));
         $naplo->setRegiertek($regiertek);
         $naplo->setUjertek($ujertek);
 
         $this->em->persist($naplo);
-        $this->uow->computeChangeSet($this->bizonylatvaltozasnaplomd, $naplo);
+        $this->uow->computeChangeSet($this->bizonylatnaplomd, $naplo);
     }
 
     /**
-     * @param \Entities\Bizonylatfej $entity
-     * @param \Entities\Bizonylatstatusz|null $regi
-     * @param \Entities\Bizonylatstatusz|null $uj
-     * @param \Entities\Dolgozo|null $dolgozo
+     * Van-e a bizonylathoz élő pénztár- vagy bankbizonylat. Csak akkor naplózzuk a felhasználó
+     * döntését, ha tényleg volt miről dönteni.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return bool
      */
-    private function createStatuszNaplo($entity, $regi, $uj, $dolgozo)
+    private function vanKapcsolodoPenzmozgas($bizfej)
     {
-        $naplo = new Bizonylatstatusznaplo();
-        $naplo->setBizonylatfej($entity);
-        $naplo->setCreated(new \DateTime());
-        $naplo->setDolgozo($dolgozo);
-        // A setterek a nevet is elmentik pillanatképként – ha később átnevezik
-        // a státuszt vagy a dolgozót, a napló nem változik.
-        $naplo->setRegistatusz($regi);
-        $naplo->setUjstatusz($uj);
-
-        $this->em->persist($naplo);
-        $this->uow->computeChangeSet($this->bizonylatstatusznaplomd, $naplo);
+        if ($this->uow->isScheduledForInsert($bizfej)) {
+            return false;
+        }
+        return (bool)(count($this->getEloPenztarBizonylatok($bizfej)) + count($this->getEloBankBizonylatok($bizfej)));
     }
 
     public function prePersist(LifecycleEventArgs $args)
@@ -1074,17 +1045,14 @@ class BizonylatfejListener
         $this->bankbizonylattetelmd = $this->em->getClassMetadata(Bankbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
         $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
-        $this->bizonylatstatusznaplomd = $this->em->getClassMetadata(Bizonylatstatusznaplo::class);
-        $this->bizonylatvaltozasnaplomd = $this->em->getClassMetadata(Bizonylatvaltozasnaplo::class);
+        $this->bizonylatnaplomd = $this->em->getClassMetadata(Bizonylatnaplo::class);
 
         $insertedentities = $this->uow->getScheduledEntityInsertions();
         $updatedentities = $this->uow->getScheduledEntityUpdates();
 
-        // A státuszbeállítást/-változást még a bizonylat feldolgozása (recompute) előtt naplózzuk.
-        $this->logStatuszValtozasok($insertedentities, $updatedentities);
-        // Ugyanígy a pénzügyi mezőkét: a recompute után a changeset már a származtatott
-        // mezőkkel is tele lenne, itt viszont pontosan az látszik, amit a felhasználó átírt.
-        $this->logValtozasok($updatedentities);
+        // Még a bizonylat feldolgozása (recompute) előtt naplózunk: utána a changeset már a
+        // származtatott mezőkkel is tele lenne, itt viszont pontosan az látszik, amit átírtak.
+        $this->logNaplo($insertedentities, $updatedentities);
 
         $entities = array_merge(
             $insertedentities,

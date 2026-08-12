@@ -8,8 +8,7 @@ use Entities\Bankszamla;
 use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
-use Entities\Bizonylatstatusznaplo;
-use Entities\Bizonylatvaltozasnaplo;
+use Entities\Bizonylatnaplo;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\CsomagTerminal;
@@ -1216,6 +1215,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     {
         $oper = $this->params->getStringRequestParam('oper');
         parent::afterSave($o, $parancs);
+        $this->logMentes($o, $parancs);
         if ($oper === 'storno') {
             $parentid = $this->params->getStringRequestParam('parentid');
             if ($parentid) {
@@ -1235,6 +1235,32 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $o->sendStatuszEmail($emailtpl);
             }
         }
+    }
+
+    /**
+     * A mentés eseménye a bizonylat naplójába. A listener a mezőváltozásokat naplózza, azok
+     * viszont nem látszanak, ha a felhasználó úgy mentett, hogy közben semmit nem írt át –
+     * a mentés ténye ettől még a bizonylat története.
+     *
+     * A létrehozást a listener írja (az insert eseményből), ezért itt csak a szerkesztésre
+     * naplózunk; a törölt bizonylat naplója amúgy is vele együtt törlődik.
+     *
+     * @param \Entities\Bizonylatfej|null $o
+     */
+    private function logMentes($o, $parancs)
+    {
+        if (!$o || !$o->getId() || ($parancs !== $this->editOperation)) {
+            return;
+        }
+        $naplo = new Bizonylatnaplo();
+        $naplo->setBizonylatfej($o);
+        $naplo->setCreated(new \DateTime());
+        $naplo->setDolgozo(\mkw\store::getLoggedInDolgozo());
+        $naplo->setDolgozonev(\mkw\store::getLoggedInDolgozoNev());
+        $naplo->setEsemeny(Bizonylatnaplo::ESEMENY_MENTES);
+        $naplo->setEsemenynev(t('Mentés'));
+        $this->getEm()->persist($naplo);
+        $this->getEm()->flush();
     }
 
     /**
@@ -2407,38 +2433,27 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A bizonylat naplója: a státuszváltások és a pénzügyi mezők (fizetési mód, pénzmozgás
-     * jelölő, pénztár) változásai egy időrendi listában.
+     * A bizonylat naplója időrendben: létrehozás, mentés, nyomtatás, és a naplózott mezők
+     * (státusz, fizetési mód, pénzmozgás jelölő, pénztár) változásai.
      */
     public function getStatuszNaplo()
     {
-        $bizszam = $this->params->getStringRequestParam('bizszam');
         $adat = [];
-        /** @var \Entities\Bizonylatstatusznaplo $naplo */
-        foreach ($this->getRepo(Bizonylatstatusznaplo::class)->getByBizonylatfej($bizszam) as $naplo) {
+        /** @var \Entities\Bizonylatnaplo $naplo */
+        foreach (
+            $this->getRepo(Bizonylatnaplo::class)
+                ->getByBizonylatfej($this->params->getStringRequestParam('bizszam')) as $naplo
+        ) {
             $adat[] = [
-                'created' => $naplo->getCreated(),
                 'datum' => $naplo->getCreatedStr(),
                 'dolgozonev' => $naplo->getDolgozonev(),
-                'mezonev' => t('Státusz'),
-                'regi' => $naplo->getRegistatusznev(),
-                'uj' => $naplo->getUjstatusznev(),
-            ];
-        }
-        /** @var \Entities\Bizonylatvaltozasnaplo $naplo */
-        foreach ($this->getRepo(Bizonylatvaltozasnaplo::class)->getByBizonylatfej($bizszam) as $naplo) {
-            $adat[] = [
-                'created' => $naplo->getCreated(),
-                'datum' => $naplo->getCreatedStr(),
-                'dolgozonev' => $naplo->getDolgozonev(),
-                'mezonev' => $naplo->getMezonev(),
+                'esemenynev' => $naplo->getEsemenynev(),
                 'regi' => $naplo->getRegiertek(),
                 'uj' => $naplo->getUjertek(),
             ];
         }
-        usort($adat, static fn($a, $b) => ($a['created'] <=> $b['created']));
 
-        $view = $this->createView('bizonylatstatusznaploreszletezo.tpl');
+        $view = $this->createView('bizonylatnaploreszletezo.tpl');
         $view->setVar('lista', $adat);
         $view->printTemplateResult();
     }

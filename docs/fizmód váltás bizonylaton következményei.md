@@ -206,7 +206,7 @@ megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
 | 3.2 | **javítva** | Ha él a bizonylatra hivatkozó, nem rontott bankbizonylat tétel, készpénzre váltva sem képződik automatikus pénztárbizonylat (`vanEloBankKiegyenlites()`). |
 | 3.3 | **javítva** | A `penztmozgat` pipa levétele ugyanazt a kérdést teszi fel, és ugyanazon az úton ront. |
 | 3.4 | **javítva** | A `syncPenztmozgat()` betöltéskor a bizonylattípus alapértelmezését őrzi meg korábbi értéknek, így a „nincs pénzmozgás" fizetési módról visszaváltva a pipa visszajön. |
-| 3.5 | **javítva** | Új `bizonylatvaltozasnaplo` tábla: a fizetési mód, a `penztmozgat` és a pénztár változása naplózódik (ki, mikor, miről mire). A bizonylatlista naplógombja mostantól a státuszváltásokkal együtt, időrendben mutatja. |
+| 3.5 | **javítva** | Naplózás a fizetési mód, a `penztmozgat` és a pénztár változásáról (ki, mikor, miről mire). A bizonylatlista naplógombja időrendben mutatja – lásd a 8. pontot. |
 | 3.6 | **másképp megoldva** | A `vegleges` (NAV-eredmény) alapú zárolás kikerült. Helyette a karb **egészben** szerkeszthetetlen, ha a bizonylat ki van nyomtatva és a típusa `editprinted = 0` – lásd a 7. pontot. Így nem csak a fizetési mód védett, hanem minden mező. |
 | 4/2. adattisztítás | **nyitva** | Szándékosan kimaradt – a meglévő adatokhoz nem nyúltunk. |
 
@@ -219,7 +219,7 @@ megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
   már a legelső feltételen kilép rá. A hozzájuk kézzel rögzített (galadon 66 db) pénztárbizonylatokat a
   javítás **nem érinti** – csak az automatikus pénztárbizonylatot képző öt típuson (`bevet`, `boltieladas`,
   `esetiszamla`, `keziszamla`, `szamla`) fut le a ront-ág.
-- A `bizonylatvaltozasnaplo` tábla új: minden telepítésen kell rá egy `./updateschema.sh`.
+- A napló új táblát igényel: minden telepítésen kell rá egy `./updateschema.sh` (lásd a 8. pontot).
   A galad és a superzoneb2b fejlesztői adatbázisán már megvan.
 
 ### Hogyan lett ellenőrizve
@@ -347,3 +347,65 @@ leszármazottja implementálja a fenti nyomtatva/editprinted szabályt.
 | `SZ2026/000001` + `oper=inherit` | teljesen szerkeszthető (új rekord) |
 | Kézi `POST /admin/szamlafej/save` a zárolt számlára | a `belsomegjegyzes` és a `lastmod` sem változott |
 | költségszámla (editprinted=1), nyomtatva bármi | nem zárolt |
+
+---
+
+## 8. Egyesített bizonylat napló (2026-08-12)
+
+A napló először két táblán élt: a régi `bizonylatstatusznaplo` (státuszváltás) és az e munka során
+született `bizonylatvaltozasnaplo` (pénzügyi mezők). A kettőt a képernyő úgyis egy időrendi listába
+fésülte, a szétválasztás csak terhet jelentett. Helyettük **egyetlen `bizonylatnaplo`** van.
+
+### Mit naplóz
+
+| Esemény | Mikor | „Mit" oszlop | Erről → Erre |
+|---------|-------|--------------|--------------|
+| `letrehozas` | a bizonylat elmentésekor, először | Létrehozás | – |
+| `mentes` | minden későbbi mentéskor, **akkor is, ha semmi nem változott** | Mentés | – |
+| `mezovaltozas` | naplózott mező változásakor | a mező neve | régi → új érték |
+
+Naplózott mezők: **státusz**, **fizetési mód**, **kintlévőséget/tartozást képez**, **pénztár**,
+**nyomtatás**. A nyomtatás azért fér ide, mert a `setNyomtatva()` a `nyomtatva` jelölőt írja át –
+így a nyomtatás visszavonása is látszik (`igen → nem`). Ide kerül a fizetésimód-váltáskor feltett
+kérdésre adott válasz is („Kapcsolódó pénzmozgás: rontva / változatlanul hagyva").
+
+A `letrehozas` és a `mezovaltozas` a `BizonylatfejListener`-ből jön (az insert eseményből, illetve
+a UnitOfWork changesetjéből, még a recompute előtt). A `mentes` a controller `afterSave()`-jéből:
+a listener csak akkor látna bármit, ha tényleg változott valami, a mentés ténye viszont akkor is a
+bizonylat története, ha a felhasználó csak megnyitotta és rábólintott.
+
+### Ki csinálta
+
+A `SYSADMIN` belépésnek nincs `Dolgozo` rekordja (`pk = -1`), ezért a `getLoggedInDolgozo()` null-t
+adott, és a „Módosította" oszlop üresen maradt. Az új `store::getLoggedInDolgozoNev()` ilyenkor a
+munkamenetből veszi a nevet, így a napló SYSADMIN-ként is megmondja, ki járt a bizonyla­ton.
+
+### Migráció és a régi táblák
+
+A `runonce.php` 0116-os blokkja átemeli a régi két tábla sorait (a státuszsorokból
+`mezovaltozas` / „Státusz" lesz). **A régi táblákat nem dobjuk el**: az `updateschema.sh`
+`--complete` nélkül fut, tehát érintetlenül maradnak. Miután a napló rendben van, kézzel
+eldobhatók:
+
+```sql
+DROP TABLE bizonylatstatusznaplo;
+DROP TABLE bizonylatvaltozasnaplo;
+```
+
+### Ellenőrzés
+
+Tranzakcióban futtatva és visszagörgetve:
+
+```
+MIGRACIO UTAN      mezovaltozas  Státusz                Rögzítve -> Teljesítve
+FIZMOD VALTAS      mezovaltozas  Fizetési mód           bankkártya -> KÉSZPÉNZ
+                   mezovaltozas  Kapcsolódó pénzmozgás  (-) -> rontva
+NYOMTATAS UTAN     mezovaltozas  Nyomtatás              nem -> igen
+LETREHOZAS UTAN    letrehozas    Létrehozás
+MENTES (edit)      mentes        Mentés
+MENTES (add)       – nem keletkezett új sor (az a Létrehozás)
+```
+
+Böngészőből, valódi mentéssel (SZ2026/000002, változtatás nélkül): egyetlen sor keletkezett –
+`Mentés`, `Módosította = SYSADMIN`. A számla adatai (nettó/áfa/bruttó, tételszám, folyószámla
+egyenleg) változatlanok, csak a `lastmod` frissült.

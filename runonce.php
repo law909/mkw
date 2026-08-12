@@ -1348,6 +1348,45 @@ if ($DBVersion < '0115') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0115');
 }
+
+if ($DBVersion < '0116') {
+    // A bizonylatstatusznaplo + bizonylatvaltozasnaplo páros helyére egyetlen bizonylatnaplo
+    // lépett; a meglévő sorokat átemeljük. A régi táblákat NEM dobjuk el: az updateschema
+    // --complete nélkül fut, tehát megmaradnak, és kézzel eldobhatók, ha a napló rendben van.
+    $conn = \mkw\store::getEm()->getConnection();
+    // a runonce az első admin kérésen fut, ami megelőzheti a kézi ./updateschema.sh-t
+    $vanujtabla = $conn->executeQuery(
+        'SELECT COUNT(*) FROM information_schema.TABLES'
+        . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+        ['bizonylatnaplo']
+    )->fetchOne();
+    if ($vanujtabla) {
+        $vanregitabla = function ($tabla) use ($conn) {
+            return $conn->executeQuery(
+                'SELECT COUNT(*) FROM information_schema.TABLES'
+                . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+                [$tabla]
+            )->fetchOne();
+        };
+        if ($vanregitabla('bizonylatstatusznaplo')) {
+            $conn->executeStatement(
+                'INSERT INTO bizonylatnaplo'
+                . ' (bizonylatfej_id, dolgozo_id, created, dolgozonev, esemeny, esemenynev, mezo, regiertek, ujertek)'
+                . ' SELECT bizonylatfej_id, dolgozo_id, created, dolgozonev, "mezovaltozas", "Státusz",'
+                . ' "bizonylatstatusz", registatusznev, ujstatusznev FROM bizonylatstatusznaplo'
+            );
+        }
+        if ($vanregitabla('bizonylatvaltozasnaplo')) {
+            $conn->executeStatement(
+                'INSERT INTO bizonylatnaplo'
+                . ' (bizonylatfej_id, dolgozo_id, created, dolgozonev, esemeny, esemenynev, mezo, regiertek, ujertek)'
+                . ' SELECT bizonylatfej_id, dolgozo_id, created, dolgozonev, "mezovaltozas", mezonev,'
+                . ' mezo, regiertek, ujertek FROM bizonylatvaltozasnaplo'
+            );
+        }
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0116');
+    }
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
