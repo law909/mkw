@@ -13,7 +13,7 @@
         <form id="mattkarb-form" action="" method="post">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <div class="matt-hseparator"></div>
-                {include "comp_idoszak.tpl" comptype="datum"}
+                {include "comp_idoszak.tpl" comptype="datum"}<span>Az időszak a szállítói megrendelésre vonatkozik. Minden hozzá kapcsolt bevételezés a listán lesz a teljesítésétől függetlenül.</span>
                 <div class="matt-hseparator"></div>
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>
