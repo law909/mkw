@@ -1387,6 +1387,22 @@ if ($DBVersion < '0116') {
         \mkw\store::setParameter(\mkw\consts::DBVersion, '0116');
     }
 }
+
+if ($DBVersion < '0117') {
+    // A régi naplótáblák eldobása. CSAK akkor, ha a fenti migráció tényleg lefutott: a verziót
+    // közvetlenül az adatbázisból olvassuk, mert a 0116-os blokk a helyi $DBVersion változót nem
+    // frissíti – e nélkül egy még nem migrált telepítésen ez a blokk vinné az adatot.
+    $conn = \mkw\store::getEm()->getConnection();
+    $migralt = $conn->executeQuery(
+        'SELECT ertek FROM parameterek WHERE id = ?',
+        [\mkw\consts::DBVersion]
+    )->fetchOne();
+    if ($migralt >= '0116') {
+        $conn->executeStatement('DROP TABLE IF EXISTS bizonylatstatusznaplo');
+        $conn->executeStatement('DROP TABLE IF EXISTS bizonylatvaltozasnaplo');
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0117');
+    }
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

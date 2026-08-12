@@ -382,15 +382,15 @@ munkamenetből veszi a nevet, így a napló SYSADMIN-ként is megmondja, ki jár
 
 ### Migráció és a régi táblák
 
-A `runonce.php` 0116-os blokkja átemeli a régi két tábla sorait (a státuszsorokból
-`mezovaltozas` / „Státusz" lesz). **A régi táblákat nem dobjuk el**: az `updateschema.sh`
-`--complete` nélkül fut, tehát érintetlenül maradnak. Miután a napló rendben van, kézzel
-eldobhatók:
+A `runonce.php` **0116**-os blokkja átemeli a régi két tábla sorait (a státuszsorokból
+`mezovaltozas` / „Státusz" lesz), a **0117**-es pedig eldobja a két régi táblát. Kézzel nincs
+tennivaló, telepítésenként magától lefut.
 
-```sql
-DROP TABLE bizonylatstatusznaplo;
-DROP TABLE bizonylatvaltozasnaplo;
-```
+A 0117 nem a helyi `$DBVersion` változóra néz, hanem **közvetlenül az adatbázisból olvassa** a
+verziót: a 0116-os blokk csak akkor fut le, ha az új tábla már létezik (`./updateschema.sh`), és
+a helyi változót nem frissíti. E nélkül egy még nem migrált telepítésen a 0117 vitte volna az
+adatot. Így viszont egyetlen kérésben, helyes sorrendben megy a migráció és az eldobás – vagy
+egyik sem.
 
 ### Ellenőrzés
 
@@ -409,3 +409,8 @@ MENTES (add)       – nem keletkezett új sor (az a Létrehozás)
 Böngészőből, valódi mentéssel (SZ2026/000002, változtatás nélkül): egyetlen sor keletkezett –
 `Mentés`, `Módosította = SYSADMIN`. A számla adatai (nettó/áfa/bruttó, tételszám, folyószámla
 egyenleg) változatlanok, csak a `lastmod` frissült.
+
+A migráció + eldobás mindkét fejlesztői adatbázison lefutott. A superzoneb2b-n jól látszott, hogy
+az őr dolgozik: ott a 0116 még nem futott le, **69 státusznapló-sor** várt átemelésre – egyetlen
+admin kérésben előbb átkerültek (dolgozónévvel, dátummal, státuszértékekkel együtt), és csak
+utána tűntek el a régi táblák.
