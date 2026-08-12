@@ -214,6 +214,7 @@ class listaController extends \mkwhelpers\Controller
     public function nemkaphatoertesito()
     {
         $sorrend = $this->params->getIntRequestParam('sorrend');
+        $order = [];
         switch ($sorrend) {
             case 1:
                 $order = ['t.nev' => 'ASC'];
@@ -222,7 +223,8 @@ class listaController extends \mkwhelpers\Controller
                 $order = ['t.cikkszam' => 'ASC'];
                 break;
             case 3:
-                $order = ['created' => 'ASC'];
+                // a pont az aliasra rendezést jelenti: a created a MIN(...) select-alias, a _xx.created nincs a GROUP BY-ban
+                $order = ['.created' => 'ASC'];
                 break;
         }
         $rep = $this->getRepo(TermekErtesito::class);

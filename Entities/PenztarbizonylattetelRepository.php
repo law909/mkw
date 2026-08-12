@@ -99,33 +99,7 @@ class PenztarbizonylattetelRepository extends \mkwhelpers\Repository
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getResult();
     }
-
-    public function getAllWithHivatkozottbizonylat($filter = [], $order = [])
-    {
-        $q = $this->_em->createQuery(
-            'SELECT _xx,'
-            . ' FROM Entities\Penztarbizonylattetel _xx'
-        );
-        $q->setParameters($this->getQueryParameters($filter));
-        return $q->getResult();
-    }
-
-    public function calcSumByValutanem($filter = [], $order = [])
-    {
-        $a = $this->alias;
-        return $this->_em->createQuery(
-            'SELECT v.nev, SUM(_xx.brutto) AS osszeg'
-            . ' FROM Entities\Penztarbizonylattetel _xx'
-            . ' LEFT JOIN _xx.bizonylatfej bf'
-            . ' LEFT JOIN _xx.valutanem v'
-            . $this->getFilterString($filter)
-            . ' GROUP BY v.nev'
-            . $this->getOrderString($order)
-        )
-            ->setParameters($this->getQueryParameters($filter))
-            ->getResult();
-    }
-
+    
     public function getAllWithFej($filter = [], $order = [])
     {
         $q = $this->_em->createQuery(
