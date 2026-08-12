@@ -48,6 +48,13 @@ class Bizonylatfej
     // ha a hívó maga gondoskodik a pénzmozgás rögzítéséről, ezzel kikapcsolható
     // az automatikus pénztárbizonylat képzése (lásd BizonylatfejListener)
     private $nincsautopenztarbizonylat = false;
+    // Nem perzisztált. A fizetési mód / pénzmozgás jelölő átállításakor a felhasználó dönt a
+    // bizonylathoz tartozó, még élő pénztár- és bankbizonylatok sorsáról; a form ezt hozza,
+    // a BizonylatfejListener eszerint ront (vagy hagyja őket békén).
+    private $rontkapcsolodopenzmozgas = false;
+    // Nem perzisztált, a listener tölti: változott-e ebben a mentésben a fizetési mód vagy a
+    // pénzmozgás jelölő. E nélkül egy teljesen más okból indított mentés is a pénzmozgásokhoz nyúlna.
+    private $penzugyimezovaltozott = false;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -5572,6 +5579,42 @@ class Bizonylatfej
     public function setNincsautopenztarbizonylat($nincsautopenztarbizonylat)
     {
         $this->nincsautopenztarbizonylat = $nincsautopenztarbizonylat;
+    }
+
+    /**
+     * Kérte-e a felhasználó a bizonylathoz tartozó élő pénztár-/bankbizonylatok rontását.
+     *
+     * @return bool
+     */
+    public function isRontkapcsolodopenzmozgas()
+    {
+        return $this->rontkapcsolodopenzmozgas;
+    }
+
+    /**
+     * @param bool $rontkapcsolodopenzmozgas
+     */
+    public function setRontkapcsolodopenzmozgas($rontkapcsolodopenzmozgas)
+    {
+        $this->rontkapcsolodopenzmozgas = $rontkapcsolodopenzmozgas;
+    }
+
+    /**
+     * Változott-e ebben a mentésben a fizetési mód vagy a pénzmozgás jelölő.
+     *
+     * @return bool
+     */
+    public function isPenzugyimezovaltozott()
+    {
+        return $this->penzugyimezovaltozott;
+    }
+
+    /**
+     * @param bool $penzugyimezovaltozott
+     */
+    public function setPenzugyimezovaltozott($penzugyimezovaltozott)
+    {
+        $this->penzugyimezovaltozott = $penzugyimezovaltozott;
     }
 
     /**

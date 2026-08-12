@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Afa;
+use Entities\Bankbizonylatfej;
 use Entities\Bankszamla;
 use Entities\BizonylatDok;
 use Entities\Bizonylatfej;
@@ -21,6 +22,7 @@ use Entities\Orszag;
 use Entities\Partner;
 use Entities\Partnercimketorzs;
 use Entities\Penztar;
+use Entities\Penztarbizonylatfej;
 use Entities\Raktar;
 use Entities\Szallitasimod;
 use Entities\Termek;
@@ -812,6 +814,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($ck) {
             $obj->setFizmod($ck);
         }
+        // A fizetési mód / pénzmozgás jelölő átállításakor a form megkérdezi, mi legyen a
+        // bizonylathoz tartozó élő pénztár- és bankbizonylatokkal; a válasz ezen a jelölőn jön.
+        $obj->setRontkapcsolodopenzmozgas($this->params->getBoolRequestParam('rontkapcsolodopenzmozgas'));
         // az automatikus pénztárbizonylat pénztára; a mező csak az azt képző
         // bizonylattípusoknál van kint a formon, egyébként érintetlen marad
         if ($obj->getBizonylattipus()?->getAutopenztarbizonylat()) {
@@ -2340,6 +2345,49 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view = $this->createView('bizonylatfolyoszamlareszletezo.tpl');
         $view->setVar('lista', $adat);
         $view->printTemplateResult();
+    }
+
+    /**
+     * A bizonylathoz tartozó, még élő pénzmozgások – a mentéskor feltett kérdéshez. A fizetési
+     * mód / pénzmozgás jelölő átállítása ezekre hat ki, ezért a felhasználónak látnia kell,
+     * miről dönt.
+     */
+    public function getKapcsolodoPenzmozgas()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $bizszam = $this->params->getStringRequestParam('bizszam');
+        $lista = [];
+        if ($bizszam) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter
+                ->addFilter('pt.hivatkozottbizonylat', '=', $bizszam)
+                ->addFilter('rontott', '=', false);
+            /** @var \Entities\Penztarbizonylatfej $pbiz */
+            foreach ($this->getRepo(Penztarbizonylatfej::class)->getAllByHivatkozottBizonylat($filter) as $pbiz) {
+                $lista[] = [
+                    'id' => $pbiz->getId(),
+                    'tipus' => t('Pénztárbizonylat'),
+                    'keltstr' => $pbiz->getKeltStr(),
+                    'brutto' => (float)$pbiz->getBrutto(),
+                ];
+            }
+
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter
+                ->addFilter('bt.hivatkozottbizonylat', '=', $bizszam)
+                ->addFilter('bt.rontott', '=', false)
+                ->addFilter('rontott', '=', false);
+            /** @var \Entities\Bankbizonylatfej $bbiz */
+            foreach ($this->getRepo(Bankbizonylatfej::class)->getAllByHivatkozottBizonylat($filter) as $bbiz) {
+                $lista[] = [
+                    'id' => $bbiz->getId(),
+                    'tipus' => t('Bankbizonylat'),
+                    'keltstr' => $bbiz->getKeltStr(),
+                    'brutto' => (float)$bbiz->getBrutto(),
+                ];
+            }
+        }
+        echo json_encode(['ok' => true, 'lista' => $lista]);
     }
 
     /**

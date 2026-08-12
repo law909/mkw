@@ -4,7 +4,8 @@
 
 > **2026-08-12: a 4. pont javításai elkészültek** (az adattisztítás kivételével, az továbbra is nyitott).
 > A 3.1–3.6 alatti leírások az **eredeti, hibás** viselkedést dokumentálják; hogy mi lett belőlük,
-> azt az 5. pont foglalja össze.
+> azt az 5. pont foglalja össze. A meglévő pénzmozgásokról **a felhasználó dönt** a mentéskor
+> feltett kérdésre adott válasszal – lásd a 6. pontot.
 
 A kérdés: mi történik az egyenleggel és a már létrejött pénztár-/bankbizonylatokkal, ha egy pénzt mozgató
 bizonylaton **utólag** átállítják a fizetési módot (készpénzről utalásra vagy vissza).
@@ -201,9 +202,9 @@ megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
 
 | Pont | Állapot | Mit csinál most |
 |------|---------|-----------------|
-| 3.1 | **javítva** | Készpénzről utalásra/kártyára váltva a `createPenztarBizonylat()` a kilépés előtt rontja az automatikus pénztárbizonylatot. A bizonylat egyenlege megnyílik, a tartozás visszakerül a kintlévőségek közé. |
+| 3.1 | **javítva** | Készpénzről utalásra/kártyára váltva a rendszer felkínálja a bizonylathoz tartozó pénzmozgások rontását; a rontást kérve a bizonylat egyenlege megnyílik, a tartozás visszakerül a kintlévőségek közé. |
 | 3.2 | **javítva** | Ha él a bizonylatra hivatkozó, nem rontott bankbizonylat tétel, készpénzre váltva sem képződik automatikus pénztárbizonylat (`vanEloBankKiegyenlites()`). |
-| 3.3 | **javítva** | A `penztmozgat` pipa levétele ugyanazon az úton rontja az automatikus pénztárbizonylatot. |
+| 3.3 | **javítva** | A `penztmozgat` pipa levétele ugyanazt a kérdést teszi fel, és ugyanazon az úton ront. |
 | 3.4 | **javítva** | A `syncPenztmozgat()` betöltéskor a bizonylattípus alapértelmezését őrzi meg korábbi értéknek, így a „nincs pénzmozgás" fizetési módról visszaváltva a pipa visszajön. |
 | 3.5 | **javítva** | Új `bizonylatvaltozasnaplo` tábla: a fizetési mód, a `penztmozgat` és a pénztár változása naplózódik (ki, mikor, miről mire). A bizonylatlista naplógombja mostantól a státuszváltásokkal együtt, időrendben mutatja. |
 | 3.6 | **javítva** | A NAV-hoz beküldött (DONE/WAITING) számlán a fizetési mód `select` tiltott; rejtett mező viszi tovább a jelenlegi értéket, és egy magyarázó sor jelzi az okát. A belőle képzett vagy stornó bizonylaton nincs zárolás. |
@@ -211,9 +212,9 @@ megőrzi a bizonylatot és a sorszámát, csak kiveszi a pénzmozgásból.
 
 ### Amire figyelni kell
 
-- **A kézzel rögzített pénztárbizonylatot is rontjuk.** Ugyanaz az elv, amit a `getAutoPenztarBizonylat()`
-  eddig is követett: a bizonylathoz tartozó pénzmozgásból egyszerre csak egy élhet – készpénz nélkül pedig
-  egy sem. A rontás itt sem törlés: a bizonylat a sorszámával együtt megmarad, csak kiesik a pénzmozgásból.
+- **A rontás nem automatikus: a felhasználó dönt** (6. pont). A kézzel rögzített pénzmozgásra is
+  vonatkozik – épp ez a kérdés értelme. A rontás nem törlés: a bizonylat a sorszámával együtt megmarad,
+  csak kiesik a pénzmozgásból.
 - A `koltsegszamla` típusnak **nincs** automatikus pénztárbizonylata, ezért a `createPenztarBizonylat()`
   már a legelső feltételen kilép rá. A hozzájuk kézzel rögzített (galadon 66 db) pénztárbizonylatokat a
   javítás **nem érinti** – csak az automatikus pénztárbizonylatot képző öt típuson (`bevet`, `boltieladas`,
@@ -242,3 +243,56 @@ kezire atirt penztarbizonylat, bankkartya -> atutalas:
 A 3.6 és a 3.4 böngészőben lett ellenőrizve (a NAV-eredmény, illetve a `nincspenzmozgas` jelző
 ideiglenes átállításával, utána visszaállítva): a zárolt `select` mellett a form továbbra is a helyes
 fizetési módot küldi be, a „nincs pénzmozgás"-ról visszaváltva pedig a pipa visszajön.
+
+---
+
+## 6. A mentéskor feltett kérdés (2026-08-12)
+
+A 3.1/3.3 javítása eredetileg magától rontotta a meglévő pénzmozgást. Ez két okból nem volt jó:
+a kézzel rögzített pénztárbizonylat egy ember állítása arról, hogy a pénz fizikailag mozgott, és
+egy teljesen más okból indított mentés is hozzányúlt volna. Ezért a döntés a felhasználóé lett.
+
+**Mikor kérdez.** Ha a mentésben megváltozik a **fizetési mód** vagy a **„Kintlévőséget/tartozást
+képez"** jelölő, és a bizonylathoz tartozik még élő pénztár- vagy bankbizonylat. Új bizonylatnál
+nincs mit rontani, ott nem kérdez. A pénztár átállítását nem kérdezi meg: azt a meglévő
+összevetés (`autoPenztarBizonylatEgyezik()`) amúgy is helyesen kezeli.
+
+**Mit kérdez.** A párbeszéd felsorolja az érintett bizonylatokat (típus, sorszám, kelt, összeg), és
+három válasz közül lehet választani:
+
+| Válasz | Mi történik |
+|--------|-------------|
+| **Rontsa** | A bizonylathoz tartozó összes élő pénztár- ÉS bankbizonylat rontott lesz. |
+| **Maradjanak** | Egyik pénzmozgáshoz sem nyúlunk. |
+| **Mégsem** | A mentés elmarad, vissza a szerkesztéshez. |
+
+**A válasz a naplóba kerül** – „Kapcsolódó pénzmozgás: rontva" vagy „… változatlanul hagyva" –,
+a fizetési mód / jelölő változása mellé, ugyanabban az időrendi listában.
+
+**Ha a fizetési mód nem változik, a mentés hozzá sem nyúl a pénzmozgásokhoz.** Ez a fontos
+biztonsági tulajdonság: egy megjegyzés átírása nem érinti a pénztárat.
+
+**Alapértelmezés: nem rontunk.** Ha a kérdés bármiért elmarad (nem a karb formról jön a mentés,
+elszáll a lekérdezés), a rejtett mező marad 0-n. Inkább maradjon a régi állapot, mint hogy magától
+tűnjön el egy pénzmozgás.
+
+### Amit tudni kell a „Maradjanak" válaszról
+
+Ilyenkor a korábban dokumentált tünetek szándékosan megmaradnak – de már a felhasználó döntéséből,
+naplózva:
+
+- készpénzről utalásra váltva a számla továbbra is kiegyenlítettnek látszik, és a pénztárban marad
+  a készpénz;
+- a `penztmozgat` levételekor a bizonylat saját folyószámla sorai eltűnnek, a pénztárbizonylaté
+  viszont megmarad, tehát a partner egyenlegén **jóváírásként** jelenik meg (a példabizonylaton
+  −52 990). Ez logikusan következik abból, hogy a pénz tényleg befolyt, a bizonylat viszont már nem
+  képez tartozást.
+
+### Érintett fájlok
+
+- `Listeners/BizonylatfejListener.php` – `rontKapcsolodoPenzmozgas()`, `getEloPenztarBizonylatok()`,
+  `getEloBankBizonylatok()`, `rontBankBizonylatfej()`, `PENZMOZGASTERINTOMEZOK`
+- `Entities/Bizonylatfej.php` – két nem perzisztált jelölő: `rontkapcsolodopenzmozgas` (a válasz),
+  `penzugyimezovaltozott` (a listener tölti)
+- `Controllers/bizonylatfejController.php` – `getKapcsolodoPenzmozgas()` végpont, a válasz átvétele
+- `js/admin/default/bizonylathelper.js` – `penzugyiMezoValtozott()`, `kerdezPenzmozgasrol()`

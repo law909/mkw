@@ -6,6 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Entities\Afa;
 use Entities\Bankbizonylatfej;
+use Entities\Bankbizonylattetel;
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusznaplo;
 use Entities\Bizonylatvaltozasnaplo;
@@ -35,11 +36,20 @@ class BizonylatfejListener
         'penztar' => 'Pénztár',
     ];
 
+    /**
+     * Ezek átállítása teszi kérdésessé a bizonylathoz tartozó, már létrejött pénzmozgásokat –
+     * ilyenkor kérdez rá a mentés (lásd bizonylathelper.js), és a válasz szerint rontunk.
+     * A pénztár váltását nem soroljuk ide: azt a meglévő összevetés amúgy is kezeli.
+     */
+    private const PENZMOZGASTERINTOMEZOK = ['fizmod', 'penztmozgat'];
+
     private $em;
     private $uow;
     private $bizonylatfejmd;
     private $penztarbizonylatfejmd;
     private $penztarbizonylattetelmd;
+    private $bankbizonylatfejmd;
+    private $bankbizonylattetelmd;
     private $bizonylattetelmd;
     private $folyoszamlamd;
     private $kuponmd;
@@ -484,28 +494,32 @@ class BizonylatfejListener
         if ($bizfej->getStornozott() || $bizfej->getRontott()) {
             return;
         }
+        // A fizetési mód / pénzmozgás jelölő átállítása kihat a bizonylathoz tartozó, már létrejött
+        // pénzmozgásokra. Hogy mi legyen velük, azt a felhasználó dönti el a mentéskor feltett
+        // kérdésre adott válasszal – ha nem kérte a rontást, hozzájuk sem nyúlunk.
+        $rontkerve = $bizfej->isPenzugyimezovaltozott() && $bizfej->isRontkapcsolodopenzmozgas();
+        if ($rontkerve) {
+            $this->rontKapcsolodoPenzmozgas($bizfej);
+        }
+
         // Az alábbi három ág mindegyike azt jelenti, hogy a bizonylathoz MOST nem való
-        // automatikus pénztárbizonylat. Ha korábban készült hozzá ilyen (pl. készpénzes volt,
-        // aztán átállították utalásra), azt rontani kell: különben a pénztárban ott marad egy
-        // soha be nem folyt készpénz, a bizonylat pedig kiegyenlítettnek látszik.
+        // automatikus pénztárbizonylat.
         if (!$bizfej->getPenztmozgat() || !$bizfej->getPartner()) {
-            $this->rontAutoPenztarBizonylat($bizfej);
             return;
         }
         $fizmod = $bizfej->getFizmod();
         if (!$fizmod || $fizmod->getTipus() !== 'P') {
-            $this->rontAutoPenztarBizonylat($bizfej);
             return;
         }
         // részletfizetési ütemezésnél nincs egyösszegű készpénzes kiegyenlítés
         if (\mkw\store::isOsztottFizmod()
             && ($bizfej->getFizetendo1() || $bizfej->getFizetendo2() || $bizfej->getFizetendo3()
                 || $bizfej->getFizetendo4() || $bizfej->getFizetendo5())) {
-            $this->rontAutoPenztarBizonylat($bizfej);
             return;
         }
         // A bizonylatot már kiegyenlítette egy élő bankbizonylat: utalásról készpénzre váltva
-        // sem szabad melléképezni egy pénztárbizonylatot, mert az túlfizetést csinálna.
+        // sem szabad melléképezni egy pénztárbizonylatot, mert az túlfizetést csinálna. (A rontást
+        // kérve a fenti ág már lerontotta, tehát ilyenkor ez nem fog fogni.)
         if ($this->vanEloBankKiegyenlites($bizfej)) {
             return;
         }
@@ -591,24 +605,74 @@ class BizonylatfejListener
     }
 
     /**
-     * A bizonylathoz tartozó élő pénztárbizonylat rontása, mert a bizonylat kikerült a készpénzes
-     * körből (fizetési mód váltás, pénzmozgás kikapcsolása, részletfizetés). A kézzel rögzítettet
-     * is: a getAutoPenztarBizonylat() elve szerint a bizonylathoz tartozó pénzmozgásból egyszerre
-     * csak egy élhet, és készpénz nélkül egy sem.
+     * A bizonylathoz tartozó összes élő pénzmozgás (pénztár- ÉS bankbizonylat) rontása, mert a
+     * felhasználó ezt kérte a fizetési mód / pénzmozgás jelölő átállításakor. A kézzel rögzítettre
+     * is vonatkozik – épp ez a kérdés értelme.
      *
-     * Nem törlünk: a rontott bizonylat a listán és a naplóban továbbra is látszik, csak a
-     * pénzmozgásból esik ki. Új bizonylathoz még nem tartozhat ilyen, ott a lekérdezés fölösleges.
+     * Nem törlünk: a rontott bizonylat a sorszámával együtt megmarad, a listán és a naplóban
+     * továbbra is látszik, csak a pénzmozgásból esik ki. Új bizonylathoz még nem tartozhat ilyen.
      *
      * @param \Entities\Bizonylatfej $bizfej
      */
-    private function rontAutoPenztarBizonylat($bizfej)
+    private function rontKapcsolodoPenzmozgas($bizfej)
     {
         if ($this->uow->isScheduledForInsert($bizfej)) {
             return;
         }
-        $regi = $this->getAutoPenztarBizonylat($bizfej);
-        if ($regi) {
-            $this->rontPenztarBizonylatfej($regi);
+        foreach ($this->getEloPenztarBizonylatok($bizfej) as $pbiz) {
+            $this->rontPenztarBizonylatfej($pbiz);
+        }
+        foreach ($this->getEloBankBizonylatok($bizfej) as $bbiz) {
+            $this->rontBankBizonylatfej($bbiz);
+        }
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return \Entities\Penztarbizonylatfej[]
+     */
+    private function getEloPenztarBizonylatok($bizfej)
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId())
+            ->addFilter('rontott', '=', false);
+        return $this->em->getRepository(Penztarbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return \Entities\Bankbizonylatfej[]
+     */
+    private function getEloBankBizonylatok($bizfej)
+    {
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter
+            ->addFilter('bt.hivatkozottbizonylat', '=', $bizfej->getId())
+            ->addFilter('bt.rontott', '=', false)
+            ->addFilter('rontott', '=', false);
+        return $this->em->getRepository(Bankbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
+    }
+
+    /**
+     * A Bankbizonylatfej::setRontott() a tételeket is átállítja, de a UnitOfWork-kel külön fel kell
+     * vetetni a változást – ugyanaz a csapda, mint a pénztárbizonylatnál.
+     *
+     * @param \Entities\Bankbizonylatfej $bbiz
+     */
+    private function rontBankBizonylatfej($bbiz)
+    {
+        $bbiz->setRontott(true);
+        $this->em->persist($bbiz);
+        $this->uow->recomputeSingleEntityChangeSet($this->bankbizonylatfejmd, $bbiz);
+        /** @var \Entities\Bankbizonylattetel $bt */
+        foreach ($bbiz->getBizonylattetelek() as $bt) {
+            if ($this->uow->isScheduledForInsert($bt)) {
+                continue;
+            }
+            $this->uow->recomputeSingleEntityChangeSet($this->bankbizonylattetelmd, $bt);
         }
     }
 
@@ -866,6 +930,7 @@ class BizonylatfejListener
                 continue;
             }
             $changeset = $this->uow->getEntityChangeSet($entity);
+            $penzugyivaltozas = false;
             foreach (self::NAPLOZOTTMEZOK as $mezo => $mezonev) {
                 if (!isset($changeset[$mezo])) {
                     continue;
@@ -879,9 +944,43 @@ class BizonylatfejListener
                 if ($regiszoveg === $ujszoveg) {
                     continue;
                 }
+                if (in_array($mezo, self::PENZMOZGASTERINTOMEZOK, true)) {
+                    $penzugyivaltozas = true;
+                }
                 $this->createValtozasNaplo($entity, $mezo, $mezonev, $regiszoveg, $ujszoveg, $dolgozo);
             }
+
+            // A createPenztarBizonylat() innen tudja meg, hogy egyáltalán van-e miről dönteni:
+            // egy más okból indított mentés nem nyúlhat a meglévő pénzmozgásokhoz.
+            $entity->setPenzugyimezovaltozott($penzugyivaltozas);
+            if ($penzugyivaltozas && $this->vanKapcsolodoPenzmozgas($entity)) {
+                // a felhasználó döntése a mentéskor feltett kérdésre – ez is a bizonylat története
+                $this->createValtozasNaplo(
+                    $entity,
+                    'kapcsolodopenzmozgas',
+                    'Kapcsolódó pénzmozgás',
+                    '',
+                    $entity->isRontkapcsolodopenzmozgas() ? t('rontva') : t('változatlanul hagyva'),
+                    $dolgozo
+                );
+            }
         }
+    }
+
+    /**
+     * Van-e a bizonylathoz élő pénztár- vagy bankbizonylat. Csak akkor naplózzuk a felhasználó
+     * döntését, ha tényleg volt miről dönteni.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return bool
+     */
+    private function vanKapcsolodoPenzmozgas($bizfej)
+    {
+        if ($this->uow->isScheduledForInsert($bizfej)) {
+            return false;
+        }
+        return (bool)(count($this->getEloPenztarBizonylatok($bizfej)) + count($this->getEloBankBizonylatok($bizfej)));
     }
 
     /**
@@ -971,6 +1070,8 @@ class BizonylatfejListener
         $this->bizonylattetelmd = $this->em->getClassMetadata(Bizonylattetel::class);
         $this->penztarbizonylatfejmd = $this->em->getClassMetadata(Penztarbizonylatfej::class);
         $this->penztarbizonylattetelmd = $this->em->getClassMetadata(Penztarbizonylattetel::class);
+        $this->bankbizonylatfejmd = $this->em->getClassMetadata(Bankbizonylatfej::class);
+        $this->bankbizonylattetelmd = $this->em->getClassMetadata(Bankbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
         $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
         $this->bizonylatstatusznaplomd = $this->em->getClassMetadata(Bizonylatstatusznaplo::class);

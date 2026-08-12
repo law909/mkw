@@ -8,7 +8,8 @@
           data-funnypartnermessage="{$maintheme=='superzoneb2b'}" data-tarsbiztipus="{$tarsbiztipus}"
           data-tulajaam="{if ($tulajalanyiafamentes)}1{else}0{/if}" data-magyarorszagid="{$magyarorszagid}"
           data-unasdefaulttermek="{$unasdefaulttermek|default}"
-          data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}">
+          data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}"
+          data-eredetifizmod="{$egyed.fizmod}" data-eredetipenztmozgat="{if ($egyed.penztmozgat)}1{else}0{/if}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
@@ -244,7 +245,8 @@
                     {/if}
                     <tr>
                         <td><label for="PenztmozgatEdit">{at('Kintlévőséget/tartozást képez')}:</label></td>
-                        <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}></td>
+                        <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}>
+                            <input id="RontkapcsolodopenzmozgasEdit" type="hidden" name="rontkapcsolodopenzmozgas" value="0"></td>
                     </tr>
                     {if isset($tarsbizonylatlist)}
                         <tr>
