@@ -257,6 +257,8 @@ class termekController extends \mkwhelpers\MattableController
             'nev' => t('Termék'),
             'globalis' => $this->beallitottErtek($t),
             'cellak' => $cellak,
+            // változatos terméken a termék sora csak mutat: a minimumot a változatokhoz kell megadni
+            'zarolt' => (bool)$valtozatok,
         ];
 
         /** @var TermekValtozat $valtozat */
@@ -274,6 +276,7 @@ class termekController extends \mkwhelpers\MattableController
                 'nev' => $this->getValtozatNev($valtozat),
                 'globalis' => $this->beallitottErtek($valtozat),
                 'cellak' => $cellak,
+                'zarolt' => false,
             ];
         }
 
@@ -287,6 +290,9 @@ class termekController extends \mkwhelpers\MattableController
      *
      * Üres vagy nulla cella ⇒ a sor törlése: a létrában a tárolt 0 és a hiányzó sor azonos.
      *
+     * Változatos terméken a termékszint kötelezően nulla: a minimumot csak a változatokhoz
+     * lehet megadni, a termék globális értékét és raktáras sorait ilyenkor töröljük.
+     *
      * @param \Entities\Termek $obj
      * @param \Entities\TermekValtozat[] $valtozatmap űrlapkulcs => változat, a fenti ciklusból –
      *        „mentés új termékként" esetén az űrlapon a RÉGI termék változatainak id-je jön vissza,
@@ -296,6 +302,15 @@ class termekController extends \mkwhelpers\MattableController
     {
         $em = $this->getEm();
         $raktaridk = $this->getIdList('minboltikeszletraktarid');
+        // a getValtozatok() null a változatot nem ismerő témákon (darshan, kisszamlazo)
+        $vanvaltozat = \mkw\store::getSetupValue('termekvaltozat') && count($obj->getValtozatok() ?? []) > 0;
+
+        if ($vanvaltozat) {
+            $obj->setMinboltikeszlet(0);
+            foreach ($this->getRepo(TermekMinboltikeszlet::class)->getRowsByTermek($obj->getId()) as $sor) {
+                $em->remove($sor);
+            }
+        }
 
         $raktarmap = [];
         if ($raktaridk) {
@@ -305,20 +320,22 @@ class termekController extends \mkwhelpers\MattableController
                 $raktarmap[$raktar->getId()] = $raktar;
             }
 
-            $termeksorok = $this->getRepo(TermekMinboltikeszlet::class)->getRowsByTermek($obj->getId());
-            foreach ($raktarmap as $rid => $raktar) {
-                $ertek = $this->params->getNumRequestParam('termekraktariminboltikeszlet_' . $rid);
-                $sor = $termeksorok[$rid] ?? null;
-                if ($ertek * 1) {
-                    if (!$sor) {
-                        $sor = new TermekMinboltikeszlet();
-                        $sor->setTermek($obj);
-                        $sor->setRaktar($raktar);
+            if (!$vanvaltozat) {
+                $termeksorok = $this->getRepo(TermekMinboltikeszlet::class)->getRowsByTermek($obj->getId());
+                foreach ($raktarmap as $rid => $raktar) {
+                    $ertek = $this->params->getNumRequestParam('termekraktariminboltikeszlet_' . $rid);
+                    $sor = $termeksorok[$rid] ?? null;
+                    if ($ertek * 1) {
+                        if (!$sor) {
+                            $sor = new TermekMinboltikeszlet();
+                            $sor->setTermek($obj);
+                            $sor->setRaktar($raktar);
+                        }
+                        $sor->setMinboltikeszlet($ertek);
+                        $em->persist($sor);
+                    } elseif ($sor) {
+                        $em->remove($sor);
                     }
-                    $sor->setMinboltikeszlet($ertek);
-                    $em->persist($sor);
-                } elseif ($sor) {
-                    $em->remove($sor);
                 }
             }
         }

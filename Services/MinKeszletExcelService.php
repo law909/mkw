@@ -16,8 +16,10 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  * fájlnak a visszatöltése. A két irány itt, egy helyen van, mert az oszlopkiosztásukat
  * kötelező szinkronban tartani.
  *
- * Egy sor = egy termék VAGY egy változat. A változatos termék a saját sorát is megkapja:
- * a termékszintű érték a változat fallbackje (lásd \Services\KeszletService).
+ * Egy sor = egy termék VAGY egy változat. Változatos terméknél csak a változatokhoz adható meg
+ * érték (lásd \Services\KeszletService feloldási létrája és a termékszerkesztő rácsa), ezért az
+ * ilyen termék saját sora ki sem kerül az exportba – ha kézzel mégis betesznek egyet, az import
+ * nullázza és figyelmeztet.
  *
  * Oszlopok: termék id, változat id, cikkszám, vonalkód, név, szín, méret, "Minden raktár",
  * majd raktáranként egy-egy oszlop. A raktároszlopokat az importáláskor a FEJLÉCBEN lévő
@@ -124,15 +126,32 @@ class MinKeszletExcelService
                     $hibak[] = sprintf(t('%d. sor: nincs %d azonosítójú termék'), $row, $termekid);
                     continue;
                 }
-                $termek->setMinboltikeszlet($mindenraktar);
-                $em->persist($termek);
-                $this->setRaktariErtekek(
-                    TermekMinboltikeszlet::class,
-                    'setTermek',
-                    $termek,
-                    $em->getRepository(TermekMinboltikeszlet::class)->getRowsByTermek($termekid),
-                    $raktariertekek
-                );
+                if (\mkw\store::getSetupValue('termekvaltozat') && count($termek->getValtozatok() ?? [])) {
+                    // változatos terméken a termékszint kötelezően nulla: a fájlban lévő értéket eldobjuk,
+                    // és a korábbi raktáras sorokat is töröljük – ugyanaz a szabály, mint a rácson
+                    if (($mindenraktar * 1) || array_filter($raktariertekek)) {
+                        $hibak[] = sprintf(
+                            t('%d. sor: a(z) %d azonosítójú terméknek van változata, a termékszintű minimum nem állítható – nullázva'),
+                            $row,
+                            $termekid
+                        );
+                    }
+                    $termek->setMinboltikeszlet(0);
+                    $em->persist($termek);
+                    foreach ($em->getRepository(TermekMinboltikeszlet::class)->getRowsByTermek($termekid) as $sor) {
+                        $em->remove($sor);
+                    }
+                } else {
+                    $termek->setMinboltikeszlet($mindenraktar);
+                    $em->persist($termek);
+                    $this->setRaktariErtekek(
+                        TermekMinboltikeszlet::class,
+                        'setTermek',
+                        $termek,
+                        $em->getRepository(TermekMinboltikeszlet::class)->getRowsByTermek($termekid),
+                        $raktariertekek
+                    );
+                }
                 $termekdb++;
             }
 
@@ -245,9 +264,10 @@ class MinKeszletExcelService
         $filter->addFilter('id', 'IN', $termekids);
         $termekek = $em->getRepository(Termek::class)->getWithValtozatok($filter);
 
+        $valtozatosmod = \mkw\store::getSetupValue('termekvaltozat');
         $valtozatids = [];
         foreach ($termekek as $termek) {
-            foreach ($termek->getValtozatok() as $valtozat) {
+            foreach ($termek->getValtozatok() ?? [] as $valtozat) {
                 $valtozatids[] = $valtozat->getId();
             }
         }
@@ -258,19 +278,23 @@ class MinKeszletExcelService
 
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
-            $this->exportSor($sheet, $sor++, [
-                'termekid' => $termek->getId(),
-                'valtozatid' => '',
-                'cikkszam' => $termek->getCikkszam(),
-                'vonalkod' => $termek->getVonalkod(),
-                'nev' => $termek->getNev(),
-                'szin' => '',
-                'meret' => '',
-                'mindenraktar' => $termek->getMinboltikeszlet(),
-                'raktari' => $termekraktari[$termek->getId()] ?? [],
-            ]);
+            // változatos terméken a termékszint kötelezően nulla, a sorának nincs értelme –
+            // a feltétel ugyanaz, mint az importban és a termékszerkesztő rácsán
+            if (!$valtozatosmod || !count($termek->getValtozatok() ?? [])) {
+                $this->exportSor($sheet, $sor++, [
+                    'termekid' => $termek->getId(),
+                    'valtozatid' => '',
+                    'cikkszam' => $termek->getCikkszam(),
+                    'vonalkod' => $termek->getVonalkod(),
+                    'nev' => $termek->getNev(),
+                    'szin' => '',
+                    'meret' => '',
+                    'mindenraktar' => $termek->getMinboltikeszlet(),
+                    'raktari' => $termekraktari[$termek->getId()] ?? [],
+                ]);
+            }
             /** @var TermekValtozat $valtozat */
-            foreach ($termek->getValtozatok() as $valtozat) {
+            foreach ($termek->getValtozatok() ?? [] as $valtozat) {
                 $this->exportSor($sheet, $sor++, [
                     'termekid' => $termek->getId(),
                     'valtozatid' => $valtozat->getId(),

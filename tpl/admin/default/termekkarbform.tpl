@@ -510,6 +510,8 @@
                                 <input name="valtozatminboltikeszlet_{$sor.valtozatid}" type="number" step="any"
                                        value="{$sor.globalis}">
                                 <input name="valtozatminboltikeszletid[]" type="hidden" value="{$sor.valtozatid}">
+                            {elseif ($sor.zarolt)}
+                                <input type="number" value="0" disabled="disabled">
                             {else}
                                 <input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any"
                                        value="{$sor.globalis}">
@@ -520,6 +522,8 @@
                                 {if ($sor.valtozatid)}
                                     <input name="valtozatraktariminboltikeszlet_{$sor.valtozatid}_{$cella.raktarid}"
                                            type="number" step="any" value="{$cella.ertek}">
+                                {elseif ($sor.zarolt)}
+                                    <input type="number" value="0" disabled="disabled">
                                 {else}
                                     <input name="termekraktariminboltikeszlet_{$cella.raktarid}"
                                            type="number" step="any" value="{$cella.ertek}">
@@ -535,6 +539,7 @@
             {/foreach}
             <p class="mattkarb-hint">
                 {at('Üres cella: nincs beállítva, az öröklött érték él.')}
+                {at('Változatos terméknél a minimumot csak a változatokhoz lehet megadni, a termék sora nulla.')}
             </p>
         </div>
         {if ($setup.kapcsolodotermekek)}

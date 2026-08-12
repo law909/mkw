@@ -1403,6 +1403,51 @@ if ($DBVersion < '0117') {
         \mkw\store::setParameter(\mkw\consts::DBVersion, '0117');
     }
 }
+
+if ($DBVersion < '0118') {
+    // Csak superzoneb2b: változatos terméken a minimumot mostantól a változatok hordozzák
+    // (\Services\KeszletService létrája). A termékszintű értéket – globálisat és raktárasat –
+    // rámásoljuk minden változatra, utána a termékszintet nullázzuk. A felülírás szándékos: a
+    // régi létrában a nem nulla termékérték úgyis elnyomta a változatét, tehát a hatályos
+    // minimum nem változik.
+    if (\mkw\store::isSuperzoneB2B()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        // a runonce megelőzheti a kézi ./updateschema.sh-t: hiányzó táblára minden admin kérés fatal lenne
+        $tablakvannak = $conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.TABLES'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN (?, ?)',
+            ['termekminboltikeszlet', 'termekvaltozatminboltikeszlet']
+        )->fetchOne();
+        if ($tablakvannak == 2) {
+            $conn->executeStatement(
+                'UPDATE termekvaltozat v JOIN termek t ON (t.id = v.termek_id)'
+                . ' SET v.minboltikeszlet = t.minboltikeszlet, v.lastmod = NOW()'
+                . ' WHERE (t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet <> 0)'
+            );
+            // created/lastmod kézzel, mert a nyers SQL megkerüli a Gedmo Timestampable-t
+            $conn->executeStatement(
+                'INSERT INTO termekvaltozatminboltikeszlet (termekvaltozat_id, raktar_id, minboltikeszlet, created)'
+                . ' SELECT v.id, m.raktar_id, m.minboltikeszlet, NOW()'
+                . ' FROM termekminboltikeszlet m'
+                . ' JOIN termekvaltozat v ON (v.termek_id = m.termek_id)'
+                . ' WHERE (m.minboltikeszlet IS NOT NULL) AND (m.minboltikeszlet <> 0)'
+                . ' ON DUPLICATE KEY UPDATE minboltikeszlet = VALUES(minboltikeszlet), lastmod = NOW()'
+            );
+            $conn->executeStatement(
+                'DELETE m FROM termekminboltikeszlet m'
+                . ' WHERE EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = m.termek_id)'
+            );
+            $conn->executeStatement(
+                'UPDATE termek t SET t.minboltikeszlet = 0, t.lastmod = NOW()'
+                . ' WHERE (t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet <> 0)'
+                . ' AND EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
+            );
+            \mkw\store::setParameter(\mkw\consts::DBVersion, '0118');
+        }
+    } else {
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0118');
+    }
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

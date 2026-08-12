@@ -142,7 +142,8 @@ váltást csinál (`find(...)?->getKarkod()`).
 
 1. A mai két oszlop **változatlanul marad** (név, típus, jelentés): ez a globális, raktárfüggetlen érték. Az átnevezés későbbi, önálló lépés (Függelék).
 2. **Két külön új tábla** a raktárankénti értékeknek (termék+raktár, változat+raktár), a meglévő `minboltikeszlet` névhez igazodva.
-3. A **precedencia marad**: nem-nulla **termék**érték elnyomja a változatét.
+3. ~~A **precedencia marad**: nem-nulla **termék**érték elnyomja a változatét.~~ **Felülírva 2026-08-12:** a szűkebb beállítás nyer, a **változat** üti a
+   terméket – és változatos terméken a termékszintű minimum kötelezően nulla, lásd 2.2.
 4. A nem raktárszűrt helyek (webshop, A2A, exportok, backorder) **számszerűen változatlanok**.
 5. Admin UI: a meglévő `ValtozatMinBoltiKeszletTab` átalakítása **változat × raktár mátrixszá**. Nincs új MattableController, nincs új listaképernyő.
 6. **Egyszeri adatmigráció**: a mai globális értékek bemásolása az **alapraktár**
@@ -152,18 +153,25 @@ váltást csinál (`find(...)?->getKarkod()`).
 
 ```
 $raktarid megadva:
-  1. termekminboltikeszlet(termek_id=T, raktar_id=R)                — ha nem nulla
-  2. termekvaltozatminboltikeszlet(termekvaltozat_id=V, raktar_id=R) — ha nem nulla
+  1. termekvaltozatminboltikeszlet(termekvaltozat_id=V, raktar_id=R) — ha nem nulla
+  2. termekminboltikeszlet(termek_id=T, raktar_id=R)                 — ha nem nulla
 $raktarid nélkül, vagy ha 1-2 nem talált:
-  3. termek.minboltikeszlet                                          — ha nem nulla
-  4. termekvaltozat.minboltikeszlet                                  — ahogy van
+  3. termekvaltozat.minboltikeszlet                                  — ha nem nulla
+  4. termek.minboltikeszlet                                          — ahogy van
 ```
 
-Raktár-szint üti a globálist; szinten belül a termék üti a változatot. **`$raktarid === null` esetén a létra a 3→4 lépés, ami betűre a mai
-`calcMinboltikeszlet()`** — ezért marad minden mai hívóhely számszerűen érintetlen.
+Raktár-szint üti a globálist, szinten belül a **változat** üti a terméket (a szűkebb beállítás nyer). **`$raktarid === null` esetén a létra a 3→4 lépés, a
+globális minimum** — a `BackorderService` szándékosan sosem ad raktárat, tehát mindig ezt látja. Máshol a szabály: ha van raktár, a raktáras érték, ha nincs,
+a globális.
 
-**Biztonsági tulajdonság:** ahol a mátrixot senki nem tölti ki és a migráció sem írt sort, ott a létra mindig a 3-4. lépésre esik → **minden képernyő pontosan
-úgy viselkedik, mint ma.**
+**Változatos terméken a termékszintű minimum kötelezően nulla** (2026-08-12): a minimumot csak a változatokhoz lehet megadni. A 2. és 4. lépés így gyakorlatilag
+csak a változat nélküli termékeknél él. Ezt két helyen kényszerítjük ki:
+`termekController::saveMinBoltiKeszletMatrix()` (a rács termék sora zárolt, mentéskor a globális 0 és a raktáras sorok törlődnek) és
+`\Services\MinKeszletExcelService::import()` (a változatos termék sorát nullázza, és figyelmeztetést tesz a hibalistába, ha volt benne érték). Ugyanennek a
+service-nek az **exportja** a változatos termék sorát ki sem írja, csak a változatokét. A meglévő adatot a `runonce` 0118-as blokkja rendezi – **csak
+superzoneb2b-n**: a termékszintű értéket (globális és raktáras) rámásolja minden változatra, aztán a változatos termékek termékszintjét nullázza.
+
+**Biztonsági tulajdonság:** ahol a mátrixot senki nem tölti ki és a migráció sem írt sort, ott a létra mindig a 3-4. lépésre esik.
 
 **Csapda mindkét implementációban:** a „nem nulla" tesztnek numerikusnak kell lennie (`* 1` PHP-ben, `NULLIF(x, 0)` SQL-ben) — a `"0.00"` string igaz.
 

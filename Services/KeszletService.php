@@ -14,14 +14,18 @@ use mkwhelpers\FilterDescriptor;
  * Készletszámítás: a bizonylattételekből összegzett raktárkészlet és foglalás, a polcon tartandó
  * minimum ("min. bolti készlet") feloldása, és a háromból a szabad készlet.
  *
- * A minimum feloldási létrája – raktáras érték üti a globálisat, szinten belül a termék a változatot:
- *   1. termekminboltikeszlet(termek, raktár)            – ha nem nulla
- *   2. termekvaltozatminboltikeszlet(változat, raktár)  – ha nem nulla
- *   3. termek.minboltikeszlet                           – ha nem nulla
- *   4. termekvaltozat.minboltikeszlet                   – ahogy van
+ * A minimum feloldási létrája – a szűkebb beállítás nyer, raktáras érték üti a globálisat:
+ *   1. termekvaltozatminboltikeszlet(változat, raktár)  – ha nem nulla
+ *   2. termekminboltikeszlet(termek, raktár)            – ha nem nulla
+ *   3. termekvaltozat.minboltikeszlet                   – ha nem nulla
+ *   4. termek.minboltikeszlet                           – ahogy van
  *
- * $raktarid nélkül a létra a 3-4. lépés, ami betűre a régi TermekValtozat::calcMinboltikeszlet().
- * Ugyanennek a létrának a másik (SQL-be írt) implementációja a keszletlistaController::getData().
+ * $raktarid nélkül a létra a 3-4. lépés (globális minimum) – ezt látja a backorder is, ami
+ * szándékosan sosem ad raktárat. A 2. és 4. lépés csak a változat nélküli termékeknél él:
+ * változatos terméken a termékszintű minimum kötelezően nulla (lásd termekController és
+ * \Services\MinKeszletExcelService).
+ *
+ * Ugyanennek a létrának a másik (SQL-be írt) implementációja a getMinKeszletSql().
  *
  * Statikus, mert entitásmetódusból is hívjuk, ahol nincs hova injektálni – ugyanezért nyúl
  * az entitás a \mkw\store::isFoglalas()-hoz.
@@ -60,10 +64,7 @@ class KeszletService
             }
         }
         // a decimal stringként hidratál, ezért a "nem nulla" teszt numerikus
-        if ($termek && ($termek->getMinboltikeszlet() * 1)) {
-            return $termek->getMinboltikeszlet();
-        }
-        if ($valtozat) {
+        if ($valtozat && ($valtozat->getMinboltikeszlet() * 1)) {
             return $valtozat->getMinboltikeszlet();
         }
         return $termek?->getMinboltikeszlet();
@@ -345,17 +346,17 @@ class KeszletService
     ) {
         $agak = [];
         if ($raktarparam) {
-            $agak[] = 'NULLIF((SELECT tmk.minboltikeszlet FROM termekminboltikeszlet tmk'
-                . ' WHERE tmk.termek_id = ' . $termekid . ' AND tmk.raktar_id = :' . $raktarparam . '), 0)';
             if ($valtozatid) {
                 $agak[] = 'NULLIF((SELECT vmk.minboltikeszlet FROM termekvaltozatminboltikeszlet vmk'
                     . ' WHERE vmk.termekvaltozat_id = ' . $valtozatid . ' AND vmk.raktar_id = :' . $raktarparam . '), 0)';
             }
+            $agak[] = 'NULLIF((SELECT tmk.minboltikeszlet FROM termekminboltikeszlet tmk'
+                . ' WHERE tmk.termek_id = ' . $termekid . ' AND tmk.raktar_id = :' . $raktarparam . '), 0)';
         }
-        $agak[] = 'NULLIF(' . $termekmin . ', 0)';
         if ($valtozatmin) {
-            $agak[] = $valtozatmin;
+            $agak[] = 'NULLIF(' . $valtozatmin . ', 0)';
         }
+        $agak[] = $termekmin;
         $agak[] = '0';
         return 'COALESCE(' . implode(',', $agak) . ')';
     }
@@ -365,18 +366,18 @@ class KeszletService
      */
     private static function getRaktariErtek($termek, $valtozat, $raktarid)
     {
-        $termekid = $termek?->getId();
-        if ($termekid) {
-            self::loadTermek([$termekid], $raktarid);
-            $ertek = self::$termekCache[$raktarid][$termekid] ?? null;
-            if ($ertek * 1) {
-                return $ertek;
-            }
-        }
         $valtozatid = $valtozat?->getId();
         if ($valtozatid) {
             self::loadValtozat([$valtozatid], $raktarid);
             $ertek = self::$valtozatCache[$raktarid][$valtozatid] ?? null;
+            if ($ertek * 1) {
+                return $ertek;
+            }
+        }
+        $termekid = $termek?->getId();
+        if ($termekid) {
+            self::loadTermek([$termekid], $raktarid);
+            $ertek = self::$termekCache[$raktarid][$termekid] ?? null;
             if ($ertek * 1) {
                 return $ertek;
             }

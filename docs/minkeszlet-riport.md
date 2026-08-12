@@ -22,8 +22,8 @@ A szűrő: dátum, raktár (kötelező – a minimum raktárfüggő), és a más
 - **Készlet**: `SUM(mennyiseg * irany)` a mozgató, nem rontott bizonylattételekre, `teljesites <=`
   a megadott napig, az adott raktárban – betűre ugyanaz a szűrés, mint a `Termek::getKeszlet()`-ben. A lerontott bizonylat tételei is rontottak
   (`Bizonylatfej::setRontott()` végigviszi), ezért a tétel rontott jelzője elég.
-- **Minimum**: a raktárankénti feloldási létra (termék@raktár → változat@raktár → termék globális → változat globális), lásd
-  `docs/raktarankenti-minimum-keszlet.md`.
+- **Minimum**: a raktárankénti feloldási létra (változat@raktár → termék@raktár → változat globális → termék globális), lásd
+  `docs/raktarankenti-minimum-keszlet.md`. Változatos terméknél a termékszintű minimum nulla, tehát ott csak a változatok értéke számít.
 - **Bekerül a riportra**, aminek a minimuma nem nulla **és** a készlete a minimum alatt van. A nulla minimum a létrában „nincs beállítva", ezért az ilyen sorok
   nem érdekesek.
 - **Hiány** = minimum − készlet.
