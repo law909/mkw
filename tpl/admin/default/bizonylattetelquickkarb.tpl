@@ -12,6 +12,7 @@
         <input class="js-termekid" name="qteteltermek_{$tetel.id}" type="hidden">
         <input name="qtetelafa_{$tetel.id}" type="hidden">
         <input name="qtetelme_{$tetel.id}" type="hidden">
+        {include 'bizonylatteteltermekgombok.tpl'}
     </td>
 </tr>
 <tr class="js-termekpicturerow_{$tetel.id}">

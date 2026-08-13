@@ -32,8 +32,14 @@
   > A javasolt megoldás a `penztmozgat` mezőt használja a válasz hordozójának (nem kell új oszlop), és mind a négy általad felsorolt esetet lefedi — a
   > kiegyenlített utalásos storno a storno számlán visszautalandó tartozásként fog látszani. **Egy nyitott döntés van** a tervben (5. pont): a meglévő storno
   > bizonylatokat runonce-szal igazítsuk-e, vagy inkább külön mező legyen. A galad fejlesztői DB-n 0 érintett sor van, ezt éles adaton kell megnézni.
-- bizonylattetelkarbformon a termék autocomplete mellett legyen 2 gomb: 1. "új", új fülön nyissa meg az új termék karbantartót; 2. "adatlap" ha van máár
-  kiválasztva termék, nyissa meg a termék karbantartóját
+- [x] **KÉSZ** bizonylattetelkarbformon a termék autocomplete mellett legyen 2 gomb: 1. "új", új fülön nyissa meg az új termék karbantartót; 2. "adatlap" ha van
+  máár kiválasztva termék, nyissa meg a termék karbantartóját
+  > Új közös részsablon: `tpl/admin/default/bizonylatteteltermekgombok.tpl`, beemelve a `bizonylattetelkarb.tpl` mindkét ágába (autocomplete és sima select is)
+  > és a `bizonylattetelquickkarb.tpl`-be. Mindkét gomb új lapra nyit (`target="_blank"`), hogy a félig kitöltött bizonylat ne vesszen el.
+  > „Új" → `/admin/termek/viewkarb?id=0&oper=add`, statikus href. „Adatlap" → a href kattintáskor áll össze a sor aktuális `.js-termekid` értékéből
+  > (`bizonylathelper.js`), mert a tétel terméke a betöltés után is változhat. Ha nincs kiválasztott termék, „Előbb válasszon terméket." üzenet jön.
+  > Storno tételen az „Új" nem jelenik meg (ott a terméket sem lehet cserélni), az „Adatlap" igen.
+  > Böngészőben kipróbálva az SZ2026/000002 számlán: mindkét gomb kirajzolódik, a href jól áll össze, üres termékre jön az üzenet.
 - a projekt gyökérben van két GLS_*.xlsx, írj egy importot ami importálja ezeket az utánvétes kifizetéseket, csak azokat a sorokat kell importálni, amelyikek Q
   oszlopa (Beszedett utánvét összege (HUF)) nem nulla. csinálj nekik egy ideiglenes táblát bank tranzakció import mintájára, importkor próbáld meg kitalálni,
   melyik bizonylathoz tartozhat a befizetés:

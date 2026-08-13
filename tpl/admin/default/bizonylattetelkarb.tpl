@@ -44,6 +44,7 @@
                                class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
                     {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
+                    {include 'bizonylatteteltermekgombok.tpl'}
                 </td>
             {else}
                 <td colspan="5">
@@ -58,6 +59,7 @@
                             {/foreach}
                         </select>
                     {/if}
+                    {include 'bizonylatteteltermekgombok.tpl'}
                 </td>
             {/if}
         </tr>
