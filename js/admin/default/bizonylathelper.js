@@ -1899,7 +1899,7 @@ let bizonylathelper = function ($) {
                         $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
-                            '.js-kiegyenlit').button();
+                            '.js-kiegyenlit, .js-mirexport').button();
                     },
                     onDoEditLink: function () {
                         $('.js-inheritbizonylat').each(function () {

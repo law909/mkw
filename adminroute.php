@@ -786,6 +786,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szallmegrfej/tetelexport', 'szallmegrfejController#tetelexport', 'adminszallmegrfejtetelexport');
 }
 $router->map('GET', '/admin/szallmegrfej/print', 'szallmegrfejController#doPrint', 'adminszallmegrfejprint');
+$router->map('GET', '/admin/szallmegrfej/mirexport', 'szallmegrfejController#mirExport', 'adminszallmegrfejmirexport');
 
 $router->map('GET', '/admin/bevetfej/viewlist', 'bevetfejController#viewlist', 'adminbevetfejviewlist');
 $router->map('GET', '/admin/bevetfej/getlistbody', 'bevetfejController#getlistbody', 'adminbevetfejgetlistbody');

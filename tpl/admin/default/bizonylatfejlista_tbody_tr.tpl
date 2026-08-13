@@ -48,6 +48,10 @@
                     <a class="js-backorder" href="#" data-egyedid="{$_egyed.id}" title="{at('Backorder')}"><span
                             class="ui-icon ui-icon-transferthick-e-w"></span></a>
                 {/if}
+                {if ($_egyed.bizonylattipusid=='szallmegr')}
+                    <a class="js-mirexport" href="/admin/szallmegrfej/mirexport?id={$_egyed.id|escape:'url'}"
+                       title="{at('Export Mir formátumban')}" target="_blank">Mir</a>
+                {/if}
                 {if ($showslicemanufacturerbutton)}
                     <a class="js-slicemanufacturer" href="#" data-egyedid="{$_egyed.id}"
                        title="{at('Szétbontás gyártónként')}"><span class="ui-icon ui-icon-scissors"></span></a>

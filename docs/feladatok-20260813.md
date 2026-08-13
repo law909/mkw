@@ -45,8 +45,19 @@
   melyik bizonylathoz tartozhat a befizetés:
   fuvarlevélszám, aztán név összeg és cím alapján. Ha olyan bizonylatot találsz ami nem mozgat pénzt akkor keresd meg a belőle készült pénzt mozgató
   bizonylatot. Az importált tételekhez lehessen bizonylatszámot megadni egy karbantartóban bank tranzakcióhoz hasonlóan.
-- a projekt gyökérben van egy "Mir Order.xls", a szállítói megrendeléseknek csinálj egy gombot amivel ilyen formátumban ki lehet exportálni őket. A gomb legyen
-  ott minden száll.megrendelés sorban, azt exportálja amelyik sorban van
+- [x] **KÉSZ** a projekt gyökérben van egy "Mir Order.xls", a szállítói megrendeléseknek csinálj egy gombot amivel ilyen formátumban ki lehet exportálni őket. A
+  gomb legyen ott minden száll.megrendelés sorban, azt exportálja amelyik sorban van
+  > **Gomb:** „Mir" a szállítói megrendelés lista minden sorában (`bizonylatfejlista_tbody_tr.tpl`, `bizonylattipusid=='szallmegr'` mögött), új lapra tölt le.
+  > **Kód:** `Services/MirOrderExcelService.php` + `szallmegrfejController::mirExport()` + `GET /admin/szallmegrfej/mirexport`.
+  > **A formátum méret-mátrix:** egy sor = egy termék+szín, az oszlopok a méretek. A két méretskála (nadrág 29–42 az F oszloptól, felsőrész S–6XL az E-től) a
+  > minta 3. és 4. sorának fejléce – ezek a formátum részei, ezért fixen beégetve mennek ki, nem a bizonylatból jönnek.
+  > **Megjegyzés/döntés:** ami egyik skálába sem illik (pl. a galad adatain a „70"-es méret), az az **N oszlopba** kerül – az is benne van a `TOT PCS`
+  > összegben –, a mérete pedig zárójelben a névhez ragad (`GÁZBOWDEN CFMOTO 125NK (70: 2)`), hogy a szállító lássa, mit rendeltünk. Így semmi nem vész el
+  > csendben. Ha inkább kimaradna vagy hibát kellene dobnia, szólj.
+  > Csoportfejléc-sor (a mintában `KEVLAR JEANS:`) a termék legmélyebb kitöltött kategóriájából képződik; ha nincs kategória, nincs fejlécsor.
+  > **Kipróbálva:** létrehoztam egy `SZMR2026/000001` szállítói megrendelést a galad fejlesztői DB-n (TESZT SZALLITO, 5 db KABÁT ARMR SUKO 1.0 KÉK/S, 1000 Ft) –
+  > a gomb kirajzolódik, a letöltés valódi xlsx, a tartalom a helyes oszlopokba kerül. **Ez a teszt bizonylat bent maradt az adatbázisban**, hogy ki tudd
+  > próbálni; ha nem kell, rontsd le.
 - [x] **KÉSZ** termék és partner karbantartón a dokumentumok fülön a dokumentum input mellett a ... gomb mellett van egy O gomb ami legyen gomb külsejű és
   nyissa meg a dokumentumot, ne pedig letöltse. A gomb captionje legyen "Megnyit"
   > **Ok: a `.button()` hívásból kimaradt.** A `dokumentumtarkarb.tpl` két megnyitó linket tartalmaz: a „Web cím" sorét (`js-dokopenbutton`) és a
