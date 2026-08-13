@@ -1452,7 +1452,7 @@ if ($DBVersion < '0118') {
 if ($DBVersion < '0119') {
     // foglalás nélküli telepítésen a státusz foglal jelölője nem hat semmire (a karbantartó is elrejti),
     // a benne maradt 1-esek viszont azonnal foglalni kezdenének, ha a setup.foglalas bekapcsolódik
-    if (!\mkw\store::isFoglalas()) {
+    if (!\mkw\store::getSetupValue('foglalas')) {
         \mkw\store::getEm()->getConnection()->executeStatement('UPDATE bizonylatstatusz SET foglal = 0');
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0119');

@@ -259,9 +259,6 @@ class KeszletService
      */
     public static function getFoglaltMennyiseg($entity, $kivevebiz = null, $datum = null, $raktarid = null)
     {
-        if (!\mkw\store::isFoglalas()) {
-            return 0;
-        }
         if ($kivevebiz instanceof Bizonylatfej) {
             $kivevebiz = $kivevebiz->getId();
         }

@@ -28,7 +28,7 @@ class BizonylatfejListener
     /** Az automatikusan képzett pénztárbizonylat megjegyzése – ettől ismerhető fel a listákon. */
     private const AUTOPENZTARMEGJEGYZES = 'Automatikus pénztárbizonylat';
 
-/**
+    /**
      * Amiknek a változását naplózzuk, mezőnév → emberi név. A nyomtatás is itt van: a
      * setNyomtatva() a nyomtatva jelölőt írja át, tehát ugyanezen az úton naplózódik – oda-vissza,
      * mert a "Nyomtatás visszavonása" is ezt a mezőt állítja.
@@ -1070,9 +1070,7 @@ class BizonylatfejListener
                 foreach ($entity->getBizonylattetelek() as $tetel) {
                     if (!$tetel->getStorno() && !$tetel->getStornozott()) {
                         $tetel->setMozgat();
-                        if (\mkw\store::isFoglalas()) {
-                            $tetel->setFoglal();
-                        }
+                        $tetel->setFoglal();
                         $tetel->setErkezik();
                         $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                     }

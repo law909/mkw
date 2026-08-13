@@ -79,7 +79,8 @@ class Bizonylattetel
     private $termeknev;
 
     /** Fordítás: üresen maradhat, ha a deployment nem multilang, vagy a terméknek nincs `nev_l1`-e.
-     * @ORM\Column(type="string",length=255,nullable=true) */
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
     private $termeknev_l1;
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
@@ -551,16 +552,14 @@ class Bizonylattetel
     public function setFoglal()
     {
         $this->foglal = false;
-        if (\mkw\store::isFoglalas()) {
-            $bf = $this->bizonylatfej;
-            $t = $this->termek;
-            if ($bf && $t) {
-                $bs = $bf->getBizonylatstatusz();
-                if ($bs) {
-                    $this->foglal = $bf->getFoglal() && $t->getMozgat() && $bs->getFoglal();
-                } else {
-                    $this->foglal = $bf->getFoglal() && $t->getMozgat();
-                }
+        $bf = $this->bizonylatfej;
+        $t = $this->termek;
+        if ($bf && $t) {
+            $bs = $bf->getBizonylatstatusz();
+            if ($bs) {
+                $this->foglal = $bf->getFoglal() && $t->getMozgat() && $bs->getFoglal();
+            } else {
+                $this->foglal = $bf->getFoglal() && $t->getMozgat();
             }
         }
     }

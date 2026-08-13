@@ -1389,12 +1389,7 @@ class store
     {
         return self::getSetupValue('osztottfizmod');
     }
-
-    public static function isFoglalas()
-    {
-        return self::getSetupValue('foglalas');
-    }
-
+    
     public static function isB2B()
     {
         return self::getSetupValue('b2b');
