@@ -41,7 +41,7 @@ class listaController extends \mkwhelpers\Controller
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter
             ->addFilter('bt.mozgat', '=', true)
-            ->addFilter('bt.rontott', '<>', true)
+            ->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))')
             ->addFilter('bf.raktar_id', '<>', $raktarid)
             ->addFilter('bf.teljesites', '<=', date(\mkw\store::$DateFormat));
         if ($termekfa) {
