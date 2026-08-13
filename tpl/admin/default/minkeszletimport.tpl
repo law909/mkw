@@ -19,7 +19,7 @@
                 <a href="/admin/minkeszletimport/import" class="js-importbutton">{at('Import')}</a>
                 <span class="js-importuzenet"></span>
                 <p class="mattkarb-hint">
-                    {at('A termékek listáján a "Minimum készlet export" csoportos művelettel készült fájlt várja. Csak a fájlban szereplő termékek és változatok minimum készlete változik; az üres vagy nulla raktárcella a raktáras felülírás törlését jelenti.')}
+                    {at('A termékek listáján a "Minimum készlet export" csoportos művelettel készült fájlt várja. Csak a fájlban szereplő termékek és változatok minimum készlete változik; az üres vagy nulla raktárcella a raktáras felülírás törlését jelenti. A raktároszlopokat a fejléc "id_név" előtagjában lévő azonosító köti a raktárhoz, a nevük szabadon átírható.')}
                 </p>
             </div>
             <div class="admin-form-footer">

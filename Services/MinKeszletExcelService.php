@@ -22,10 +22,10 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  * nullázza és figyelmeztet.
  *
  * Oszlopok: termék id, változat id, cikkszám, vonalkód, név, szín, méret, "Minden raktár",
- * majd a nem archivált raktárak egy-egy oszlopa. A raktároszlopokat az importáláskor a FEJLÉCBEN
- * lévő raktárnév azonosítja, nem a pozíció – így a fájl oszlopai átrendezhetők, de a raktárt
- * átnevezni két export között nem szabad. Az import az archivált raktár nevét is felismeri:
- * a korábbi exportok oszlopa így nem vész el (és a ráragadt érték nullázható).
+ * majd a nem archivált raktárak egy-egy oszlopa. A raktároszlop fejléce `<id>_<név>` (pl.
+ * `3_KISKER RAKTÁR`): az importáláskor az id azonosítja a raktárt, nem a pozíció és nem a név –
+ * így a fájl oszlopai átrendezhetők, és a raktár két export között át is nevezhető. A régebbi,
+ * csak nevet tartalmazó fejlécet is elfogadjuk, az archivált raktár nevével együtt.
  */
 class MinKeszletExcelService
 {
@@ -61,12 +61,12 @@ class MinKeszletExcelService
         $excel = new Spreadsheet();
         $sheet = $excel->setActiveSheetIndex(0);
 
-        $fejlecek = self::FEJLECEK;
-        foreach ($this->raktarak as $raktarnev) {
-            $fejlecek[] = $raktarnev;
+        $fejlecek = array_map('t', self::FEJLECEK);
+        foreach ($this->raktarak as $raktarid => $raktarnev) {
+            $fejlecek[] = self::raktarFejlec($raktarid, $raktarnev);
         }
         foreach ($fejlecek as $i => $fejlec) {
-            $sheet->setCellValue(\mkw\store::getExcelCoordinate($i) . '1', t($fejlec));
+            $sheet->setCellValue(\mkw\store::getExcelCoordinate($i) . '1', $fejlec);
         }
 
         $sor = 2;
@@ -171,8 +171,15 @@ class MinKeszletExcelService
         return ['sorok' => $sorok, 'termek' => $termekdb, 'valtozat' => $valtozatdb, 'hibak' => $hibak];
     }
 
+    /** A raktároszlop fejléce: az id azonosít, a név csak az embernek szól. */
+    private static function raktarFejlec($raktarid, $raktarnev): string
+    {
+        return $raktarid . '_' . $raktarnev;
+    }
+
     /**
-     * Az azonosító oszlopok utáni raktároszlopok fejléc (raktárnév) alapján.
+     * Az azonosító oszlopok utáni raktároszlopok a fejléc `<id>_<név>` előtagja alapján.
+     * A csak nevet tartalmazó (2026.08. előtti) fejlécet is elfogadjuk.
      *
      * @param string[] $hibak kimenő: az ismeretlen fejlécű oszlopok
      *
@@ -193,7 +200,11 @@ class MinKeszletExcelService
             if ($fejlec === '') {
                 continue;
             }
-            $raktarid = $nevmap[mb_strtolower($fejlec)] ?? 0;
+            if (preg_match('/^(\d+)_/', $fejlec, $m) && isset($this->mindenraktar[(int)$m[1]])) {
+                $raktarid = (int)$m[1];
+            } else {
+                $raktarid = $nevmap[mb_strtolower($fejlec)] ?? 0;
+            }
             if ($raktarid) {
                 $ret[$i] = $raktarid;
             } else {

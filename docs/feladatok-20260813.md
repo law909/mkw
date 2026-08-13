@@ -8,7 +8,12 @@
   > raktáras táblát a schema-tool nem bántja, azt a runonce utólag is átmenti.
   > A megjelenő feliratok („Min. készlet") nem változtak, csak az azonosítók. A `docs/raktarankenti-minimum-keszlet.md` terv szándékosan a régi néven maradt
   > (történeti dokumentum), csak egy hivatkozó megjegyzést tettem bele.
-- minimum készlet export/importban a raktár oszlopok neve legyen id_nev, így tudod azonosítani a raktárt akkor is ha megváltozik a neve export/import között
+- [x] **KÉSZ** minimum készlet export/importban a raktár oszlopok neve legyen id_nev, így tudod azonosítani a raktárt akkor is ha megváltozik a neve
+  export/import között
+  > `Services/MinKeszletExcelService.php`. Az export fejléce most `3_KISKER RAKTÁR`, az import a `^(\d+)_` előtagból veszi a raktár id-t.
+  > A csak nevet tartalmazó régi fejlécet továbbra is elfogadja (visszafelé kompatibilis a korábban letöltött fájlokkal), az ismeretlen fejléc pedig
+  > ugyanúgy figyelmeztetést ad és kimarad. Kipróbálva: átnevezett raktárfejléccel is a jó raktárra kerül az érték.
+  > Mellékesen: a fejléceket eddig a raktárnevekre is ráeresztette a `t()` fordító, ezt szétszedtem – a raktárnév nem fordítandó.
 - bizonylaton fizetési mód váltáskor a program rákérdez, hogy mi legyen e létező pénztár és bank bizonylatokkal. Rontáskor és stornokor rontsa le. lehet hogy ez
   már le van fejlesztve, ellenőrizd
 - bizonylattetelkarbformon a termék autocomplete mellett legyen 2 gomb: 1. "új", új fülön nyissa meg az új termék karbantartót; 2. "adatlap" ha van máár
