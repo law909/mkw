@@ -62,10 +62,18 @@ class listaController extends \mkwhelpers\Controller
         $keszletres = $q->getScalarResult();
         $res = [];
         foreach ($keszletres as $kesz) {
+            /** @var TermekValtozat $valtozat */
             $valtozat = $rep->find($kesz['termekvaltozat_id']);
             if ($valtozat) {
                 // a riport a bolt polckészletét nézi, nem a szabad készletet: a foglalás nem számít
-                $boltikeszlet = $valtozat->getAvailableStock(null, $raktarid, null, true, false, true);
+                $boltikeszlet = $valtozat->getAvailableStock(
+                    datum: null,
+                    raktarid: $raktarid,
+                    kivevebiz: null,
+                    clamp: false,
+                    ignoreminkeszlet: false,
+                    ignorefoglalas: true
+                );
                 if ($boltikeszlet <= $minkeszlet) {
                     $raktar = $raktarrepo->find($kesz['raktar_id']);
                     $termek = $termekrepo->find($kesz['termek_id']);
@@ -73,6 +81,7 @@ class listaController extends \mkwhelpers\Controller
                     $tomb = $termek->toRiport($valtozat);
                     $tomb['raktarnev'] = $raktar->getNev();
                     $tomb['keszlet'] = $kesz['keszlet'];
+                    $tomb['boltikeszlet'] = $boltikeszlet;
                     $res[] = $tomb;
                 }
             }
