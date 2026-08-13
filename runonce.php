@@ -1457,6 +1457,43 @@ if ($DBVersion < '0119') {
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0119');
 }
+
+if ($DBVersion < '0120') {
+    // b2brendeles a megrendeles mintájára: a kapcsolókat a telepítés saját megrendelés-típusáról
+    // másoljuk, így az ott kézzel átállított flagek is átjönnek
+    $em = \mkw\store::getEm();
+    $biztipusrepo = $em->getRepository(\Entities\Bizonylattipus::class);
+    $megrendeles = $biztipusrepo->find('megrendeles');
+    if ($megrendeles && !$biztipusrepo->find('b2brendeles')) {
+        $md = $em->getClassMetadata(\Entities\Bizonylattipus::class);
+        $b2brendeles = new \Entities\Bizonylattipus();
+        foreach ($md->getFieldNames() as $mezo) {
+            $md->setFieldValue($b2brendeles, $mezo, $md->getFieldValue($megrendeles, $mezo));
+        }
+        $b2brendeles->setId('b2brendeles');
+        $b2brendeles->setNev('B2B rendelés');
+        $b2brendeles->setAzonosito('B2BR');
+        $b2brendeles->setKezdosorszam(1);
+        $b2brendeles->setTplname('biz_b2brendeles.tpl');
+        $em->persist($b2brendeles);
+        $em->flush();
+
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' SELECT 1, "B2B rendelések", "/admin/b2brendelesfej/viewlist", "/admin/b2brendelesfej", 30, 1, 510, ""'
+            . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/b2brendelesfej/viewlist") m)'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0120');
+}
+
+if ($DBVersion < '0121') {
+    // eddig a foglaló bizonylattípusok listája a kódban volt beégetve
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattipus SET foglal = 1 WHERE id IN ("megrendeles", "b2brendeles", "webshopbiz")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0121');
+}
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

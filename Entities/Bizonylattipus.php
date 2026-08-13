@@ -103,6 +103,9 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showgarancialisadatok = false;
 
+    /** @var string[]|null a getFoglalIdList() kérésen belüli cache-e */
+    private static $foglalIdList;
+
     public function __construct()
     {
         $this->bizonylatfejek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -462,6 +465,28 @@ class Bizonylattipus
     public function setFoglal($adat)
     {
         $this->foglal = $adat;
+    }
+
+    /**
+     * A foglalást nyilvántartó bizonylattípusok id-i.
+     *
+     * @return string[]
+     */
+    public static function getFoglalIdList(): array
+    {
+        if (is_null(self::$foglalIdList)) {
+            $rows = \mkw\store::getEm()->createQueryBuilder()
+                ->select('bt.id')->from(self::class, 'bt')
+                ->where('bt.foglal = 1')
+                ->orderBy('bt.id', 'ASC')
+                ->getQuery()->getScalarResult();
+            self::$foglalIdList = array_column($rows, 'id');
+        }
+        return self::$foglalIdList;
+    }
+
+    public static function isRonthato($biztipusid)
+    {
     }
 
     /**

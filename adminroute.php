@@ -583,6 +583,30 @@ $router->map('GET', '/admin/megrendelesfej/print', 'megrendelesfejController#doP
 $router->map('GET', '/admin/megrendelesfej/printelolegbekero', 'megrendelesfejController#doPrintelolegbekero', 'adminmegrendelesfejprintelolegbekero');
 $router->map('POST', '/admin/megrendelesfej/concat', 'megrendelesfejController#concat', 'adminmegrendelesfejconcat');
 
+$router->map('GET', '/admin/b2brendelesfej/viewlist', 'b2brendelesfejController#viewlist', 'adminb2brendelesfejviewlist');
+$router->map('GET', '/admin/b2brendelesfej/getlistbody', 'b2brendelesfejController#getlistbody', 'adminb2brendelesfejgetlistbody');
+$router->map('GET', '/admin/b2brendelesfej/getkarb', 'b2brendelesfejController#getkarb', 'adminb2brendelesfejgetkarb');
+$router->map('GET', '/admin/b2brendelesfej/viewkarb', 'b2brendelesfejController#viewkarb', 'adminb2brendelesfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/b2brendelesfej/save', 'b2brendelesfejController#save', 'adminb2brendelesfejsave');
+    $router->map('POST', '/admin/b2brendelesfej/sendtofoxpost', 'b2brendelesfejController#sendToFoxPost', 'adminb2brendelessendtofoxpost');
+    $router->map('POST', '/admin/b2brendelesfej/generatefoxpostlabel', 'b2brendelesfejController#generateFoxpostLabel', 'adminb2brendelesgeneratefoxpostlabel');
+    $router->map('POST', '/admin/b2brendelesfej/sendtogls', 'b2brendelesfejController#sendToGLS', 'adminb2brendelessendtogls');
+    $router->map('POST', '/admin/b2brendelesfej/delglsparcel', 'b2brendelesfejController#delGLSParcel', 'adminb2brendelesdelglsparcel');
+    $router->map('POST', '/admin/b2brendelesfej/sendtofedex', 'b2brendelesfejController#sendToFedex', 'adminb2brendelessendtofedex');
+    $router->map('POST', '/admin/b2brendelesfej/delfedexparcel', 'b2brendelesfejController#delFedexParcel', 'adminb2brendelesdelfedexparcel');
+    $router->map('POST', '/admin/b2brendelesfej/fedexrates', 'b2brendelesfejController#getFedexRates', 'adminb2brendelesfedexrates');
+    $router->map('POST', '/admin/b2brendelesfej/ront', 'b2brendelesfejController#ront', 'adminb2brendelesfejront');
+    $router->map('POST', '/admin/b2brendelesfej/backorder', 'b2brendelesfejController#backOrder', 'adminb2brendelesfejbackorder');
+    $router->map('POST', '/admin/b2brendelesfej/fejexport', 'b2brendelesfejController#fejexport', 'adminb2brendelesfejfejexport');
+    $router->map('POST', '/admin/b2brendelesfej/tetelexport', 'b2brendelesfejController#tetelexport', 'adminb2brendelesfejtetelexport');
+    $router->map('GET', '/admin/b2brendelesfej/getszamlakarb', 'b2brendelesfejController#getszamlakarb', 'adminb2brendelesfejgetszamlakarb');
+    $router->map('POST', '/admin/b2brendelesfej/recalcprice', 'b2brendelesfejController#recalcPrice', 'adminb2brendelesrecalcprice');
+}
+$router->map('GET', '/admin/b2brendelesfej/print', 'b2brendelesfejController#doPrint', 'adminb2brendelesfejprint');
+$router->map('GET', '/admin/b2brendelesfej/printelolegbekero', 'b2brendelesfejController#doPrintelolegbekero', 'adminb2brendelesfejprintelolegbekero');
+$router->map('POST', '/admin/b2brendelesfej/concat', 'b2brendelesfejController#concat', 'adminb2brendelesfejconcat');
+
 $router->map('GET', '/admin/webshopbizfej/viewlist', 'webshopbizfejController#viewlist', 'adminwebshopbizfejviewlist');
 $router->map('GET', '/admin/webshopbizfej/getlistbody', 'webshopbizfejController#getlistbody', 'adminwebshopbizfejgetlistbody');
 $router->map('GET', '/admin/webshopbizfej/getkarb', 'webshopbizfejController#getkarb', 'adminwebshopbizfejgetkarb');

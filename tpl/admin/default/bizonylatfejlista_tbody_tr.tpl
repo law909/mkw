@@ -40,7 +40,7 @@
                 <a class="js-navstat" href="#" data-egyedid="{$_egyed.id}" title="{at('NAV állapot lekérdezés')}" target="_blank">NAV stat</a>
             {/if}
             {if ($_egyed.nemrossz)}
-                {if ($_egyed.bizonylattipusid=='megrendeles')}
+                {if (($_egyed.bizonylattipusid=='megrendeles') || ($_egyed.bizonylattipusid=='b2brendeles'))}
                     <a class="js-printelolegbekero" href="#" data-egyedid="{$_egyed.id}" data-oper="print" title="{at('Előleg bekérő')}" target="_blank"><span
                             class="ui-icon ui-icon-print"></span></a>
                 {/if}
@@ -158,7 +158,7 @@
                     </td>
                 </tr>
             {/if}
-            {if (($_egyed.bizonylattipusid=='megrendeles') && ($_egyed.regmode > 0))}
+            {if ((($_egyed.bizonylattipusid=='megrendeles') || ($_egyed.bizonylattipusid=='b2brendeles')) && ($_egyed.regmode > 0))}
                 <tr>
                     <td colspan="5">
                         {at('Reg.mód')}

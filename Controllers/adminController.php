@@ -584,7 +584,7 @@ class adminController extends mkwhelpers\Controller
 
         $filter->clear();
         $filter->addSql('_xx.bizonylatstatusz NOT IN (' . implode(',', $statuszok) . ')');
-        $filter->addFilter('bizonylattipus', '=', 'megrendeles');
+        $filter->addFilter('bizonylattipus', '', Entities\Bizonylattipus::getFoglalIdList());
         $r = $this->getRepo(Entities\Bizonylatfej::class)->getAll($filter);
         foreach ($r as $bf) {
             $q = \mkw\store::getEm()->createQuery('UPDATE Entities\Bizonylattetel bt SET bt.foglal=0 WHERE bt.bizonylatfej=\'' . $bf->getId() . '\'');

@@ -4,6 +4,7 @@ namespace Controllers;
 
 
 use Entities\Bizonylatfej;
+use Entities\Bizonylattipus;
 
 class teljesitmenyjelentesController extends \mkwhelpers\MattableController
 {
@@ -75,7 +76,7 @@ class teljesitmenyjelentesController extends \mkwhelpers\MattableController
         }
 
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('bizonylattipus_id', '=', 'megrendeles');
+        $filter->addFilter('bizonylattipus_id', 'IN', Bizonylattipus::getFoglalIdList());
         $filter->addSql(implode(' OR ', $sqls));
         $sorok = $bfrepo->calcTeljesitmeny($filter);
         $adat = [];

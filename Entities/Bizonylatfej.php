@@ -2790,6 +2790,21 @@ class Bizonylatfej
     }
 
     /**
+     * A bizonylat nyomtatási képének URL-je. A null-szabály a getListaUrl()-lel azonos.
+     *
+     * @return string|null
+     */
+    public function getPrintUrl()
+    {
+        $tipusid = $this->getBizonylattipusId();
+        if (!$tipusid) {
+            return null;
+        }
+        $prefix = self::ROUTEPREFIX[$tipusid] ?? $tipusid;
+        return $this->buildAdminUrl('admin' . $prefix . 'fejprint', ['id' => $this->getId()]);
+    }
+
+    /**
      * @return \Entities\Bizonylatfej
      */
     public function getTarsbizonylat()

@@ -23,10 +23,8 @@ class garancialevelfejController extends bizonylatfejController
                 $kelt = date(\mkw\store::$DateFormat);
                 $egyed['keltstr'] = $kelt;
                 $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-                switch ($source) {
-                    case 'megrendeles':
-                        $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                        break;
+                if ($this->isOrderSource($source)) {
+                    $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
                 }
                 $ttk = [];
                 $cikl = 1;

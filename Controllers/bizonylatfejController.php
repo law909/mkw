@@ -59,6 +59,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         return $this->biztipus;
     }
 
+    /** rendelés jellegű forrásbizonylat, amiből örökölhetünk: a foglalást nyilvántartó típusok bármelyike */
+    protected function isOrderSource($source): bool
+    {
+        return in_array($source, Bizonylattipus::getFoglalIdList(), true);
+    }
+
     public static function factory($biztip)
     {
         switch ($biztip) {
@@ -138,7 +144,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
-                if ($this->biztipusid === 'megrendeles') {
+                if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
                 } else {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
@@ -153,12 +159,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 }
                 $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
-                if ($this->biztipusid === 'megrendeles' || $this->biztipusid === 'koltsegszamla' || $this->biztipusid === 'webshopbiz') {
+                if (!$this->biztipus->getShowstorno()) {
                     $view->setVar('bizonylatrontottfilter', 1);
                 }
                 break;
             case \mkw\store::isKisszamlazo():
-                if ($this->biztipusid === 'bizsablon') {
+                if (!$this->biztipus->getShowstorno()) {
                     $view->setVar('bizonylatrontottfilter', 1);
                 }
                 $a = false;
@@ -1868,7 +1874,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $fejek = $this->getRepo()->getWithJoins($filter, []);
         $o = 0;
         $excel = new Spreadsheet();
-        if ($this->biztipusid === 'megrendeles') {
+        if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
             $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, 1), 'Státusz');
         }
         $excel->setActiveSheetIndex(0)
@@ -1898,7 +1904,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $fej */
             foreach ($fejek as $fej) {
                 $o = 0;
-                if ($this->biztipusid === 'megrendeles') {
+                if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
                     $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getBizonylatstatusznev());
                 }
                 $excel->setActiveSheetIndex(0)
@@ -1960,7 +1966,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         $o = 0;
         $excel = new Spreadsheet();
-        if ($this->biztipusid === 'megrendeles') {
+        if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
             $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, 1), 'Státusz');
         }
         $excel->setActiveSheetIndex(0)
@@ -2008,7 +2014,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 /** @var \Entities\Bizonylattetel $tetel */
                 foreach ($fej->getBizonylattetelek() as $tetel) {
                     $o = 0;
-                    if ($this->biztipusid === 'megrendeles') {
+                    if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
                         $excel->setActiveSheetIndex(0)->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getBizonylatstatusznev());
                     }
                     $excel->setActiveSheetIndex(0)

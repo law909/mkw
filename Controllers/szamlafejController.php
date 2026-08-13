@@ -36,28 +36,25 @@ class szamlafejController extends bizonylatfejController
                 $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
                 $egyed['reportfile'] = '';
                 $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
-                switch ($source) {
-                    case 'megrendeles':
-                        $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                        $arf = $this->getRepo(Arfolyam::class)->getActualArfolyam(
-                            $egyed['valutanem'],
-                            new \DateTime(\mkw\store::convDate($egyed['teljesitesstr']))
-                        );
-                        if ($arf) {
-                            $egyed['arfolyam'] = $arf->getArfolyam();
-                        }
-                        $uk = $record->getUzletkoto();
-                        if ($uk) {
-                            $egyed['uzletkotojutalek'] = $uk->getJutalek();
-                        }
-                        $uk = $record->getBelsouzletkoto();
-                        if ($uk) {
-                            $egyed['belsouzletkotojutalek'] = $uk->getJutalek();
-                        }
-                        break;
-                    case 'szallito':
-                        $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
-                        break;
+                if ($this->isOrderSource($source)) {
+                    $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
+                    $arf = $this->getRepo(Arfolyam::class)->getActualArfolyam(
+                        $egyed['valutanem'],
+                        new \DateTime(\mkw\store::convDate($egyed['teljesitesstr']))
+                    );
+                    if ($arf) {
+                        $egyed['arfolyam'] = $arf->getArfolyam();
+                    }
+                    $uk = $record->getUzletkoto();
+                    if ($uk) {
+                        $egyed['uzletkotojutalek'] = $uk->getJutalek();
+                    }
+                    $uk = $record->getBelsouzletkoto();
+                    if ($uk) {
+                        $egyed['belsouzletkotojutalek'] = $uk->getJutalek();
+                    }
+                } elseif ($source === 'szallito') {
+                    $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
                 }
                 $ttk = [];
                 $cikl = 1;
@@ -65,7 +62,7 @@ class szamlafejController extends bizonylatfejController
                     $tetel['parentid'] = $tetel['id'];
                     $tetel['id'] = \mkw\store::createUID($cikl);
                     $tetel['oper'] = 'inherit';
-                    if ($source == 'megrendeles') {
+                    if ($this->isOrderSource($source)) {
                         $tetel['nettoegysarhuf'] = $tetel['nettoegysar'] * $egyed['arfolyam'];
                         $tetel['bruttoegysarhuf'] = $tetel['bruttoegysar'] * $egyed['arfolyam'];
                         $tetel['nettohuf'] = $tetel['netto'] * $egyed['arfolyam'];

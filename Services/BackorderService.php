@@ -4,6 +4,7 @@ namespace Services;
 
 use Entities\Bizonylatfej;
 use Entities\Bizonylatstatusz;
+use Entities\Bizonylattipus;
 use Entities\TermekFa;
 
 class BackorderService extends AbstractBizonylatSzetbontasService
@@ -181,8 +182,9 @@ class BackorderService extends AbstractBizonylatSzetbontasService
     public function getTeljesithetoBackorderLista()
     {
         $ret = [];
+        $foglalotipusok = Bizonylattipus::getFoglalIdList();
         $backorder = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
-        if ($backorder) {
+        if ($backorder && $foglalotipusok) {
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
             $nominkeszletkat = \mkw\store::getEm()->getRepository(TermekFa::class)->find(
                 \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
@@ -191,7 +193,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
-            $filter->addFilter('bizonylattipus', '', ['megrendeles', 'webshopbiz']);
+            $filter->addFilter('bizonylattipus', '', $foglalotipusok);
             $filter->addFilter('rontott', '=', false);
             $filter->addFilter('hibas', '=', false);
             $fejek = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->getWithTetelek($filter, ['hatarido' => 'ASC']);
@@ -212,13 +214,9 @@ class BackorderService extends AbstractBizonylatSzetbontasService
                             'kelt' => $fej->getKeltStr(),
                             'hatarido' => $fej->getHataridoStr(),
                             'partnernev' => $fej->getPartnernev(),
-                            'printurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejprint', false, [], [
-                                'id' => $fej->getId()
-                            ]),
-                            'editurl' => \mkw\store::getRouter()->generate('adminmegrendelesfejviewkarb', false, [], [
-                                'id' => $fej->getId(),
-                                'oper' => 'edit'
-                            ])
+                            // a listán több bizonylattípus is szerepel, ezért a saját típusa adja az URL-t
+                            'printurl' => $fej->getPrintUrl(),
+                            'editurl' => $fej->getKarbUrl()
                         ];
                     }
                 }

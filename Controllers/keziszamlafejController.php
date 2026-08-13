@@ -27,13 +27,10 @@ class KeziszamlafejController extends bizonylatfejController
             $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $egyed['reportfile'] = '';
             $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
-            switch ($source) {
-                case 'megrendeles':
-                    $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
-                    break;
-                case 'szallito':
-                    $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
-                    break;
+            if ($this->isOrderSource($source)) {
+                $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
+            } elseif ($source === 'szallito') {
+                $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
             }
             $ttk = [];
             $cikl = 1;

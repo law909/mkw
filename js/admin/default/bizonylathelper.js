@@ -2115,7 +2115,7 @@ let bizonylathelper = function ($) {
                                     'Igen': function () {
                                         let dia = $(this);
                                         $.ajax({
-                                            url: '/admin/megrendelesfej/concat',
+                                            url: '/admin/' + entityName + '/concat',
                                             type: 'POST',
                                             data: {
                                                 ids: tomb

@@ -4,6 +4,7 @@ namespace Services;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Bizonylatfej;
+use Entities\Bizonylattipus;
 use Entities\Termek;
 use Entities\TermekMinboltikeszlet;
 use Entities\TermekValtozat;
@@ -32,9 +33,6 @@ use mkwhelpers\FilterDescriptor;
  */
 class KeszletService
 {
-
-    /** a foglalást nyilvántartó bizonylattípusok – ugyanez a lista a BackorderService-ben */
-    private const FOGLALOTIPUSOK = ['megrendeles', 'webshopbiz'];
 
     /** [raktarid][termekid] => érték|null – kérésen belüli cache */
     private static $termekCache = [];
@@ -267,13 +265,17 @@ class KeszletService
 
     private static function calcFoglalas($entity, $kivevebiz, $datum, $raktarid)
     {
+        $foglalotipusok = Bizonylattipus::getFoglalIdList();
+        if (!$foglalotipusok) {
+            return 0;
+        }
         $kulcs = self::cacheKey($entity, $kivevebiz, $datum, $raktarid);
         if (!array_key_exists($kulcs, self::$foglalasCache)) {
             $filter = self::entityFilter($entity);
             $filter->addFilter('bt.foglal', '=', 1);
             $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
             $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
-            $filter->addFilter('bf.bizonylattipus_id', 'IN', self::FOGLALOTIPUSOK);
+            $filter->addFilter('bf.bizonylattipus_id', 'IN', $foglalotipusok);
             if ($kivevebiz) {
                 $filter->addFilter('bf.id', '<>', $kivevebiz);
             }
