@@ -49,7 +49,15 @@
   ott minden száll.megrendelés sorban, azt exportálja amelyik sorban van
 - termék és partner karbantartón a dokumentumok fülön a dokumentum input mellett a ... gomb mellett van egy O gomb ami legyen gomb külsejű és nyissa meg a
   dokumentumot, ne pedig letöltse. A gomb captionje legyen "Megnyit"
-- bolti eladásokat nem lehet lerontani, megnyomom a gombot és nem törénik meg a rontás. galad deployon ki tudod próbálni
+- [x] **KÉSZ** bolti eladásokat nem lehet lerontani, megnyomom a gombot és nem törénik meg a rontás. galad deployon ki tudod próbálni
+  > **Ok: hiányzott a route.** A gomb a `/admin/<entitas>/ront` címre POST-ol (`bizonylathelper.js`), és `boltieladasfej`-re ez a route nem létezett az
+  > `adminroute.php`-ban. Az AltoRouter nem talált egyezést, ezért a kérés csendben, 200-zal és üres törzzsel tért vissza — pontosan az a tünet, amit írtál.
+  > Egy sor a javítás (`adminroute.php`, a `boltieladasfej` blokk `isClosed()` ágába, a többi bizonylattípus mintájára).
+  > **Átnéztem az összes bizonylatfej-listát is:** `van viewlist, de nincs ront` = `boltieladasfej`, `esetiszamlafej`, `leltarfej`, `szamlafej`. Ebből
+  > az `esetiszamla` és a `szamla` `showstorno = 1`, tehát ott a lista storno gombokat rajzol ront helyett — nincs szükségük rá; a `leltarfej` pedig saját
+  > lista sablont használ, amiben nincs ront gomb. Vagyis egyedül a bolti eladás volt hibás.
+  > **Kipróbálva galadon** a BO2026/000004-en: a rontás lefutott (`bizonylatfej.rontott`, `bizonylattetel.rontott`, a folyószámla sor újraképződött
+  > rontottként), majd a bizonylatot **visszaállítottam** az eredeti állapotába (a folyószámla sor id-je 338→348, a tartalma azonos).
 - vegyél fel egy beállítást config.ini-be: path.dokumentum amit path.mediatar-on vagy path.ckfinder-en belül kell értelmezni. partner és termék dokumentumok
   fülre fentre tegyél egy új gombot: "Azonnali feltöltés", ezt megnyomva lehessen feltölteni egy fájlt a konfigban megadott mappába és szülesseb belőle egy
   dokumentum rekord. a rekord jelenjen is meg a karbantartón. figyelj rá hogy új terméknél/partnernél a dokumentum bekerül a mappába de a rekord nem mentődik

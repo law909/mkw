@@ -697,6 +697,7 @@ $router->map('GET', '/admin/boltieladasfej/getkarb', 'boltieladasfejController#g
 $router->map('GET', '/admin/boltieladasfej/viewkarb', 'boltieladasfejController#viewkarb', 'adminboltieladasfejviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/boltieladasfej/save', 'boltieladasfejController#save', 'adminboltieladasfejsave');
+    $router->map('POST', '/admin/boltieladasfej/ront', 'boltieladasfejController#ront', 'adminboltieladasfejront');
     $router->map('POST', '/admin/boltieladasfej/fejexport', 'boltieladasfejController#fejexport', 'adminboltieladasfejfejexport');
     $router->map('POST', '/admin/boltieladasfej/tetelexport', 'boltieladasfejController#tetelexport', 'adminboltieladasfejtetelexport');
 }
