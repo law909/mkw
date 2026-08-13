@@ -8,11 +8,21 @@ use Entities\TermekFa;
 
 class BackorderService extends AbstractBizonylatSzetbontasService
 {
+    /** a backorderstock beállítás értékei: meddig fogyhat a készlet backorder nélkül */
+    const STOCKMINIMUM = 0;
+    const STOCKZERO = 1;
+
+    private function isStockToZero(): bool
+    {
+        return (int)\mkw\store::getParameter(\mkw\consts::BackorderStock, self::STOCKMINIMUM) === self::STOCKZERO;
+    }
+
     private function szabadKeszlet(
         \Entities\Bizonylattetel $tetel,
         Bizonylatfej $biz,
         $nominkeszlet,
-        $nominkeszletkat
+        $nominkeszletkat,
+        $stocktozero = false
     ): float|bool {
         /** @var \Entities\Termek $t */
         $t = $tetel->getTermek();
@@ -22,7 +32,8 @@ class BackorderService extends AbstractBizonylatSzetbontasService
         $v = $tetel->getTermekvaltozat();
         // kategória nélkül a kapcsoló nem jelent semmit – beállított kategória nélküli
         // nominkeszlet nem kapcsolhatja ki a minimumot minden termékre
-        $ignoreminkeszlet = $nominkeszlet && $nominkeszletkat && $t->isInTermekKategoria($nominkeszletkat);
+        $ignoreminkeszlet = $stocktozero
+            || ($nominkeszlet && $nominkeszletkat && $t->isInTermekKategoria($nominkeszletkat));
         return ($v ?: $t)->getAvailableStock(
             datum: null,
             raktarid: null,
@@ -54,6 +65,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
         $nominkeszletkat = \mkw\store::getEm()->getRepository(TermekFa::class)->find(
             \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
         )?->getKarkod();
+        $stocktozero = $this->isStockToZero();
         $teljesitheto = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(
             \mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto)
         );
@@ -63,7 +75,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
         \mkw\store::getEm()->beginTransaction();
         try {
             // tervet készítünk: tételenként mennyi teljesíthető és mennyi kerül backorderre
-            [$terv, $teljdb, $bodb] = $this->keszletTerv($regibiz, $nominkeszlet, $nominkeszletkat);
+            [$terv, $teljdb, $bodb] = $this->keszletTerv($regibiz, $nominkeszlet, $nominkeszletkat, $stocktozero);
 
             // csak akkor van értelme szétbontani, ha van teljesíthető ÉS backorder rész is;
             // egyébként nem készül új bizonylat, csak az eredeti státuszát állítjuk
@@ -130,7 +142,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
      *     hány tételnek van backorder része
      * ]
      */
-    private function keszletTerv(Bizonylatfej $regibiz, $nominkeszlet, $nominkeszletkat)
+    private function keszletTerv(Bizonylatfej $regibiz, $nominkeszlet, $nominkeszletkat, $stocktozero = false)
     {
         $terv = [];
         $teljdb = 0;
@@ -141,7 +153,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
                 continue;
             }
             $menny = $regitetel->getMennyiseg();
-            $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat);
+            $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat, $stocktozero);
             if ($keszlet === false || $keszlet >= $menny) {
                 // készletet nem mozgató tétel, vagy a teljes mennyiség teljesíthető
                 $teljmenny = $menny;
@@ -175,6 +187,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             $nominkeszletkat = \mkw\store::getEm()->getRepository(TermekFa::class)->find(
                 \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
             )?->getKarkod();
+            $stocktozero = $this->isStockToZero();
 
             $filter = new \mkwhelpers\FilterDescriptor();
             $filter->addFilter('bizonylatstatusz', '=', $backorder);
@@ -188,7 +201,7 @@ class BackorderService extends AbstractBizonylatSzetbontasService
                     $vankeszlet = false;
                     /** @var \Entities\Bizonylattetel $tetel */
                     foreach ($fej->getBizonylattetelek() as $tetel) {
-                        if ($this->szabadKeszlet($tetel, $fej, $nominkeszlet, $nominkeszletkat) > 0) {
+                        if ($this->szabadKeszlet($tetel, $fej, $nominkeszlet, $nominkeszletkat, $stocktozero) > 0) {
                             $vankeszlet = true;
                             break;
                         }

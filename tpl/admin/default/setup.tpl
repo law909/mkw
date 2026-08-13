@@ -772,6 +772,13 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="BackorderStockEdit">{at('Backorder eddig engedi a készletet')}:</label></span>
+                            <select id="BackorderStockEdit" name="backorderstock">
+                                <option value="0"{if ($backorderstock=='0')} selected="selected"{/if}>{at('Minimum készletig')}</option>
+                                <option value="1"{if ($backorderstock=='1')} selected="selected"{/if}>{at('0-ig')}</option>
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="MegrendelesFilterStatuszCsoportEdit">{at('Megrendelés filter')}:</label></span>
                             <select id="MegrendelesFilterStatuszCsoportEdit" name="megrendelesfilterstatuszcsoport">
                                 <option value="">{at('válasszon')}</option>

@@ -802,6 +802,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::NoMinKeszlet);
         $view->setVar(\mkw\consts::NoMinKeszlet, ($p ? $p->getErtek() : 0));
 
+        $p = $repo->find(\mkw\consts::BackorderStock);
+        $view->setVar(\mkw\consts::BackorderStock, ($p ? $p->getErtek() : \Services\BackorderService::STOCKMINIMUM));
+
         $p = $repo->find(\mkw\consts::MugenraceKatId);
         $inkid = $p ? $p->getErtek() : 0;
         $mugenracekat = \mkw\store::getEm()->getRepository('Entities\TermekFa')->find($inkid);
@@ -2155,6 +2158,10 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::NoMinKeszletTermekkat, 0);
         }
         $this->setObj(\mkw\consts::NoMinKeszlet, $this->params->getBoolRequestParam(\mkw\consts::NoMinKeszlet));
+        $this->setObj(
+            \mkw\consts::BackorderStock,
+            $this->params->getIntRequestParam(\mkw\consts::BackorderStock, \Services\BackorderService::STOCKMINIMUM)
+        );
 
         $inkid = $this->params->getIntRequestParam('mugenracekatid');
         if ($inkid) {
