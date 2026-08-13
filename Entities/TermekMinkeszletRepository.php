@@ -2,13 +2,13 @@
 
 namespace Entities;
 
-class TermekMinboltikeszletRepository extends \mkwhelpers\Repository
+class TermekMinkeszletRepository extends \mkwhelpers\Repository
 {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\TermekMinboltikeszlet');
+        $this->setEntityname('Entities\TermekMinkeszlet');
     }
 
     /**
@@ -27,8 +27,8 @@ class TermekMinboltikeszletRepository extends \mkwhelpers\Repository
             return $ret;
         }
         $dql = 'SELECT IDENTITY(_xx.termek) AS termekid, IDENTITY(_xx.raktar) AS raktarid,'
-            . ' _xx.minboltikeszlet AS ertek'
-            . ' FROM Entities\TermekMinboltikeszlet _xx'
+            . ' _xx.minkeszlet AS ertek'
+            . ' FROM Entities\TermekMinkeszlet _xx'
             . ' JOIN _xx.termek t'
             . ' WHERE t.id IN (:ids)';
         if ($raktarid) {
@@ -48,7 +48,7 @@ class TermekMinboltikeszletRepository extends \mkwhelpers\Repository
     /**
      * Egy termék összes raktáras sora a termékszerkesztő mátrixához.
      *
-     * @return array [ raktar_id => \Entities\TermekMinboltikeszlet ]
+     * @return array [ raktar_id => \Entities\TermekMinkeszlet ]
      */
     public function getRowsByTermek($termekid): array
     {
@@ -58,7 +58,7 @@ class TermekMinboltikeszletRepository extends \mkwhelpers\Repository
         }
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('termek', '=', $termekid);
-        /** @var TermekMinboltikeszlet $sor */
+        /** @var TermekMinkeszlet $sor */
         foreach ($this->getAll($filter, []) as $sor) {
             $ret[$sor->getRaktarId()] = $sor;
         }

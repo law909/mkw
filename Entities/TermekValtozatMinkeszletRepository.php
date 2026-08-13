@@ -2,13 +2,13 @@
 
 namespace Entities;
 
-class TermekValtozatMinboltikeszletRepository extends \mkwhelpers\Repository
+class TermekValtozatMinkeszletRepository extends \mkwhelpers\Repository
 {
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
-        $this->setEntityname('Entities\TermekValtozatMinboltikeszlet');
+        $this->setEntityname('Entities\TermekValtozatMinkeszlet');
     }
 
     /**
@@ -27,8 +27,8 @@ class TermekValtozatMinboltikeszletRepository extends \mkwhelpers\Repository
             return $ret;
         }
         $dql = 'SELECT IDENTITY(_xx.termekvaltozat) AS valtozatid, IDENTITY(_xx.raktar) AS raktarid,'
-            . ' _xx.minboltikeszlet AS ertek'
-            . ' FROM Entities\TermekValtozatMinboltikeszlet _xx'
+            . ' _xx.minkeszlet AS ertek'
+            . ' FROM Entities\TermekValtozatMinkeszlet _xx'
             . ' JOIN _xx.termekvaltozat v'
             . ' WHERE v.id IN (:ids)';
         if ($raktarid) {
@@ -51,7 +51,7 @@ class TermekValtozatMinboltikeszletRepository extends \mkwhelpers\Repository
      *
      * @param int[] $valtozatids
      *
-     * @return array [ termekvaltozat_id => [ raktar_id => \Entities\TermekValtozatMinboltikeszlet ] ]
+     * @return array [ termekvaltozat_id => [ raktar_id => \Entities\TermekValtozatMinkeszlet ] ]
      */
     public function getRowsByTermekValtozatIds(array $valtozatids): array
     {
@@ -61,12 +61,12 @@ class TermekValtozatMinboltikeszletRepository extends \mkwhelpers\Repository
             return $ret;
         }
         $q = $this->_em->createQuery(
-            'SELECT _xx FROM Entities\TermekValtozatMinboltikeszlet _xx'
+            'SELECT _xx FROM Entities\TermekValtozatMinkeszlet _xx'
             . ' JOIN _xx.termekvaltozat v'
             . ' WHERE v.id IN (:ids)'
         );
         $q->setParameter('ids', $ids);
-        /** @var TermekValtozatMinboltikeszlet $sor */
+        /** @var TermekValtozatMinkeszlet $sor */
         foreach ($q->getResult() as $sor) {
             $ret[$sor->getTermekvaltozatId()][$sor->getRaktarId()] = $sor;
         }

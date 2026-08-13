@@ -409,7 +409,7 @@ class Termek
     private $termekdokok;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
-    private $minboltikeszlet;
+    private $minkeszlet;
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $garancia;
@@ -623,7 +623,7 @@ class Termek
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
+        $x['minkeszlet'] = $this->getMinkeszlet();
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
@@ -773,7 +773,7 @@ class Termek
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
+        $x['minkeszlet'] = $this->getMinkeszlet();
         if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
             /** @var \Entities\Afa $afa */
             $afa = \mkw\store::getOrszag()?->getAfa();
@@ -831,7 +831,7 @@ class Termek
         $x['akciotipus'] = $this->getAkcioTipus();
         $x['akciostart'] = $this->getAkciostartStr();
         $x['akciostop'] = $this->getAkciostopStr();
-        $x['minboltikeszlet'] = $this->getMinboltikeszlet();
+        $x['minkeszlet'] = $this->getMinkeszlet();
         $ert = $this->getErtekelesAtlag();
         $x['ertekelesatlag'] = $ert['ertekelesatlag'];
         $x['ertekelesdb'] = $ert['ertekelesdb'];
@@ -3248,22 +3248,22 @@ class Termek
     /**
      * @return mixed
      */
-    public function getMinboltikeszlet()
+    public function getMinkeszlet()
     {
-        return $this->minboltikeszlet;
+        return $this->minkeszlet;
     }
 
-    public function calcMinboltikeszlet($raktarid = null)
+    public function calcMinkeszlet($raktarid = null)
     {
         return \Services\KeszletService::getMinKeszlet($this, null, $raktarid);
     }
 
     /**
-     * @param mixed $minboltikeszlet
+     * @param mixed $minkeszlet
      */
-    public function setMinboltikeszlet($minboltikeszlet)
+    public function setMinkeszlet($minkeszlet)
     {
-        $this->minboltikeszlet = $minboltikeszlet;
+        $this->minkeszlet = $minkeszlet;
     }
 
     /**

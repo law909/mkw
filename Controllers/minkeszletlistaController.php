@@ -117,9 +117,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'masikraktar') . ' AS masikkeszlet,'
             . ' ' . \Services\KeszletService::getMinKeszletSql(
                 '_xx.termek_id',
-                't.minboltikeszlet',
+                't.minkeszlet',
                 '_xx.id',
-                '_xx.minboltikeszlet',
+                '_xx.minkeszlet',
                 $raktarparam
             ) . ' AS minkeszlet'
             . ' FROM termekvaltozat _xx'
@@ -132,7 +132,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . " t.nev AS termeknev, '' AS ertek1, '' AS ertek2,"
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . \Services\KeszletService::getMinKeszletSql('t.id', 't.minboltikeszlet', '', '', $raktarparam)
+            . ' ' . \Services\KeszletService::getMinKeszletSql('t.id', 't.minkeszlet', '', '', $raktarparam)
             . ' AS minkeszlet'
             . ' FROM termek t'
             . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'

@@ -22,7 +22,7 @@
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
                 <li><a href="#SzinKepTab">{at('Szín képek')}</a></li>
             {/if}
-            <li><a href="#MinBoltiKeszletTab">{at('Min. készlet')}</a></li>
+            <li><a href="#MinKeszletTab">{at('Min. készlet')}</a></li>
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
             {/if}
@@ -490,14 +490,14 @@
                         class="ui-icon ui-icon-circle-plus"></span></a>
             </div>
         {/if}
-        <div id="MinBoltiKeszletTab" class="mattkarb-page" data-visible="visible">
-            <table id="MinBoltiKeszletMatrix" class="mattkarb-matrix">
+        <div id="MinKeszletTab" class="mattkarb-page" data-visible="visible">
+            <table id="MinKeszletMatrix" class="mattkarb-matrix">
                 <thead>
                 <tr>
                     <th></th>
                     <th>{at('Kitöltés')}</th>
                     <th>{at('Minden raktár')}</th>
-                    {foreach $egyed.minboltikeszletraktarak as $raktar}
+                    {foreach $egyed.minkeszletraktarak as $raktar}
                         <th>{$raktar.nev}</th>
                     {/foreach}
                 </tr>
@@ -513,14 +513,14 @@
                         <input class="js-minkeszletfillvalue" type="number" step="any">
                         <input class="js-minkeszletfill" type="button" data-scope="col" value="{at('Kitölt')}">
                     </td>
-                    {foreach $egyed.minboltikeszletraktarak as $raktar}
+                    {foreach $egyed.minkeszletraktarak as $raktar}
                         <td>
                             <input class="js-minkeszletfillvalue" type="number" step="any">
                             <input class="js-minkeszletfill" type="button" data-scope="col" value="{at('Kitölt')}">
                         </td>
                     {/foreach}
                 </tr>
-                {foreach $egyed.minboltikeszletsorok as $sor}
+                {foreach $egyed.minkeszletsorok as $sor}
                     <tr>
                         <td>{$sor.nev}</td>
                         <td>
@@ -531,25 +531,25 @@
                         </td>
                         <td>
                             {if ($sor.valtozatid)}
-                                <input name="valtozatminboltikeszlet_{$sor.valtozatid}" type="number" step="any"
+                                <input name="valtozatminkeszlet_{$sor.valtozatid}" type="number" step="any"
                                        value="{$sor.globalis}">
-                                <input name="valtozatminboltikeszletid[]" type="hidden" value="{$sor.valtozatid}">
+                                <input name="valtozatminkeszletid[]" type="hidden" value="{$sor.valtozatid}">
                             {elseif ($sor.zarolt)}
                                 <input type="number" value="0" disabled="disabled">
                             {else}
-                                <input id="MinboltikeszletEdit" name="minboltikeszlet" type="number" step="any"
+                                <input id="MinkeszletEdit" name="minkeszlet" type="number" step="any"
                                        value="{$sor.globalis}">
                             {/if}
                         </td>
                         {foreach $sor.cellak as $cella}
                             <td>
                                 {if ($sor.valtozatid)}
-                                    <input name="valtozatraktariminboltikeszlet_{$sor.valtozatid}_{$cella.raktarid}"
+                                    <input name="valtozatraktariminkeszlet_{$sor.valtozatid}_{$cella.raktarid}"
                                            type="number" step="any" value="{$cella.ertek}">
                                 {elseif ($sor.zarolt)}
                                     <input type="number" value="0" disabled="disabled">
                                 {else}
-                                    <input name="termekraktariminboltikeszlet_{$cella.raktarid}"
+                                    <input name="termekraktariminkeszlet_{$cella.raktarid}"
                                            type="number" step="any" value="{$cella.ertek}">
                                 {/if}
                             </td>
@@ -558,8 +558,8 @@
                 {/foreach}
                 </tbody>
             </table>
-            {foreach $egyed.minboltikeszletraktarak as $raktar}
-                <input name="minboltikeszletraktarid[]" type="hidden" value="{$raktar.id}">
+            {foreach $egyed.minkeszletraktarak as $raktar}
+                <input name="minkeszletraktarid[]" type="hidden" value="{$raktar.id}">
             {/foreach}
             <p class="mattkarb-hint">
                 {at('Üres cella: nincs beállítva, az öröklött érték él.')}

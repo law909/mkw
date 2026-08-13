@@ -6,9 +6,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
 use Entities\Termek;
-use Entities\TermekMinboltikeszlet;
+use Entities\TermekMinkeszlet;
 use Entities\TermekValtozat;
-use Entities\TermekValtozatMinboltikeszlet;
+use Entities\TermekValtozatMinkeszlet;
 use mkwhelpers\FilterDescriptor;
 
 /**
@@ -16,10 +16,10 @@ use mkwhelpers\FilterDescriptor;
  * minimum ("min. bolti készlet") feloldása, és a háromból a szabad készlet.
  *
  * A minimum feloldási létrája – a szűkebb beállítás nyer, raktáras érték üti a globálisat:
- *   1. termekvaltozatminboltikeszlet(változat, raktár)  – ha nem nulla
- *   2. termekminboltikeszlet(termek, raktár)            – ha nem nulla
- *   3. termekvaltozat.minboltikeszlet                   – ha nem nulla
- *   4. termek.minboltikeszlet                           – ahogy van
+ *   1. termekvaltozatminkeszlet(változat, raktár)  – ha nem nulla
+ *   2. termekminkeszlet(termek, raktár)            – ha nem nulla
+ *   3. termekvaltozat.minkeszlet                   – ha nem nulla
+ *   4. termek.minkeszlet                           – ahogy van
  *
  * $raktarid nélkül a létra a 3-4. lépés (globális minimum) – ezt látja a backorder is, ami
  * szándékosan sosem ad raktárat. A 2. és 4. lépés csak a változat nélküli termékeknél él:
@@ -62,10 +62,10 @@ class KeszletService
             }
         }
         // a decimal stringként hidratál, ezért a "nem nulla" teszt numerikus
-        if ($valtozat && ($valtozat->getMinboltikeszlet() * 1)) {
-            return $valtozat->getMinboltikeszlet();
+        if ($valtozat && ($valtozat->getMinkeszlet() * 1)) {
+            return $valtozat->getMinkeszlet();
         }
-        return $termek?->getMinboltikeszlet();
+        return $termek?->getMinkeszlet();
     }
 
     /**
@@ -329,9 +329,9 @@ class KeszletService
      * raktárfüggetlen értékhez a $raktarparam.
      *
      * @param string $termekid a termék azonosítóját adó SQL kifejezés (pl. `_xx.termek_id`)
-     * @param string $termekmin a termék globális minimumát adó kifejezés (pl. `t.minboltikeszlet`)
+     * @param string $termekmin a termék globális minimumát adó kifejezés (pl. `t.minkeszlet`)
      * @param string $valtozatid a változat azonosítója (pl. `_xx.id`)
-     * @param string $valtozatmin a változat globális minimuma (pl. `_xx.minboltikeszlet`)
+     * @param string $valtozatmin a változat globális minimuma (pl. `_xx.minkeszlet`)
      * @param string $raktarparam a raktár kötött paraméterének neve, kettőspont nélkül
      *
      * @return string
@@ -346,10 +346,10 @@ class KeszletService
         $agak = [];
         if ($raktarparam) {
             if ($valtozatid) {
-                $agak[] = 'NULLIF((SELECT vmk.minboltikeszlet FROM termekvaltozatminboltikeszlet vmk'
+                $agak[] = 'NULLIF((SELECT vmk.minkeszlet FROM termekvaltozatminkeszlet vmk'
                     . ' WHERE vmk.termekvaltozat_id = ' . $valtozatid . ' AND vmk.raktar_id = :' . $raktarparam . '), 0)';
             }
-            $agak[] = 'NULLIF((SELECT tmk.minboltikeszlet FROM termekminboltikeszlet tmk'
+            $agak[] = 'NULLIF((SELECT tmk.minkeszlet FROM termekminkeszlet tmk'
                 . ' WHERE tmk.termek_id = ' . $termekid . ' AND tmk.raktar_id = :' . $raktarparam . '), 0)';
         }
         if ($valtozatmin) {
@@ -390,7 +390,7 @@ class KeszletService
         if (!$keresendo) {
             return;
         }
-        $sorok = \mkw\store::getEm()->getRepository(TermekMinboltikeszlet::class)
+        $sorok = \mkw\store::getEm()->getRepository(TermekMinkeszlet::class)
             ->getByTermekIds($keresendo, $raktarid);
         // a nem talált id-kre is írunk, hogy a hiány ne generáljon egyesével újabb lekérdezést
         foreach ($keresendo as $id) {
@@ -404,7 +404,7 @@ class KeszletService
         if (!$keresendo) {
             return;
         }
-        $sorok = \mkw\store::getEm()->getRepository(TermekValtozatMinboltikeszlet::class)
+        $sorok = \mkw\store::getEm()->getRepository(TermekValtozatMinkeszlet::class)
             ->getByTermekValtozatIds($keresendo, $raktarid);
         foreach ($keresendo as $id) {
             self::$valtozatCache[$raktarid][$id] = $sorok[$id][$raktarid] ?? null;

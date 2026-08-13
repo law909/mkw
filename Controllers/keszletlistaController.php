@@ -151,9 +151,9 @@ class keszletlistaController extends \mkwhelpers\MattableController
             $this->minkeszletstr = 'Min.készlet számít';
             $minexpr = \Services\KeszletService::getMinKeszletSql(
                 '_xx.termek_id',
-                't.minboltikeszlet',
+                't.minkeszlet',
                 '_xx.id',
-                '_xx.minboltikeszlet',
+                '_xx.minkeszlet',
                 $this->raktar ? 'mkraktar' : ''
             );
             if ($this->raktar) {

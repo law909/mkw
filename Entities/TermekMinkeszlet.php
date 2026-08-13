@@ -6,19 +6,19 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Termék raktáranként megadott min. bolti készlete – a `termek.minboltikeszlet` globális
+ * Termék raktáranként megadott min. bolti készlete – a `termek.minkeszlet` globális
  * oszlop raktáras párja. Sor csak ott van, ahol az admin ténylegesen megadott értéket;
  * a hiányzó sor a globális oszlopra esik vissza (lásd \Services\KeszletService).
  *
  * Szándékosan nincs inverz OneToMany a Termek-en: minden olvasás a kötegelt service-en
  * megy, a törlést a DB-szintű cascade intézi.
  *
- * @ORM\Entity(repositoryClass="Entities\TermekMinboltikeszletRepository")
- * @ORM\Table(name="termekminboltikeszlet",
+ * @ORM\Entity(repositoryClass="Entities\TermekMinkeszletRepository")
+ * @ORM\Table(name="termekminkeszlet",
  *  options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
- *  uniqueConstraints={@ORM\UniqueConstraint(name="termekminboltikeszlet_egyedi",columns={"termek_id","raktar_id"})})
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="termekminkeszlet_egyedi",columns={"termek_id","raktar_id"})})
  */
-class TermekMinboltikeszlet
+class TermekMinkeszlet
 {
 
     /**
@@ -52,7 +52,7 @@ class TermekMinboltikeszlet
     private $raktar;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
-    private $minboltikeszlet;
+    private $minkeszlet;
 
     public function getId()
     {
@@ -105,14 +105,14 @@ class TermekMinboltikeszlet
         $this->raktar = $raktar;
     }
 
-    public function getMinboltikeszlet()
+    public function getMinkeszlet()
     {
-        return $this->minboltikeszlet;
+        return $this->minkeszlet;
     }
 
-    public function setMinboltikeszlet($minboltikeszlet)
+    public function setMinkeszlet($minkeszlet)
     {
-        $this->minboltikeszlet = $minboltikeszlet;
+        $this->minkeszlet = $minkeszlet;
     }
 
 }

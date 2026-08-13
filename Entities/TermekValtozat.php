@@ -194,7 +194,7 @@ class TermekValtozat
     private $beerkezesdatum;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
-    private $minboltikeszlet;
+    private $minkeszlet;
 
     /**
      * @ORM\ManyToOne(targetEntity="Szin")
@@ -853,22 +853,22 @@ class TermekValtozat
     /**
      * @return mixed
      */
-    public function getMinboltikeszlet()
+    public function getMinkeszlet()
     {
-        return $this->minboltikeszlet;
+        return $this->minkeszlet;
     }
 
-    public function calcMinboltikeszlet($raktarid = null)
+    public function calcMinkeszlet($raktarid = null)
     {
         return \Services\KeszletService::getMinKeszlet($this->getTermek(), $this, $raktarid);
     }
 
     /**
-     * @param mixed $minboltikeszlet
+     * @param mixed $minkeszlet
      */
-    public function setMinboltikeszlet($minboltikeszlet)
+    public function setMinkeszlet($minkeszlet)
     {
-        $this->minboltikeszlet = $minboltikeszlet;
+        $this->minkeszlet = $minkeszlet;
     }
 
     /**

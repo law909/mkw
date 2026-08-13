@@ -49,7 +49,7 @@
                         </tr>
                         <tr>
                             <td>{at('Min. bolti készlet')}:</td>
-                            <td>{number_format($_termek.minboltikeszlet|default:0, 2, '.', ' ')}</td>
+                            <td>{number_format($_termek.minkeszlet|default:0, 2, '.', ' ')}</td>
                             <td>{at('Garancia')}:</td>
                             <td>{$_termek.garancia}</td>
                         </tr>

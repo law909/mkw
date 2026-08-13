@@ -614,7 +614,7 @@ $(document).ready(function () {
             // Min. készlet mátrix tömeges kitöltése: a sor eleji gomb a sort, a felső sor gombja
             // az oszlopot, a bal felső az egész rácsot tölti ki. A rejtett és a zárolt (változatos
             // termék termék sora) mezőket nem bántjuk.
-            $('#MinBoltiKeszletTab').on('click', '.js-minkeszletfill', function () {
+            $('#MinKeszletTab').on('click', '.js-minkeszletfill', function () {
                 var $gomb = $(this),
                     $cella = $gomb.closest('td'),
                     ertek = $cella.find('.js-minkeszletfillvalue').val(),
@@ -808,7 +808,7 @@ $(document).ready(function () {
             // a max_input_vars fölött csendben csonkolja a POST-ot. Az üres cellákat kihagyni
             // biztonságos: a „hiányzik ⇒ törlés" és az „üres ⇒ törlés" ugyanaz a szabály.
             // A rácsot leíró rejtett tömböket soha nem szűrjük.
-            var minboltimezo = /^(termekraktariminboltikeszlet_|valtozatraktariminboltikeszlet_|valtozatminboltikeszlet_)/;
+            var minboltimezo = /^(termekraktariminkeszlet_|valtozatraktariminkeszlet_|valtozatminkeszlet_)/;
             for (var i = arr.length - 1; i >= 0; i--) {
                 if (arr[i].value === '' && minboltimezo.test(arr[i].name)) {
                     arr.splice(i, 1);

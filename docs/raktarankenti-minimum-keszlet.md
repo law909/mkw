@@ -16,6 +16,9 @@ egyetlen érték vonatkozik az összes raktárra.
 > későbbi lépés, lásd a Függeléket. Ebben a tervben minden a mai néven marad, beleértve az
 > új táblákat és kérésparamétereket is.
 
+> **2026-08-14:** az átnevezés azóta megtörtént (`docs/minkeszlet-atnevezes.md`). A terv többi
+> része a kódolás kori, régi néven maradt — a mai kódban mindenütt `minkeszlet` áll.
+
 ---
 
 # 1. rész — Felmérés

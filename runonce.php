@@ -14,6 +14,77 @@ if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '') < '3_0') {
 }
 
 
+// minboltikeszlet -> minkeszlet átnevezés. Szándékosan a DBVersion-lánc ELŐTT és attól függetlenül
+// fut: a lánc alsóbb blokkjai (0113, 0117, 0118) már az új néven mozgatják az adatot, tehát a régi
+// nevek addigra nem élhetnek túl. A schema-tool a felesleges oszlopot eldobja és az új táblát üresen
+// hozná létre, ezért az „./updateschema.sh már lefutott" állapotot is kezelni kell: olyankor nem
+// átnevezünk, hanem átmásoljuk az adatot az újba és a régit eldobjuk.
+if (!\mkw\store::getParameter(\mkw\consts::MinkeszletRename)) {
+    $conn = \mkw\store::getEm()->getConnection();
+    $vantabla = static function (string $tabla) use ($conn) {
+        return (bool)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [$tabla]
+        )->fetchOne();
+    };
+    $vanoszlop = static function (string $tabla, string $oszlop) use ($conn) {
+        return (bool)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.COLUMNS'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
+            [$tabla, $oszlop]
+        )->fetchOne();
+    };
+    $vanindex = static function (string $tabla, string $index) use ($conn) {
+        return (bool)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.STATISTICS'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND INDEX_NAME = ?',
+            [$tabla, $index]
+        )->fetchOne();
+    };
+    foreach (['termek' => 'termekminkeszlet', 'termekvaltozat' => 'termekvaltozatminkeszlet'] as $szulo => $uj) {
+        $regi = str_replace('minkeszlet', 'minboltikeszlet', $uj);
+        $fk = $szulo . '_id';
+
+        if ($vantabla($regi)) {
+            if ($vantabla($uj)) {
+                $conn->executeStatement(
+                    'INSERT INTO ' . $uj . ' (' . $fk . ', raktar_id, minkeszlet, created, lastmod)'
+                    . ' SELECT ' . $fk . ', raktar_id, minboltikeszlet, created, lastmod FROM ' . $regi
+                    . ' ON DUPLICATE KEY UPDATE minkeszlet = VALUES(minkeszlet), lastmod = VALUES(lastmod)'
+                );
+                $conn->executeStatement('DROP TABLE ' . $regi);
+            } else {
+                $conn->executeStatement('RENAME TABLE ' . $regi . ' TO ' . $uj);
+            }
+        }
+        if ($vantabla($uj) && $vanoszlop($uj, 'minboltikeszlet')) {
+            $conn->executeStatement(
+                'ALTER TABLE ' . $uj . ' CHANGE minboltikeszlet minkeszlet NUMERIC(14, 2) DEFAULT NULL'
+            );
+        }
+        if ($vantabla($uj) && $vanindex($uj, $regi . '_egyedi')) {
+            $conn->executeStatement(
+                'ALTER TABLE ' . $uj . ' RENAME INDEX ' . $regi . '_egyedi TO ' . $uj . '_egyedi'
+            );
+        }
+
+        if ($vanoszlop($szulo, 'minboltikeszlet')) {
+            if ($vanoszlop($szulo, 'minkeszlet')) {
+                $conn->executeStatement(
+                    'UPDATE ' . $szulo . ' SET minkeszlet = minboltikeszlet'
+                    . ' WHERE (minkeszlet IS NULL OR minkeszlet = 0) AND (minboltikeszlet IS NOT NULL)'
+                );
+                $conn->executeStatement('ALTER TABLE ' . $szulo . ' DROP COLUMN minboltikeszlet');
+            } else {
+                $conn->executeStatement(
+                    'ALTER TABLE ' . $szulo . ' CHANGE minboltikeszlet minkeszlet NUMERIC(14, 2) DEFAULT NULL'
+                );
+            }
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::MinkeszletRename, '1');
+}
+
 $DBVersion = \mkw\store::getParameter(\mkw\consts::DBVersion, '');
 
 if ($DBVersion < '0028') {
@@ -1303,7 +1374,7 @@ if ($DBVersion < '0113') {
     $tablakvannak = $conn->executeQuery(
         'SELECT COUNT(*) FROM information_schema.TABLES'
         . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN (?, ?)',
-        ['termekminboltikeszlet', 'termekvaltozatminboltikeszlet']
+        ['termekminkeszlet', 'termekvaltozatminkeszlet']
     )->fetchOne();
     if ($tablakvannak == 2) {
         $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
@@ -1313,15 +1384,15 @@ if ($DBVersion < '0113') {
         if ($vanraktar) {
             // created kézzel, mert a nyers SQL megkerüli a Gedmo Timestampable-t
             $conn->executeStatement(
-                'INSERT IGNORE INTO termekminboltikeszlet (termek_id, raktar_id, minboltikeszlet, created)'
-                . ' SELECT t.id, ?, t.minboltikeszlet, NOW() FROM termek t'
-                . ' WHERE (t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet <> 0)',
+                'INSERT IGNORE INTO termekminkeszlet (termek_id, raktar_id, minkeszlet, created)'
+                . ' SELECT t.id, ?, t.minkeszlet, NOW() FROM termek t'
+                . ' WHERE (t.minkeszlet IS NOT NULL) AND (t.minkeszlet <> 0)',
                 [$raktarid]
             );
             $conn->executeStatement(
-                'INSERT IGNORE INTO termekvaltozatminboltikeszlet (termekvaltozat_id, raktar_id, minboltikeszlet, created)'
-                . ' SELECT v.id, ?, v.minboltikeszlet, NOW() FROM termekvaltozat v'
-                . ' WHERE (v.minboltikeszlet IS NOT NULL) AND (v.minboltikeszlet <> 0)',
+                'INSERT IGNORE INTO termekvaltozatminkeszlet (termekvaltozat_id, raktar_id, minkeszlet, created)'
+                . ' SELECT v.id, ?, v.minkeszlet, NOW() FROM termekvaltozat v'
+                . ' WHERE (v.minkeszlet IS NOT NULL) AND (v.minkeszlet <> 0)',
                 [$raktarid]
             );
         }
@@ -1416,30 +1487,30 @@ if ($DBVersion < '0118') {
         $tablakvannak = $conn->executeQuery(
             'SELECT COUNT(*) FROM information_schema.TABLES'
             . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN (?, ?)',
-            ['termekminboltikeszlet', 'termekvaltozatminboltikeszlet']
+            ['termekminkeszlet', 'termekvaltozatminkeszlet']
         )->fetchOne();
         if ($tablakvannak == 2) {
             $conn->executeStatement(
                 'UPDATE termekvaltozat v JOIN termek t ON (t.id = v.termek_id)'
-                . ' SET v.minboltikeszlet = t.minboltikeszlet, v.lastmod = NOW()'
-                . ' WHERE (t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet <> 0)'
+                . ' SET v.minkeszlet = t.minkeszlet, v.lastmod = NOW()'
+                . ' WHERE (t.minkeszlet IS NOT NULL) AND (t.minkeszlet <> 0)'
             );
             // created/lastmod kézzel, mert a nyers SQL megkerüli a Gedmo Timestampable-t
             $conn->executeStatement(
-                'INSERT INTO termekvaltozatminboltikeszlet (termekvaltozat_id, raktar_id, minboltikeszlet, created)'
-                . ' SELECT v.id, m.raktar_id, m.minboltikeszlet, NOW()'
-                . ' FROM termekminboltikeszlet m'
+                'INSERT INTO termekvaltozatminkeszlet (termekvaltozat_id, raktar_id, minkeszlet, created)'
+                . ' SELECT v.id, m.raktar_id, m.minkeszlet, NOW()'
+                . ' FROM termekminkeszlet m'
                 . ' JOIN termekvaltozat v ON (v.termek_id = m.termek_id)'
-                . ' WHERE (m.minboltikeszlet IS NOT NULL) AND (m.minboltikeszlet <> 0)'
-                . ' ON DUPLICATE KEY UPDATE minboltikeszlet = VALUES(minboltikeszlet), lastmod = NOW()'
+                . ' WHERE (m.minkeszlet IS NOT NULL) AND (m.minkeszlet <> 0)'
+                . ' ON DUPLICATE KEY UPDATE minkeszlet = VALUES(minkeszlet), lastmod = NOW()'
             );
             $conn->executeStatement(
-                'DELETE m FROM termekminboltikeszlet m'
+                'DELETE m FROM termekminkeszlet m'
                 . ' WHERE EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = m.termek_id)'
             );
             $conn->executeStatement(
-                'UPDATE termek t SET t.minboltikeszlet = 0, t.lastmod = NOW()'
-                . ' WHERE (t.minboltikeszlet IS NOT NULL) AND (t.minboltikeszlet <> 0)'
+                'UPDATE termek t SET t.minkeszlet = 0, t.lastmod = NOW()'
+                . ' WHERE (t.minkeszlet IS NOT NULL) AND (t.minkeszlet <> 0)'
                 . ' AND EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
             );
             \mkw\store::setParameter(\mkw\consts::DBVersion, '0118');
@@ -1494,6 +1565,7 @@ if ($DBVersion < '0121') {
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0121');
 }
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

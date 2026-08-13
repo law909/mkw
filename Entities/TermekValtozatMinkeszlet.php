@@ -6,16 +6,16 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Termékváltozat raktáranként megadott min. bolti készlete – a `termekvaltozat.minboltikeszlet`
+ * Termékváltozat raktáranként megadott min. bolti készlete – a `termekvaltozat.minkeszlet`
  * globális oszlop raktáras párja. A feloldási létrában a termék raktáras értéke üti ezt,
  * lásd \Services\KeszletService.
  *
- * @ORM\Entity(repositoryClass="Entities\TermekValtozatMinboltikeszletRepository")
- * @ORM\Table(name="termekvaltozatminboltikeszlet",
+ * @ORM\Entity(repositoryClass="Entities\TermekValtozatMinkeszletRepository")
+ * @ORM\Table(name="termekvaltozatminkeszlet",
  *  options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
- *  uniqueConstraints={@ORM\UniqueConstraint(name="termekvaltozatminboltikeszlet_egyedi",columns={"termekvaltozat_id","raktar_id"})})
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="termekvaltozatminkeszlet_egyedi",columns={"termekvaltozat_id","raktar_id"})})
  */
-class TermekValtozatMinboltikeszlet
+class TermekValtozatMinkeszlet
 {
 
     /**
@@ -49,7 +49,7 @@ class TermekValtozatMinboltikeszlet
     private $raktar;
 
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
-    private $minboltikeszlet;
+    private $minkeszlet;
 
     public function getId()
     {
@@ -102,14 +102,14 @@ class TermekValtozatMinboltikeszlet
         $this->raktar = $raktar;
     }
 
-    public function getMinboltikeszlet()
+    public function getMinkeszlet()
     {
-        return $this->minboltikeszlet;
+        return $this->minkeszlet;
     }
 
-    public function setMinboltikeszlet($minboltikeszlet)
+    public function setMinkeszlet($minkeszlet)
     {
-        $this->minboltikeszlet = $minboltikeszlet;
+        $this->minkeszlet = $minkeszlet;
     }
 
 }

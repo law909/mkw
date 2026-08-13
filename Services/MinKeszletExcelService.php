@@ -4,9 +4,9 @@ namespace Services;
 
 use Entities\Raktar;
 use Entities\Termek;
-use Entities\TermekMinboltikeszlet;
+use Entities\TermekMinkeszlet;
 use Entities\TermekValtozat;
-use Entities\TermekValtozatMinboltikeszlet;
+use Entities\TermekValtozatMinkeszlet;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -116,13 +116,13 @@ class MinKeszletExcelService
                     $hibak[] = sprintf(t('%d. sor: nincs %d azonosítójú változat'), $row, $valtozatid);
                     continue;
                 }
-                $valtozat->setMinboltikeszlet($mindenraktar);
+                $valtozat->setMinkeszlet($mindenraktar);
                 $em->persist($valtozat);
                 $this->setRaktariErtekek(
-                    TermekValtozatMinboltikeszlet::class,
+                    TermekValtozatMinkeszlet::class,
                     'setTermekvaltozat',
                     $valtozat,
-                    $em->getRepository(TermekValtozatMinboltikeszlet::class)->getRowsByTermekValtozatIds([$valtozatid])[$valtozatid] ?? [],
+                    $em->getRepository(TermekValtozatMinkeszlet::class)->getRowsByTermekValtozatIds([$valtozatid])[$valtozatid] ?? [],
                     $raktariertekek
                 );
                 $valtozatdb++;
@@ -143,19 +143,19 @@ class MinKeszletExcelService
                             $termekid
                         );
                     }
-                    $termek->setMinboltikeszlet(0);
+                    $termek->setMinkeszlet(0);
                     $em->persist($termek);
-                    foreach ($em->getRepository(TermekMinboltikeszlet::class)->getRowsByTermek($termekid) as $sor) {
+                    foreach ($em->getRepository(TermekMinkeszlet::class)->getRowsByTermek($termekid) as $sor) {
                         $em->remove($sor);
                     }
                 } else {
-                    $termek->setMinboltikeszlet($mindenraktar);
+                    $termek->setMinkeszlet($mindenraktar);
                     $em->persist($termek);
                     $this->setRaktariErtekek(
-                        TermekMinboltikeszlet::class,
+                        TermekMinkeszlet::class,
                         'setTermek',
                         $termek,
-                        $em->getRepository(TermekMinboltikeszlet::class)->getRowsByTermek($termekid),
+                        $em->getRepository(TermekMinkeszlet::class)->getRowsByTermek($termekid),
                         $raktariertekek
                     );
                 }
@@ -224,7 +224,7 @@ class MinKeszletExcelService
                     $sor->$setter($hordozo);
                     $sor->setRaktar($em->getRepository(Raktar::class)->find($raktarid));
                 }
-                $sor->setMinboltikeszlet($ertek);
+                $sor->setMinkeszlet($ertek);
                 $em->persist($sor);
             } elseif ($sor) {
                 $em->remove($sor);
@@ -278,9 +278,9 @@ class MinKeszletExcelService
                 $valtozatids[] = $valtozat->getId();
             }
         }
-        $termekraktari = $em->getRepository(TermekMinboltikeszlet::class)->getByTermekIds($termekids);
+        $termekraktari = $em->getRepository(TermekMinkeszlet::class)->getByTermekIds($termekids);
         $valtozatraktari = $valtozatids
-            ? $em->getRepository(TermekValtozatMinboltikeszlet::class)->getByTermekValtozatIds($valtozatids)
+            ? $em->getRepository(TermekValtozatMinkeszlet::class)->getByTermekValtozatIds($valtozatids)
             : [];
 
         /** @var Termek $termek */
@@ -296,7 +296,7 @@ class MinKeszletExcelService
                     'nev' => $termek->getNev(),
                     'szin' => '',
                     'meret' => '',
-                    'mindenraktar' => $termek->getMinboltikeszlet(),
+                    'mindenraktar' => $termek->getMinkeszlet(),
                     'raktari' => $termekraktari[$termek->getId()] ?? [],
                 ]);
             }
@@ -310,7 +310,7 @@ class MinKeszletExcelService
                     'nev' => $termek->getNev(),
                     'szin' => $valtozat->getErtek1(),
                     'meret' => $valtozat->getErtek2(),
-                    'mindenraktar' => $valtozat->getMinboltikeszlet(),
+                    'mindenraktar' => $valtozat->getMinkeszlet(),
                     'raktari' => $valtozatraktari[$valtozat->getId()] ?? [],
                 ]);
             }
