@@ -14,8 +14,24 @@
   > A csak nevet tartalmazó régi fejlécet továbbra is elfogadja (visszafelé kompatibilis a korábban letöltött fájlokkal), az ismeretlen fejléc pedig
   > ugyanúgy figyelmeztetést ad és kimarad. Kipróbálva: átnevezett raktárfejléccel is a jó raktárra kerül az érték.
   > Mellékesen: a fejléceket eddig a raktárnevekre is ráeresztette a `t()` fordító, ezt szétszedtem – a raktárnév nem fordítandó.
-- bizonylaton fizetési mód váltáskor a program rákérdez, hogy mi legyen e létező pénztár és bank bizonylatokkal. Rontáskor és stornokor rontsa le. lehet hogy ez
-  már le van fejlesztve, ellenőrizd
+- [ ] **TERV KÉSZ, KÓDOLÁS VÁR JÓVÁHAGYÁSRA** bizonylaton fizetési mód váltáskor a program rákérdez, hogy mi legyen e létező pénztár és bank bizonylatokkal.
+  Rontáskor és stornokor rontsa le. lehet hogy ez már le van fejlesztve, ellenőrizd. bizonylat stornokor ha van pénztárbizonylat, akkor jöjjön fel egy kérdés
+  hogy visszafizeti a pénztárból a pénzt vagy csak rontja a pénztárbizonylatot. ha visszafizeti a pénzt, akkor storno bizonylat is pnztmozgat, ha csak rontja a
+  pénztárbizonylatot akkor storno bizonylat nem mozgat pénzt és rontani kell a pénztárbizonylatot.
+  > **Terv: `docs/storno-penzmozgas.md`.** Kérted, hogy előbb csak a terv készüljön el, ezért kódolni még nem kezdtem.
+  >
+  > **Ellenőrzés eredménye — a fizmód-váltáskori rákérdezés már kész** (2026-08-12, `docs/fizmód váltás bizonylaton következményei.md`): pénztár- és
+  > bankbizonylatra egyaránt, három válasszal (Rontsa / Maradjanak / Mégsem), a válasz a bizonylatnaplóba is bekerül.
+  >
+  > **Két hiány maradt:**
+  > 1. `BizonylatfejListener.php:1120` — rontáskor csak a *pénztár*bizonylatot rontja (`rontPenztarBizonylat()`), a bizonylatra hivatkozó élő *bank*bizonylatot
+  >    nem. Ez egyértelmű hiba, a storno-kérdéstől függetlenül.
+  > 2. `PenztarbizonylatfejListener:123-124` és `BankbizonylatfejListener:123-124` — a pénzmozgás folyószámla sora fixen `setStorno(false)` /
+  >    `setStornozott(false)`, tehát a stornózott számla kiegyenlítése bent marad az egyenlegben párját vesztett jóváírásként.
+  >
+  > A javasolt megoldás a `penztmozgat` mezőt használja a válasz hordozójának (nem kell új oszlop), és mind a négy általad felsorolt esetet lefedi — a
+  > kiegyenlített utalásos storno a storno számlán visszautalandó tartozásként fog látszani. **Egy nyitott döntés van** a tervben (5. pont): a meglévő storno
+  > bizonylatokat runonce-szal igazítsuk-e, vagy inkább külön mező legyen. A galad fejlesztői DB-n 0 érintett sor van, ezt éles adaton kell megnézni.
 - bizonylattetelkarbformon a termék autocomplete mellett legyen 2 gomb: 1. "új", új fülön nyissa meg az új termék karbantartót; 2. "adatlap" ha van máár
   kiválasztva termék, nyissa meg a termék karbantartóját
 - a projekt gyökérben van két GLS_*.xlsx, írj egy importot ami importálja ezeket az utánvétes kifizetéseket, csak azokat a sorokat kell importálni, amelyikek Q
