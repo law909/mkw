@@ -32,6 +32,10 @@
                     <td><input id="MozgatEdit" name="mozgat" type="checkbox"{if ($egyed.mozgat)} checked="checked"{/if}"></td>
                 </tr>
                 <tr>
+                    <td><label for="ErkezikEdit">{at('Érkezik')}:</label></td>
+                    <td><input id="ErkezikEdit" name="erkezik" type="checkbox"{if ($egyed.erkezik)} checked="checked"{/if}"></td>
+                </tr>
+                <tr>
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td><input id="SorrendEdit" name="sorrend" type="text" size="80" maxlength="255" value="{$egyed.sorrend}"></td>
                 </tr>

@@ -40,6 +40,7 @@
                     <th>{at('Foglal')}</th>
                 {/if}
                 <th>{at('Mozgat')}</th>
+                <th>{at('Érkezik')}</th>
                 <th>{at('Értékelhető')}</th>
                 <th>{at('Csoport')}</th>
                 <th>{at('Sorrend')}</th>

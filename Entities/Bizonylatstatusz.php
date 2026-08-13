@@ -34,6 +34,9 @@ class Bizonylatstatusz
     private $foglal;
 
     /** @ORM\Column(type="boolean") */
+    private $erkezik = false;
+
+    /** @ORM\Column(type="boolean") */
     private $mozgat;
 
     /**
@@ -143,6 +146,16 @@ class Bizonylatstatusz
     public function setFoglal($adat)
     {
         $this->foglal = $adat;
+    }
+
+    public function getErkezik()
+    {
+        return $this->erkezik;
+    }
+
+    public function setErkezik($adat)
+    {
+        $this->erkezik = $adat;
     }
 
     /**

@@ -211,6 +211,7 @@ class BizonylatfejListener
                 }
                 $k->setMozgat();
                 $k->setFoglal();
+                $k->setErkezik();
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
@@ -420,6 +421,7 @@ class BizonylatfejListener
                 }
                 $k->setMozgat();
                 $k->setFoglal();
+                $k->setErkezik();
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
@@ -855,6 +857,7 @@ class BizonylatfejListener
                 }
                 $k->setMozgat();
                 $k->setFoglal();
+                $k->setErkezik();
                 $k->setMennyiseg(1);
                 if ($afaoverride) {
                     $k->setAfa($afaoverride);
@@ -1070,6 +1073,7 @@ class BizonylatfejListener
                         if (\mkw\store::isFoglalas()) {
                             $tetel->setFoglal();
                         }
+                        $tetel->setErkezik();
                         $this->uow->recomputeSingleEntityChangeSet($this->bizonylattetelmd, $tetel);
                     }
                 }

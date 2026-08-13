@@ -48,6 +48,9 @@ class Bizonylattetel
     private $foglal = false;
 
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $erkezik = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $kozvetitett = false;
 
     /** @ORM\Column(type="integer") */
@@ -559,6 +562,22 @@ class Bizonylattetel
                     $this->foglal = $bf->getFoglal() && $t->getMozgat();
                 }
             }
+        }
+    }
+
+    public function getErkezik()
+    {
+        return $this->erkezik;
+    }
+
+    public function setErkezik()
+    {
+        $this->erkezik = false;
+        $bf = $this->bizonylatfej;
+        $t = $this->termek;
+        if ($bf && $t) {
+            $bs = $bf->getBizonylatstatusz();
+            $this->erkezik = (bool)($bs && $bs->getErkezik() && $t->getMozgat());
         }
     }
 

@@ -14,6 +14,7 @@
         <td class="cell">{if ($_egyed.foglal)}{at('foglal')}{else}{at('nem foglal')}{/if}</td>
     {/if}
     <td class="cell">{if ($_egyed.mozgat)}{at('mozgat')}{else}{at('nem mozgat')}{/if}</td>
+    <td class="cell">{if ($_egyed.erkezik)}{at('érkezik')}{else}{at('nem érkezik')}{/if}</td>
     <td class="cell">{if ($_egyed.nemertekelheto)}{at('nem értékelhető')}{else}{at('értékelhető')}{/if}</td>
     <td class="cell">{$_egyed.csoport}</td>
     <td class="cell">{$_egyed.sorrend}</td>
