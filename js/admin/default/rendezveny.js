@@ -14,7 +14,7 @@ $(document).ready(function () {
                         type: 'GET',
                         success: function (data) {
                             doktab.append(data);
-                            $('.js-doknewbutton,.js-dokdelbutton,.js-dokbrowsebutton,.js-dokopenbutton').button();
+                            $('.js-doknewbutton,.js-dokdelbutton,.js-dokbrowsebutton,.js-dokopenbutton,.js-dokopen2button').button();
                             $this.remove();
                         }
                     });
@@ -60,7 +60,7 @@ $(document).ready(function () {
                     };
                     finder.popup();
                 });
-            $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton').button();
+            $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton,.js-dokopen2button').button();
             mkwcomp.datumEdit.init('#KezdodatumEdit');
             mkwcomp.datumEdit.init('#EarlybirdvegeEdit');
         },

@@ -47,8 +47,16 @@
   bizonylatot. Az importált tételekhez lehessen bizonylatszámot megadni egy karbantartóban bank tranzakcióhoz hasonlóan.
 - a projekt gyökérben van egy "Mir Order.xls", a szállítói megrendeléseknek csinálj egy gombot amivel ilyen formátumban ki lehet exportálni őket. A gomb legyen
   ott minden száll.megrendelés sorban, azt exportálja amelyik sorban van
-- termék és partner karbantartón a dokumentumok fülön a dokumentum input mellett a ... gomb mellett van egy O gomb ami legyen gomb külsejű és nyissa meg a
-  dokumentumot, ne pedig letöltse. A gomb captionje legyen "Megnyit"
+- [x] **KÉSZ** termék és partner karbantartón a dokumentumok fülön a dokumentum input mellett a ... gomb mellett van egy O gomb ami legyen gomb külsejű és
+  nyissa meg a dokumentumot, ne pedig letöltse. A gomb captionje legyen "Megnyit"
+  > **Ok: a `.button()` hívásból kimaradt.** A `dokumentumtarkarb.tpl` két megnyitó linket tartalmaz: a „Web cím" sorét (`js-dokopenbutton`) és a
+  > „Dokumentum" sorét (`js-dokopen2button`). A `termek.js`, `partner.js` és `rendezveny.js` a jQuery UI `.button()`-t csak az elsőre hívta meg, ezért a
+  > második csupasz szövegként látszott. (A `bizonylathelper.js` mindkettőt gombosítja – ott jó is volt.) Mind a hat helyre bekerült a hiányzó osztály.
+  > A felirat `O` → `Megnyit`, és a link kapott `rel="noopener"`-t is.
+  > **A letöltés ügye:** a link a statikus fájlra mutat (`/kepek/...`), az Apache `application/pdf`-fel és `Content-Disposition` nélkül szolgálja ki, tehát
+  > semmi nem kényszerít letöltést. Böngészőben kipróbálva (ideiglenes dokumentum rekorddal termék 1-en, utána törölve): a PDF **új fülön megnyílik**, nem
+  > töltődik le. Ami maradhat: a böngésző azokat a típusokat, amiket nem tud megjeleníteni (docx, xlsx, zip), mindig letölti – ezt kódból nem lehet
+  > felülbírálni. Ha nálad PDF-re is letöltés jön, az a Chrome „PDF-ek letöltése megnyitás helyett" beállítása.
 - [x] **KÉSZ** bolti eladásokat nem lehet lerontani, megnyomom a gombot és nem törénik meg a rontás. galad deployon ki tudod próbálni
   > **Ok: hiányzott a route.** A gomb a `/admin/<entitas>/ront` címre POST-ol (`bizonylathelper.js`), és `boltieladasfej`-re ez a route nem létezett az
   > `adminroute.php`-ban. Az AltoRouter nem talált egyezést, ezért a kérés csendben, 200-zal és üres törzzsel tért vissza — pontosan az a tünet, amit írtál.
