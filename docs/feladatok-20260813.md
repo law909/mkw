@@ -66,8 +66,21 @@
   > lista sablont használ, amiben nincs ront gomb. Vagyis egyedül a bolti eladás volt hibás.
   > **Kipróbálva galadon** a BO2026/000004-en: a rontás lefutott (`bizonylatfej.rontott`, `bizonylattetel.rontott`, a folyószámla sor újraképződött
   > rontottként), majd a bizonylatot **visszaállítottam** az eredeti állapotába (a folyószámla sor id-je 338→348, a tartalma azonos).
-- vegyél fel egy beállítást config.ini-be: path.dokumentum amit path.mediatar-on vagy path.ckfinder-en belül kell értelmezni. partner és termék dokumentumok
-  fülre fentre tegyél egy új gombot: "Azonnali feltöltés", ezt megnyomva lehessen feltölteni egy fájlt a konfigban megadott mappába és szülesseb belőle egy
-  dokumentum rekord. a rekord jelenjen is meg a karbantartón. figyelj rá hogy új terméknél/partnernél a dokumentum bekerül a mappába de a rekord nem mentődik
-  csak a karbantartó mentésekor.
+- [x] **KÉSZ** vegyél fel egy beállítást config.ini-be: path.dokumentum amit path.mediatar-on vagy path.ckfinder-en belül kell értelmezni. partner és termék
+  dokumentumok fülre fentre tegyél egy új gombot: "Azonnali feltöltés", ezt megnyomva lehessen feltölteni egy fájlt a konfigban megadott mappába és szülesseb
+  belőle egy dokumentum rekord. a rekord jelenjen is meg a karbantartón. figyelj rá hogy új terméknél/partnernél a dokumentum bekerül a mappába de a rekord nem
+  mentődik csak a karbantartó mentésekor.
+  > **Beállítás:** `path.dokumentum` (config.ini), a médiatár gyökeréhez képest értelmezve. Alapértelmezés `dokumentum`, tehát beállítás nélkül is működik;
+  > a mappát az első feltöltéskor magától létrehozza. Dokumentálva a CLAUDE.md konfigurációs fejezetében, és beírtam a `galadconfig.ini`-be is.
+  > **Új fájlok:** `Services/DokumentumUploadService.php` (mappa feloldás + létrehozás), `Controllers/dokumentumtarController.php` (a közös feltöltő végpont),
+  > `js/admin/default/dokumentumtar.js`, `tpl/admin/default/dokumentumfeltoltes.tpl`.
+  > **Egy végpont mindkét törzshöz:** a `dokumentumtarkarb.tpl` sor mezőnevei nem függenek attól, melyik entitáshoz tartozik a dokumentum (a `Dokumentumtar`
+  > single-table öröklődés `osztaly` diszkriminátorát a karb mentése tölti ki), ezért nem kellett külön termék/partner végpont.
+  > **A rekord tényleg csak mentéskor születik meg:** a válasz `oper = add` állapotú sor, amit a karb a saját mentésével visz be. Kipróbálva mind a három
+  > esetben: meglévő terméken (mentés után létrejött a rekord), meglévő partneren, és **új terméken** (`id=0&oper=add`) – ott a fájl bekerült a mappába,
+  > rekord nem keletkezett. Utána minden tesztfájlt és rekordot töröltem.
+  > **Mellékesen:** a médiatár HTTP-őrei (`requireAdmin`, `requireWritable`, `requireSameOrigin`, `checkPostMaxSize`, `json`, `jsonError`) átkerültek a
+  > `Traits/MediatarGuard.php`-ba, hogy az új végpont ugyanazt a védelmet kapja duplikálás nélkül. A route szándékosan **nincs** a `mediatar` kapcsoló mögött:
+  > a `path.dokumentum` a CKFinder-es telepítéseken is értelmes.
+  > A feltöltés a `MediatarService`-en megy keresztül, tehát örökli a kiterjesztés- és tartalomellenőrzést, a névtisztítást és az ütközésfeloldást.
 - 

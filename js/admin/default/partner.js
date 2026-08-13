@@ -80,6 +80,8 @@ $(document).ready(function () {
                 doktab = $('#DokTab'),
                 mptfolyoszamlatab = $('#MPTFolyoszamlaTab');
 
+            initDokumentumUpload(doktab);
+
             mkwcomp.datumEdit.init(mpt_tagsagdateedit);
             mkwcomp.datumEdit.init(szuletesiidoedit);
             mkwcomp.datumEdit.init(mptngybefdatumedit);

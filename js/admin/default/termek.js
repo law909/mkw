@@ -207,6 +207,7 @@ $(document).ready(function () {
             var kapcsolodotab = $('#KapcsolodoTab');
             var valtozattab = $('#ValtozatTab');
             var doktab = $('#DokTab');
+            initDokumentumUpload(doktab);
             $('.js-saveas').on('click', function (e) {
                 e.preventDefault();
                 $('input[name="oper"]').val('add');

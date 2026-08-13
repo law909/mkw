@@ -709,6 +709,7 @@
             </table>
         </div>
         <div id="DokTab" class="mattkarb-page" data-visible="visible">
+            {include 'dokumentumfeltoltes.tpl'}
             {foreach $egyed.dokok as $dok}
                 {include 'dokumentumtarkarb.tpl'}
             {/foreach}

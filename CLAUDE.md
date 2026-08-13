@@ -43,6 +43,8 @@ Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored 
   Comments must start with `;` — a `#` line is *not* a comment to `parse_ini_file()` and can make the whole file unparseable (every request then 500s).
   - `mediatar.type.<Name>.{dir,ext,max}` — optional per-deployment override of the media library's resource types (`Services\MediatarService::getTypes()`,
     default in `DEFAULTTYPES`). Field-level: writing only `ext` keeps the default `dir`/`max`. `max` understands `50M`; `0` means the PHP upload limit decides.
+  - `path.dokumentum` — target folder of the "Azonnali feltöltés" button on the product/partner document tabs (`Services\DokumentumUploadService`),
+    resolved **inside** the media root (`path.mediatar`, else `path.ckfinder`). Default `dokumentum`; the folder is created on first upload.
 - **`setup.ini`** — feature toggles per deployment (`b2b`, `multilang`, `multivaluta`, `bankpenztar`, `arsavok`, `kisszamlazo`, `pdf`, `pdfmode`, `barion`,
   `webshopnum`, `enabledwebshops`, `mediatar`, `mediatarstrictorigin`, …). Read via `store::getSetupValue($key)`.
   - `mediatar = 1` swaps the legacy CKFinder 2.3 file browser for the in-house media library (`Services/MediatarService.php`, `Controllers/mediatarController.php`,

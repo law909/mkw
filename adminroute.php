@@ -1004,6 +1004,12 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekkep/addfrommediatar', 'termekkepController#addFromMediatar', 'admintermekkepaddfrommediatar');
 }
 
+// A dokumentum fülek közös azonnali feltöltése – szándékosan nem a mediatar kapcsoló mögött:
+// a path.dokumentum a CKFinder-es telepítéseken is a path.ckfinder gyökér alatt értendő.
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/dokumentumtar/quickupload', 'dokumentumtarController#quickUpload', 'admindokumentumtarquickupload');
+}
+
 $router->map('GET', '/admin/termekdok/getemptyrow', 'termekdokController#getemptyrow', 'admintermekdokgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekdok/del', 'termekdokController#del', 'admintermekdokdel');

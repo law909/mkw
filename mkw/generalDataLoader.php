@@ -44,6 +44,7 @@ class generalDataLoader
         $view->setVar('localelist', \mkw\store::getLongLocaleList());
         $setup = \mkw\store::getSetup();
         $view->setVar('setup', $setup);
+        $view->setVar('dokumentumurl', \Services\DokumentumUploadService::getUrl());
         $view->setVar('maintheme', \mkw\store::getTheme());
         $view->setVar('noversion', \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion));
         $view->setVar('today', date(\mkw\store::$DateFormat));
