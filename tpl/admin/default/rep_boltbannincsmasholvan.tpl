@@ -11,8 +11,8 @@
             <th>Név</th>
             <th>Változat</th>
             <th>Raktár</th>
-            <th>Készlet</th>
-            <th>Bolti készlet</th>
+            <th class="textalignright">Készlet</th>
+            <th class="textalignright">{$raktarnev} készlet</th>
         </tr>
         </thead>
         <tbody>

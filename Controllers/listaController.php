@@ -71,7 +71,7 @@ class listaController extends \mkwhelpers\Controller
                     raktarid: $raktarid,
                     kivevebiz: null,
                     clamp: false,
-                    ignoreminkeszlet: false,
+                    ignoreminkeszlet: true,
                     ignorefoglalas: true
                 );
                 if ($boltikeszlet <= $minkeszlet) {
