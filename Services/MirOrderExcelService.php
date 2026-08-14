@@ -89,7 +89,7 @@ class MirOrderExcelService
      */
     private function writeFejlec($sheet, $fej): void
     {
-        $sheet->setCellValue('F2', 'Mir Order ' . $fej->getKeltStr());
+        $sheet->setCellValue('F2', 'Order ' . $fej->getKeltStr());
 
         $sheet->setCellValue('D3', 'PANTS MEN size');
         foreach (self::NADRAGMERETEK as $i => $meret) {
