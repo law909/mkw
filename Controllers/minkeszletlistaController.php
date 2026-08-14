@@ -229,6 +229,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $q = $this->getEm()->createNativeQuery(
             'SELECT * FROM (' . $valtozatag . ' UNION ALL ' . $termekag . ') x'
             . ' WHERE ' . ($this->uselimit ? '' : '(x.minkeszlet > 0) AND ') . '(x.keszlet <= x.minkeszlet)'
+            // csak az érdekes, ami a másik raktárból tényleg átmozgatható
+            . ($this->masikraktar ? ' AND (x.masikkeszlet > 0)' : '')
             . ' ORDER BY x.cikkszam, x.termeknev, x.ertek1, x.ertek2',
             $rsm
         );
