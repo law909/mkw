@@ -251,6 +251,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $report->setVar('termekfa', $this->fanevek);
         $report->setVar('uselimit', $this->uselimit);
         $report->setVar('limit', $this->limit);
+        $report->setVar('printdatum', date(\mkw\store::$DateTimeFormat));
         $report->printTemplateResult();
     }
 

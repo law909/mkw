@@ -1,6 +1,7 @@
 {extends "../rep_base.tpl"}
 
 {block "body"}
+    <button class="noprint" onclick="window.print()">Nyomtatás</button>
     <h4>Minimum készlet alatt</h4>
     <h5>{$datumstr}</h5>
     <h5>{$raktar}</h5>
@@ -49,7 +50,21 @@
             {$hianysum = $hianysum + $elem.hiany}
         {/foreach}
         </tbody>
-        <tfoot>
+        <tfoot class="pagenum">
+        <tr>
+            <td class="printdatum">{$printdatum}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            {if ($masikraktar)}
+                <td></td>
+            {/if}
+        </tr>
+        </tfoot>
+        <tfoot class="sum">
         <tr>
             <td></td>
             <td></td>

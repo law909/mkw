@@ -79,6 +79,10 @@ table td {
     color: red;
 }
 
+.redtext {
+    color: red;
+}
+
 @media print {
 
     a {
@@ -86,8 +90,13 @@ table td {
         text-decoration: none;
     }
 
-    .lejart {
+    .lejart,
+    .redtext {
         color: #000;
+    }
+
+    .noprint {
+        display: none;
     }
 
     h4,
