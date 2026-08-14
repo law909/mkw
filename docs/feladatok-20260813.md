@@ -136,12 +136,14 @@ kívülről támadható, de egy admin fiókból shellt adott volna.
 
 1. `Controllers/glsutanvetController.php` – a célnevet most **teljes egészében a program állítja elő** (`uniqid()` + fehérlistás kiterjesztés), a beküldött név
    egyáltalán nem kerül bele. Csak `.xls` / `.xlsx` mehet, van `is_uploaded_file()` ellenőrzés, és a hibás fájl sem marad a lemezen.
-2. **`storage/.htaccess`** – új fájl, a `kepek/.htaccess` mintájára: a `storage/`-ban semmilyen körülmények között nem futhat PHP. Ez mélységi védelem, ami
-   **az összes többi feltöltő végpontot is fedezi**.
+2. ~~**`storage/.htaccess`** – a `kepek/.htaccess` mintájára, hogy a `storage/`-ban semmilyen körülmények között ne futhasson PHP.~~
+   **Ezt te levetted** (`641c14b2b`), tudomásul vettem. A lyukat így kizárólag az 1. pont zárja – ami elég is, mert a beküldött név sehol nem kerül az
+   útvonalba, tehát `.php` nevű fájl nem is jöhet létre a `storage/`-ban. Csak a mélységi védelem esett ki: ha valaha bekerül egy új feltöltő, ami megkerüli a
+   közös segédfüggvényt, azt már nem fogja meg semmi.
 
-**Kipróbálva:** a `storage/`-ba tett teszt PHP fájl 403-at ad és nem fut le (a legitim xlsx-et továbbra is kiszolgálja); a `gonosz.php`, a `../../gonosz.php` és
-a `gonosz.xlsx.php` feltöltését az import visszautasítja; a `../../gonosz.xlsx` néven feltöltött **érvényes** fájl a `storage/glsutanvet-<uniqid>.xlsx`-be kerül,
-a projekt gyökerébe semmi nem íródott.
+**Kipróbálva:** a `gonosz.php`, a `../../gonosz.php` és a `gonosz.xlsx.php` feltöltését az import visszautasítja; a `../../gonosz.xlsx` néven feltöltött
+**érvényes** fájl a `storage/glsutanvet-<uniqid>.xlsx`-be kerül, a projekt gyökerébe semmi nem íródott. (Amíg a `.htaccess` fent volt, a `storage/`-ba tett
+teszt PHP 403-at adott és nem futott le.)
 
 ### A többi feltöltő végpont javítása (kérésedre)
 
