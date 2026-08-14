@@ -5,6 +5,7 @@ namespace Services;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Meret;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -53,7 +54,7 @@ class MirOrderExcelService
         $meretoszlopok = $this->getMeretOszlopok($sorok, $this->getMeretSorrend($fej));
         $oszlopok = $this->getOszlopok($meretoszlopok);
 
-        $sor = $this->writeFejlec($sheet, $fej, $oszlopok);
+        $sor = $this->writeCimkeSor($sheet, $oszlopok);
         $elsoadat = null;
         $utolsoadat = null;
         $csoport = null;
@@ -88,6 +89,11 @@ class MirOrderExcelService
 
         $this->writeTermekLap($excel, $fej);
         $excel->setActiveSheetIndex(0);
+
+        // Az oszlopszélesség a tartalomhoz igazodik. A megrendelő neve és a kelt viszont nem
+        // szélesíthet oszlopot, ezért csak a szélességek kiszámolása után kerül a lapra.
+        $this->autoSizeOszlopok($sheet);
+        $this->writeRendelesAdatok($sheet, $fej);
         return $excel;
     }
 
@@ -115,18 +121,43 @@ class MirOrderExcelService
     }
 
     /**
-     * A rendelés fejléce (partner, kelt) és az oszlopcímkék sora.
+     * A megrendelő neve és a kelt a 2. sorban – a hosszú nevük miatt csak az oszlopszélességek
+     * kiszámolása után írjuk ki (lásd autoSizeOszlopok).
      *
      * @param Bizonylatfej $fej
+     */
+    private function writeRendelesAdatok($sheet, $fej): void
+    {
+        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPPARTNER, 2), $fej->getPartnernev());
+        $sheet->setCellValue('F2', 'Order ' . $fej->getKeltStr());
+    }
+
+    /**
+     * Az oszlopok szélessége a tartalomhoz igazítva – ugyanaz, mint az oszlopszegélyre dupla
+     * kattintani. A számolás után kikapcsoljuk az automatikus méretezést, hogy a mentés már ne
+     * számolja újra (a 2. sor tartalmával együtt).
+     */
+    private function autoSizeOszlopok($sheet): void
+    {
+        $utolso = Coordinate::columnIndexFromString($sheet->getHighestColumn());
+        for ($i = 1; $i <= $utolso; $i++) {
+            $sheet->getColumnDimension(Coordinate::stringFromColumnIndex($i))->setAutoSize(true);
+        }
+        $sheet->calculateColumnWidths();
+        for ($i = 1; $i <= $utolso; $i++) {
+            $sheet->getColumnDimension(Coordinate::stringFromColumnIndex($i))->setAutoSize(false);
+        }
+    }
+
+    /**
+     * Az oszlopcímkék sora.
+     *
      * @param array $oszlopok a méretek mögötti oszlopok helye (getOszlopok)
      *
      * @return int az első adatsor száma
      */
-    private function writeFejlec($sheet, $fej, array $oszlopok): int
+    private function writeCimkeSor($sheet, array $oszlopok): int
     {
-        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPPARTNER, 2), $fej->getPartnernev());
-        $sheet->setCellValue('F2', 'Order ' . $fej->getKeltStr());
-
         $sor = self::CIMKESOR;
         $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor), 'ART:');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPNEV, $sor), 'Name');
@@ -250,6 +281,8 @@ class MirOrderExcelService
             );
             $sor++;
         }
+
+        $this->autoSizeOszlopok($sheet);
     }
 
     /**
