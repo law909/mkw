@@ -288,7 +288,8 @@ class MirOrderExcelService
     }
 
     /**
-     * Az egész sor vízszintesen középre – a cikkszámtól a határidőig.
+     * Az egész sor vízszintesen és függőlegesen is középre – a cikkszámtól a határidőig. A
+     * függőleges igazítás a képek miatt magas sorokban számít.
      *
      * @param array $oszlopok a méretek mögötti oszlopok helye (getOszlopok)
      */
@@ -297,7 +298,9 @@ class MirOrderExcelService
         $sheet->getStyle(
             \mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor)
             . ':' . \mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor)
-        )->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        )->getAlignment()
+            ->setHorizontal(Alignment::HORIZONTAL_CENTER)
+            ->setVertical(Alignment::VERTICAL_CENTER);
     }
 
     /** @param string $tartomany egy cella vagy cellatartomány */
