@@ -143,11 +143,33 @@ kívülről támadható, de egy admin fiókból shellt adott volna.
 a `gonosz.xlsx.php` feltöltését az import visszautasítja; a `../../gonosz.xlsx` néven feltöltött **érvényes** fájl a `storage/glsutanvet-<uniqid>.xlsx`-be kerül,
 a projekt gyökerébe semmi nem íródott.
 
-> **Ami még nyitva van – ez már nem az én kódom, ezért nem nyúltam hozzá.** Ugyanez a minta **kb. 25 másik helyen** él a repóban (`importController` a
-> legtöbb, de a `banktranzakcioController:189`, a `leltarfejController:367`, a négy `galad*ImportController` és a `minkeszletimportController:27` is – ez
-> utóbbi `basename()`-mel legalább a bejárást kivédi, a `.php` kiterjesztést nem). A `storage/.htaccess` a **kódfuttatást** mindegyiknél megszünteti, de a
-> `../` névvel máshova (pl. `kepek/`-be vagy a gyökérbe) írás továbbra is lehetséges. Ha akarod, végigviszem ugyanezt a javítást mind a 25 helyen – kb. egy
-> órás, mechanikus meló.
+### A többi feltöltő végpont javítása (kérésedre)
+
+Ugyanez a minta a repó többi importálójában is élt. Végigvittem: **21 hívási hely** javítva, közös segédfüggvénnyel.
+
+**`mkw\store::moveUploadedFile($mezo, $prefix, $engedett)`** – új, a `storagePath()` szomszédja. Ellenőrzi az `is_uploaded_file()`-t, a kiterjesztést
+fehérlistázza (`xls, xlsx, xlsm, csv, txt, xml, ods` – egyik sem olyan, amit a webszerver futtatna), a célnevet pedig **teljes egészében ő állítja elő**
+(`uniqid($prefix)` + a fehérlistás kiterjesztés). A beküldött névből semmi nem kerül az útvonalba, tehát se `../`, se `.php` nem érvényesül.
+
+| fájl | hely |
+|------|------|
+| `importController.php` | 11 |
+| `galadCGMImportController`, `galadSuomyImportController`, `galadProductImportController`, `galadOxfordImportController` | 4 |
+| `banktranzakcioController`, `leltarfejController`, `partnertermekkedvezmenyuploadController` | 3 |
+| `bizonylattetelController`, `minkeszletimportController` | 2 (ezek `basename()`-mel a bejárást már kivédték, a `.php` kiterjesztést nem) |
+| `glsutanvetController` | 1 (a saját javításom is átkerült a közös függvényre) |
+
+**Amihez nem nyúltam, mert nem volt sebezhető:** hat `importController`-beli hely fix, beégetett fájlnévre ír (`reintex.csv`, `tutisportimport.csv`,
+`vaterarendeles.csv`, `vateratermek.csv`, `copydepotermek.xml`, `copydepokeszlet.xml`) – oda a beküldött név nem jut el. A `MediatarService::upload()` pedig
+eleve saját, szigorúbb ellenőrzést futtat.
+
+**Mellékhatás, ami inkább javulás:** eddig hiányzó vagy hibás fájl esetén ezek a végpontok fatal errorral szálltak el (a `IOFactory::identify()` egy nem
+létező útvonalra). Mostantól „Hiányzó vagy nem elfogadott típusú fájl." üzenettel térnek vissza.
+
+**Kipróbálva:** a GLS, a min. készlet és a bank tranzakció importja érvényes xlsx-szel változatlanul működik (24 változat min. készlete frissült, a GLS
+duplikátumszűrő is helyesen 0 újat csinált), `.php` néven feltöltve mindhárom elutasítja. A `storage/`-ban nem maradt szemétfájl, az adatok nem mozdultak.
+
+**Ellenőrzés kódszinten:** `grep -rn "storagePath(\$_FILES" Controllers/ Services/` – nincs találat.
 
 ---
 

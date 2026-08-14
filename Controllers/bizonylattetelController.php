@@ -334,14 +334,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
      */
     private function getUploadedFile()
     {
-        if (empty($_FILES['toimport']['tmp_name']) || !is_uploaded_file($_FILES['toimport']['tmp_name'])) {
-            return null;
-        }
-        $file = \mkw\store::storagePath(uniqid('tetelimport-') . '-' . basename($_FILES['toimport']['name']));
-        if (!move_uploaded_file($_FILES['toimport']['tmp_name'], $file)) {
-            return null;
-        }
-        return $file;
+        return \mkw\store::moveUploadedFile('toimport', 'tetelimport');
     }
 
     /**

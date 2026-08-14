@@ -3882,8 +3882,11 @@ class importController extends \mkwhelpers\Controller
             return;
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
 
         $filetype = IOFactory::identify($filenev);
         $reader = IOFactory::createReader($filetype);
@@ -4609,8 +4612,11 @@ class importController extends \mkwhelpers\Controller
             $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $urleleje = rtrim($urleleje, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
-            $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+            if (!$filenev) {
+                echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+                return;
+            }
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -5421,8 +5427,11 @@ class importController extends \mkwhelpers\Controller
 
             \mkw\store::writelog(print_r($_FILES['toimport'], true));
 
-            $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-            move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+            $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+            if (!$filenev) {
+                echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+                return;
+            }
             //pathinfo
 
             $filetype = IOFactory::identify($filenev);
@@ -5823,8 +5832,11 @@ class importController extends \mkwhelpers\Controller
             $dbtol = 2;
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6015,8 +6027,11 @@ class importController extends \mkwhelpers\Controller
             $dbtol = 2;
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6118,8 +6133,11 @@ class importController extends \mkwhelpers\Controller
             $dbtol = 3;
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6160,8 +6178,11 @@ class importController extends \mkwhelpers\Controller
             $dbtol = 3;
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6208,8 +6229,11 @@ class importController extends \mkwhelpers\Controller
             $dbtol = 1;
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6242,8 +6266,11 @@ class importController extends \mkwhelpers\Controller
 
     public function fcmotoorderimport()
     {
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6679,8 +6706,11 @@ class importController extends \mkwhelpers\Controller
 
     public function mptngybiraloimport()
     {
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);
@@ -6723,8 +6753,11 @@ class importController extends \mkwhelpers\Controller
             return;
         }
 
-        $filenev = \mkw\store::storagePath($eredetinev);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'termekbevet');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
 
         $filetype = IOFactory::identify($filenev);
         $reader = IOFactory::createReader($filetype);

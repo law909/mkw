@@ -49,8 +49,11 @@ class partnertermekkedvezmenyuploadController extends \mkwhelpers\Controller
     public function upload()
     {
         $orgszazalek = store::getParameter('szazalek', 20);
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'partnerkedvezmeny');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
         //pathinfo
 
         $filetype = IOFactory::identify($filenev);

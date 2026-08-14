@@ -20,13 +20,9 @@ class minkeszletimportController extends \mkwhelpers\Controller
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        if (empty($_FILES['toimport']['tmp_name']) || !is_uploaded_file($_FILES['toimport']['tmp_name'])) {
-            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
-            return;
-        }
-        $filepath = \mkw\store::storagePath(uniqid('minkeszletimport-') . '-' . basename($_FILES['toimport']['name']));
-        if (!move_uploaded_file($_FILES['toimport']['tmp_name'], $filepath)) {
-            echo json_encode(['ok' => false, 'error' => t('A fájl mentése nem sikerült.')]);
+        $filepath = \mkw\store::moveUploadedFile('toimport', 'minkeszletimport');
+        if (!$filepath) {
+            echo json_encode(['ok' => false, 'error' => t('Hiányzó vagy nem elfogadott típusú fájl.')]);
             return;
         }
 

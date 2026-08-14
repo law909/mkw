@@ -185,8 +185,11 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         \mkw\store::setParameter(\mkw\consts::LastBankiFormatum, $formatumkulcs);
         $negativis = $this->params->getBoolRequestParam('negativis', false);
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'banktranzakcio');
+        if (!$filenev) {
+            echo json_encode(['msg' => t('Hiányzó vagy nem elfogadott típusú fájl.')]);
+            return;
+        }
 
         $filetype = IOFactory::identify($filenev);
         $reader = IOFactory::createReader($filetype);

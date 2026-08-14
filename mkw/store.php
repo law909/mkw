@@ -2106,6 +2106,43 @@ class store
         return getcwd() . '/' . self::getConfigValue('path.storage', '') . $filename;
     }
 
+    /**
+     * Az importálók által elfogadott kiterjesztések. Egyik sem olyan, amit a webszerver
+     * futtatna – épp ez a lényeg.
+     */
+    const UPLOADEXTENSIONS = ['xls', 'xlsx', 'xlsm', 'csv', 'txt', 'xml', 'ods'];
+
+    /**
+     * Feltöltött fájl átvétele a storage/-ba, biztonságos néven.
+     *
+     * A célnevet TELJES EGÉSZÉBEN itt állítjuk elő; a beküldött névből legfeljebb a
+     * fehérlistázott kiterjesztés marad meg. Két okból:
+     *
+     *  - a {@see storagePath()} sima string-összefűzés, tehát a beküldött névben lévő `../`
+     *    kilépne a könyvtárból;
+     *  - a `storage/`-t a webszerver kiszolgálja, így egy `.php` feltöltése kódfuttatás lenne.
+     *
+     * A `storage/.htaccess` ugyanezt mélységben is védi, de a helyes név itt dől el.
+     *
+     * @param string $mezo a $_FILES kulcsa
+     * @param string $prefix a generált fájlnév eleje, hogy a storage/-ban látszódjon, mi tette oda
+     * @param string[] $engedett engedélyezett kiterjesztések kisbetűvel
+     *
+     * @return string|null a fájl útvonala, vagy null: nincs feltöltés, tiltott kiterjesztés, sikertelen mentés
+     */
+    public static function moveUploadedFile($mezo, $prefix, array $engedett = self::UPLOADEXTENSIONS)
+    {
+        if (empty($_FILES[$mezo]['tmp_name']) || !is_uploaded_file($_FILES[$mezo]['tmp_name'])) {
+            return null;
+        }
+        $kiterjesztes = strtolower(pathinfo((string)($_FILES[$mezo]['name'] ?? ''), PATHINFO_EXTENSION));
+        if (!in_array($kiterjesztes, $engedett, true)) {
+            return null;
+        }
+        $path = self::storagePath(uniqid($prefix . '-') . '.' . $kiterjesztes);
+        return move_uploaded_file($_FILES[$mezo]['tmp_name'], $path) ? $path : null;
+    }
+
     public static function exporttemplatePath($filename)
     {
         return getcwd() . '/exporttemplates/' . $filename;

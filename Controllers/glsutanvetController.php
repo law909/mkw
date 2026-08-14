@@ -136,21 +136,9 @@ class glsutanvetController extends \mkwhelpers\MattableController
     {
         header('Content-Type: application/json; charset=utf-8');
 
-        if (empty($_FILES['toimport']['tmp_name']) || !is_uploaded_file($_FILES['toimport']['tmp_name'])) {
-            echo json_encode(['msg' => t('Nem érkezett feltöltött fájl.')]);
-            return;
-        }
-        // A célnevet teljes egészében mi állítjuk elő: a feltöltött fájl neve nem kerül bele.
-        // A storage/ könyvtárat a webszerver kiszolgálja, tehát a beküldött név átvétele
-        // egyszerre lenne könyvtárbejárás (../) és tetszőleges fájl (.php) elhelyezése.
-        $kiterjesztes = strtolower(pathinfo((string)$_FILES['toimport']['name'], PATHINFO_EXTENSION));
-        if (!in_array($kiterjesztes, ['xls', 'xlsx'], true)) {
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'glsutanvet', ['xls', 'xlsx']);
+        if (!$filenev) {
             echo json_encode(['msg' => t('Csak .xls vagy .xlsx fájl tölthető fel.')]);
-            return;
-        }
-        $filenev = \mkw\store::storagePath(uniqid('glsutanvet-') . '.' . $kiterjesztes);
-        if (!move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev)) {
-            echo json_encode(['msg' => t('A fájl mentése nem sikerült.')]);
             return;
         }
 

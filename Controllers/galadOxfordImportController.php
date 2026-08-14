@@ -63,8 +63,11 @@ class galadOxfordImportController extends \mkwhelpers\Controller
             $dbtol = 2; // fejléc sor kihagyása
         }
 
-        $filenev = \mkw\store::storagePath($_FILES['toimport']['name']);
-        move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+        $filenev = \mkw\store::moveUploadedFile('toimport', 'oxfordimport');
+        if (!$filenev) {
+            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
+            return;
+        }
 
         $filetype = IOFactory::identify($filenev);
         $reader = IOFactory::createReader($filetype);
