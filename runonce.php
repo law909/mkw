@@ -1566,6 +1566,23 @@ if ($DBVersion < '0121') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0121');
 }
 
+if ($DBVersion < '0122') {
+    // GLS utánvét import – a bank tranzakciók mellé, azonos jogosultsággal.
+    // A DDL az entitásból jön (./updateschema.sh).
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 2, "GLS utánvétek", "/admin/glsutanvet/viewlist", "/admin/glsutanvet", 40, 1, 270, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/glsutanvet/viewlist") m)'
+    );
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 2, "GLS utánvét import", "/admin/glsutanvet/viewupload", "/admin/glsutanvet", 40, 1, 280, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/glsutanvet/viewupload") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0122');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

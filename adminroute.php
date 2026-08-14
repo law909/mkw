@@ -1065,6 +1065,17 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/fizmodhatar/save', 'fizmodhatarController#save', 'adminfizmodhatarsave');
 }
 
+$router->map('GET', '/admin/glsutanvet/viewlist', 'glsutanvetController#viewlist', 'adminglsutanvetviewlist');
+$router->map('GET', '/admin/glsutanvet/getlistbody', 'glsutanvetController#getlistbody', 'adminglsutanvetgetlistbody');
+$router->map('GET', '/admin/glsutanvet/getkarb', 'glsutanvetController#getkarb', 'adminglsutanvetgetkarb');
+$router->map('GET', '/admin/glsutanvet/viewkarb', 'glsutanvetController#viewkarb', 'adminglsutanvetviewkarb');
+$router->map('GET', '/admin/glsutanvet/viewupload', 'glsutanvetController#viewupload', 'adminglsutanvetviewupload');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/glsutanvet/save', 'glsutanvetController#save', 'adminglsutanvetsave');
+    $router->map('POST', '/admin/glsutanvet/upload', 'glsutanvetController#upload', 'adminglsutanvetupload');
+    $router->map('POST', '/admin/glsutanvet/parosit', 'glsutanvetController#parosit', 'adminglsutanvetparosit');
+}
+
 $router->map('GET', '/admin/banktranzakcio/viewlist', 'banktranzakcioController#viewlist', 'adminbanktranzakcioviewlist');
 $router->map('GET', '/admin/banktranzakcio/getlistbody', 'banktranzakcioController#getlistbody', 'adminbanktranzakciogetlistbody');
 $router->map('GET', '/admin/banktranzakcio/getkarb', 'banktranzakcioController#getkarb', 'adminbanktranzakciogetkarb');

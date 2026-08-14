@@ -40,11 +40,29 @@
   > (`bizonylathelper.js`), mert a tétel terméke a betöltés után is változhat. Ha nincs kiválasztott termék, „Előbb válasszon terméket." üzenet jön.
   > Storno tételen az „Új" nem jelenik meg (ott a terméket sem lehet cserélni), az „Adatlap" igen.
   > Böngészőben kipróbálva az SZ2026/000002 számlán: mindkét gomb kirajzolódik, a href jól áll össze, üres termékre jön az üzenet.
-- a projekt gyökérben van két GLS_*.xlsx, írj egy importot ami importálja ezeket az utánvétes kifizetéseket, csak azokat a sorokat kell importálni, amelyikek Q
-  oszlopa (Beszedett utánvét összege (HUF)) nem nulla. csinálj nekik egy ideiglenes táblát bank tranzakció import mintájára, importkor próbáld meg kitalálni,
-  melyik bizonylathoz tartozhat a befizetés:
+- [x] **KÉSZ** a projekt gyökérben van két GLS_*.xlsx, írj egy importot ami importálja ezeket az utánvétes kifizetéseket, csak azokat a sorokat kell importálni,
+  amelyikek Q oszlopa (Beszedett utánvét összege (HUF)) nem nulla. csinálj nekik egy ideiglenes táblát bank tranzakció import mintájára, importkor próbáld meg
+  kitalálni, melyik bizonylathoz tartozhat a befizetés:
   fuvarlevélszám, aztán név összeg és cím alapján. Ha olyan bizonylatot találsz ami nem mozgat pénzt akkor keresd meg a belőle készült pénzt mozgató
   bizonylatot. Az importált tételekhez lehessen bizonylatszámot megadni egy karbantartóban bank tranzakcióhoz hasonlóan.
+  > **Részletes leírás: `docs/gls-utanvet-import.md`.** Menü: Bank, pénztár → **GLS utánvétek** és **GLS utánvét import** (a runonce 0122 teszi be).
+  > Új tábla `glsutanvet` (`Entities/GLSUtanvet.php`), a duplikátumszűrő a csomagszám – ugyanaz a kimutatás kétszer feltöltve nem csinál duplikátumot.
+  >
+  > **Egy dolgot hozzátettem a kért két lépcsőhöz** (szólj, ha nem kell): a fuvarlevélszám után, a név+összeg+cím **előtt** megnézem a kimutatás
+  > hivatkozás-mezőit is – a 2025-ös mintafájlban ott áll maga a bizonylatszám (`MR2025/002079`). Csak **pontos** bizonylatszám-egyezést fogadok el, tehát ha a
+  > mező webshopos rendelésszám (a 2026-os fájlban `5705`), ez az ág nem talál semmit és nem is tippel.
+  >
+  > **Amit a kódolás közben derült ki:** a képzett bizonylat **átveszi az előd fuvarlevélszámát**, tehát egy megrendelés és a belőle készült számla egyaránt
+  > illik a csomagszámra. Ezért a párosítás nem „egy találat vagy semmi", hanem összegyűjti a jelölteket, végigjárja a leszármazottaikat, és a **pénzt mozgató**
+  > bizonylatot választja – ez oldja fel a láncot is, meg a te „ha nem mozgat pénzt, keresd meg a belőle készültet" kérésedet is. Ha több pénzt mozgató
+  > bizonylat jönne ki, üresen hagyja: egy téves találat rossz bizonylatra könyvelné a pénzt.
+  >
+  > **Ami szándékosan kimaradt:** a párosított tételekből **nem** képez bank-/pénztárbizonylatot (a bank tranzakciónál erre van csoportos művelet). A feladat a
+  > táblát, az importot, a párosítást és a karbantartót kérte. Ha kell a könyvelés is, a `banktranzakcioController::generateBankbizonylat()` mintájára megy –
+  > az utánvét a futárszolgálat átutalásaként érkezik, tehát bankbizonylat való hozzá egy „GLS utánvét" jogcímmel. Szólj, és megcsinálom.
+  >
+  > **Kipróbálva** mindkét mintafájllal (2/6 és 4/16 sor jött be, az újraimport 0 újat csinált), és mind a három párosítási ág külön is – lásd a doksi végén az
+  > ellenőrzési táblázatot.
 - [x] **KÉSZ** a projekt gyökérben van egy "Mir Order.xls", a szállítói megrendeléseknek csinálj egy gombot amivel ilyen formátumban ki lehet exportálni őket. A
   gomb legyen ott minden száll.megrendelés sorban, azt exportálja amelyik sorban van
   > **Gomb:** „Mir" a szállítói megrendelés lista minden sorában (`bizonylatfejlista_tbody_tr.tpl`, `bizonylattipusid=='szallmegr'` mögött), új lapra tölt le.
