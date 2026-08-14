@@ -252,6 +252,10 @@
                         &nbsp;{if ($_egyed.isfedexszallitas)}<a href="#" class="js-fedexrates" data-egyedid="{$_egyed.id}">{at('Fedex díj')}</a>{/if}
                     </td>
                 </tr>
+                <tr>
+                    <td>{at('GLS parcelid')}:</td>
+                    <td class="fuvarlevel">{$_egyed.glsparcelid}</td>
+                </tr>
                 {if ($_egyed.foxpostbarcode)}
                     <tr>
                         <td>{at('Foxpost barcode')}:</td>

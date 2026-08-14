@@ -567,6 +567,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['stripepaymentintentid'] = $t->getStripepaymentintentid();
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = (bool)$t->getGlsparcelid();
+        $x['glsparcelid'] = $t->getGlsparcelid();
         $x['fedexparcellabelurlek'] = $t->getFedexparcellabelurlek();
         $x['shipdatestr'] = $t->getShipdateStr();
         $x['isfedexbekuldve'] = (bool)$t->getFedextrackingnumber();

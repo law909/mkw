@@ -1807,6 +1807,7 @@ class Bizonylatfej
         $ret['sysmegjegyzes'] = $this->getSysmegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
+        $ret['glsparcelid'] = $this->getGlsparcelid();
         $ret['foxpostbarcode'] = $this->getFoxpostBarcode();
         if (\mkw\store::isFoxpostSzallitasimod($this->getSzallitasimodId())) {
             $ret['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $this->getFuvarlevelszam();
