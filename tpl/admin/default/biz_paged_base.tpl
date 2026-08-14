@@ -36,7 +36,9 @@
         .tetelsor { font-size: 8pt; }
         .keszult { font-size: 6pt; }
         .osszesen { font-size: 10pt; }
-        .tetelcell { padding: 0; border: 0; }
+        /* a padding-bottom választja el a tételeket egymástól – minden sablon-családban,
+           mert minden tétel ebben a cellában ül */
+        .tetelcell { padding: 0 0 1.5mm 0; border: 0; }
         .osszesitocell { padding-top: 4mm; border: 0; }
         .tetelgrid { border-collapse: collapse; }
         /* oszlopköz, különben a jobbra igazított érték a szomszéd oszlop feliratához ér */
