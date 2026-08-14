@@ -80,17 +80,31 @@ visszaállítottam, lásd lent.
 
 ---
 
-## Amit menet közben találtam – ezt nézd meg
+- [x] **KÉSZ (utólag kért)** A Beállítások mentés hibája: az OK gomb kitörölte a nem látszó fülek beállításait
+  > **A hiba:** a `setup.tpl` sok blokkja `{if}` mögött van (`setup.ini` kapcsoló, `main.theme`, vagy adatfüggő
+  > feltétel), a `setupController::save()` viszont **feltétel nélkül** írta ki ezeket a paramétereket. Ami nincs a
+  > formon, az üres stringként érkezik, a kikapcsolt pipa meg hamisként – így egy ártatlan „OK" némán kitörölte annak a
+  > fülnek a beállításait, amelyik ezen a telepítésen ki van kapcsolva. Nálam ez a **6 Stripe paramétert** vitte el
+  > (köztük egy `sk_live_…` kulcsot); visszaállítottam.
+  > **A javítás** az UNAS fülön már meglévő minta általánosítása: minden feltételes blokkba került egy jelzőmező
+  > (`<input name="…van" type="hidden" value="1">`), a controllerben pedig egy táblázat
+  > (`setupController::CONDITIONAL_BLOCKS`) mondja meg, melyik jelzőhöz melyik paraméterek tartoznak. A `setObj()`
+  > egyetlen ponton kihagyja azt a paramétert, amelyiknek a blokkja nem renderelődött. Az UNAS-ra írt `setUnasObj()`
+  > ezzel feleslegessé vált, kikerült.
+  > **15 blokk** van védve: ársávok, automatikus pénztárbizonylat, darshan fizetési módok, jóga fül, teljesítmény
+  > kezdő éve, spanyol mezők, változat-típusok, változat sorrend, multishop fül, MPTNGY fül, gyártói import fül,
+  > mugenrace fül, Barion, Stripe, UNAS.
+  > **Új feltételes blokknál** két dolog kell: a jelzőmező a blokkba, és a paraméterei a táblázatba.
+  > **Kipróbálva** a superzoneb2b/mugenrace fejlesztői DB-n: mentés után a `parameterek` tábla **betűre ugyanaz**
+  > maradt (a Stripe kulcsok is), a renderelt fülek mezői viszont továbbra is mentődnek (a multishop fül
+  > `kezdotermekkategoria5` mezőjébe írt teszt érték elmentődött). A tesztadatot visszaállítottam.
+  > **Két apróság, ami mentéskor felvesz egy-egy új sort** (`backorderstock=0`, `utanvetbankszamla=''`): ezek
+  > feltétel nélküli mezők, csak eddig nem volt soruk a táblában – az értékük az alapértelmezés, tehát nem változtatnak
+  > semmin.
 
-**A Beállítások képernyő OK gombja kitörli a nem látszó fülek beállításait.** Amikor a beállítás mentését próbáltam, a
-mentés **kinullázta a 6 Stripe paramétert** (köztük egy `sk_live_…` kulcsot!), és felvett egy `backorderstock=0` sort.
-Ez **nem az én változtatásom hibája**: a `setup.tpl`-ben a Stripe blokk `{if ($setup.stripe)}` mögött van, a
-`setupController::save()` viszont **feltétel nélkül** kiírja a Stripe mezőket a requestből – ami nincs a formon, az üres
-stringként mentődik. Tehát minden olyan telepítésen, ahol a `setup.ini` kapcsolója nem egyezik a DB tartalmával, egy
-ártatlan „OK" adatot veszít. Ezen a fejlesztői DB-n a mentés előtti állapotot **visszaállítottam** (a Stripe kulcsokat
-és a `backorderstock` sort is), ellenőrizve, hogy a `parameterek` tábla a mentés előtti tartalmú.
-Javaslat: a mentésben minden fülhöz ugyanaz a `{if}` feltétel kerüljön, mint a sablonban (vagy csak azt írja, ami
-tényleg megérkezett a requestben). Ha kéred, megcsinálom – nem nyúltam hozzá, mert ez a mostani feladatokon kívül van.
+---
+
+## Megjegyzések
 
 **Az „Utánvét bankszámla" beállítást a teszt után kivettem** ebből a DB-ből, mert találomra választottam számlát.
 A GLS-t használó telepítésen neked kell beállítanod, különben a képzett bankbizonylat a számla bankszámláját örökli.

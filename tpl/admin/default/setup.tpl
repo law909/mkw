@@ -105,6 +105,7 @@
                             </select>
                         </div>
                         {if ($vanautopenztarbizonylat)}
+                            <input name="autopenztarvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label
                                         for="AutoPenztarbizonylatPenztarEdit">{at('Automatikus pénztárbizonylat pénztára')}:</label></span>
@@ -149,6 +150,7 @@
                             </select>
                         </div>
                         {if ($setup.darshan)}
+                            <input name="darshanfizmodvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>
                                 <select id="SZEPFizmodEdit" name="szepkartyafizmod">
@@ -287,6 +289,7 @@
                             </select>
                         </div>
                         {if ($setup.arsavok)}
+                            <input name="arsavokvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="ArsavEdit">{at('Ársáv')}:</label></span>
                                 <select id="ArsavEdit" name="arsav">
@@ -343,6 +346,7 @@
                             <span><input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}">
                         </div>
                         {if ($maintheme === 'mkwcansas')}
+                            <input name="teljesitmenyvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="TeljesitmenyKezdoEvEdit">{at('Teljesítmény jelentés kezdő éve')}:</label></span>
                                 <input id="TeljesitmenyKezdoEvEdit" name="teljesitmenykezdoev" type="text" value="{$teljesitmenykezdoev}">
@@ -422,6 +426,7 @@
                         </div>
                     </div>
                     {if ($maintheme === 'darshan' || $setup.darshan == 1)}
+                        <input name="jogafulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="JogaJutalekEdit">{at('Jutalék százalék')}:</label></span>
@@ -677,6 +682,7 @@
                             </select>
                         </div>
                         {if ($maintheme === 'superzoneb2b')}
+                            <input name="spanyolvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SpanyolCimkeEdit">{at('Spanyol címke')}:</label></span>
                                 <select id="SpanyolCimkeEdit" name="spanyolcimke">
@@ -699,6 +705,7 @@
                             </div>
                         {/if}
                         {if ($maintheme === 'superzoneb2b' || $maintheme === "mkwcansas" || $maintheme === "mugenrace" || $maintheme === "mugenrace2026" || $maintheme === "superzonehu")}
+                            <input name="valtozattipusvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SzinEdit">{at('Szín')}:</label></span>
                                 <select id="SzinEdit" name="valtozattipusszin">
@@ -719,6 +726,7 @@
                             </div>
                         {/if}
                         {if ($maintheme !== 'mkwcansas')}
+                            <input name="valtozatsorrendvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="RendezendoValtozatEdit">{at('Rendezendő változat')}:</label></span>
                                 <select id="RendezendoValtozatEdit" name="rendezendovaltozat">
@@ -1168,6 +1176,7 @@
                 </div>
                 {if ($setup.mptngy)}
                     <div id="MPTNGYTab" class="mattkarb-page" data-visible="visible">
+                        <input name="mptngyfulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="MPTNGYRegSablonEdit">{at('Reg.visszaig. sablon')}:</label></span>
@@ -1296,6 +1305,7 @@
                 </div>
                 {if ($setup.multishop)}
                     <div id="Web2Tab" class="mattkarb-page" data-visible="visible">
+                        <input name="multishopfulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off2Edit">{at('Publikus felület kikapcsolva')}:</label></span>
@@ -1546,6 +1556,7 @@
                 {/if}
                 {if ($maintheme == 'mkwcansas')}
                     <div id="ImportTab" class="mattkarb-page" data-visible="visible">
+                        <input name="gyartoimportfulvan" type="hidden" value="1">
                         <div>
                             <label>{at('Vízjel')}:</label>
                             <input name="watermark" type="text" value="{$watermark}">
@@ -1838,6 +1849,7 @@
                 {/if}
                 {if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace')}
                     <div id="MugenraceTab" class="mattkarb-page" data-visible="visible">
+                        <input name="mugenracefulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <label>{at('Mugenrace logo')}:</label>
@@ -1885,6 +1897,7 @@
                 {/if}
                 {if ($setup.barion)}
                     <div id="BarionTab" class="mattkarb-page" data-visible="visible">
+                        <input name="barionfulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="BarionPOSkeyEdit">{at('POS key')}:</label></span>
@@ -1956,6 +1969,7 @@
                 {/if}
                 {if ($setup.stripe)}
                     <div id="StripeTab" class="mattkarb-page" data-visible="visible">
+                        <input name="stripefulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="StripeAPIKeyEdit">{at('Stripe API kulcs (secret)')}:</label></span>

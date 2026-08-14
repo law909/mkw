@@ -1084,15 +1084,235 @@ class setupController extends \mkwhelpers\Controller
     }
 
     /**
-     * Csak akkor ír, ha a mező tényleg megérkezett. Az UNAS fül a setup.ini kapcsolója mögött
-     * van: ha nem renderelődik, a feltétel nélküli írás némán kitörölné az API kulcsot.
+     * A `setup.tpl` feltételesen renderelt blokkjai: a blokk jelzőmezője => a blokkban
+     * szerkesztett paraméterek.
+     *
+     * Amit a form nem rendereltt ki, azt a mentés nem is szerkesztheti: a hiányzó szövegmező üres
+     * stringként, a kikapcsolt pipa hamisként érkezik, tehát a feltétel nélküli írás némán
+     * kitörölné a beállítást azon a telepítésen, ahol a blokk kapcsolója ki van kapcsolva, de az
+     * érték az adatbázisban ott van.
+     *
+     * Új feltételes blokknál két dolog kell: egy `<input name="…van" type="hidden" value="1">` a
+     * blokk belsejébe, és a blokkban szerkesztett paraméterek ide.
      */
-    private function setUnasObj($par, $specialchars = false)
+    private const CONDITIONAL_BLOCKS = [
+        'arsavokvan' => [
+            \mkw\consts::Arsav,
+            \mkw\consts::ShowTermekArsav,
+            \mkw\consts::ShowTermekArsavValutanem,
+        ],
+        'autopenztarvan' => [
+            \mkw\consts::AutoPenztarbizonylatPenztar,
+            \mkw\consts::AutoPenztarbizonylatJogcim,
+        ],
+        'darshanfizmodvan' => [
+            \mkw\consts::SZEPFizmod,
+            \mkw\consts::SportkartyaFizmod,
+            \mkw\consts::AYCMFizmod,
+        ],
+        'jogafulvan' => [
+            \mkw\consts::JogaJutalek,
+            \mkw\consts::JogaUresTeremJutalek,
+            \mkw\consts::JogaAYCMJutalek,
+            \mkw\consts::JogaTanarelszamolasSablon,
+            \mkw\consts::JogaNemjonsenkiSablon,
+            \mkw\consts::JogaNemjelenteztekelegenTanarnakSablon,
+            \mkw\consts::JogaNemjelentkeztekelegenGyakorlonakSablon,
+            \mkw\consts::JogaElegenjelentkeztekTanarnakSablon,
+            \mkw\consts::JogaBejelentkezesKoszonoSablon,
+            \mkw\consts::JogaBejelentkezesErtesitoSablon,
+            \mkw\consts::JogaLemondasKoszonoSablon,
+            \mkw\consts::JogaLemondasErtesitoSablon,
+            \mkw\consts::JogaElmaradasErtesitoSablon,
+            \mkw\consts::JogaElmaradasKonyvelonekSablon,
+            \mkw\consts::JogaBerletKoszonoSablon,
+            \mkw\consts::JogaBerletFelszolitoSablon,
+            \mkw\consts::JogaBerletSzamlazvaSablon,
+            \mkw\consts::JogaBerletLefogjarniSablon,
+            \mkw\consts::JogaBerletLejartSablon,
+            \mkw\consts::JogaBerletDatumLejartSablon,
+            \mkw\consts::JogaOrajegyTermek,
+            \mkw\consts::JogaBerlet4Termek,
+            \mkw\consts::JogaBerlet10Termek,
+            \mkw\consts::JogaAllapotfelmeresTipus,
+        ],
+        'teljesitmenyvan' => [
+            \mkw\consts::TeljesitmenyKezdoEv,
+        ],
+        'spanyolvan' => [
+            \mkw\consts::SpanyolCimke,
+            \mkw\consts::Spanyolorszag,
+        ],
+        'valtozattipusvan' => [
+            \mkw\consts::ValtozatTipusSzin,
+            \mkw\consts::ValtozatTipusMeret,
+        ],
+        'valtozatsorrendvan' => [
+            \mkw\consts::RendezendoValtozat,
+            \mkw\consts::ValtozatSorrend,
+        ],
+        'multishopfulvan' => [
+            \mkw\consts::Off2,
+            \mkw\consts::Off3,
+            \mkw\consts::Off4,
+            \mkw\consts::Off5,
+            \mkw\consts::Locale2,
+            \mkw\consts::Locale3,
+            \mkw\consts::Locale4,
+            \mkw\consts::Locale5,
+            \mkw\consts::WebshopValutanem2,
+            \mkw\consts::WebshopValutanem3,
+            \mkw\consts::WebshopValutanem4,
+            \mkw\consts::WebshopValutanem5,
+            \mkw\consts::KezdoTermekKategoria2,
+            \mkw\consts::KezdoTermekKategoria3,
+            \mkw\consts::KezdoTermekKategoria4,
+            \mkw\consts::KezdoTermekKategoria5,
+            \mkw\consts::Webshop2Price,
+            \mkw\consts::Webshop2Discount,
+            \mkw\consts::Webshop3Price,
+            \mkw\consts::Webshop3Discount,
+            \mkw\consts::Webshop4Price,
+            \mkw\consts::Webshop4Discount,
+            \mkw\consts::Webshop5Price,
+            \mkw\consts::Webshop5Discount,
+            \mkw\consts::Web4DefaKatId,
+        ],
+        'mptngyfulvan' => [
+            \mkw\consts::MPTNGYRegVisszaigSablon,
+            \mkw\consts::MPTNGYJelszoEmlekSablon,
+            \mkw\consts::MPTNGYSzimpoziumTipus,
+            \mkw\consts::MPTNGYSzimpoziumEloadasTipus,
+            \mkw\consts::MPTNGYKonyvbemutatoTipus,
+            \mkw\consts::MPTNGYDatum1,
+            \mkw\consts::MPTNGYDatum2,
+            \mkw\consts::MPTNGYDatum3,
+            \mkw\consts::MPTNGYSzempont1,
+            \mkw\consts::MPTNGYSzempont2,
+            \mkw\consts::MPTNGYSzempont3,
+            \mkw\consts::MPTNGYSzempont4,
+            \mkw\consts::MPTNGYSzempont5,
+        ],
+        'gyartoimportfulvan' => [
+            \mkw\consts::Watermark,
+            \mkw\consts::DENCs,
+            \mkw\consts::EpitoelemszamCs,
+            \mkw\consts::CsomagoltmeretCs,
+            \mkw\consts::AjanlottkorosztalyCs,
+            \mkw\consts::ExcludeReintex,
+            \mkw\consts::GyartoDelton,
+            \mkw\consts::GyartoKreativ,
+            \mkw\consts::GyartoMaxutov,
+            \mkw\consts::GyartoReintex,
+            \mkw\consts::GyartoTutisport,
+            \mkw\consts::GyartoLegavenue,
+            \mkw\consts::GyartoNomad,
+            \mkw\consts::GyartoNika,
+            \mkw\consts::GyartoHaffner24,
+            \mkw\consts::GyartoEvona,
+            \mkw\consts::GyartoEvonaXML,
+            \mkw\consts::GyartoGulf,
+            \mkw\consts::GyartoSmileebike,
+            \mkw\consts::GyartoCopydepo,
+            \mkw\consts::PathDelton,
+            \mkw\consts::PathKreativ,
+            \mkw\consts::PathMaxutov,
+            \mkw\consts::PathReintex,
+            \mkw\consts::PathTutisport,
+            \mkw\consts::PathLegavenue,
+            \mkw\consts::PathNomad,
+            \mkw\consts::PathNika,
+            \mkw\consts::PathHaffner24,
+            \mkw\consts::PathEvona,
+            \mkw\consts::PathSmileebike,
+            \mkw\consts::PathCopydepo,
+            \mkw\consts::UrlKreativ,
+            \mkw\consts::UrlKreativImages,
+            \mkw\consts::UrlDelton,
+            \mkw\consts::UrlNomad,
+            \mkw\consts::UrlNika,
+            \mkw\consts::UrlMaxutov,
+            \mkw\consts::UrlLegavenue,
+            \mkw\consts::UrlHaffner24,
+            \mkw\consts::UrlReintex,
+            \mkw\consts::UrlEvonaXML,
+            \mkw\consts::UrlSmileebike,
+            \mkw\consts::UrlCopydepoTermek,
+            \mkw\consts::UrlCopydepoKeszlet,
+            \mkw\consts::KepUrlEvona,
+        ],
+        'mugenracefulvan' => [
+            \mkw\consts::Napijelentes2DefaultRaktar,
+            \mkw\consts::MugenraceKatId,
+            \mkw\consts::MugenraceLogo,
+            \mkw\consts::MugenraceFooterLogo,
+            \mkw\consts::MugenraceFooldalKep,
+            \mkw\consts::MugenraceFejlecKep,
+            \mkw\consts::MugenraceFooldalSzoveg,
+        ],
+        'barionfulvan' => [
+            \mkw\consts::BarionEnvironment,
+            \mkw\consts::BarionPayeeEmail,
+            \mkw\consts::BarionPOSKey,
+            \mkw\consts::BarionAPIVersion,
+            \mkw\consts::BarionRedirectUrl,
+            \mkw\consts::BarionCallbackUrl,
+            \mkw\consts::BarionFizmod,
+            \mkw\consts::BarionFizetesrevarStatusz,
+            \mkw\consts::BarionFizetveStatusz,
+            \mkw\consts::BarionRefundedStatusz,
+        ],
+        'stripefulvan' => [
+            \mkw\consts::StripeAPIKey,
+            \mkw\consts::StripePublishableKey,
+            \mkw\consts::StripeWebhookSecret,
+            \mkw\consts::StripeFizmod,
+            \mkw\consts::StripeFizetveStatusz,
+            \mkw\consts::StripeFizetesrevarStatusz,
+        ],
+        'unasfulvan' => [
+            \mkw\consts::UnasApiUrl,
+            \mkw\consts::UnasApiKey,
+            \mkw\consts::UnasKepPath,
+            \mkw\consts::UnasKepUrlPrefix,
+            \mkw\consts::UnasNyelv,
+            \mkw\consts::UnasNyelvL1,
+            \mkw\consts::UnasStatuszOpenNormal,
+            \mkw\consts::UnasStatuszOpenPrepare,
+            \mkw\consts::UnasStatuszCloseOk,
+            \mkw\consts::UnasStatuszCloseFault,
+            \mkw\consts::UnasFizetveStatusz,
+            \mkw\consts::UnasRaktar,
+            \mkw\consts::UnasPartnertipus,
+            \mkw\consts::UnasDefaultTermek,
+            \mkw\consts::UnasSzallitasiKtgTermek,
+            \mkw\consts::UnasKezelesiKtgTermek,
+            \mkw\consts::UnasKedvezmenyTermek,
+            \mkw\consts::UnasVisszairasStatusz,
+            \mkw\consts::UnasVisszairasSzamla,
+            \mkw\consts::UnasVisszairasCsomag,
+            \mkw\consts::UnasStatuszEmail,
+            \mkw\consts::UnasModositasEngedve,
+        ],
+    ];
+
+    /** @var array|null paraméter => true azokra, amiket ez a mentés nem szerkeszthet */
+    private $skippedparams;
+
+    /** Nem renderelt blokk paramétere-e – lásd CONDITIONAL_BLOCKS. */
+    private function isSkippedParam($par): bool
     {
-        if (!$this->params->existsRequestParam($par)) {
-            return;
+        if ($this->skippedparams === null) {
+            $this->skippedparams = [];
+            foreach (self::CONDITIONAL_BLOCKS as $jelzo => $parok) {
+                if (!$this->params->existsRequestParam($jelzo)) {
+                    foreach ($parok as $p) {
+                        $this->skippedparams[$p] = true;
+                    }
+                }
+            }
         }
-        $this->setObj($par, $this->params->getStringRequestParam($par), $specialchars);
+        return isset($this->skippedparams[$par]);
     }
 
     /**
@@ -1144,6 +1364,9 @@ class setupController extends \mkwhelpers\Controller
 
     private function setObj($par, $value, $specialchars = false)
     {
+        if ($this->isSkippedParam($par)) {
+            return;
+        }
         $en = $this->getEntityName();
         /** @var \Entities\Parameterek $p */
         $p = \mkw\store::getEm()->getRepository($en)->find($par);
@@ -1723,12 +1946,12 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::StripeFizetesrevarStatusz, '');
         }
 
-        $this->setUnasObj(\mkw\consts::UnasApiUrl, true);
-        $this->setUnasObj(\mkw\consts::UnasApiKey);
-        $this->setUnasObj(\mkw\consts::UnasKepPath, true);
-        $this->setUnasObj(\mkw\consts::UnasKepUrlPrefix, true);
-        $this->setUnasObj(\mkw\consts::UnasNyelv);
-        $this->setUnasObj(\mkw\consts::UnasNyelvL1);
+        $this->setObj(\mkw\consts::UnasApiUrl, $this->params->getStringRequestParam(\mkw\consts::UnasApiUrl), true);
+        $this->setObj(\mkw\consts::UnasApiKey, $this->params->getStringRequestParam(\mkw\consts::UnasApiKey));
+        $this->setObj(\mkw\consts::UnasKepPath, $this->params->getStringRequestParam(\mkw\consts::UnasKepPath), true);
+        $this->setObj(\mkw\consts::UnasKepUrlPrefix, $this->params->getStringRequestParam(\mkw\consts::UnasKepUrlPrefix), true);
+        $this->setObj(\mkw\consts::UnasNyelv, $this->params->getStringRequestParam(\mkw\consts::UnasNyelv));
+        $this->setObj(\mkw\consts::UnasNyelvL1, $this->params->getStringRequestParam(\mkw\consts::UnasNyelvL1));
         $this->saveUnasRendelesSetup();
 
         $this->setObj(\mkw\consts::SzamlaOrzesAlap, $this->params->getIntRequestParam(\mkw\consts::SzamlaOrzesAlap));
