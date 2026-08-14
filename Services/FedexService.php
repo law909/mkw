@@ -145,12 +145,12 @@ class FedexService
     private function createSzamlakepPdf(Bizonylatfej $bizonylatfej)
     {
         $bizctrl = \Controllers\bizonylatfejController::factory($bizonylatfej->getBizonylattipusId());
-        $html = $bizctrl->getBizonylatHTML($bizonylatfej->getId());
-        if (!$html) {
+        $pdf = $bizctrl->getBizonylatPDF($bizonylatfej->getId());
+        if (!$pdf) {
             return false;
         }
         $pdfpath = \mkw\store::storagePath(\mkw\store::urlize($bizonylatfej->getId()) . '_fedex.pdf');
-        \mkw\store::getPDFEngine($html)->saveAs($pdfpath);
+        $pdf->saveAs($pdfpath);
         if (!is_readable($pdfpath)) {
             return false;
         }

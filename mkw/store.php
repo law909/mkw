@@ -1435,6 +1435,17 @@ class store
         return self::getSetupValue('pdf');
     }
 
+    /**
+     * Szerveroldali, lapozott PDF (mPDF) a böngészőben nyomtatott HTML helyett.
+     * Szándékosan opt-in: kapcsoló nélkül minden bizonylat a régi úton megy, és bekapcsolva
+     * is csak azok a típusok, amelyekhez van biz_paged_* sablonváltozat.
+     * Az isPDF() azért kell bele, mert a doPrint() – a doPDF()-fel ellentétben – nincs mögötte.
+     */
+    public static function isPagedPdf()
+    {
+        return self::getSetupValue('pagedpdf') && self::isPDF();
+    }
+
     public static function isSSL()
     {
         return self::getSetupValue('ssl');
@@ -2294,6 +2305,8 @@ class store
     public static function getPDFEngine($html)
     {
         switch (self::getPDFMode()) {
+            case 'mpdf':
+                return new mkwmpdf($html);
             case 'dompdf':
                 return new mkwdompdf($html);
             case 'wkhtmltopdf':

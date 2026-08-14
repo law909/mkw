@@ -79,6 +79,14 @@ abstract class Controller
         return $view;
     }
 
+    // lapozott (mPDF) bizonylatsablon: téma + alapértelmezett könyvtár, hogy az {extends} is feloldódjon
+    public function createPagedView($tplfilename)
+    {
+        $view = $this->getTemplateFactory()->createFallbackView($tplfilename);
+        $this->generalDataLoader->loadData($view);
+        return $view;
+    }
+
     /**
      * A lista-sablonokhoz (…lista.tpl) átadja a "Mindig nyitva" (szűrő nyitva tartása)
      * mentett állapotát. A kulcs a lista URL-jének elérési útja (a ? előtti rész, domain nélkül)

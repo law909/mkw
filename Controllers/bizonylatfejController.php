@@ -42,6 +42,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     private $biztipusid;
     private \Entities\Bizonylattipus|null $biztipus;
+    // a getBizonylatHTML() mellékhatása: igaz, ha lapozott (mPDF) sablon renderelt
+    private bool $pagedrendered = false;
 
     public function setBiztipus($biztipusid)
     {
@@ -1477,7 +1479,18 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     $tplname = $this->biztipus->getTplname();
                 }
             }
-            $view = $this->createView($tplname);
+            $this->pagedrendered = false;
+            $view = null;
+            if (\mkw\store::isPagedPdf()) {
+                $paged = \mkw\store::getTemplateFactory()->findPagedTemplate($tplname);
+                if ($paged) {
+                    $view = $this->createPagedView($paged);
+                    $this->pagedrendered = true;
+                }
+            }
+            if (!$view) {
+                $view = $this->createView($tplname);
+            }
             $this->biztipus->setTemplateVars($view);
             $x = $o->toLista();
             $view->setVar('egyed', $x);
@@ -1486,9 +1499,30 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
     }
 
+    /**
+     * A bizonylat PDF motorja: lapozott sablon esetén mindig mPDF (a sablon mPDF-specifikus
+     * tageket tartalmaz), különben a pdfmode szerinti motor. Minden PDF-et előállító hívó
+     * ezen megy át, így a nyomtatás, a letöltés, az e-mail és a tömeges export azonos fájlt ad.
+     */
+    public function getBizonylatPDF($id)
+    {
+        $html = $this->getBizonylatHTML($id);
+        if (!$html) {
+            return null;
+        }
+        return $this->pagedrendered ? new \mkw\mkwmpdf($html) : \mkw\store::getPDFEngine($html);
+    }
+
     public function doPrint()
     {
-        echo $this->getBizonylatHTML($this->params->getStringRequestParam('id'));
+        $id = $this->params->getStringRequestParam('id');
+        $html = $this->getBizonylatHTML($id);
+        if ($this->pagedrendered) {
+            // inline, nem letöltés: a nyomtatás gomb új fülön nyitja, ott a böngésző PDF nézője kell
+            (new \mkw\mkwmpdf($html))->inline(\mkw\store::urlize($id) . '.pdf');
+            return;
+        }
+        echo $html;
     }
 
     public function doPDF()
@@ -1501,9 +1535,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             if ($o) {
                 $this->biztipusid = $o->getBizonylattipusId();
                 $this->biztipus = $o->getBizonylattipus();
-                $html = $this->getBizonylatHTML($id);
-                $pdf = \mkw\store::getPDFEngine($html);
-                $pdf->send(\mkw\store::urlize($id) . '.pdf');
+                $pdf = $this->getBizonylatPDF($id);
+                if ($pdf) {
+                    $pdf->send(\mkw\store::urlize($id) . '.pdf');
+                }
                 if ($printed !== false) {
                     $this->setNyomtatva($id, true);
                 }
@@ -1523,9 +1558,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $email = $o->getPartneremail();
                 if ($email) {
                     $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
-                    $html = $this->getBizonylatHTML($id);
-                    $pdf = \mkw\store::getPDFEngine($html);
-                    if ($email && $emailtpl) {
+                    $pdf = $this->getBizonylatPDF($id);
+                    if ($pdf && $emailtpl) {
                         $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
                         $pdf->saveAs($filepath);
 

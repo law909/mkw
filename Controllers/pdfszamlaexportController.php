@@ -40,10 +40,13 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
             $mar = $bizonylat->getId();
             $filenev = \mkw\store::urlize($mar) . '.pdf';
             $filepath = \mkw\store::storagePath($filenev);
-            $html = $bizctrl->getBizonylatHTML($mar);
-            $pdf = \mkw\store::getPDFEngine($html);
-            $pdf->saveAs($filepath);
-            $this->files[] = $filenev;
+            $pdf = $bizctrl->getBizonylatPDF($mar);
+            if ($pdf) {
+                $pdf->saveAs($filepath);
+                $this->files[] = $filenev;
+            }
+            // az mPDF a teljes dokumentumot memóriában tartja a destruktorig
+            unset($pdf);
         }
         return $mar;
     }

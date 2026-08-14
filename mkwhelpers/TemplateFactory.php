@@ -121,6 +121,48 @@ class TemplateFactory
         return $view;
     }
 
+    /**
+     * A lapozott (mPDF) sablonváltozat neve, ha van ilyen a téma- vagy az alapértelmezett
+     * könyvtárban. Nincs találat ⇒ null, és a hívó marad a régi, böngészőben nyomtatott HTML-nél.
+     * A biz_ előtag után beszúrt "paged_" azért jobb, mint egy _paged utótag, mert a
+     * {@see \Entities\BizonylatfejRepository::getReportfileSelectList()} biz_<biztipus> előtagra
+     * illeszt, így a lapozott sablonok nem szivárognak be a reportfile legördülőbe.
+     */
+    public function findPagedTemplate($tplfilename)
+    {
+        if (strpos($tplfilename, 'biz_paged_') === 0) {
+            $paged = $tplfilename;
+        } elseif (strpos($tplfilename, 'biz_') === 0) {
+            $paged = 'biz_paged_' . substr($tplfilename, 4);
+        } else {
+            return null;
+        }
+        if (file_exists($this->getTemplate() . $paged) || file_exists($this->getTemplateDefault() . $paged)) {
+            return $paged;
+        }
+        return null;
+    }
+
+    /**
+     * Két sablonkönyvtárral nyit nézetet, hogy az {extends}/{include} is végigessen a témáról az
+     * alapértelmezettre – a createView() csak a belépő sablont ejti vissza, a hivatkozásait nem.
+     * Szándékosan csak a lapozott útvonalé: globálisan más sablonok feloldását is elmozdítaná.
+     */
+    public function createFallbackView($tplfilename)
+    {
+        $view = null;
+        if (strtolower($this->templateenginename) == 'smarty') {
+            $view = new SmartyView(
+                $this->getTemplateC(),
+                [$this->getTemplate(), $this->getTemplateDefault()],
+                $tplfilename,
+                $this->getSmartyConfig(),
+                $this->getSmartyCache()
+            );
+        }
+        return $view;
+    }
+
     public function createMainView($tplfilename)
     {
         $view = null;
