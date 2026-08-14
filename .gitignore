@@ -37,7 +37,6 @@ tpl/cache/
 tpl/template_c/
 vendor/
 /vendor/
-/!docs/
 /tpl/configs/
 !/js/vendor/
 /config.php
