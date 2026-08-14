@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
@@ -31,6 +32,7 @@ class MirOrderExcelService
 {
 
     private const OSZLOPCIKKSZAM = 0;   // A
+    private const OSZLOPKEP = 1;        // B – a termék főképe
     private const OSZLOPPARTNER = 3;    // D – a 2. sorban a partner neve, az E-vel összevonva
     private const OSZLOPNEV = 2;        // C
     private const OSZLOPSZIN = 3;       // D
@@ -38,6 +40,9 @@ class MirOrderExcelService
 
     /** a minta űrlapján E–M a méretskála: ennyi méretoszlop akkor is megvan, ha kevesebb kell */
     private const MINMERETOSZLOP = 9;
+
+    /** a termékkép befoglaló négyzete képpontban (a sormagasság és a B oszlop ehhez igazodik) */
+    private const KEPMERET = 60;
 
     /** az oszlopcímkék sora; alatta kezdődnek az adatok */
     private const CIMKESOR = 3;
@@ -95,6 +100,11 @@ class MirOrderExcelService
         // Az oszlopszélesség a tartalomhoz igazodik. A megrendelő neve és a kelt viszont nem
         // szélesíthet oszlopot, ezért csak a szélességek kiszámolása után kerül a lapra.
         $this->autoSizeOszlopok($sheet);
+        if (array_filter(array_column($sorok, 'kep'))) {
+            // a képek nem cellaértékek, az automatikus méretezés üresnek látja a képoszlopot
+            $sheet->getColumnDimension(Coordinate::stringFromColumnIndex(self::OSZLOPKEP + 1))
+                ->setWidth((self::KEPMERET + 9) / 7);
+        }
         $this->writeRendelesAdatok($sheet, $fej);
         return $excel;
     }
@@ -238,6 +248,7 @@ class MirOrderExcelService
         );
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor), $fej->getValutanemnev());
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor), $fej->getHataridoStr());
+        $this->writeKep($sheet, $sor, $adat['kep']);
 
         // a mátrix-rész rácsos (az üres méretcella is), az azon túli cellák csak akkor kapnak
         // keretet, ha van bennük adat – az elválasztó „egyéb" oszlop így üresen keret nélkül marad
@@ -247,6 +258,29 @@ class MirOrderExcelService
             . ':' . \mkw\store::getExcelCoordinate($oszlopok['egyeb'] - 1, $sor)
         );
         $this->setErtekKeret($sheet, $sor, $oszlopok);
+    }
+
+    /**
+     * A termék főképe a B oszlopba, a sor magasságát a képhez igazítva. A kép a befoglaló
+     * négyzetbe fér bele, az arányát megtartva.
+     *
+     * @param string $fajl a kép fájlja a lemezen, üresen nincs mit kitenni
+     */
+    private function writeKep($sheet, $sor, $fajl): void
+    {
+        if (!$fajl) {
+            return;
+        }
+        $kep = new Drawing();
+        $kep->setPath($fajl);
+        $kep->setResizeProportional(true);
+        $kep->setWidthAndHeight(self::KEPMERET, self::KEPMERET);
+        $kep->setCoordinates(\mkw\store::getExcelCoordinate(self::OSZLOPKEP, $sor));
+        $kep->setOffsetX(2);
+        $kep->setOffsetY(2);
+        $kep->setWorksheet($sheet);
+        // a sormagasság pontban értendő, a kép képpontban
+        $sheet->getRowDimension($sor)->setRowHeight(self::KEPMERET * 0.75 + 3);
     }
 
     /** @param string $tartomany egy cella vagy cellatartomány */
@@ -322,6 +356,30 @@ class MirOrderExcelService
         }
 
         $this->autoSizeOszlopok($sheet);
+    }
+
+    /**
+     * A termék főképének fájlja a lemezen, vagy üres string, ha nincs használható kép. Először a
+     * kicsinyített változatokat keressük: a rendelőlapra bőven elég, és nem hizlalja a fájlt.
+     * A `kepurl` URL-kódolt és a dokumentumgyökérhez képest relatív.
+     */
+    private function getKepFajl($termek): string
+    {
+        if (!$termek) {
+            return '';
+        }
+        $docroot = \Services\MediatarService::getDocRoot();
+        foreach ([$termek->getKepurlSmall(), $termek->getKepurlMini(), $termek->getKepurl()] as $url) {
+            if (!$url) {
+                continue;
+            }
+            $fajl = $docroot . '/' . ltrim(rawurldecode($url), '/');
+            // a getimagesize a formátumot is kiszűri: amit a PhpSpreadsheet nem tud, azt kihagyjuk
+            if (is_file($fajl) && @getimagesize($fajl)) {
+                return $fajl;
+            }
+        }
+        return '';
     }
 
     /**
@@ -452,6 +510,7 @@ class MirOrderExcelService
                 $sorok[$kulcs] = [
                     'cikkszam' => $cikkszam,
                     'nev' => $this->getTermekNev($tetel, $termek, $nyelv),
+                    'kep' => $this->getKepFajl($termek),
                     'szin' => $szin,
                     'csoport' => $this->getCsoportNev($termek, $nyelv),
                     'ar' => $tetel->getNettoegysar(),
