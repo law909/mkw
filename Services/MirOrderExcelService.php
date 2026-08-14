@@ -145,7 +145,7 @@ class MirOrderExcelService
         $sheet->setCellValue($partnercella, $fej->getPartnernev());
         // a hosszú név ne lógjon bele a kelt cellájába
         $sheet->mergeCells($partnercella . ':' . \mkw\store::getExcelCoordinate(self::OSZLOPPARTNER + 1, 2));
-        $sheet->setCellValue('F2', 'Order ' . $fej->getKeltStr());
+        $sheet->setCellValue('F2', 'ORDER ' . $fej->getKeltStr());
     }
 
     /**
