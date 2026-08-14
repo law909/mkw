@@ -116,6 +116,41 @@
 
 ---
 
+## Biztonsági hiba, amit a kódolás után találtunk (2026-08-14)
+
+A commit utáni biztonsági ellenőrzés **könyvtárbejárást / tetszőleges fájl írását** jelezte a GLS importban. Megnéztem: **valós volt, és súlyosabb is, mint
+elsőre látszik.** Javítva, kipróbálva.
+
+**Mi volt a baj.** Az import a feltöltött fájlt a *beküldött néven* mentette a `storage/`-ba:
+
+```php
+$filenev = \mkw\store::storagePath($_FILES['toimport']['name']);   // a nev tamado-vezerelt
+move_uploaded_file($_FILES['toimport']['tmp_name'], $filenev);
+```
+
+A `store::storagePath()` sima string-összefűzés, tehát a `../../` a névben kilép a könyvtárból. **És a `storage/`-t az Apache kiszolgálja** – ezt ebben a
+munkamenetben ellenőriztem –, úgyhogy egy `.php` feltöltése nem csak fájlírás, hanem **kódfuttatás** lett volna. Admin jogosultság kell hozzá, tehát nem
+kívülről támadható, de egy admin fiókból shellt adott volna.
+
+**Mit javítottam.**
+
+1. `Controllers/glsutanvetController.php` – a célnevet most **teljes egészében a program állítja elő** (`uniqid()` + fehérlistás kiterjesztés), a beküldött név
+   egyáltalán nem kerül bele. Csak `.xls` / `.xlsx` mehet, van `is_uploaded_file()` ellenőrzés, és a hibás fájl sem marad a lemezen.
+2. **`storage/.htaccess`** – új fájl, a `kepek/.htaccess` mintájára: a `storage/`-ban semmilyen körülmények között nem futhat PHP. Ez mélységi védelem, ami
+   **az összes többi feltöltő végpontot is fedezi**.
+
+**Kipróbálva:** a `storage/`-ba tett teszt PHP fájl 403-at ad és nem fut le (a legitim xlsx-et továbbra is kiszolgálja); a `gonosz.php`, a `../../gonosz.php` és
+a `gonosz.xlsx.php` feltöltését az import visszautasítja; a `../../gonosz.xlsx` néven feltöltött **érvényes** fájl a `storage/glsutanvet-<uniqid>.xlsx`-be kerül,
+a projekt gyökerébe semmi nem íródott.
+
+> **Ami még nyitva van – ez már nem az én kódom, ezért nem nyúltam hozzá.** Ugyanez a minta **kb. 25 másik helyen** él a repóban (`importController` a
+> legtöbb, de a `banktranzakcioController:189`, a `leltarfejController:367`, a négy `galad*ImportController` és a `minkeszletimportController:27` is – ez
+> utóbbi `basename()`-mel legalább a bejárást kivédi, a `.php` kiterjesztést nem). A `storage/.htaccess` a **kódfuttatást** mindegyiknél megszünteti, de a
+> `../` névvel máshova (pl. `kepek/`-be vagy a gyökérbe) írás továbbra is lehetséges. Ha akarod, végigviszem ugyanezt a javítást mind a 25 helyen – kb. egy
+> órás, mechanikus meló.
+
+---
+
 ## Összegzés (2026-08-14)
 
 **8 feladat kész, 1 vár rád** (a fizmód/storno pénzmozgás – ott kérted, hogy előbb csak a terv készüljön el: `docs/storno-penzmozgas.md`).
