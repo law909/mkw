@@ -144,8 +144,7 @@ class FedexService
      */
     private function createSzamlakepPdf(Bizonylatfej $bizonylatfej)
     {
-        $bizctrl = \Controllers\bizonylatfejController::factory($bizonylatfej->getBizonylattipusId());
-        $pdf = $bizctrl->getBizonylatPDF($bizonylatfej->getId());
+        $pdf = (new BizonylatPrintService())->createEngine($bizonylatfej->getId());
         if (!$pdf) {
             return false;
         }

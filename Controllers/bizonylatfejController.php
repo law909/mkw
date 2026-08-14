@@ -42,8 +42,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     private $biztipusid;
     private \Entities\Bizonylattipus|null $biztipus;
-    // a getBizonylatHTML() mellékhatása: igaz, ha lapozott (mPDF) sablon renderelt
-    private bool $pagedrendered = false;
 
     public function setBiztipus($biztipusid)
     {
@@ -1462,67 +1460,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         echo json_encode($ki);
     }
 
-    public function getBizonylatHTML($id)
+    public function getPrintService()
     {
-        /** @var Bizonylatfej $o */
-        $o = $this->getRepo()->findForPrint($id);
-        if ($o) {
-            if (!$this->biztipusid) {
-                $this->biztipusid = $o->getBizonylattipus()?->getId();
-                $this->biztipus = $o->getBizonylattipus();
-            }
-            if ($o->getReportfile()) {
-                $tplname = $o->getReportfile();
-            } elseif ($this->biztipus) {
-                $tplname = $this->biztipus->getLocalizedFieldValue('tplname', $o->getBizonylatnyelv());
-                if (!$tplname) {
-                    $tplname = $this->biztipus->getTplname();
-                }
-            }
-            $this->pagedrendered = false;
-            $view = null;
-            if (\mkw\store::isPagedPdf()) {
-                $paged = \mkw\store::getTemplateFactory()->findPagedTemplate($tplname);
-                if ($paged) {
-                    $view = $this->createPagedView($paged);
-                    $this->pagedrendered = true;
-                }
-            }
-            if (!$view) {
-                $view = $this->createView($tplname);
-            }
-            $this->biztipus->setTemplateVars($view);
-            $x = $o->toLista();
-            $view->setVar('egyed', $x);
-            $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
-            return $view->getTemplateResult();
-        }
-    }
-
-    /**
-     * A bizonylat PDF motorja: lapozott sablon esetén mindig mPDF (a sablon mPDF-specifikus
-     * tageket tartalmaz), különben a pdfmode szerinti motor. Minden PDF-et előállító hívó
-     * ezen megy át, így a nyomtatás, a letöltés, az e-mail és a tömeges export azonos fájlt ad.
-     */
-    public function getBizonylatPDF($id)
-    {
-        $html = $this->getBizonylatHTML($id);
-        if (!$html) {
-            return null;
-        }
-        return $this->pagedrendered ? new \mkw\mkwmpdf($html) : \mkw\store::getPDFEngine($html);
+        return new \Services\BizonylatPrintService();
     }
 
     public function doPrint()
     {
-        $id = $this->params->getStringRequestParam('id');
-        $html = $this->getBizonylatHTML($id);
-        if ($this->pagedrendered) {
-            // inline, nem letöltés: a nyomtatás gomb új fülön nyitja, ott a böngésző PDF nézője kell
-            (new \mkw\mkwmpdf($html))->inline(\mkw\store::urlize($id) . '.pdf');
-            return;
-        }
-        echo $html;
+        $this->getPrintService()->output($this->params->getStringRequestParam('id'));
     }
 
     public function doPDF()
@@ -1533,9 +1478,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
-                $this->biztipusid = $o->getBizonylattipusId();
-                $this->biztipus = $o->getBizonylattipus();
-                $pdf = $this->getBizonylatPDF($id);
+                $pdf = $this->getPrintService()->createEngine($id);
                 if ($pdf) {
                     $pdf->send(\mkw\store::urlize($id) . '.pdf');
                 }
@@ -1553,12 +1496,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
-                $this->biztipusid = $o->getBizonylattipusId();
-                $this->biztipus = $o->getBizonylattipus();
                 $email = $o->getPartneremail();
                 if ($email) {
                     $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
-                    $pdf = $this->getBizonylatPDF($id);
+                    $pdf = $this->getPrintService()->createEngine($id);
                     if ($pdf && $emailtpl) {
                         $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
                         $pdf->saveAs($filepath);

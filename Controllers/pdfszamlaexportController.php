@@ -25,7 +25,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
     private function getPDFs($biztipus, $utolsoszamla)
     {
         $bizrepo = $this->getEm()->getRepository(Bizonylatfej::class);
-        $bizctrl = bizonylatfejController::factory($biztipus);
+        $printsvc = new \Services\BizonylatPrintService();
         $bt = \mkw\store::getEm()->getRepository(Bizonylattipus::class)->find($biztipus);
 
         $filter = new \mkwhelpers\FilterDescriptor();
@@ -40,7 +40,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
             $mar = $bizonylat->getId();
             $filenev = \mkw\store::urlize($mar) . '.pdf';
             $filepath = \mkw\store::storagePath($filenev);
-            $pdf = $bizctrl->getBizonylatPDF($mar);
+            $pdf = $printsvc->createEngine($mar);
             if ($pdf) {
                 $pdf->saveAs($filepath);
                 $this->files[] = $filenev;

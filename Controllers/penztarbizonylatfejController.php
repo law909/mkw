@@ -330,25 +330,23 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
 
     /**
      * A pénztárbizonylat nyomtatási képe. A sablont a bizonylattípus tplname mezője
-     * adja meg (alapértelmezésben biz_penztar.tpl).
+     * adja meg (alapértelmezésben biz_penztar.tpl). A renderelést és a lapozott/régi
+     * mód eldöntését a BizonylatPrintService végzi, csak a sablonváltozók állnak itt össze.
      *
      * @param string $id
      *
-     * @return string
+     * @return array{html: string, paged: bool}|null
      */
-    public function getBizonylatHTML($id)
+    public function renderBizonylat($id)
     {
         /** @var \Entities\Penztarbizonylatfej $o */
         $o = $this->getRepo()->find($id);
         if (!$o) {
-            return '';
+            return null;
         }
 
         $bt = $o->getBizonylattipus();
-        $view = $this->createView(($bt ? $bt->getTplname() : '') ?: 'biz_penztar.tpl');
-        if ($bt) {
-            $bt->setTemplateVars($view);
-        }
+        $tplname = ($bt ? $bt->getTplname() : '') ?: 'biz_penztar.tpl';
 
         $x = $this->loadVars($o);
         $x['bizonylatnev'] = $bt ? $bt->getNev() : t('Pénztárbizonylat');
@@ -372,13 +370,20 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         }
         $x['tetellista'] = $tetellista;
 
-        $view->setVar('egyed', $x);
-        return $view->getTemplateResult();
+        $vars = ['egyed' => $x];
+        if ($bt) {
+            $vars = array_merge($bt->getTemplateVars(), $vars);
+        }
+        return (new \Services\BizonylatPrintService())->renderTemplate($tplname, $vars);
     }
 
     public function doPrint()
     {
-        echo $this->getBizonylatHTML($this->params->getStringRequestParam('id'));
+        $id = $this->params->getStringRequestParam('id');
+        $r = $this->renderBizonylat($id);
+        if ($r) {
+            (new \Services\BizonylatPrintService())->outputResult($r, $id);
+        }
     }
 
     protected function _getkarb($tplname)
