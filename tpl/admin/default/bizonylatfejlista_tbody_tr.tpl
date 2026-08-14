@@ -9,7 +9,8 @@
                     data-vanpartneremail="{if ($_egyed.partneremail)}1{else}0{/if}">
                 <option value="">{at('válasszon')}</option>
                 {foreach $_egyed.bizonylatstatuszlist as $_role}
-                    <option value="{$_role.id}" data-vanemailtemplate="{if ($_role.vanemailtemplate)}1{else}0{/if}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                    <option value="{$_role.id}"
+                            data-vanemailtemplate="{if ($_role.vanemailtemplate)}1{else}0{/if}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
                 {/foreach}
             </select>
         </td>
@@ -50,7 +51,7 @@
                 {/if}
                 {if ($_egyed.bizonylattipusid=='szallmegr')}
                     <a class="js-mirexport" href="/admin/szallmegrfej/mirexport?id={$_egyed.id|escape:'url'}"
-                       title="{at('Export Mir formátumban')}" target="_blank">Mir</a>
+                       title="{at('Excel export')}" target="_blank">Xlsx</a>
                 {/if}
                 {if ($showslicemanufacturerbutton)}
                     <a class="js-slicemanufacturer" href="#" data-egyedid="{$_egyed.id}"
