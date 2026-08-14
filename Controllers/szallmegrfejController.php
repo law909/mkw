@@ -42,7 +42,7 @@ class szallmegrfejController extends bizonylatfejController
 
     private function getMirFilename($fej): string
     {
-        return 'Mir Order ' . str_replace(['/', '\\'], '-', (string)$fej->getId()) . '.xlsx';
+        return 'Order ' . str_replace(['/', '\\'], '-', (string)$fej->getId()) . '.xlsx';
     }
 
 }
