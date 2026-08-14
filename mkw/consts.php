@@ -12,8 +12,6 @@ class consts
     const Tulajcrc = 'tulajcrc';
 
     const DBVersion = 'dbversion';
-    /** a minboltikeszlet -> minkeszlet átnevezés jelölője; a DBVersion-től független, mert a sor elején kell futnia */
-    const MinkeszletRename = 'minkeszletrename';
 
     const Valutanem = 'valutanem';
     const WebshopValutanem = 'webshopvalutanem';

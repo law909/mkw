@@ -13,78 +13,6 @@ if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '') < '3_0') {
     }
 }
 
-
-// minboltikeszlet -> minkeszlet átnevezés. Szándékosan a DBVersion-lánc ELŐTT és attól függetlenül
-// fut: a lánc alsóbb blokkjai (0113, 0117, 0118) már az új néven mozgatják az adatot, tehát a régi
-// nevek addigra nem élhetnek túl. A schema-tool a felesleges oszlopot eldobja és az új táblát üresen
-// hozná létre, ezért az „./updateschema.sh már lefutott" állapotot is kezelni kell: olyankor nem
-// átnevezünk, hanem átmásoljuk az adatot az újba és a régit eldobjuk.
-if (!\mkw\store::getParameter(\mkw\consts::MinkeszletRename)) {
-    $conn = \mkw\store::getEm()->getConnection();
-    $vantabla = static function (string $tabla) use ($conn) {
-        return (bool)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
-            [$tabla]
-        )->fetchOne();
-    };
-    $vanoszlop = static function (string $tabla, string $oszlop) use ($conn) {
-        return (bool)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.COLUMNS'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
-            [$tabla, $oszlop]
-        )->fetchOne();
-    };
-    $vanindex = static function (string $tabla, string $index) use ($conn) {
-        return (bool)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.STATISTICS'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND INDEX_NAME = ?',
-            [$tabla, $index]
-        )->fetchOne();
-    };
-    foreach (['termek' => 'termekminkeszlet', 'termekvaltozat' => 'termekvaltozatminkeszlet'] as $szulo => $uj) {
-        $regi = str_replace('minkeszlet', 'minboltikeszlet', $uj);
-        $fk = $szulo . '_id';
-
-        if ($vantabla($regi)) {
-            if ($vantabla($uj)) {
-                $conn->executeStatement(
-                    'INSERT INTO ' . $uj . ' (' . $fk . ', raktar_id, minkeszlet, created, lastmod)'
-                    . ' SELECT ' . $fk . ', raktar_id, minboltikeszlet, created, lastmod FROM ' . $regi
-                    . ' ON DUPLICATE KEY UPDATE minkeszlet = VALUES(minkeszlet), lastmod = VALUES(lastmod)'
-                );
-                $conn->executeStatement('DROP TABLE ' . $regi);
-            } else {
-                $conn->executeStatement('RENAME TABLE ' . $regi . ' TO ' . $uj);
-            }
-        }
-        if ($vantabla($uj) && $vanoszlop($uj, 'minboltikeszlet')) {
-            $conn->executeStatement(
-                'ALTER TABLE ' . $uj . ' CHANGE minboltikeszlet minkeszlet NUMERIC(14, 2) DEFAULT NULL'
-            );
-        }
-        if ($vantabla($uj) && $vanindex($uj, $regi . '_egyedi')) {
-            $conn->executeStatement(
-                'ALTER TABLE ' . $uj . ' RENAME INDEX ' . $regi . '_egyedi TO ' . $uj . '_egyedi'
-            );
-        }
-
-        if ($vanoszlop($szulo, 'minboltikeszlet')) {
-            if ($vanoszlop($szulo, 'minkeszlet')) {
-                $conn->executeStatement(
-                    'UPDATE ' . $szulo . ' SET minkeszlet = minboltikeszlet'
-                    . ' WHERE (minkeszlet IS NULL OR minkeszlet = 0) AND (minboltikeszlet IS NOT NULL)'
-                );
-                $conn->executeStatement('ALTER TABLE ' . $szulo . ' DROP COLUMN minboltikeszlet');
-            } else {
-                $conn->executeStatement(
-                    'ALTER TABLE ' . $szulo . ' CHANGE minboltikeszlet minkeszlet NUMERIC(14, 2) DEFAULT NULL'
-                );
-            }
-        }
-    }
-    \mkw\store::setParameter(\mkw\consts::MinkeszletRename, '1');
-}
-
 $DBVersion = \mkw\store::getParameter(\mkw\consts::DBVersion, '');
 
 if ($DBVersion < '0028') {
@@ -1476,48 +1404,7 @@ if ($DBVersion < '0117') {
 }
 
 if ($DBVersion < '0118') {
-    // Csak superzoneb2b: változatos terméken a minimumot mostantól a változatok hordozzák
-    // (\Services\KeszletService létrája). A termékszintű értéket – globálisat és raktárasat –
-    // rámásoljuk minden változatra, utána a termékszintet nullázzuk. A felülírás szándékos: a
-    // régi létrában a nem nulla termékérték úgyis elnyomta a változatét, tehát a hatályos
-    // minimum nem változik.
-    if (\mkw\store::isSuperzoneB2B()) {
-        $conn = \mkw\store::getEm()->getConnection();
-        // a runonce megelőzheti a kézi ./updateschema.sh-t: hiányzó táblára minden admin kérés fatal lenne
-        $tablakvannak = $conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.TABLES'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN (?, ?)',
-            ['termekminkeszlet', 'termekvaltozatminkeszlet']
-        )->fetchOne();
-        if ($tablakvannak == 2) {
-            $conn->executeStatement(
-                'UPDATE termekvaltozat v JOIN termek t ON (t.id = v.termek_id)'
-                . ' SET v.minkeszlet = t.minkeszlet, v.lastmod = NOW()'
-                . ' WHERE (t.minkeszlet IS NOT NULL) AND (t.minkeszlet <> 0)'
-            );
-            // created/lastmod kézzel, mert a nyers SQL megkerüli a Gedmo Timestampable-t
-            $conn->executeStatement(
-                'INSERT INTO termekvaltozatminkeszlet (termekvaltozat_id, raktar_id, minkeszlet, created)'
-                . ' SELECT v.id, m.raktar_id, m.minkeszlet, NOW()'
-                . ' FROM termekminkeszlet m'
-                . ' JOIN termekvaltozat v ON (v.termek_id = m.termek_id)'
-                . ' WHERE (m.minkeszlet IS NOT NULL) AND (m.minkeszlet <> 0)'
-                . ' ON DUPLICATE KEY UPDATE minkeszlet = VALUES(minkeszlet), lastmod = NOW()'
-            );
-            $conn->executeStatement(
-                'DELETE m FROM termekminkeszlet m'
-                . ' WHERE EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = m.termek_id)'
-            );
-            $conn->executeStatement(
-                'UPDATE termek t SET t.minkeszlet = 0, t.lastmod = NOW()'
-                . ' WHERE (t.minkeszlet IS NOT NULL) AND (t.minkeszlet <> 0)'
-                . ' AND EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
-            );
-            \mkw\store::setParameter(\mkw\consts::DBVersion, '0118');
-        }
-    } else {
-        \mkw\store::setParameter(\mkw\consts::DBVersion, '0118');
-    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0118');
 }
 
 if ($DBVersion < '0119') {
