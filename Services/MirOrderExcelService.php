@@ -160,8 +160,8 @@ class MirOrderExcelService
     {
         $sor = self::CIMKESOR;
         $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor), 'ART:');
-        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPNEV, $sor), 'Name');
-        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPSZIN, $sor), 'color');
+        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPNEV, $sor), 'NAME');
+        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPSZIN, $sor), 'COLOR');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['db'], $sor), 'TOT PCS');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['ar'], $sor), 'PRICE');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['ossz'], $sor), 'TOTAL');
@@ -376,8 +376,10 @@ class MirOrderExcelService
         }
         if ($nevre) {
             /** @var Meret $meret */
-            foreach (\mkw\store::getEm()->getRepository(Meret::class)
-                         ->findBy(['nev' => array_keys($nevre)]) as $meret) {
+            foreach (
+                \mkw\store::getEm()->getRepository(Meret::class)
+                    ->findBy(['nev' => array_keys($nevre)]) as $meret
+            ) {
                 $ret[$meret->getNev()] = (int)$meret->getSorrend();
             }
         }
