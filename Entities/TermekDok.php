@@ -12,7 +12,7 @@ class TermekDok extends Dokumentumtar
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="termek",inversedBy="termekdokok")
+     * @ORM\ManyToOne(targetEntity="Termek",inversedBy="termekdokok")
      * @ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")
      */
     private $termek;

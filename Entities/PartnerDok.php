@@ -11,7 +11,7 @@ use mkw\store;
 class PartnerDok extends Dokumentumtar {
 
     /**
-     * @ORM\ManyToOne(targetEntity="partner",inversedBy="partnerdokok")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="partnerdokok")
      * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",onDelete="cascade")
      */
     private $partner;

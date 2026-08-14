@@ -11,7 +11,7 @@ use mkw\store;
 class BizonylatDok extends Dokumentumtar {
 
     /**
-     * @ORM\ManyToOne(targetEntity="bizonylatfej",inversedBy="bizonylatdokok")
+     * @ORM\ManyToOne(targetEntity="Bizonylatfej",inversedBy="bizonylatdokok")
      * @ORM\JoinColumn(name="bizonylat_id",referencedColumnName="id",onDelete="cascade")
      */
     private $bizonylat;

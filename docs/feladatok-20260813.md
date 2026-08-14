@@ -173,6 +173,36 @@ duplikátumszűrő is helyesen 0 újat csinált), `.php` néven feltöltve mindh
 
 ---
 
+## Deploy után jött elő: a dokumentum fül „+" gombja fatalra futott (2026-08-14)
+
+```
+MappingException: The target-entity Entities\termek cannot be found in 'Entities\TermekDok#termek'
+```
+
+**Nem a mostani munkából származó hiba, de a deployom váltotta ki.** Három entitásban a kapcsolat célosztálya **kisbetűvel** volt beírva:
+
+| fájl | volt | lett |
+|------|------|------|
+| `Entities/TermekDok.php` | `targetEntity="termek"` | `targetEntity="Termek"` |
+| `Entities/PartnerDok.php` | `targetEntity="partner"` | `targetEntity="Partner"` |
+| `Entities/BizonylatDok.php` | `targetEntity="bizonylatfej"` | `targetEntity="Bizonylatfej"` |
+
+**Miért csak most.** A `Entities\termek` osztály nem létezik – a fájl `Termek.php`. A fejlesztői gépen (macOS) a fájlrendszer nem érzékeny a kis- és
+nagybetűre, ezért a Composer autoloader megtalálja; **a szerveren (Linux) nem.** A Doctrine ezt a `validateRuntimeMetadata()`-ban ellenőrzi, ami **csak akkor
+fut le, ha a metaadat nincs a cache-ben**. A mostani entitás-változások (új `GLSUtanvet`, a `minkeszlet` átnevezés) miatt a metaadat-cache újraépült, és ekkor
+robbant a évek óta ott lapuló hiba.
+
+**Nincs DDL-változás** (`./updatesql.sh` → „Nothing to update"), csak a leképezés neve javult; proxy újragenerálva.
+
+**Átnéztem az összes entitást ugyanerre a hibára:** a `targetEntity` és a `repositoryClass` értékek most mind pontosan egyeznek a valódi osztálynevekkel
+(0 eltérés). Az `orm:validate-schema` a javítás előtt és után is ugyanazt a 11, **korábbról meglévő** figyelmeztetést adja (Termekcsoport, Leltarfej, Partner
+– ezek nem futásidejű hibák), a három Dok entitás egyikben sem szerepel.
+
+> **Megjegyzés a jövőre:** nyolc controller osztályneve eltér a fájlnevétől kis/nagybetűben (`bevetfejController.php` → `class BevetfejController` stb.).
+> Ezek most működnek, mert mindenhol a fájlnévvel egyező, kisbetűs alakkal hivatkozunk rájuk – de ez ugyanez a csapda. Nem nyúltam hozzájuk.
+
+---
+
 ## Összegzés (2026-08-14)
 
 **8 feladat kész, 1 vár rád** (a fizmód/storno pénzmozgás – ott kérted, hogy előbb csak a terv készüljön el: `docs/storno-penzmozgas.md`).
