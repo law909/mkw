@@ -24,6 +24,12 @@ feloldott minimum helyett – tehát „mi van 5 darab alatt", függetlenül att
 minimum. Ilyenkor a „nincs beállítva minimum" szűrés (`minkeszlet > 0`) sem érvényes, így
 0-t beírva pont a negatív készletűek jönnek. A pipa nélkül a riport számai változatlanok.
 
+**A pipa állása dolgozónként megjegyződik**: átkapcsoláskor a képernyő a `/admin/setlistparam`
+útvonalon elmenti a bejelentkezett dolgozóhoz (`dolgozoparameterek` tábla,
+`/admin/minkeszletlista/view_keszletszamit` kulccsal), a `view()` pedig ezzel az értékkel rajzolja
+ki. Ugyanaz a mechanizmus, mint a listák „Mindig nyitva" pipája – és ugyanaz a korlátja is:
+a **SYSADMIN belépés mögött nincs dolgozó** (`pk = -1`), ott nem tárolódik semmi.
+
 A képernyős riportnak **nyomtatási képe** is van: a lap tetején egy „Nyomtatás" gomb (nyomtatáskor
 maga a gomb eltűnik), a táblázat alján a nyomtatás dátuma – ugyanaz a `rep.css`, ami a többi
 kimutatásé.

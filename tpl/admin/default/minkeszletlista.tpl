@@ -46,7 +46,8 @@
                         <label for="KeszletEdit">{at('Készlet')}:</label>
                         <input id="KeszletEdit" name="keszlet" type="number" step="any" size="8" value="0">
                         <label for="KeszletSzamitEdit">{at('a minimum készlet helyett ezt figyelje')}:</label>
-                        <input id="KeszletSzamitEdit" name="keszletszamit" type="checkbox" value="1">
+                        <input id="KeszletSzamitEdit" name="keszletszamit" type="checkbox" value="1"
+                               {if ($keszletszamit)}checked="checked"{/if}>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>

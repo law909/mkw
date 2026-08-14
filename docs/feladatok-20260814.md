@@ -102,6 +102,17 @@ visszaállítottam, lásd lent.
   > feltétel nélküli mezők, csak eddig nem volt soruk a táblában – az értékük az alapértelmezés, tehát nem változtatnak
   > semmin.
 
+- [x] **KÉSZ (utólag kért)** A `keszletszamit` pipa értéke maradjon meg a bejelentkezett felhasználónak
+  > A listák „Mindig nyitva" pipájának mechanizmusát használja: átkapcsoláskor a képernyő a `/admin/setlistparam`
+  > útvonalra küldi az értéket, ami a `dolgozoparameterek` táblába megy a bejelentkezett dolgozóhoz,
+  > `/admin/minkeszletlista/view_keszletszamit` kulccsal; a `view()` ugyanezzel a kulccsal olvassa vissza és pipálja be.
+  > **Fontos korlát:** a **SYSADMIN belépés mögött nincs dolgozó** (`pk = -1`), így SYSADMIN-ként semmi nem tárolódik –
+  > ez az egész `dolgozoparameterek` mechanizmus sajátja, nem ezé a képernyőé. Valódi dolgozóval belépve működik.
+  > **Csak a pipa** tárolódik, a mellette lévő Készlet input értéke nem – ha azt is meg kell jegyezni, szólj.
+  > **Kipróbálva:** a képernyő tényleg elküldi a `keszletszamit` értéket a `/admin/setlistparam`-nak (200-as válasz,
+  > a kulcs a lap útvonala); a tárolás oda-vissza működik egy valódi dolgozó azonosítóval (`1` → `true`, `0` → `false`,
+  > SYSADMIN alatt `false`); a sablon `checked`-del rajzolja a pipát, ha a mentett érték 1. A tesztsort töröltem.
+
 ---
 
 ## Megjegyzések

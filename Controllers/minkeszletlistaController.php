@@ -40,6 +40,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     private $limit;
     private $uselimit = false;
 
+    /** a „készlet számít" pipa mentett állása – dolgozónként, a lista-paraméterek kulcsával */
+    private const KESZLETSZAMIT = 'keszletszamit';
+
     public function view()
     {
         $view = $this->createView('minkeszletlista.tpl');
@@ -49,7 +52,23 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $view->setVar('masikraktarlist', $rc->getSelectList());
         $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
+        $view->setVar(
+            self::KESZLETSZAMIT,
+            \Services\DolgozoParameterService::getBoolParameter($this->getKeszletSzamitKey()) ? 1 : 0
+        );
         $view->printTemplateResult();
+    }
+
+    /**
+     * A pipa kulcsa a `dolgozoparameterek` táblában: a szűrőképernyő útvonala + a paraméternév,
+     * ugyanaz, amit a kliens is összerak a `/admin/setlistparam` híváskor.
+     */
+    private function getKeszletSzamitKey()
+    {
+        return \Services\DolgozoParameterService::getListKey(
+            parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH),
+            self::KESZLETSZAMIT
+        );
     }
 
     private function readParams()
