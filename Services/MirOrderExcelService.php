@@ -92,6 +92,7 @@ class MirOrderExcelService
                 $fej->getValutanemnev()
             );
             $this->setErtekKeret($sheet, $sor, $oszlopok);
+            $this->setKozepre($sheet, $sor, $oszlopok);
         }
 
         $this->writeTermekLap($excel, $fej);
@@ -258,6 +259,7 @@ class MirOrderExcelService
             . ':' . \mkw\store::getExcelCoordinate($oszlopok['egyeb'] - 1, $sor)
         );
         $this->setErtekKeret($sheet, $sor, $oszlopok);
+        $this->setKozepre($sheet, $sor, $oszlopok);
     }
 
     /**
@@ -277,10 +279,25 @@ class MirOrderExcelService
         $kep->setWidthAndHeight(self::KEPMERET, self::KEPMERET);
         $kep->setCoordinates(\mkw\store::getExcelCoordinate(self::OSZLOPKEP, $sor));
         $kep->setOffsetX(2);
-        $kep->setOffsetY(2);
         $kep->setWorksheet($sheet);
         // a sormagasság pontban értendő, a kép képpontban
-        $sheet->getRowDimension($sor)->setRowHeight(self::KEPMERET * 0.75 + 3);
+        $magassagpt = self::KEPMERET * 0.75 + 3;
+        $sheet->getRowDimension($sor)->setRowHeight($magassagpt);
+        // az arányos kicsinyítéstől a kép alacsonyabb lehet a sornál: tegyük függőlegesen középre
+        $kep->setOffsetY((int)max(0, round(($magassagpt / 0.75 - $kep->getHeight()) / 2)));
+    }
+
+    /**
+     * Az egész sor vízszintesen középre – a cikkszámtól a határidőig.
+     *
+     * @param array $oszlopok a méretek mögötti oszlopok helye (getOszlopok)
+     */
+    private function setKozepre($sheet, $sor, array $oszlopok): void
+    {
+        $sheet->getStyle(
+            \mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor)
+            . ':' . \mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor)
+        )->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
     }
 
     /** @param string $tartomany egy cella vagy cellatartomány */
