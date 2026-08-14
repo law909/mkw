@@ -4,6 +4,8 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Raktar;
+use Entities\TermekFa;
+use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -31,6 +33,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     private $masikraktarnev;
     private $gyarto;
     private $gyartonev;
+    /** @var string[] a kijelölt termékfák karkod-előtagjai */
+    private $faszuro = [];
+    private $fanevek = '';
 
     public function view()
     {
@@ -61,6 +66,55 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $this->gyarto = $this->params->getIntRequestParam('gyarto');
         $gy = $this->getRepo(\Entities\Partner::class)->find($this->gyarto);
         $this->gyartonev = $gy ? $gy->getNev() : '';
+
+        $this->readFaFilter();
+    }
+
+    /**
+     * A kijelölt termékfák karkod-előtagjai – a termék a három fa-mezője bármelyikével
+     * beleeshet a kijelölt ágba, ugyanúgy, mint a készlet kimutatásban.
+     */
+    private function readFaFilter()
+    {
+        $this->faszuro = [];
+        $this->fanevek = '';
+        $fak = $this->params->getArrayRequestParam('fafilter');
+        $fak = array_filter(array_map('intval', (array)$fak));
+        if (!$fak) {
+            return;
+        }
+        $ff = new FilterDescriptor();
+        $ff->addFilter('id', 'IN', $fak);
+        $nevek = [];
+        /** @var TermekFa $sor */
+        foreach ($this->getRepo(TermekFa::class)->getAll($ff, []) as $sor) {
+            $this->faszuro[] = $sor->getKarkod() . '%';
+            $nevek[] = $sor->getNev();
+        }
+        $this->fanevek = implode(', ', $nevek);
+    }
+
+    /**
+     * A termékre vonatkozó szűrések SQL-feltételei. Mindkét ág `t` néven hivatkozik a termékre.
+     *
+     * @return string[]
+     */
+    private function getTermekFeltetelek()
+    {
+        $feltetelek = [];
+        if ($this->gyarto) {
+            $feltetelek[] = 't.gyarto_id = :gyarto';
+        }
+        if ($this->faszuro) {
+            $agak = [];
+            foreach (array_keys($this->faszuro) as $i) {
+                foreach (['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'] as $mezo) {
+                    $agak[] = 't.' . $mezo . ' LIKE :fa' . $i;
+                }
+            }
+            $feltetelek[] = '(' . implode(' OR ', $agak) . ')';
+        }
+        return $feltetelek;
     }
 
     /**
@@ -106,7 +160,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             $rsm->addScalarResult($oszlop, $oszlop);
         }
 
-        $gyartoszuro = $this->gyarto ? ' t.gyarto_id = :gyarto' : '';
+        $termekfeltetelek = $this->getTermekFeltetelek();
+        $termekszuro = $termekfeltetelek ? implode(' AND ', $termekfeltetelek) : '';
 
         // változatos ág: a tétel a változatra hivatkozik
         $valtozatag = 'SELECT _xx.termek_id AS termek_id, _xx.id AS termekvaltozat_id,'
@@ -124,7 +179,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             ) . ' AS minkeszlet'
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (t.id = _xx.termek_id)'
-            . ($gyartoszuro ? ' WHERE' . $gyartoszuro : '');
+            . ($termekszuro ? ' WHERE ' . $termekszuro : '');
 
         // változat nélküli termékek: a tétel a termékre hivatkozik, változat nélkül
         $termekag = 'SELECT t.id AS termek_id, NULL AS termekvaltozat_id,'
@@ -136,7 +191,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' AS minkeszlet'
             . ' FROM termek t'
             . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
-            . ($gyartoszuro ? ' AND' . $gyartoszuro : '');
+            . ($termekszuro ? ' AND ' . $termekszuro : '');
 
         $q = $this->getEm()->createNativeQuery(
             'SELECT * FROM (' . $valtozatag . ' UNION ALL ' . $termekag . ') x'
@@ -153,6 +208,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         }
         if ($this->gyarto) {
             $parameterek['gyarto'] = $this->gyarto;
+        }
+        foreach ($this->faszuro as $i => $karkod) {
+            $parameterek['fa' . $i] = $karkod;
         }
         $q->setParameters($parameterek);
 
@@ -173,6 +231,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('masikraktar', $this->masikraktarnev);
         $report->setVar('gyarto', $this->gyartonev);
+        $report->setVar('termekfa', $this->fanevek);
         $report->printTemplateResult();
     }
 

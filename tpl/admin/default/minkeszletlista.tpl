@@ -2,6 +2,7 @@
 
 {block "inhead"}
     {include "../partials/form.scripts.tpl"}
+    <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/minkeszletlista.js"></script>
 {/block}
 
@@ -51,7 +52,10 @@
                         </select>
                     </div>
                     <div class="matt-hseparator"></div>
+                    {include "comp_termekfa.tpl"}
+                    <div class="matt-hseparator"></div>
                     <div>
+                        <input type="hidden" name="fafilter">
                         <a href="/admin/minkeszletlista/get" class="js-okbutton">{at('OK')}</a>
                         <a href="/admin/minkeszletlista/export" class="js-exportbutton">{at('Export')}</a>
                         <a href="/admin/minkeszletlista/exportbizonylat" class="js-exportbizonylatbutton">{at('Export bizonylathoz')}</a>

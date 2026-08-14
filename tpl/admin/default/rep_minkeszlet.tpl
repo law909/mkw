@@ -10,6 +10,9 @@
     {if ($gyarto)}
         <h5>Gyártó: {$gyarto}</h5>
     {/if}
+    {if ($termekfa)}
+        <h5>Termékfa: {$termekfa}</h5>
+    {/if}
     <table>
         <thead>
         <tr>
