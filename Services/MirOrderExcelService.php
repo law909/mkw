@@ -405,18 +405,6 @@ class MirOrderExcelService
             }
             $probalt[] = $relativ;
         }
-        // Beállított kép, de egyik változata sincs a lemezen: a B oszlop üresen marad, és eddig
-        // semmi nem árulta el, miért. A terméknek beállított, de feltöltetlen kép a tipikus ok.
-        // Kép nélküli terméket (nincs kepurl) nem naplózunk – az nem hiba.
-        // A napló szándékosan csak a dokumentumgyökérhez képesti utat írja: a storage/logs webről
-        // elérhető, és a szerver könyvtárszerkezete nem tartozik oda.
-        if ($probalt) {
-            \mkw\store::writelog(
-                'Mir order: a(z) ' . $termek->getCikkszam() . ' termék képe nincs a lemezen: '
-                . implode(', ', $probalt),
-                'mirorder.txt'
-            );
-        }
         return '';
     }
 
