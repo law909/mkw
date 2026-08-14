@@ -113,6 +113,9 @@ class BizonylatPrintService
             : \mkw\store::getTemplateFactory()->createView($tplname);
         \mkw\store::getGdl()->loadData($view);
         $o->getBizonylattipus()?->setTemplateVars($view);
+        // a képes sablonok ezzel hivatkoznak a fájlrendszerre: az mPDF a $mainurl-lel HTTP-n
+        // toltene le a sajat szerveretol minden tetelkepet
+        $view->setVar('webroot', getcwd());
         $view->setVar('egyed', $o->toLista());
         $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
         return ['html' => $view->getTemplateResult(), 'paged' => (bool)$paged];
