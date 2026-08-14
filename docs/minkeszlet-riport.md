@@ -15,7 +15,18 @@ Menü: Kimutatások → **Minimum készlet alatt** (a Készlet kimutatás mellet
 | **Export**              | ugyanez Excelben                                                                                                                                         |
 | **Export bizonylathoz** | szűkebb Excel: **termék id, változat id, cikkszám, vonalkód, mennyiség** – a mennyiség a minimumig való feltöltéshez szükséges darab                     |
 
-A szűrő: dátum, raktár (kötelező – a minimum raktárfüggő), és a másik raktár (elhagyható).
+A szűrő: dátum, raktár (kötelező – a minimum raktárfüggő), a másik raktár (elhagyható), a
+gyártó, a **termékfa** (a készlet kimutatáséval azonos jstree, a kijelölt ágak karkod-előtagja
+megy a `termekfa1/2/3karkod` mezőkre), és a **Készlet** input a mellette lévő pipával.
+
+**A Készlet input**: bekapcsolt pipánál a beírt érték a küszöb minden soron a raktáranként
+feloldott minimum helyett – tehát „mi van 5 darab alatt", függetlenül attól, be van-e állítva
+minimum. Ilyenkor a „nincs beállítva minimum" szűrés (`minkeszlet > 0`) sem érvényes, így
+0-t beírva pont a negatív készletűek jönnek. A pipa nélkül a riport számai változatlanok.
+
+A képernyős riportnak **nyomtatási képe** is van: a lap tetején egy „Nyomtatás" gomb (nyomtatáskor
+maga a gomb eltűnik), a táblázat alján a nyomtatás dátuma – ugyanaz a `rep.css`, ami a többi
+kimutatásé.
 
 ## Hogyan számol
 
@@ -54,6 +65,7 @@ A `keszletlistaController` is ezt hívja – a számai bizonyítottan változatl
 | `runonce.php`                               | 0114: menüpont                                     |
 | `../Services/KeszletService.php`            | `getMinKeszletSql()` – a létra SQL-mása egy helyre |
 | `Controllers/keszletlistaController.php`    | a beépített SQL helyett a service-t hívja          |
+| `../themes/admin/default/rep.css`           | `.noprint`, és a `.redtext` (eddig nem is létezett) |
 
 ## Ellenőrzés
 
@@ -76,3 +88,13 @@ A `keszletlistaController` is ezt hívja – a számai bizonyítottan változatl
 2. A dátumválasztó és a két raktárválasztó működik, a riport új lapon nyílik.
 3. Mindhárom gomb ugyanazt a szűrőt küldi a maga útvonalára.
 4. Nagy termékszámnál a futásidő elfogadható (a lekérdezés termékenként/változatonként számol készletet, mint a `keszletlista`).
+
+### A termékfa szűrő, a küszöb és a nyomtatási kép (2026-08-14, mugenrace fejlesztői DB, böngészőben)
+
+- A fa betölt (169 csomópont), a kijelölés a rejtett `fafilter` mezőbe kerül, és mindhárom gomb elviszi.
+- Szűrő nélkül 3376 sor / 6945 hiány; ugyanez a szám jön akkor is, ha a Készlet inputba írunk, de a pipa nincs bekapcsolva – **nincs regresszió**.
+- `fafilter=36,38` (Textil kabát + Kesztyű): 584 sor, a riportfejlécben a két kategória neve.
+- Olyan kategóriára, ahol egy változatnak sincs minimuma (`fafilter=175`), üres a riport – SQL-lel ellenőrizve, hogy tényleg 0 az érintett sor.
+- Készlet = 5 + pipa: 1956 sor, mindegyiken 5 a „Min. készlet" oszlop.
+- Készlet = 0 + pipa: 56 sor, mindegyik negatív készletű.
+- A riporton ott a Nyomtatás gomb és a nyomtatási dátum.

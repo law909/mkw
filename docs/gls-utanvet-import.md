@@ -1,8 +1,8 @@
 # GLS utánvét import
 
 Állapot: **lekódolva és böngészőben végigpróbálva** a galad fejlesztői adatbázison
-(2026-08-14). A pénzt mozgató bizonylat képzése (bank-/pénztárbizonylat) **nem** része –
-lásd a *Ami szándékosan kimaradt* fejezetet.
+(2026-08-14); a párosított tételekből azóta **bankbizonylat is képezhető** – lásd a
+*Bankbizonylat a párosított tételekből* fejezetet.
 
 A GLS „Actual pcl statuses" kimutatásából a **beszedett** utánvétek átemelése egy átmeneti
 táblába, a bank tranzakció import mintájára, és a befizetéshez tartozó bizonylat megkeresése.
@@ -66,7 +66,7 @@ csomagszámra. A bejárás után a kettőből egy pénzt mozgató bizonylat mara
 ## A felület
 
 - **Kereskedelem → Bank, pénztár → GLS utánvétek** – lista, szűrő csomagszámra, névre és a
-  párosítatlanokra, „Import" és „Párosít" gombbal.
+  párosítatlanokra, „Import", „Csoportos művelet + Futtat" és „Párosít" gombbal.
 - **GLS utánvét import** – a fájlfeltöltő oldal. Az import a végén megmondja, hány sorból hány
   új tétel lett és ebből hány kapott bizonylatszámot.
 - A karbantartón minden mező **csak olvasható**, kivéve a **Bizonylatszámok**-at és az
@@ -75,24 +75,35 @@ csomagszámra. A bejárás után a kettőből egy pénzt mozgató bizonylat mara
 - A **Párosít** gomb a bizonylatszám nélküli tételeken újra lefuttatja a keresést – pl. ha az
   importálás óta elkészült a számla.
 
-## Ami szándékosan kimaradt
+## Bankbizonylat a párosított tételekből
 
-A bank tranzakciónál van egy „Bank bizonylatok létrehozása" csoportos művelet, ami a párosított
-tételekből tényleg megcsinálja a bankbizonylatot. **Ez itt nincs**: a feladat a táblát, az
-importot, a párosítást és a karbantartót kérte. Ha kell, a
-`banktranzakcioController::generateBankbizonylat()` mintájára pénztár- vagy bankbizonylat
-képezhető belőle – az utánvét jellemzően a futárszolgálat átutalásaként érkezik, tehát
-bankbizonylat való hozzá, egy „GLS utánvét" jogcímmel.
+A lista fejlécében a **Csoportos művelet → „Bank bizonylatok létrehozása" + Futtat** a párosított
+tételekből bankbizonylatot képez – a `banktranzakcioController::generateBankbizonylat()`
+mintájára, ezekkel a különbségekkel:
+
+- **Mindig bevétel** (`irany = 1`): az utánvét a futárszolgálattól érkező pénz.
+- A bizonylat **saját bankszámlája** a Beállítások → Alapértelmezések fül **„Utánvét bankszámla"**
+  értéke (`\mkw\consts::UtanvetBankszamla`). Ha nincs beállítva, a hivatkozott számla
+  bankszámlája marad – az viszont számlától függően üres is lehet, ezért érdemes beállítani.
+- A tétel **jogcíme** az „Automatikus bankbizonylat jogcíme" beállításból jön (ugyanaz, mint a
+  banki importnál), a dátuma a GLS státusz dátuma, az `erbizonylatszam` a csomagszám.
+- Csak az kerül sorra, ami **párosított, nem inaktív és még nincs bankbizonylata**. Kipipált
+  sorokkal csak azok, pipa nélkül minden ilyen tétel.
+- Ha a tétel bizonylatszáma nem létező bizonylatra mutat, a tétel **kimarad** (a válaszüzenet
+  megmondja, hányról van szó) – így egy elgépelt bizonylatszám nem könyvel rossz helyre.
+- A kész tételen a `bankbizonylatkesz` jelző áll be: a lista sora ettől már nem szerkeszthető, és
+  a művelet újrafuttatása nem csinál duplikátumot.
 
 ## Érintett fájlok
 
 | fájl | mi |
 |------|-----|
-| `Entities/GLSUtanvet.php`, `Entities/GLSUtanvetRepository.php` | az átmeneti tábla (`glsutanvet`) |
-| `Controllers/glsutanvetController.php` | lista, karb, import, párosítás |
+| `Entities/GLSUtanvet.php`, `Entities/GLSUtanvetRepository.php` | az átmeneti tábla (`glsutanvet`), csoportos művelet |
+| `Controllers/glsutanvetController.php` | lista, karb, import, párosítás, bankbizonylat képzés |
+| `Controllers/setupController.php`, `tpl/admin/default/setup.tpl`, `mkw/consts.php` | az „Utánvét bankszámla" beállítás |
 | `tpl/admin/default/glsutanvet*.tpl` | lista, karb, feltöltő |
 | `js/admin/default/glsutanvet.js`, `glsutanvetupload.js` | |
-| `adminroute.php` | 8 route |
+| `adminroute.php` | 9 route |
 | `runonce.php` 0122 | a két menüpont |
 
 ## Hogyan lett ellenőrizve
@@ -110,3 +121,16 @@ Böngészőben, a galad fejlesztői adatbázison:
 | név + összeg + cím párosítás | `MR2026/000002` |
 | a 2025-ös sorok (`MR2025/…` nem létezik ezen a DB-n) | nincs találat – a hivatkozás-ág nem tippel |
 | karbantartó: kézzel átírt bizonylatszám | elmentődött |
+
+A bankbizonylat képzés böngészőben, a **mugenrace fejlesztői adatbázison** (2026-08-14), egy ideiglenes
+tétellel egy valódi számlára (`SZ2026/001190`, 159 240 Ft) – utána minden visszaállítva:
+
+| eset | eredmény |
+|------|----------|
+| „Utánvét bankszámla" beállítás | a Beállítások → Alapértelmezések fülön megjelenik, elmentődik |
+| a csoportos művelet a kipipált soron | 1 bankbizonylat (`BANK2026/000391`), a beállított saját bankszámlával, a számla partnerével |
+| a bankbizonylat tétele | `irany = 1`, bruttó 159 240, jogcím „Számla kiegyenlítés", dátum a GLS státusz dátuma, `erbizonylatszam` = csomagszám |
+| folyószámla | egy sor keletkezett, `irany = -1` (a listener fordított előjellel könyvel) |
+| újrafuttatás | „0 bankbizonylat készült." – a `bankbizonylatkesz` jelző miatt nincs duplikátum |
+| a kész sor a listán | nem szerkeszthető, „Bankbizonylat kész" felirattal |
+| nem létező bizonylatszámmal | „0 bankbizonylat készült, 1 tétel kimaradt (nincs meg a hivatkozott bizonylat)." |
