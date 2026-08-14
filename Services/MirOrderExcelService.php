@@ -6,6 +6,7 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Meret;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -43,6 +44,9 @@ class MirOrderExcelService
 
     /** a termékkép befoglaló négyzete képpontban (a sormagasság és a B oszlop ehhez igazodik) */
     private const KEPMERET = 60;
+
+    /** a képoszlop és a képes sor mérete képpontban – a képet ezen belül tesszük középre */
+    private const KEPCELLA = self::KEPMERET + 8;
 
     /** az oszlopcímkék sora; alatta kezdődnek az adatok */
     private const CIMKESOR = 3;
@@ -103,8 +107,9 @@ class MirOrderExcelService
         $this->autoSizeOszlopok($sheet);
         if (array_filter(array_column($sorok, 'kep'))) {
             // a képek nem cellaértékek, az automatikus méretezés üresnek látja a képoszlopot
-            $sheet->getColumnDimension(Coordinate::stringFromColumnIndex(self::OSZLOPKEP + 1))
-                ->setWidth((self::KEPMERET + 9) / 7);
+            $sheet->getColumnDimension(Coordinate::stringFromColumnIndex(self::OSZLOPKEP + 1))->setWidth(
+                SharedDrawing::pixelsToCellDimension(self::KEPCELLA, $excel->getDefaultStyle()->getFont())
+            );
         }
         $this->writeRendelesAdatok($sheet, $fej);
         return $excel;
@@ -278,13 +283,12 @@ class MirOrderExcelService
         $kep->setResizeProportional(true);
         $kep->setWidthAndHeight(self::KEPMERET, self::KEPMERET);
         $kep->setCoordinates(\mkw\store::getExcelCoordinate(self::OSZLOPKEP, $sor));
-        $kep->setOffsetX(2);
         $kep->setWorksheet($sheet);
         // a sormagasság pontban értendő, a kép képpontban
-        $magassagpt = self::KEPMERET * 0.75 + 3;
-        $sheet->getRowDimension($sor)->setRowHeight($magassagpt);
-        // az arányos kicsinyítéstől a kép alacsonyabb lehet a sornál: tegyük függőlegesen középre
-        $kep->setOffsetY((int)max(0, round(($magassagpt / 0.75 - $kep->getHeight()) / 2)));
+        $sheet->getRowDimension($sor)->setRowHeight(SharedDrawing::pixelsToPoints(self::KEPCELLA));
+        // az arányos kicsinyítéstől a kép kisebb lehet a cellánál: mindkét irányban középre
+        $kep->setOffsetX((int)max(0, round((self::KEPCELLA - $kep->getWidth()) / 2)));
+        $kep->setOffsetY((int)max(0, round((self::KEPCELLA - $kep->getHeight()) / 2)));
     }
 
     /**
