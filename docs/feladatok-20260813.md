@@ -112,4 +112,36 @@
   > `Traits/MediatarGuard.php`-ba, hogy az új végpont ugyanazt a védelmet kapja duplikálás nélkül. A route szándékosan **nincs** a `mediatar` kapcsoló mögött:
   > a `path.dokumentum` a CKFinder-es telepítéseken is értelmes.
   > A feltöltés a `MediatarService`-en megy keresztül, tehát örökli a kiterjesztés- és tartalomellenőrzést, a névtisztítást és az ütközésfeloldást.
-- 
+-
+
+---
+
+## Összegzés (2026-08-14)
+
+**8 feladat kész, 1 vár rád** (a fizmód/storno pénzmozgás – ott kérted, hogy előbb csak a terv készüljön el: `docs/storno-penzmozgas.md`).
+
+Minden feladat külön commitban van. Böngészőben (galad, `mkw.test`) végig tudtam tesztelni, be voltál jelentkezve SYSADMIN-ként.
+
+### Deploy előtt olvasd el
+
+- **`minboltikeszlet` → `minkeszlet`:** a szervereken **előbb egy admin kérés (runonce), utána `./updateschema.sh`**. Fordított sorrendben a
+  `termek.minboltikeszlet` / `termekvaltozat.minboltikeszlet` tartalma elvész. Részletek: `docs/minkeszlet-atnevezes.md`.
+- **Új tábla:** `glsutanvet` – kell rá `./updateschema.sh` minden telepítésen.
+- **Új config kulcs:** `path.dokumentum` (van alapértelmezése: `dokumentum`, tehát beállítás nélkül is működik).
+- **Új runonce blokk:** 0122 – a két GLS menüpont.
+
+### Amit a fejlesztői adatbázisban hagytam
+
+Teszteléshez hoztam létre őket, hogy ki tudd próbálni a funkciókat. Ha nem kellenek, rontsd le / töröld:
+
+| bizonylat / adat | miért | mihez tartozik |
+|---|---|---|
+| `SZMR2026/000001` szállítói megrendelés (TESZT SZALLITO) | a „Mir" export gomb kipróbálása | Mir export |
+| `MR2026/000001` megrendelés + `SZ2026/000003` számla | a fuvarlevélszám-párosítás és a „pénzt mozgató leszármazott" ág bizonyítása | GLS import |
+| `MR2026/000002` megrendelés | a név+összeg+cím párosítás bizonyítása | GLS import |
+| 6 sor a `glsutanvet` táblában | a két mintafájl importja | GLS import |
+
+A `SZ2026/000003` miatt jelenik meg a főoldalon az „1 db számla nincs beküldve a NAV-nak!" figyelmeztetés – ez a teszt számla, nem valódi hiány.
+
+Minden más tesztadatot (min. készlet sorok, dokumentum rekordok, feltöltött fájlok, a lerontott `BO2026/000004`) visszaállítottam az eredeti állapotába.
+ 
