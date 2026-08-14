@@ -1,7 +1,10 @@
 {extends "biz_paged_base.tpl"}
 
 {* ár nélküli szállítólevél: nincs egységár/érték/ÁFA oszlop és nincs ÁFA-összesítő *}
-{$w = ['sorszam'=>'6%','termek'=>'62%','mennyiseg'=>'20%','me'=>'12%']}
+{* a 'nevsor' a colspan-os terméknév-cella szélessége: a sorszám utáni oszlopok összege.
+   Enélkül az mPDF minden tételnél újraszámolja a beágyazott tábla oszlopait, és a rövid nevű
+   tétel számoszlopai elcsúsznak a többihez képest. *}
+{$w = ['sorszam'=>'11mm','termek'=>'118mm','mennyiseg'=>'38mm','me'=>'23mm','nevsor'=>'179mm']}
 
 {block "title"}{$egyed.bizonylatnev}{/block}
 
@@ -45,7 +48,7 @@
     </tr>
     <tr class="tetelsor">
         <td class="dashedline"></td>
-        <td colspan="3" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
+        <td colspan="3" width="{$w.nevsor}" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
     </tr>
 {/block}
 

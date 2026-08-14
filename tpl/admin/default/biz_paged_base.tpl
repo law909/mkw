@@ -14,6 +14,11 @@
         bekötése van. A @page-be írt "size: A4 portrait" az mPDF-ben félremegy.
 
     A gyerek sablon a {block}-okat tölti ki; kötelező a columnheaders és az itemrows.
+
+    Az oszlopszélességek a $w tömbben, MILLIMÉTERBEN, összegük 190 mm = A4 szélesség mínusz a
+    mkw\mkwmpdf bal-jobb margója (10-10 mm). Százalékkal nem működik: minden tétel külön beágyazott
+    táblázat, és az mPDF a százalékot csak ajánlásnak veszi – a rövid nevű tétel oszlopai
+    elcsúsznak a többihez és az oszlopfejléchez képest. Ha a margó változik, ezeket is át kell írni.
 *}
 <!DOCTYPE html>
 <html>
@@ -39,7 +44,8 @@
         /* a padding-bottom választja el a tételeket egymástól – minden sablon-családban,
            mert minden tétel ebben a cellában ül */
         .tetelcell { padding: 0 0 1.5mm 0; border: 0; }
-        .osszesitocell { padding-top: 4mm; border: 0; }
+        /* a felső szegély zárja le a tétellistát: ez a vonal az utolsó tétel után fut */
+        .osszesitocell { border-top: solid 1px black; border-left: 0; border-right: 0; border-bottom: 0; padding-top: 3mm; }
         .tetelgrid { border-collapse: collapse; }
         /* oszlopköz, különben a jobbra igazított érték a szomszéd oszlop feliratához ér */
         .tetelgrid td { padding-right: 3px; }

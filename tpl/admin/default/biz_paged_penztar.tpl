@@ -5,7 +5,7 @@
 *}
 {extends "biz_paged_base.tpl"}
 
-{$w = ['jogcim'=>'20%','szoveg'=>'34%','hivatkozas'=>'22%','esedekesseg'=>'12%','osszeg'=>'12%']}
+{$w = ['jogcim'=>'38mm','szoveg'=>'65mm','hivatkozas'=>'42mm','esedekesseg'=>'23mm','osszeg'=>'22mm']}
 
 {block "title"}{$egyed.bizonylatnev}{if ($egyed.rontott)} <span style="color:red">(rontott)</span>{/if}{/block}
 

@@ -4,10 +4,10 @@
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>
-        <td width="14%" class="textaligncenter">
+        <td width="27mm" class="textaligncenter">
             {if ($tetel.kiskepurl)}<img src="{$webroot}{$tetel.kiskepurl}" alt="{$tetel.termeknev}" width="90">{/if}
         </td>
-        <td colspan="{if ($egyed.kedvezmenycount > 0)}9{else}7{/if}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
+        <td colspan="{if ($egyed.kedvezmenycount > 0)}9{else}7{/if}" width="157mm" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
     </tr>
     <tr class="tetelsor">
         <td width="{$w.sorszam}" class="dashedline"></td>

@@ -1,7 +1,7 @@
 {extends "biz_paged_base.tpl"}
 
 {* lásd a biz_paged_szamla.tpl-t: egyetlen szélesség-vektor, összegük 100% *}
-{$w = ['sorszam'=>'3%','termek'=>'14%','mennyiseg'=>'11%','me'=>'4%','egysar'=>'13%','netto'=>'14%','afanev'=>'5%','afa'=>'14%','brutto'=>'22%']}
+{$w = ['sorszam'=>'6mm','termek'=>'27mm','mennyiseg'=>'21mm','me'=>'8mm','egysar'=>'25mm','netto'=>'26mm','afanev'=>'9mm','afa'=>'26mm','brutto'=>'42mm','nevsor'=>'184mm']}
 
 {block "title"}{$egyed.bizonylatnev}{/block}
 
@@ -64,6 +64,6 @@
     </tr>
     <tr class="tetelsor">
         <td class="dashedline"></td>
-        <td colspan="8" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
+        <td colspan="8" width="{$w.nevsor}" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
     </tr>
 {/block}

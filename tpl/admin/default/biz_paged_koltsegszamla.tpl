@@ -5,7 +5,7 @@
 *}
 {extends "biz_paged_base.tpl"}
 
-{$w = ['cikkszam'=>'14%','termek'=>'26%','mennyiseg'=>'11%','egysar'=>'11%','netto'=>'12%','afanev'=>'5%','afa'=>'10%','brutto'=>'11%']}
+{$w = ['cikkszam'=>'27mm','termek'=>'49mm','mennyiseg'=>'21mm','egysar'=>'21mm','netto'=>'23mm','afanev'=>'9mm','afa'=>'19mm','brutto'=>'21mm']}
 
 {block "title"}{$egyed.bizonylatnev}{/block}
 

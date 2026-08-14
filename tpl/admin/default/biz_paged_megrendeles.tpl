@@ -2,8 +2,8 @@
 
 {* lásd a biz_paged_szamla.tpl-t: egyetlen szélesség-vektor, összegük 100% *}
 {$w = ($egyed.kedvezmenycount > 0)
-    ? ['sorszam'=>'3%','termek'=>'6%','mennyiseg'=>'10%','me'=>'3%','ebrutto'=>'12%','kedv'=>'13%','egysar'=>'11%','netto'=>'11%','afanev'=>'4%','afa'=>'11%','brutto'=>'16%']
-    : ['sorszam'=>'3%','termek'=>'12%','mennyiseg'=>'11%','me'=>'4%','egysar'=>'15%','netto'=>'14%','afanev'=>'5%','afa'=>'14%','brutto'=>'22%']}
+    ? ['sorszam'=>'6mm','termek'=>'11mm','mennyiseg'=>'19mm','me'=>'6mm','ebrutto'=>'23mm','kedv'=>'25mm','egysar'=>'21mm','netto'=>'21mm','afanev'=>'7mm','afa'=>'21mm','brutto'=>'30mm','nevsor'=>'184mm']
+    : ['sorszam'=>'6mm','termek'=>'23mm','mennyiseg'=>'21mm','me'=>'8mm','egysar'=>'28mm','netto'=>'27mm','afanev'=>'9mm','afa'=>'27mm','brutto'=>'41mm','nevsor'=>'184mm']}
 
 {block "title"}{$egyed.bizonylatnev}{if ($egyed.allapotnev)} ({$egyed.allapotnev}){/if}{/block}
 
@@ -56,7 +56,7 @@
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>
-        <td colspan="{if ($egyed.kedvezmenycount > 0)}10{else}8{/if}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
+        <td colspan="{if ($egyed.kedvezmenycount > 0)}10{else}8{/if}" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
     </tr>
     <tr class="tetelsor">
         <td width="{$w.sorszam}" class="dashedline"></td>
