@@ -593,6 +593,9 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('autopenztarbizonylatjogcimlist', $jogcim->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::AutoBankbizonylatJogcim);
         $view->setVar('autobankbizonylatjogcimlist', $jogcim->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::UtanvetBankszamla);
+        $bankszamla = new bankszamlaController();
+        $view->setVar('utanvetbankszamlalist', $bankszamla->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::MunkaJelenlet);
         $c = new jelenlettipusController();
@@ -1794,6 +1797,12 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::AutoBankbizonylatJogcim, $jogcim->getId());
         } else {
             $this->setObj(\mkw\consts::AutoBankbizonylatJogcim, '');
+        }
+        $bankszamla = \mkw\store::getEm()->getRepository(\Entities\Bankszamla::class)->find($this->params->getIntRequestParam('utanvetbankszamla', 0));
+        if ($bankszamla) {
+            $this->setObj(\mkw\consts::UtanvetBankszamla, $bankszamla->getId());
+        } else {
+            $this->setObj(\mkw\consts::UtanvetBankszamla, '');
         }
         $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('szepkartyafizmod', 0));
         if ($fizmod) {

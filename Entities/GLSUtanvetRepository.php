@@ -15,6 +15,7 @@ class GLSUtanvetRepository extends \mkwhelpers\Repository
             '3' => ['caption' => 'csomagszám szerint', 'order' => ['_xx.csomagszam' => 'ASC']],
             '4' => ['caption' => 'név szerint', 'order' => ['_xx.nev' => 'ASC']],
         ]);
+        $this->setBatches(['generatebankbiz' => 'Bank bizonylatok létrehozása']);
     }
 
 }

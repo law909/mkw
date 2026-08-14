@@ -91,6 +91,9 @@ class GLSUtanvet
     private $bizonylatszamok;
 
     /** @ORM\Column(type="boolean") */
+    private $bankbizonylatkesz = false;
+
+    /** @ORM\Column(type="boolean") */
     private $inaktiv = false;
 
     public function getId()
@@ -266,6 +269,16 @@ class GLSUtanvet
     public function setBizonylatszamok($val)
     {
         $this->bizonylatszamok = $val;
+    }
+
+    public function getBankbizonylatkesz()
+    {
+        return $this->bankbizonylatkesz;
+    }
+
+    public function setBankbizonylatkesz($val)
+    {
+        $this->bankbizonylatkesz = $val;
     }
 
     public function getInaktiv()

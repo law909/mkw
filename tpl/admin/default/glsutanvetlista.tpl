@@ -33,6 +33,13 @@
         </div>
         <div class="mattable-batch">
             <a href="/admin/glsutanvet/viewupload" class="js-import">{at('Import')}</a>
+            {at('Csoportos művelet')} <select class="mattable-batchselect">
+                <option value="">{at('válasszon')}</option>
+                {foreach $batchesselect as $_batch}
+                    <option value="{$_batch.id}">{$_batch.caption}</option>
+                {/foreach}
+            </select>
+            <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
             {* a bizonylatszám nélküli tételeken újra lefuttatja a keresést *}
             <a href="#" class="js-parosit">{at('Párosít')}</a>
         </div>

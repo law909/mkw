@@ -2,8 +2,14 @@
 
 namespace Controllers;
 
+use Entities\Bankbizonylatfej;
+use Entities\Bankbizonylattetel;
+use Entities\Bankszamla;
 use Entities\Bizonylatfej;
+use Entities\Bizonylattipus;
 use Entities\GLSUtanvet;
+use Entities\Jogcim;
+use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -112,6 +118,7 @@ class glsutanvetController extends \mkwhelpers\MattableController
 
         $view->setVar('pagetitle', t('GLS utánvétek'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
+        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->printTemplateResult();
     }
 
@@ -228,6 +235,103 @@ class glsutanvetController extends \mkwhelpers\MattableController
         $this->getEm()->flush();
         echo json_encode([
             'msg' => count($tetelek) . ' párosítatlan tétel közül ' . $talalt . ' kapott bizonylatszámot.',
+        ]);
+    }
+
+    /**
+     * A párosított tételekből bankbizonylat: az utánvétet a futárszolgálat utalja, tehát a
+     * pénz a „Utánvét bankszámla" beállításban megadott saját számlánkra érkezik. Egy tételből
+     * egy bankbizonylat lesz, a tételei a párosított bizonylatszámok – a
+     * `banktranzakcioController::generateBankbizonylat()` mintájára, de mindig bevétel.
+     *
+     * Csak azok a tételek jönnek szóba, amelyek párosítva vannak, nem inaktívak, és még nincs
+     * bankbizonylatuk; a csoportos műveletnél a kipipált soroké.
+     */
+    public function generateBankbizonylat()
+    {
+        $jogcim = $this->getRepo(Jogcim::class)->find(
+            \mkw\store::getIntParameter(\mkw\consts::AutoBankbizonylatJogcim, 1)
+        );
+        $utanvetbankszamla = $this->getRepo(Bankszamla::class)->find(
+            \mkw\store::getIntParameter(\mkw\consts::UtanvetBankszamla, 0)
+        );
+        $valutanem = $this->getRepo(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bankbizonylatkesz', '=', false);
+        $filter->addFilter('inaktiv', '=', false);
+        $filter->addSql("(_xx.bizonylatszamok IS NOT NULL) AND (_xx.bizonylatszamok <> '')");
+        $ids = $this->params->getArrayRequestParam('ids');
+        if ($ids) {
+            $filter->addFilter('id', 'IN', $ids);
+        }
+
+        $keszult = 0;
+        $kimaradt = 0;
+        /** @var GLSUtanvet $tetel */
+        foreach ($this->getRepo()->getAll($filter, ['statuszdatum' => 'ASC']) as $tetel) {
+            $szlaszamok = explode(';', $tetel->getBizonylatszamok());
+            $szamlak = [];
+            foreach ($szlaszamok as $szlaszam) {
+                $szamla = $this->getRepo(Bizonylatfej::class)->find(trim($szlaszam));
+                if (!$szamla) {
+                    // hiányzó bizonylatszámnál nem tippelünk, a tétel marad párosítottnak
+                    $szamlak = [];
+                    break;
+                }
+                $szamlak[] = $szamla;
+            }
+            if (!$szamlak) {
+                $kimaradt++;
+                continue;
+            }
+
+            $bb = new Bankbizonylatfej();
+            $bb->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bank'));
+            $bb->setKelt();
+            if ($utanvetbankszamla) {
+                $bb->setBankszamla($utanvetbankszamla);
+            }
+            $befosszeg = abs((float)$tetel->getOsszeg());
+            /** @var Bizonylatfej $szamla */
+            foreach ($szamlak as $szamla) {
+                if (!$bb->getPartner()) {
+                    $bb->setPartner($szamla->getPartner());
+                }
+                if (!$utanvetbankszamla) {
+                    $bb->setBankszamla($szamla->getBankszamla());
+                }
+                $bt = new Bankbizonylattetel();
+                $bt->setBizonylatfej($bb);
+                $bt->setPartner($szamla->getPartner());
+                $bt->setDatum($tetel->getStatuszdatumStr());
+                $bt->setHivatkozottbizonylat($szamla->getId());
+                $bt->setHivatkozottdatum($szamla->getEsedekesseg());
+                $bt->setJogcim($jogcim);
+                $bt->setValutanem($szamla->getValutanem());
+                $bt->setErbizonylatszam($tetel->getCsomagszam());
+                // az utánvét mindig befizetés
+                $bt->setIrany(1);
+                $needed = min(abs($szamla->getBrutto()), $befosszeg);
+                $bt->setBrutto($needed);
+                $this->getEm()->persist($bt);
+                $befosszeg = $befosszeg - $needed;
+                if ($befosszeg <= 0) {
+                    break;
+                }
+            }
+            // A valutanemet CSAK a partner beállítása után szabad megadni
+            $bb->setValutanem($valutanem);
+            $tetel->setBankbizonylatkesz(true);
+            $this->getEm()->persist($tetel);
+            $this->getEm()->persist($bb);
+            $this->getEm()->flush();
+            $keszult++;
+        }
+
+        echo json_encode([
+            'msg' => $keszult . ' bankbizonylat készült'
+                . ($kimaradt ? ', ' . $kimaradt . ' tétel kimaradt (nincs meg a hivatkozott bizonylat).' : '.'),
         ]);
     }
 

@@ -137,6 +137,17 @@
                                 {/foreach}
                             </select>
                         </div>
+                        {* a GLS utánvétekből képzett bankbizonylat saját bankszámlája *}
+                        <div class="setuprow">
+                            <span class="setuplabel"><label
+                                    for="UtanvetBankszamlaEdit">{at('Utánvét bankszámla')}:</label></span>
+                            <select id="UtanvetBankszamlaEdit" name="utanvetbankszamla">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $utanvetbankszamlalist as $_b}
+                                    <option value="{$_b.id}"{if ($_b.selected)} selected="selected"{/if}>{$_b.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
                         {if ($setup.darshan)}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>

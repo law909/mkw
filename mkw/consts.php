@@ -35,6 +35,9 @@ class consts
     // a banktranzakciókból automatikusan képzett bankbizonylat tételeinek jogcíme
     // (banktranzakcioController::generateBankbizonylat)
     const AutoBankbizonylatJogcim = 'autobankbizonylatjogcim';
+    // a GLS utánvétekből képzett bankbizonylat saját bankszámlája – ide utal a futárszolgálat
+    // (glsutanvetController::generateBankbizonylat)
+    const UtanvetBankszamla = 'utanvetbankszamla';
     // a banki tranzakció-import legutóbb választott formátuma – a feltöltő képernyő
     // ezt kínálja fel alapértelmezésként (banktranzakcioController::IMPORTFORMATUMOK kulcsa)
     const LastBankiFormatum = 'lastbankiformatum';

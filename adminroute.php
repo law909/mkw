@@ -1074,6 +1074,12 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/glsutanvet/save', 'glsutanvetController#save', 'adminglsutanvetsave');
     $router->map('POST', '/admin/glsutanvet/upload', 'glsutanvetController#upload', 'adminglsutanvetupload');
     $router->map('POST', '/admin/glsutanvet/parosit', 'glsutanvetController#parosit', 'adminglsutanvetparosit');
+    $router->map(
+        'POST',
+        '/admin/glsutanvet/generatebankbizonylat',
+        'glsutanvetController#generateBankbizonylat',
+        'adminglsutanvetgeneratebankbizonylat'
+    );
 }
 
 $router->map('GET', '/admin/banktranzakcio/viewlist', 'banktranzakcioController#viewlist', 'adminbanktranzakcioviewlist');
