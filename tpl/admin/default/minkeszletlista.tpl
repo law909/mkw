@@ -43,6 +43,13 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <label for="KeszletEdit">{at('Készlet')}:</label>
+                        <input id="KeszletEdit" name="keszlet" type="number" step="any" size="8" value="0">
+                        <label for="KeszletSzamitEdit">{at('a minimum készlet helyett ezt figyelje')}:</label>
+                        <input id="KeszletSzamitEdit" name="keszletszamit" type="checkbox" value="1">
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <label for="GyartoEdit">{at('Gyártó')}:</label>
                         <select id="GyartoEdit" name="gyarto">
                             <option value="">{at('mindegy')}</option>

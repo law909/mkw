@@ -36,6 +36,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     /** @var string[] a kijelölt termékfák karkod-előtagjai */
     private $faszuro = [];
     private $fanevek = '';
+    /** a minimum készlet helyett figyelt, kézzel megadott küszöb */
+    private $limit;
+    private $uselimit = false;
 
     public function view()
     {
@@ -66,6 +69,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $this->gyarto = $this->params->getIntRequestParam('gyarto');
         $gy = $this->getRepo(\Entities\Partner::class)->find($this->gyarto);
         $this->gyartonev = $gy ? $gy->getNev() : '';
+
+        $this->uselimit = $this->params->getBoolRequestParam('keszletszamit');
+        $this->limit = $this->params->getFloatRequestParam('keszlet');
 
         $this->readFaFilter();
     }
@@ -163,6 +169,21 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $termekfeltetelek = $this->getTermekFeltetelek();
         $termekszuro = $termekfeltetelek ? implode(' AND ', $termekfeltetelek) : '';
 
+        // bekapcsolt pipánál a beírt érték a küszöb minden soron, egyébként a raktáranként
+        // feloldott minimum (a nulla minimum ott „nincs beállítva”, ezért esik ki)
+        $valtozatmin = $this->uselimit
+            ? ':limit'
+            : \Services\KeszletService::getMinKeszletSql(
+                '_xx.termek_id',
+                't.minkeszlet',
+                '_xx.id',
+                '_xx.minkeszlet',
+                $raktarparam
+            );
+        $termekmin = $this->uselimit
+            ? ':limit'
+            : \Services\KeszletService::getMinKeszletSql('t.id', 't.minkeszlet', '', '', $raktarparam);
+
         // változatos ág: a tétel a változatra hivatkozik
         $valtozatag = 'SELECT _xx.termek_id AS termek_id, _xx.id AS termekvaltozat_id,'
             . " COALESCE(NULLIF(_xx.cikkszam, ''), t.cikkszam) AS cikkszam,"
@@ -170,13 +191,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' t.nev AS termeknev, _xx.ertek1 AS ertek1, _xx.ertek2 AS ertek2,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . \Services\KeszletService::getMinKeszletSql(
-                '_xx.termek_id',
-                't.minkeszlet',
-                '_xx.id',
-                '_xx.minkeszlet',
-                $raktarparam
-            ) . ' AS minkeszlet'
+            . ' ' . $valtozatmin . ' AS minkeszlet'
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (t.id = _xx.termek_id)'
             . ($termekszuro ? ' WHERE ' . $termekszuro : '');
@@ -187,15 +202,14 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . " t.nev AS termeknev, '' AS ertek1, '' AS ertek2,"
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . \Services\KeszletService::getMinKeszletSql('t.id', 't.minkeszlet', '', '', $raktarparam)
-            . ' AS minkeszlet'
+            . ' ' . $termekmin . ' AS minkeszlet'
             . ' FROM termek t'
             . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
             . ($termekszuro ? ' AND ' . $termekszuro : '');
 
         $q = $this->getEm()->createNativeQuery(
             'SELECT * FROM (' . $valtozatag . ' UNION ALL ' . $termekag . ') x'
-            . ' WHERE (x.minkeszlet > 0) AND (x.keszlet < x.minkeszlet)'
+            . ' WHERE ' . ($this->uselimit ? '' : '(x.minkeszlet > 0) AND ') . '(x.keszlet < x.minkeszlet)'
             . ' ORDER BY x.cikkszam, x.termeknev, x.ertek1, x.ertek2',
             $rsm
         );
@@ -211,6 +225,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         }
         foreach ($this->faszuro as $i => $karkod) {
             $parameterek['fa' . $i] = $karkod;
+        }
+        if ($this->uselimit) {
+            $parameterek['limit'] = $this->limit;
         }
         $q->setParameters($parameterek);
 
@@ -232,6 +249,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $report->setVar('masikraktar', $this->masikraktarnev);
         $report->setVar('gyarto', $this->gyartonev);
         $report->setVar('termekfa', $this->fanevek);
+        $report->setVar('uselimit', $this->uselimit);
+        $report->setVar('limit', $this->limit);
         $report->printTemplateResult();
     }
 

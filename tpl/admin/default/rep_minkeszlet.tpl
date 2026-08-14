@@ -13,6 +13,9 @@
     {if ($termekfa)}
         <h5>Termékfa: {$termekfa}</h5>
     {/if}
+    {if ($uselimit)}
+        <h5>A minimum készlet helyett figyelt készlet: {$limit|string_format:"%g"}</h5>
+    {/if}
     <table>
         <thead>
         <tr>
