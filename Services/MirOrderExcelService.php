@@ -6,16 +6,21 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Meret;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
  * Szállítói megrendelés exportja a Mir rendelőlapjának formátumában – a minta a projekt
  * gyökerében lévő „Mir Order.xls”.
  *
  * A lap méret-mátrix: egy sor egy termék+szín párost ír le, az oszlopok a méretek. A
- * méretskálák a fejlécből derülnek ki: termékfánként egy sor, benne a termékfa termékeinek
- * a bizonylaton szereplő méretei, a Meret entitás sorrend mezője szerint rendezve. A
- * méretoszlopok száma nincs korlátozva – a mögöttük álló oszlopok (egyéb, TOT PCS, PRICE,
- * TOTAL, DELIVERY DATE) annyival csúsznak jobbra, amennyi kell.
+ * méretskálát minden termékfa a saját csoportsorában viszi (a tételei fölött, középre
+ * rendezve): a termékfa termékeinek a bizonylaton szereplő méretei, a Meret entitás sorrend
+ * mezője szerint rendezve. A méretoszlopok száma nincs korlátozva – a mögöttük álló oszlopok
+ * (egyéb, TOT PCS, PRICE, TOTAL, CURRENCY, DELIVERY DATE) annyival csúsznak jobbra, amennyi kell.
+ *
+ * A második munkalap a megrendelésen szereplő termékek/változatok azonosítói (cikkszám, név,
+ * változat, vonalkód).
  *
  * A terméknév és a termékfa neve a bizonylat nyelvén megy ki (`bizonylatnyelv`), ha van
  * fordítás; a szín és a méret a változat értéke, azt nem fordítjuk.
@@ -24,14 +29,16 @@ class MirOrderExcelService
 {
 
     private const OSZLOPCIKKSZAM = 0;   // A
+    private const OSZLOPPARTNER = 4;    // E – a 2. sorban a partner neve
     private const OSZLOPNEV = 2;        // C
-    private const OSZLOPSZIN = 3;       // D – a fejlécsorokban a termékfa neve
+    private const OSZLOPSZIN = 3;       // D
     private const OSZLOPELSOMERET = 4;  // E
 
     /** a minta űrlapján E–M a méretskála: ennyi méretoszlop akkor is megvan, ha kevesebb kell */
     private const MINMERETOSZLOP = 9;
 
-    private const ELSOFEJLECSOR = 3;
+    /** az oszlopcímkék sora; alatta kezdődnek az adatok */
+    private const CIMKESOR = 3;
 
     /**
      * @param Bizonylatfej $fej
@@ -46,15 +53,16 @@ class MirOrderExcelService
         $meretoszlopok = $this->getMeretOszlopok($sorok, $this->getMeretSorrend($fej));
         $oszlopok = $this->getOszlopok($meretoszlopok);
 
-        $sor = $this->writeFejlec($sheet, $fej, $meretoszlopok, $oszlopok);
+        $sor = $this->writeFejlec($sheet, $fej, $oszlopok);
         $elsoadat = null;
         $utolsoadat = null;
         $csoport = null;
         foreach ($sorok as $adat) {
             if ($adat['csoport'] !== $csoport) {
                 $csoport = $adat['csoport'];
-                if ($csoport !== '') {
-                    $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor), $csoport . ':');
+                $meretek = $meretoszlopok[$csoport] ?? [];
+                if ($csoport !== '' || $meretek) {
+                    $this->writeCsoportSor($sheet, $sor, $csoport, $meretek);
                     $sor++;
                 }
             }
@@ -72,7 +80,14 @@ class MirOrderExcelService
                     . ':' . \mkw\store::getExcelCoordinate($oszlopok[$mezo], $utolsoadat) . ')'
                 );
             }
+            $sheet->setCellValue(
+                \mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor),
+                $fej->getValutanemnev()
+            );
         }
+
+        $this->writeTermekLap($excel, $fej);
+        $excel->setActiveSheetIndex(0);
         return $excel;
     }
 
@@ -94,49 +109,54 @@ class MirOrderExcelService
             'db' => $egyeb + 1,
             'ar' => $egyeb + 2,
             'ossz' => $egyeb + 3,
-            'hatarido' => $egyeb + 4,
+            'valutanem' => $egyeb + 4,
+            'hatarido' => $egyeb + 5,
         ];
     }
 
     /**
-     * Termékfánként egy méretsor, majd az oszlopcímkék sora.
+     * A rendelés fejléce (partner, kelt) és az oszlopcímkék sora.
      *
      * @param Bizonylatfej $fej
-     * @param array[] $meretoszlopok termékfa => [méretcímke => oszlopindex]
      * @param array $oszlopok a méretek mögötti oszlopok helye (getOszlopok)
      *
      * @return int az első adatsor száma
      */
-    private function writeFejlec($sheet, $fej, array $meretoszlopok, array $oszlopok): int
+    private function writeFejlec($sheet, $fej, array $oszlopok): int
     {
+        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPPARTNER, 2), $fej->getPartnernev());
         $sheet->setCellValue('F2', 'Order ' . $fej->getKeltStr());
 
-        $sor = self::ELSOFEJLECSOR;
-        foreach ($meretoszlopok as $csoport => $meretek) {
-            $sheet->setCellValue(
-                \mkw\store::getExcelCoordinate(self::OSZLOPSZIN, $sor),
-                $csoport === '' ? 'SIZES' : $csoport
-            );
-            foreach ($meretek as $meret => $oszlop) {
-                // explicit szöveg, különben a számozott méretskála számként landol
-                $sheet->setCellValueExplicit(
-                    \mkw\store::getExcelCoordinate($oszlop, $sor),
-                    (string)$meret,
-                    \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
-                );
-            }
-            $sor++;
-        }
-
+        $sor = self::CIMKESOR;
         $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor), 'ART:');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPNEV, $sor), 'Name');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPSZIN, $sor), 'color');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['db'], $sor), 'TOT PCS');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['ar'], $sor), 'PRICE');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['ossz'], $sor), 'TOTAL');
+        $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor), 'CURRENCY');
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor), 'DELIVERY DATE');
 
         return $sor + 1;
+    }
+
+    /**
+     * Csoportsor a tételei fölött: az A oszlopban a termékfa neve, a méretoszlopokban a
+     * termékfa méretskálája – középre rendezve, hogy a mennyiségek fölött ez legyen a fejléc.
+     *
+     * @param array $meretek méretcímke => oszlopindex
+     */
+    private function writeCsoportSor($sheet, $sor, $csoport, array $meretek): void
+    {
+        if ($csoport !== '') {
+            $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor), $csoport . ':');
+        }
+        foreach ($meretek as $meret => $oszlop) {
+            $cella = \mkw\store::getExcelCoordinate($oszlop, $sor);
+            // explicit szöveg, különben a számozott méretskála számként landol
+            $sheet->setCellValueExplicit($cella, (string)$meret, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            $sheet->getStyle($cella)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        }
     }
 
     /**
@@ -177,7 +197,59 @@ class MirOrderExcelService
             '=' . \mkw\store::getExcelCoordinate($oszlopok['db'], $sor)
             . '*' . \mkw\store::getExcelCoordinate($oszlopok['ar'], $sor)
         );
+        $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor), $fej->getValutanemnev());
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor), $fej->getHataridoStr());
+    }
+
+    /**
+     * A második munkalap: a megrendelésen szereplő termékek/változatok azonosítói. Egy sor egy
+     * termék+változat, a bizonylaton lévő sorrendben; a vonalkód a változaté, ha van neki saját.
+     *
+     * @param Bizonylatfej $fej
+     */
+    private function writeTermekLap(Spreadsheet $excel, $fej): void
+    {
+        $sheet = new Worksheet($excel, 'Products');
+        $excel->addSheet($sheet);
+
+        $sheet->setCellValue('A1', 'ART:');
+        $sheet->setCellValue('B1', 'Name');
+        $sheet->setCellValue('C1', 'Variant');
+        $sheet->setCellValue('D1', 'Barcode');
+
+        $nyelv = $fej->getBizonylatnyelv();
+        $sor = 2;
+        $latott = [];
+        /** @var Bizonylattetel $tetel */
+        foreach ($fej->getBizonylattetelek() as $tetel) {
+            if ($tetel->getStorno() || $tetel->getStornozott()) {
+                continue;
+            }
+            $valtozat = $tetel->getTermekvaltozat();
+            $termek = $tetel->getTermek();
+            $kulcs = $tetel->getCikkszam() . '|' . $tetel->getValtozatertek1() . '|' . $tetel->getValtozatertek2();
+            if (isset($latott[$kulcs])) {
+                continue;
+            }
+            $latott[$kulcs] = true;
+
+            $sheet->setCellValueExplicit(
+                'A' . $sor,
+                (string)$tetel->getCikkszam(),
+                \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+            );
+            $sheet->setCellValue('B' . $sor, $this->getTermekNev($tetel, $termek, $nyelv));
+            $sheet->setCellValue(
+                'C' . $sor,
+                trim($tetel->getValtozatertek1() . ' ' . $tetel->getValtozatertek2())
+            );
+            $sheet->setCellValueExplicit(
+                'D' . $sor,
+                (string)($valtozat?->getVonalkod() ?: $termek?->getVonalkod()),
+                \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+            );
+            $sor++;
+        }
     }
 
     /**
