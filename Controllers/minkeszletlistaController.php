@@ -41,7 +41,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     private $uselimit = false;
 
     /** a „készlet számít" pipa mentett állása – dolgozónként, a lista-paraméterek kulcsával */
-    private const KESZLETSZAMIT = 'keszletszamit';
+    private const KESZLETSZAMIT = 'minkeszletalattkeszletszamit';
 
     public function view()
     {

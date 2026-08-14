@@ -15,7 +15,7 @@ $(document).ready(function () {
                     global: false,
                     data: {
                         key: window.location.pathname,
-                        par: 'keszletszamit',
+                        par: 'minkeszletalattkeszletszamit',
                         value: $(this).prop('checked') ? 1 : 0
                     }
                 });
