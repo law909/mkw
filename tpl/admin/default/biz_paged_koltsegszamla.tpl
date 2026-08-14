@@ -5,7 +5,10 @@
 *}
 {extends "biz_paged_base.tpl"}
 
-{$w = ['cikkszam'=>'27mm','termek'=>'49mm','mennyiseg'=>'21mm','egysar'=>'21mm','netto'=>'23mm','afanev'=>'9mm','afa'=>'19mm','brutto'=>'21mm']}
+{* a leltárbizonylatokon százmilliós összegek is előfordulnak, ezért a pénzoszlopok bővek:
+   ha a tartalom nem fér a megadott szélességbe, az mPDF tételenként másképp osztja újra,
+   és elcsúsznak az oszlopok *}
+{$w = ['cikkszam'=>'24mm','termek'=>'50mm','mennyiseg'=>'17mm','egysar'=>'21mm','netto'=>'22mm','afanev'=>'8mm','afa'=>'22mm','brutto'=>'26mm']}
 
 {block "title"}{$egyed.bizonylatnev}{/block}
 
@@ -56,7 +59,7 @@
 {block "itemrows"}
     <tr class="tetelsor">
         <td width="{$w.cikkszam}">{$tetel.cikkszam}</td>
-        <td width="{$w.termek}">{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
+        <td width="{$w.termek}">{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek} {/foreach}</td>
         <td width="{$w.mennyiseg}" class="textalignright">{number_format($tetel.mennyiseg,2,',',' ')} {$tetel.me}</td>
         <td width="{$w.egysar}" class="textalignright">{number_format($tetel.nettoegysar,2,',',' ')}</td>
         <td width="{$w.netto}" class="textalignright">{number_format($tetel.netto,2,',',' ')}</td>

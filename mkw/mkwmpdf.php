@@ -42,8 +42,11 @@ class mkwmpdf
             'margin_top' => self::MARGIN_HEADER + $headerheight + self::MARGIN_PADDING,
             'margin_bottom' => self::MARGIN_FOOTER + $footerheight + self::MARGIN_PADDING,
         ]));
-        // a tételtáblák egymásba ágyazottak: enélkül a százalékos oszlopszélességek oldalanként elcsúsznak
-        $this->engine->keep_table_proportions = true;
+        // A tételtáblák oszlopszélessége milliméterben van megadva (lásd biz_paged_base.tpl).
+        // A keep_table_proportions arányosan skálázza újra az oszlopokat, ha az összeg nem jön ki
+        // pontosan – ettől viszont tételenként más lesz az eredmény, mert a skálázás a tartalomtól
+        // is függ. Kikapcsolva az mPDF a megadott milliméter-értékeket tartja.
+        $this->engine->keep_table_proportions = false;
         // a bizonylat egyetlen táblázat, és az oldal első tábláját az mPDF alapból az egy oldalra
         // zsugorítás felé viszi – itt inkább lapdobás kell, betűzsugorítás nélkül
         $this->engine->shrink_tables_to_fit = 1;

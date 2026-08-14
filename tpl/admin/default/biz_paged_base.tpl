@@ -46,7 +46,9 @@
         .tetelcell { padding: 0 0 1.5mm 0; border: 0; }
         /* a felső szegély zárja le a tétellistát: ez a vonal az utolsó tétel után fut */
         .osszesitocell { border-top: solid 1px black; border-left: 0; border-right: 0; border-bottom: 0; padding-top: 3mm; }
-        .tetelgrid { border-collapse: collapse; }
+        /* abszolút szélesség, nem 100%: a beágyazott tételtáblák így pontosan ugyanazt a
+           190 mm-t kapják, mint az oldalfejléc oszlopfejléc-táblája */
+        .tetelgrid { width: 190mm; border-collapse: collapse; }
         /* oszlopköz, különben a jobbra igazított érték a szomszéd oszlop feliratához ér */
         .tetelgrid td { padding-right: 3px; }
         @page {
