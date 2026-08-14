@@ -8,6 +8,7 @@ use Entities\Meret;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 /**
@@ -30,7 +31,7 @@ class MirOrderExcelService
 {
 
     private const OSZLOPCIKKSZAM = 0;   // A
-    private const OSZLOPPARTNER = 4;    // E – a 2. sorban a partner neve
+    private const OSZLOPPARTNER = 3;    // D – a 2. sorban a partner neve, az E-vel összevonva
     private const OSZLOPNEV = 2;        // C
     private const OSZLOPSZIN = 3;       // D
     private const OSZLOPELSOMERET = 4;  // E
@@ -48,7 +49,7 @@ class MirOrderExcelService
     {
         $excel = new Spreadsheet();
         $sheet = $excel->setActiveSheetIndex(0);
-        $sheet->setTitle('Munka1');
+        $sheet->setTitle('Order');
 
         $sorok = $this->getSorok($fej);
         $meretoszlopok = $this->getMeretOszlopok($sorok, $this->getMeretSorrend($fej));
@@ -85,6 +86,7 @@ class MirOrderExcelService
                 \mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor),
                 $fej->getValutanemnev()
             );
+            $this->setErtekKeret($sheet, $sor, $oszlopok);
         }
 
         $this->writeTermekLap($excel, $fej);
@@ -128,7 +130,10 @@ class MirOrderExcelService
      */
     private function writeRendelesAdatok($sheet, $fej): void
     {
-        $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPPARTNER, 2), $fej->getPartnernev());
+        $partnercella = \mkw\store::getExcelCoordinate(self::OSZLOPPARTNER, 2);
+        $sheet->setCellValue($partnercella, $fej->getPartnernev());
+        // a hosszú név ne lógjon bele a kelt cellájába
+        $sheet->mergeCells($partnercella . ':' . \mkw\store::getExcelCoordinate(self::OSZLOPPARTNER + 1, 2));
         $sheet->setCellValue('F2', 'Order ' . $fej->getKeltStr());
     }
 
@@ -187,6 +192,7 @@ class MirOrderExcelService
             // explicit szöveg, különben a számozott méretskála számként landol
             $sheet->setCellValueExplicit($cella, (string)$meret, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
             $sheet->getStyle($cella)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle($cella)->getFont()->setBold(true);
         }
     }
 
@@ -230,6 +236,36 @@ class MirOrderExcelService
         );
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor), $fej->getValutanemnev());
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor), $fej->getHataridoStr());
+
+        // a mátrix-rész rácsos (az üres méretcella is), az értékrészen csak ott van keret, ahol adat is
+        $this->setKeret(
+            $sheet,
+            \mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor)
+            . ':' . \mkw\store::getExcelCoordinate($oszlopok['egyeb'], $sor)
+        );
+        $this->setErtekKeret($sheet, $sor, $oszlopok);
+    }
+
+    /** @param string $tartomany egy cella vagy cellatartomány */
+    private function setKeret($sheet, $tartomany): void
+    {
+        $sheet->getStyle($tartomany)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    }
+
+    /**
+     * A jobb oldali értékrész keretei. Csak az adattal kitöltött cella kap keretet – az összesítő
+     * sorban pl. nincs ár és határidő, oda nem kell.
+     *
+     * @param array $oszlopok a méretek mögötti oszlopok helye (getOszlopok)
+     */
+    private function setErtekKeret($sheet, $sor, array $oszlopok): void
+    {
+        foreach (['db', 'ar', 'ossz', 'valutanem', 'hatarido'] as $mezo) {
+            $cella = \mkw\store::getExcelCoordinate($oszlopok[$mezo], $sor);
+            if ($sheet->cellExists($cella) && (string)$sheet->getCell($cella)->getValue() !== '') {
+                $this->setKeret($sheet, $cella);
+            }
+        }
     }
 
     /**
@@ -240,7 +276,7 @@ class MirOrderExcelService
      */
     private function writeTermekLap(Spreadsheet $excel, $fej): void
     {
-        $sheet = new Worksheet($excel, 'Products');
+        $sheet = new Worksheet($excel, 'Products EAN list');
         $excel->addSheet($sheet);
 
         $sheet->setCellValue('A1', 'ART:');
