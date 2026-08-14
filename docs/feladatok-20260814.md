@@ -38,17 +38,25 @@ visszaállítottam, lásd lent.
   > bizonylaton szereplő méretei, a **`meret` entitás `sorrend`** mezője szerint rendezve. A méretsorok a D oszlopban a
   > termékfa nevét viszik, a méretek az E oszloptól. Ettől az oszlopcímke-sor és az első adatsor lefelé csúszik, a
   > sorok a **saját termékfájuk** oszlopkiosztását használják.
-  > **Egy fejlécsorba 9 méret fér (E–M)**, mert az N–R oszlop (egyéb / TOT PCS / PRICE / TOTAL / DELIVERY DATE) a Mir
-  > űrlapjának fix része. Ha egy termékfának ennél több mérete van a bizonylaton, a sorrendben hátrébb lévők a régi
-  > „egyéb" (N) oszlopba mennek, a méret pedig a névhez ragad – ugyanaz a viselkedés, mint eddig a skálába nem illő
-  > méreteknél. A `SZMR2026/000001`-en a BŐRRUHA-nál pont ez történik (54-es és fölötte).
+  > **A méretek száma nincs korlátozva** (2. kör): a méret-mátrix addig tart, ameddig a legtöbb méretet vivő termékfa
+  > kívánja, és a mögötte álló oszlopok (egyéb / TOT PCS / PRICE / TOTAL / DELIVERY DATE) annyival csúsznak jobbra.
+  > **9 méretig a minta űrlapjának kiosztása marad** (méretek E–M, egyéb N, TOT PCS O, PRICE P, TOTAL Q, DELIVERY DATE
+  > R) – így a szokásos bizonylatokon a lap ugyanúgy néz ki, mint eddig. Az „egyéb" oszlop megmaradt, de már csak a
+  > **méret nélküli** tételeket viszi (pl. szállítási költség sor), a méretcímke a névhez ragadva.
+  > **Nevek a bizonylat nyelvén** (2. kör): a terméknév és a termékfa neve a `bizonylatnyelv` szerint megy ki. A
+  > terméknévnél a sorrend: a tételen tárolt fordítás (`termeknev_l1`) → a termék aktuális fordítása (`termek.nev_l1`)
+  > → a tétel eredeti neve. A második lépcső azért kell, mert a régi tételeken a `termeknev_l1` üres, a terméken viszont
+  > ott az angol név. A szín és a méret a változat értéke, azt nem fordítjuk.
   > **Egy régi hibát javítani kellett hozzá:** a csoportnevet adó `getCsoportNev()` a legmélyebb kitöltött kategóriát
   > kereste, de a ki nem töltött `termekfa2/3` mező ezen az adatbázison **a gyökérre mutat, nem üres** – ezért eddig
   > minden termék a „Termék kategóriák" csoportba esett (a törzsben is így jelent meg a csoportfejléc). Mostantól a
   > szülő nélküli (gyökér) kategória nem számít kitöltöttnek.
-  > **Kipróbálva:** `SZMR2026/000009` → 3 fejlécsor (BŐRKABÁT S–6XL, TEXTIL KABÁT S–5XL, KEVLAR JEANS 29–42), a
-  > mennyiségek a saját skálájuk oszlopaiba kerülnek; `SZMR2026/000001` → 3 fejlécsor és a BŐRRUHA túlcsordulása az N
-  > oszlopba. A rendezés bizonyítottan a `sorrend` szerint megy (S=9600 … 6XL=10400, 29=2800 … 42=4200).
+  > **Kipróbálva:** `SZMR2026/000009` (en_us) → 3 fejlécsor angol kategórianévvel (LEATHER JACKET S–6XL, TEXTILE JACKET
+  > S–5XL, KEVLAR JEANS 29–42), angol terméknevekkel, és **a minta űrlapjának eredeti oszlopkiosztásával** (TOT PCS az
+  > O-ban). `SZMR2026/000001` (en_us) → a LEATHER SUIT-nak 14 mérete van (34–62), semmi nem csordul túl, az összegző
+  > oszlopok a T–W-be csúsznak. `SZMR2026/000008` (hu_hu) → magyar nevek maradnak (GERINCVÉDŐ, ZANDONA).
+  > `SZMR2025/000005` → a méret nélküli szállítási költség sor az „egyéb" oszlopba kerül, `(?: 1)` a névben.
+  > A rendezés bizonyítottan a `sorrend` szerint megy (S=9600 … 6XL=10400, 29=2800 … 42=4200).
 
 - [x] **KÉSZ** GLS utánvét: bank bizonylatok a párosított tételekből
   > **Beállítás:** Beállítások → Alapértelmezések fül → **„Utánvét bankszámla"** (`\mkw\consts::UtanvetBankszamla`), a
@@ -89,9 +97,9 @@ A GLS-t használó telepítésen neked kell beállítanod, különben a képzett
 
 ## Amit érdemes még átgondolni
 
-- **Mir export, 9 méret fölött:** most a `sorrend` szerinti első 9 méret kapja az oszlopot, a többi az N oszlopba megy.
-  Lehetne inkább a legtöbb darabot vivő 9 méret, vagy a termékfát „meretsor" szerint tovább bontani – szólj, ha nem jó
-  a mostani.
 - **Mir export csoportneve:** a legmélyebb, gyökértől különböző kategória. Ha inkább mindig a `termekfa1`-et (a
   főkategóriát) szeretnéd fejlécsornak, az egy sor.
+- **Mir export, 9 méretnél kevesebb:** a lap ilyenkor is 9 méretoszlopot tart fenn, hogy a minta űrlapjának kiosztása
+  (TOT PCS az O oszlopban) megmaradjon. Ha inkább mindig szorosan a méretek után jöjjenek az összegző oszlopok, a
+  `MINMERETOSZLOP` konstanst kell 0-ra venni.
 - **Minimum készlet nyomtatási kép:** ha kell külön „Nyomtat" gomb a szűrőképernyőre, lásd fent.
