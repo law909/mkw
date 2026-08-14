@@ -185,7 +185,9 @@ class MirOrderExcelService
     private function writeCsoportSor($sheet, $sor, $csoport, array $meretek): void
     {
         if ($csoport !== '') {
-            $sheet->setCellValue(\mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor), $csoport . ':');
+            $cella = \mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor);
+            $sheet->setCellValue($cella, $csoport . ':');
+            $sheet->getStyle($cella)->getFont()->setBold(true);
         }
         foreach ($meretek as $meret => $oszlop) {
             $cella = \mkw\store::getExcelCoordinate($oszlop, $sor);
@@ -237,11 +239,12 @@ class MirOrderExcelService
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['valutanem'], $sor), $fej->getValutanemnev());
         $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlopok['hatarido'], $sor), $fej->getHataridoStr());
 
-        // a mátrix-rész rácsos (az üres méretcella is), az értékrészen csak ott van keret, ahol adat is
+        // a mátrix-rész rácsos (az üres méretcella is), az azon túli cellák csak akkor kapnak
+        // keretet, ha van bennük adat – az elválasztó „egyéb" oszlop így üresen keret nélkül marad
         $this->setKeret(
             $sheet,
             \mkw\store::getExcelCoordinate(self::OSZLOPCIKKSZAM, $sor)
-            . ':' . \mkw\store::getExcelCoordinate($oszlopok['egyeb'], $sor)
+            . ':' . \mkw\store::getExcelCoordinate($oszlopok['egyeb'] - 1, $sor)
         );
         $this->setErtekKeret($sheet, $sor, $oszlopok);
     }
@@ -260,7 +263,7 @@ class MirOrderExcelService
      */
     private function setErtekKeret($sheet, $sor, array $oszlopok): void
     {
-        foreach (['db', 'ar', 'ossz', 'valutanem', 'hatarido'] as $mezo) {
+        foreach (['egyeb', 'db', 'ar', 'ossz', 'valutanem', 'hatarido'] as $mezo) {
             $cella = \mkw\store::getExcelCoordinate($oszlopok[$mezo], $sor);
             if ($sheet->cellExists($cella) && (string)$sheet->getCell($cella)->getValue() !== '') {
                 $this->setKeret($sheet, $cella);
