@@ -4,7 +4,7 @@ namespace Controllers;
 
 use mkw\store;
 
-class KeziszamlafejController extends bizonylatfejController
+class keziszamlafejController extends bizonylatfejController
 {
 
     public function __construct()

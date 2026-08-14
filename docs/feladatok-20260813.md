@@ -198,8 +198,20 @@ robbant a évek óta ott lapuló hiba.
 (0 eltérés). Az `orm:validate-schema` a javítás előtt és után is ugyanazt a 11, **korábbról meglévő** figyelmeztetést adja (Termekcsoport, Leltarfej, Partner
 – ezek nem futásidejű hibák), a három Dok entitás egyikben sem szerepel.
 
-> **Megjegyzés a jövőre:** nyolc controller osztályneve eltér a fájlnevétől kis/nagybetűben (`bevetfejController.php` → `class BevetfejController` stb.).
-> Ezek most működnek, mert mindenhol a fájlnévvel egyező, kisbetűs alakkal hivatkozunk rájuk – de ez ugyanez a csapda. Nem nyúltam hozzájuk.
+### Ugyanez a csapda máshol – kérésedre kitakarítva
+
+Az osztálynév eltért a fájlnévtől kis/nagybetűben **12 helyen**. Ezek **ma működnek**, mert mindenhol a fájlnévvel egyező alakkal hivatkozunk rájuk, tehát a
+`file_exists()` / az autoloader megtalálja a fájlt – a PHP osztálynevek pedig kis/nagybetűre érzéketlenek. De ha bárki egyszer a „szép" alakot írja le
+(`\Controllers\BevetfejController`), az Linuxon azonnal fatal. Az osztálynevet igazítottam a fájlnévhez (a repó mind a 201 controller-fájlja kisbetűvel kezdődik):
+
+| hely | volt → lett |
+|------|-------------|
+| `Controllers/` – 8 bizonylat-controller | `class BevetfejController` → `class bevetfejController`; ugyanígy `autokiserofej`, `keziszamlafej`, `kivetfej`, `koltsegszamlafej`, `leltarhianyfej`, `leltartobbletfej`, `szallitofej` |
+| `mkwhelpers/` – 4 egyedi DQL függvény | `class IfElse` → `class ifelse`; `Now` → `now`, `Rand` → `rand`, `Year` → `year` (a `bootstrap.php` `mkwhelpers\ifelse` / `\now` / `\rand` / `\year` néven regisztrálja őket) |
+
+**Kipróbálva:** a nyolc controller mind a 16 végpontja (lista + listatörzs) és a karbantartóik 200-at adnak; az öt egyedi DQL függvény (`YEAR`, `NOW`, `IF`,
+`RAND`, `CURDATE`) valódi lekérdezésben lefut. Az egész kódbázisban (`Entities`, `Controllers`, `Services`, `Traits`, `Listeners`, `mkwhelpers`, `mkw`) most
+**0 fájlnév/osztálynév eltérés** van.
 
 ---
 

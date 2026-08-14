@@ -1,7 +1,7 @@
 <?php
 namespace mkwhelpers;
 
-class Rand extends \Doctrine\ORM\Query\AST\Functions\FunctionNode {
+class rand extends \Doctrine\ORM\Query\AST\Functions\FunctionNode {
 
     public function parse(\Doctrine\ORM\Query\Parser $parser)
     {

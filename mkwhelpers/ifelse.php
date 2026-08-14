@@ -27,7 +27,7 @@ use Doctrine\ORM\Query\AST\Functions\FunctionNode,
  * @author  Andrew Mackrodt <andrew@ajmm.org>
  * @version 2011.06.19
  */
-class IfElse extends FunctionNode
+class ifelse extends FunctionNode
 {
     private $expr = array();
 

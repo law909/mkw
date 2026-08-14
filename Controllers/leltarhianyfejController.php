@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class LeltarhianyfejController extends bizonylatfejController
+class leltarhianyfejController extends bizonylatfejController
 {
 
     public function __construct()

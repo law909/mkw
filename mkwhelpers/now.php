@@ -1,7 +1,7 @@
 <?php
 namespace mkwhelpers;
 
-class Now extends \Doctrine\ORM\Query\AST\Functions\FunctionNode {
+class now extends \Doctrine\ORM\Query\AST\Functions\FunctionNode {
     public $firstDateExpression = null;
 
     public function parse(\Doctrine\ORM\Query\Parser $parser)

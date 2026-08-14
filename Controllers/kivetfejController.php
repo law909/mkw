@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class KivetfejController extends bizonylatfejController
+class kivetfejController extends bizonylatfejController
 {
 
     public function __construct()

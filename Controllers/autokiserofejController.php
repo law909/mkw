@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class AutokiserofejController extends bizonylatfejController
+class autokiserofejController extends bizonylatfejController
 {
 
     public function __construct()
