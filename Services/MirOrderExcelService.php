@@ -393,15 +393,29 @@ class MirOrderExcelService
             return '';
         }
         $docroot = \Services\MediatarService::getDocRoot();
+        $probalt = [];
         foreach ([$termek->getKepurlSmall(), $termek->getKepurlMini(), $termek->getKepurl()] as $url) {
             if (!$url) {
                 continue;
             }
-            $fajl = $docroot . '/' . ltrim(rawurldecode($url), '/');
+            $relativ = ltrim(rawurldecode($url), '/');
             // a getimagesize a formátumot is kiszűri: amit a PhpSpreadsheet nem tud, azt kihagyjuk
-            if (is_file($fajl) && @getimagesize($fajl)) {
-                return $fajl;
+            if (is_file($docroot . '/' . $relativ) && @getimagesize($docroot . '/' . $relativ)) {
+                return $docroot . '/' . $relativ;
             }
+            $probalt[] = $relativ;
+        }
+        // Beállított kép, de egyik változata sincs a lemezen: a B oszlop üresen marad, és eddig
+        // semmi nem árulta el, miért. A terméknek beállított, de feltöltetlen kép a tipikus ok.
+        // Kép nélküli terméket (nincs kepurl) nem naplózunk – az nem hiba.
+        // A napló szándékosan csak a dokumentumgyökérhez képesti utat írja: a storage/logs webről
+        // elérhető, és a szerver könyvtárszerkezete nem tartozik oda.
+        if ($probalt) {
+            \mkw\store::writelog(
+                'Mir order: a(z) ' . $termek->getCikkszam() . ' termék képe nincs a lemezen: '
+                . implode(', ', $probalt),
+                'mirorder.txt'
+            );
         }
         return '';
     }
