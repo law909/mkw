@@ -5,6 +5,8 @@ namespace Services;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Meret;
+use Entities\Szin;
+use Entities\TermekSzinKep;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -33,7 +35,7 @@ class MirOrderExcelService
 {
 
     private const OSZLOPCIKKSZAM = 0;   // A
-    private const OSZLOPKEP = 1;        // B – a termék főképe
+    private const OSZLOPKEP = 1;        // B – a sor színének első képe, híján a termék főképe
     private const OSZLOPPARTNER = 3;    // D – a 2. sorban a partner neve, az E-vel összevonva
     private const OSZLOPNEV = 2;        // C
     private const OSZLOPSZIN = 3;       // D
@@ -268,8 +270,8 @@ class MirOrderExcelService
     }
 
     /**
-     * A termék főképe a B oszlopba, a sor magasságát a képhez igazítva. A kép a befoglaló
-     * négyzetbe fér bele, az arányát megtartva.
+     * A sor képe a B oszlopba, a sor magasságát a képhez igazítva. A kép a befoglaló négyzetbe
+     * fér bele, az arányát megtartva.
      *
      * @param string $fajl a kép fájlja a lemezen, üresen nincs mit kitenni
      */
@@ -383,18 +385,60 @@ class MirOrderExcelService
     }
 
     /**
-     * A termék főképének fájlja a lemezen, vagy üres string, ha nincs használható kép. Először a
-     * kicsinyített változatokat keressük: a rendelőlapra bőven elég, és nem hizlalja a fájlt.
-     * A `kepurl` URL-kódolt és a dokumentumgyökérhez képest relatív.
+     * A sor képe: a változat színéhez tartozó képek közül a `sorrend` szerint első, aminek a
+     * fájlja meg is van. Ha a színhez nincs kép – vagy a tételnek nincs színe –, a termék főképe
+     * marad, mert egy kép többet mond a rendelőlapon, mint az üres cella.
+     *
+     * @param Bizonylattetel $tetel
+     */
+    private function getSorKepFajl($tetel, $termek): string
+    {
+        $szin = $tetel->getTermekvaltozat()?->getSzinObject() ?: $this->getSzin($tetel->getValtozatertek1());
+        if ($termek && $szin) {
+            /** @var TermekSzinKep $szinkep */
+            foreach (
+                \mkw\store::getEm()->getRepository(TermekSzinKep::class)
+                    ->getByTermekAndSzin($termek, $szin) as $szinkep
+            ) {
+                $kep = $szinkep->getKep();
+                $fajl = $kep ? $this->getLetezoFajl([$kep->getUrlSmall(), $kep->getUrlMini(), $kep->getUrl()]) : '';
+                if ($fajl) {
+                    return $fajl;
+                }
+            }
+        }
+        return $this->getKepFajl($termek);
+    }
+
+    /** A színtörzs eleme név szerint – változat nélküli tételnél ez az egyetlen fogódzó. */
+    private function getSzin($nev): ?Szin
+    {
+        if ((string)$nev === '') {
+            return null;
+        }
+        return \mkw\store::getEm()->getRepository(Szin::class)->findOneBy(['nev' => $nev]);
+    }
+
+    /**
+     * A termék főképének fájlja a lemezen, vagy üres string, ha nincs használható kép.
      */
     private function getKepFajl($termek): string
     {
         if (!$termek) {
             return '';
         }
+        return $this->getLetezoFajl([$termek->getKepurlSmall(), $termek->getKepurlMini(), $termek->getKepurl()]);
+    }
+
+    /**
+     * A felsorolt URL-ek közül az első, aminek a fájlja megvan a lemezen. A kicsinyített
+     * változatok elöl: a rendelőlapra bőven elegendők, és nem hizlalják a fájlt. Az URL-ek
+     * URL-kódoltak és a dokumentumgyökérhez képest relatívak.
+     */
+    private function getLetezoFajl(array $urlok): string
+    {
         $docroot = \Services\MediatarService::getDocRoot();
-        $probalt = [];
-        foreach ([$termek->getKepurlSmall(), $termek->getKepurlMini(), $termek->getKepurl()] as $url) {
+        foreach ($urlok as $url) {
             if (!$url) {
                 continue;
             }
@@ -403,7 +447,6 @@ class MirOrderExcelService
             if (is_file($docroot . '/' . $relativ) && @getimagesize($docroot . '/' . $relativ)) {
                 return $docroot . '/' . $relativ;
             }
-            $probalt[] = $relativ;
         }
         return '';
     }
@@ -536,7 +579,7 @@ class MirOrderExcelService
                 $sorok[$kulcs] = [
                     'cikkszam' => $cikkszam,
                     'nev' => $this->getTermekNev($tetel, $termek, $nyelv),
-                    'kep' => $this->getKepFajl($termek),
+                    'kep' => $this->getSorKepFajl($tetel, $termek),
                     'szin' => $szin,
                     'csoport' => $this->getCsoportNev($termek, $nyelv),
                     'ar' => $tetel->getNettoegysar(),
