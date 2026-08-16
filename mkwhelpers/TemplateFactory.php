@@ -121,6 +121,26 @@ class TemplateFactory
         return $view;
     }
 
+    /**
+     * Két sablonkönyvtárral nyit nézetet, hogy az {extends}/{include} is végigessen a témáról az
+     * alapértelmezettre – a createView() csak a belépő sablont ejti vissza, a hivatkozásait nem.
+     * Szándékosan nem ez az alapértelmezés: globálisan más sablonok feloldását is elmozdítaná.
+     */
+    public function createFallbackView($tplfilename)
+    {
+        $view = null;
+        if (strtolower($this->templateenginename) == 'smarty') {
+            $view = new SmartyView(
+                $this->getTemplateC(),
+                [$this->getTemplate(), $this->getTemplateDefault()],
+                $tplfilename,
+                $this->getSmartyConfig(),
+                $this->getSmartyCache()
+            );
+        }
+        return $view;
+    }
+
     public function createMainView($tplfilename)
     {
         $view = null;

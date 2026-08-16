@@ -113,37 +113,46 @@ class Bizonylattipus
 
     public function setTemplateVars($view)
     {
-        $view->setVar('showteljesites', $this->getShowteljesites());
-        $view->setVar('showesedekesseg', $this->getShowesedekesseg());
-        $view->setVar('showhatarido', $this->getShowhatarido());
-        $view->setVar('showvalutanem', \mkw\store::isMultiValuta());
-        $view->setVar('showbizonylatstatuszeditor', $this->getShowbizonylatstatuszeditor());
-        $view->setVar('showszamlabutton', $this->getShowszamlabutton());
-        $view->setVar('showkeziszamlabutton', $this->getShowkeziszamlabutton());
-        $view->setVar('showszallitobutton', $this->getShowszallitobutton());
-        $view->setVar('showkivetbutton', $this->getShowkivetbutton());
-        $view->setVar('showbevetbutton', $this->getShowbevetbutton());
-        $view->setVar('showuzenet', $this->getShowuzenet());
-        $view->setVar('showszallitasicim', $this->getShowszallitasicim());
-        $view->setVar('showerbizonylatszam', $this->getShowerbizonylatszam());
-        $view->setVar('showfuvarlevelszam', $this->getShowfuvarlevelszam());
-        $view->setVar('showhaszonszazalek', $this->getShowhaszonszazalek());
-        $view->setVar('showstorno', $this->getShowstorno());
-        $view->setVar('showbackorder', $this->getShowbackorder());
-        $view->setVar('showslicemanufacturerbutton', $this->getShowslicemanufacturerbutton());
-        $view->setVar('showcsomagbutton', $this->getShowcsomagbutton());
-        $view->setVar('showfeketelistabutton', $this->getShowfeketelistabutton());
-        $view->setVar('showkupon', $this->getShowkupon());
-        $view->setVar('showfoxpostterminaleditor', $this->getShowfoxpostterminaleditor());
-        $view->setVar('showfelhasznalo', $this->getShowfelhasznalo());
-        $view->setVar('showpdf', $this->getShowpdf());
-        $view->setVar('shownavallapot', $this->getNavbekuldendo());
-        $view->setVar('showforditottadozas', $this->getId() === 'szamla' || $this->getId() === 'esetiszamla');
-        $view->setVar('showemailbutton', $this->getShowemailbutton());
-        $view->setVar('showeddigimegrendeleseiurl', $this->getShoweddigimegrendeleseiurl());
-        $view->setVar('showgarancialisadatok', $this->getShowgarancialisadatok());
-        // a pénztár csak az automatikus pénztárbizonylatot képző típusokon szerkeszthető
-        $view->setVar('showpenztar', $this->getAutopenztarbizonylat());
+        foreach ($this->getTemplateVars() as $key => $value) {
+            $view->setVar($key, $value);
+        }
+    }
+
+    public function getTemplateVars()
+    {
+        return [
+            'showteljesites' => $this->getShowteljesites(),
+            'showesedekesseg' => $this->getShowesedekesseg(),
+            'showhatarido' => $this->getShowhatarido(),
+            'showvalutanem' => \mkw\store::isMultiValuta(),
+            'showbizonylatstatuszeditor' => $this->getShowbizonylatstatuszeditor(),
+            'showszamlabutton' => $this->getShowszamlabutton(),
+            'showkeziszamlabutton' => $this->getShowkeziszamlabutton(),
+            'showszallitobutton' => $this->getShowszallitobutton(),
+            'showkivetbutton' => $this->getShowkivetbutton(),
+            'showbevetbutton' => $this->getShowbevetbutton(),
+            'showuzenet' => $this->getShowuzenet(),
+            'showszallitasicim' => $this->getShowszallitasicim(),
+            'showerbizonylatszam' => $this->getShowerbizonylatszam(),
+            'showfuvarlevelszam' => $this->getShowfuvarlevelszam(),
+            'showhaszonszazalek' => $this->getShowhaszonszazalek(),
+            'showstorno' => $this->getShowstorno(),
+            'showbackorder' => $this->getShowbackorder(),
+            'showslicemanufacturerbutton' => $this->getShowslicemanufacturerbutton(),
+            'showcsomagbutton' => $this->getShowcsomagbutton(),
+            'showfeketelistabutton' => $this->getShowfeketelistabutton(),
+            'showkupon' => $this->getShowkupon(),
+            'showfoxpostterminaleditor' => $this->getShowfoxpostterminaleditor(),
+            'showfelhasznalo' => $this->getShowfelhasznalo(),
+            'showpdf' => $this->getShowpdf(),
+            'shownavallapot' => $this->getNavbekuldendo(),
+            'showforditottadozas' => $this->getId() === 'szamla' || $this->getId() === 'esetiszamla',
+            'showemailbutton' => $this->getShowemailbutton(),
+            'showeddigimegrendeleseiurl' => $this->getShoweddigimegrendeleseiurl(),
+            'showgarancialisadatok' => $this->getShowgarancialisadatok(),
+            // a pénztár csak az automatikus pénztárbizonylatot képző típusokon szerkeszthető
+            'showpenztar' => $this->getAutopenztarbizonylat(),
+        ];
     }
 
     public function getId()

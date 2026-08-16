@@ -1460,35 +1460,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         echo json_encode($ki);
     }
 
-    public function getBizonylatHTML($id)
+    public function getPrintService()
     {
-        /** @var Bizonylatfej $o */
-        $o = $this->getRepo()->findForPrint($id);
-        if ($o) {
-            if (!$this->biztipusid) {
-                $this->biztipusid = $o->getBizonylattipus()?->getId();
-                $this->biztipus = $o->getBizonylattipus();
-            }
-            if ($o->getReportfile()) {
-                $tplname = $o->getReportfile();
-            } elseif ($this->biztipus) {
-                $tplname = $this->biztipus->getLocalizedFieldValue('tplname', $o->getBizonylatnyelv());
-                if (!$tplname) {
-                    $tplname = $this->biztipus->getTplname();
-                }
-            }
-            $view = $this->createView($tplname);
-            $this->biztipus->setTemplateVars($view);
-            $x = $o->toLista();
-            $view->setVar('egyed', $x);
-            $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
-            return $view->getTemplateResult();
-        }
+        return new \Services\BizonylatPrintService();
     }
 
     public function doPrint()
     {
-        echo $this->getBizonylatHTML($this->params->getStringRequestParam('id'));
+        $this->getPrintService()->output($this->params->getStringRequestParam('id'));
     }
 
     public function doPDF()
@@ -1499,11 +1478,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
-                $this->biztipusid = $o->getBizonylattipusId();
-                $this->biztipus = $o->getBizonylattipus();
-                $html = $this->getBizonylatHTML($id);
-                $pdf = \mkw\store::getPDFEngine($html);
-                $pdf->send(\mkw\store::urlize($id) . '.pdf');
+                $pdf = $this->getPrintService()->createEngine($id);
+                if ($pdf) {
+                    $pdf->send(\mkw\store::urlize($id) . '.pdf');
+                }
                 if ($printed !== false) {
                     $this->setNyomtatva($id, true);
                 }
@@ -1518,14 +1496,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Bizonylatfej $o */
             $o = $this->getRepo()->find($id);
             if ($o) {
-                $this->biztipusid = $o->getBizonylattipusId();
-                $this->biztipus = $o->getBizonylattipus();
                 $email = $o->getPartneremail();
                 if ($email) {
                     $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
-                    $html = $this->getBizonylatHTML($id);
-                    $pdf = \mkw\store::getPDFEngine($html);
-                    if ($email && $emailtpl) {
+                    $pdf = $this->getPrintService()->createEngine($id);
+                    if ($pdf && $emailtpl) {
                         $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
                         $pdf->saveAs($filepath);
 

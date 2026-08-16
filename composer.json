@@ -15,7 +15,8 @@
 		"symfony/cache": "^6.0",
 		"dompdf/dompdf": "^3.0",
 		"google/apiclient": "^2.14",
-		"stripe/stripe-php": "^20.1"
+		"stripe/stripe-php": "^20.1",
+		"mpdf/mpdf": "^8.2"
 	},
     "autoload": {
         "psr-4": {

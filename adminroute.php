@@ -1628,6 +1628,9 @@ $router->map('GET', '/admin/getinbound', 'adminController#getInbound', 'adminget
 $router->map('GET', '/admin/getinboundinv', 'adminController#getInboundInv', 'admingetinboundinv');
 $router->map('GET', '/admin/getinboundinvlist', 'adminController#getInboundInvList', 'admingetinboundinvlist');
 
+if (\mkw\store::isSuperzoneB2B()) {
+    $router->map('GET', '/admin/t/bizpdf', 'adminController#saveBizonylatPdfs', 'adminbizpdf');
+}
 //$router->map('GET', '/admin/t/kerriiimport', 'importController#kerriiimport', 'adminkerriiimport');
 //$router->map('GET', '/admin/t/genean13', 'adminController#genean13', 'admingenean13');
 //$router->map('GET', '/admin/t/emailtemplateconvert', 'emailtemplateController#convertToCKEditor', 'adminemailtemplateconverttockeditor');

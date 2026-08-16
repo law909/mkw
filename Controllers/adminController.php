@@ -1258,4 +1258,54 @@ class adminController extends mkwhelpers\Controller
         }
     }
 
+    /**
+     * A felsorolt bizonylatok PDF-je a storage/ mappába, urlize-olt bizonylatszám néven
+     * (SZ2026/001187 -> sz2026-001187.pdf). Eseti karbantartó végpont: a listát itt kell átírni.
+     *
+     * A PDF ugyanazon az úton készül, mint a nyomtatás gomboké, tehát a lapozott sablont is
+     * a `pagedpdf` kapcsoló dönti el.
+     */
+    public function saveBizonylatPdfs()
+    {
+        $bizonylatszamok = [
+            'SZL2018/000010',
+            'MR2025/002323',
+            'SZL2026/000133',
+            'SZ2026/001171',
+            'SZ2026/000971',
+            'SZ2026/000967',
+            'SZMR2026/000009',
+            'SZ2016/000264',
+            'BE2016/000021',
+            'SZ2025/000264',
+            'BE2021/000012',
+            'GAR2026/002010',
+            'MR2025/000721',
+            'BE2022/000021',
+            'BE2022/000116',
+            'KI2026/000083',
+            'MR2025/000368',
+            'SZ2025/000792',
+            'SZL2019/000007',
+            'LT2020/000006',
+            'SZL2017/000010',
+        ];
+
+        $printsvc = new \Services\BizonylatPrintService();
+        foreach ($bizonylatszamok as $bizonylatszam) {
+            $filenev = \mkw\store::urlize($bizonylatszam) . '.pdf';
+            $pdf = $printsvc->createEngine($bizonylatszam);
+            if (!$pdf) {
+                echo $bizonylatszam . ': nincs ilyen bizonylat<br />';
+                continue;
+            }
+            // a storage/ alól az Apache kiszolgálja a létező fájlokat: ami ide kerül, azt a
+            // fájlnév ismeretében bárki letöltheti
+            $pdf->saveAs(\mkw\store::storagePath($filenev));
+            echo $bizonylatszam . ' -> ' . $filenev . '<br />';
+            // az mPDF a teljes dokumentumot memóriában tartja a destruktorig
+            unset($pdf);
+        }
+    }
+
 }

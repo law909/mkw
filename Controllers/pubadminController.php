@@ -314,11 +314,9 @@ class pubadminController extends mkwhelpers\Controller
                 if (\mkw\store::isSendableEmail($email)) {
                     $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaBerletSzamlazvaSablon));
 
-                    $bfcontroller = new bizonylatfejController();
-                    $html = $bfcontroller->getBizonylatHTML($szamlafej->getId());
-                    $pdf = \mkw\store::getPDFEngine($html);
+                    $pdf = (new \Services\BizonylatPrintService())->createEngine($szamlafej->getId());
                     $filepath = \mkw\store::storagePath(\mkw\store::urlize($szamlafej->getId()) . '.pdf');
-                    $pdf->saveAs($filepath);
+                    $pdf?->saveAs($filepath);
 
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $body = \mkw\store::getTemplateFactory()->createMainView(

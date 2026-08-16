@@ -43,20 +43,13 @@ class megrendelesfejController extends bizonylatfejController
 
     public function doPrintelolegbekero()
     {
-        $o = $this->getRepo()->findForPrint($this->params->getStringRequestParam('id'));
-        if ($o) {
-            if ($this->getBiztipus()) {
-                if (\mkw\store::isSuperzoneB2B()) {
-                    $view = $this->createView('biz_elolegbekero_eng.tpl');
-                } else {
-                    $view = $this->createView('biz_elolegbekero.tpl');
-                }
-                $this->setVars($view);
-                $view->setVar('egyed', $o->toLista());
-                $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
-                echo $view->getTemplateResult();
-            }
+        $id = $this->params->getStringRequestParam('id');
+        if (!$this->getBiztipus()) {
+            return;
         }
+        // az előlegbekérőnek nincs saját bizonylattípusa, ezért a sablon nevét itt kell megadni
+        $tplname = \mkw\store::isSuperzoneB2B() ? 'biz_elolegbekero_eng.tpl' : 'biz_elolegbekero.tpl';
+        $this->getPrintService()->output($id, $tplname);
     }
 
     public function sendToFoxPost()
