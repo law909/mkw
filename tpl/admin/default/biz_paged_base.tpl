@@ -35,6 +35,8 @@
         .textaligncenter { text-align: center; }
         .topalign { vertical-align: top; }
         .bold { font-weight: bold; }
+        /* az mPDF a <tr>-re tett stílust nem örökíti a cellákra – enélkül a fejlécsorok nem lesznek félkövérek */
+        tr.bold td { font-weight: bold; }
         .fullwidth { width: 100%; }
         .nev { font-size: 8pt; }
         .biznev { font-size: 13pt; font-weight: bold; }
@@ -50,7 +52,7 @@
            190 mm-t kapják, mint az oldalfejléc oszlopfejléc-táblája */
         .tetelgrid { width: 190mm; border-collapse: collapse; }
         /* oszlopköz, különben a jobbra igazított érték a szomszéd oszlop feliratához ér */
-        .tetelgrid td { padding-right: 3px; }
+        .tetelgrid td, .osszesitogrid td { padding-right: 3px; }
         @page {
             odd-header-name: html_bizfej;
             even-header-name: html_bizfej;

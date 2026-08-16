@@ -38,7 +38,7 @@ class mkwmpdf
         $this->raiseLimits();
         $this->html = $html;
         [$headerheight, $footerheight] = $this->measureRunningBlocks($html);
-        $this->engine = new Mpdf($this->getConfig([
+        $this->engine = new shortdashmpdf($this->getConfig([
             'margin_top' => self::MARGIN_HEADER + $headerheight + self::MARGIN_PADDING,
             'margin_bottom' => self::MARGIN_FOOTER + $footerheight + self::MARGIN_PADDING,
         ]));
