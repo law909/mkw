@@ -52,19 +52,17 @@
         <script src="/js/main/mkwcansas/mkwapp.js?v={$jsversion}"></script>
     {/if}
     {if ($GAFollow)}
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', '{$GAFollow}']);
-            _gaq.push(['_trackPageview']);
+        <script async src="https://www.googletagmanager.com/gtag/js?id={$GAFollow}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
 
-            (function () {
-                var ga = document.createElement('script');
-                ga.type = 'text/javascript';
-                ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(ga, s);
-            })();
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', '{$GAFollow}');
         </script>
     {/if}
     <script>
