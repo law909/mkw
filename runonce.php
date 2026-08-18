@@ -1513,6 +1513,16 @@ if ($DBVersion < '0124') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0124');
 }
 
+if ($DBVersion < '0125') {
+    // A rendezvény helyszíne a Jogahelyszin törzsre került, a régi Helyszín képernyő megszűnt.
+    // A `helyszin` táblát nem dobjuk el: ha valamelyik telepítésen mégis van benne adat, kézzel
+    // átvezethető a jogahelyszin-be, utána eldobható.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DELETE FROM menu WHERE routename = "/admin/helyszin"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0125');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

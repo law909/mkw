@@ -1570,14 +1570,6 @@ $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalControll
 
 $router->map('POST', '/admin/konyveloexport', 'bankbizonylatfejController#exportKonyvelo', 'adminkonyveloexport');
 
-$router->map('GET', '/admin/helyszin/viewlist', 'helyszinController#viewlist', 'adminhelyszinviewlist');
-$router->map('GET', '/admin/helyszin/getlistbody', 'helyszinController#getlistbody', 'adminhelyszingetlistbody');
-$router->map('GET', '/admin/helyszin/getkarb', 'helyszinController#getkarb', 'adminhelyszingetkarb');
-$router->map('GET', '/admin/helyszin/viewkarb', 'helyszinController#viewkarb', 'adminhelyszinviewkarb');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/helyszin/save', 'helyszinController#save', 'adminhelyszinsave');
-}
-
 $router->map('GET', '/admin/rendezveny/viewlist', 'rendezvenyController#viewlist', 'adminrendezvenyviewlist');
 $router->map('GET', '/admin/rendezveny/getlistbody', 'rendezvenyController#getlistbody', 'adminrendezvenygetlistbody');
 $router->map('GET', '/admin/rendezveny/getkarb', 'rendezvenyController#getkarb', 'adminrendezvenygetkarb');

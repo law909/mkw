@@ -34,7 +34,7 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
     }
 
     /**
-     * @param \Entities\Helyszin $obj
+     * @param \Entities\MPTFolyoszamla $obj
      *
      * @return mixed
      */
@@ -65,29 +65,11 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
     {
         $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
         $res = [];
-        /** @var \Entities\Helyszin $sor */
+        /** @var \Entities\MPTFolyoszamla $sor */
         foreach ($rec as $sor) {
             $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
         }
         return $res;
-    }
-
-    public function viewselect()
-    {
-        $view = $this->createView('helyszinlista.tpl');
-
-        $view->setVar('pagetitle', t('Helyszínek'));
-        $view->printTemplateResult(false);
-    }
-
-    public function viewlist()
-    {
-        $view = $this->createView('helyszinlista.tpl');
-
-        $view->setVar('pagetitle', t('Helyszínek'));
-        $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
-        $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $view->printTemplateResult(false);
     }
 
     protected function _getkarb($tplname)
@@ -96,8 +78,8 @@ class mptfolyoszamlaController extends \mkwhelpers\MattableController
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
 
-        $view->setVar('pagetitle', t('Helyszin'));
-        $view->setVar('formaction', '/admin/helyszin/save');
+        $view->setVar('pagetitle', t('Folyószámla'));
+        $view->setVar('formaction', '/admin/mptfolyoszamla/save');
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record, true));
