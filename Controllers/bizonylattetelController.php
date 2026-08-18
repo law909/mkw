@@ -61,6 +61,9 @@ class bizonylattetelController extends \mkwhelpers\MattableController
 
         $term = $t->getTermek();
         $x['kellegyediazonosito'] = $term ? (bool)$term->getKellegyediazonosito() : false;
+        // a költségszámla importja minden tételre ezt a gyűjtőterméket teszi, az ár viszont a
+        // bejövő számláról jön: termékcserekor nem szabad felülírni (lásd bizonylathelper.js)
+        $x['koltsegtermek'] = $term && \mkw\store::getParameter(\mkw\consts::KoltsegTermek) == $term->getId();
         if ($term) {
             $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
             $x['eladasibrutto'] = $eb;

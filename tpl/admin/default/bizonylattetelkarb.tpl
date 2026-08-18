@@ -1,4 +1,5 @@
-<div id="teteltable_{$tetel.id}" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+<div id="teteltable_{$tetel.id}" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable"
+     {if ($tetel.koltsegtermek|default)}data-koltsegtermek="1"{/if}>
     <input name="tetelid[]" type="hidden" value="{$tetel.id}">
     <input name="teteloper_{$tetel.id}" type="hidden" value="{$tetel.oper}">
     <input name="tetelmozgat_{$tetel.id}" type="hidden" value="{$tetel.mozgat}">

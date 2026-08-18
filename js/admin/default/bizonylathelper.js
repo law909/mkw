@@ -194,6 +194,11 @@ let bizonylathelper = function ($) {
 
     function setTermekAr(sorId) {
         let partner, termekedit;
+        // a költségszámla gyűjtőtermékével felvitt tétel ára a bejövő számláról jön, nem a
+        // termékárból: termékcsere után is az marad
+        if ($('#teteltable_' + sorId).data('koltsegtermek')) {
+            return;
+        }
         if (isPartnerAutocomplete()) {
             partner = $('.js-partnerid').val();
         } else {
