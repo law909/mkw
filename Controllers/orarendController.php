@@ -256,6 +256,7 @@ class orarendController extends \mkwhelpers\MattableController
     {
         $offset = $this->params->getIntRequestParam('o', 0);
         $tanarkod = $this->params->getIntRequestParam('t', 0);
+        $helyszinkod = $this->params->getIntRequestParam('h', 0);
         $csakfelmeres = $this->params->getIntRequestParam('f', 0);
         $startdatum = \mkw\store::startOfWeek();
         if ($offset < 0) {
@@ -268,6 +269,9 @@ class orarendController extends \mkwhelpers\MattableController
         $filter->addFilter('orarendbennincs', '=', false);
         if ($tanarkod) {
             $filter->addFilter('dolgozo', '=', $tanarkod);
+        }
+        if ($helyszinkod) {
+            $filter->addFilter('jogahelyszin', '=', $helyszinkod);
         }
         if ($csakfelmeres) {
             $filter->addFilter('jogaoratipus', '=', \mkw\store::getParameter(\mkw\consts::JogaAllapotfelmeresTipus));
@@ -334,7 +338,11 @@ class orarendController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('orarendbenszerepel', '=', true);
         $filter->addFilter('ra.orarendbenszerepel', '=', true);
-        $rec = $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
+        // a rendezvény helyszíne másik törzs (Helyszin, nem Jogahelyszin), ezért helyszínre
+        // szűrve nem tudjuk eldönteni, odatartozik-e: ilyenkor csak az órarend látszik
+        $rec = $helyszinkod
+            ? []
+            : $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
         /** @var \Entities\Rendezveny $item */
         foreach ($rec as $item) {
             $orak = [
@@ -380,6 +388,9 @@ class orarendController extends \mkwhelpers\MattableController
         $view->setVar('prevoffset', $offset - 1);
         $view->setVar('nextoffset', $offset + 1);
         $view->setVar('tanarkod', $tanarkod);
+        $view->setVar('helyszinkod', $helyszinkod);
+        // a lapozó linkek megőrzik a szűrést
+        $view->setVar('szuroparam', ($tanarkod ? '&t=' . $tanarkod : '') . ($helyszinkod ? '&h=' . $helyszinkod : ''));
         $view->printTemplateResult();
     }
 
