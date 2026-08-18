@@ -17,7 +17,7 @@
 *}
 <table class="osszesito" cellspacing="0" cellpadding="0" border="0" style="width: 190mm;">
     <tr>
-        <td width="60mm" class="topalign">Összes mennyiség: {bizformat($summennyiseg)}</td>
+        <td width="60mm" class="topalign">{if ($setup.theme === 'superzoneb2b')}Összes mennyiség: {bizformat($summennyiseg)}{/if}</td>
         <td width="130mm" class="topalign">
             <table class="osszesitogrid" cellspacing="0" cellpadding="0" border="0" style="width: 130mm;">
                 <tr>

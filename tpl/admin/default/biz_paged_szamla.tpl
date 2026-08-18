@@ -21,7 +21,7 @@
             <td width="16%">Fiz.határidő</td>
             <td width="18%">Fizetési mód</td>
             <td width="12%">Pénznem</td>
-            <td width="22%">Számla száma</td>
+            <td width="22%" class="textalignright">Számla száma</td>
         </tr>
         <tr class="textaligncenter">
             <td>{$egyed.keltstr|default:"&nbsp;"}</td>
@@ -29,7 +29,7 @@
             <td>{$egyed.esedekessegstr|default:"&nbsp;"}</td>
             <td>{$egyed.fizmodnev_locale|default:"&nbsp;"}</td>
             <td>{$egyed.valutanemnev|default:"&nbsp;"}</td>
-            <td>{$egyed.id}</td>
+            <td class="textalignright">{$egyed.id}</td>
         </tr>
     </table>
 {/block}
