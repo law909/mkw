@@ -8,6 +8,14 @@ use mkwhelpers\FilterDescriptor;
 class FolyoszamlaRepository extends \mkwhelpers\Repository
 {
 
+    /**
+     * A stornó bizonylat sorai a SZÜLŐJE csoportjában számítanak: a stornó a szülő bizonylat
+     * követelését szünteti meg, tehát a kettő egy tételként nullázza ki egymást. E nélkül egy
+     * kifizetetlen, majd stornózott számla a kintlevőségen, a stornója pedig a tartozáson állna.
+     */
+    private const STORNOJOIN = ' LEFT JOIN bizonylatfej sbf ON (sbf.id = f.hivatkozottbizonylat) AND (sbf.storno = 1)';
+
+
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
@@ -55,10 +63,13 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    /**
+     * @param string|array $bizszam egy bizonylatszám, vagy több (a bizonylat és a stornói együtt)
+     */
     public function getSumByHivatkozottBizonylat($bizszam)
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('hivatkozottbizonylat', is_array($bizszam) ? 'IN' : '=', $bizszam);
         $filter->addFilter('rontott', '=', false);
 
         $q = $this->_em->createQuery(
@@ -86,10 +97,13 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         return $q->getSingleScalarResult();
     }
 
+    /**
+     * @param string|array $bizszam egy bizonylatszám, vagy több (a bizonylat és a stornói együtt)
+     */
     public function getSumByHivatkozottBizonylatDatum($bizszam)
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter('hivatkozottbizonylat', '=', $bizszam);
+        $filter->addFilter('hivatkozottbizonylat', is_array($bizszam) ? 'IN' : '=', $bizszam);
         $filter->addFilter('rontott', '=', false);
 
         $q = $this->_em->createQuery(
@@ -119,28 +133,49 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
             ->addFilter('partner', '=', $partnerid)
             ->addFilter('rontott', '=', false)
             ->addSql('((_xx.bizonylatfej IS NULL) OR (_xx.bizonylatfej=_xx.hivatkozottbizonylat))');
-        switch ($irany) {
-            case 1:
-                $having = ' HAVING egyenleg>0';
-                break;
-            case -1:
-                $having = ' HAVING egyenleg<0';
-                break;
-            default:
-                $having = ' HAVING egyenleg<>0';
-        }
 
         $q = $this->_em->createQuery(
-            'SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg, fm.nev AS fizmodnev'
+            'SELECT _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,SUM(_xx.brutto * _xx.irany) AS egyenleg,'
+            . ' fm.nev AS fizmodnev, IDENTITY(sbf.parbizonylatfej) AS stornoszulo'
             . ' FROM Entities\Folyoszamla _xx'
             . ' LEFT JOIN _xx.fizmod fm'
+            . ' LEFT JOIN Entities\Bizonylatfej sbf WITH (sbf.id = _xx.hivatkozottbizonylat) AND (sbf.storno = true)'
             . $this->getFilterString($filter)
-            . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,fm.nev'
-            . $having
+            . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,fm.nev,sbf.id'
+            . ' HAVING egyenleg<>0'
             . ' ORDER BY _xx.hivatkozottdatum'
         );
         $q->setParameters($this->getQueryParameters($filter));
-        return $q->getResult();
+
+        // A stornó bizonylat a szülője csoportjába olvad, az összevonás UTÁN dől el, melyik
+        // oldalra tartozik – e nélkül a pár két külön sorként, két külön listán jelenne meg.
+        $csoportok = [];
+        foreach ($q->getResult() as $sor) {
+            $bizszam = $sor['stornoszulo'] ?: $sor['hivatkozottbizonylat'];
+            $kulcs = $bizszam . '|' . ($sor['hivatkozottdatum'] ? $sor['hivatkozottdatum']->format('Y-m-d') : '');
+            if (!isset($csoportok[$kulcs])) {
+                $csoportok[$kulcs] = [
+                    'hivatkozottbizonylat' => $bizszam,
+                    'hivatkozottdatum' => $sor['hivatkozottdatum'],
+                    'fizmodnev' => $sor['fizmodnev'],
+                    'egyenleg' => 0,
+                ];
+            }
+            $csoportok[$kulcs]['egyenleg'] += $sor['egyenleg'] * 1;
+        }
+
+        $result = [];
+        foreach ($csoportok as $csoport) {
+            $egyenleg = $csoport['egyenleg'];
+            if (abs($egyenleg) < 0.005) {
+                continue;
+            }
+            if ((($irany === 1) && ($egyenleg < 0)) || (($irany === -1) && ($egyenleg > 0))) {
+                continue;
+            }
+            $result[] = $csoport;
+        }
+        return $result;
     }
 
     public function getLejartKintlevosegByValutanem($cimkek = null)
@@ -170,11 +205,14 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
             $join = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN ('
                 . \mkw\store::getCommaList($cimkek) . '))';
         }
-        return ' SELECT valutanem_id,hivatkozottbizonylat,hivatkozottdatum,SUM(brutto*irany) AS egyenleg'
+        return ' SELECT f.valutanem_id AS valutanem_id,'
+            . ' IFNULL(sbf.parbizonylatfej_id, f.hivatkozottbizonylat) AS hivatkozottbizonylat,'
+            . ' f.hivatkozottdatum AS hivatkozottdatum, SUM(f.brutto*f.irany) AS egyenleg'
             . ' FROM folyoszamla f'
             . $join
-            . ' WHERE (rontott=0) AND ((bizonylatfej_id IS NULL) OR (bizonylatfej_id=hivatkozottbizonylat))'
-            . ' GROUP BY valutanem_id,hivatkozottbizonylat,hivatkozottdatum';
+            . self::STORNOJOIN
+            . ' WHERE (f.rontott=0) AND ((f.bizonylatfej_id IS NULL) OR (f.bizonylatfej_id=f.hivatkozottbizonylat))'
+            . ' GROUP BY f.valutanem_id, IFNULL(sbf.parbizonylatfej_id, f.hivatkozottbizonylat), f.hivatkozottdatum';
     }
 
     public function getFakeKintlevosegByValutanem($cimkek = null)

@@ -55,6 +55,17 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         return $filter;
     }
 
+    /**
+     * A stornó bizonylat sorait nettózó allekérdezés dátumszűrője – ugyanaz a "befizetések eddig"
+     * időpont, csak másik táblaalias alatt.
+     */
+    protected function createStornoDatumFilter()
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('fs.datum', '<=', $this->befdatumstr);
+        return $filter;
+    }
+
     protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter)
     {
         $filter = new FilterDescriptor();
@@ -186,6 +197,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             $befdatum = $this->params->getStringRequestParam('befdatum');
         }
         $beffilter = $this->createBefdatumFilter($befdatum);
+        $stornofilter = $this->createStornoDatumFilter();
 
         if (!$tol) {
             $tol = $this->params->getStringRequestParam('tol');
@@ -218,12 +230,22 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . $beffilter->getFilterString('', 'bef')
             . '   AND (fa.hivatkozottbizonylat = f.bizonylatfej_id) AND (fa.hivatkozottdatum = f.hivatkozottdatum) AND (bizonylatfej_id IS NULL)'
             . '   AND (fa.rontott = 0)),0)'
+            // a bizonylat stornóinak (és a stornóra könyvelt pénzmozgásnak) a sorai: a stornó a
+            // bizonylat követelését szünteti meg, tehát ide, a szülő csoportjába tartozik
+            . ' + IFNULL('
+            . '  (SELECT SUM(fs.brutto * fs.irany)'
+            . '   FROM folyoszamla fs'
+            . '   JOIN bizonylatfej sbf ON (sbf.id = fs.hivatkozottbizonylat) AND (sbf.storno = 1) AND (sbf.rontott = 0)'
+            . $stornofilter->getFilterString('', 'sto')
+            . '   AND (sbf.parbizonylatfej_id = f.bizonylatfej_id) AND (fs.hivatkozottdatum = f.hivatkozottdatum)'
+            . '   AND (fs.rontott = 0)),0)'
             . ' + SUM(f.brutto * f.irany) AS tartozas, bf.valutanemnev'
             . ' FROM folyoszamla f'
             . ' LEFT OUTER JOIN bizonylatfej bf ON (f.hivatkozottbizonylat = bf.id)'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . $filter->getFilterString('', 'par')
             . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
+            . ' AND ((bf.storno = 0) OR (bf.parbizonylatfej_id IS NULL))'
             . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
             . ' HAVING (tartozas > 0))'
             . ' UNION'
@@ -248,6 +270,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             array_merge_recursive(
                 $filter->getQueryParameters('par'),
                 $beffilter->getQueryParameters('bef'),
+                $stornofilter->getQueryParameters('sto'),
                 $secfilter->getQueryParameters('sec')
             )
         );

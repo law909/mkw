@@ -1149,24 +1149,48 @@ class Bizonylatfej
     }
 
     /**
-     * A bizonylat nyitott egyenlege. A stornó és a stornózott bizonylatnak is van egyenlege:
-     * a stornó bizonylat visszafizetendő, a stornózotté meg addig áll nyitva, amíg a stornó
-     * párja ki nem egyenlíti. Csak a rontott (és a pénzt nem mozgató) bizonylat ad nullát.
+     * A bizonylat nyitott egyenlege. Csak a rontott (és a pénzt nem mozgató) bizonylat ad nullát;
+     * a stornó a szülőjén számolódik el, ezért a saját sorában nem mutat egyenleget.
      */
     public function getEgyenleg()
     {
-        if ($this->getRontott() || !$this->getPenztmozgat()) {
+        if ($this->getRontott() || !$this->getPenztmozgat() || $this->isStornoGyerek()) {
             return 0;
         }
-        return \mkw\store::getEm()->getRepository(Folyoszamla::class)->getSumByHivatkozottBizonylat($this->getId());
+        return \mkw\store::getEm()->getRepository(Folyoszamla::class)
+            ->getSumByHivatkozottBizonylat($this->getEgyenlegBizonylatszamok());
     }
 
     public function getOsztottEgyenleg()
     {
-        if ($this->getRontott() || !$this->getPenztmozgat()) {
+        if ($this->getRontott() || !$this->getPenztmozgat() || $this->isStornoGyerek()) {
             return 0;
         }
-        return \mkw\store::getEm()->getRepository(Folyoszamla::class)->getSumByHivatkozottBizonylatDatum($this->getId());
+        return \mkw\store::getEm()->getRepository(Folyoszamla::class)
+            ->getSumByHivatkozottBizonylatDatum($this->getEgyenlegBizonylatszamok());
+    }
+
+    /** Stornó bizonylat, aminek megvan a szülője – az egyenlegét a szülőjén mutatjuk. */
+    private function isStornoGyerek()
+    {
+        return $this->getStorno() && $this->getParbizonylatfej();
+    }
+
+    /**
+     * A bizonylat egyenlegébe beleszámító bizonylatszámok: önmaga és az élő stornói. A stornó a
+     * bizonylat követelését szünteti meg, tehát a kettő egy tételként nullázza ki egymást – e nélkül
+     * egy kifizetetlen, majd stornózott számla a listán nyitva maradna.
+     */
+    private function getEgyenlegBizonylatszamok()
+    {
+        $bizszamok = [$this->getId()];
+        /** @var \Entities\Bizonylatfej $gyerek */
+        foreach ($this->getSzulobizonylatfejek() as $gyerek) {
+            if ($gyerek->getStorno() && !$gyerek->getRontott()) {
+                $bizszamok[] = $gyerek->getId();
+            }
+        }
+        return $bizszamok;
     }
 
     public function getKedvezmenyCount()
