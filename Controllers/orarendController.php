@@ -338,11 +338,10 @@ class orarendController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('orarendbenszerepel', '=', true);
         $filter->addFilter('ra.orarendbenszerepel', '=', true);
-        // a rendezvény helyszíne másik törzs (Helyszin, nem Jogahelyszin), ezért helyszínre
-        // szűrve nem tudjuk eldönteni, odatartozik-e: ilyenkor csak az órarend látszik
-        $rec = $helyszinkod
-            ? []
-            : $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
+        if ($helyszinkod) {
+            $filter->addFilter('helyszin', '=', $helyszinkod);
+        }
+        $rec = $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
         /** @var \Entities\Rendezveny $item */
         foreach ($rec as $item) {
             $orak = [
