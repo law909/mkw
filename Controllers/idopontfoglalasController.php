@@ -263,6 +263,9 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('idoponttemafilter', null))) {
             $filter->addFilter('idoponttema.id', '=', $this->params->getIntRequestParam('idoponttemafilter'));
         }
+        if (!is_null($this->params->getRequestParam('idopontfilter', null))) {
+            $filter->addFilter('idopont.id', '=', $this->params->getIntRequestParam('idopontfilter'));
+        }
 
         $this->setVars($view);
         $this->initPager($this->getRepo()->getCount($filter));
@@ -285,6 +288,8 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->setVar('dolgozolist', (new dolgozoController())->getSelectList());
         $view->setVar('idoponttemalist', (new idoponttemaController())->getSelectList());
+        // a szűrő az inaktív időpontokat is kínálja: a régi foglalásokat is meg kell találni
+        $view->setVar('idopontlist', (new idopontController())->getSelectList(null, false));
         $view->setVar('fizmodlist', (new fizmodController())->getSelectList());
         $view->setVar('jogcimlist', (new jogcimController())->getSelectList());
         $view->setVar('penztarlist', (new penztarController())->getSelectList());

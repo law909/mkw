@@ -39,6 +39,16 @@
                     {/foreach}
                 </select>
             </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="idopontfilter">{at('Időpont')}: </label>
+                <select id="idopontfilter" name="idopontfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $idopontlist as $_d}
+                        <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
         </div>
         <div class="mattable-pagerwrapper">
             <div class="mattable-order">

@@ -278,7 +278,8 @@ $(document).ready(function () {
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#dolgozofilter',
-                    '#idoponttemafilter'
+                    '#idoponttemafilter',
+                    '#idopontfilter'
                 ]
             },
             tablebody: {
