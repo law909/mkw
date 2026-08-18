@@ -47,7 +47,17 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $x['idoponttemanev'] = $idopont ? $idopont->getIdoponttemaNev() : '';
         $x['idopontdolgozonev'] = $idopont ? $idopont->getDolgozoNev() : '';
         $x['idoponthelyszinnev'] = $idopont ? $idopont->getJogahelyszinNev() : '';
+        $x['emailemlekeztetodatum'] = $t->getEmailemlekeztetodatumStr();
         return $x;
+    }
+
+    /**
+     * A sorokon megjelenő gombokat a beállított levélsablonok kapcsolják – a lista törzse és a
+     * mentés utáni egy sor is ezen keresztül kapja meg őket.
+     */
+    protected function setVars($view)
+    {
+        $view->setVar('emlekeztetosablonvan', (bool)\mkw\store::getParameter(\mkw\consts::IdopontfoglalasSablonEmlekezteto));
     }
 
     /**
@@ -211,6 +221,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             $filter->addFilter('idoponttema.id', '=', $this->params->getIntRequestParam('idoponttemafilter'));
         }
 
+        $this->setVars($view);
         $this->initPager($this->getRepo()->getCount($filter));
 
         $egyedek = $this->getRepo()->getWithJoins(
@@ -250,6 +261,28 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             }
         }
         return $view->getTemplateResult();
+    }
+
+    /**
+     * A lista sorának „Emlékeztető email" gombja.
+     */
+    public function sendEmlekeztetoEmail()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        if (!$foglalas) {
+            echo json_encode(['msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        if (!$this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonEmlekezteto, 'idopontfoglalasemlekeztetoemail.html')) {
+            echo json_encode(['msg' => at('Emlékeztető levél sablon nem található, vagy a foglalónak nincs emailcíme.')]);
+            return;
+        }
+        $foglalas->setEmailemlekezteto(true);
+        $foglalas->setEmailemlekeztetodatum('');
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+        echo json_encode(['msg' => at('Az emlékeztető levél kiküldve.')]);
     }
 
     /**

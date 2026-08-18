@@ -482,6 +482,7 @@ class consts
     const RendezvenyRegErtesitoEmail = 'rendezvenyregertesitoemail';
 
     const IdopontfoglalasSablonKoszono = 'idopontfoglalaskoszonoemailsablon';
+    const IdopontfoglalasSablonEmlekezteto = 'idopontfoglalasemlekeztetoemailsablon';
 
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';
     const NAVOnlineVersion = 'NAVOnlineVersion';

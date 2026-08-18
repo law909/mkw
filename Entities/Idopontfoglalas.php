@@ -46,6 +46,12 @@ class Idopontfoglalas
     /** @ORM\Column(type="boolean", nullable=false) */
     private $emailkoszono = false;
 
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $emailemlekezteto = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $emailemlekeztetodatum;
+
     public function __construct()
     {
         $this->foglalasido = new \DateTime();
@@ -196,6 +202,43 @@ class Idopontfoglalas
         $this->emailkoszono = $emailkoszono;
     }
 
+    public function getEmailemlekezteto()
+    {
+        return $this->emailemlekezteto;
+    }
+
+    public function setEmailemlekezteto($emailemlekezteto)
+    {
+        $this->emailemlekezteto = $emailemlekezteto;
+    }
+
+    public function getEmailemlekeztetodatum()
+    {
+        return $this->emailemlekeztetodatum;
+    }
+
+    public function getEmailemlekeztetodatumStr()
+    {
+        if ($this->emailemlekeztetodatum) {
+            return $this->emailemlekeztetodatum->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /** Üres értékkel a mai napra áll – a levélküldés így nem ad át dátumot. */
+    public function setEmailemlekeztetodatum($datum = '')
+    {
+        if ($datum instanceof \DateTime) {
+            $this->emailemlekeztetodatum = $datum;
+            return;
+        }
+        $datum = trim((string)$datum);
+        if ($datum === '') {
+            $datum = date(\mkw\store::$DateFormat);
+        }
+        $this->emailemlekeztetodatum = new \DateTime(\mkw\store::convDate($datum));
+    }
+
     /**
      * A foglalás leveleinek Smarty adatai – a sablonokban a `foglalas` változó.
      */
@@ -208,6 +251,9 @@ class Idopontfoglalas
             'napnev' => $this->getNapNev(),
             'foglalasido' => $this->getFoglalasidoStr(),
             'online' => $this->isOnline(),
+            'emailkoszono' => $this->getEmailkoszono(),
+            'emailemlekezteto' => $this->getEmailemlekezteto(),
+            'emailemlekeztetodatum' => $this->getEmailemlekeztetodatumStr(),
             'partnerid' => $this->getPartnerId(),
             'partnernev' => $this->getPartnerNev(),
             'partneremail' => $this->getPartnerEmail(),

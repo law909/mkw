@@ -58,6 +58,7 @@
                 <th>{at('Foglaló')}</th>
                 <th>{at('Foglalás ideje')}</th>
                 <th>{at('Részvétel')}</th>
+                <th>{at('Akciók')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

@@ -221,6 +221,10 @@ class setupController extends \mkwhelpers\Controller
         $ifsablon = new emailtemplateController();
         $view->setVar('idopontfoglalaskoszonoemailsablonlist', $ifsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::IdopontfoglalasSablonEmlekezteto);
+        $ifsablon = new emailtemplateController();
+        $view->setVar('idopontfoglalasemlekeztetoemailsablonlist', $ifsablon->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::JogaBerletFelszolitoSablon);
         $rskesablon = new emailtemplateController();
         $view->setVar('jogaberletfelszolitosablonlist', $rskesablon->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1820,6 +1824,15 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::IdopontfoglalasSablonKoszono, $levelsablon->getId());
         } else {
             $this->setObj(\mkw\consts::IdopontfoglalasSablonKoszono, '');
+        }
+
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::IdopontfoglalasSablonEmlekezteto, 0)
+        );
+        if ($levelsablon) {
+            $this->setObj(\mkw\consts::IdopontfoglalasSablonEmlekezteto, $levelsablon->getId());
+        } else {
+            $this->setObj(\mkw\consts::IdopontfoglalasSablonEmlekezteto, '');
         }
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(

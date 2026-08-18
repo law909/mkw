@@ -33,6 +33,24 @@ $(document).ready(function () {
         });
     }
 
+    // A sorok gombjai ugyanazt csinálják: POST az id-vel, majd az üzenet kiírása és lista frissítés.
+    function sorMuvelet(url, id, frissit) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                const d = JSON.parse(data);
+                showError(d.msg);
+                if (frissit) {
+                    $('.mattable-tablerefresh').click();
+                }
+            }
+        });
+    }
+
     const mattkarbconfig = new MattkarbConfig({
         entityName: 'idopontfoglalas',
         // a szerver a mentést is elutasítja (409), de a hibaüzenetet itt tudjuk megmutatni
@@ -111,9 +129,16 @@ $(document).ready(function () {
                 ]
             },
             tablebody: {
-                url: '/admin/idopontfoglalas/getlistbody'
+                url: '/admin/idopontfoglalas/getlistbody',
+                onStyle: function () {
+                    $('.js-emailemlekezteto').button();
+                }
             },
             karb: mattkarbconfig
+        });
+        $('#mattable-body').on('click', '.js-emailemlekezteto', function (e) {
+            e.preventDefault();
+            sorMuvelet('/admin/idopontfoglalas/email/emlekezteto', $(this).data('id'), true);
         });
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));

@@ -269,6 +269,12 @@ $router->map('GET', '/admin/idopontfoglalas/viewkarb', 'idopontfoglalasControlle
 $router->map('GET', '/admin/idopontfoglalas/check', 'idopontfoglalasController#check', 'adminidopontfoglalascheck');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idopontfoglalas/save', 'idopontfoglalasController#save', 'adminidopontfoglalassave');
+    $router->map(
+        'POST',
+        '/admin/idopontfoglalas/email/emlekezteto',
+        'idopontfoglalasController#sendEmlekeztetoEmail',
+        'adminidopontfoglalasemlekeztetoemail'
+    );
 }
 $router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
 $router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
