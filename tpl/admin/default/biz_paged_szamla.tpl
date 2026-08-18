@@ -6,8 +6,8 @@
     terméknév a fölötte lévő, colspan-os sorban van – itt csak a fejlécfelirat fér el benne.
 *}
 {$w = ($egyed.kedvezmenycount > 0)
-    ? ['sorszam'=>'6mm','termek'=>'11mm','mennyiseg'=>'19mm','me'=>'6mm','ebrutto'=>'23mm','kedv'=>'25mm','egysar'=>'17mm','netto'=>'21mm','afanev'=>'7mm','afa'=>'21mm','brutto'=>'34mm','nevsor'=>'184mm']
-    : ['sorszam'=>'6mm','termek'=>'27mm','mennyiseg'=>'21mm','me'=>'8mm','egysar'=>'25mm','netto'=>'26mm','afanev'=>'9mm','afa'=>'26mm','brutto'=>'42mm','nevsor'=>'184mm']}
+? ['sorszam'=>'6mm','termek'=>'11mm','mennyiseg'=>'19mm','me'=>'6mm','ebrutto'=>'23mm','kedv'=>'25mm','egysar'=>'17mm','netto'=>'21mm','afanev'=>'7mm','afa'=>'21mm','brutto'=>'34mm','nevsor'=>'184mm']
+: ['sorszam'=>'6mm','termek'=>'27mm','mennyiseg'=>'21mm','me'=>'8mm','egysar'=>'25mm','netto'=>'26mm','afanev'=>'9mm','afa'=>'26mm','brutto'=>'42mm','nevsor'=>'184mm']}
 
 {block "title"}Számla{/block}
 
@@ -47,26 +47,27 @@
 
 {block "columnheaders"}
     <tr class="bold">
-    <td width="{$w.sorszam}">#</td>
-    <td width="{$w.termek}">Termék</td>
-    <td width="{$w.mennyiseg}" class="textalignright">Mennyiség</td>
-    <td width="{$w.me}">ME</td>
-    {if ($egyed.kedvezmenycount > 0)}
-        <td width="{$w.ebrutto}" class="textalignright">Eredeti e.ár</td>
-        <td width="{$w.kedv}" class="textalignright">Kedvezmény %</td>
-    {/if}
-    <td width="{$w.egysar}" class="textalignright">Egységár</td>
-    <td width="{$w.netto}" class="textalignright">Nettó érték</td>
-    <td width="{$w.afanev}" class="textalignright">ÁFA</td>
-    <td width="{$w.afa}" class="textalignright">ÁFA érték</td>
-    <td width="{$w.brutto}" class="textalignright">Bruttó érték</td>
+        <td width="{$w.sorszam}">#</td>
+        <td width="{$w.termek}">Termék</td>
+        <td width="{$w.mennyiseg}" class="textalignright">Mennyiség</td>
+        <td width="{$w.me}">ME</td>
+        {if ($egyed.kedvezmenycount > 0)}
+            <td width="{$w.ebrutto}" class="textalignright">Eredeti e.ár</td>
+            <td width="{$w.kedv}" class="textalignright">Kedvezmény %</td>
+        {/if}
+        <td width="{$w.egysar}" class="textalignright">Egységár</td>
+        <td width="{$w.netto}" class="textalignright">Nettó érték</td>
+        <td width="{$w.afanev}" class="textalignright">ÁFA</td>
+        <td width="{$w.afa}" class="textalignright">ÁFA érték</td>
+        <td width="{$w.brutto}" class="textalignright">Bruttó érték</td>
     </tr>
 {/block}
 
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>
-        <td colspan="{if ($egyed.kedvezmenycount > 0)}10{else}8{/if}" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}({$tetel.vtszszam})</td>
+        <td colspan="{if ($egyed.kedvezmenycount > 0)}10{else}8{/if}" width="{$w.nevsor}"
+            class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($setup.theme === 'superzoneb2b')}({$tetel.vtszszam}){/if}</td>
     </tr>
     <tr class="tetelsor">
         <td width="{$w.sorszam}" class="dashedline"></td>
