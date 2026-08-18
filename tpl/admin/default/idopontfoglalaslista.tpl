@@ -126,6 +126,28 @@
             <input id="afizetosszegedit" name="afizetosszeg" type="text">
         </div>
     </form>
+    <form id="szamlazform" class="hidden">
+        <div>
+            <label for="aszamlazbiztipusedit">{at('Bizonylattípus')}:</label>
+            <input id="aszamlazbiztipusedit" name="aszamlazbiztipus" type="radio" value="szamla" checked="checked">{at('Számla')}
+            <input name="aszamlazbiztipus" type="radio" value="egyeb">{at('Egyéb mozgás')}
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="aszamlazkeltedit">{at('Kelt')}:</label>
+            <input id="aszamlazkeltedit" name="aszamlazkelt" type="text" size="12">
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="aszamlazteljesitesedit">{at('Teljesítés')}:</label>
+            <input id="aszamlazteljesitesedit" name="aszamlazteljesites" type="text" size="12">
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="aszamlazosszegedit">{at('Összeg')}:</label>
+            <input id="aszamlazosszegedit" name="aszamlazosszeg" type="text">
+        </div>
+    </form>
     <form id="lemondform" class="hidden">
         <div>
             <label for="alemondasokaedit">{at('Lemondás oka')}:</label>

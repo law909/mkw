@@ -3,7 +3,9 @@
 namespace Controllers;
 
 use Entities\Bankbizonylatfej;
+use Entities\Bankbizonylattetel;
 use Entities\Bankszamla;
+use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
@@ -13,6 +15,8 @@ use Entities\Jogcim;
 use Entities\Partner;
 use Entities\Penztar;
 use Entities\Penztarbizonylatfej;
+use Entities\Penztarbizonylattetel;
+use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
 
 class idopontfoglalasController extends \mkwhelpers\MattableController
@@ -64,6 +68,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             $this->getBizonylatUrl($t->getFizetvepenztarbizonylatszam(), Penztarbizonylatfej::class);
         $x['fizetvebankbizonylatszamlink'] =
             $this->getBizonylatUrl($t->getFizetvebankbizonylatszam(), Bankbizonylatfej::class);
+        $x['szamlazasdatum'] = $t->getSzamlazasdatumStr();
+        $x['szamlazvakelt'] = $t->getSzamlazvakeltStr();
+        $x['szamlazvateljesites'] = $t->getSzamlazvateljesitesStr();
+        $x['szamlaszamlink'] = $this->getBizonylatUrl($t->getSzamlaszam(), Bizonylatfej::class);
         return $x;
     }
 
@@ -86,6 +94,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     protected function setVars($view)
     {
         $view->setVar('emlekeztetosablonvan', (bool)\mkw\store::getParameter(\mkw\consts::IdopontfoglalasSablonEmlekezteto));
+        $view->setVar('szamlazhato', (bool)\mkw\store::getParameter(\mkw\consts::IdopontfoglalasTermek));
     }
 
     /**
@@ -486,6 +495,136 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $foglalas->setFizetveosszeghuf($osszeg);
         $foglalas->setFizmod($fizmod);
         $foglalas->setFizetve(true);
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+
+        echo json_encode(['result' => 'ok']);
+    }
+
+    /**
+     * A számlázó doboz ezzel tölti fel az összeget: a már kifizetett összeg.
+     */
+    public function getfizetettosszeg()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if (!$foglalas) {
+            echo json_encode(['result' => 'error', 'msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        echo json_encode(['result' => 'ok', 'price' => $foglalas->getFizetveosszeghuf()]);
+    }
+
+    /**
+     * A lista sorának „Számláz" gombja: a kifizetéskor rögzített fizetési móddal állít ki
+     * bizonylatot a foglaló partnerre. A tétel terméke a beállításokból jön
+     * (\mkw\consts::IdopontfoglalasTermek), az összeg a kifizetett összeg.
+     */
+    public function szamlaz()
+    {
+        if (!\mkw\store::csinalhatUjSzamlat()) {
+            echo json_encode(['result' => 'error', 'msg' => at('Amíg van beküldetlen számla, nem állíthat ki újat!')]);
+            return;
+        }
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        $kelt = $this->params->getStringRequestParam('kelt');
+        $teljesites = $this->params->getStringRequestParam('teljesites');
+        $osszeg = $this->params->getNumRequestParam('osszeg');
+
+        $biztipusstr = $this->params->getStringRequestParam('biztipus');
+        $biztipus = in_array($biztipusstr, ['szamla', 'egyeb'], true)
+            ? $this->getRepo(Bizonylattipus::class)->find($biztipusstr)
+            : null;
+
+        if (!$foglalas) {
+            echo json_encode(['result' => 'error', 'msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        if ($foglalas->getLemondva() || !$foglalas->getFizetve()) {
+            echo json_encode(['result' => 'error', 'msg' => at('Csak kifizetett, le nem mondott foglalás számlázható.')]);
+            return;
+        }
+        if ($foglalas->getSzamlazva()) {
+            echo json_encode(['result' => 'error', 'msg' => at('A foglalás már ki van számlázva.')]);
+            return;
+        }
+        /** @var \Entities\Termek $termek */
+        $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::IdopontfoglalasTermek));
+        if (!$termek) {
+            echo json_encode(['result' => 'error', 'msg' => at('Nincs beállítva az időpont foglalás termék a beállításokban.')]);
+            return;
+        }
+        if (!$biztipus || !$kelt || !$teljesites || !$osszeg) {
+            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
+            return;
+        }
+
+        if ($foglalas->getFizetvebanktetelid()) {
+            /** @var \Entities\Bankbizonylatfej $bankfej */
+            $bankfej = $this->getRepo(Bankbizonylatfej::class)->find($foglalas->getFizetvebankbizonylatszam());
+            /** @var \Entities\Bankbizonylattetel $banktetel */
+            $banktetel = $this->getRepo(Bankbizonylattetel::class)->find($foglalas->getFizetvebanktetelid());
+            $penztartetel = null;
+        } else {
+            $bankfej = null;
+            $banktetel = null;
+            /** @var \Entities\Penztarbizonylattetel $penztartetel */
+            $penztartetel = $this->getRepo(Penztarbizonylattetel::class)->find($foglalas->getFizetvepenztartetelid());
+        }
+
+        $biz = new Bizonylatfej();
+        $bt = new \Entities\Bizonylattetel();
+
+        $biz->setBizonylattipus($biztipus);
+        $biz->setPersistentData();
+        $biz->addBizonylattetel($bt);
+
+        $biz->setPartner($foglalas->getPartner());
+        if (!$biz->getPartnervatstatus() && !$biz->getPartneradoszam()) {
+            $biz->setPartnervatstatus(2);
+        }
+        $biz->setFizmod($foglalas->getFizmod());
+        $biz->setKelt($kelt);
+        $biz->setTeljesites($teljesites);
+        $biz->setEsedekesseg(\mkw\store::calcEsedekesseg($kelt, $foglalas->getFizmod(), $foglalas->getPartner()));
+        $biz->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        $biz->setArfolyam(1);
+        if ($bankfej) {
+            $biz->setBankszamla($bankfej->getBankszamla());
+        }
+        $biz->setBelsomegjegyzes(at('Automatikus bizonylat'));
+        // a kifizetéskor már készült bank-/pénztárbizonylat, azt kötjük rá lentebb a számlára
+        $biz->setNincsautopenztarbizonylat(true);
+        $biz->setRaktar(\mkw\store::getDefaultRaktarId());
+        $biz->setSzallitasimod(\mkw\store::getParameter(\mkw\consts::Szallitasimod));
+
+        $bt->setPersistentData();
+        $bt->setTermek($termek);
+        $bt->setBruttoegysarhuf($osszeg);
+        $bt->setBruttoegysar($osszeg);
+        $bt->setMennyiseg(1);
+        $bt->calc();
+
+        $this->getEm()->persist($biz);
+        $this->getEm()->flush($biz);
+
+        $foglalas->setSzamlazva(true);
+        $foglalas->setSzamlazasdatum();
+        $foglalas->setSzamlaszam($biz->getId());
+        $foglalas->setSzamlazvabizonylattipus($biztipusstr);
+        $foglalas->setSzamlazvakelt($kelt);
+        $foglalas->setSzamlazvateljesites($teljesites);
+        $foglalas->setSzamlazvaosszeghuf($osszeg);
+
+        if ($banktetel) {
+            $banktetel->setHivatkozottbizonylat($biz->getId());
+            $this->getEm()->persist($banktetel);
+        } elseif ($penztartetel) {
+            $penztartetel->setHivatkozottbizonylat($biz->getId());
+            $this->getEm()->persist($penztartetel);
+        }
+
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
 

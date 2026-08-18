@@ -484,6 +484,7 @@ class consts
     const IdopontfoglalasSablonKoszono = 'idopontfoglalaskoszonoemailsablon';
     const IdopontfoglalasSablonEmlekezteto = 'idopontfoglalasemlekeztetoemailsablon';
     const IdopontfoglalasSablonLemondas = 'idopontfoglalaslemondasemailsablon';
+    const IdopontfoglalasTermek = 'idopontfoglalastermek';
 
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';
     const NAVOnlineVersion = 'NAVOnlineVersion';

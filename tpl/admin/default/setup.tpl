@@ -671,6 +671,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="IdopontfoglalasTermekEdit">{at('Időpont foglalás termék')}:</label></span>
+                                <select id="IdopontfoglalasTermekEdit" name="idopontfoglalastermek">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $idopontfoglalastermeklist as $_role}
+                                        <option value="{$_role.id}"{if ($_role.selected)} selected="selected"{/if}>{$_role.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

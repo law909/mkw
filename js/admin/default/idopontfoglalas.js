@@ -111,6 +111,63 @@ $(document).ready(function () {
         });
     }
 
+    // Számlázás: az összeg a kifizetett összeg, a fizetési mód a kifizetésé (a szerver veszi).
+    function szamlazDialog(id) {
+        $.ajax({
+            url: '/admin/idopontfoglalas/getfizetettosszeg',
+            type: 'GET',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                const d = JSON.parse(data);
+                if (d.result !== 'ok') {
+                    showError(d.msg);
+                    return;
+                }
+                const $form = $('#szamlazform');
+                $('#aszamlazosszegedit').val(d.price);
+                $('#aszamlazkeltedit').datepicker('setDate', new Date());
+                $('#aszamlazteljesitesedit').datepicker('setDate', new Date());
+                $form.show().dialog({
+                    resizable: false,
+                    width: 420,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            const $dia = $(this);
+                            $.ajax({
+                                url: '/admin/idopontfoglalas/szamlaz',
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                    kelt: mkwcomp.datumEdit.getDate('#aszamlazkeltedit'),
+                                    teljesites: mkwcomp.datumEdit.getDate('#aszamlazteljesitesedit'),
+                                    osszeg: $('#aszamlazosszegedit').val(),
+                                    biztipus: $('input[name="aszamlazbiztipus"]:checked').val()
+                                },
+                                success: function (data) {
+                                    const r = JSON.parse(data);
+                                    $dia.dialog('close').dialog('destroy');
+                                    $form.hide();
+                                    if (r.result === 'ok') {
+                                        $('.mattable-tablerefresh').click();
+                                    } else {
+                                        showError(r.msg);
+                                    }
+                                }
+                            });
+                        },
+                        'Mégsem': function () {
+                            $(this).dialog('close').dialog('destroy');
+                            $form.hide();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     // A lemondás levelet is küldhet, ezért egy kattintásra nem indul: a doboz a lemondás okát is felveszi.
     function lemondDialog(id) {
         const $form = $('#lemondform');
@@ -210,6 +267,8 @@ $(document).ready(function () {
         mkwcomp.datumEdit.init('#datumtolfilter');
         mkwcomp.datumEdit.init('#datumigfilter');
         mkwcomp.datumEdit.init('#afizetdatumedit');
+        mkwcomp.datumEdit.init('#aszamlazkeltedit');
+        mkwcomp.datumEdit.init('#aszamlazteljesitesedit');
 
         $('#mattable-select').mattable({
             filter: {
@@ -225,7 +284,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/idopontfoglalas/getlistbody',
                 onStyle: function () {
-                    $('.js-emailemlekezteto, .js-lemond, .js-visszaallit, .js-fizet').button();
+                    $('.js-emailemlekezteto, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz').button();
                 }
             },
             karb: mattkarbconfig
@@ -246,6 +305,10 @@ $(document).ready(function () {
             .on('click', '.js-fizet', function (e) {
                 e.preventDefault();
                 fizetDialog($(this).data('id'));
+            })
+            .on('click', '.js-szamlaz', function (e) {
+                e.preventDefault();
+                szamlazDialog($(this).data('id'));
             });
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));

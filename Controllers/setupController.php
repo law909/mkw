@@ -565,6 +565,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('jogaberlet4termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::JogaBerlet10Termek);
         $view->setVar('jogaberlet10termeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::IdopontfoglalasTermek);
+        $view->setVar('idopontfoglalastermeklist', $termek->getSelectList(($p ? $p->getErtek() : 0)));
 
         $jtc = new jogaoratipusController();
         $p = $repo->find(\mkw\consts::JogaAllapotfelmeresTipus);
@@ -2017,6 +2019,12 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::JogaBerlet10Termek, $vut->getId());
         } else {
             $this->setObj(\mkw\consts::JogaBerlet10Termek, null);
+        }
+        $vut = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam(\mkw\consts::IdopontfoglalasTermek, 0));
+        if ($vut) {
+            $this->setObj(\mkw\consts::IdopontfoglalasTermek, $vut->getId());
+        } else {
+            $this->setObj(\mkw\consts::IdopontfoglalasTermek, null);
         }
 
         $vut = \mkw\store::getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaallapotfelmerestipus', 0));

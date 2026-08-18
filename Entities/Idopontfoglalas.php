@@ -101,6 +101,27 @@ class Idopontfoglalas
     /** @ORM\Column(type="integer",nullable=true) */
     private $fizetvebanktetelid;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $szamlazva = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $szamlazasdatum;
+
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $szamlaszam;
+
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $szamlazvabizonylattipus;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $szamlazvakelt;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $szamlazvateljesites;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $szamlazvaosszeghuf;
+
     public function __construct()
     {
         $this->foglalasido = new \DateTime();
@@ -471,6 +492,106 @@ class Idopontfoglalas
         $this->fizetvebanktetelid = $id;
     }
 
+    public function getSzamlazva()
+    {
+        return $this->szamlazva;
+    }
+
+    public function setSzamlazva($szamlazva)
+    {
+        $this->szamlazva = $szamlazva;
+    }
+
+    public function getSzamlazasdatumStr()
+    {
+        if ($this->szamlazasdatum) {
+            return $this->szamlazasdatum->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /** Üres értékkel a mai napra áll. */
+    public function setSzamlazasdatum($datum = '')
+    {
+        $this->szamlazasdatum = self::toDate($datum, true);
+    }
+
+    public function getSzamlaszam()
+    {
+        return $this->szamlaszam;
+    }
+
+    public function setSzamlaszam($szamlaszam)
+    {
+        $this->szamlaszam = $szamlaszam;
+    }
+
+    public function getSzamlazvabizonylattipus()
+    {
+        return $this->szamlazvabizonylattipus;
+    }
+
+    public function setSzamlazvabizonylattipus($tipus)
+    {
+        $this->szamlazvabizonylattipus = $tipus;
+    }
+
+    public function getSzamlazvakeltStr()
+    {
+        if ($this->szamlazvakelt) {
+            return $this->szamlazvakelt->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setSzamlazvakelt($datum = '')
+    {
+        $this->szamlazvakelt = self::toDate($datum);
+    }
+
+    public function getSzamlazvateljesitesStr()
+    {
+        if ($this->szamlazvateljesites) {
+            return $this->szamlazvateljesites->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setSzamlazvateljesites($datum = '')
+    {
+        $this->szamlazvateljesites = self::toDate($datum);
+    }
+
+    public function getSzamlazvaosszeghuf()
+    {
+        return $this->szamlazvaosszeghuf;
+    }
+
+    public function setSzamlazvaosszeghuf($osszeg)
+    {
+        $this->szamlazvaosszeghuf = $osszeg;
+    }
+
+    /**
+     * @param bool $uresmaiNap üres értékre a mai nap (a bejegyzés dátumánál kell), különben null
+     *
+     * @return \DateTime|null
+     */
+    private static function toDate($datum, $uresmaiNap = false)
+    {
+        if ($datum instanceof \DateTime) {
+            return $datum;
+        }
+        $datum = trim((string)$datum);
+        if ($datum === '') {
+            if (!$uresmaiNap) {
+                return null;
+            }
+            $datum = date(\mkw\store::$DateFormat);
+        }
+        return new \DateTime(\mkw\store::convDate($datum));
+    }
+
     /**
      * A foglalás leveleinek Smarty adatai – a sablonokban a `foglalas` változó.
      */
@@ -497,6 +618,12 @@ class Idopontfoglalas
             'fizetvepenztarbizonylatszam' => $this->getFizetvepenztarbizonylatszam(),
             'fizetvebankszamlaszam' => $this->getFizetvebankszamla()?->getSzamlaszam(),
             'fizetvebankbizonylatszam' => $this->getFizetvebankbizonylatszam(),
+            'szamlazva' => $this->getSzamlazva(),
+            'szamlazasdatum' => $this->getSzamlazasdatumStr(),
+            'szamlaszam' => $this->getSzamlaszam(),
+            'szamlazvakelt' => $this->getSzamlazvakeltStr(),
+            'szamlazvateljesites' => $this->getSzamlazvateljesitesStr(),
+            'szamlazvaosszeghuf' => $this->getSzamlazvaosszeghuf(),
             'partnerid' => $this->getPartnerId(),
             'partnernev' => $this->getPartnerNev(),
             'partneremail' => $this->getPartnerEmail(),
