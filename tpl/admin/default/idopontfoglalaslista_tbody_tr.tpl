@@ -18,6 +18,52 @@
     <td class="cell">{$_egyed.foglalasido}</td>
     <td class="cell">{if ($_egyed.online)}{at('online')}{else}{at('élő')}{/if}</td>
     <td class="cell">
+        {if ($_egyed.lemondva)}
+            <div>
+                <span class="mattable-important">{at('Lemondva')}</span> ({$_egyed.lemondasdatum})<br>
+                {if ($_egyed.lemondasoka)}{at('Oka')}: {$_egyed.lemondasoka}{/if}
+            </div>
+        {/if}
+        {if ($_egyed.fizetve)}
+            <div>
+                <span class="mattable-important">{at('Fizetve')}</span> ({$_egyed.fizetesdatum}): {bizformat($_egyed.fizetveosszeghuf)}<br>
+                {$_egyed.fizmodnev}<br>
+                {if ($_egyed.fizetvepenztarnev)}
+                    {$_egyed.fizetvepenztarnev}<br>
+                    {if ($_egyed.fizetvepenztarbizonylatszamlink)}
+                        <a href="{$_egyed.fizetvepenztarbizonylatszamlink}" target="_blank"
+                           title="{at('Ugrás a bizonylathoz')}">{$_egyed.fizetvepenztarbizonylatszam}</a>
+                    {else}
+                        {$_egyed.fizetvepenztarbizonylatszam}
+                    {/if}
+                {else}
+                    {$_egyed.fizetvebankszamlaszam}<br>
+                    {if ($_egyed.fizetvebankbizonylatszamlink)}
+                        <a href="{$_egyed.fizetvebankbizonylatszamlink}" target="_blank"
+                           title="{at('Ugrás a bizonylathoz')}">{$_egyed.fizetvebankbizonylatszam}</a>
+                    {else}
+                        {$_egyed.fizetvebankbizonylatszam}
+                    {/if}
+                {/if}
+            </div>
+        {/if}
+        {if ($_egyed.szamlazva)}
+            <div>
+                <span class="mattable-important">{at('Számlázva')}</span> ({$_egyed.szamlazasdatum}): {bizformat($_egyed.szamlazvaosszeghuf)}<br>
+                {if ($_egyed.szamlaszamlink)}
+                    <a href="{$_egyed.szamlaszamlink}" target="_blank" title="{at('Ugrás a bizonylathoz')}">{$_egyed.szamlaszam}</a>
+                {else}
+                    {$_egyed.szamlaszam}
+                {/if}<br>
+                {at('Kért kelt')}: {$_egyed.szamlazvakelt}<br>
+                {at('Kért teljesítés')}: {$_egyed.szamlazvateljesites}
+            </div>
+        {/if}
+    </td>
+    <td class="cell">
+        {if ($_egyed.emailkoszono)}
+            <div>{at('Foglalás megköszönve')}</div>
+        {/if}
         {if ($emlekeztetosablonvan && !$_egyed.lemondva)}
             {if ($_egyed.emailemlekezteto)}
                 <div>{at('Utolsó emlékeztető')}: {$_egyed.emailemlekeztetodatum}</div>
