@@ -455,6 +455,13 @@ class BizonylatfejListener
         }
     }
 
+    private function rontBankBizonylat($bizfej)
+    {
+        foreach ($this->getEloBankBizonylatok($bizfej) as $bbiz) {
+            $this->rontBankBizonylatfej($bbiz);
+        }
+    }
+
     /**
      * A Penztarbizonylatfej::setRontott() a tételeket is átállítja, de a bennük lévő
      * változást a UnitOfWork-kel is fel kell vetetni – e nélkül a penztarbizonylattetel.rontott
@@ -1113,12 +1120,15 @@ class BizonylatfejListener
                         $entity->setWebshopnum(\mkw\store::getWebshopNum());
                     }
 
-                    // Rontáskor a bizonylat pénztárbizonylata is rontott lesz. Stornónál
-                    // viszont nem: a stornózott bizonylat pénztárbizonylata érintetlen
+                    // Rontáskor a bizonylat pénzmozgásai (pénztár- ÉS bankbizonylat) is
+                    // rontottá válnak – különben a bizonylat sora kiesik a folyószámláról,
+                    // a kiegyenlítése viszont bennmarad, és hamis túlfizetést mutat.
+                    // Stornónál más a helyzet: a stornózott bizonylat pénzmozgása érintetlen
                     // marad, a visszafizetést a storno bizonylat saját pénztárbizonylata
                     // rögzíti (azt a createPenztarBizonylat képzi).
                     if ($entity->getRontott()) {
                         $this->rontPenztarBizonylat($entity);
+                        $this->rontBankBizonylat($entity);
                     } else {
                         $this->createPenztarBizonylat($entity);
                     }

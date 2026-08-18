@@ -338,6 +338,19 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         return $tetel;
     }
 
+    public function ront()
+    {
+        $id = $this->params->getStringRequestParam('id');
+        if ($id) {
+            $bf = $this->getRepo()->find($id);
+            if ($bf) {
+                $bf->setRontott(true);
+                $this->getEm()->persist($bf);
+                $this->getEm()->flush();
+            }
+        }
+    }
+
     public function exportKonyvelo()
     {
         function x($o)

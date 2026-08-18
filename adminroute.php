@@ -497,6 +497,10 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/kintlevoseglista/get', 'kintlevoseglistaController#createLista', 'adminkintlevoseglistaget');
     $router->map('GET', '/admin/kintlevoseglista/export', 'kintlevoseglistaController#exportLista', 'adminkintlevoseglistaexport');
 
+    $router->map('GET', '/admin/folyoszamlaellenorzes/view', 'folyoszamlaellenorzesController#view', 'adminfolyoszamlaellenorzesview');
+    $router->map('GET', '/admin/folyoszamlaellenorzes/get', 'folyoszamlaellenorzesController#createLista', 'adminfolyoszamlaellenorzesget');
+    $router->map('GET', '/admin/folyoszamlaellenorzes/export', 'folyoszamlaellenorzesController#exportLista', 'adminfolyoszamlaellenorzesexport');
+
     $router->map('GET', '/admin/tartozaslista/view', 'tartozaslistaController#view', 'admintartozaslistaview');
     $router->map('GET', '/admin/tartozaslista/get', 'tartozaslistaController#createLista', 'admintartozaslistaget');
     $router->map('GET', '/admin/tartozaslista/export', 'tartozaslistaController#exportLista', 'admintartozaslistaexport');

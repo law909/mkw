@@ -1523,6 +1523,20 @@ if ($DBVersion < '0125') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0125');
 }
 
+if ($DBVersion < '0126') {
+    // Folyószámla ellenőrzés riport – csak ott van értelme, ahol van bank/pénztár kezelés
+    // (az útvonala is a `isBankpenztar()` ágban él).
+    $lathato = \mkw\store::isBankpenztar() ? 1 : 0;
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 4, "Folyószámla ellenőrzés", "/admin/folyoszamlaellenorzes/view", "/admin/folyoszamlaellenorzes",'
+        . ' 20, ' . $lathato . ', 430, ""'
+        . ' FROM DUAL WHERE NOT EXISTS'
+        . '  (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/folyoszamlaellenorzes/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0126');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
