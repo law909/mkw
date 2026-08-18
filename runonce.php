@@ -1515,8 +1515,7 @@ if ($DBVersion < '0124') {
 
 if ($DBVersion < '0125') {
     // A rendezvény helyszíne a Jogahelyszin törzsre került, a régi Helyszín képernyő megszűnt.
-    // A `helyszin` táblát nem dobjuk el: ha valamelyik telepítésen mégis van benne adat, kézzel
-    // átvezethető a jogahelyszin-be, utána eldobható.
+    // A tábla eldobása a 0127-es blokkban van.
     \mkw\store::getEm()->getConnection()->executeStatement(
         'DELETE FROM menu WHERE routename = "/admin/helyszin"'
     );
@@ -1535,6 +1534,25 @@ if ($DBVersion < '0126') {
         . '  (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/folyoszamlaellenorzes/view") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0126');
+}
+
+if ($DBVersion < '0127') {
+    // A `helyszin` tábla utolsó használója a rendezvény volt, az már a jogahelyszin-re mutat.
+    // Eldobás előtt a tartalmát a naplóba írjuk: minden ismert telepítésen üres, de ha valahol
+    // mégsem, ne nyom nélkül tűnjön el.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vantabla = $conn->fetchOne(
+        'SELECT COUNT(*) FROM information_schema.tables'
+        . ' WHERE table_schema = DATABASE() AND table_name = "helyszin"'
+    );
+    if ($vantabla) {
+        $sorok = $conn->fetchAllAssociative('SELECT * FROM helyszin');
+        if ($sorok) {
+            \mkw\store::writelog(json_encode($sorok, JSON_UNESCAPED_UNICODE), 'helyszin_tabla_eldobas.log');
+        }
+        $conn->executeStatement('DROP TABLE helyszin');
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0127');
 }
 
 /**
