@@ -1475,8 +1475,8 @@ if ($DBVersion < '0123') {
     $joga = \mkw\store::isDarshan() ? 1 : 0;
     $conn = \mkw\store::getEm()->getConnection();
     $menupontok = [
-        [7, 'Időpont témák', '/admin/idoponttema/viewlist', '/admin/idoponttema', 40, 287],
-        [7, 'Jóga helyszínek', '/admin/jogahelyszin/viewlist', '/admin/jogahelyszin', 40, 288],
+        [7, 'Időpont témák', '/admin/idoponttema/viewlist', '/admin/idoponttema', 40, 1300],
+        [7, 'Jóga helyszínek', '/admin/jogahelyszin/viewlist', '/admin/jogahelyszin', 40, 1650],
         [8, 'Időpontok', '/admin/idopont/viewlist', '/admin/idopont', 15, 230],
         [8, 'Időpont foglalások', '/admin/idopontfoglalas/viewlist', '/admin/idopontfoglalas', 15, 240],
     ];

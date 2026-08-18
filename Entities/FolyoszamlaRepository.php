@@ -103,25 +103,31 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    /**
+     * A partner nyitott tételei bizonylatonként. Az oldalt (kintlevőség / tartozás) a csoport
+     * NETTÓ egyenlegének előjele dönti el, nem a soronkénti irány: egy negatív összegű bizonylat
+     * (stornó, jóváíró) és a hozzá tartozó pénzmozgás így egy csoportba kerül, és kinullázza
+     * egymást. A stornó és stornózott sorok bent maradnak – csak a rontott esik ki.
+     *
+     * @param mixed $partnerid
+     * @param int $irany 1: kintlevőség (a partner tartozik), -1: tartozás (mi tartozunk)
+     */
     public function getSumByPartner($partnerid, $irany)
     {
         $filter = new FilterDescriptor();
         $filter
             ->addFilter('partner', '=', $partnerid)
-            ->addFilter('storno', '=', false)
-            ->addFilter('stornozott', '=', false)
-            ->addFilter('rontott', '=', false);
+            ->addFilter('rontott', '=', false)
+            ->addSql('((_xx.bizonylatfej IS NULL) OR (_xx.bizonylatfej=_xx.hivatkozottbizonylat))');
         switch ($irany) {
             case 1:
-                $filter->addSql(
-                    '(((_xx.bizonylatfej IS NULL) AND (_xx.irany<0)) OR ((_xx.bizonylatfej IS NOT NULL) AND (_xx.bizonylatfej=_xx.hivatkozottbizonylat) AND (_xx.irany>0)))'
-                );
+                $having = ' HAVING egyenleg>0';
                 break;
             case -1:
-                $filter->addSql(
-                    '(((_xx.bizonylatfej IS NULL) AND (_xx.irany>0)) OR ((_xx.bizonylatfej IS NOT NULL) AND (_xx.bizonylatfej=_xx.hivatkozottbizonylat) AND (_xx.irany<0)))'
-                );
+                $having = ' HAVING egyenleg<0';
                 break;
+            default:
+                $having = ' HAVING egyenleg<>0';
         }
 
         $q = $this->_em->createQuery(
@@ -130,7 +136,7 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
             . ' LEFT JOIN _xx.fizmod fm'
             . $this->getFilterString($filter)
             . ' GROUP BY _xx.hivatkozottbizonylat,_xx.hivatkozottdatum,fm.nev'
-            . ' HAVING egyenleg<>0'
+            . $having
             . ' ORDER BY _xx.hivatkozottdatum'
         );
         $q->setParameters($this->getQueryParameters($filter));
@@ -139,26 +145,36 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
 
     public function getLejartKintlevosegByValutanem($cimkek = null)
     {
-        $pluszsql = ' WHERE (storno=0) AND (stornozott=0) AND '
-            . '(((bizonylatfej_id IS NULL) AND (irany<0)) OR ((bizonylatfej_id IS NOT NULL) AND (bizonylatfej_id=hivatkozottbizonylat) AND (irany>0)))';
-        if ($cimkek) {
-            $pluszsql = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN (' . \mkw\store::getCommaList(
-                    $cimkek
-                ) . '))' . $pluszsql;
-        }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
-        $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM ('
-            . ' SELECT valutanem_id,hivatkozottbizonylat,hivatkozottdatum,sum(brutto*irany) AS egyenleg'
-            . ' FROM folyoszamla f'
-            . $pluszsql
-            . ' GROUP BY valutanem_id,hivatkozottbizonylat,hivatkozottdatum) AS egyen'
+        $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM (' . $this->getEgyenlegSql($cimkek) . ') AS egyen'
             . ' LEFT JOIN valutanem v ON (egyen.valutanem_id=v.id)'
-            . ' WHERE egyen.hivatkozottdatum<CURDATE()'
+            . ' WHERE (egyen.egyenleg>0) AND (egyen.hivatkozottdatum<CURDATE())'
             . ' GROUP BY v.nev';
         $q = $this->_em->createNativeQuery($sql, $rsm);
         return $q->getScalarResult();
+    }
+
+    /**
+     * Bizonylatonkénti (és esedékességenkénti) nettó egyenleg – a kintlevőség aggregátumok közös
+     * belső lekérdezése. Csak a rontott sorok maradnak ki; hogy egy csoport kintlevőség-e vagy
+     * tartozás, azt a nettó egyenleg előjele dönti el, nem a soronkénti irány.
+     *
+     * @param array|null $cimkek partnercímke szűrő
+     */
+    private function getEgyenlegSql($cimkek = null)
+    {
+        $join = '';
+        if ($cimkek) {
+            $join = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN ('
+                . \mkw\store::getCommaList($cimkek) . '))';
+        }
+        return ' SELECT valutanem_id,hivatkozottbizonylat,hivatkozottdatum,SUM(brutto*irany) AS egyenleg'
+            . ' FROM folyoszamla f'
+            . $join
+            . ' WHERE (rontott=0) AND ((bizonylatfej_id IS NULL) OR (bizonylatfej_id=hivatkozottbizonylat))'
+            . ' GROUP BY valutanem_id,hivatkozottbizonylat,hivatkozottdatum';
     }
 
     public function getFakeKintlevosegByValutanem($cimkek = null)
@@ -194,20 +210,12 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
 
     public function getKintlevosegByValutanem($cimkek = null)
     {
-        $pluszsql = ' WHERE (storno=0) AND (stornozott=0) AND '
-            . '(((bizonylatfej_id IS NULL) AND (irany<0)) OR ((bizonylatfej_id IS NOT NULL) AND (bizonylatfej_id=hivatkozottbizonylat) AND (irany>0)))';
-        if ($cimkek) {
-            $pluszsql = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN (' . \mkw\store::getCommaList(
-                    $cimkek
-                ) . '))' . $pluszsql;
-        }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
-        $sql = 'SELECT v.nev,SUM(f.brutto * f.irany) AS egyenleg '
-            . ' FROM folyoszamla f'
-            . ' LEFT JOIN valutanem v ON (f.valutanem_id=v.id)'
-            . $pluszsql
+        $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM (' . $this->getEgyenlegSql($cimkek) . ') AS egyen'
+            . ' LEFT JOIN valutanem v ON (egyen.valutanem_id=v.id)'
+            . ' WHERE egyen.egyenleg>0'
             . ' GROUP BY v.nev';
         $q = $this->_em->createNativeQuery($sql, $rsm);
         return $q->getScalarResult();

@@ -67,10 +67,10 @@ class Penztarbizonylatfej extends \Entities\Penztarbizonylatfej implements \Doct
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztar', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztarnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerhazszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'folyoszamlak'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztar', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztarnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'storno', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerhazszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'folyoszamlak'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztar', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztarnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerhazszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'folyoszamlak'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'id', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'created', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'createdby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'irany', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztar', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'penztarnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'rontott', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'storno', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'stornozott', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'erbizonylatszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'kelt', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'brutto', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanem', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'valutanemnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'arfolyam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partner', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervezeteknev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerkeresztnev', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partneradoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnereuadoszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'partnerhazszam', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'bizonylattetelek', '' . "\0" . 'Entities\\Penztarbizonylatfej' . "\0" . 'folyoszamlak'];
     }
 
     /**
@@ -872,6 +872,50 @@ class Penztarbizonylatfej extends \Entities\Penztarbizonylatfej implements \Doct
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRontott', [$adat]);
 
         return parent::setRontott($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStorno()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStorno', []);
+
+        return parent::getStorno();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setStorno($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStorno', [$adat]);
+
+        return parent::setStorno($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getStornozott()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStornozott', []);
+
+        return parent::getStornozott();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setStornozott($adat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStornozott', [$adat]);
+
+        return parent::setStornozott($adat);
     }
 
     /**

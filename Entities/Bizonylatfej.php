@@ -55,6 +55,18 @@ class Bizonylatfej
     // Nem perzisztált, a listener tölti: változott-e ebben a mentésben a fizetési mód vagy a
     // pénzmozgás jelölő. E nélkül egy teljesen más okból indított mentés is a pénzmozgásokhoz nyúlna.
     private $penzugyimezovaltozott = false;
+    // Nem perzisztált. A bizonylat rontásakor a felhasználó dönti el, rontsuk-e vele a pénzügyi
+    // teljesítést is. Alapértelmezésben igen: a kérdést nem feltevő hívók (bizonylat szétbontás,
+    // import) számára ez a helyes viselkedés.
+    private $rontpenzmozgas = true;
+    // Nem perzisztált. A stornó bizonylat mentésekor a felhasználó dönti el, stornózzuk-e az
+    // eredeti bizonylat pénzmozgását és képezzünk-e a stornóhoz párat.
+    private $stornopenzmozgas = false;
+    // Nem perzisztált. A bizonylat összegének megváltozásakor a felhasználó dönti el, igazítsuk-e
+    // hozzá a már rögzített pénzügyi teljesítést.
+    private $igazitpenzmozgasosszeget = false;
+    // Nem perzisztált, a listener tölti: változott-e ebben a mentésben a fizetendő összeg.
+    private $osszegvaltozott = false;
 
     /**
      * @ORM\Id @ORM\Column(type="string",length=30,nullable=false)
@@ -1136,9 +1148,14 @@ class Bizonylatfej
         $this->setPersistentData();
     }
 
+    /**
+     * A bizonylat nyitott egyenlege. A stornó és a stornózott bizonylatnak is van egyenlege:
+     * a stornó bizonylat visszafizetendő, a stornózotté meg addig áll nyitva, amíg a stornó
+     * párja ki nem egyenlíti. Csak a rontott (és a pénzt nem mozgató) bizonylat ad nullát.
+     */
     public function getEgyenleg()
     {
-        if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
+        if ($this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
         return \mkw\store::getEm()->getRepository(Folyoszamla::class)->getSumByHivatkozottBizonylat($this->getId());
@@ -1146,7 +1163,7 @@ class Bizonylatfej
 
     public function getOsztottEgyenleg()
     {
-        if ($this->getStorno() || $this->getStornozott() || $this->getRontott() || !$this->getPenztmozgat()) {
+        if ($this->getRontott() || !$this->getPenztmozgat()) {
             return 0;
         }
         return \mkw\store::getEm()->getRepository(Folyoszamla::class)->getSumByHivatkozottBizonylatDatum($this->getId());
@@ -5631,6 +5648,46 @@ class Bizonylatfej
     public function setPenzugyimezovaltozott($penzugyimezovaltozott)
     {
         $this->penzugyimezovaltozott = $penzugyimezovaltozott;
+    }
+
+    public function isRontpenzmozgas()
+    {
+        return $this->rontpenzmozgas;
+    }
+
+    public function setRontpenzmozgas($rontpenzmozgas)
+    {
+        $this->rontpenzmozgas = $rontpenzmozgas;
+    }
+
+    public function isStornopenzmozgas()
+    {
+        return $this->stornopenzmozgas;
+    }
+
+    public function setStornopenzmozgas($stornopenzmozgas)
+    {
+        $this->stornopenzmozgas = $stornopenzmozgas;
+    }
+
+    public function isIgazitpenzmozgasosszeget()
+    {
+        return $this->igazitpenzmozgasosszeget;
+    }
+
+    public function setIgazitpenzmozgasosszeget($igazitpenzmozgasosszeget)
+    {
+        $this->igazitpenzmozgasosszeget = $igazitpenzmozgasosszeget;
+    }
+
+    public function isOsszegvaltozott()
+    {
+        return $this->osszegvaltozott;
+    }
+
+    public function setOsszegvaltozott($osszegvaltozott)
+    {
+        $this->osszegvaltozott = $osszegvaltozott;
     }
 
     /**

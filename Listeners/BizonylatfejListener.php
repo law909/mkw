@@ -463,6 +463,156 @@ class BizonylatfejListener
     }
 
     /**
+     * A bizonylat összegének megváltozásakor a felhasználó kérhette, hogy a már rögzített pénzügyi
+     * teljesítés kövesse. Ilyenkor a legutolsó élő pénzmozgás tételén vezetjük át a különbözetet.
+     *
+     * Két esetben nem nyúlunk hozzá, mert nem lenne egyértelmű, mi a helyes:
+     *  - a bizonylat eddig sem volt teljesen kiegyenlítve (részfizetés),
+     *  - a különbözet nullára vagy negatívba vinné a tételt.
+     * Az automatikus pénztárbizonylatot képző típusoknál sem itt dől el: azt a createPenztarBizonylat
+     * amúgy is lerontja és újraképzi az új összeggel.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function igazitPenzmozgasOsszeget($bizfej)
+    {
+        if (!$bizfej->isOsszegvaltozott() || !$bizfej->isIgazitpenzmozgasosszeget()) {
+            return;
+        }
+        if ($bizfej->getBizonylattipus()?->getAutopenztarbizonylat()) {
+            return;
+        }
+
+        $tetelek = $this->getEloPenzmozgasTetelek($bizfej);
+        if (!$tetelek) {
+            return;
+        }
+
+        $eredeti = $this->uow->getOriginalEntityData($bizfej);
+        $regiosszeg = ($eredeti['fizetendo'] ?? 0) * 1;
+        $ujosszeg = $bizfej->getFizetendo() * 1;
+        $irany = $bizfej->getIrany();
+
+        $fizetve = 0;
+        foreach ($tetelek as $sor) {
+            $fizetve += $sor['tetel']->getBrutto() * $sor['irany'] * -1;
+        }
+        if (abs($fizetve - $regiosszeg * $irany) >= 0.005) {
+            $this->naplozPenzmozgasIgazitas($bizfej, t('a bizonylat nem volt teljesen kiegyenlítve'));
+            return;
+        }
+
+        // a legutolsó pénzmozgáson vezetjük át a különbözetet
+        usort($tetelek, function ($a, $b) {
+            return $a['kelt'] <=> $b['kelt'];
+        });
+        $sor = end($tetelek);
+        $kulonbseg = ($ujosszeg - $regiosszeg) * $irany;
+        $ujbrutto = $sor['tetel']->getBrutto() * 1 + ($kulonbseg / $sor['irany'] * -1);
+
+        if ($ujbrutto <= 0.005) {
+            $this->naplozPenzmozgasIgazitas($bizfej, t('a különbözet nem fér el a pénzmozgáson'));
+            return;
+        }
+        if (($sor['fej'] instanceof Penztarbizonylatfej)
+            && $this->penztarZartIdoszak($sor['fej']->getPenztar(), $sor['fej']->getKelt())) {
+            $this->naplozPenzmozgasIgazitas($bizfej, t('a pénztár időszaka zárt'));
+            return;
+        }
+
+        $regibrutto = $sor['tetel']->getBrutto();
+        $sor['tetel']->setBrutto($ujbrutto);
+        $this->em->persist($sor['tetel']);
+        $this->uow->recomputeSingleEntityChangeSet(
+            $sor['fej'] instanceof Penztarbizonylatfej ? $this->penztarbizonylattetelmd : $this->bankbizonylattetelmd,
+            $sor['tetel']
+        );
+        $this->naplozPenzmozgasIgazitas(
+            $bizfej,
+            $sor['fej']->getId() . ': ' . $this->naploErtek($regibrutto) . ' -> ' . $this->naploErtek($ujbrutto)
+        );
+    }
+
+    /**
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function naplozPenzmozgasIgazitas($bizfej, $szoveg)
+    {
+        $this->createNaplo(
+            $bizfej,
+            Bizonylatnaplo::ESEMENY_MEZOVALTOZAS,
+            'Pénzmozgás összege',
+            'penzmozgasosszeg',
+            '',
+            $szoveg,
+            \mkw\store::getLoggedInDolgozo()
+        );
+    }
+
+    /**
+     * A bizonylatra hivatkozó élő pénzmozgás tételek, a fejükkel és az irányukkal együtt.
+     * A folyószámlán a tétel a fej (pénztár) ill. a saját (bank) irányának ellentettjével szerepel.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     *
+     * @return array [['tetel'=>…, 'fej'=>…, 'kelt'=>…, 'irany'=>…], …]
+     */
+    private function getEloPenzmozgasTetelek($bizfej)
+    {
+        $tetelek = [];
+        foreach ($this->getEloPenztarBizonylatok($bizfej) as $pbiz) {
+            /** @var \Entities\Penztarbizonylattetel $pt */
+            foreach ($pbiz->getBizonylattetelek() as $pt) {
+                if (!$pt->getRontott() && ((string)$pt->getHivatkozottbizonylat() === (string)$bizfej->getId())) {
+                    $tetelek[] = ['tetel' => $pt, 'fej' => $pbiz, 'kelt' => $pbiz->getKelt(), 'irany' => $pbiz->getIrany()];
+                }
+            }
+        }
+        foreach ($this->getEloBankBizonylatok($bizfej) as $bbiz) {
+            /** @var \Entities\Bankbizonylattetel $bt */
+            foreach ($bbiz->getBizonylattetelek() as $bt) {
+                if (!$bt->getRontott() && ((string)$bt->getHivatkozottbizonylat() === (string)$bizfej->getId())) {
+                    $tetelek[] = ['tetel' => $bt, 'fej' => $bbiz, 'kelt' => $bbiz->getKelt(), 'irany' => $bt->getIrany()];
+                }
+            }
+        }
+        return $tetelek;
+    }
+
+    /**
+     * Most, ebben a mentésben lett-e rontott a bizonylat. Egy már rontott bizonylat újramentése
+     * nem nyúlhat a pénzmozgásokhoz: a kérdés akkor hangzott el, a válasz akkor érvényesült.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function mostLettRontott($bizfej)
+    {
+        if ($this->uow->isScheduledForInsert($bizfej)) {
+            return (bool)$bizfej->getRontott();
+        }
+        $changeset = $this->uow->getEntityChangeSet($bizfej);
+        return isset($changeset['rontott']) && $changeset['rontott'][1];
+    }
+
+    /**
+     * Megváltozott-e a fizetendő összeg ebben a mentésben. A changeset ehhez kevés: a fizetendőt
+     * a calcOsszesen() csak itt, a listenerben számolja ki, ezért a betöltéskori értékkel vetjük össze.
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function osszegValtozott($bizfej)
+    {
+        if ($this->uow->isScheduledForInsert($bizfej)) {
+            return false;
+        }
+        $eredeti = $this->uow->getOriginalEntityData($bizfej);
+        if (!array_key_exists('fizetendo', $eredeti)) {
+            return false;
+        }
+        return abs($eredeti['fizetendo'] * 1 - $bizfej->getFizetendo() * 1) >= 0.005;
+    }
+
+    /**
      * A Penztarbizonylatfej::setRontott() a tételeket is átállítja, de a bennük lévő
      * változást a UnitOfWork-kel is fel kell vetetni – e nélkül a penztarbizonylattetel.rontott
      * soha nem kerül ki az adatbázisba.
@@ -1114,6 +1264,8 @@ class BizonylatfejListener
                         //$this->uow->recomputeSingleEntityChangeSet($this->kuponmd, $kupon);
                     }
 
+                    $entity->setOsszegvaltozott($this->osszegValtozott($entity));
+
                     $this->createFolyoszamla($entity);
 
                     if (!$entity->getWebshopnum()) {
@@ -1122,14 +1274,19 @@ class BizonylatfejListener
 
                     // Rontáskor a bizonylat pénzmozgásai (pénztár- ÉS bankbizonylat) is
                     // rontottá válnak – különben a bizonylat sora kiesik a folyószámláról,
-                    // a kiegyenlítése viszont bennmarad, és hamis túlfizetést mutat.
+                    // a kiegyenlítése viszont bennmarad, és hamis túlfizetést mutat. Hogy
+                    // tényleg így legyen-e, azt a rontáskor feltett kérdés dönti el; egy
+                    // már rontott bizonylat újramentése nem nyúl semmihez.
                     // Stornónál más a helyzet: a stornózott bizonylat pénzmozgása érintetlen
-                    // marad, a visszafizetést a storno bizonylat saját pénztárbizonylata
-                    // rögzíti (azt a createPenztarBizonylat képzi).
+                    // marad, a visszafizetést a storno bizonylat saját pénzmozgása rögzíti
+                    // (a createPenztarBizonylat, ill. a PenzmozgasService::createStornoPenzmozgas).
                     if ($entity->getRontott()) {
-                        $this->rontPenztarBizonylat($entity);
-                        $this->rontBankBizonylat($entity);
+                        if ($entity->isRontpenzmozgas() && $this->mostLettRontott($entity)) {
+                            $this->rontPenztarBizonylat($entity);
+                            $this->rontBankBizonylat($entity);
+                        }
                     } else {
+                        $this->igazitPenzmozgasOsszeget($entity);
                         $this->createPenztarBizonylat($entity);
                     }
 

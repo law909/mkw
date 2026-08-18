@@ -46,6 +46,64 @@ class FolyoszamlaCheckService
     }
 
     /**
+     * Az elavult (és a hiányzó) folyószámla sorok újraképzése.
+     *
+     * A sorokat a pénzmozgás mentésekor futó listener írja, ezért elég a bank- és
+     * pénztárbizonylatokat újra elmenteni: adatot nem írunk át, csak újraszámoltatjuk azt,
+     * aminek a forrása amúgy is a bizonylat tétele.
+     *
+     * @return array ['penztar' => n, 'bank' => n]
+     */
+    public function regenerate(): array
+    {
+        return [
+            'penztar' => $this->regenerateFor(
+                \Entities\Penztarbizonylatfej::class,
+                'SELECT DISTINCT pt.penztarbizonylatfej_id AS id FROM penztarbizonylattetel pt'
+                . ' LEFT JOIN folyoszamla f ON (f.penztarbizonylattetel_id = pt.id)'
+                . ' WHERE (f.id IS NULL)'
+                . '  OR NOT (f.hivatkozottbizonylat <=> pt.hivatkozottbizonylat)'
+                . '  OR NOT (f.hivatkozottdatum <=> pt.hivatkozottdatum)'
+                . '  OR NOT (f.brutto <=> pt.brutto) OR NOT (f.rontott <=> pt.rontott)'
+            ),
+            'bank' => $this->regenerateFor(
+                \Entities\Bankbizonylatfej::class,
+                'SELECT DISTINCT bt.bankbizonylatfej_id AS id FROM bankbizonylattetel bt'
+                . ' LEFT JOIN folyoszamla f ON (f.bankbizonylattetel_id = bt.id)'
+                . ' WHERE (f.id IS NULL)'
+                . '  OR NOT (f.hivatkozottbizonylat <=> bt.hivatkozottbizonylat)'
+                . '  OR NOT (f.hivatkozottdatum <=> bt.hivatkozottdatum)'
+                . '  OR NOT (f.brutto <=> bt.brutto) OR NOT (f.rontott <=> bt.rontott)'
+            ),
+        ];
+    }
+
+    /**
+     * A megadott bizonylatok újramentése kötegenként. A scheduleForUpdate arra kell, hogy a
+     * listener akkor is lefusson, ha magán a bizonylaton nem változott semmi – üres changesettel
+     * a Doctrine nem ad ki UPDATE-et, tehát a bizonylat maga érintetlen marad.
+     */
+    private function regenerateFor(string $entityname, string $sql): int
+    {
+        $em = \mkw\store::getEm();
+        $idk = $em->getConnection()->fetchFirstColumn($sql);
+        $db = 0;
+        foreach (array_chunk($idk, 50) as $koteg) {
+            $uow = $em->getUnitOfWork();
+            foreach ($koteg as $id) {
+                $bizonylat = $em->getRepository($entityname)->find($id);
+                if ($bizonylat) {
+                    $uow->scheduleForUpdate($bizonylat);
+                    $db++;
+                }
+            }
+            $em->flush();
+            $em->clear();
+        }
+        return $db;
+    }
+
+    /**
      * Az oszlopok minden ellenőrzésnél azonosak, hogy a riport egyetlen táblázattal
      * meg tudja jeleníteni őket: penzmozgas, bizonylat, partner, datum, osszeg, valutanem,
      * megjegyzes.

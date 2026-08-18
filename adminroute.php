@@ -500,6 +500,14 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/folyoszamlaellenorzes/view', 'folyoszamlaellenorzesController#view', 'adminfolyoszamlaellenorzesview');
     $router->map('GET', '/admin/folyoszamlaellenorzes/get', 'folyoszamlaellenorzesController#createLista', 'adminfolyoszamlaellenorzesget');
     $router->map('GET', '/admin/folyoszamlaellenorzes/export', 'folyoszamlaellenorzesController#exportLista', 'adminfolyoszamlaellenorzesexport');
+    if (!\mkw\store::isClosed()) {
+        $router->map(
+            'POST',
+            '/admin/folyoszamlaellenorzes/regenerate',
+            'folyoszamlaellenorzesController#regenerate',
+            'adminfolyoszamlaellenorzesregenerate'
+        );
+    }
 
     $router->map('GET', '/admin/tartozaslista/view', 'tartozaslistaController#view', 'admintartozaslistaview');
     $router->map('GET', '/admin/tartozaslista/get', 'tartozaslistaController#createLista', 'admintartozaslistaget');

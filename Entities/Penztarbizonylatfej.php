@@ -66,6 +66,12 @@ class Penztarbizonylatfej {
     /** @ORM\Column(type="boolean",nullable=false) */
     private $rontott = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $storno = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $stornozott = false;
+
     /** @ORM\Column(type="string",length=30,nullable=true) */
     private $erbizonylatszam;
 
@@ -537,6 +543,22 @@ class Penztarbizonylatfej {
             $bt->setRontott($adat);
             \mkw\store::getEm()->persist($bt);
         }
+    }
+
+    public function getStorno() {
+        return $this->storno;
+    }
+
+    public function setStorno($adat) {
+        $this->storno = $adat;
+    }
+
+    public function getStornozott() {
+        return $this->stornozott;
+    }
+
+    public function setStornozott($adat) {
+        $this->stornozott = $adat;
     }
 
     /**

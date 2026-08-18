@@ -30,6 +30,7 @@
                     <div>
                         <a href="/admin/folyoszamlaellenorzes/get" class="js-okbutton">{at('OK')}</a>
                         <a href="/admin/folyoszamlaellenorzes/export" class="js-exportbutton">{at('Export')}</a>
+                        <a href="/admin/folyoszamlaellenorzes/regenerate" class="js-regeneratebutton">{at('Elavult sorok újraképzése')}</a>
                     </div>
                 </form>
             </div>

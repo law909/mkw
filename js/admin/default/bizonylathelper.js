@@ -4,6 +4,8 @@ let bizonylathelper = function ($) {
     let afaEllenorzesAtlepes = false;
     // A pénzmozgás-kérdésre adott válasz megvan-e már ebben a mentési kísérletben.
     let penzmozgasKerdesMegvolt = false;
+    // A bizonylat tételeinek bruttó összege betöltéskor – ehhez képest nézzük, változott-e.
+    let eredetiBruttoOsszeg = null;
 
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
@@ -764,17 +766,57 @@ let bizonylathelper = function ($) {
         return $pm.length && ((String($form.data('eredetipenztmozgat')) === '1') !== $pm.prop('checked'));
     }
 
+    // A bizonylathoz tartozó pénzmozgásról feltehető kérdések. A szerver oldalán mindegyikhez
+    // külön jelölő tartozik, a válasz aszerint érvényesül (BizonylatfejListener, PenzmozgasService).
+    const PENZMOZGASKERDESEK = {
+        fizmod: {
+            cim: 'Kapcsolódó pénzmozgás',
+            bevezeto: 'A fizetési mód megváltozott. A bizonylathoz az alábbi pénzmozgás(ok) tartoznak:',
+            kerdes: 'Rontsuk ezeket, és képződjön az új fizetési módnak megfelelő pénzügyi teljesítés?'
+                + ' A rontott bizonylat megmarad, csak kikerül a pénzmozgásból.',
+            igen: 'Rontsa és képezzen újat',
+            nem: 'Maradjanak'
+        },
+        osszeg: {
+            cim: 'Kapcsolódó pénzmozgás',
+            bevezeto: 'A bizonylat összege megváltozott. A bizonylathoz az alábbi pénzmozgás(ok) tartoznak:',
+            kerdes: 'Változtassuk meg a pénzügyi teljesítés összegét? A különbözetet a legutolsó'
+                + ' pénzmozgáson vezetjük át.',
+            igen: 'Változtassa',
+            nem: 'Maradjon'
+        },
+        ront: {
+            cim: 'Kapcsolódó pénzmozgás',
+            bevezeto: 'A bizonylathoz az alábbi pénzmozgás(ok) tartoznak:',
+            kerdes: 'Rontsuk a pénzügyi teljesítést is? A rontott bizonylat megmarad, csak kikerül'
+                + ' a pénzmozgásból.',
+            igen: 'Rontsa',
+            nem: 'Maradjon'
+        },
+        storno: {
+            cim: 'Kapcsolódó pénzmozgás',
+            bevezeto: 'A stornózott bizonylathoz az alábbi pénzmozgás(ok) tartoznak:',
+            kerdes: 'Stornózzuk a pénzügyi teljesítést, és hozzunk létre egyet a stornó bizonylatnak?',
+            igen: 'Stornózza',
+            nem: 'Maradjon'
+        }
+    };
+
     /**
-     * A fizetési mód / pénzmozgás jelölő átállítása kihat a bizonylathoz már rögzített
-     * pénzmozgásokra, ezért mentés előtt megkérdezzük, mi legyen velük. A válasz rejtett mezőbe
-     * kerül, és a szerver aszerint ront (BizonylatfejListener).
+     * A bizonylathoz tartozó élő pénzmozgásokról kérdez. Ha nincs ilyen, nem kérdez semmit.
      *
-     * @param fn a válasz megvan, folytatható a mentés
+     * @param bizszam a bizonylat sorszáma
+     * @param kerdes a PENZMOZGASKERDESEK egyik eleme
+     * @param fn a válasz megvan (true = a kérdésben szereplő művelet). Mégsem esetén nem hívjuk.
      */
-    function kerdezPenzmozgasrol(fn) {
+    function kerdezPenzmozgasrol(bizszam, kerdes, fn) {
+        if (!bizszam) {
+            fn(false);
+            return;
+        }
         $.ajax({
             url: '/admin/bizonylatfej/kapcsolodopenzmozgas',
-            data: {bizszam: $('input[name="id"]').val()},
+            data: {bizszam: bizszam},
             dataType: 'json',
             success: function (d) {
                 const lista = (d && d.lista) || [];
@@ -783,41 +825,75 @@ let bizonylathelper = function ($) {
                     fn(false);
                     return;
                 }
-                const $doboz = $('<div></div>').append(
-                    $('<div></div>').text('A fizetési mód megváltozott. A bizonylathoz az alábbi pénzmozgás(ok) tartoznak:')
-                );
+                const $doboz = $('<div></div>').append($('<div></div>').text(kerdes.bevezeto));
                 const $ul = $('<ul></ul>');
                 lista.forEach(function (sor) {
                     $ul.append($('<li></li>').text(sor.tipus + ' ' + sor.id + ' (' + sor.keltstr + ', ' + sor.brutto + ')'));
                 });
-                $doboz.append($ul).append(
-                    $('<div></div>').text('Rontsuk ezeket? A rontott bizonylat megmarad, csak kikerül a pénzmozgásból.')
-                );
+                $doboz.append($ul).append($('<div></div>').text(kerdes.kerdes));
+
+                const gombok = {};
+                gombok[kerdes.igen] = function () {
+                    $(this).dialog('close');
+                    fn(true);
+                };
+                gombok[kerdes.nem] = function () {
+                    $(this).dialog('close');
+                    fn(false);
+                };
+                gombok['Mégsem'] = function () {
+                    $(this).dialog('close');
+                };
                 $('#dialogcenter').empty().append($doboz).dialog({
-                    title: 'Kapcsolódó pénzmozgás',
+                    title: kerdes.cim,
                     resizable: false,
                     width: 520,
                     modal: true,
-                    buttons: {
-                        'Rontsa': function () {
-                            $(this).dialog('close');
-                            fn(true);
-                        },
-                        'Maradjanak': function () {
-                            $(this).dialog('close');
-                            fn(false);
-                        },
-                        'Mégsem': function () {
-                            $(this).dialog('close');
-                        }
-                    }
+                    buttons: gombok
                 });
             },
             error: function () {
-                // ha nem tudjuk megkérdezni, ne rontsunk magunktól
+                // ha nem tudjuk megkérdezni, ne nyúljunk magunktól a pénzmozgáshoz
                 fn(false);
             }
         });
+    }
+
+    /**
+     * A mentés előtti pénzmozgás-kérdések sorban, egymás után; a végén megy el a mentés.
+     *
+     * @param kerdesek [{bizszam, kerdes, mezo}, …]
+     */
+    function futtatPenzmozgasKerdesek(kerdesek, i) {
+        if (i >= kerdesek.length) {
+            penzmozgasKerdesMegvolt = true;
+            $('#mattkarb-form').submit();
+            return;
+        }
+        kerdezPenzmozgasrol(kerdesek[i].bizszam, kerdesek[i].kerdes, function (valasz) {
+            $(kerdesek[i].mezo).val(valasz ? '1' : '0');
+            futtatPenzmozgasKerdesek(kerdesek, i + 1);
+        });
+    }
+
+    /**
+     * A tételek bruttó összege – a mentés előtti "változott-e az összeg" kérdéshez. Ugyanaz a
+     * számítás, mint a calcOsszesen() bruttó ága. A szerver a fizetendőt nézi, ez csak arra kell,
+     * hogy fölöslegesen ne kérdezzünk.
+     */
+    function tetelBruttoOsszeg() {
+        let brutto = 0;
+        $('input[name^="tetelbrutto_"]').each(function () {
+            brutto = brutto + $(this).val() * 1;
+        });
+        $('.js-quickmennyiseginput').each(function () {
+            let $this = $(this);
+            brutto = brutto + $('#BruttoegysarEdit' + $this.data('termektetelid')).val() * ($this.val() * 1);
+        });
+        if (window.bizonylatpos) {
+            brutto = brutto + bizonylatpos.osszegek().brutto;
+        }
+        return tools.round(brutto, -2);
     }
 
     function termekAutocompleteConfig() {
@@ -1699,6 +1775,8 @@ let bizonylathelper = function ($) {
                 if (!window.mkwIsMobile && $.fn.flyout) {
                     $('.js-toflyout').flyout();
                 }
+
+                eredetiBruttoOsszeg = tetelBruttoOsszeg();
             },
             beforeSerialize: function (f, o, quick) {
                 // A gyorsrögzítő jelzőt a mattkarb setup.quick-je nem állítja be, ezért a bizonylat
@@ -1812,15 +1890,41 @@ let bizonylathelper = function ($) {
                 }
                 afaEllenorzesAtlepes = false;
 
-                // A pénzmozgásra vonatkozó kérdés a legutolsó: csak akkor tegyük fel, ha a mentés
-                // egyébként rendben lemenne. Meglévő bizonylatnál van értelme, újnál nincs mit rontani.
-                if (!penzmozgasKerdesMegvolt && $('input[name="id"]').val() && penzugyiMezoValtozott()) {
-                    kerdezPenzmozgasrol(function (ront) {
-                        $('#RontkapcsolodopenzmozgasEdit').val(ront ? '1' : '0');
-                        penzmozgasKerdesMegvolt = true;
-                        $('#mattkarb-form').submit();
-                    });
-                    return false;
+                // A pénzmozgásra vonatkozó kérdések a legutolsók: csak akkor tegyük fel őket, ha a
+                // mentés egyébként rendben lemenne.
+                if (!penzmozgasKerdesMegvolt) {
+                    const bizszam = $('input[name="id"]').val(),
+                        parentid = $('input[name="parentid"]').val(),
+                        storno = $('input[name="oper"]').val() === 'storno',
+                        kerdesek = [];
+                    if (storno) {
+                        // a pénzmozgás a stornózott (szülő) bizonylathoz tartozik, nem a stornóhoz
+                        kerdesek.push({
+                            bizszam: parentid,
+                            kerdes: PENZMOZGASKERDESEK.storno,
+                            mezo: '#StornopenzmozgasEdit'
+                        });
+                    } else if (bizszam) {
+                        // új bizonylatnál nincs mit rontani vagy igazítani
+                        if (penzugyiMezoValtozott()) {
+                            kerdesek.push({
+                                bizszam: bizszam,
+                                kerdes: PENZMOZGASKERDESEK.fizmod,
+                                mezo: '#RontkapcsolodopenzmozgasEdit'
+                            });
+                        }
+                        if (eredetiBruttoOsszeg !== null && Math.abs(tetelBruttoOsszeg() - eredetiBruttoOsszeg) >= 0.005) {
+                            kerdesek.push({
+                                bizszam: bizszam,
+                                kerdes: PENZMOZGASKERDESEK.osszeg,
+                                mezo: '#IgazitpenzmozgasosszegetEdit'
+                            });
+                        }
+                    }
+                    if (kerdesek.length) {
+                        futtatPenzmozgasKerdesek(kerdesek, 0);
+                        return false;
+                    }
                 }
                 penzmozgasKerdesMegvolt = false;
                 return true;
@@ -2212,25 +2316,33 @@ let bizonylathelper = function ($) {
                     });
                 })
                 .on('click', '.js-rontbizonylat', function (e) {
-                    let $this = $(this);
+                    let $this = $(this),
+                        bizszam = $this.data('egyedid');
                     e.preventDefault();
+
+                    function ront(rontpenzmozgas) {
+                        $.ajax({
+                            url: '/admin/' + entityName + '/ront',
+                            type: 'POST',
+                            data: {
+                                id: bizszam,
+                                rontpenzmozgas: rontpenzmozgas ? '1' : '0'
+                            },
+                            success: function () {
+                                $('.mattable-tablerefresh').click();
+                            }
+                        });
+                    }
+
                     dialogcenter.html('Biztosan rontja a bizonylatot?').dialog({
                         resizable: false,
                         height: 140,
                         modal: true,
                         buttons: {
                             'Igen': function () {
-                                $.ajax({
-                                    url: '/admin/' + entityName + '/ront',
-                                    type: 'POST',
-                                    data: {
-                                        id: $this.data('egyedid')
-                                    },
-                                    success: function () {
-                                        $('.mattable-tablerefresh').click();
-                                    }
-                                });
                                 $(this).dialog('close');
+                                // a bizonylathoz tartozó pénzügyi teljesítés sorsáról külön kérdezünk
+                                kerdezPenzmozgasrol(bizszam, PENZMOZGASKERDESEK.ront, ront);
                             },
                             'Nem': function () {
                                 $(this).dialog('close');

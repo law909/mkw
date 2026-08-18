@@ -105,6 +105,22 @@ class folyoszamlaellenorzesController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
+    /**
+     * Az elavult folyószámla sorok újraképzése. A gomb mögötti végpont; a riport ettől lesz
+     * "nulla" azokon a tételeken, amiket csak a régi sorok hoztak be.
+     */
+    public function regenerate()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $checkSvc = new FolyoszamlaCheckService();
+        $eredmeny = $checkSvc->regenerate();
+        echo json_encode([
+            'ok' => true,
+            'penztar' => $eredmeny['penztar'],
+            'bank' => $eredmeny['bank'],
+        ]);
+    }
+
     private function sumTalalat($report)
     {
         $osszes = 0;

@@ -145,8 +145,8 @@ class PenztarbizonylatfejListener
             }
             $fszla->setBizonylattipus($bbf->getBizonylattipus());
             $fszla->setRontott($tetel->getRontott());
-            $fszla->setStorno(false);
-            $fszla->setStornozott(false);
+            $fszla->setStorno($bizonylat->getStorno());
+            $fszla->setStornozott($bizonylat->getStornozott());
             $fszla->setHivatkozottbizonylat($tetel->getHivatkozottbizonylat());
             $fszla->setHivatkozottdatum($tetel->getHivatkozottdatum());
             $fszla->setValutanem($bbf->getValutanem());

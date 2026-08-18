@@ -109,12 +109,9 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         }
 
         $filter
-            ->addFilter('f.irany', '>', 0)
             ->addFilter($this->datummezo, '>=', $this->tolstr)
             ->addFilter($this->datummezo, '<=', $this->igstr)
-            ->addFilter('bf.rontott', '=', false)
-            ->addFilter('bf.storno', '=', false)
-            ->addFilter('bf.stornozott', '=', false);
+            ->addFilter('bf.rontott', '=', false);
         return $filter;
     }
 
@@ -226,11 +223,11 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . ' LEFT OUTER JOIN bizonylatfej bf ON (f.hivatkozottbizonylat = bf.id)'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . $filter->getFilterString('', 'par')
-            . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat = f.bizonylatfej_id) AND (f.irany > 0)'
+            . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
             . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
-            . ' HAVING (tartozas <> 0))'
+            . ' HAVING (tartozas > 0))'
             . ' UNION'
-            . ' (SELECT MAX(f.bankbizonylatfej_id) AS bizonylat, f.partner_id, MAX(fm.nev) AS fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
+            . ' (SELECT COALESCE(MAX(f.bankbizonylatfej_id), MAX(f.penztarbizonylatfej_id)) AS bizonylat, f.partner_id, MAX(fm.nev) AS fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
             . ' p.varos, p.utca, f.datum AS kelt, f.datum AS teljesites, f.datum AS esedekesseg, f.datum, MAX(f.hivatkozottdatum) AS hivatkozottdatum, 0 AS brutto,'
             . ' SUM(f.brutto * f.irany) AS tartozas, v.nev AS valutanemnev '
             . ' FROM folyoszamla f'
@@ -238,10 +235,10 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . ' LEFT OUTER JOIN valutanem v ON (f.valutanem_id = v.id)'
             . ' LEFT OUTER JOIN fizmod fm ON (f.fizmod_id = fm.id)'
             . $secfilter->getFilterString('', 'sec')
-            . ' AND (f.hivatkozottbizonylat IS NULL) AND (f.irany < 0)'
+            . ' AND (f.hivatkozottbizonylat IS NULL)'
             // valutanemenként külön sor: a report a valutanemnév szerint összesít, egy csoportba keverve hamis végösszeg lenne
             . ' GROUP BY f.partner_id, f.datum, f.valutanem_id'
-            . ' HAVING (tartozas <> 0)'
+            . ' HAVING (tartozas > 0)'
             . ')'
             . $sorrend
             ,
