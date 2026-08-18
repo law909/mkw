@@ -67,10 +67,10 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebanktetelid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebanktetelid'];
     }
 
     /**
@@ -542,6 +542,248 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLemondasoka', [$lemondasoka]);
 
         return parent::setLemondasoka($lemondasoka);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetve()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetve', []);
+
+        return parent::getFizetve();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetve($fizetve)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetve', [$fizetve]);
+
+        return parent::setFizetve($fizetve);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetesdatum()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetesdatum', []);
+
+        return parent::getFizetesdatum();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetesdatumStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetesdatumStr', []);
+
+        return parent::getFizetesdatumStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetesdatum($datum = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetesdatum', [$datum]);
+
+        return parent::setFizetesdatum($datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetveosszeghuf()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetveosszeghuf', []);
+
+        return parent::getFizetveosszeghuf();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetveosszeghuf($fizetveosszeghuf)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetveosszeghuf', [$fizetveosszeghuf]);
+
+        return parent::setFizetveosszeghuf($fizetveosszeghuf);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
+
+        return parent::getFizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodNev', []);
+
+        return parent::getFizmodNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizmod($fizmod)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$fizmod]);
+
+        return parent::setFizmod($fizmod);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetvepenztar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvepenztar', []);
+
+        return parent::getFizetvepenztar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetvepenztar($fizetvepenztar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetvepenztar', [$fizetvepenztar]);
+
+        return parent::setFizetvepenztar($fizetvepenztar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetvepenztarbizonylatszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvepenztarbizonylatszam', []);
+
+        return parent::getFizetvepenztarbizonylatszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetvepenztarbizonylatszam($szam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetvepenztarbizonylatszam', [$szam]);
+
+        return parent::setFizetvepenztarbizonylatszam($szam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetvepenztartetelid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvepenztartetelid', []);
+
+        return parent::getFizetvepenztartetelid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetvepenztartetelid($id)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetvepenztartetelid', [$id]);
+
+        return parent::setFizetvepenztartetelid($id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetvebankszamla()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvebankszamla', []);
+
+        return parent::getFizetvebankszamla();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetvebankszamla($fizetvebankszamla)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetvebankszamla', [$fizetvebankszamla]);
+
+        return parent::setFizetvebankszamla($fizetvebankszamla);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetvebankbizonylatszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvebankbizonylatszam', []);
+
+        return parent::getFizetvebankbizonylatszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetvebankbizonylatszam($szam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetvebankbizonylatszam', [$szam]);
+
+        return parent::setFizetvebankbizonylatszam($szam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetvebanktetelid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetvebanktetelid', []);
+
+        return parent::getFizetvebanktetelid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizetvebanktetelid($id)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizetvebanktetelid', [$id]);
+
+        return parent::setFizetvebanktetelid($id);
     }
 
     /**

@@ -267,6 +267,7 @@ $router->map('GET', '/admin/idopontfoglalas/getlistbody', 'idopontfoglalasContro
 $router->map('GET', '/admin/idopontfoglalas/getkarb', 'idopontfoglalasController#getkarb', 'adminidopontfoglalasgetkarb');
 $router->map('GET', '/admin/idopontfoglalas/viewkarb', 'idopontfoglalasController#viewkarb', 'adminidopontfoglalasviewkarb');
 $router->map('GET', '/admin/idopontfoglalas/check', 'idopontfoglalasController#check', 'adminidopontfoglalascheck');
+$router->map('GET', '/admin/idopontfoglalas/getar', 'idopontfoglalasController#getar', 'adminidopontfoglalasgetar');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idopontfoglalas/save', 'idopontfoglalasController#save', 'adminidopontfoglalassave');
     $router->map(
@@ -277,6 +278,7 @@ if (!\mkw\store::isClosed()) {
     );
     $router->map('POST', '/admin/idopontfoglalas/lemond', 'idopontfoglalasController#lemond', 'adminidopontfoglalaslemond');
     $router->map('POST', '/admin/idopontfoglalas/visszaallit', 'idopontfoglalasController#visszaallit', 'adminidopontfoglalasvisszaallit');
+    $router->map('POST', '/admin/idopontfoglalas/fizet', 'idopontfoglalasController#fizet', 'adminidopontfoglalasfizet');
 }
 $router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
 $router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');

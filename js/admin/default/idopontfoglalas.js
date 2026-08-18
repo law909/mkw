@@ -51,6 +51,66 @@ $(document).ready(function () {
         });
     }
 
+    // Kifizetés: az összeget az alkalom árából kínáljuk fel, a bizonylat a fizetési mód
+    // típusa szerint pénztár- vagy bankbizonylat lesz (a szerver dönti el).
+    function fizetDialog(id) {
+        $.ajax({
+            url: '/admin/idopontfoglalas/getar',
+            type: 'GET',
+            data: {
+                id: id
+            },
+            success: function (data) {
+                const d = JSON.parse(data);
+                if (d.result !== 'ok') {
+                    showError(d.msg);
+                    return;
+                }
+                const $form = $('#fizetform');
+                $('#afizetosszegedit').val(d.price);
+                mkwcomp.datumEdit.clear('#afizetdatumedit');
+                $('#afizetdatumedit').datepicker('setDate', new Date());
+                $form.show().dialog({
+                    resizable: false,
+                    width: 420,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            const $dia = $(this);
+                            $.ajax({
+                                url: '/admin/idopontfoglalas/fizet',
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                    fizmod: $('#afizetfizmodedit').val(),
+                                    bankszamla: $('#afizetbankszamlaedit').val(),
+                                    penztar: $('#afizetpenztaredit').val(),
+                                    jogcim: $('#afizetjogcimedit').val(),
+                                    datum: mkwcomp.datumEdit.getDate('#afizetdatumedit'),
+                                    osszeg: $('#afizetosszegedit').val()
+                                },
+                                success: function (data) {
+                                    const r = JSON.parse(data);
+                                    $dia.dialog('close').dialog('destroy');
+                                    $form.hide();
+                                    if (r.result === 'ok') {
+                                        $('.mattable-tablerefresh').click();
+                                    } else {
+                                        showError(r.msg);
+                                    }
+                                }
+                            });
+                        },
+                        'Mégsem': function () {
+                            $(this).dialog('close').dialog('destroy');
+                            $form.hide();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     // A lemondás levelet is küldhet, ezért egy kattintásra nem indul: a doboz a lemondás okát is felveszi.
     function lemondDialog(id) {
         const $form = $('#lemondform');
@@ -149,6 +209,7 @@ $(document).ready(function () {
     if ($.fn.mattable) {
         mkwcomp.datumEdit.init('#datumtolfilter');
         mkwcomp.datumEdit.init('#datumigfilter');
+        mkwcomp.datumEdit.init('#afizetdatumedit');
 
         $('#mattable-select').mattable({
             filter: {
@@ -164,7 +225,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/idopontfoglalas/getlistbody',
                 onStyle: function () {
-                    $('.js-emailemlekezteto, .js-lemond, .js-visszaallit').button();
+                    $('.js-emailemlekezteto, .js-lemond, .js-visszaallit, .js-fizet').button();
                 }
             },
             karb: mattkarbconfig
@@ -181,6 +242,10 @@ $(document).ready(function () {
             .on('click', '.js-visszaallit', function (e) {
                 e.preventDefault();
                 sorMuvelet('/admin/idopontfoglalas/visszaallit', $(this).data('id'), true);
+            })
+            .on('click', '.js-fizet', function (e) {
+                e.preventDefault();
+                fizetDialog($(this).data('id'));
             });
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));

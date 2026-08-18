@@ -62,6 +62,45 @@ class Idopontfoglalas
     /** @ORM\Column(type="text",nullable=true) */
     private $lemondasoka;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $fizetve = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $fizetesdatum;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $fizetveosszeghuf;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Fizmod")
+     * @ORM\JoinColumn(name="fizmod_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $fizmod;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Penztar")
+     * @ORM\JoinColumn(name="fizetvepenztar_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $fizetvepenztar;
+
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $fizetvepenztarbizonylatszam;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $fizetvepenztartetelid;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bankszamla")
+     * @ORM\JoinColumn(name="fizetvebankszamla_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $fizetvebankszamla;
+
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $fizetvebankbizonylatszam;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $fizetvebanktetelid;
+
     public function __construct()
     {
         $this->foglalasido = new \DateTime();
@@ -300,6 +339,138 @@ class Idopontfoglalas
         $this->lemondasoka = $lemondasoka;
     }
 
+    public function getFizetve()
+    {
+        return $this->fizetve;
+    }
+
+    public function setFizetve($fizetve)
+    {
+        $this->fizetve = $fizetve;
+    }
+
+    public function getFizetesdatum()
+    {
+        return $this->fizetesdatum;
+    }
+
+    public function getFizetesdatumStr()
+    {
+        if ($this->fizetesdatum) {
+            return $this->fizetesdatum->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setFizetesdatum($datum = '')
+    {
+        $datum = $datum instanceof \DateTime ? $datum : trim((string)$datum);
+        if ($datum instanceof \DateTime) {
+            $this->fizetesdatum = $datum;
+        } elseif ($datum === '') {
+            $this->fizetesdatum = null;
+        } else {
+            $this->fizetesdatum = new \DateTime(\mkw\store::convDate($datum));
+        }
+    }
+
+    public function getFizetveosszeghuf()
+    {
+        return $this->fizetveosszeghuf;
+    }
+
+    public function setFizetveosszeghuf($fizetveosszeghuf)
+    {
+        $this->fizetveosszeghuf = $fizetveosszeghuf;
+    }
+
+    /**
+     * @return Fizmod
+     */
+    public function getFizmod()
+    {
+        return $this->fizmod;
+    }
+
+    public function getFizmodNev()
+    {
+        if ($this->fizmod) {
+            return $this->fizmod->getNev();
+        }
+        return '';
+    }
+
+    public function setFizmod($fizmod)
+    {
+        $this->fizmod = $fizmod;
+    }
+
+    /**
+     * @return Penztar
+     */
+    public function getFizetvepenztar()
+    {
+        return $this->fizetvepenztar;
+    }
+
+    public function setFizetvepenztar($fizetvepenztar)
+    {
+        $this->fizetvepenztar = $fizetvepenztar;
+    }
+
+    public function getFizetvepenztarbizonylatszam()
+    {
+        return $this->fizetvepenztarbizonylatszam;
+    }
+
+    public function setFizetvepenztarbizonylatszam($szam)
+    {
+        $this->fizetvepenztarbizonylatszam = $szam;
+    }
+
+    public function getFizetvepenztartetelid()
+    {
+        return $this->fizetvepenztartetelid;
+    }
+
+    public function setFizetvepenztartetelid($id)
+    {
+        $this->fizetvepenztartetelid = $id;
+    }
+
+    /**
+     * @return Bankszamla
+     */
+    public function getFizetvebankszamla()
+    {
+        return $this->fizetvebankszamla;
+    }
+
+    public function setFizetvebankszamla($fizetvebankszamla)
+    {
+        $this->fizetvebankszamla = $fizetvebankszamla;
+    }
+
+    public function getFizetvebankbizonylatszam()
+    {
+        return $this->fizetvebankbizonylatszam;
+    }
+
+    public function setFizetvebankbizonylatszam($szam)
+    {
+        $this->fizetvebankbizonylatszam = $szam;
+    }
+
+    public function getFizetvebanktetelid()
+    {
+        return $this->fizetvebanktetelid;
+    }
+
+    public function setFizetvebanktetelid($id)
+    {
+        $this->fizetvebanktetelid = $id;
+    }
+
     /**
      * A foglalás leveleinek Smarty adatai – a sablonokban a `foglalas` változó.
      */
@@ -318,6 +489,14 @@ class Idopontfoglalas
             'lemondva' => $this->getLemondva(),
             'lemondasdatum' => $this->getLemondasdatumStr(),
             'lemondasoka' => $this->getLemondasoka(),
+            'fizetve' => $this->getFizetve(),
+            'fizetesdatum' => $this->getFizetesdatumStr(),
+            'fizetveosszeghuf' => $this->getFizetveosszeghuf(),
+            'fizmodnev' => $this->getFizmodNev(),
+            'fizetvepenztarnev' => $this->getFizetvepenztar()?->getNev(),
+            'fizetvepenztarbizonylatszam' => $this->getFizetvepenztarbizonylatszam(),
+            'fizetvebankszamlaszam' => $this->getFizetvebankszamla()?->getSzamlaszam(),
+            'fizetvebankbizonylatszam' => $this->getFizetvebankbizonylatszam(),
             'partnerid' => $this->getPartnerId(),
             'partnernev' => $this->getPartnerNev(),
             'partneremail' => $this->getPartnerEmail(),

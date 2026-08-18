@@ -2,10 +2,17 @@
 
 namespace Controllers;
 
+use Entities\Bankbizonylatfej;
+use Entities\Bankszamla;
+use Entities\Bizonylattipus;
 use Entities\Emailtemplate;
+use Entities\Fizmod;
 use Entities\Idopont;
 use Entities\Idopontfoglalas;
+use Entities\Jogcim;
 use Entities\Partner;
+use Entities\Penztar;
+use Entities\Penztarbizonylatfej;
 use mkwhelpers\FilterDescriptor;
 
 class idopontfoglalasController extends \mkwhelpers\MattableController
@@ -49,7 +56,27 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $x['idoponthelyszinnev'] = $idopont ? $idopont->getJogahelyszinNev() : '';
         $x['emailemlekeztetodatum'] = $t->getEmailemlekeztetodatumStr();
         $x['lemondasdatum'] = $t->getLemondasdatumStr();
+        $x['fizetesdatum'] = $t->getFizetesdatumStr();
+        $x['fizmodnev'] = $t->getFizmodNev();
+        $x['fizetvepenztarnev'] = $t->getFizetvepenztar()?->getNev();
+        $x['fizetvebankszamlaszam'] = $t->getFizetvebankszamla()?->getSzamlaszam();
+        $x['fizetvepenztarbizonylatszamlink'] =
+            $this->getBizonylatUrl($t->getFizetvepenztarbizonylatszam(), Penztarbizonylatfej::class);
+        $x['fizetvebankbizonylatszamlink'] =
+            $this->getBizonylatUrl($t->getFizetvebankbizonylatszam(), Bankbizonylatfej::class);
         return $x;
+    }
+
+    /**
+     * A foglaláson a bizonylatszám denormalizált szövegmező, a listanézet URL-jéhez fel kell
+     * oldani a bizonylatra. Ha nincs meg (törölt bizonylat), null – a sablon ilyenkor szöveget mutat.
+     */
+    private function getBizonylatUrl($bizonylatszam, $entityclass)
+    {
+        if (!$bizonylatszam) {
+            return null;
+        }
+        return $this->getRepo($entityclass)->find($bizonylatszam)?->getListaUrl();
     }
 
     /**
@@ -249,6 +276,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->setVar('dolgozolist', (new dolgozoController())->getSelectList());
         $view->setVar('idoponttemalist', (new idoponttemaController())->getSelectList());
+        $view->setVar('fizmodlist', (new fizmodController())->getSelectList());
+        $view->setVar('jogcimlist', (new jogcimController())->getSelectList());
+        $view->setVar('penztarlist', (new penztarController())->getSelectList());
+        $view->setVar('bankszamlalist', (new bankszamlaController())->getSelectList());
         $view->printTemplateResult();
     }
 
@@ -347,6 +378,118 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
         echo json_encode(['msg' => at('A foglalás visszaállítva.')]);
+    }
+
+    /**
+     * A kifizető doboz ezzel tölti fel az összeget: az alkalom ára.
+     */
+    public function getar()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        if (!$foglalas) {
+            echo json_encode(['result' => 'error', 'msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        echo json_encode(['result' => 'ok', 'price' => $foglalas->getIdopont()?->getAr() ?: 0]);
+    }
+
+    /**
+     * A lista sorának „Kifizet" gombja: a rendezvény jelentkezés kifizetésével azonos módon
+     * bank- vagy pénztárbizonylatot képez, és a foglalásra írja a bizonylat azonosítóit.
+     */
+    public function fizet()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        /** @var \Entities\Fizmod $fizmod */
+        $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
+        $bankszamla = $this->getRepo(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
+        $penztar = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
+        $jogcim = $this->getRepo(Jogcim::class)->find($this->params->getIntRequestParam('jogcim'));
+        $osszeg = $this->params->getNumRequestParam('osszeg');
+        $datum = $this->params->getStringRequestParam('datum');
+
+        if (!$foglalas) {
+            echo json_encode(['result' => 'error', 'msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        if ($foglalas->getLemondva()) {
+            echo json_encode(['result' => 'error', 'msg' => at('Lemondott foglalás nem fizethető ki.')]);
+            return;
+        }
+        if ($foglalas->getFizetve()) {
+            echo json_encode(['result' => 'error', 'msg' => at('A foglalás már ki van fizetve.')]);
+            return;
+        }
+        if (!$fizmod || !$jogcim || !$osszeg || !$datum || (!$bankszamla && !$penztar)) {
+            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
+            return;
+        }
+
+        $tipus = $fizmod->getTipus();
+        if ($tipus === 'B' && $bankszamla) {
+            $biz = new Bankbizonylatfej();
+            $bt = new \Entities\Bankbizonylattetel();
+            $biz->addBizonylattetel($bt);
+
+            $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bank'));
+            $biz->setMegjegyzes(at('Automatikus bizonylat'));
+            $biz->setBankszamla($bankszamla);
+            $biz->setPartner($foglalas->getPartner());
+            $biz->setKelt('');
+            $biz->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
+
+            $bt->setPartner($foglalas->getPartner());
+            $bt->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            $bt->setDatum($datum);
+            $bt->setHivatkozottdatum($datum);
+            $bt->setBrutto($osszeg);
+            $bt->setIrany(1);
+            $bt->setJogcim($jogcim);
+
+            $this->getEm()->persist($biz);
+            $this->getEm()->flush($biz);
+
+            $foglalas->setFizetvebankszamla($bankszamla);
+            $foglalas->setFizetvebankbizonylatszam($biz->getId());
+            $foglalas->setFizetvebanktetelid($bt->getId());
+        } elseif ($tipus === 'P' && $penztar) {
+            $biz = new Penztarbizonylatfej();
+            $bt = new \Entities\Penztarbizonylattetel();
+            $biz->addBizonylattetel($bt);
+
+            $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('penztar'));
+            $biz->setMegjegyzes(at('Automatikus bizonylat'));
+            $biz->setIrany(1);
+            $biz->setKelt('');
+            $biz->setPenztar($penztar);
+            $biz->setPartner($foglalas->getPartner());
+
+            $bt->setJogcim($jogcim);
+            $bt->setBrutto($osszeg);
+            $bt->setSzoveg(trim($foglalas->getIdopont()?->getIdoponttemaNev() . ' ' . $foglalas->getDatumStr()));
+            $bt->setHivatkozottdatum($datum);
+
+            $this->getEm()->persist($biz);
+            $this->getEm()->flush($biz);
+
+            $foglalas->setFizetvepenztar($penztar);
+            $foglalas->setFizetvepenztarbizonylatszam($biz->getId());
+            $foglalas->setFizetvepenztartetelid($bt->getId());
+        } else {
+            echo json_encode(['result' => 'error', 'msg' => at('A fizetési módhoz nem a megfelelő pénztárat / bankszámlát adta meg.')]);
+            return;
+        }
+
+        $foglalas->setFizetesdatum($datum);
+        $foglalas->setFizetveosszeghuf($osszeg);
+        $foglalas->setFizmod($fizmod);
+        $foglalas->setFizetve(true);
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+
+        echo json_encode(['result' => 'ok']);
     }
 
     /**

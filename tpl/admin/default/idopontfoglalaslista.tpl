@@ -75,6 +75,57 @@
         </div>
     </div>
     <div id="mattkarb"></div>
+    <form id="fizetform" class="hidden">
+        <div>
+            <label for="afizetfizmodedit">{at('Fizetési mód')}:</label>
+            <select id="afizetfizmodedit" name="afizetfizmod">
+                <option value="0">{at('válasszon')}</option>
+                {foreach $fizmodlist as $_fm}
+                    <option value="{$_fm.id}">{$_fm.caption}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="afizetjogcimedit">{at('Jogcím')}:</label>
+            <select id="afizetjogcimedit" name="afizetjogcim">
+                <option value="0">{at('válasszon')}</option>
+                {foreach $jogcimlist as $_fm}
+                    <option value="{$_fm.id}">{$_fm.caption}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="afizetpenztaredit">{at('Pénztár')}:</label>
+            <select id="afizetpenztaredit" name="afizetpenztar">
+                <option value="0">{at('válasszon')}</option>
+                {foreach $penztarlist as $_fm}
+                    <option value="{$_fm.id}">{$_fm.caption}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="afizetbankszamlaedit">{at('Bankszámla')}:</label>
+            <select id="afizetbankszamlaedit" name="afizetbankszamla">
+                <option value="0">{at('válasszon')}</option>
+                {foreach $bankszamlalist as $_fm}
+                    <option value="{$_fm.id}">{$_fm.caption}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="afizetdatumedit">{at('Dátum')}:</label>
+            <input id="afizetdatumedit" name="afizetdatum" type="text" size="12">
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>
+            <label for="afizetosszegedit">{at('Összeg')}:</label>
+            <input id="afizetosszegedit" name="afizetosszeg" type="text">
+        </div>
+    </form>
     <form id="lemondform" class="hidden">
         <div>
             <label for="alemondasokaedit">{at('Lemondás oka')}:</label>

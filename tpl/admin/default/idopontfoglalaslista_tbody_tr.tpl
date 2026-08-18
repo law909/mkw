@@ -28,6 +28,9 @@
             <div><a class="js-visszaallit" href="#" data-id="{$_egyed.id}">{at('Visszaállít')}</a></div>
         {else}
             <div><a class="js-lemond" href="#" data-id="{$_egyed.id}">{at('Lemond')}</a></div>
+            {if (!$_egyed.fizetve)}
+                <div><a class="js-fizet" href="#" data-id="{$_egyed.id}">{at('Kifizet')}</a></div>
+            {/if}
         {/if}
     </td>
 </tr>
