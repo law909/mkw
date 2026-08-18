@@ -1,0 +1,24 @@
+$(document).ready(function () {
+    const mattkarbconfig = new MattkarbConfig({
+        entityName: 'idoponttema'
+    });
+
+    if ($.fn.mattable) {
+        $('#mattable-select').mattable({
+            filter: {
+                fields: ['#nevfilter', '#inaktivfilter']
+            },
+            tablebody: {
+                url: '/admin/idoponttema/getlistbody'
+            },
+            karb: mattkarbconfig
+        });
+        $('.js-maincheckbox').change(function () {
+            $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
+        });
+    } else {
+        if ($.fn.mattkarb) {
+            $('#mattkarb').mattkarb(mattkarbconfig);
+        }
+    }
+});

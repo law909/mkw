@@ -1470,6 +1470,49 @@ if ($DBVersion < '0122') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0122');
 }
 
+if ($DBVersion < '0123') {
+    // Időpontfoglaló (darshan) – a DDL az entitásokból jön (./updateschema.sh).
+    $joga = \mkw\store::isDarshan() ? 1 : 0;
+    $conn = \mkw\store::getEm()->getConnection();
+    $menupontok = [
+        [7, 'Időpont témák', '/admin/idoponttema/viewlist', '/admin/idoponttema', 40, 287],
+        [7, 'Jóga helyszínek', '/admin/jogahelyszin/viewlist', '/admin/jogahelyszin', 40, 288],
+        [8, 'Időpontok', '/admin/idopont/viewlist', '/admin/idopont', 15, 230],
+        [8, 'Időpont foglalások', '/admin/idopontfoglalas/viewlist', '/admin/idopontfoglalas', 15, 240],
+    ];
+    foreach ($menupontok as [$csoport, $nev, $url, $routename, $jogosultsag, $sorrend]) {
+        $conn->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' SELECT ' . $csoport . ', "' . $nev . '", "' . $url . '", "' . $routename . '", ' . $jogosultsag . ', ' . $joga . ', ' . $sorrend . ', ""'
+            . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "' . $url . '") m)'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0123');
+}
+
+if ($DBVersion < '0124') {
+    // Az időpontfoglalás mostantól egy konkrét naptári napra szól (ismétlődő időpontok miatt).
+    // A NOT NULL-ra állítást az ./updateschema.sh végzi – itt csak a meglévő sorokat töltjük fel,
+    // különben strict módban elhasalna. Új telepítésen a tábla már ezzel az oszloppal jön létre.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vanoszlop = $conn->fetchOne(
+        'SELECT COUNT(*) FROM information_schema.columns'
+        . ' WHERE table_schema = DATABASE() AND table_name = "idopontfoglalas" AND column_name = "datum"'
+    );
+    $vantabla = $conn->fetchOne(
+        'SELECT COUNT(*) FROM information_schema.tables'
+        . ' WHERE table_schema = DATABASE() AND table_name = "idopontfoglalas"'
+    );
+    if ($vantabla && !$vanoszlop) {
+        $conn->executeStatement('ALTER TABLE idopontfoglalas ADD datum DATE DEFAULT NULL');
+        $conn->executeStatement(
+            'UPDATE idopontfoglalas f JOIN idopont i ON i.id = f.idopont_id'
+            . ' SET f.datum = DATE(COALESCE(i.kezdet, f.foglalasido)) WHERE f.datum IS NULL'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0124');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -238,6 +238,38 @@ $router->map('GET', '/admin/jogaoratipus/htmllist', 'jogaoratipusController#html
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/jogaoratipus/save', 'jogaoratipusController#save', 'adminjogaoratipussave');
 }
+$router->map('GET', '/admin/idoponttema/viewlist', 'idoponttemaController#viewlist', 'adminidoponttemaviewlist');
+$router->map('GET', '/admin/idoponttema/getlistbody', 'idoponttemaController#getlistbody', 'adminidoponttemagetlistbody');
+$router->map('GET', '/admin/idoponttema/getkarb', 'idoponttemaController#getkarb', 'adminidoponttemagetkarb');
+$router->map('GET', '/admin/idoponttema/viewkarb', 'idoponttemaController#viewkarb', 'adminidoponttemaviewkarb');
+$router->map('GET', '/admin/idoponttema/htmllist', 'idoponttemaController#htmllist', 'adminidoponttemahtmllist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/idoponttema/save', 'idoponttemaController#save', 'adminidoponttemasave');
+}
+$router->map('GET', '/admin/jogahelyszin/viewlist', 'jogahelyszinController#viewlist', 'adminjogahelyszinviewlist');
+$router->map('GET', '/admin/jogahelyszin/getlistbody', 'jogahelyszinController#getlistbody', 'adminjogahelyszingetlistbody');
+$router->map('GET', '/admin/jogahelyszin/getkarb', 'jogahelyszinController#getkarb', 'adminjogahelyszingetkarb');
+$router->map('GET', '/admin/jogahelyszin/viewkarb', 'jogahelyszinController#viewkarb', 'adminjogahelyszinviewkarb');
+$router->map('GET', '/admin/jogahelyszin/htmllist', 'jogahelyszinController#htmllist', 'adminjogahelyszinhtmllist');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/jogahelyszin/save', 'jogahelyszinController#save', 'adminjogahelyszinsave');
+}
+$router->map('GET', '/admin/idopont/viewlist', 'idopontController#viewlist', 'adminidopontviewlist');
+$router->map('GET', '/admin/idopont/getlistbody', 'idopontController#getlistbody', 'adminidopontgetlistbody');
+$router->map('GET', '/admin/idopont/getkarb', 'idopontController#getkarb', 'adminidopontgetkarb');
+$router->map('GET', '/admin/idopont/viewkarb', 'idopontController#viewkarb', 'adminidopontviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/idopont/save', 'idopontController#save', 'adminidopontsave');
+    $router->map('POST', '/admin/idopont/setflag', 'idopontController#setflag', 'adminidopontsetflag');
+}
+$router->map('GET', '/admin/idopontfoglalas/viewlist', 'idopontfoglalasController#viewlist', 'adminidopontfoglalasviewlist');
+$router->map('GET', '/admin/idopontfoglalas/getlistbody', 'idopontfoglalasController#getlistbody', 'adminidopontfoglalasgetlistbody');
+$router->map('GET', '/admin/idopontfoglalas/getkarb', 'idopontfoglalasController#getkarb', 'adminidopontfoglalasgetkarb');
+$router->map('GET', '/admin/idopontfoglalas/viewkarb', 'idopontfoglalasController#viewkarb', 'adminidopontfoglalasviewkarb');
+$router->map('GET', '/admin/idopontfoglalas/check', 'idopontfoglalasController#check', 'adminidopontfoglalascheck');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/idopontfoglalas/save', 'idopontfoglalasController#save', 'adminidopontfoglalassave');
+}
 $router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
 $router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
 $router->map('GET', '/admin/rendezvenyallapot/getkarb', 'rendezvenyallapotController#getkarb', 'adminrendezvenyallapotgetkarb');

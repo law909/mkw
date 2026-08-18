@@ -39,6 +39,9 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/berletellenor', 'jogaberletController#getBerletAlkalmak', 'berletellenor');
     $router->map('POST', '/orarend/bejelentkezes', 'jogabejelentkezesController#bejelentkezes', 'orarendbejelentkezes');
     $router->map('POST', '/orarend/lemondas', 'jogabejelentkezesController#lemondas', 'orarendlemondas');
+    $router->map('GET', '/idopont/wp', 'idopontController#exportToWordpress', 'idopontexporttowordpress');
+    $router->map('GET', '/idopont/foglalas', 'idopontfoglalasController#showBookingForm', 'idopontfoglalasform');
+    $router->map('POST', '/idopont/foglalas/ment', 'idopontfoglalasController#saveBooking', 'idopontfoglalassave');
     $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
     $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
     $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');

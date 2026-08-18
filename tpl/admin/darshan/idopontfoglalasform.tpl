@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="/js/main/darshan/iframeResizer.contentWindow.min.js"></script>
+    {include 'idopontpublicstyle.tpl'}
+</head>
+
+<body>
+<div class="dtt">
+    {if ($hiba)}
+        <div class="foglalashiba">{$hiba}</div>
+    {/if}
+    {if ($idopontid)}
+        <div class="foglalasfejlec">
+            <div><strong>{$temanev}</strong></div>
+            <div>{$napnev} - {$datum} {$idotartam}</div>
+            <div>{$tanar}</div>
+            {if ($helyszin)}
+                <div>{$helyszin}{if ($helyszincim)} ({$helyszincim}){/if}</div>
+            {/if}
+            {if ($ar > 0)}
+                <div>{$ar|number_format:0:",":" "} Ft</div>
+            {/if}
+            <div>{$szabadhely} szabad hely</div>
+        </div>
+        <form id="idopontfoglalasform" method="post" action="/idopont/foglalas/ment">
+            <div class="form-group">
+                <label class="form-label" for="nevedit">Név *</label>
+                <input class="form-control" id="nevedit" type="text" name="nev" maxlength="255" value="{$egyed.nev}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="emailedit">Email *</label>
+                <input class="form-control" id="emailedit" type="email" name="email" maxlength="255" value="{$egyed.email}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="telefonedit">Telefonszám *</label>
+                <input class="form-control" id="telefonedit" type="text" name="telefon" maxlength="50" value="{$egyed.telefon}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="irszamedit">Irányítószám</label>
+                <input class="form-control" id="irszamedit" type="text" name="irszam" maxlength="10" value="{$egyed.irszam}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="varosedit">Város</label>
+                <input class="form-control" id="varosedit" type="text" name="varos" maxlength="255" value="{$egyed.varos}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="utcaedit">Utca, házszám</label>
+                <input class="form-control" id="utcaedit" type="text" name="utca" maxlength="255" value="{$egyed.utca}">
+            </div>
+            {if ($onlinevalaszthato)}
+                <div class="form-group">
+                    <span class="form-label">Hogyan veszel részt?</span>
+                    <label>
+                        <input type="radio" name="reszvetel" value="elo"{if ($egyed.reszvetel !== 'online')} checked="checked"{/if}>
+                        Élőben
+                    </label>
+                    <label>
+                        <input type="radio" name="reszvetel" value="online"{if ($egyed.reszvetel === 'online')} checked="checked"{/if}>
+                        Online
+                    </label>
+                </div>
+            {/if}
+            <input type="hidden" name="id" value="{$idopontid}">
+            <input type="hidden" name="d" value="{$datumparam}">
+            <input type="hidden" name="t" value="{$tanarkod}">
+            <input type="hidden" name="tema" value="{$temakod}">
+            <div class="form-group">
+                <button class="foglalasbtn" type="submit">Foglalok</button>
+            </div>
+        </form>
+    {/if}
+    <div><a href="{$visszaurl}">Vissza az időpontokhoz</a></div>
+</div>
+</body>
+</html>
