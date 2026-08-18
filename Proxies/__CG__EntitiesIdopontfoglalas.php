@@ -67,10 +67,10 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono'];
     }
 
     /**
@@ -388,6 +388,39 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOnline', [$online]);
 
         return parent::setOnline($online);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmailkoszono()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailkoszono', []);
+
+        return parent::getEmailkoszono();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmailkoszono($emailkoszono)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailkoszono', [$emailkoszono]);
+
+        return parent::setEmailkoszono($emailkoszono);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toLista()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLista', []);
+
+        return parent::toLista();
     }
 
 }

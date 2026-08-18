@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\Emailtemplate;
 use Entities\Idopont;
 use Entities\Idopontfoglalas;
 use Entities\Partner;
@@ -333,11 +334,56 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
 
+        if ($this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonKoszono, 'idopontfoglalaskoszonoemail.html')) {
+            $foglalas->setEmailkoszono(true);
+            $this->getEm()->flush();
+        }
+
         $view = $this->createView('idopontfoglalaskoszono.tpl');
         $this->setBookingFormVars($view, $idopont, $datum);
         $view->setVar('partnernev', $partner->getNev());
         $view->setVar('online', $online);
         $view->printTemplateResult();
+    }
+
+    /**
+     * A foglalás levelei egy helyen: a sablont a paraméter adja, a Smarty változó neve
+     * mindig `foglalas`. Sablon vagy emailcím híján nem küldünk semmit.
+     *
+     * @param \Entities\Idopontfoglalas $foglalas
+     * @param string $parameter \mkw\consts::Idopontfoglalas… paraméternév
+     * @param string $logfile developer módban ide írjuk a levelet küldés helyett
+     *
+     * @return bool ment-e ki levél
+     */
+    private function sendFoglalasEmail($foglalas, $parameter, $logfile)
+    {
+        if (!$foglalas || !$foglalas->getPartnerEmail()) {
+            return false;
+        }
+        /** @var \Entities\Emailtemplate $emailtpl */
+        $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter($parameter));
+        if (!$emailtpl) {
+            return false;
+        }
+        $tpldata = $foglalas->toLista();
+        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+        $subject->setVar('foglalas', $tpldata);
+        $body = \mkw\store::getTemplateFactory()->createMainView(
+            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+        );
+        $body->setVar('foglalas', $tpldata);
+        if (\mkw\store::getConfigValue('developer')) {
+            \mkw\store::writelog($subject->getTemplateResult(), $logfile);
+            \mkw\store::writelog($body->getTemplateResult(), $logfile);
+        } else {
+            $mailer = \mkw\store::getMailer();
+            $mailer->addTo($foglalas->getPartnerEmail());
+            $mailer->setSubject($subject->getTemplateResult());
+            $mailer->setMessage($body->getTemplateResult());
+            $mailer->send();
+        }
+        return true;
     }
 
     /**

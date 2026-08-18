@@ -481,6 +481,8 @@ class consts
     const RendezvenySablonFelszabadultHelyErtesito = 'rendezvenysablonfelszabadulthelyertesito';
     const RendezvenyRegErtesitoEmail = 'rendezvenyregertesitoemail';
 
+    const IdopontfoglalasSablonKoszono = 'idopontfoglalaskoszonoemailsablon';
+
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';
     const NAVOnlineVersion = 'NAVOnlineVersion';
     const NAVOnlineEnv = 'NAVOnlineEnv';

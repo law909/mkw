@@ -43,6 +43,9 @@ class Idopontfoglalas
     /** @ORM\Column(type="boolean", nullable=false) */
     private $online = false;
 
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $emailkoszono = false;
+
     public function __construct()
     {
         $this->foglalasido = new \DateTime();
@@ -181,6 +184,42 @@ class Idopontfoglalas
     public function setOnline($online)
     {
         $this->online = $online;
+    }
+
+    public function getEmailkoszono()
+    {
+        return $this->emailkoszono;
+    }
+
+    public function setEmailkoszono($emailkoszono)
+    {
+        $this->emailkoszono = $emailkoszono;
+    }
+
+    /**
+     * A foglalás leveleinek Smarty adatai – a sablonokban a `foglalas` változó.
+     */
+    public function toLista()
+    {
+        $idopont = $this->getIdopont();
+        return [
+            'id' => $this->getId(),
+            'datum' => $this->getDatumStr(),
+            'napnev' => $this->getNapNev(),
+            'foglalasido' => $this->getFoglalasidoStr(),
+            'online' => $this->isOnline(),
+            'partnerid' => $this->getPartnerId(),
+            'partnernev' => $this->getPartnerNev(),
+            'partneremail' => $this->getPartnerEmail(),
+            'partnertelefon' => $this->getPartnerTelefon(),
+            'idopontid' => $this->getIdopontId(),
+            'idopontido' => $idopont?->getIdotartamStr(),
+            'temanev' => $idopont?->getIdoponttemaNev(),
+            'tanarnev' => $idopont?->getDolgozoNev(),
+            'helyszinnev' => $idopont?->getJogahelyszinNev(),
+            'helyszincim' => $idopont?->getJogahelyszinCim(),
+            'ar' => $idopont?->getAr(),
+        ];
     }
 
 }

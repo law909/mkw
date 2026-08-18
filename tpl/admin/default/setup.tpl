@@ -640,6 +640,18 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label
+                                        for="IdopontfoglalasKoszonoSablonEdit">{at('Időpont foglalás köszönő levél sablon')}:</label></span>
+                                <select id="IdopontfoglalasKoszonoSablonEdit" name="idopontfoglalaskoszonoemailsablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $idopontfoglalaskoszonoemailsablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
                     {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
