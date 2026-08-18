@@ -67,10 +67,10 @@ class Jogahelyszin extends \Entities\Jogahelyszin implements \Doctrine\ORM\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'id', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'irszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'varos', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'utca', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'hazszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'url', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'inaktiv'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'id', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'irszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'varos', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'utca', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'hazszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'url', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'emailsablon'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'id', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'irszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'varos', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'utca', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'hazszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'url', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'inaktiv'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'id', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'nev', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'irszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'varos', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'utca', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'hazszam', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'url', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Jogahelyszin' . "\0" . 'emailsablon'];
     }
 
     /**
@@ -344,6 +344,28 @@ class Jogahelyszin extends \Entities\Jogahelyszin implements \Doctrine\ORM\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmailsablon()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmailsablon', []);
+
+        return parent::getEmailsablon();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmailsablon($emailsablon)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailsablon', [$emailsablon]);
+
+        return parent::setEmailsablon($emailsablon);
     }
 
     /**

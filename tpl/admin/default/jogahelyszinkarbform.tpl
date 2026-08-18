@@ -38,6 +38,10 @@
                     <td><label for="InaktivEdit">{at('Inaktív')}:</label></td>
                     <td><input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked="checked"{/if}></td>
                 </tr>
+                <tr>
+                    <td><label for="LeirasEdit">{at('Helyszín szövege a levelekben')}:</label></td>
+                    <td><textarea id="LeirasEdit" name="emailsablon" class="emailtemplateleiras">{$egyed.emailsablon}</textarea></td>
+                </tr>
                 </tbody>
             </table>
         </div>

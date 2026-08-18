@@ -38,6 +38,10 @@ class Jogahelyszin
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
+    /** A helyszínről szóló szövegblokk (megközelítés, parkolás), a levelekben `{$helyszin}`. */
+    /** @ORM\Column(type="text",nullable=true) */
+    private $emailsablon;
+
     public function getId()
     {
         return $this->id;
@@ -111,6 +115,16 @@ class Jogahelyszin
     public function setInaktiv($inaktiv)
     {
         $this->inaktiv = $inaktiv;
+    }
+
+    public function getEmailsablon()
+    {
+        return $this->emailsablon;
+    }
+
+    public function setEmailsablon($emailsablon)
+    {
+        $this->emailsablon = $emailsablon;
     }
 
     public function getFullAddress()

@@ -1,6 +1,20 @@
 $(document).ready(function () {
     const mattkarbconfig = new MattkarbConfig({
-        entityName: 'jogahelyszin'
+        entityName: 'jogahelyszin',
+        beforeShow: function () {
+            if (!window.mkwIsMobile) {
+                CKFinder.setupCKEditor(null, '/ckfinder/');
+                $('#LeirasEdit').ckeditor();
+            }
+        },
+        beforeHide: function () {
+            if (!window.mkwIsMobile) {
+                const editor = $('#LeirasEdit').ckeditorGet();
+                if (editor) {
+                    editor.destroy();
+                }
+            }
+        }
     });
 
     if ($.fn.mattable) {

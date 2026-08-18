@@ -87,7 +87,9 @@ class Rendezveny
     private $jogaterem;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Helyszin")
+     * Ugyanaz a helyszíntörzs, mint az órarendé és az időpontoké.
+     *
+     * @ORM\ManyToOne(targetEntity="Jogahelyszin")
      * @ORM\JoinColumn(name="helyszin_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $helyszin;
@@ -391,9 +393,28 @@ class Rendezveny
         $this->jogaterem = $ra;
     }
 
+    /**
+     * @return Jogahelyszin
+     */
     public function getHelyszin()
     {
         return $this->helyszin;
+    }
+
+    public function getHelyszinId()
+    {
+        if ($this->helyszin) {
+            return $this->helyszin->getId();
+        }
+        return '';
+    }
+
+    public function getHelyszinNev()
+    {
+        if ($this->helyszin) {
+            return $this->helyszin->getNev();
+        }
+        return '';
     }
 
     public function setHelyszin($ra)

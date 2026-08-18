@@ -35,7 +35,7 @@ class jogahelyszinController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        return $this->setEntityFieldsFromRequest($obj);
+        return $this->setEntityFieldsFromRequest($obj, ['raw' => ['emailsablon']]);
     }
 
     public function getlistbody()

@@ -1,6 +1,7 @@
 {extends "../base.tpl"}
 
 {block "inhead"}
+    {include 'ckeditor.tpl'}
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
     <script type="text/javascript" src="/js/admin/default/jogahelyszin.js"></script>
 {/block}

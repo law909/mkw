@@ -4,7 +4,7 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
-use Entities\Helyszin;
+use Entities\Jogahelyszin;
 use Entities\Jogaterem;
 use Entities\Partner;
 use Entities\Rendezveny;
@@ -94,10 +94,10 @@ class rendezvenyController extends \mkwhelpers\MattableController
         if ($ck) {
             $obj->setJogaterem($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository(Helyszin::class)->find($this->params->getIntRequestParam('helyszin', 0));
-        if ($ck) {
-            $obj->setHelyszin($ck);
-        }
+        // a többi kapcsolattal szemben a helyszín üríthető is: a legördülő „válasszon" tétele eddig
+        // csendben nem csinált semmit
+        $ck = \mkw\store::getEm()->getRepository(Jogahelyszin::class)->find($this->params->getIntRequestParam('helyszin', 0));
+        $obj->setHelyszin($ck ?: null);
         $dokids = $this->params->getArrayRequestParam('dokid');
         foreach ($dokids as $dokid) {
             if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') !== '') ||
@@ -206,7 +206,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList());
         $jtcs = new jogateremController();
         $view->setVar('jogateremlist', $jtcs->getSelectList());
-        $hcs = new helyszinController();
+        $hcs = new jogahelyszinController();
         $view->setVar('helyszinlist', $hcs->getSelectList());
         $view->printTemplateResult(false);
     }
@@ -230,8 +230,12 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList($record?->getRendezvenyallapot()?->getId()));
         $jtcs = new jogateremController();
         $view->setVar('jogateremlist', $jtcs->getSelectList($record?->getJogaterem()?->getId()));
-        $hcs = new helyszinController();
-        $view->setVar('helyszinlist', $hcs->getSelectList($record?->getHelyszin()?->getId()));
+        $hcs = new jogahelyszinController();
+        // a rekordon már beállított helyszín akkor is bent marad, ha időközben inaktívvá tették
+        $view->setVar(
+            'helyszinlist',
+            $hcs->getSelectList($record?->getHelyszinId(), !$record?->getHelyszin()?->getInaktiv())
+        );
         return $view->getTemplateResult();
     }
 

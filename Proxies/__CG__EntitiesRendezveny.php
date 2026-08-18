@@ -547,6 +547,28 @@ class Rendezveny extends \Entities\Rendezveny implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function getHelyszinId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHelyszinId', []);
+
+        return parent::getHelyszinId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHelyszinNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHelyszinNev', []);
+
+        return parent::getHelyszinNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setHelyszin($ra)
     {
 
