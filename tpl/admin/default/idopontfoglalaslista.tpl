@@ -75,4 +75,10 @@
         </div>
     </div>
     <div id="mattkarb"></div>
+    <form id="lemondform" class="hidden">
+        <div>
+            <label for="alemondasokaedit">{at('Lemondás oka')}:</label>
+            <textarea id="alemondasokaedit" name="alemondasoka"></textarea>
+        </div>
+    </form>
 {/block}

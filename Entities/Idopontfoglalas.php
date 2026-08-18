@@ -52,6 +52,16 @@ class Idopontfoglalas
     /** @ORM\Column(type="date",nullable=true) */
     private $emailemlekeztetodatum;
 
+    /** A lemondott foglalás nem foglal helyet – lásd IdopontfoglalasRepository::getCountForIdopont(). */
+    /** @ORM\Column(type="boolean", nullable=false) */
+    private $lemondva = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $lemondasdatum;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $lemondasoka;
+
     public function __construct()
     {
         $this->foglalasido = new \DateTime();
@@ -239,6 +249,57 @@ class Idopontfoglalas
         $this->emailemlekeztetodatum = new \DateTime(\mkw\store::convDate($datum));
     }
 
+    public function getLemondva()
+    {
+        return $this->lemondva;
+    }
+
+    public function setLemondva($lemondva)
+    {
+        $this->lemondva = $lemondva;
+    }
+
+    public function getLemondasdatum()
+    {
+        return $this->lemondasdatum;
+    }
+
+    public function getLemondasdatumStr()
+    {
+        if ($this->lemondasdatum) {
+            return $this->lemondasdatum->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    /** Üres értékkel a mai napra áll, null-lal törlődik (visszaállításkor). */
+    public function setLemondasdatum($datum = '')
+    {
+        if ($datum instanceof \DateTime) {
+            $this->lemondasdatum = $datum;
+            return;
+        }
+        if ($datum === null) {
+            $this->lemondasdatum = null;
+            return;
+        }
+        $datum = trim((string)$datum);
+        if ($datum === '') {
+            $datum = date(\mkw\store::$DateFormat);
+        }
+        $this->lemondasdatum = new \DateTime(\mkw\store::convDate($datum));
+    }
+
+    public function getLemondasoka()
+    {
+        return $this->lemondasoka;
+    }
+
+    public function setLemondasoka($lemondasoka)
+    {
+        $this->lemondasoka = $lemondasoka;
+    }
+
     /**
      * A foglalás leveleinek Smarty adatai – a sablonokban a `foglalas` változó.
      */
@@ -254,6 +315,9 @@ class Idopontfoglalas
             'emailkoszono' => $this->getEmailkoszono(),
             'emailemlekezteto' => $this->getEmailemlekezteto(),
             'emailemlekeztetodatum' => $this->getEmailemlekeztetodatumStr(),
+            'lemondva' => $this->getLemondva(),
+            'lemondasdatum' => $this->getLemondasdatumStr(),
+            'lemondasoka' => $this->getLemondasoka(),
             'partnerid' => $this->getPartnerId(),
             'partnernev' => $this->getPartnerNev(),
             'partneremail' => $this->getPartnerEmail(),

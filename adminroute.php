@@ -275,6 +275,8 @@ if (!\mkw\store::isClosed()) {
         'idopontfoglalasController#sendEmlekeztetoEmail',
         'adminidopontfoglalasemlekeztetoemail'
     );
+    $router->map('POST', '/admin/idopontfoglalas/lemond', 'idopontfoglalasController#lemond', 'adminidopontfoglalaslemond');
+    $router->map('POST', '/admin/idopontfoglalas/visszaallit', 'idopontfoglalasController#visszaallit', 'adminidopontfoglalasvisszaallit');
 }
 $router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
 $router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');

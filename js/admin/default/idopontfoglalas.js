@@ -51,6 +51,39 @@ $(document).ready(function () {
         });
     }
 
+    // A lemondás levelet is küldhet, ezért egy kattintásra nem indul: a doboz a lemondás okát is felveszi.
+    function lemondDialog(id) {
+        const $form = $('#lemondform');
+        $('#alemondasokaedit').val('');
+        $form.show().dialog({
+            resizable: false,
+            width: 420,
+            modal: true,
+            buttons: {
+                'Lemond': function () {
+                    $(this).dialog('close').dialog('destroy');
+                    $form.hide();
+                    $.ajax({
+                        url: '/admin/idopontfoglalas/lemond',
+                        type: 'POST',
+                        data: {
+                            id: id,
+                            ok: $('#alemondasokaedit').val()
+                        },
+                        success: function (data) {
+                            showError(JSON.parse(data).msg);
+                            $('.mattable-tablerefresh').click();
+                        }
+                    });
+                },
+                'Mégsem': function () {
+                    $(this).dialog('close').dialog('destroy');
+                    $form.hide();
+                }
+            }
+        });
+    }
+
     const mattkarbconfig = new MattkarbConfig({
         entityName: 'idopontfoglalas',
         // a szerver a mentést is elutasítja (409), de a hibaüzenetet itt tudjuk megmutatni
@@ -131,15 +164,24 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/idopontfoglalas/getlistbody',
                 onStyle: function () {
-                    $('.js-emailemlekezteto').button();
+                    $('.js-emailemlekezteto, .js-lemond, .js-visszaallit').button();
                 }
             },
             karb: mattkarbconfig
         });
-        $('#mattable-body').on('click', '.js-emailemlekezteto', function (e) {
-            e.preventDefault();
-            sorMuvelet('/admin/idopontfoglalas/email/emlekezteto', $(this).data('id'), true);
-        });
+        $('#mattable-body')
+            .on('click', '.js-emailemlekezteto', function (e) {
+                e.preventDefault();
+                sorMuvelet('/admin/idopontfoglalas/email/emlekezteto', $(this).data('id'), true);
+            })
+            .on('click', '.js-lemond', function (e) {
+                e.preventDefault();
+                lemondDialog($(this).data('id'));
+            })
+            .on('click', '.js-visszaallit', function (e) {
+                e.preventDefault();
+                sorMuvelet('/admin/idopontfoglalas/visszaallit', $(this).data('id'), true);
+            });
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });

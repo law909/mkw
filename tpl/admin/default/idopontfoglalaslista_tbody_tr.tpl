@@ -18,11 +18,16 @@
     <td class="cell">{$_egyed.foglalasido}</td>
     <td class="cell">{if ($_egyed.online)}{at('online')}{else}{at('élő')}{/if}</td>
     <td class="cell">
-        {if ($emlekeztetosablonvan)}
+        {if ($emlekeztetosablonvan && !$_egyed.lemondva)}
             {if ($_egyed.emailemlekezteto)}
                 <div>{at('Utolsó emlékeztető')}: {$_egyed.emailemlekeztetodatum}</div>
             {/if}
             <div><a class="js-emailemlekezteto" href="#" data-id="{$_egyed.id}">{at('Emlékeztető email')}</a></div>
+        {/if}
+        {if ($_egyed.lemondva)}
+            <div><a class="js-visszaallit" href="#" data-id="{$_egyed.id}">{at('Visszaállít')}</a></div>
+        {else}
+            <div><a class="js-lemond" href="#" data-id="{$_egyed.id}">{at('Lemond')}</a></div>
         {/if}
     </td>
 </tr>

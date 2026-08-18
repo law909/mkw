@@ -67,10 +67,10 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka'];
     }
 
     /**
@@ -465,6 +465,83 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmailemlekeztetodatum', [$datum]);
 
         return parent::setEmailemlekeztetodatum($datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLemondva()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondva', []);
+
+        return parent::getLemondva();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLemondva($lemondva)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLemondva', [$lemondva]);
+
+        return parent::setLemondva($lemondva);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLemondasdatum()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasdatum', []);
+
+        return parent::getLemondasdatum();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLemondasdatumStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasdatumStr', []);
+
+        return parent::getLemondasdatumStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLemondasdatum($datum = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLemondasdatum', [$datum]);
+
+        return parent::setLemondasdatum($datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLemondasoka()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasoka', []);
+
+        return parent::getLemondasoka();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLemondasoka($lemondasoka)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLemondasoka', [$lemondasoka]);
+
+        return parent::setLemondasoka($lemondasoka);
     }
 
     /**

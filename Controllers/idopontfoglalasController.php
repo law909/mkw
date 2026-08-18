@@ -48,6 +48,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $x['idopontdolgozonev'] = $idopont ? $idopont->getDolgozoNev() : '';
         $x['idoponthelyszinnev'] = $idopont ? $idopont->getJogahelyszinNev() : '';
         $x['emailemlekeztetodatum'] = $t->getEmailemlekeztetodatumStr();
+        $x['lemondasdatum'] = $t->getLemondasdatumStr();
         return $x;
     }
 
@@ -123,8 +124,14 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
         }
 
-        if ($partner && $this->getRepo()->findOneBy(['idopont' => $idopont, 'partner' => $partner, 'datum' => $datum])) {
-            return t('Ennek a partnernek erre az alkalomra már van foglalása.');
+        /** @var \Entities\Idopontfoglalas $meglevo */
+        $meglevo = $partner
+            ? $this->getRepo()->findOneBy(['idopont' => $idopont, 'partner' => $partner, 'datum' => $datum])
+            : null;
+        if ($meglevo) {
+            return $meglevo->getLemondva()
+                ? t('Ennek a partnernek erre az alkalomra lemondott foglalása van, azt kell visszaállítani.')
+                : t('Ennek a partnernek erre az alkalomra már van foglalása.');
         }
         if (!$idopont->isBookable($datum)) {
             return t('Erre az alkalomra már nincs szabad hely.');
@@ -286,6 +293,63 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     }
 
     /**
+     * A lista sorának „Lemond" gombja. A lemondott foglalás a helyet is felszabadítja
+     * (IdopontfoglalasRepository::getCountForIdopont()).
+     */
+    public function lemond()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        if (!$foglalas) {
+            echo json_encode(['msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        if ($foglalas->getLemondva()) {
+            echo json_encode(['msg' => at('A foglalás már le van mondva.')]);
+            return;
+        }
+        $foglalas->setLemondva(true);
+        $foglalas->setLemondasdatum($this->params->getStringRequestParam('datum'));
+        $foglalas->setLemondasoka($this->params->getStringRequestParam('ok'));
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+
+        $msg = at('A foglalás lemondva.');
+        if ($this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonLemondas, 'idopontfoglalaslemondasemail.html')) {
+            $msg .= ' ' . at('A lemondásról levél ment ki.');
+        }
+        echo json_encode(['msg' => $msg]);
+    }
+
+    /**
+     * A „Lemond" visszavonása: a foglalás újra helyet foglal, ezért csak akkor megy át,
+     * ha az alkalmon van még szabad hely.
+     */
+    public function visszaallit()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        if (!$foglalas) {
+            echo json_encode(['msg' => at('A foglalás nem található.')]);
+            return;
+        }
+        if (!$foglalas->getLemondva()) {
+            echo json_encode(['msg' => at('A foglalás nincs lemondva.')]);
+            return;
+        }
+        if (!$foglalas->getIdopont() || !$foglalas->getIdopont()->isBookable($foglalas->getDatum())) {
+            echo json_encode(['msg' => at('Erre az alkalomra már nincs szabad hely.')]);
+            return;
+        }
+        $foglalas->setLemondva(false);
+        $foglalas->setLemondasdatum(null);
+        $foglalas->setLemondasoka('');
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+        echo json_encode(['msg' => at('A foglalás visszaállítva.')]);
+    }
+
+    /**
      * Publikus foglalási űrlap – a heti megjelenítő "Foglalok" gombja hozza ide.
      */
     public function showBookingForm()
@@ -323,8 +387,12 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
 
         /** @var \Entities\Partner $partner */
         $partner = $hiba ? null : $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
-        // a meglévő foglalás nem módosítható a publikus űrlapról
-        if (!$hiba && $partner && $this->getRepo()->findOneBy(['idopont' => $idopont, 'partner' => $partner, 'datum' => $datum])) {
+        /** @var \Entities\Idopontfoglalas $meglevo */
+        $meglevo = $partner
+            ? $this->getRepo()->findOneBy(['idopont' => $idopont, 'partner' => $partner, 'datum' => $datum])
+            : null;
+        // a meglévő foglalás nem módosítható a publikus űrlapról – a lemondott viszont újra felvehető
+        if (!$hiba && $meglevo && !$meglevo->getLemondva()) {
             $hiba = t('Erre az alkalomra ezzel az emailcímmel már van foglalásod. Ha módosítanál rajta, keress minket!');
         }
 
@@ -359,11 +427,16 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         }
         $this->getEm()->persist($partner);
 
-        $foglalas = new Idopontfoglalas();
+        // a korábban lemondott foglalás éled újra: az (időpont, partner, nap) hármason egyedi index van
+        $foglalas = $meglevo ?: new Idopontfoglalas();
         $foglalas->setIdopont($idopont);
         $foglalas->setPartner($partner);
         $foglalas->setDatum($datum);
         $foglalas->setOnline($online);
+        $foglalas->setFoglalasido(new \DateTime());
+        $foglalas->setLemondva(false);
+        $foglalas->setLemondasdatum(null);
+        $foglalas->setLemondasoka('');
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
 

@@ -67,6 +67,7 @@ class IdopontfoglalasRepository extends \mkwhelpers\Repository
 
     /**
      * A foglalás mindig egy naptári napra szól, ezért az ismétlődő időpontnál is naponként telik be.
+     * A lemondott foglalás nem foglal helyet.
      *
      * @param int $idopontid
      * @param \DateTime|string|null $datum
@@ -77,7 +78,8 @@ class IdopontfoglalasRepository extends \mkwhelpers\Repository
             return 0;
         }
         $q = $this->_em->createQuery(
-            'SELECT COUNT(_xx) FROM Entities\Idopontfoglalas _xx WHERE _xx.idopont = :idopont AND _xx.datum = :datum'
+            'SELECT COUNT(_xx) FROM Entities\Idopontfoglalas _xx'
+            . ' WHERE _xx.idopont = :idopont AND _xx.datum = :datum AND _xx.lemondva = 0'
         );
         $q->setParameter('idopont', $idopontid);
         $q->setParameter('datum', self::toDate($datum), \Doctrine\DBAL\Types\Types::DATE_MUTABLE);
@@ -98,7 +100,7 @@ class IdopontfoglalasRepository extends \mkwhelpers\Repository
         $q = $this->_em->createQuery(
             'SELECT IDENTITY(_xx.idopont) AS idopontid, _xx.datum AS datum, COUNT(_xx) AS db'
             . ' FROM Entities\Idopontfoglalas _xx'
-            . ' WHERE _xx.idopont IN (:idopontok) AND _xx.datum IN (:datumok)'
+            . ' WHERE _xx.idopont IN (:idopontok) AND _xx.datum IN (:datumok) AND _xx.lemondva = 0'
             . ' GROUP BY _xx.idopont, _xx.datum'
         );
         $q->setParameter('idopontok', $idopontids);
