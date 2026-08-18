@@ -10,20 +10,37 @@
     </tr>
     <tr>
         <td class="topalign" style="padding: 5px;">
-            <span class="nev bold">{$egyed.tulajnev}</span><br />
-            {$egyed.tulajirszam} {$egyed.tulajvaros}, {$egyed.tulajutca}<br />
-            Adószám: {$egyed.tulajadoszam}<br />
-            Bank: {$egyed.tulajbanknev}<br />
-            Swift: {$egyed.tulajswift}<br />
-            IBAN: {$egyed.tulajiban} {$egyed.tulajbankszamlaszam}
+            <span class="nev bold">{$egyed.tulajnev}{if ($egyed.tulajegyenivallalkozo)} ({$egyed.tulajevnyilvszam}){/if}</span><br/>
+            {if ($egyed.tulajkisadozo)}
+                Kisadózó
+                <br/>
+            {/if}
+            {$egyed.tulajirszam} {$egyed.tulajvaros}, {$egyed.tulajutca}<br/>
+            Adószám: {$egyed.tulajadoszam}<br/>
+            {if ($egyed.tulajeuadoszam)}
+                <p>EU adószám: {$egyed.tulajeuadoszam}</p>
+            {/if}
+            {if ($setup.theme === 'superzoneb2b')}
+                Bank: {$egyed.tulajbanknev}
+                <br/>
+                Swift: {$egyed.tulajswift}
+                <br/>
+                IBAN: {$egyed.tulajiban} {$egyed.tulajbankszamlaszam}
+            {else}
+                Bankszámla: {$egyed.tulajbankszamlaszam}
+            {/if}
         </td>
         <td class="topalign" style="padding: 5px;">
-            <span class="nev bold">{$egyed.szamlanev}</span><br />
-            {$egyed.szamlairszam} {$egyed.szamlavaros}<br />
+            <span class="nev bold">{$egyed.szamlanev}</span><br/>
+            {$egyed.szamlairszam} {$egyed.szamlavaros}<br/>
             {$egyed.szamlautca} {$egyed.szamlahazszam}
-            {if ($egyed.partnerorszag)}<br />{$egyed.partnerorszag}{/if}
-            {if ($egyed.partneradoszam)}<br />Adószám: {$egyed.partneradoszam}{/if}
-            {if ($egyed.partnereuadoszam)}<br />EU adószám: {$egyed.partnereuadoszam}{/if}
+            {if ($egyed.partnerorszag)}<br/>{$egyed.partnerorszag}{/if}
+            {if ($egyed.partneradoszam)}<br/>Adószám: {$egyed.partneradoszam}{/if}
+            {if ($egyed.partnereuadoszam)}<br/>EU adószám: {$egyed.partnereuadoszam}{/if}
+            {if ($egyed.partnerszamlaegyeb)}
+                <br/>
+                {$egyed.partnerszamlaegyeb}
+            {/if}
         </td>
     </tr>
 </table>
