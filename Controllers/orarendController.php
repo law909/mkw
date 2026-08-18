@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\JogaBejelentkezes;
+use Entities\Jogahelyszin;
 use Entities\Jogaoratipus;
 use Entities\Jogaterem;
 use Entities\Orarend;
@@ -40,6 +41,7 @@ class orarendController extends \mkwhelpers\MattableController
         }
         $x = $this->getEntityFieldsArray($t);
         $x['dolgozonev'] = $t->getDolgozoNev();
+        $x['jogahelyszinnev'] = $t->getJogahelyszinNev();
         $x['jogateremnev'] = $t->getJogateremNev();
         $x['jogaoratipusnev'] = $t->getJogaoratipusNev();
         $x['napnev'] = $t->getNapNev();
@@ -63,6 +65,8 @@ class orarendController extends \mkwhelpers\MattableController
         } else {
             $obj->setDolgozo(null);
         }
+        $jogahelyszin = \mkw\store::getEm()->getRepository(Jogahelyszin::class)->find($this->params->getIntRequestParam('jogahelyszin'));
+        $obj->setJogahelyszin($jogahelyszin ?: null);
         $jogaterem = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem'));
         if ($jogaterem) {
             $obj->setJogaterem($jogaterem);
@@ -172,6 +176,9 @@ class orarendController extends \mkwhelpers\MattableController
         $dc = new dolgozoController();
         $view->setVar('dolgozolist', $dc->getSelectList());
 
+        $jhc = new jogahelyszinController();
+        $view->setVar('jogahelyszinlist', $jhc->getSelectList());
+
         $jtc = new jogateremController();
         $view->setVar('jogateremlist', $jtc->getSelectList());
 
@@ -196,6 +203,10 @@ class orarendController extends \mkwhelpers\MattableController
 
         $dc = new dolgozoController();
         $view->setVar('dolgozolist', $dc->getSelectList(($ora ? $ora->getDolgozoId() : 0)));
+
+        $jhc = new jogahelyszinController();
+        // a rekordon már beállított helyszín akkor is bent marad, ha időközben inaktívvá tették
+        $view->setVar('jogahelyszinlist', $jhc->getSelectList(($ora ? $ora->getJogahelyszinId() : 0), !$ora?->getJogahelyszin()?->getInaktiv()));
 
         $jtc = new jogateremController();
         $view->setVar('jogateremlist', $jtc->getSelectList(($ora ? $ora->getJogateremId() : 0)));

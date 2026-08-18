@@ -43,6 +43,12 @@ class Orarend
     private $dolgozo;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Jogahelyszin")
+     * @ORM\JoinColumn(name="jogahelyszin_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $jogahelyszin;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Jogaterem")
      * @ORM\JoinColumn(name="jogaterem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -152,6 +158,35 @@ class Orarend
     public function setDolgozo($dolgozo)
     {
         $this->dolgozo = $dolgozo;
+    }
+
+    /**
+     * @return Jogahelyszin
+     */
+    public function getJogahelyszin()
+    {
+        return $this->jogahelyszin;
+    }
+
+    public function getJogahelyszinId()
+    {
+        if ($this->jogahelyszin) {
+            return $this->jogahelyszin->getId();
+        }
+        return '';
+    }
+
+    public function getJogahelyszinNev()
+    {
+        if ($this->jogahelyszin) {
+            return $this->jogahelyszin->getNev();
+        }
+        return '';
+    }
+
+    public function setJogahelyszin($jogahelyszin)
+    {
+        $this->jogahelyszin = $jogahelyszin;
     }
 
     public function getJogaterem()

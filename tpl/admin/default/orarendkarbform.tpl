@@ -38,6 +38,15 @@
                     <td><input id="VegEdit" name="veg" type="text" value="{$egyed.veg}" required></td>
                 </tr>
                 <tr>
+                    <td><label for="JogahelyszinEdit">{at('Helyszín')}:</label></td>
+                    <td><select id="JogahelyszinEdit" name="jogahelyszin">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $jogahelyszinlist as $_tcs}
+                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
+                            {/foreach}
+                        </select></td>
+                </tr>
+                <tr>
                     <td><label for="JogateremEdit">{at('Terem')}:</label></td>
                     <td><select id="JogateremEdit" name="jogaterem" required="required">
                             <option value="">{at('válasszon')}</option>
