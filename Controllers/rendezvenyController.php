@@ -223,15 +223,15 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $record = $this->getRepo()->findWithJoins($id);
         $view->setVar('egyed', $this->loadVars($record, true));
         $tanar = new dolgozoController();
-        $view->setVar('tanarlist', $tanar->getSelectList($record?->getTanarId()));
+        $view->setVar('tanarlist', $tanar->getSelectList($record?->getTanar()?->getId()));
         $termek = new termekController();
-        $view->setVar('termeklist', $termek->getSelectList($record?->getTermekId()));
+        $view->setVar('termeklist', $termek->getSelectList($record?->getTermek()?->getId()));
         $rcs = new rendezvenyallapotController();
-        $view->setVar('rendezvenyallapotlist', $rcs->getSelectList($record?->getRendezvenyallapotId()));
+        $view->setVar('rendezvenyallapotlist', $rcs->getSelectList($record?->getRendezvenyallapot()?->getId()));
         $jtcs = new jogateremController();
-        $view->setVar('jogateremlist', $jtcs->getSelectList($record?->getJogateremId()));
+        $view->setVar('jogateremlist', $jtcs->getSelectList($record?->getJogaterem()?->getId()));
         $hcs = new helyszinController();
-        $view->setVar('helyszinlist', $hcs->getSelectList($record?->getHelyszinId()));
+        $view->setVar('helyszinlist', $hcs->getSelectList($record?->getHelyszin()?->getId()));
         return $view->getTemplateResult();
     }
 
