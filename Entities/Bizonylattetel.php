@@ -1736,7 +1736,7 @@ class Bizonylattetel
         if (is_a($adat, 'DateTime')) {
             $this->vasarlasdatum = $adat;
         } else {
-            $this->vasarlasdatum = new \DateTime(\mkw\store::convDate($adat));
+            $this->vasarlasdatum = new \DateTime(\mkw\store::convDate($adat) ?: '');
         }
     }
 

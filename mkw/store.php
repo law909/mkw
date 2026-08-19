@@ -324,7 +324,7 @@ class store
     public static function getParameter($par, $default = null)
     {
         $p = self::getEm()->getRepository(Parameterek::class)->find($par);
-        if ($p) {
+        if ($p && $p->getErtek() !== null) {
             return str_replace(chr(194) . chr(173), '', $p->getErtek());  // adoszam kotojelei ele text mezobe valamiert $C2 $AD-t ir
         } else {
             return $default;
@@ -1429,7 +1429,7 @@ class store
     {
         return self::getSetupValue('multishop');
     }
-    
+
     /**
      * Szerveroldali, lapozott PDF (mPDF) a böngészőben nyomtatott HTML helyett.
      * Szándékosan opt-in: kapcsoló nélkül minden bizonylat a régi úton megy, és bekapcsolva
