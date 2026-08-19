@@ -242,7 +242,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
             $view->setVar('partnerlist', $partner->getSelectList());
         }
         $fizmod = new fizmodController();
-        $view->setVar('fizmodlist', $fizmod->getSelectList());
+        // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('fizmodlist', $fizmod->getSelectList(null, null, null, false));
         $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
         $bankszamla = new bankszamlaController();
@@ -273,7 +274,8 @@ class rendezvenyjelentkezesController extends \mkwhelpers\MattableController
             $view->setVar('partnerlist', $partner->getSelectList());
         }
         $fizmod = new fizmodController();
-        $view->setVar('fizmodlist', $fizmod->getSelectList());
+        // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('fizmodlist', $fizmod->getSelectList(null, null, null, false));
         $penztar = new penztarController();
         $view->setVar('penztarlist', $penztar->getSelectList());
         $bankszamla = new bankszamlaController();

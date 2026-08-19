@@ -290,7 +290,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('idoponttemalist', (new idoponttemaController())->getSelectList());
         // a szűrő az inaktív időpontokat is kínálja: a régi foglalásokat is meg kell találni
         $view->setVar('idopontlist', (new idopontController())->getSelectList(null, false));
-        $view->setVar('fizmodlist', (new fizmodController())->getSelectList());
+        $view->setVar('fizmodlist', (new fizmodController())->getSelectList(null, null, null, false));
         $view->setVar('jogcimlist', (new jogcimController())->getSelectList());
         $view->setVar('penztarlist', (new penztarController())->getSelectList());
         $view->setVar('bankszamlalist', (new bankszamlaController())->getSelectList());

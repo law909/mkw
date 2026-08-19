@@ -9,6 +9,7 @@
         <div>{if ($_egyed.rugalmas)}{at('Rugalmas')}{else}{at('Nem rugalmas')}{/if}</div>
         <div>{if ($_egyed.nincspenzmozgas)}{at('Nincs pénzmozgás')}{else}{at('Van pénzmozgás')}{/if}</div>
         <div>{if ($_egyed.tipus == 'P')}{at('Pénztár')}{elseif ($_egyed.tipus == 'B')}{at('Bank')}{else}{at('Ismeretlen típus')}{/if}</div>
+        <div>{if ($_egyed.inaktiv)}{at('Inaktív')}{else}{at('Aktív')}{/if}</div>
     </td>
     <td class="cell">
         {$_egyed.sorrend}

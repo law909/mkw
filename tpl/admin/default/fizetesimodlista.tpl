@@ -9,8 +9,18 @@
     <div id="mattable-select" data-theme="{$theme}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Fizetési módok')}"></div>
         <div id="mattable-filterwrapper">
-            <label for="nevfilter">{at('Szűrés')}</label>
-            <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+            <div>
+                <label for="nevfilter">{at('Szűrés')}</label>
+                <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <select id="inaktivfilter" name="inaktivfilter">
+                    <option value="0">{at('Aktív')}</option>
+                    <option value="1">{at('Inaktív')}</option>
+                    <option value="9">{at('Mindegy')}</option>
+                </select>
+            </div>
         </div>
         <div class="mattable-pagerwrapper">
             <div class="mattable-order">

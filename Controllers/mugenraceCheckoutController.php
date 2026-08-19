@@ -54,6 +54,7 @@ class mugenraceCheckoutController extends checkoutController
         $szallorszag = $this->params->getIntRequestParam('szallorszag');
         $szallitasimod = $this->params->getIntRequestParam('szallitasimod');
         $fizetesimod = $this->params->getIntRequestParam('fizetesimod');
+        $fizmod = $this->getRepo(Fizmod::class)->findActive($fizetesimod);
         $webshopmessage = $this->params->getStringRequestParam('webshopmessage');
         $couriermessage = $this->params->getStringRequestParam('couriermessage');
         $aszfready = $this->params->getBoolRequestParam('aszfready');
@@ -80,6 +81,12 @@ class mugenraceCheckoutController extends checkoutController
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
             $errors[] = 'Nem adott meg egy kötelező adatot.';
+        }
+
+        if ($fizetesimod && !$fizmod) {
+            $ok = false;
+            $errorlogtext[] = '6fizmod';
+            $errors[] = 'A választott fizetési mód nem választható.';
         }
 
         $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\mkw\session::getId());
@@ -193,7 +200,7 @@ class mugenraceCheckoutController extends checkoutController
 
             $megrendfej->setPartner($partner);
 
-            $megrendfej->setFizmod($this->getEm()->getRepository(Fizmod::class)->find($fizetesimod));
+            $megrendfej->setFizmod($fizmod);
             $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
             $megrendfej->setRaktar($this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
 

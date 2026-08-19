@@ -43,6 +43,7 @@ class mindentkapniCheckoutController extends checkoutController
         $szallutca = $this->params->getStringRequestParam('szallutca');
         $szallitasimod = $this->params->getIntRequestParam('szallitasimod');
         $fizetesimod = $this->params->getIntRequestParam('fizetesimod');
+        $fizmod = $this->getRepo(Fizmod::class)->findActive($fizetesimod);
         $webshopmessage = $this->params->getStringRequestParam('webshopmessage');
         $couriermessage = $this->params->getStringRequestParam('couriermessage');
         $aszfready = $this->params->getBoolRequestParam('aszfready');
@@ -64,7 +65,7 @@ class mindentkapniCheckoutController extends checkoutController
             (!$szamlaeqszall ? $szamlavaros : true) &&
             (!$szamlaeqszall ? $szamlautca : true) &&
             $szallitasimod > 0 &&
-            $fizetesimod > 0 &&
+            $fizmod &&
             $aszfready
         );
 
@@ -121,6 +122,8 @@ class mindentkapniCheckoutController extends checkoutController
             }
             if (!$fizetesimod) {
                 $errors[] = 'Nem adta meg a fizetési módot.';
+            } elseif (!$fizmod) {
+                $errors[] = 'A választott fizetési mód nem választható.';
             }
             if (!$aszfready) {
                 $errors[] = 'Nem fogadta el az ált.szerződési feltételeket.';
@@ -236,7 +239,7 @@ class mindentkapniCheckoutController extends checkoutController
             $megrendfej->setArfolyam(1);
             $megrendfej->setPartner($partner);
             $megrendfej->setKupon($kuponkod);
-            $megrendfej->setFizmod($this->getEm()->getRepository(Fizmod::class)->find($fizetesimod));
+            $megrendfej->setFizmod($fizmod);
             $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
             $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
             $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);

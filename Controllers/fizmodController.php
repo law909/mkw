@@ -90,6 +90,10 @@ class fizmodController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
+        $f = $this->params->getNumRequestParam('inaktivfilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('inaktiv', '=', $f);
+        }
 
         $this->initPager(
             $this->getRepo()->getCount($filter),
@@ -131,7 +135,7 @@ class fizmodController extends \mkwhelpers\MattableController
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $szallmod = null, $exc = null)
+    public function getSelectList($selid = null, $szallmod = null, $exc = null, $csakaktiv = true)
     {
         $szepfm = \mkw\store::getParameter(\mkw\consts::SZEPFizmod);
         $sportfm = \mkw\store::getParameter(\mkw\consts::SportkartyaFizmod);
@@ -148,6 +152,11 @@ class fizmodController extends \mkwhelpers\MattableController
         $vanvalasztott = \mkw\store::getTheme() !== 'mkwcansas';
         /** @var Fizmod $sor */
         foreach ($rec as $sor) {
+            // az inaktívat csak akkor kínáljuk, ha épp az van kiválasztva – különben a
+            // meglévő bizonylat mentéskor némán másik fizetési módot kapna
+            if ($csakaktiv && $sor->getInaktiv() && $sor->getId() != $selid) {
+                continue;
+            }
             $r = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getLocalizedFieldValue('nev'),

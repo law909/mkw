@@ -183,7 +183,7 @@ class checkoutController extends \mkwhelpers\MattableController
             $fmarr = [];
             foreach ($fmlist as $fmid) {
                 $fizmod = $fr->find($fmid);
-                if ($fizmod) {
+                if ($fizmod && !$fizmod->getInaktiv()) {
                     $fmarr[] = $fc->loadVars($fizmod, true);
                 }
             }
@@ -396,7 +396,7 @@ class checkoutController extends \mkwhelpers\MattableController
     public function saveCheckoutFizmod()
     {
         $megrendelesszam = $this->params->getStringRequestParam('megrendelesszam');
-        $f = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizetesimod'));
+        $f = $this->getRepo(Fizmod::class)->findActive($this->params->getIntRequestParam('fizetesimod'));
 
         $mf = $this->getRepo(Bizonylatfej::class)->find($megrendelesszam);
         if ($mf && $f) {

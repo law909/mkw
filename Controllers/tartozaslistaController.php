@@ -48,7 +48,8 @@ class tartozaslistaController extends \mkwhelpers\MattableController
         $view->setVar('dolgozolist', $d->getSelectList());
 
         $fm = new fizmodController();
-        $view->setVar('fizmodlist', $fm->getSelectList());
+        // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('fizmodlist', $fm->getSelectList(null, null, null, false));
 
         $view->printTemplateResult();
     }

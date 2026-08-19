@@ -58,7 +58,7 @@ $(document).ready(function () {
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#nevfilter']
+                fields: ['#nevfilter', '#inaktivfilter']
             },
             tablebody: {
                 url: '/admin/fizetesimod/getlistbody'

@@ -18,8 +18,16 @@ class FizmodRepository extends \mkwhelpers\Repository
         ]);
     }
 
+    // a webshopos POST-ok ezen keresztül veszik át a fizetési módot: az inaktív nem küldhető vissza
+    public function findActive($id)
+    {
+        $fizmod = $this->find($id);
+        return $fizmod && !$fizmod->getInaktiv() ? $fizmod : null;
+    }
+
     public function getAllWebesBySzallitasimod($szmid, $exc = [])
     {
+        $szm = false;
         if (!is_null($szmid)) {
             $szm = $this->_em->getRepository(Szallitasimod::class)->find($szmid);
         }

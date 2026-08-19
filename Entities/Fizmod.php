@@ -66,6 +66,8 @@ class Fizmod
     private $migrid;
     /** @ORM\Column(type="boolean") */
     private $nincspenzmozgas = false;
+    /** @ORM\Column(type="boolean") */
+    private $inaktiv = false;
 
     public function __construct()
     {
@@ -355,6 +357,16 @@ class Fizmod
     public function setLeirasL1($leiras_l1): void
     {
         $this->leiras_l1 = $leiras_l1;
+    }
+
+    public function getInaktiv()
+    {
+        return $this->inaktiv;
+    }
+
+    public function setInaktiv($inaktiv)
+    {
+        $this->inaktiv = $inaktiv;
     }
 
 

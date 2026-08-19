@@ -54,6 +54,10 @@
                     <td><input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}></td>
                 </tr>
                 <tr>
+                    <td><label for="InaktivEdit">{at('Inaktív')}:</label></td>
+                    <td><input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
                     <td><label for="NincspenzmozgasEdit">{at('Nincs pénzmozgás')}:</label></td>
                     <td><input id="NincspenzmozgasEdit" name="nincspenzmozgas" type="checkbox"{if ($egyed.nincspenzmozgas)} checked="checked"{/if}></td>
                 </tr>

@@ -121,7 +121,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $this->biztipus?->setTemplateVars($view);
 
         $fmc = new fizmodController();
-        $view->setVar('fizmodlist', $fmc->getSelectList());
+        // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('fizmodlist', $fmc->getSelectList(null, null, null, false));
 
         $fmc = new szallitasimodController();
         $view->setVar('szallitasimodlist', $fmc->getSelectList());

@@ -193,7 +193,7 @@ class PartnerWriterService
         $this->partner->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));
         $this->partner->setUjdonsaghirlevelkell($this->params->getBoolRequestParam('ujdonsaghirlevelkell'));
         $this->partner->setBizonylatnyelv(\mkw\store::getWebshopLongLocale());
-        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizetesimod', 0));
+        $fizmod = \mkw\store::getEm()->getRepository(Fizmod::class)->findActive($this->params->getIntRequestParam('fizetesimod', 0));
         if ($fizmod) {
             $this->partner->setFizmod($fizmod);
         }

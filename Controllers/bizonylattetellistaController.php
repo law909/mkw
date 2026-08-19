@@ -46,7 +46,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         $uk = new uzletkotoController();
         $view->setVar('uklist', $uk->getSelectList());
         $fm = new fizmodController();
-        $view->setVar('fizmodlist', $fm->getSelectList());
+        // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('fizmodlist', $fm->getSelectList(null, null, null, false));
 
 
         $view->setVar('nyelvlist', \mkw\store::getLocaleSelectList());
