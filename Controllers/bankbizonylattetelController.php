@@ -112,10 +112,8 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
 
-        $partner = new partnerController();
         $valutanem = new valutanemController();
 
-        $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('valutanemlist', $valutanem->getSelectList());
 
         $this->setVars($view);
@@ -128,7 +126,7 @@ class bankbizonylattetelController extends \mkwhelpers\MattableController
 
         $idfilter = $this->params->getStringRequestParam('idfilter', '');
         if ($idfilter) {
-            $filter->addFilter('id', '=', $idfilter);
+            $filter->addFilter('bf.id', 'LIKE', '%' . $idfilter . '%');
         }
 
         $datumtolfilter = $this->params->getStringRequestParam('datumtolfilter', '');

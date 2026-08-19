@@ -133,7 +133,7 @@ class penztarbizonylattetelController extends \mkwhelpers\MattableController
 
         $idfilter = $this->params->getStringRequestParam('idfilter', '');
         if ($idfilter) {
-            $filter->addFilter('bf.id', 'LIKE', '%' . $idfilter);
+            $filter->addFilter('bf.id', 'LIKE', '%' . $idfilter . '%');
         }
 
         $datumtolfilter = $this->params->getStringRequestParam('datumtolfilter', '');

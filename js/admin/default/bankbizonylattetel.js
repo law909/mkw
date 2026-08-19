@@ -49,6 +49,7 @@ $(document).ready(function () {
                     '#bizonylatrontottfilter',
                     '#erbizonylatszamfilter',
                     '#valutanemfilter',
+                    '#partnernevfilter',
                     '#partnerfilter',
                     '#hivatkozottbizonylatfilter'
                 ]
@@ -221,5 +222,20 @@ $(document).ready(function () {
 
         mkwcomp.datumEdit.init('#datumtolfilter');
         mkwcomp.datumEdit.init('#datumigfilter');
+
+        $('#partnernevfilter')
+            .autocomplete({
+                minLength: 4,
+                autoFocus: true,
+                source: '/admin/bizonylatfej/getpartnerlist',
+                select: function (event, ui) {
+                    $('#partnerfilter').val(ui.item ? ui.item.id : '');
+                }
+            })
+            .autocompleteRenderer(partnerAutocompleteRenderer)
+            // csak a listából választott partner szűr: gépeléskor a korábbi id nem maradhat érvényben
+            .on('input', function () {
+                $('#partnerfilter').val('');
+            });
     }
 });

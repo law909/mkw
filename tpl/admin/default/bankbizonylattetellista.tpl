@@ -43,13 +43,9 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
-                <label for="partnerfilter">{at('Partner')}:</label>
-                <select id="partnerfilter" name="partnerfilter">
-                    <option value="0">{at('válasszon')}</option>
-                    {foreach $partnerlist as $partner}
-                        <option value="{$partner.id}"{if ($partner.selected)} selected="selected"{/if}>{$partner.caption}</option>
-                    {/foreach}
-                </select>
+                <label for="partnernevfilter">{at('Partner')}:</label>
+                <input id="partnernevfilter" name="partnernevfilter" type="text" size="40" autocomplete="off">
+                <input id="partnerfilter" name="partnerfilter" type="hidden">
             </div>
             <div class="matt-hseparator"></div>
             <div>

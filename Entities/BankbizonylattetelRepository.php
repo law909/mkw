@@ -115,6 +115,18 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    public function getCount($filter)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx)'
+            . ' FROM Entities\Bankbizonylattetel _xx'
+            . ' LEFT JOIN _xx.bizonylatfej bf'
+            . $this->getFilterString($filter)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getSingleScalarResult();
+    }
+
     public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
