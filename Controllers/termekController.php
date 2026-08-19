@@ -1919,12 +1919,13 @@ class termekController extends \mkwhelpers\MattableController
                 ->setCellValue(\mkw\store::getExcelCoordinate(1) . $sor, $termek->getCikkszam())
                 ->setCellValue(\mkw\store::getExcelCoordinate(2) . $sor, $termek->getNev());
             $arak = $termek->getTermekArak();
+            /** @var TermekAr $ar */
             foreach ($arak as $ar) {
                 $i = array_search(
                     [
                         'id' => $ar->getArsav()?->getId(),
-                        'valutanemid' => $ar->getValutanemId(),
-                        'valutanem' => $ar->getValutanemnev(),
+                        'valutanemid' => $ar->getValutanem()?->getId(),
+                        'valutanem' => $ar->getValutanem()?->getNev(),
                         'azonosito' => $ar->getArsav()?->getNev(),
                     ],
                     $arsavok
