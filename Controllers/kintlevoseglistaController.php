@@ -228,8 +228,16 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . '  (SELECT SUM(fa.brutto * fa.irany)'
             . '   FROM folyoszamla fa '
             . $beffilter->getFilterString('', 'bef')
-            . '   AND (fa.hivatkozottbizonylat = f.bizonylatfej_id) AND (fa.hivatkozottdatum = f.hivatkozottdatum) AND (bizonylatfej_id IS NULL)'
-            . '   AND (fa.rontott = 0)),0)'
+            . '   AND (fa.hivatkozottbizonylat = f.bizonylatfej_id) AND (fa.bizonylatfej_id IS NULL)'
+            . '   AND (fa.rontott = 0)'
+            // A befizetés ahhoz a részlethez tartozik, aminek az esedékességére hivatkozik; ha
+            // egyikkel sem egyezik (elgépelt vagy üresen hagyott dátum), akkor a legkorábbihoz –
+            // e nélkül a befizetés némán kimaradna a listáról.
+            . '   AND ((fa.hivatkozottdatum = f.hivatkozottdatum)'
+            . '     OR (NOT EXISTS (SELECT 1 FROM folyoszamla fi WHERE (fi.bizonylatfej_id = f.bizonylatfej_id)'
+            . '                      AND (fi.rontott = 0) AND (fi.hivatkozottdatum <=> fa.hivatkozottdatum))'
+            . '         AND (f.hivatkozottdatum = (SELECT MIN(fj.hivatkozottdatum) FROM folyoszamla fj'
+            . '                                    WHERE (fj.bizonylatfej_id = f.bizonylatfej_id) AND (fj.rontott = 0)))))),0)'
             // a bizonylat stornóinak (és a stornóra könyvelt pénzmozgásnak) a sorai: a stornó a
             // bizonylat követelését szünteti meg, tehát ide, a szülő csoportjába tartozik
             . ' + IFNULL('
@@ -244,7 +252,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . ' LEFT OUTER JOIN bizonylatfej bf ON (f.hivatkozottbizonylat = bf.id)'
             . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
             . $filter->getFilterString('', 'par')
-            . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
+            . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat <> "")'
+            . ' AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
             . ' AND ((bf.storno = 0) OR (bf.parbizonylatfej_id IS NULL))'
             . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
             . ' HAVING (tartozas > 0))'
@@ -257,7 +266,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . ' LEFT OUTER JOIN valutanem v ON (f.valutanem_id = v.id)'
             . ' LEFT OUTER JOIN fizmod fm ON (f.fizmod_id = fm.id)'
             . $secfilter->getFilterString('', 'sec')
-            . ' AND (f.hivatkozottbizonylat IS NULL)'
+            . ' AND ((f.hivatkozottbizonylat IS NULL) OR (f.hivatkozottbizonylat = ""))'
             // valutanemenként külön sor: a report a valutanemnév szerint összesít, egy csoportba keverve hamis végösszeg lenne
             . ' GROUP BY f.partner_id, f.datum, f.valutanem_id'
             . ' HAVING (tartozas > 0)'

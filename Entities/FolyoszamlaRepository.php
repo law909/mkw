@@ -15,6 +15,25 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
      */
     private const STORNOJOIN = ' LEFT JOIN bizonylatfej sbf ON (sbf.id = f.hivatkozottbizonylat) AND (sbf.storno = 1)';
 
+    /** A csoport bizonylatszáma: stornónál a szülőé. */
+    private const CSOPORTBIZ = 'IFNULL(sbf.parbizonylatfej_id, f.hivatkozottbizonylat)';
+
+    /**
+     * A csoport esedékessége. Hivatkozás nélküli befizetésnél maga a befizetés napja; a bizonylat
+     * sorainál a saját esedékesség (részletfizetésnél soronként más); a bizonylatra könyvelt
+     * pénzmozgásnál pedig annak a részletnek az esedékessége, amelyikhez tartozik – ha a
+     * hivatkozott dátuma egyikkel sem egyezik, akkor a legkorábbié. E nélkül egy elgépelt
+     * dátumú befizetés önálló, hamis nyitott tételként jelenne meg.
+     */
+    private const CSOPORTDATUM = 'IF(IFNULL(f.hivatkozottbizonylat, "") = "", f.datum,'
+        . ' IF(f.bizonylatfej_id IS NOT NULL, f.hivatkozottdatum,'
+        . '  IFNULL((SELECT MIN(fi.hivatkozottdatum) FROM folyoszamla fi'
+        . '          WHERE (fi.bizonylatfej_id = ' . self::CSOPORTBIZ . ') AND (fi.rontott = 0)'
+        . '            AND (fi.hivatkozottdatum <=> f.hivatkozottdatum)),'
+        . '   IFNULL((SELECT MIN(fj.hivatkozottdatum) FROM folyoszamla fj'
+        . '           WHERE (fj.bizonylatfej_id = ' . self::CSOPORTBIZ . ') AND (fj.rontott = 0)),'
+        . '    f.hivatkozottdatum))))';
+
 
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
@@ -183,10 +202,10 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
-        $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM (' . $this->getEgyenlegSql($cimkek) . ') AS egyen'
-            . ' LEFT JOIN valutanem v ON (egyen.valutanem_id=v.id)'
+        $sql = 'SELECT egyen.valutanemnev AS nev,SUM(egyenleg) AS egyenleg FROM ('
+            . $this->getEgyenlegSql($cimkek) . ') AS egyen'
             . ' WHERE (egyen.egyenleg>0) AND (egyen.hivatkozottdatum<CURDATE())'
-            . ' GROUP BY v.nev';
+            . ' GROUP BY egyen.valutanemnev';
         $q = $this->_em->createNativeQuery($sql, $rsm);
         return $q->getScalarResult();
     }
@@ -205,14 +224,23 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
             $join = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN ('
                 . \mkw\store::getCommaList($cimkek) . '))';
         }
-        return ' SELECT f.valutanem_id AS valutanem_id,'
-            . ' IFNULL(sbf.parbizonylatfej_id, f.hivatkozottbizonylat) AS hivatkozottbizonylat,'
-            . ' f.hivatkozottdatum AS hivatkozottdatum, SUM(f.brutto*f.irany) AS egyenleg'
+        return ' SELECT IFNULL(gbf.valutanemnev, fv.nev) AS valutanemnev,'
+            . ' ' . self::CSOPORTBIZ . ' AS hivatkozottbizonylat,'
+            . ' ' . self::CSOPORTDATUM . ' AS hivatkozottdatum,'
+            . ' SUM(f.brutto*f.irany) AS egyenleg'
             . ' FROM folyoszamla f'
             . $join
             . self::STORNOJOIN
+            // A valutanem a bizonylaté – a kintlevőség lista is aszerint összesít. A folyószámla
+            // soré csak ott számít, ahol nincs bizonylat (hivatkozás nélküli befizetés); ha a
+            // kettő eltér, azt a folyószámla ellenőrzés riport jelzi.
+            . ' LEFT JOIN bizonylatfej gbf ON (gbf.id = ' . self::CSOPORTBIZ . ')'
+            . ' LEFT JOIN valutanem fv ON (fv.id = f.valutanem_id)'
             . ' WHERE (f.rontott=0) AND ((f.bizonylatfej_id IS NULL) OR (f.bizonylatfej_id=f.hivatkozottbizonylat))'
-            . ' GROUP BY f.valutanem_id, IFNULL(sbf.parbizonylatfej_id, f.hivatkozottbizonylat), f.hivatkozottdatum';
+            . ' GROUP BY IFNULL(gbf.valutanemnev, fv.nev), ' . self::CSOPORTBIZ . ', ' . self::CSOPORTDATUM . ','
+            // a semmihez nem kötött befizetések partnerenként külön tételek – egy csoportba téve
+            // az egyik partner kifizetése a másikét oltaná ki
+            . ' IF(IFNULL(f.hivatkozottbizonylat, "") = "", f.partner_id, NULL)';
     }
 
     public function getFakeKintlevosegByValutanem($cimkek = null)
@@ -251,10 +279,10 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
-        $sql = 'SELECT v.nev,SUM(egyenleg) AS egyenleg FROM (' . $this->getEgyenlegSql($cimkek) . ') AS egyen'
-            . ' LEFT JOIN valutanem v ON (egyen.valutanem_id=v.id)'
+        $sql = 'SELECT egyen.valutanemnev AS nev,SUM(egyenleg) AS egyenleg FROM ('
+            . $this->getEgyenlegSql($cimkek) . ') AS egyen'
             . ' WHERE egyen.egyenleg>0'
-            . ' GROUP BY v.nev';
+            . ' GROUP BY egyen.valutanemnev';
         $q = $this->_em->createNativeQuery($sql, $rsm);
         return $q->getScalarResult();
     }

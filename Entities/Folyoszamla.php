@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Doctrine\ORM\Mapping\Entity(repositoryClass="FolyoszamlaRepository")
- * @Doctrine\ORM\Mapping\Table(name="folyoszamla",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @Doctrine\ORM\Mapping\Table(name="folyoszamla",indexes={@Doctrine\ORM\Mapping\Index(name="hivatkozott_idx", columns={"hivatkozottbizonylat","hivatkozottdatum"})},options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Folyoszamla {
 
