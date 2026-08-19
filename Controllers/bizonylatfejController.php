@@ -2281,7 +2281,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
                             $pbtetel->setJogcim($jogcim);
                             $pbtetel->setHivatkozottbizonylat($obj->getId());
-                            $pbtetel->setHivatkozottdatum($obj->getKelt());
+                            $pbtetel->setHivatkozottdatum($obj->getEsedekesseg());
                             if ($tetel) {
                                 $pbtetel->setSzoveg($tetel->getTermeknev() . ' ' . at('eladás'));
                             }
@@ -2321,7 +2321,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                             $bbtetel->setJogcim($jogcim);
                             $bbtetel->setIrany($penzirany);
                             $bbtetel->setHivatkozottbizonylat($obj->getId());
-                            $bbtetel->setHivatkozottdatum($obj->getTeljesites());
+                            $bbtetel->setHivatkozottdatum($obj->getEsedekesseg());
 
                             $bbtetel->setBrutto($this->params->getFloatRequestParam('penz'));
 
