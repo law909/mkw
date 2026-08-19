@@ -4,6 +4,30 @@ $(document).ready(function () {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
 
+    function setPartnerData(d) {
+        $('#PartnernevEdit').val(d.nev || '');
+        $('#PartnertelefonEdit').val(d.telefon || '');
+        $('#PartneremailEdit').val(d.email || '');
+    }
+
+    // Ürítés is kell: a bennragadt emailcím alapján az új felvitel a régi partnert nevezné át.
+    function loadPartnerData(partnerid) {
+        if (!(partnerid > 0)) {
+            setPartnerData({});
+            return;
+        }
+        $.ajax({
+            url: '/admin/partner/getdata',
+            type: 'GET',
+            data: {
+                partnerid: partnerid
+            },
+            success: function (data) {
+                setPartnerData(JSON.parse(data));
+            }
+        });
+    }
+
     function partnerAutocompleteConfig() {
         return {
             minLength: 4,
@@ -12,8 +36,10 @@ $(document).ready(function () {
             select: function (event, ui) {
                 var partner = ui.item;
                 if (partner) {
+                    // a rejtett mező val()-ja nem vált ki change-et, ezért itt közvetlenül töltünk
                     $('.js-partnerid').val(partner.id);
                     $('.js-ujpartnercb').prop('checked', false);
+                    loadPartnerData(partner.id);
                 }
             }
         };
@@ -236,9 +262,15 @@ $(document).ready(function () {
                 $('.js-ujpartnercb').on('change', function () {
                     if ($(this).is(':checked')) {
                         $('.js-partnerid').val('');
+                        setPartnerData({});
                     }
                 });
             }
+
+            // választó listás módban a select maga a .js-partnerid
+            $('select.js-partnerid').on('change', function () {
+                loadPartnerData($(this).val());
+            });
 
             // egyszeri időpontnál a nap adott, ismétlődőnél a következő olyan napra ugrunk
             $('.js-idopontedit').on('change', function () {
