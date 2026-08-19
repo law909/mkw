@@ -25,7 +25,7 @@
         {if (!$_egyed.hibas)}
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
                title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
-            {if ($setup.pdf && $showpdf)}
+            {if ($showpdf)}
                 {if (!$setup.pagedpdf)}
                     <a class="js-pdf" href="#" data-egyedid="{$_egyed.id}" data-oper="pdf" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
                        title="{at('PDF letöltés')}" target="_blank">PDF</a>

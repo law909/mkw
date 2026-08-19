@@ -1389,7 +1389,7 @@ class store
     {
         return self::getSetupValue('osztottfizmod');
     }
-    
+
     public static function isB2B()
     {
         return self::getSetupValue('b2b');
@@ -1429,12 +1429,7 @@ class store
     {
         return self::getSetupValue('multishop');
     }
-
-    public static function isPDF()
-    {
-        return self::getSetupValue('pdf');
-    }
-
+    
     /**
      * Szerveroldali, lapozott PDF (mPDF) a böngészőben nyomtatott HTML helyett.
      * Szándékosan opt-in: kapcsoló nélkül minden bizonylat a régi úton megy, és bekapcsolva
@@ -1443,7 +1438,7 @@ class store
      */
     public static function isPagedPdf()
     {
-        return self::getSetupValue('pagedpdf') && self::isPDF();
+        return self::getSetupValue('pagedpdf');
     }
 
     public static function isSSL()

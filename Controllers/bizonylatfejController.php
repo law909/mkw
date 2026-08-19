@@ -1495,57 +1495,53 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     public function doPDF()
     {
-        if (\mkw\store::isPDF()) {
-            $id = $this->params->getStringRequestParam('id');
-            $printed = $this->params->getBoolRequestParam('printed', false);
-            /** @var \Entities\Bizonylatfej $o */
-            $o = $this->getRepo()->find($id);
-            if ($o) {
-                $pdf = $this->getPrintService()->createEngine($id);
-                if ($pdf) {
-                    $pdf->send(\mkw\store::urlize($id) . '.pdf');
-                }
-                if ($printed !== false) {
-                    $this->setNyomtatva($id, true);
-                }
+        $id = $this->params->getStringRequestParam('id');
+        $printed = $this->params->getBoolRequestParam('printed', false);
+        /** @var \Entities\Bizonylatfej $o */
+        $o = $this->getRepo()->find($id);
+        if ($o) {
+            $pdf = $this->getPrintService()->createEngine($id);
+            if ($pdf) {
+                $pdf->send(\mkw\store::urlize($id) . '.pdf');
+            }
+            if ($printed !== false) {
+                $this->setNyomtatva($id, true);
             }
         }
     }
 
     public function sendPDF()
     {
-        if (\mkw\store::isPDF()) {
-            $id = $this->params->getStringRequestParam('id');
-            /** @var \Entities\Bizonylatfej $o */
-            $o = $this->getRepo()->find($id);
-            if ($o) {
-                $email = $o->getPartneremail();
-                if ($email) {
-                    $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
-                    $pdf = $this->getPrintService()->createEngine($id);
-                    if ($pdf && $emailtpl) {
-                        $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
-                        $pdf->saveAs($filepath);
+        $id = $this->params->getStringRequestParam('id');
+        /** @var \Entities\Bizonylatfej $o */
+        $o = $this->getRepo()->find($id);
+        if ($o) {
+            $email = $o->getPartneremail();
+            if ($email) {
+                $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
+                $pdf = $this->getPrintService()->createEngine($id);
+                if ($pdf && $emailtpl) {
+                    $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');
+                    $pdf->saveAs($filepath);
 
-                        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                        $body = \mkw\store::getTemplateFactory()->createMainView(
-                            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
-                        );
-                        $body->setVar('szamla', $o->toLista());
-                        $body->setVar('megszolitas', $o->getPartner()->getSzamlalevelmegszolitas());
+                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+                    $body = \mkw\store::getTemplateFactory()->createMainView(
+                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+                    );
+                    $body->setVar('szamla', $o->toLista());
+                    $body->setVar('megszolitas', $o->getPartner()->getSzamlalevelmegszolitas());
 
 
-                        $mailer = \mkw\store::getMailer();
+                    $mailer = \mkw\store::getMailer();
 
-                        $mailer->setAttachment($filepath);
-                        $mailer->addTo($email);
-                        $mailer->setSubject($subject->getTemplateResult());
-                        $mailer->setMessage($body->getTemplateResult());
+                    $mailer->setAttachment($filepath);
+                    $mailer->addTo($email);
+                    $mailer->setSubject($subject->getTemplateResult());
+                    $mailer->setMessage($body->getTemplateResult());
 
-                        $mailer->send();
+                    $mailer->send();
 
-                        \unlink($filepath);
-                    }
+                    \unlink($filepath);
                 }
             }
         }

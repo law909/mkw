@@ -79,10 +79,6 @@ class FedexService
      */
     public function uploadSzamlakep(Bizonylatfej $bizonylatfej)
     {
-        if (!\mkw\store::isPDF()) {
-            \mkw\store::writelog('Fedex dokumentum feltöltés: a pdf készítés nincs bekapcsolva', 'fedex_api_error.txt');
-            return false;
-        }
         $pdfpath = $this->createSzamlakepPdf($bizonylatfej);
         if (!$pdfpath) {
             \mkw\store::writelog(
