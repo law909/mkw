@@ -20,7 +20,7 @@
             {if ($egyed.tulajeuadoszam)}
                 <p>EU adószám: {$egyed.tulajeuadoszam}</p>
             {/if}
-            {if ($setup.theme === 'superzoneb2b')}
+            {if ($maintheme === 'superzoneb2b')}
                 Bank: {$egyed.tulajbanknev}
                 <br/>
                 Swift: {$egyed.tulajswift}
