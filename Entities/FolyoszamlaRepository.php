@@ -197,16 +197,63 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         return $result;
     }
 
-    public function getLejartKintlevosegByValutanem($cimkek = null)
+    /**
+     * Valutanemenkénti kintlevőség a főoldali dobozoknak. A partnercímke szűrő miatt ugyanez a
+     * metódus szolgálja ki a szűretlen és a spanyol dobozt is.
+     */
+    public function getKintlevosegByValutanem($cimkek = null, $csaklejart = false)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('egyenleg', 'egyenleg');
         $sql = 'SELECT egyen.valutanemnev AS nev,SUM(egyenleg) AS egyenleg FROM ('
             . $this->getEgyenlegSql($cimkek) . ') AS egyen'
-            . ' WHERE (egyen.egyenleg>0) AND (egyen.hivatkozottdatum<CURDATE())'
+            . ' WHERE (egyen.egyenleg>0)'
+            . ($csaklejart ? ' AND (egyen.hivatkozottdatum<CURDATE())' : '')
             . ' GROUP BY egyen.valutanemnev';
         $q = $this->_em->createNativeQuery($sql, $rsm);
+        return $q->getScalarResult();
+    }
+
+    public function getLejartKintlevosegByValutanem($cimkek = null)
+    {
+        return $this->getKintlevosegByValutanem($cimkek, true);
+    }
+
+    /**
+     * A pénzügyi lista sorai: bizonylatonként (részletfizetésnél esedékességenként) a nettó
+     * egyenleg, a megjelenítéshez kellő bizonylat- és partneradatokkal. A szűrő a csoport (`e.`)
+     * és a bizonylat (`gbf.`) mezőire hivatkozhat; a bizonylat nélküli csoportoknál `gbf` NULL.
+     */
+    public function getEgyenlegSorok($filter = null, $befdatum = null, $order = '')
+    {
+        $rsm = new ResultSetMapping();
+        foreach ([
+            'bizonylatfej_id', 'partner_id', 'nev', 'telefon', 'mobil', 'email', 'irszam', 'varos', 'utca',
+            'kelt', 'teljesites', 'esedekesseg', 'datum', 'hivatkozottdatum', 'brutto', 'tartozas',
+            'valutanemnev', 'fizmodnev', 'felhasznalonev',
+        ] as $mezo) {
+            $rsm->addScalarResult($mezo, $mezo);
+        }
+
+        $sql = 'SELECT IFNULL(NULLIF(e.hivatkozottbizonylat, ""), e.penzbizonylat) AS bizonylatfej_id, e.partner_id,'
+            . ' IFNULL(gbf.fizmodnev, e.fizmodnev) AS fizmodnev, gbf.felhasznalonev,'
+            . ' p.nev, p.telefon, p.mobil, p.email, p.irszam, p.varos, p.utca,'
+            . ' IFNULL(gbf.kelt, e.datum) AS kelt, IFNULL(gbf.teljesites, e.datum) AS teljesites,'
+            . ' IFNULL(gbf.esedekesseg, e.datum) AS esedekesseg,'
+            . ' e.datum, e.hivatkozottdatum, e.brutto, e.egyenleg AS tartozas, e.valutanemnev'
+            . ' FROM (' . $this->getEgyenlegSql(null, $befdatum) . ') e'
+            . ' LEFT JOIN bizonylatfej gbf ON (gbf.id = e.hivatkozottbizonylat)'
+            . ' LEFT JOIN partner p ON (p.id = e.partner_id)'
+            . ($filter ? $filter->getFilterString('', 'par') : '')
+            . ' ' . $order;
+
+        $q = $this->_em->createNativeQuery($sql, $rsm);
+        $params = $filter ? $filter->getQueryParameters('par') : [];
+        if ($befdatum) {
+            $params['befdatum'] = $befdatum;
+        }
+        $q->setParameters($params);
         return $q->getScalarResult();
     }
 
@@ -217,16 +264,28 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
      *
      * @param array|null $cimkek partnercímke szűrő
      */
-    private function getEgyenlegSql($cimkek = null)
+    private function getEgyenlegSql($cimkek = null, $befdatum = null)
     {
         $join = '';
         if ($cimkek) {
             $join = ' JOIN partner_cimkek pc ON (f.partner_id=pc.partner_id) AND (pc.cimketorzs_id IN ('
                 . \mkw\store::getCommaList($cimkek) . '))';
         }
+        // A "befizetéseket eddig" határ a csoport saját bizonylatának a sorára nem vonatkozik (azt az
+        // időszak szűri), minden másra – befizetésre és a stornó soraira – igen.
+        $befszures = $befdatum
+            ? ' AND ((f.bizonylatfej_id = ' . self::CSOPORTBIZ . ') OR (f.datum <= :befdatum))'
+            : '';
         return ' SELECT IFNULL(gbf.valutanemnev, fv.nev) AS valutanemnev,'
             . ' ' . self::CSOPORTBIZ . ' AS hivatkozottbizonylat,'
             . ' ' . self::CSOPORTDATUM . ' AS hivatkozottdatum,'
+            . ' IFNULL(MAX(gbf.partner_id), MAX(f.partner_id)) AS partner_id,'
+            . ' MAX(f.datum) AS datum,'
+            . ' MAX(fm.nev) AS fizmodnev,'
+            // bizonylat nélküli csoportnál a bank/pénztár bizonylat száma azonosítja a sort
+            . ' COALESCE(MAX(f.bankbizonylatfej_id), MAX(f.penztarbizonylatfej_id)) AS penzbizonylat,'
+            // a csoport bizonylatának saját összege (Fizetendő oszlop); a stornójáé már nem
+            . ' SUM(IF(f.bizonylatfej_id = ' . self::CSOPORTBIZ . ', f.brutto*f.irany, 0)) AS brutto,'
             . ' SUM(f.brutto*f.irany) AS egyenleg'
             . ' FROM folyoszamla f'
             . $join
@@ -236,7 +295,9 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
             // kettő eltér, azt a folyószámla ellenőrzés riport jelzi.
             . ' LEFT JOIN bizonylatfej gbf ON (gbf.id = ' . self::CSOPORTBIZ . ')'
             . ' LEFT JOIN valutanem fv ON (fv.id = f.valutanem_id)'
+            . ' LEFT JOIN fizmod fm ON (fm.id = f.fizmod_id)'
             . ' WHERE (f.rontott=0) AND ((f.bizonylatfej_id IS NULL) OR (f.bizonylatfej_id=f.hivatkozottbizonylat))'
+            . $befszures
             . ' GROUP BY IFNULL(gbf.valutanemnev, fv.nev), ' . self::CSOPORTBIZ . ', ' . self::CSOPORTDATUM . ','
             // a semmihez nem kötött befizetések partnerenként külön tételek – egy csoportba téve
             // az egyik partner kifizetése a másikét oltaná ki
@@ -274,16 +335,4 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
-    public function getKintlevosegByValutanem($cimkek = null)
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('nev', 'nev');
-        $rsm->addScalarResult('egyenleg', 'egyenleg');
-        $sql = 'SELECT egyen.valutanemnev AS nev,SUM(egyenleg) AS egyenleg FROM ('
-            . $this->getEgyenlegSql($cimkek) . ') AS egyen'
-            . ' WHERE egyen.egyenleg>0'
-            . ' GROUP BY egyen.valutanemnev';
-        $q = $this->_em->createNativeQuery($sql, $rsm);
-        return $q->getScalarResult();
-    }
 }

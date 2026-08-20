@@ -4,6 +4,8 @@ namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Dolgozo;
+use Entities\Fizmod;
+use Entities\Folyoszamla;
 use Entities\Partner;
 use Entities\Partnercimketorzs;
 use Entities\Uzletkoto;
@@ -55,27 +57,17 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
-    protected function createBefdatumFilter($befdatumfilter)
+    protected function setBefdatum($befdatumfilter)
     {
-        $filter = new FilterDescriptor();
-
         $this->befdatumstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($befdatumfilter)));
-
-        $filter->addFilter('fa.datum', '<=', $this->befdatumstr);
-        return $filter;
     }
 
     /**
-     * A stornó bizonylat sorait nettózó allekérdezés dátumszűrője – ugyanaz a "befizetések eddig"
-     * időpont, csak másik táblaalias alatt.
+     * A lista szűrője a FolyoszamlaRepository egyenleg-lekérdezésének kimenetére épül: `e.` a
+     * bizonylatonkénti (részletenkénti) csoport, `gbf.` a csoport bizonylata. A hivatkozás nélküli
+     * pénzmozgás csoportoknál nincs bizonylat, ezért a bizonylatra vonatkozó szűrők azokat
+     * változatlanul átengedik – ahogy a korábbi, külön lekérdezésben is történt.
      */
-    protected function createStornoDatumFilter()
-    {
-        $filter = new FilterDescriptor();
-        $filter->addFilter('fs.datum', '<=', $this->befdatumstr);
-        return $filter;
-    }
-
     protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter, $dolgozo)
     {
         $filter = new FilterDescriptor();
@@ -86,47 +78,34 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         switch ($datumtipus) {
             case 'kelt':
-                $this->datummezo = 'bf.kelt';
+                $this->datummezo = 'IFNULL(gbf.kelt, e.datum)';
                 $this->datumnev = 'Kelt';
                 break;
-            case 'teljesites':
-                $this->datummezo = 'bf.teljesites';
-                $this->datumnev = 'Teljesítés';
-                break;
             case 'esedekesseg':
-                $this->datummezo = 'f.hivatkozottdatum';
+                $this->datummezo = 'e.hivatkozottdatum';
                 $this->datumnev = 'Esedékesség';
                 break;
+            case 'teljesites':
             default:
-                $this->datummezo = 'bf.teljesites';
+                $this->datummezo = 'IFNULL(gbf.teljesites, e.datum)';
                 $this->datumnev = 'Teljesítés';
         }
 
+        $filter
+            ->addFilter($this->datummezo, '>=', $this->tolstr)
+            ->addFilter($this->datummezo, '<=', $this->igstr)
+            ->addSql('(gbf.id IS NULL) OR (gbf.rontott = 0)');
+
         if ($ukkod) {
-            $filter->addFilter('bf.uzletkoto_id', '=', $ukkod);
+            $filter->addSql('(gbf.id IS NULL) OR (gbf.uzletkoto_id = ' . (int)$ukkod . ')');
             $uk = $this->getRepo(Uzletkoto::class)->find($ukkod);
             if ($uk) {
                 $this->uknev = $uk->getNev();
             }
         }
 
-        if ($partnerkod) {
-            $filter->addFilter('f.partner_id', '=', $partnerkod);
-            $partner = $this->getRepo(Partner::class)->find($partnerkod);
-            if ($partner) {
-                $this->partnernev = $partner->getNev();
-            }
-        } else {
-            $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($cimkefilter);
-            if ($partnerkodok) {
-                $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
-            }
-            $this->cimkenevek = $this->getRepo(Partnercimketorzs::class)->getCimkeNevek($cimkefilter);
-            $this->cimkenevek = implode(',', $this->cimkenevek);
-        }
-
         if ($dolgozo) {
-            $filter->addFilter('bf.felhasznalo_id', '=', $dolgozo);
+            $filter->addSql('(gbf.id IS NULL) OR (gbf.felhasznalo_id = ' . (int)$dolgozo . ')');
             $d = $this->getRepo(Dolgozo::class)->find($dolgozo);
             if ($d) {
                 $this->dolgozonev = $d->getNev();
@@ -134,39 +113,26 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         }
 
         if ($fizmodfilter) {
-            if (is_a($fizmodfilter, '\mkwhelpers\FilterDescriptor')) {
-                $filter = $filter->merge($fizmodfilter);
-            } else {
-                $filter->addFilter('f.fizmod_id', '=', $fizmodfilter);
+            $filter->addSql('(gbf.id IS NULL) OR (gbf.fizmod_id = ' . (int)$fizmodfilter . ')');
+            $fm = $this->getRepo(Fizmod::class)->find($fizmodfilter);
+            if ($fm) {
+                $this->fizmodnev = $fm->getNev();
             }
         }
 
-        $filter
-            ->addFilter($this->datummezo, '>=', $this->tolstr)
-            ->addFilter($this->datummezo, '<=', $this->igstr)
-            ->addFilter('bf.rontott', '=', false);
-        return $filter;
-    }
-
-    protected function createSecFilter($partnerkod, $cimkefilter)
-    {
-        $filter = new FilterDescriptor();
-
-        // a hivatkozás nélküli pénzmozgásra is az időszak vonatkozik: e nélkül a szűk időszakra
-        // kért lista az összes korábbi bank/pénztár tételt is behozná
-        $filter
-            ->addFilter('f.rontott', '=', false)
-            ->addFilter('f.datum', '<=', $this->befdatumstr)
-            ->addFilter('f.datum', '>=', $this->tolstr)
-            ->addFilter('f.datum', '<=', $this->igstr);
-
         if ($partnerkod) {
-            $filter->addFilter('f.partner_id', '=', $partnerkod);
+            $filter->addFilter('e.partner_id', '=', $partnerkod);
+            $partner = $this->getRepo(Partner::class)->find($partnerkod);
+            if ($partner) {
+                $this->partnernev = $partner->getNev();
+            }
         } else {
             $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($cimkefilter);
             if ($partnerkodok) {
-                $filter->addFilter('f.partner_id', 'IN', $partnerkodok);
+                $filter->addFilter('e.partner_id', 'IN', $partnerkodok);
             }
+            $this->cimkenevek = $this->getRepo(Partnercimketorzs::class)->getCimkeNevek($cimkefilter);
+            $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
         return $filter;
@@ -186,26 +152,6 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         $egyenlegfilter = null,
         $dolgozo = null
     ) {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('bizonylatfej_id', 'bizonylatfej_id');
-        $rsm->addScalarResult('partner_id', 'partner_id');
-        $rsm->addScalarResult('nev', 'nev');
-        $rsm->addScalarResult('telefon', 'telefon');
-        $rsm->addScalarResult('mobil', 'mobil');
-        $rsm->addScalarResult('email', 'email');
-        $rsm->addScalarResult('irszam', 'irszam');
-        $rsm->addScalarResult('varos', 'varos');
-        $rsm->addScalarResult('utca', 'utca');
-        $rsm->addScalarResult('kelt', 'kelt');
-        $rsm->addScalarResult('teljesites', 'teljesites');
-        $rsm->addScalarResult('esedekesseg', 'esedekesseg');
-        $rsm->addScalarResult('datum', 'datum');
-        $rsm->addScalarResult('hivatkozottdatum', 'hivatkozottdatum');
-        $rsm->addScalarResult('brutto', 'brutto');
-        $rsm->addScalarResult('tartozas', 'tartozas');
-        $rsm->addScalarResult('valutanemnev', 'valutanemnev');
-        $rsm->addScalarResult('fizmodnev', 'fizmodnev');
-
         if (!$sorrend) {
             $sorrend = $this->params->getIntRequestParam('sorrend', 1);
         }
@@ -224,8 +170,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         if (!$befdatum) {
             $befdatum = $this->params->getStringRequestParam('befdatum');
         }
-        $beffilter = $this->createBefdatumFilter($befdatum);
-        $stornofilter = $this->createStornoDatumFilter();
+        $this->setBefdatum($befdatum);
 
         if (!$tol) {
             $tol = $this->params->getStringRequestParam('tol');
@@ -253,99 +198,31 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         }
         $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter, $fizmodfilter, $dolgozo);
 
-        $secfilter = $this->createSecFilter($partner, $cimkefilter);
-
         if (!$egyenlegfilter) {
             $egyenlegfilter = $this->params->getIntRequestParam('egyenlegfilter', 1);
         }
         switch ($egyenlegfilter) {
             case 2:
-                $having = ' HAVING (tartozas > 0)';
+                $filter->addFilter('e.egyenleg', '>', 0);
                 $this->egyenlegnev = t('Csak kintlevőség');
                 break;
             case 3:
-                $having = ' HAVING (tartozas < 0)';
+                $filter->addFilter('e.egyenleg', '<', 0);
                 $this->egyenlegnev = t('Csak tartozás');
                 break;
             default:
                 // a kiegyenlített (0) bizonylatokat egyik nézetben sem hozzuk
-                $having = ' HAVING (tartozas <> 0)';
+                $filter->addFilter('e.egyenleg', '<>', 0);
                 $this->egyenlegnev = t('Egyenleg');
         }
 
-        $q = $this->getEm()->createNativeQuery(
-            '(SELECT f.bizonylatfej_id, bf.partner_id, bf.fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
-            . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, MAX(f.datum) AS datum, f.hivatkozottdatum, SUM(f.brutto * f.irany) AS brutto,'
-            . ' IFNULL('
-            . '  (SELECT SUM(fa.brutto * fa.irany)'
-            . '   FROM folyoszamla fa '
-            . $beffilter->getFilterString('', 'bef')
-            . '   AND (fa.hivatkozottbizonylat = f.bizonylatfej_id) AND (fa.bizonylatfej_id IS NULL)'
-            . '   AND (fa.rontott = 0)'
-            // A befizetés ahhoz a részlethez tartozik, aminek az esedékességére hivatkozik; ha
-            // egyikkel sem egyezik (elgépelt vagy üresen hagyott dátum), akkor a legkorábbihoz –
-            // e nélkül a befizetés némán kimaradna a listáról.
-            . '   AND ((fa.hivatkozottdatum = f.hivatkozottdatum)'
-            . '     OR (NOT EXISTS (SELECT 1 FROM folyoszamla fi WHERE (fi.bizonylatfej_id = f.bizonylatfej_id)'
-            . '                      AND (fi.rontott = 0) AND (fi.hivatkozottdatum <=> fa.hivatkozottdatum))'
-            . '         AND (f.hivatkozottdatum = (SELECT MIN(fj.hivatkozottdatum) FROM folyoszamla fj'
-            . '                                    WHERE (fj.bizonylatfej_id = f.bizonylatfej_id) AND (fj.rontott = 0)))))),0)'
-            // a bizonylat stornóinak (és a stornóra könyvelt pénzmozgásnak) a sorai: a stornó a
-            // bizonylat követelését szünteti meg, tehát ide, a szülő csoportjába tartozik
-            . ' + IFNULL('
-            . '  (SELECT SUM(fs.brutto * fs.irany)'
-            . '   FROM folyoszamla fs'
-            . '   JOIN bizonylatfej sbf ON (sbf.id = fs.hivatkozottbizonylat) AND (sbf.storno = 1) AND (sbf.rontott = 0)'
-            . $stornofilter->getFilterString('', 'sto')
-            . '   AND (sbf.parbizonylatfej_id = f.bizonylatfej_id) AND (fs.hivatkozottdatum = f.hivatkozottdatum)'
-            . '   AND (fs.rontott = 0)),0)'
-            . ' + SUM(f.brutto * f.irany) AS tartozas, bf.valutanemnev'
-            . ' FROM folyoszamla f'
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (f.hivatkozottbizonylat = bf.id)'
-            . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
-            . $filter->getFilterString('', 'par')
-            . ' AND (f.hivatkozottbizonylat IS NOT NULL) AND (f.hivatkozottbizonylat <> "")'
-            . ' AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
-            . ' AND ((bf.storno = 0) OR (bf.parbizonylatfej_id IS NULL))'
-            . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
-            . $having . ')'
-            . ' UNION'
-            . ' (SELECT COALESCE(MAX(f.bankbizonylatfej_id), MAX(f.penztarbizonylatfej_id)) AS bizonylat, f.partner_id, MAX(fm.nev) AS fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
-            . ' p.varos, p.utca, f.datum AS kelt, f.datum AS teljesites, f.datum AS esedekesseg, f.datum, MAX(f.hivatkozottdatum) AS hivatkozottdatum, 0 AS brutto,'
-            . ' SUM(f.brutto * f.irany) AS tartozas, v.nev AS valutanemnev '
-            . ' FROM folyoszamla f'
-            . ' LEFT OUTER JOIN partner p ON (f.partner_id = p.id)'
-            . ' LEFT OUTER JOIN valutanem v ON (f.valutanem_id = v.id)'
-            . ' LEFT OUTER JOIN fizmod fm ON (f.fizmod_id = fm.id)'
-            . $secfilter->getFilterString('', 'sec')
-            . ' AND ((f.hivatkozottbizonylat IS NULL) OR (f.hivatkozottbizonylat = ""))'
-            // valutanemenként külön sor: a report a valutanemnév szerint összesít, egy csoportba keverve hamis végösszeg lenne
-            . ' GROUP BY f.partner_id, f.datum, f.valutanem_id'
-            . $having
-            . ')'
-            . $sorrend
-            ,
-            $rsm
-        );
-        $q->setParameters(
-            array_merge_recursive(
-                $filter->getQueryParameters('par'),
-                $beffilter->getQueryParameters('bef'),
-                $stornofilter->getQueryParameters('sto'),
-                $secfilter->getQueryParameters('sec')
-            )
-        );
+        $d = $this->getRepo(Folyoszamla::class)->getEgyenlegSorok($filter, $this->befdatumstr, $sorrend);
 
-        if (!$lejartfilter) {
-            $lejartfilter = $this->params->getIntRequestParam('lejartfilter');
-        }
-
-        $d = $q->getScalarResult();
         $ret = [];
         $ma = new \DateTime(date(\mkw\store::$SQLDateFormat));
         $mastr = date(\mkw\store::$SQLDateFormat);
         foreach ($d as $sor) {
-            $sor['lejart'] = $sor['hivatkozottdatum'] <= $mastr;
+            $sor['lejart'] = $sor['hivatkozottdatum'] < $mastr;
             $es = new \DateTime($sor['hivatkozottdatum']);
             $diff = $ma->diff($es);
             if ($sor['lejart']) {
