@@ -1555,6 +1555,23 @@ if ($DBVersion < '0127') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0127');
 }
 
+if ($DBVersion < '0128') {
+    // A lista a partner egyenlegét mutatja, a tartozás oldallal együtt, ezért a menüben már nem
+    // "Kintlevőség" a neve. Az útvonala és a routename változatlan.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET nev = "Pénzügyi lista" WHERE url = "/admin/kintlevoseglista/view"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0128');
+}
+
+if ($DBVersion < '0129') {
+    // A külön tartozás lista megszűnt: a pénzügyi lista "csak tartozás" nézete ugyanazt adja.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DELETE FROM menu WHERE url = "/admin/tartozaslista/view"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0129');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -10,11 +10,11 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
-            <h3>{at('Kintlevőség')}</h3>
+            <h3>{at('Pénzügyi lista')}</h3>
         </div>
         <div id="mattkarb-tabs">
             <ul>
-                <li><a href="#DefaTab">{at('Kintlevőség')}</a></li>
+                <li><a href="#DefaTab">{at('Pénzügyi lista')}</a></li>
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="kintlevoseg" action="" target="_blank">
@@ -50,6 +50,8 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     {include "comp_partnerselect.tpl"}
+                    <div class="matt-hseparator"></div>
+                    {include "comp_dolgozoselect.tpl"}
                     <div class="matt-hseparator"></div>
                     {include "comp_uzletkotoselect.tpl"}
                     <div class="matt-hseparator"></div>

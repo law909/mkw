@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Doctrine\ORM\Query\ResultSetMapping;
+use Entities\Dolgozo;
 use Entities\Partner;
 use Entities\Partnercimketorzs;
 use Entities\Uzletkoto;
@@ -23,6 +24,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
     private $partnernev;
     private $cimkenevek;
     private $fizmodnev;
+    private $dolgozonev;
     private $egyenlegnev;
 
     public function view()
@@ -42,6 +44,13 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         $pcc = new partnercimkekatController();
         $view->setVar('cimkekat', $pcc->getWithCimkek(null));
+
+        $d = new dolgozoController();
+        $view->setVar('dolgozolist', $d->getSelectList());
+
+        $fm = new fizmodController();
+        // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('fizmodlist', $fm->getSelectList(null, null, null, false));
 
         $view->printTemplateResult();
     }
@@ -67,7 +76,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         return $filter;
     }
 
-    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter)
+    protected function createFilter($tol, $ig, $datumtipus, $ukkod, $partnerkod, $cimkefilter, $fizmodfilter, $dolgozo)
     {
         $filter = new FilterDescriptor();
 
@@ -116,8 +125,20 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             $this->cimkenevek = implode(',', $this->cimkenevek);
         }
 
-        if ($fizmodfilter && is_a($fizmodfilter, '\mkwhelpers\FilterDescriptor')) {
-            $filter = $filter->merge($fizmodfilter);
+        if ($dolgozo) {
+            $filter->addFilter('bf.felhasznalo_id', '=', $dolgozo);
+            $d = $this->getRepo(Dolgozo::class)->find($dolgozo);
+            if ($d) {
+                $this->dolgozonev = $d->getNev();
+            }
+        }
+
+        if ($fizmodfilter) {
+            if (is_a($fizmodfilter, '\mkwhelpers\FilterDescriptor')) {
+                $filter = $filter->merge($fizmodfilter);
+            } else {
+                $filter->addFilter('f.fizmod_id', '=', $fizmodfilter);
+            }
         }
 
         $filter
@@ -162,7 +183,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         $cimkefilter = null,
         $lejartfilter = null,
         $fizmodfilter = null,
-        $egyenlegfilter = null
+        $egyenlegfilter = null,
+        $dolgozo = null
     ) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('bizonylatfej_id', 'bizonylatfej_id');
@@ -223,7 +245,13 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         if (!$cimkefilter) {
             $cimkefilter = $this->params->getArrayRequestParam('cimkefilter');
         }
-        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter, $fizmodfilter);
+        if (!$fizmodfilter) {
+            $fizmodfilter = $this->params->getIntRequestParam('fizmod');
+        }
+        if (!$dolgozo) {
+            $dolgozo = $this->params->getIntRequestParam('dolgozo');
+        }
+        $filter = $this->createFilter($tol, $ig, $datumtipus, $uzletkoto, $partner, $cimkefilter, $fizmodfilter, $dolgozo);
 
         $secfilter = $this->createSecFilter($partner, $cimkefilter);
 
@@ -462,6 +490,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         $report->setVar('cimkenevek', $this->cimkenevek);
         $report->setVar('egyenlegnev', $this->egyenlegnev);
         $report->setVar('partnernev', $this->partnernev);
+        $report->setVar('dolgozonev', $this->dolgozonev);
         $report->setVar('uknev', $this->uknev);
         $report->setVar('reszletessum', $this->params->getBoolRequestParam('reszletessum'));
         $report->printTemplateResult();
@@ -518,7 +547,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
-        $filename = uniqid('kintlevoseg') . '.xlsx';
+        $filename = uniqid('penzugyilista') . '.xlsx';
         $filepath = \mkw\store::storagePath($filename);
         $writer->save($filepath);
 

@@ -1,11 +1,12 @@
 {extends "../rep_base.tpl"}
 
 {block "body"}
-    <h4 xmlns="http://www.w3.org/1999/html">Kintlevőség/Assets</h4>
+    <h4 xmlns="http://www.w3.org/1999/html">Pénzügyi lista/Financial list</h4>
     <h5>{$datumnev} {$tolstr} - {$igstr}</h5>
     <h5>Befizetések/payments before {$befdatumstr}-ig</h5>
     <h5>{$partnernev}</h5>
     <h5>{$cimkenevek}</h5>
+    <h5>{$dolgozonev}</h5>
     <h5>{$uknev}</h5>
     <h5>{$egyenlegnev}</h5>
     <table>

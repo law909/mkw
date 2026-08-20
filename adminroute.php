@@ -509,10 +509,6 @@ if (\mkw\store::isBankpenztar()) {
         );
     }
 
-    $router->map('GET', '/admin/tartozaslista/view', 'tartozaslistaController#view', 'admintartozaslistaview');
-    $router->map('GET', '/admin/tartozaslista/get', 'tartozaslistaController#createLista', 'admintartozaslistaget');
-    $router->map('GET', '/admin/tartozaslista/export', 'tartozaslistaController#exportLista', 'admintartozaslistaexport');
-
     $router->map('GET', '/admin/penzbelista/view', 'penzbelistaController#view', 'adminpenzbelistaview');
     $router->map('GET', '/admin/penzbelista/get', 'penzbelistaController#createLista', 'adminpenzbelistaget');
 

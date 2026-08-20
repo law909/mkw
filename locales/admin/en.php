@@ -153,6 +153,7 @@ return [
     'Foglalás számít' => 'Count reservations',
     'Nyelv' => 'Language',
     'Kintlevőség' => 'Assets',
+    'Pénzügyi lista' => 'Financial list',
     'A befizetéseket' => '',
     '-ig kell figyelembe venni.' => '',
     'Lejárat' => 'Expiration',
