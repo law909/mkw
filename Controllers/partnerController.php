@@ -364,6 +364,10 @@ class partnerController extends \mkwhelpers\MattableController
         $view = $this->createView('partnerlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
+        $f = $this->params->getIntRequestParam('idfilter');
+        if ($f) {
+            $filter->addFilter('id', '=', $f);
+        }
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $fv = $this->params->getStringRequestParam('nevfilter');
             $filter->addFilter(['nev', 'keresztnev', 'vezeteknev', 'szallnev'], 'LIKE', '%' . $fv . '%');

@@ -448,6 +448,7 @@ $(document).ready(function () {
             name: 'partner',
             filter: {
                 fields: [
+                    '#idfilter',
                     '#nevfilter',
                     '#emailfilter',
                     '#szallitasiirszamfilter',

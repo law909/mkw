@@ -16,6 +16,8 @@
         <div id="mattable-filterwrapper">
             <div class="matt-hseparator"></div>
             <div>
+                <label for="idfilter">{at('Id')}:</label>
+                <input id="idfilter" name="idfilter" type="text" size="8" maxlength="10">
                 <label for="nevfilter">{at('Név')}:</label>
                 <input id="nevfilter" name="nevfilter" type="text" maxlength="255">
                 <label for="emailfilter">{at('Email')}:</label>

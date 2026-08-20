@@ -7,6 +7,7 @@
     <h5>{$partnernev}</h5>
     <h5>{$cimkenevek}</h5>
     <h5>{$uknev}</h5>
+    <h5>{$egyenlegnev}</h5>
     <table>
         <thead>
         <tr>
@@ -44,7 +45,7 @@
             {$pnemlejartsum = array()}
             <tr class="italic">
                 <td colspan="8" class="cell">
-                    {$partner.nev} {$partner.irszam} {$partner.varos} {$partner.utca}
+                    {$partner.nev} ({$partner.partner_id}) {$partner.irszam} {$partner.varos} {$partner.utca}
                 </td>
             </tr>
             {while (($cikl < $cnt) && ($partnerid == $lista[$cikl].partner_id))}

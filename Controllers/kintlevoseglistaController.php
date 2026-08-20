@@ -23,6 +23,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
     private $partnernev;
     private $cimkenevek;
     private $fizmodnev;
+    private $egyenlegnev;
 
     public function view()
     {
@@ -130,9 +131,13 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
     {
         $filter = new FilterDescriptor();
 
+        // a hivatkozás nélküli pénzmozgásra is az időszak vonatkozik: e nélkül a szűk időszakra
+        // kért lista az összes korábbi bank/pénztár tételt is behozná
         $filter
             ->addFilter('f.rontott', '=', false)
-            ->addFilter('f.datum', '<=', $this->befdatumstr);
+            ->addFilter('f.datum', '<=', $this->befdatumstr)
+            ->addFilter('f.datum', '>=', $this->tolstr)
+            ->addFilter('f.datum', '<=', $this->igstr);
 
         if ($partnerkod) {
             $filter->addFilter('f.partner_id', '=', $partnerkod);
@@ -156,7 +161,8 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         $partner = null,
         $cimkefilter = null,
         $lejartfilter = null,
-        $fizmodfilter = null
+        $fizmodfilter = null,
+        $egyenlegfilter = null
     ) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('bizonylatfej_id', 'bizonylatfej_id');
@@ -221,6 +227,24 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
 
         $secfilter = $this->createSecFilter($partner, $cimkefilter);
 
+        if (!$egyenlegfilter) {
+            $egyenlegfilter = $this->params->getIntRequestParam('egyenlegfilter', 1);
+        }
+        switch ($egyenlegfilter) {
+            case 2:
+                $having = ' HAVING (tartozas > 0)';
+                $this->egyenlegnev = t('Csak kintlevőség');
+                break;
+            case 3:
+                $having = ' HAVING (tartozas < 0)';
+                $this->egyenlegnev = t('Csak tartozás');
+                break;
+            default:
+                // a kiegyenlített (0) bizonylatokat egyik nézetben sem hozzuk
+                $having = ' HAVING (tartozas <> 0)';
+                $this->egyenlegnev = t('Egyenleg');
+        }
+
         $q = $this->getEm()->createNativeQuery(
             '(SELECT f.bizonylatfej_id, bf.partner_id, bf.fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
             . ' p.varos, p.utca, bf.kelt, bf.teljesites, bf.esedekesseg, MAX(f.datum) AS datum, f.hivatkozottdatum, SUM(f.brutto * f.irany) AS brutto,'
@@ -256,7 +280,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . ' AND (f.hivatkozottbizonylat = f.bizonylatfej_id)'
             . ' AND ((bf.storno = 0) OR (bf.parbizonylatfej_id IS NULL))'
             . ' GROUP BY f.partner_id , hivatkozottbizonylat, f.hivatkozottdatum, bf.kelt, bf.teljesites'
-            . ' HAVING (tartozas > 0))'
+            . $having . ')'
             . ' UNION'
             . ' (SELECT COALESCE(MAX(f.bankbizonylatfej_id), MAX(f.penztarbizonylatfej_id)) AS bizonylat, f.partner_id, MAX(fm.nev) AS fizmodnev, p.nev, p.telefon, p.mobil, p.email, p.irszam,'
             . ' p.varos, p.utca, f.datum AS kelt, f.datum AS teljesites, f.datum AS esedekesseg, f.datum, MAX(f.hivatkozottdatum) AS hivatkozottdatum, 0 AS brutto,'
@@ -269,7 +293,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             . ' AND ((f.hivatkozottbizonylat IS NULL) OR (f.hivatkozottbizonylat = ""))'
             // valutanemenként külön sor: a report a valutanemnév szerint összesít, egy csoportba keverve hamis végösszeg lenne
             . ' GROUP BY f.partner_id, f.datum, f.valutanem_id'
-            . ' HAVING (tartozas > 0)'
+            . $having
             . ')'
             . $sorrend
             ,
@@ -321,7 +345,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
             }
         }
 
-        if (\mkw\store::isFakeKintlevoseg() && ($lejartfilter === 1 || $lejartfilter === 2)) {
+        if (\mkw\store::isFakeKintlevoseg() && ($lejartfilter === 1 || $lejartfilter === 2) && $egyenlegfilter != 3) {
             $ret = $this->getFakeData($ret);
         }
         return $ret;
@@ -436,6 +460,7 @@ class kintlevoseglistaController extends \mkwhelpers\MattableController
         $report->setVar('igstr', $this->igstr);
         $report->setVar('befdatumstr', $this->befdatumstr);
         $report->setVar('cimkenevek', $this->cimkenevek);
+        $report->setVar('egyenlegnev', $this->egyenlegnev);
         $report->setVar('partnernev', $this->partnernev);
         $report->setVar('uknev', $this->uknev);
         $report->setVar('reszletessum', $this->params->getBoolRequestParam('reszletessum'));

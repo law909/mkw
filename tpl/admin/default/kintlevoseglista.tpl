@@ -36,6 +36,15 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <label for="EgyenlegFilterEdit">{at('Nézet')}:</label>
+                        <select id="EgyenlegFilterEdit" name="egyenlegfilter">
+                            <option value="1">{at('egyenleg')}</option>
+                            <option value="2">{at('csak kintlevőség')}</option>
+                            <option value="3">{at('csak tartozás')}</option>
+                        </select>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <label for="ReszletesSumCB">{at('Részletes összesítő kell')}</label>
                         <input id="ReszletesSumCB" name="reszletessum" type="checkbox">
                     </div>
