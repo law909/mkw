@@ -1047,6 +1047,21 @@ if (!\mkw\store::isClosed()) {
     );
 }
 
+$router->map(
+    'GET',
+    '/admin/partnergyartokedvezmeny/getemptyrow',
+    'partnergyartokedvezmenyController#getemptyrow',
+    'adminpartnergyartokedvezmenygetemptyrow'
+);
+if (!\mkw\store::isClosed()) {
+    $router->map(
+        'POST',
+        '/admin/partnergyartokedvezmeny/save',
+        'partnergyartokedvezmenyController#save',
+        'adminpartnergyartokedvezmenysave'
+    );
+}
+
 $router->map('GET', '/admin/partnertermekkedvezmeny/getemptyrow', 'partnertermekkedvezmenyController#getemptyrow', 'adminpartnertermekkedvezmenygetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partnertermekkedvezmeny/save', 'partnertermekkedvezmenyController#save', 'adminpartnertermekkedvezmenysave');

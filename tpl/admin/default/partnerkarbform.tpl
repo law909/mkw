@@ -20,6 +20,7 @@
             {if (!$setup.mptngy && !$setup.mpt)}
                 <li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
                 <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
+                <li><a href="#GyartoKedvezmenyTab">{at('Kedvezmények gyártónként')}</a></li>
             {/if}
             <li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
             {if (!$setup.mptngy && !$setup.mpt)}
@@ -647,6 +648,14 @@
                     {include 'partnertermekkedvezmenykarb.tpl'}
                 {/foreach}
                 <a class="js-termekkedvezmenynewbutton" href="#" title="{at('Új')}">
+                    <span class="ui-icon ui-icon-circle-plus"></span>
+                </a>
+            </div>
+            <div id="GyartoKedvezmenyTab" class="mattkarb-page" data-visible="visible">
+                {foreach $partner.gyartokedvezmenyek as $kd}
+                    {include 'partnergyartokedvezmenykarb.tpl'}
+                {/foreach}
+                <a class="js-gyartokedvezmenynewbutton" href="#" title="{at('Új')}">
                     <span class="ui-icon ui-icon-circle-plus"></span>
                 </a>
             </div>

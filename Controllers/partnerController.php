@@ -15,6 +15,7 @@ use Entities\Partner;
 use Entities\Partnercimketorzs;
 use Entities\PartnerDok;
 use Entities\PartnerTermekcsoportKedvezmeny;
+use Entities\PartnerGyartoKedvezmeny;
 use Entities\PartnerTermekKedvezmeny;
 use Entities\Partnertipus;
 use Entities\Szallitasimod;
@@ -66,6 +67,7 @@ class partnerController extends \mkwhelpers\MattableController
     {
         $kedvCtrl = new partnertermekcsoportkedvezmenyController();
         $termekkedvCtrl = new partnertermekkedvezmenyController();
+        $gyartokedvCtrl = new partnergyartokedvezmenyController();
         $dokCtrl = new partnerdokController();
         $mptfolyoszamlaCtrl = new mptfolyoszamlaController();
         if (!$t) {
@@ -131,6 +133,11 @@ class partnerController extends \mkwhelpers\MattableController
                 $kedv[] = $termekkedvCtrl->loadVars($tar, true);
             }
             $x['termekkedvezmenyek'] = $kedv;
+            $kedv = [];
+            foreach ($t->getGyartokedvezmenyek() as $tar) {
+                $kedv[] = $gyartokedvCtrl->loadVars($tar, true);
+            }
+            $x['gyartokedvezmenyek'] = $kedv;
 
             $dok = [];
             foreach ($t->getPartnerDokok() as $kepje) {
@@ -353,6 +360,29 @@ class partnerController extends \mkwhelpers\MattableController
                 }
             }
         }
+        $kdids = $this->params->getArrayRequestParam('gyartokedvezmenyid');
+        foreach ($kdids as $kdid) {
+            $oper = $this->params->getStringRequestParam('gyartokedvezmenyoper_' . $kdid);
+            $gyarto = $this->getEm()->getRepository(Partner::class)->find(
+                $this->params->getIntRequestParam('gyartokedvezmenygyarto_' . $kdid)
+            );
+            if ($gyarto) {
+                if ($oper === 'add') {
+                    $kedv = new \Entities\PartnerGyartoKedvezmeny();
+                } elseif ($oper === 'edit') {
+                    $kedv = $this->getEm()->getRepository(PartnerGyartoKedvezmeny::class)->find($kdid);
+                } else {
+                    continue;
+                }
+                if ($kedv) {
+                    $kedv->setPartner($obj);
+                    $kedv->setGyarto($gyarto);
+                    $kedv->setKedvezmeny($this->params->getNumRequestParam('gyartokedvezmeny_' . $kdid));
+                    $this->getEm()->persist($kedv);
+                }
+            }
+        }
+
         if (!$obj->getVatstatus()) {
             $obj->calcVatstatus();
         }

@@ -2338,11 +2338,33 @@ class Termek
         return $kedvezmeny * 1;
     }
 
+    /**
+     * A termék gyártójára adott kedvezmény. A gyártó maga is partner (szállító).
+     *
+     * @param \Entities\Partner $partner
+     */
+    public function getGyartoKedvezmeny($partner = null)
+    {
+        $kedvezmeny = 0;
+        if ($partner && $this->gyarto) {
+            $kdv = \mkw\store::getEm()->getRepository(PartnerGyartoKedvezmeny::class)
+                ->getByPartnerGyarto($partner, $this->gyarto);
+            if ($kdv) {
+                $kedvezmeny = $kdv->getKedvezmeny();
+            }
+        }
+        return $kedvezmeny * 1;
+    }
+
+    /** A szűkebb érvényű kedvezmény nyer: termék, utána termékcsoport, végül gyártó. */
     public function getKedvezmeny($partner = null)
     {
         $kedvezmeny = $this->getTermekKedvezmeny($partner);
         if (!$kedvezmeny) {
             $kedvezmeny = $this->getTermekcsoportKedvezmeny($partner);
+        }
+        if (!$kedvezmeny) {
+            $kedvezmeny = $this->getGyartoKedvezmeny($partner);
         }
         return $kedvezmeny;
     }

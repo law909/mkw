@@ -195,6 +195,28 @@ class BankTranzakcio extends \Entities\BankTranzakcio implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
+
+        return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAzonosito()
     {
 

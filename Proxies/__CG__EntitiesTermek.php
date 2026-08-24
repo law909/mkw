@@ -2230,6 +2230,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getGyartoKedvezmeny($partner = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getGyartoKedvezmeny', [$partner]);
+
+        return parent::getGyartoKedvezmeny($partner);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getKedvezmeny($partner = NULL)
     {
 

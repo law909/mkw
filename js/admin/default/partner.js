@@ -76,6 +76,7 @@ $(document).ready(function () {
                 mpt_tagsagdateedit = $('#MPTTagsagdateEdit'),
                 mptngybefdatumedit = $('#MptngyBefdatumEdit'),
                 termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
+                gyartokedvezmenytab = $('#GyartoKedvezmenyTab'),
                 termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                 doktab = $('#DokTab'),
                 mptfolyoszamlatab = $('#MPTFolyoszamlaTab');
@@ -259,6 +260,53 @@ $(document).ready(function () {
                     }
                 });
             $('.js-termekcsoportkedvezmenynewbutton, .js-termekcsoportkedvezmenydelbutton').button();
+            gyartokedvezmenytab.on('click', '.js-gyartokedvezmenynewbutton', function (e) {
+                var $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/partnergyartokedvezmeny/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        gyartokedvezmenytab.append(data);
+                        $('.js-gyartokedvezmenynewbutton,.js-gyartokedvezmenydelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
+                .on('click', '.js-gyartokedvezmenydelbutton', function (e) {
+                    e.preventDefault();
+                    var argomb = $(this),
+                        arid = argomb.attr('data-id');
+                    if (argomb.attr('data-source') === 'client') {
+                        $('#gyartokedvezmenytable_' + arid).remove();
+                    } else {
+                        dialogcenter.html('Biztos, hogy törli a kedvezményt?').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Igen': function () {
+                                    $.ajax({
+                                        url: '/admin/partnergyartokedvezmeny/save',
+                                        type: 'POST',
+                                        data: {
+                                            id: arid,
+                                            oper: 'del'
+                                        },
+                                        success: function (data) {
+                                            $('#gyartokedvezmenytable_' + data).remove();
+                                        }
+                                    });
+                                    $(this).dialog('close');
+                                },
+                                'Nem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            $('.js-gyartokedvezmenynewbutton, .js-gyartokedvezmenydelbutton').button();
             termekkedvezmenytab.on('click', '.js-termekkedvezmenynewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();
