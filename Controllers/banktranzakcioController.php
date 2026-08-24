@@ -119,6 +119,10 @@ class banktranzakcioController extends \mkwhelpers\MattableController
      * `oszlop`: melyik oszlopban áll az adott mező; `elsosor`: az első adatsor (a fejléc alatt);
      * `datum`: a dátumoszlopok formátuma – az OTP HTML-export szövegesen adja a dátumot,
      * a Raiffeisen viszont Excel-sorszámként.
+     *
+     * `csv`: pontosvesszős szövegfájl (ERSTE) – a PhpSpreadsheet CSV-olvasójának elválasztója
+     * és idézőjele. `irany`: külön előjeloszlop (T/J), az összeg ilyenkor előjel nélkül jön.
+     * `azonosito` hiányában a sor tartalmából képzünk kulcsot – lásd {@see rowAzonosito()}.
      */
     const IMPORTFORMATUMOK = [
         'raiffeisen' => [
@@ -158,6 +162,26 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                 'partnernev' => 'G',
             ],
         ],
+        'erste' => [
+            'nev' => 'ERSTE',
+            'elsosor' => 2,
+            'datum' => 'szoveg',
+            'csv' => ['delimiter' => ';', 'enclosure' => '"'],
+            'oszlop' => [
+                'konyvelesdatum' => 'A',
+                'erteknap' => 'B',
+                'osszeg' => 'F',
+                // T = terhelés, J = jóváírás; az F oszlopban az összeg mindig pozitív
+                'irany' => 'G',
+                // a tranzakció típusa (BEIP, 100B, …) csak tájékoztató
+                'kozlemeny1' => 'H',
+                'kozlemeny2' => 'D',
+                'kozlemeny3' => 'I',
+                'szamlaszam' => 'E',
+                'bizonylatszam' => 'I',
+                'partnernev' => 'D',
+            ],
+        ],
     ];
 
     public function viewupload()
@@ -191,8 +215,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             return;
         }
 
-        $filetype = IOFactory::identify($filenev);
-        $reader = IOFactory::createReader($filetype);
+        $reader = $this->createReader($filenev, $formatum);
         $reader->setReadDataOnly(true);
         $excel = $reader->load($filenev);
         $sheet = $excel->getActiveSheet();
@@ -200,11 +223,18 @@ class banktranzakcioController extends \mkwhelpers\MattableController
 
         $repo = $this->getRepo();
         $partnerrepo = $this->getRepo(Partner::class);
+        $azonszamlalo = [];
 
         for ($row = $formatum['elsosor']; $row <= $maxrow; ++$row) {
             $osszeg = $this->importOsszeg($sheet->getCell($oszlop['osszeg'] . $row)->getValue());
+            if ($osszeg && isset($oszlop['irany'])) {
+                $irany = strtoupper(trim((string)$sheet->getCell($oszlop['irany'] . $row)->getValue()));
+                $osszeg = ($irany === 'T') ? -abs($osszeg) : abs($osszeg);
+            }
             if ($osszeg && ($osszeg > 0 || $negativis)) {
-                $azon = trim((string)$sheet->getCell($oszlop['azonosito'] . $row)->getValue());
+                $azon = isset($oszlop['azonosito'])
+                    ? trim((string)$sheet->getCell($oszlop['azonosito'] . $row)->getValue())
+                    : $this->rowAzonosito($sheet, $oszlop, $row, $osszeg, $azonszamlalo);
                 // az azonosító csak bankon belül egyedi (az OTP pl. rövid sorszámot ad),
                 // ezért a duplikátumszűrés a bankot is nézi
                 if ($azon && !$repo->findOneBy(['azonosito' => $azon, 'bank' => $formatumkulcs])) {
@@ -255,6 +285,48 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         }
         $excel->disconnectWorksheets();
         \unlink($filenev);
+    }
+
+    /**
+     * A kivonat olvasója. A CSV-formátumoknál az elválasztót és a kódolást is meg kell adni:
+     * a magyar bankok latin-2-ben exportálnak, a PhpSpreadsheet viszont UTF-8-at feltételez.
+     *
+     * @return \PhpOffice\PhpSpreadsheet\Reader\IReader
+     */
+    private function createReader($filenev, array $formatum)
+    {
+        if (!isset($formatum['csv'])) {
+            return IOFactory::createReader(IOFactory::identify($filenev));
+        }
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $reader->setDelimiter($formatum['csv']['delimiter']);
+        $reader->setEnclosure($formatum['csv']['enclosure']);
+        $reader->setInputEncoding(
+            mb_check_encoding((string)file_get_contents($filenev), 'UTF-8') ? 'UTF-8' : 'ISO-8859-2'
+        );
+        return $reader;
+    }
+
+    /**
+     * Azonosító olyan kivonathoz, amiben nincs tranzakcióazonosító (ERSTE): a sor tartalmából
+     * képezzük, hogy az újraimportálás ne duplázzon.
+     *
+     * A fájlon belül azonos tartalmú sorok (ugyanaznap, ugyanakkora, ugyanattól, ugyanazzal a
+     * közleménnyel) valódi külön utalások is lehetnek, ezért kapnak sorszámot – így két
+     * ugyanolyan sor két tranzakció marad, ugyanannak a fájlnak az újratöltése viszont nem hoz
+     * létre újat.
+     */
+    private function rowAzonosito($sheet, array $oszlop, $row, $osszeg, array &$szamlalo): string
+    {
+        $reszek = [$osszeg];
+        foreach (['konyvelesdatum', 'erteknap', 'szamlaszam', 'kozlemeny1', 'kozlemeny2', 'kozlemeny3'] as $mezo) {
+            $reszek[] = isset($oszlop[$mezo])
+                ? trim((string)$sheet->getCell($oszlop[$mezo] . $row)->getValue())
+                : '';
+        }
+        $kulcs = md5(implode('|', $reszek));
+        $szamlalo[$kulcs] = ($szamlalo[$kulcs] ?? 0) + 1;
+        return $kulcs . '-' . $szamlalo[$kulcs];
     }
 
     public function parosit()
