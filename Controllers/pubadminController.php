@@ -27,6 +27,9 @@ use mkwhelpers, Entities;
 class pubadminController extends mkwhelpers\Controller
 {
 
+    /** ennyi karakter alatt nem keresünk partnert (a select2 minimumInputLength párja) */
+    private const PARTNERKERESES_MINHOSSZ = 3;
+
     public function view()
     {
         $view = $this->createPubAdminView('main.tpl');
@@ -81,9 +84,10 @@ class pubadminController extends mkwhelpers\Controller
         $datum = $this->params->getStringRequestParam('datum');
         $ma = new Carbon();
         $datumdate = Carbon::createFromFormat(\mkw\store::$SQLDateFormat, $datum);
-        $ora = $this->getRepo(Orarend::class)->find($oraid);
+        // az óra azonosítója a kérésből jön: csak a saját óránk résztvevői láthatók
+        $ora = $this->getSajatOra($oraid, $datum);
 
-        if ($oraid) {
+        if ($ora) {
             /** @var Termek $orajegytermek */
             $orajegytermek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             /** @var Termek $berlet4termek */
@@ -93,7 +97,7 @@ class pubadminController extends mkwhelpers\Controller
 
 
             $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter('orarend', '=', $oraid);
+            $filter->addFilter('orarend', '=', $ora);
             $filter->addFilter('datum', '=', $datum);
             $resztvevok = $this->getRepo(JogaBejelentkezes::class)->getAll($filter, ['partnernev' => 'ASC']);
 
@@ -253,6 +257,59 @@ class pubadminController extends mkwhelpers\Controller
     }
 
     /**
+     * A kérésben kapott óra, DE csak akkor, ha a bejelentkezett tanáré: vagy az övé az órarendi
+     * sor, vagy őt jelölték be helyettesnek arra a napra (ugyanaz a két forrás, amiből a
+     * {@see getOralist()} az óralistát összerakja).
+     *
+     * A helyettesítés egyetlen napra szól, ezért ott a dátum is számít; a saját órájához a tanár
+     * a nap megadása nélkül is hozzáfér.
+     *
+     * @return Orarend|null
+     */
+    private function getSajatOra($oraid, $datum = null)
+    {
+        $dolgozo = $this->getBejelentkezettTanar();
+        if (!$dolgozo || !$oraid) {
+            return null;
+        }
+        /** @var Orarend|null $ora */
+        $ora = $this->getRepo(Orarend::class)->find($oraid);
+        if (!$ora) {
+            return null;
+        }
+        if ((int)$ora->getDolgozoId() === (int)$dolgozo->getId()) {
+            return $ora;
+        }
+        if ($datum) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('orarend', '=', $ora);
+            $filter->addFilter('helyettesito', '=', $dolgozo);
+            $filter->addFilter('datum', '=', $datum);
+            $filter->addFilter('inaktiv', '=', false);
+            if ($this->getRepo(Orarendhelyettesites::class)->getCount($filter)) {
+                return $ora;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * A kérésben kapott bejelentkezés, csak a saját óránkról. A napot a bejelentkezés maga adja,
+     * nem a kérés – így a helyettesítés napja sem téveszthető meg.
+     *
+     * @return JogaBejelentkezes|null
+     */
+    private function getSajatBejelentkezes($id)
+    {
+        /** @var JogaBejelentkezes|null $rv */
+        $rv = $id ? $this->getRepo(JogaBejelentkezes::class)->find($id) : null;
+        if (!$rv || !$this->getSajatOra($rv->getOrarendId(), $rv->getDatum())) {
+            return null;
+        }
+        return $rv;
+    }
+
+    /**
      * A kérésben kapott időpont, DE csak akkor, ha a bejelentkezett tanáré. Az azonosító a
      * böngészőből jön, más tanár időpontjának foglalói pedig se nem láthatók, se nem jelölhetők.
      *
@@ -290,7 +347,7 @@ class pubadminController extends mkwhelpers\Controller
     {
         /** @var JogaBejelentkezes $rv */
         $online = $this->params->getIntRequestParam('online');
-        $rv = $this->getRepo(JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
+        $rv = $this->getSajatBejelentkezes($this->params->getIntRequestParam('id'));
         if ($rv) {
             $megje = $rv->isMegjelent();
             $rv->setMegjelent(!$rv->isMegjelent());
@@ -315,7 +372,7 @@ class pubadminController extends mkwhelpers\Controller
         $price = $this->params->getNumRequestParam('price');
         $later = $this->params->getBoolRequestParam('later');
         /** @var JogaBejelentkezes $rv */
-        $rv = $this->getRepo(JogaBejelentkezes::class)->find($this->params->getIntRequestParam('id'));
+        $rv = $this->getSajatBejelentkezes($this->params->getIntRequestParam('id'));
         if ($rv) {
             $rv->setTipus($type);
             $rv->setAr($price);
@@ -496,10 +553,20 @@ class pubadminController extends mkwhelpers\Controller
         }
     }
 
+    /**
+     * Partnerkereső az „új gyakorló" ablakhoz. A minimális hossz eddig csak a böngészőben volt
+     * feltétel (select2 minimumInputLength): üres kereséssel az egész partnertörzs kijött egy
+     * kérésre, névvel és emaillel együtt.
+     */
     public function getPartnerData()
     {
         $result = [];
-        $q = $this->params->getStringRequestParam('q');
+        $q = trim($this->params->getStringRequestParam('q'));
+        if (mb_strlen($q) < self::PARTNERKERESES_MINHOSSZ) {
+            header('Content-Type: application/json');
+            echo json_encode(['results' => $result]);
+            return;
+        }
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter(['nev', 'keresztnev', 'vezeteknev'], 'like', '%' . $q . '%');
         $partnerek = $this->getRepo(Partner::class)->getAll($filter, ['nev' => 'ASC']);
@@ -517,8 +584,8 @@ class pubadminController extends mkwhelpers\Controller
     public function newBejelentkezes()
     {
         $oraid = $this->params->getIntRequestParam('oraid');
-        $ora = $this->getRepo(Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
+        $ora = $this->getSajatOra($oraid, $datum);
         $partnerid = $this->params->getIntRequestParam('partnerid');
         /** @var Partner $partner */
         $partner = $this->getRepo(Partner::class)->find($partnerid);
@@ -536,8 +603,8 @@ class pubadminController extends mkwhelpers\Controller
     public function newBejelentkezesWNewPartner()
     {
         $oraid = $this->params->getIntRequestParam('oraid');
-        $ora = $this->getRepo(Orarend::class)->find($oraid);
         $datum = $this->params->getStringRequestParam('datum');
+        $ora = $this->getSajatOra($oraid, $datum);
         $nev = $this->params->getStringRequestParam('nev');
         $email = $this->params->getStringRequestParam('email');
         if ($ora && $nev && $email) {
@@ -555,7 +622,7 @@ class pubadminController extends mkwhelpers\Controller
     {
         $id = $this->params->getIntRequestParam('id');
         /** @var JogaBejelentkezes $rv */
-        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
+        $rv = $this->getSajatBejelentkezes($id);
         if ($rv) {
             echo $rv->getMegjegyzes();
         }
@@ -566,7 +633,7 @@ class pubadminController extends mkwhelpers\Controller
         $id = $this->params->getIntRequestParam('id');
         $m = $this->params->getStringRequestParam('megjegyzes');
         /** @var JogaBejelentkezes $rv */
-        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
+        $rv = $this->getSajatBejelentkezes($id);
         if ($rv) {
             $rv->setMegjegyzes($m);
             $this->getEm()->persist($rv);
@@ -582,7 +649,7 @@ class pubadminController extends mkwhelpers\Controller
             'email' => ''
         ];
         /** @var JogaBejelentkezes $rv */
-        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
+        $rv = $this->getSajatBejelentkezes($id);
         if ($rv) {
             $r['nev'] = $rv->getPartnernev();
             $r['email'] = $rv->getPartneremail();
@@ -597,7 +664,7 @@ class pubadminController extends mkwhelpers\Controller
         $nev = $this->params->getStringRequestParam('nev');
         $email = $this->params->getStringRequestParam('email');
         /** @var JogaBejelentkezes $rv */
-        $rv = $this->getRepo(JogaBejelentkezes::class)->find($id);
+        $rv = $this->getSajatBejelentkezes($id);
         if ($rv) {
             $rv->setPartnernev($nev);
             $rv->setPartneremail($email);
@@ -610,7 +677,8 @@ class pubadminController extends mkwhelpers\Controller
     {
         $id = $this->params->getIntRequestParam('oraid');
         $datum = $this->params->getStringRequestParam('datum');
-        $ora = $this->getRepo(Orarend::class)->find($id);
+        // az óra lemondása levelet küld minden bejelentkezettnek: csak a sajátunkat mondhatjuk le
+        $ora = $this->getSajatOra($id, $datum);
         if ($ora) {
             $helyett = new Orarendhelyettesites();
             $helyett->setOrarend($ora);
