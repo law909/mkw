@@ -193,7 +193,7 @@ class FedexAPI
 
     protected function callAPI($endpoint, $data, $method = 'POST', $retry = true)
     {
-        \mkw\store::writelog('callAPI() starts: ' . $this->apiurl . $endpoint, 'fedex_api.txt');
+        \mkw\store::writelog('callAPI() start: ' . $this->apiurl . $endpoint, 'fedex_api.txt');
 
         $token = $this->getToken();
         if (!$token) {
@@ -223,8 +223,8 @@ class FedexAPI
 
         curl_close($curl);
 
-        \mkw\store::writelog($req, 'fedex_api.txt');
-        \mkw\store::writelog($response, 'fedex_api.txt');
+        \mkw\store::writelog(json_encode($data, JSON_PRETTY_PRINT), 'fedex_api.txt');
+        \mkw\store::writelog(json_encode(json_decode($response), JSON_PRETTY_PRINT), 'fedex_api.txt');
         \mkw\store::writelog('errno: ' . $errno . ' error: ' . $error . ' status: ' . $status, 'fedex_api.txt');
         \mkw\store::writelog($httpcode, 'fedex_api.txt');
 
