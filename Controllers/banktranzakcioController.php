@@ -123,6 +123,10 @@ class banktranzakcioController extends \mkwhelpers\MattableController
      * `csv`: pontosvesszős szövegfájl (ERSTE) – a PhpSpreadsheet CSV-olvasójának elválasztója
      * és idézőjele. `irany`: külön előjeloszlop (T/J), az összeg ilyenkor előjel nélkül jön.
      * `azonosito` hiányában a sor tartalmából képzünk kulcsot – lásd {@see rowAzonosito()}.
+     *
+     * `duplikatumkerdes`: rákérdezünk-e, ha a fájlban már betöltött tétel van. Ott kell, ahol a
+     * banktól nem kapunk tranzakcióazonosítót, tehát az egyezés csak valószínű – ahol a bank ad
+     * azonosítót, ott a duplikátum biztos, azt néma kihagyni a helyes.
      */
     const IMPORTFORMATUMOK = [
         'raiffeisen' => [
@@ -167,6 +171,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             'elsosor' => 2,
             'datum' => 'szoveg',
             'csv' => ['delimiter' => ';', 'enclosure' => '"'],
+            'duplikatumkerdes' => true,
             'oszlop' => [
                 'konyvelesdatum' => 'A',
                 'erteknap' => 'B',
@@ -198,8 +203,9 @@ class banktranzakcioController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A kivonat feltöltése két lépésben: előbb beolvassuk és megnézzük, van-e benne olyan tétel,
-     * ami már bent van, és csak azután mentünk.
+     * A kivonat feltöltése. A `duplikatumkerdes`-es formátumoknál (ERSTE) két lépés: előbb
+     * beolvassuk és megnézzük, van-e a fájlban már betöltött tétel, és csak megerősítés után
+     * mentünk; a többi banknál egy lépés, mint eddig.
      *
      * Az ERSTE kivonatában nincs tranzakcióazonosító, azt a sor tartalmából képezzük
      * ({@see rowAzonosito()}) – egy már beimportált tétel ezért „valószínűleg", nem biztosan
@@ -231,7 +237,10 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         }
 
         $letezok = $this->keresLetezoTetelek($sorok, $formatumkulcs);
-        if ($letezok && !$this->params->getBoolRequestParam('megerosites')) {
+        if ($letezok
+            && !empty($formatum['duplikatumkerdes'])
+            && !$this->params->getBoolRequestParam('megerosites')
+        ) {
             echo json_encode([
                 'duplikaltak' => $this->duplikatumLista($sorok, $letezok),
                 'sordb' => count($sorok),
