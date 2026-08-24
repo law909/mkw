@@ -33,14 +33,23 @@ $(document).ready(
             $('#aredit').trigger('focus');
         });
 
-        $('#keresoedit').select2({
+        const select2opts = {
             theme: 'bootstrap4',
             ajax: {
                 url: '/pubadmin/partnerdata',
                 delay: 500,
             },
             minimumInputLength: 3,
-        });
+        };
+        // A Bootstrap modal magához rántja a fókuszt, a select2 legördülője viszont
+        // alapból a body-ra kerül - a keresőmezőjébe így nem lehet írni. Ezért a
+        // legördülő a modalon belülre megy.
+        const $keresoedit = $('#keresoedit'),
+            $keresomodal = $keresoedit.closest('.modal');
+        if ($keresomodal.length) {
+            select2opts.dropdownParent = $keresomodal;
+        }
+        $keresoedit.select2(select2opts);
         $('#keresoedit').on('select2:select', function() {
             $('#nevedit, #emailedit').val('');
         });
