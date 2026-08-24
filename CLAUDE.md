@@ -144,6 +144,23 @@ Comment sparingly. **If the next few lines of code say it, don't write it** — 
 
 Test: cover the comment — is it still clear from the next 3–4 lines? Then drop it.
 
+## Task lists (`docs/feladatok*.md`)
+
+Work handed over as a task list lives in `docs/feladatok-<YYYYMMDD>.md` — a numbered/bulleted list of
+independent jobs. Three rules when working from one:
+
+- **One task, one commit.** Not a single commit at the end. If two tasks genuinely can't be separated
+  (they edit the same lines), commit them together and say so in the reply.
+- **Mark progress in the file**: prefix each item with `**[kész]**` / `**[folyamatban]**` /
+  `**[nyitott]**` as you go.
+- **Write your notes into the file too**, indented under the item: the real cause of a bug, decisions
+  you made instead, what you left open, what still has to be filled in by hand, and any question that
+  is the user's to answer. The reply scrolls away, the file stays.
+
+A task is done when the code is written, checked, committed, *and* the `.md` is updated — only then
+start the next one. `docs/` is gitignored, so the `.md` never goes into the commit (and must not be
+added with `git add -f`); update it on disk and send it with `SendUserFile`.
+
 ## Things to know that bite
 
 - **Hungarian naming**: don't anglicize entity, column, or route identifiers when editing — match the existing convention (see "Naming" above).
