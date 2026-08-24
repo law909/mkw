@@ -1741,12 +1741,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('belsouzletkotolist', $uk->getSelectList($ukid, $fofilter));
 
             $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
+            // Képzett bizonylatnál a $record még az ELŐD (pl. a megrendelés), a form viszont a
+            // most készülő bizonylaté – a nyomtatási formák ezért mindig a saját típusé, és az
+            // előd formája sincs kiválasztva.
+            $sajatforma = ($record && $oper !== $this->inheritOperation) ? $record->getReportfile() : '';
             $view->setVar(
                 'reportfilelist',
-                $this->getRepo()->getReportfileSelectList(
-                    ($record ? $record->getReportfile() : ''),
-                    ($record ? $record->getBizonylattipusId() : $this->biztipusid)
-                )
+                $this->getRepo()->getReportfileSelectList($sajatforma, $this->biztipusid)
             );
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
 
