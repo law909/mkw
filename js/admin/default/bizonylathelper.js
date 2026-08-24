@@ -363,15 +363,22 @@ let bizonylathelper = function ($) {
     // tételeket megjelöljük, hogy a kezelő a valódi termékre javítsa. A jelölés a pillanatnyi
     // termékválasztást követi, tehát javítás után magától eltűnik.
     // Nem a tetelszamhiba class-t használjuk: azt a checkTetelOsszegek() minden futáskor letörli.
-    function jelolUnasDefaultTetelek() {
-        let defaultTermek = String($('#mattkarb-form').data('unasdefaulttermek') || '');
-        if (defaultTermek === '' || defaultTermek === '0') {
+    // Pirossal jelöli azokat a tételeket, amikre nem a valódi termék került, hanem a helykitöltő:
+    // az UNAS import beazonosíthatatlan cikkszámai, illetve az Oxford importnál az alapértelmezett
+    // termék. Mindkettőt kézzel kell javítani, ezért látszaniuk kell.
+    function jelolDefaultTetelek() {
+        let $form = $('#mattkarb-form'),
+            jelolendo = [String($form.data('unasdefaulttermek') || ''), String($form.data('defaulttermek') || '')]
+                .filter(function (id) {
+                    return id !== '' && id !== '0';
+                });
+        if (!jelolendo.length) {
             return;
         }
         $('.js-termekid').each(function () {
             let $this = $(this);
             $this.closest('[id^="teteltable_"]')
-                .toggleClass('unasdefaulttetel', String($this.val() || '') === defaultTermek);
+                .toggleClass('defaulttermektetel', jelolendo.indexOf(String($this.val() || '')) !== -1);
         });
     }
 
@@ -751,7 +758,7 @@ let bizonylathelper = function ($) {
         if (termek.valtozat) {  // valtozat select kitoltese + valtozat ar betoltese
             $('select[name="tetelvaltozat_' + sorid + '"]').val(termek.valtozat).change();
         }
-        jelolUnasDefaultTetelek();
+        jelolDefaultTetelek();
     }
 
     // Megváltozott-e a fizetési mód vagy a pénzmozgás jelölő a betöltés óta. A kiinduló értéket a
@@ -976,12 +983,14 @@ let bizonylathelper = function ($) {
             $('.js-tetelimportuzenet').text(szoveg).toggleClass('bizonylattetel-importhiba', !!hiba);
         };
 
-        $file.on('change', function () {
-            if (!this.files || !this.files.length) {
-                return;
-            }
+        // A munkalapot választató importoknál (Oxford) ugyanez a fájl megy fel másodszor is, a
+        // választott lap nevével – így nem kell a szerveren félkész feltöltést tárolni.
+        let kuld = function (fajl, extra) {
             let fd = new FormData();
-            fd.append('toimport', this.files[0]);
+            fd.append('toimport', fajl);
+            $.each(extra || {}, function (kulcs, ertek) {
+                fd.append(kulcs, ertek);
+            });
             uzen('', false);
             $.ajax({
                 url: $file.data('url'),
@@ -995,9 +1004,16 @@ let bizonylathelper = function ($) {
                         uzen((res && res.error) ? res.error : 'A fájl feldolgozása nem sikerült.', true);
                         return;
                     }
+                    if (res.sheets) {
+                        lapValaszto(fajl, res.sheets);
+                        return;
+                    }
                     let tetelek = res.tetelek || [],
                         hibak = res.hibak || [];
                     importTetelek(bizonylattipus, tetelek);
+                    if (res.erbizonylatszam) {
+                        $('#ErbizonylatszamEdit').val(res.erbizonylatszam).change();
+                    }
                     uzen(tetelek.length + ' tétel betöltve, ' + hibak.length + ' sor nem azonosítható.', false);
                     if (hibak.length) {
                         // a sorok a feltöltött fájlból jönnek: szövegként, nem html-ként
@@ -1022,6 +1038,41 @@ let bizonylathelper = function ($) {
                     uzen('A fájl feltöltése nem sikerült.', true);
                 }
             });
+        };
+
+        let lapValaszto = function (fajl, sheets) {
+            let $select = $('<select class="js-importsheet"></select>');
+            sheets.forEach(function (nev) {
+                $select.append($('<option></option>').attr('value', nev).text(nev));
+            });
+            let $tartalom = $('<div></div>')
+                .append($('<p></p>').text('Melyik munkalapról töltsük be a tételeket?'))
+                .append($select);
+            dialogcenter.empty().append($tartalom).dialog({
+                title: 'Munkalap választás',
+                resizable: true,
+                width: 400,
+                modal: true,
+                buttons: {
+                    'OK': function () {
+                        let valasztott = $select.val();
+                        $(this).dialog('close');
+                        if (valasztott) {
+                            kuld(fajl, {sheet: valasztott});
+                        }
+                    },
+                    'Mégsem': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        };
+
+        $file.on('change', function () {
+            if (!this.files || !this.files.length) {
+                return;
+            }
+            kuld(this.files[0], {});
         });
         return $file;
     }
@@ -1592,7 +1643,7 @@ let bizonylathelper = function ($) {
                         }
                     })
                     .on('change', '.js-termekid', function () {
-                        jelolUnasDefaultTetelek();
+                        jelolDefaultTetelek();
                     })
                     .on('change', '.js-vtszselect', function (e) {
                         e.preventDefault();
@@ -1726,14 +1777,18 @@ let bizonylathelper = function ($) {
                     .on('click', '.js-fcmotoimportbutton', function (e) {
                         e.preventDefault();
                         tetelImportFile(initTetelImport(bizonylattipus, dialogcenter), '/admin/bizonylattetel/importfcmoto', '.csv,.txt');
+                    })
+                    .on('click', '.js-oxfordimportbutton', function (e) {
+                        e.preventDefault();
+                        tetelImportFile(initTetelImport(bizonylattipus, dialogcenter), '/admin/bizonylattetel/importoxford', '.xlsx,.xls');
                     });
 
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocompleteRenderer(termekAutocompleteRenderer);
-                jelolUnasDefaultTetelek();
+                jelolDefaultTetelek();
 
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email,' +
-                    '.js-tetelimportbutton,.js-fcmotoimportbutton').button();
+                    '.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton').button();
 
                 $('.js-inheritbizonylat').each(function () {
                     let $this = $(this);

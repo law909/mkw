@@ -11,6 +11,7 @@
           data-funnypartnermessage="{$maintheme=='superzoneb2b'}" data-tarsbiztipus="{$tarsbiztipus}"
           data-tulajaam="{if ($tulajalanyiafamentes)}1{else}0{/if}" data-magyarorszagid="{$magyarorszagid}"
           data-unasdefaulttermek="{$unasdefaulttermek|default}"
+          data-defaulttermek="{$defaulttermek|default}"
           data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}"
           data-eredetifizmod="{$egyed.fizmod}" data-eredetipenztmozgat="{if ($egyed.penztmozgat)}1{else}0{/if}"
           data-readonly="{if ($readonly|default)}1{else}0{/if}">
@@ -455,6 +456,9 @@
                             <a class="js-tetelimportbutton js-karbmodosito" href="#">{at('Tételek betöltése xlsx-ből')}</a>
                             {if ($maintheme === 'superzoneb2b')}
                                 <a class="js-fcmotoimportbutton js-karbmodosito" href="#">{at('FC-Moto rendelés')}</a>
+                            {/if}
+                            {if ($maintheme === 'galad')}
+                                <a class="js-oxfordimportbutton js-karbmodosito" href="#">{at('Oxford')}</a>
                             {/if}
                             <span class="js-tetelimportuzenet"></span>
                         </div>

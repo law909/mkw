@@ -405,7 +405,7 @@ select.tetelszamhiba,
    témák arra háttérKÉPET is tesznek (pl. a sunny egy világos gradienst), ami kifestené a színt –
    a shorthand a képet is nullázza.
    Külön class, mert a checkTetelOsszegek() a tetelszamhiba-t minden futásnál letörli. */
-.unasdefaulttetel {
+.defaulttermektetel {
     background: #ffd5d5;
     border: 1px solid red;
 }

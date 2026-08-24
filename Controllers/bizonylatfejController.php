@@ -1786,6 +1786,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     ? \mkw\store::getParameter(\mkw\consts::UnasDefaultTermek, '')
                     : ''
             );
+            // ugyanez az Oxford importnál: a fel nem ismert cikkszámok az alapértelmezett termékre
+            // kerülnek, azokat is jelöli a bizonylathelper.js
+            $view->setVar('defaulttermek', \mkw\store::getParameter(\mkw\consts::DefaultTermek, ''));
 
             if (method_exists($this, 'onGetKarb')) {
                 $egyed = $this->onGetKarb($view, $record, $egyed, $oper, $id, $stornotip);

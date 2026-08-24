@@ -372,6 +372,97 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         return $nevek + $hianyzo + ['fejleces' => true];
     }
 
+    /** Az Oxford (GALAD) számla-munkafüzet oszlopai. A fejlécsor az A oszlopban „Code". */
+    private const OXFORD_OSZLOPOK = ['cikkszam' => 'A', 'nev' => 'B', 'mennyiseg' => 'H'];
+
+    /**
+     * Oxford számla xlsx tételei. A munkafüzet számlánként egy munkalapot tartalmaz, a lap neve
+     * a szállító számlaszáma – ezért két lépés: elsőre a lapok nevét adjuk vissza, a választott
+     * lappal újraküldve pedig a tételeket.
+     *
+     * Sorból akkor lesz tétel, ha az első oszlop (cikkszám) nem üres – a számla eleji fuvar- és
+     * jogi szövegek így maradnak ki. A cikkszám a termék vagy a változat cikkszáma; ha nincs meg,
+     * a beállított alapértelmezett termék kerül a tételre, a nevébe a cikkszámmal és a lapon
+     * szereplő megnevezéssel, és a kliens pirossal jelöli.
+     */
+    public function importOxford()
+    {
+        $file = $this->getUploadedFile();
+        if (!$file) {
+            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
+            return;
+        }
+
+        try {
+            $reader = IOFactory::createReader(IOFactory::identify($file));
+            $reader->setReadDataOnly(true);
+            $excel = $reader->load($file);
+        } catch (\Exception $e) {
+            \unlink($file);
+            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható táblázatként.')]);
+            return;
+        }
+        \unlink($file);
+
+        $sheetnev = trim($this->params->getStringRequestParam('sheet'));
+        if ($sheetnev === '') {
+            $sheets = $excel->getSheetNames();
+            $excel->disconnectWorksheets();
+            echo json_encode(['ok' => true, 'sheets' => $sheets]);
+            return;
+        }
+
+        $sheet = $excel->getSheetByName($sheetnev);
+        if (!$sheet) {
+            $excel->disconnectWorksheets();
+            echo json_encode(['ok' => false, 'error' => sprintf(t('Nincs "%s" nevű munkalap a fájlban.'), $sheetnev)]);
+            return;
+        }
+
+        $oszlop = self::OXFORD_OSZLOPOK;
+        $alaptermek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::DefaultTermek));
+
+        $tetelek = [];
+        $hibak = [];
+        $maxrow = (int)$sheet->getHighestRow();
+        for ($row = 1; $row <= $maxrow; ++$row) {
+            $cikkszam = trim((string)$sheet->getCell($oszlop['cikkszam'] . $row)->getValue());
+            if (($cikkszam === '') || (strcasecmp($cikkszam, 'Code') === 0)) {
+                continue;
+            }
+            $nev = trim((string)$sheet->getCell($oszlop['nev'] . $row)->getValue());
+            $mennyiseg = (float)$sheet->getCell($oszlop['mennyiseg'] . $row)->getValue();
+
+            $talalat = $this->findTermek(0, 0, $cikkszam, '');
+            if ($talalat) {
+                $tetelek[] = $this->tetelAdat($talalat, $mennyiseg);
+                continue;
+            }
+            if (!$alaptermek) {
+                $hibak[] = sprintf(
+                    t('%d. sor: nincs ilyen cikkszámú termék (%s), és nincs beállítva alapértelmezett termék sem.'),
+                    $row,
+                    $cikkszam
+                );
+                continue;
+            }
+            $adat = $this->tetelAdat([$alaptermek, null], $mennyiseg);
+            // a fel nem ismert cikkszám és a szállító megnevezése a tétel nevébe
+            $adat['value'] = trim($cikkszam . ' ' . $nev);
+            $tetelek[] = $adat;
+            $hibak[] = sprintf(t('%d. sor: nincs ilyen cikkszámú termék (%s), az alapértelmezett termék került rá.'), $row, $cikkszam);
+        }
+        $excel->disconnectWorksheets();
+
+        echo json_encode([
+            'ok' => true,
+            'tetelek' => $tetelek,
+            'hibak' => $hibak,
+            // a lap neve a szállító számlaszáma
+            'erbizonylatszam' => $sheetnev,
+        ]);
+    }
+
     /**
      * A feltöltött fájl a storage-ba mentve, vagy null. A hívó törli.
      *
