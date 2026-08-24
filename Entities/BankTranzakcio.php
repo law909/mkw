@@ -83,6 +83,17 @@ class BankTranzakcio
         return $this->id;
     }
 
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /** Mikor került be az importálással – a duplikátum-figyelmeztetés ezt mutatja. */
+    public function getCreatedStr()
+    {
+        return $this->created ? $this->created->format(\mkw\store::$DateTimeFormat) : '';
+    }
+
     /**
      * @return mixed
      */

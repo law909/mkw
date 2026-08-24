@@ -197,6 +197,15 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    /**
+     * A kivonat feltöltése két lépésben: előbb beolvassuk és megnézzük, van-e benne olyan tétel,
+     * ami már bent van, és csak azután mentünk.
+     *
+     * Az ERSTE kivonatában nincs tranzakcióazonosító, azt a sor tartalmából képezzük
+     * ({@see rowAzonosito()}) – egy már beimportált tétel ezért „valószínűleg", nem biztosan
+     * ugyanaz. A már meglévő tételeket a mentés amúgy is kihagyja, a kérdés arra való, hogy a
+     * rossz (pl. már feldolgozott időszakról szóló) fájlt idejében észre lehessen venni.
+     */
     public function upload()
     {
         $formatumkulcs = $this->params->getStringRequestParam('formatum', 'raiffeisen');
@@ -205,7 +214,6 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             return;
         }
         $formatum = self::IMPORTFORMATUMOK[$formatumkulcs];
-        $oszlop = $formatum['oszlop'];
         \mkw\store::setParameter(\mkw\consts::LastBankiFormatum, $formatumkulcs);
         $negativis = $this->params->getBoolRequestParam('negativis', false);
 
@@ -215,76 +223,182 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             return;
         }
 
+        $sorok = $this->readSorok($filenev, $formatum, $negativis);
+        \unlink($filenev);
+        if (!$sorok) {
+            echo json_encode(['msg' => t('A fájlban nincs betölthető tétel.')]);
+            return;
+        }
+
+        $letezok = $this->keresLetezoTetelek($sorok, $formatumkulcs);
+        if ($letezok && !$this->params->getBoolRequestParam('megerosites')) {
+            echo json_encode([
+                'duplikaltak' => $this->duplikatumLista($sorok, $letezok),
+                'sordb' => count($sorok),
+            ]);
+            return;
+        }
+
+        $ujdb = $this->importSorok($sorok, $formatumkulcs, $letezok);
+        echo json_encode([
+            'msg' => sprintf(
+                t('%d tétel a fájlban, ebből %d új; %d már be volt töltve.'),
+                count($sorok),
+                $ujdb,
+                count($letezok)
+            ),
+        ]);
+    }
+
+    /**
+     * A kivonat sorai feldolgozott alakban – mentés nélkül. Az összeg előjelét a külön
+     * iránynál (ERSTE) a T/J oszlop adja, a dátumhiányos sorok (fejléc, összesítő) kimaradnak.
+     *
+     * @return array[]
+     */
+    private function readSorok($filenev, array $formatum, $negativis): array
+    {
+        $oszlop = $formatum['oszlop'];
         $reader = $this->createReader($filenev, $formatum);
         $reader->setReadDataOnly(true);
         $excel = $reader->load($filenev);
         $sheet = $excel->getActiveSheet();
         $maxrow = (int)$sheet->getHighestRow();
 
-        $repo = $this->getRepo();
-        $partnerrepo = $this->getRepo(Partner::class);
+        $sorok = [];
         $azonszamlalo = [];
-
         for ($row = $formatum['elsosor']; $row <= $maxrow; ++$row) {
             $osszeg = $this->importOsszeg($sheet->getCell($oszlop['osszeg'] . $row)->getValue());
             if ($osszeg && isset($oszlop['irany'])) {
                 $irany = strtoupper(trim((string)$sheet->getCell($oszlop['irany'] . $row)->getValue()));
                 $osszeg = ($irany === 'T') ? -abs($osszeg) : abs($osszeg);
             }
-            if ($osszeg && ($osszeg > 0 || $negativis)) {
-                $azon = isset($oszlop['azonosito'])
-                    ? trim((string)$sheet->getCell($oszlop['azonosito'] . $row)->getValue())
-                    : $this->rowAzonosito($sheet, $oszlop, $row, $osszeg, $azonszamlalo);
-                // az azonosító csak bankon belül egyedi (az OTP pl. rövid sorszámot ad),
-                // ezért a duplikátumszűrés a bankot is nézi
-                if ($azon && !$repo->findOneBy(['azonosito' => $azon, 'bank' => $formatumkulcs])) {
-                    $konyvelesdatum = $this->importDatum(
-                        $sheet->getCell($oszlop['konyvelesdatum'] . $row)->getValue(),
-                        $formatum['datum']
-                    );
-                    $erteknap = $this->importDatum(
-                        $sheet->getCell($oszlop['erteknap'] . $row)->getValue(),
-                        $formatum['datum']
-                    );
-                    if (!$konyvelesdatum && !$erteknap) {
-                        // fejléc- vagy összesítő sor a dátumoszlopban – nem tranzakció
-                        continue;
-                    }
-                    // a bank néha csak az egyik dátumot adja meg (pl. függő kártyás tételnél
-                    // nincs még értéknap) – ilyenkor a másikkal pótoljuk
-                    $konyvelesdatum = $konyvelesdatum ? $konyvelesdatum : clone $erteknap;
-                    $erteknap = $erteknap ? $erteknap : clone $konyvelesdatum;
-
-                    $o = new BankTranzakcio();
-                    $o->setAzonosito($azon);
-                    $o->setBank($formatumkulcs);
-                    $o->setOsszeg($osszeg);
-
-                    $o->setKozlemeny1((string)$sheet->getCell($oszlop['kozlemeny1'] . $row)->getValue());
-                    $o->setKozlemeny2((string)$sheet->getCell($oszlop['kozlemeny2'] . $row)->getValue());
-                    $o->setKozlemeny3((string)$sheet->getCell($oszlop['kozlemeny3'] . $row)->getValue());
-
-                    $o->setKonyvelesdatum($konyvelesdatum);
-                    $o->setErteknap($erteknap);
-
-                    $szamlaszam = trim((string)$sheet->getCell($oszlop['szamlaszam'] . $row)->getValue());
-                    $partner = $szamlaszam ? $partnerrepo->findOneBy(['iban' => $szamlaszam]) : null;
-                    if ($partner) {
-                        $o->setPartner($partner);
-                    }
-
-                    $bizszamarr = $this->keresBizonylatszamok($o);
-                    if ($bizszamarr) {
-                        $o->setBizonylatszamok(implode(';', $bizszamarr));
-                    }
-
-                    $this->getEm()->persist($o);
-                    $this->getEm()->flush();
-                }
+            if (!$osszeg || (($osszeg < 0) && !$negativis)) {
+                continue;
             }
+            $azon = isset($oszlop['azonosito'])
+                ? trim((string)$sheet->getCell($oszlop['azonosito'] . $row)->getValue())
+                : $this->rowAzonosito($sheet, $oszlop, $row, $osszeg, $azonszamlalo);
+            if (!$azon) {
+                continue;
+            }
+            $konyvelesdatum = $this->importDatum(
+                $sheet->getCell($oszlop['konyvelesdatum'] . $row)->getValue(),
+                $formatum['datum']
+            );
+            $erteknap = $this->importDatum(
+                $sheet->getCell($oszlop['erteknap'] . $row)->getValue(),
+                $formatum['datum']
+            );
+            if (!$konyvelesdatum && !$erteknap) {
+                // fejléc- vagy összesítő sor a dátumoszlopban – nem tranzakció
+                continue;
+            }
+            // a bank néha csak az egyik dátumot adja meg (pl. függő kártyás tételnél
+            // nincs még értéknap) – ilyenkor a másikkal pótoljuk
+            $konyvelesdatum = $konyvelesdatum ? $konyvelesdatum : clone $erteknap;
+            $erteknap = $erteknap ? $erteknap : clone $konyvelesdatum;
+
+            $sorok[] = [
+                'azonosito' => $azon,
+                'osszeg' => $osszeg,
+                'konyvelesdatum' => $konyvelesdatum,
+                'erteknap' => $erteknap,
+                'kozlemeny1' => (string)$sheet->getCell($oszlop['kozlemeny1'] . $row)->getValue(),
+                'kozlemeny2' => (string)$sheet->getCell($oszlop['kozlemeny2'] . $row)->getValue(),
+                'kozlemeny3' => (string)$sheet->getCell($oszlop['kozlemeny3'] . $row)->getValue(),
+                'szamlaszam' => trim((string)$sheet->getCell($oszlop['szamlaszam'] . $row)->getValue()),
+            ];
         }
         $excel->disconnectWorksheets();
-        \unlink($filenev);
+        return $sorok;
+    }
+
+    /**
+     * A fájl azon sorai, amikhez már van tranzakciónk. Az azonosító csak bankon belül egyedi
+     * (az OTP pl. rövid sorszámot ad), ezért a keresés a bankot is nézi.
+     *
+     * @return array<string,BankTranzakcio> azonosító => a meglévő tranzakció
+     */
+    private function keresLetezoTetelek(array $sorok, $bank): array
+    {
+        $repo = $this->getRepo();
+        $letezok = [];
+        foreach ($sorok as $sor) {
+            $letezo = $repo->findOneBy(['azonosito' => $sor['azonosito'], 'bank' => $bank]);
+            if ($letezo) {
+                $letezok[$sor['azonosito']] = $letezo;
+            }
+        }
+        return $letezok;
+    }
+
+    /**
+     * A figyelmeztető ablak sorai: mi van a fájlban, és a párja mikor került be.
+     *
+     * @param array<string,BankTranzakcio> $letezok
+     */
+    private function duplikatumLista(array $sorok, array $letezok): array
+    {
+        $lista = [];
+        foreach ($sorok as $sor) {
+            $letezo = $letezok[$sor['azonosito']] ?? null;
+            if (!$letezo) {
+                continue;
+            }
+            $lista[] = [
+                'datum' => $sor['konyvelesdatum']->format(\mkw\store::$DateFormat),
+                'osszeg' => number_format($sor['osszeg'], 0, ',', ' '),
+                'partnernev' => $sor['kozlemeny2'],
+                'kozlemeny' => $sor['kozlemeny3'],
+                'importalva' => $letezo->getCreatedStr(),
+                'bizonylatszamok' => (string)$letezo->getBizonylatszamok(),
+            ];
+        }
+        return $lista;
+    }
+
+    /**
+     * A még nem szereplő sorok mentése. A már meglévőket megerősítés után sem töltjük be újra:
+     * a megerősítés arra szól, hogy a fájl többi tétele mehet.
+     *
+     * @param array<string,BankTranzakcio> $letezok
+     *
+     * @return int a létrejött tételek száma
+     */
+    private function importSorok(array $sorok, $bank, array $letezok): int
+    {
+        $partnerrepo = $this->getRepo(Partner::class);
+        $ujdb = 0;
+        foreach ($sorok as $sor) {
+            if (isset($letezok[$sor['azonosito']])) {
+                continue;
+            }
+            $o = new BankTranzakcio();
+            $o->setAzonosito($sor['azonosito']);
+            $o->setBank($bank);
+            $o->setOsszeg($sor['osszeg']);
+            $o->setKozlemeny1($sor['kozlemeny1']);
+            $o->setKozlemeny2($sor['kozlemeny2']);
+            $o->setKozlemeny3($sor['kozlemeny3']);
+            $o->setKonyvelesdatum($sor['konyvelesdatum']);
+            $o->setErteknap($sor['erteknap']);
+
+            $partner = $sor['szamlaszam'] ? $partnerrepo->findOneBy(['iban' => $sor['szamlaszam']]) : null;
+            if ($partner) {
+                $o->setPartner($partner);
+            }
+
+            $bizszamarr = $this->keresBizonylatszamok($o);
+            if ($bizszamarr) {
+                $o->setBizonylatszamok(implode(';', $bizszamarr));
+            }
+
+            $this->getEm()->persist($o);
+            $this->getEm()->flush();
+            $ujdb++;
+        }
+        return $ujdb;
     }
 
     /**
