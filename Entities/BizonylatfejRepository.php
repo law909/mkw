@@ -22,36 +22,28 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         ]);
     }
 
+    /**
+     * A bizonylat "Nyomtatási forma" legördülője: a `biz_<biztipus>*` sablonok a téma és az
+     * alapértelmezett admin sablonkönyvtárból.
+     *
+     * Lapozott PDF-nél (`setup.pagedpdf`) a `biz_paged_<biztipus>*` változatok is választhatók –
+     * azok az előtag miatt egyébként kimaradnának. Kapcsoló nélkül szándékosan nem kínáljuk fel
+     * őket: a lapozott sablon mPDF-specifikus, a régi úton nem renderelhető.
+     */
     public function getReportfileSelectList($sel, $biztip)
     {
-        $elo = 'biz_' . $biztip;
-        $files = dir(\mkw\store::getAdminDefaultTemplatePath());
+        $elotagok = ['biz_' . $biztip];
+        if (\mkw\store::isPagedPdf()) {
+            $elotagok[] = 'biz_paged_' . $biztip;
+        }
+
         $list = [];
-        while (false !== ($entry = $files->read())) {
-            if (($entry != '.') && ($entry != '..')) {
-                $path_parts = pathinfo($entry);
-                $xx = substr($path_parts['basename'], 0, strlen($elo));
-                if ($path_parts['extension']
-                    && ($path_parts['extension'] == 'tpl')
-                    && ($xx == $elo)
-                ) {
-                    $list[$entry] = $entry;
-                }
+        foreach ([\mkw\store::getAdminDefaultTemplatePath(), \mkw\store::getAdminTemplatePath()] as $path) {
+            foreach ($this->readTemplateNames($path, $elotagok) as $entry) {
+                $list[$entry] = $entry;
             }
         }
-        $files = dir(\mkw\store::getAdminTemplatePath());
-        while (false !== ($entry = $files->read())) {
-            if (($entry != '.') && ($entry != '..')) {
-                $path_parts = pathinfo($entry);
-                $xx = substr($path_parts['basename'], 0, strlen($elo));
-                if ($path_parts['extension']
-                    && ($path_parts['extension'] == 'tpl')
-                    && ($xx == $elo)
-                ) {
-                    $list[$entry] = $entry;
-                }
-            }
-        }
+
         $ret = [];
         foreach ($list as $l) {
             $ret[] = [
@@ -60,6 +52,39 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 'selected' => ($l === $sel)
             ];
         }
+        return $ret;
+    }
+
+    /**
+     * Egy sablonkönyvtár .tpl fájljai, amelyek a megadott előtagok valamelyikével kezdődnek.
+     *
+     * @param string[] $elotagok
+     *
+     * @return string[]
+     */
+    private function readTemplateNames($path, array $elotagok): array
+    {
+        $files = @dir($path);
+        if (!$files) {
+            return [];
+        }
+        $ret = [];
+        while (false !== ($entry = $files->read())) {
+            if (($entry === '.') || ($entry === '..')) {
+                continue;
+            }
+            $path_parts = pathinfo($entry);
+            if (($path_parts['extension'] ?? '') !== 'tpl') {
+                continue;
+            }
+            foreach ($elotagok as $elotag) {
+                if (strpos($path_parts['basename'], $elotag) === 0) {
+                    $ret[] = $entry;
+                    break;
+                }
+            }
+        }
+        $files->close();
         return $ret;
     }
 
