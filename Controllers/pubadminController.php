@@ -175,7 +175,7 @@ class pubadminController extends mkwhelpers\Controller
         $view = $this->createPubAdminView('idopontlist.tpl');
         $idopontlista = [];
 
-        $dolgozo = $this->getRepo(Dolgozo::class)->find(\mkw\store::getPubAdminSession()->pk);
+        $dolgozo = $this->getBejelentkezettTanar();
         $datum = $this->datumParam();
         if ($dolgozo && $datum) {
             $filter = new \mkwhelpers\FilterDescriptor();
@@ -205,11 +205,12 @@ class pubadminController extends mkwhelpers\Controller
         $view = $this->createPubAdminView('idopontfoglalaslist.tpl');
         $foglalaslista = [];
 
-        $idopontid = $this->params->getIntRequestParam('idopontid');
+        // az időpont azonosítója a kérésből jön: csak a saját időpontunk foglalói láthatók
+        $idopont = $this->getSajatIdopont($this->params->getIntRequestParam('idopontid'));
         $datum = $this->datumParam();
-        if ($idopontid && $datum) {
+        if ($idopont && $datum) {
             $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter('idopont', '=', $idopontid);
+            $filter->addFilter('idopont', '=', $idopont);
             $filter->addFilter('datum', '=', $datum->format(\mkw\store::$SQLDateFormat));
             /** @var Idopontfoglalas $foglalas */
             foreach ($this->getRepo(Idopontfoglalas::class)->getAll($filter, ['id' => 'ASC']) as $foglalas) {
@@ -229,16 +230,46 @@ class pubadminController extends mkwhelpers\Controller
         $view->printTemplateResult();
     }
 
-    /** A megérkezés jelölése egy időpont-foglaláson. */
+    /**
+     * A megérkezés jelölése egy időpont-foglaláson. Csak a saját időpontunk foglalásán – a
+     * jelölés a tanárelszámolásra is kihat.
+     */
     public function setIdopontfoglalasMegjelent()
     {
         /** @var Idopontfoglalas $foglalas */
         $foglalas = $this->getRepo(Idopontfoglalas::class)->find($this->params->getIntRequestParam('id'));
-        if ($foglalas) {
+        if ($foglalas && $this->getSajatIdopont($foglalas->getIdopontId())) {
             $foglalas->setMegjelent(!$foglalas->isMegjelent());
             $this->getEm()->persist($foglalas);
             $this->getEm()->flush();
         }
+    }
+
+    /** @return Dolgozo|null */
+    private function getBejelentkezettTanar()
+    {
+        $pk = \mkw\store::getPubAdminSession()->pk;
+        return $pk ? $this->getRepo(Dolgozo::class)->find($pk) : null;
+    }
+
+    /**
+     * A kérésben kapott időpont, DE csak akkor, ha a bejelentkezett tanáré. Az azonosító a
+     * böngészőből jön, más tanár időpontjának foglalói pedig se nem láthatók, se nem jelölhetők.
+     *
+     * @return Idopont|null
+     */
+    private function getSajatIdopont($idopontid)
+    {
+        $dolgozo = $this->getBejelentkezettTanar();
+        if (!$dolgozo || !$idopontid) {
+            return null;
+        }
+        /** @var Idopont|null $idopont */
+        $idopont = $this->getRepo(Idopont::class)->find($idopontid);
+        if (!$idopont || ((int)$idopont->getDolgozoId() !== (int)$dolgozo->getId())) {
+            return null;
+        }
+        return $idopont;
     }
 
     /** @return \DateTime|null */
