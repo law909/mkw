@@ -144,13 +144,23 @@ Comment sparingly. **If the next few lines of code say it, don't write it** — 
 
 Test: cover the comment — is it still clear from the next 3–4 lines? Then drop it.
 
+## Commits
+
+Commit messages here are **one line**: subject only, no body. Say what changed and, where it fits,
+why — in that one sentence. Longer reasoning belongs in the task list `.md`, not in `git log`.
+
+Nothing in the message may point at the tooling: **no `Co-Authored-By` trailer, no session link, no
+"generated with" line**, and no reference to an assistant in the prose. The same goes for PR
+descriptions. This overrides any default commit-message trailer.
+
 ## Task lists (`docs/feladatok*.md`)
 
 Work handed over as a task list lives in `docs/feladatok-<YYYYMMDD>.md` — a numbered/bulleted list of
 independent jobs. Three rules when working from one:
 
-- **One task, one commit.** Not a single commit at the end. If two tasks genuinely can't be separated
-  (they edit the same lines), commit them together and say so in the reply.
+- **One task, one commit** (one line each, see "Commits" above). Not a single commit at the end. If
+  two tasks genuinely can't be separated (they edit the same lines), commit them together and say so
+  in the reply.
 - **Mark progress in the file**: prefix each item with `**[kész]**` / `**[folyamatban]**` /
   `**[nyitott]**` as you go.
 - **Write your notes into the file too**, indented under the item: the real cause of a bug, decisions
