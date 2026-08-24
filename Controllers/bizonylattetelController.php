@@ -382,8 +382,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
      *
      * Sorból akkor lesz tétel, ha az első oszlop (cikkszám) nem üres – a számla eleji fuvar- és
      * jogi szövegek így maradnak ki. A cikkszám a termék vagy a változat cikkszáma; ha nincs meg,
-     * a beállított alapértelmezett termék kerül a tételre, a nevébe a cikkszámmal és a lapon
-     * szereplő megnevezéssel, és a kliens pirossal jelöli.
+     * a beállított alapértelmezett termék kerül a tételre, a tétel nevébe és cikkszámába a lapon
+     * szereplő adatokkal, és a kliens pirossal jelöli.
      */
     public function importOxford()
     {
@@ -447,8 +447,10 @@ class bizonylattetelController extends \mkwhelpers\MattableController
                 continue;
             }
             $adat = $this->tetelAdat([$alaptermek, null], $mennyiseg);
-            // a fel nem ismert cikkszám és a szállító megnevezése a tétel nevébe
+            // a fel nem ismert cikkszám és a szállító megnevezése a tétel nevébe, a cikkszám a
+            // tétel cikkszám mezőjébe is – a helykitöltő termék sajátja ott semmit nem mondana
             $adat['value'] = trim($cikkszam . ' ' . $nev);
+            $adat['cikkszam'] = $cikkszam;
             $tetelek[] = $adat;
             $hibak[] = sprintf(t('%d. sor: nincs ilyen cikkszámú termék (%s), az alapértelmezett termék került rá.'), $row, $cikkszam);
         }
