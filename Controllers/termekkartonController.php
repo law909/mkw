@@ -10,25 +10,31 @@ use mkwhelpers\FilterDescriptor;
 class termekkartonController extends \mkwhelpers\Controller
 {
 
+    /**
+     * A karton önállóan is meghívható: `id` nélkül a terméket a képernyőn kell kiválasztani
+     * (autocomplete + változat), vagy egy bizonylattételen szereplő egyedi azonosítóból
+     * megkerestetni ({@see egyediAzonositoKereses()}).
+     */
     public function view()
     {
         $termekid = $this->params->getIntRequestParam('id');
-        /** @var \Entities\Termek $termek */
-        $termek = $this->getRepo(Termek::class)->find($termekid);
+        /** @var \Entities\Termek|null $termek */
+        $termek = $termekid ? $this->getRepo(Termek::class)->find($termekid) : null;
 
         $view = $this->createView('termekkarton.tpl');
 
         $view->setVar('pagetitle', t('Termék karton'));
         $view->setVar('datumtipus', 'teljesites');
-        $view->setVar('termekid', $termekid);
-        $view->setVar('termeknev', $termek->getNev());
-        $view->setVar('cikkszam', $termek->getCikkszam());
-        $view->setVar('keszletetmozgat', $termek->getMozgat());
-        $view->setVar('kellegyediazonosito', $termek->getKellegyediazonosito());
-        if ($termek) {
-            $tc = new termekController();
-            $view->setVar('valtozatlista', $tc->getValtozatList($termekid, null));
-        }
+        // termékválasztó akkor kell, ha nem konkrét termékre nyitották meg
+        $view->setVar('termekvalaszto', !$termek);
+        $view->setVar('termekid', $termek ? $termek->getId() : 0);
+        $view->setVar('termeknev', $termek ? $termek->getNev() : '');
+        $view->setVar('cikkszam', $termek ? $termek->getCikkszam() : '');
+        $view->setVar('keszletetmozgat', $termek ? $termek->getMozgat() : true);
+        // választós módban mindig látszik: a kiválasztott termék még lehet egyedi azonosítós
+        $view->setVar('kellegyediazonosito', $termek ? $termek->getKellegyediazonosito() : true);
+        $tc = new termekController();
+        $view->setVar('valtozatlista', $termek ? $tc->getValtozatList($termekid, null) : []);
         $rc = new raktarController();
         $view->setVar('raktarlista', $rc->getSelectList());
         $partner = new partnerController();
@@ -135,6 +141,47 @@ class termekkartonController extends \mkwhelpers\Controller
         $view->setVar('nyito', $nyito['mennyiseg']);
         $view->setVar('kartontetelek', $kartontetelek);
         $view->printTemplateResult();
+    }
+
+    /**
+     * Egy termék változatai a termékválasztó után – a bizonylattétel változatlistájával azonos
+     * tartalom, csak json-ban, mert itt egy sima select-et kell újratölteni.
+     */
+    public function valtozatLista()
+    {
+        $tc = new termekController();
+        echo json_encode($tc->getValtozatList($this->params->getIntRequestParam('termekid'), null));
+    }
+
+    /**
+     * Termék és változat megkeresése egy bizonylattételen szereplő egyedi azonosítóból. Ugyanaz
+     * az azonosító több tételen is szerepelhet (bevét, majd eladás), de ugyanarra a termékre –
+     * ezért az elsőt vesszük.
+     */
+    public function egyediAzonositoKereses()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $azonosito = trim($this->params->getStringRequestParam('egyediazonosito'));
+        if ($azonosito === '') {
+            echo json_encode(['ok' => false, 'error' => t('Adja meg az egyedi azonosítót.')]);
+            return;
+        }
+        /** @var \Entities\Bizonylattetel|null $tetel */
+        $tetel = $this->getRepo(Bizonylattetel::class)->findOneBy(['termekegyediazonosito' => $azonosito]);
+        $termek = $tetel?->getTermek();
+        if (!$termek) {
+            echo json_encode(['ok' => false, 'error' => sprintf(t('Nincs "%s" egyedi azonosítójú bizonylattétel.'), $azonosito)]);
+            return;
+        }
+        $tc = new termekController();
+        echo json_encode([
+            'ok' => true,
+            'termekid' => $termek->getId(),
+            'termeknev' => $termek->getNev(),
+            'cikkszam' => $termek->getCikkszam(),
+            'valtozatid' => $tetel->getTermekvaltozatId(),
+            'valtozatlista' => $tc->getValtozatList($termek->getId(), $tetel->getTermekvaltozatId()),
+        ]);
     }
 
     public function egyediAzonositoLista()

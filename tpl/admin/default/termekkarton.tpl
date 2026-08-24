@@ -10,10 +10,25 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}">
-            <h3>{at('Termék karton')} - {$cikkszam} {$termeknev}</h3>
+            <h3>{at('Termék karton')}<span class="js-termekfejlec"> - {$cikkszam} {$termeknev}</span></h3>
         </div>
         <form id="mattkarb-form" action="" method="post">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
+                {if ($termekvalaszto)}
+                    <div>
+                        <label for="TermekEdit">{at('Termék')}:</label>
+                        <input id="TermekEdit" class="js-termekselect" type="text" size="60" autocomplete="off">
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <label for="EgyediazonositoKeresoEdit">{at('Egyedi azonosító alapján')}:</label>
+                        <input id="EgyediazonositoKeresoEdit" class="js-egyediazonositokereso" type="text" size="30"
+                               autocomplete="off">
+                        <a href="#" class="js-egyediazonositokeres">{at('Keres')}</a>
+                        <span class="js-egyediazonositouzenet"></span>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                {/if}
                 <div>
                     <label for="ValtozatEdit">{at('Változat')}:</label>
                     <select id="ValtozatEdit" name="valtozat">

@@ -1583,6 +1583,13 @@ $router->map('GET', '/admin/keresoszolista/get', 'keresoszolistaController#creat
 $router->map('GET', '/admin/termekkarton/view', 'termekkartonController#view', 'admintermekkartonview');
 $router->map('GET', '/admin/termekkarton/refresh', 'termekkartonController#refresh', 'admintermekkartonrefresh');
 $router->map('GET', '/admin/termekkarton/egyediazonositolista', 'termekkartonController#egyediAzonositoLista', 'admintermekkartonegyediazonositolista');
+$router->map('GET', '/admin/termekkarton/valtozatlista', 'termekkartonController#valtozatLista', 'admintermekkartonvaltozatlista');
+$router->map(
+    'GET',
+    '/admin/termekkarton/egyediazonositokereses',
+    'termekkartonController#egyediAzonositoKereses',
+    'admintermekkartonegyediazonositokereses'
+);
 
 $router->map('GET', '/admin/termekforgalmilista/view', 'termekforgalmilistaController#view', 'admintermekforgalmilistaview');
 $router->map('GET', '/admin/termekforgalmilista/refresh', 'termekforgalmilistaController#refresh', 'admintermekforgalmilistarefresh');
