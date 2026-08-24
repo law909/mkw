@@ -1587,6 +1587,17 @@ if ($DBVersion < '0130') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0130');
 }
 
+if ($DBVersion < '0131') {
+    // GS1 vonalkód import – a "GS1 export" csoportos művelet párja. Csak ott kell, ahol a GS1
+    // export is használatban van (mugenrace), ezért alapból nem látszik.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "GS1 vonalkód import", "/admin/termek/gs1importview", "/admin/termek", 40, 0, 560, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/termek/gs1importview") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0131');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

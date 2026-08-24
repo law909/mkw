@@ -24,6 +24,11 @@
                     <td><label for="ArukeresoidEdit">{at('Árukereső id')}:</label></td>
                     <td><input id="ArukeresoidEdit" name="arukeresoid" type="text" value="{$egyed.arukeresoid}"></td>
                 </tr>
+                <tr>
+                    <td><label for="GpcEdit">{at('GS1 termékbesorolás (GPC)')}:</label></td>
+                    <td><input id="GpcEdit" name="gpc" type="text" maxlength="20" value="{$egyed.gpc}"
+                               title="{at('Ha üres, a fölérendelt kategória besorolása érvényes.')}"></td>
+                </tr>
                 </tbody>
             </table>
             {include 'termekfaimagekarb.tpl'}

@@ -1005,6 +1005,7 @@ $router->map('GET', '/admin/termek/getbrutto', 'termekController#getbrutto', 'ad
 $router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
 $router->map('GET', '/admin/termek/fcmotoexport', 'termekController#fcmotoexport', 'admintermekfcmotoexport');
 $router->map('GET', '/admin/termek/gs1export', 'termekController#gs1export', 'admintermekgs1export');
+$router->map('GET', '/admin/termek/gs1importview', 'termekController#gs1importView', 'admintermekgs1importview');
 $router->map('GET', '/admin/termek/colorexport', 'termekController#colorexport', 'admintermekcolorexport');
 $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszamosexport', 'admintermekcikkszamosexport');
 $router->map('GET', '/admin/termek/minkeszletexport', 'termekController#minKeszletExport', 'admintermekminkeszletexport');
@@ -1012,6 +1013,7 @@ $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKes
 $router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termek/save', 'termekController#save', 'admintermeksave');
+    $router->map('POST', '/admin/termek/gs1import', 'termekController#gs1import', 'admintermekgs1import');
     $router->map('POST', '/admin/termek/setflag', 'termekController#setflag', 'admintermeksetflag');
     $router->map('POST', '/admin/termek/tcsset', 'termekController#setTermekcsoport', 'admintermektcsset');
     $router->map('POST', '/admin/termek/kategoriaset', 'termekController#setKategoria', 'admintermekkategoriaset');

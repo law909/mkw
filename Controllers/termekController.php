@@ -34,6 +34,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class termekController extends \mkwhelpers\MattableController
 {
 
+    /** a GS1 export AC oszlopa: a saját azonosító melyik törzsre mutat */
+    private const GS1AZONOSITOTIPUS_TERMEK = 'termek';
+    private const GS1AZONOSITOTIPUS_VALTOZAT = 'valtozat';
+
+    private const GS1MARKANEV = 'MUGENRACE';
+    private const GS1NETTOMENNYISEG = 1;
+
     private $kaphatolett = false;
     private $vanshowarsav = false;
 
@@ -2076,77 +2083,55 @@ class termekController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
+    /**
+     * GS1 számkiadási export: azoknak a termékeknek/változatoknak, amelyeknek még nincs
+     * vonalkódjuk, a GS1 által várt Excel (exporttemplates/gs1template.xlsx). A visszakapott
+     * fájlt a {@see gs1import()} tölti vissza – ezért írjuk az utolsó két oszlopba a saját
+     * azonosítót és azt, hogy termékről vagy változatról van szó.
+     *
+     * A GS1 sablon a 3. sortól várja az adatokat, a fejléc két sor (kódok + magyar címkék).
+     */
     public function gs1export()
     {
-        $ids = $this->params->getStringRequestParam('ids');
-        $ids = explode(',', $ids);
+        $ids = explode(',', $this->params->getStringRequestParam('ids'));
 
         $filenev = \mkw\store::exporttemplatePath('gs1template.xlsx');
-        $filetype = IOFactory::identify($filenev);
-        $reader = IOFactory::createReader($filetype);
+        $reader = IOFactory::createReader(IOFactory::identify($filenev));
         $excel = $reader->load($filenev);
-        $sheet = $excel->getActiveSheet();
+        $sheet = $excel->setActiveSheetIndex(0);
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
         $termekek = $this->getRepo()->getWithValtozatok($filter);
+
         $sor = 3;
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
-            $nev = $termek->getLocalizedFieldValue('nev', 'en_us');
-            $leiras = $termek->getLocalizedFieldValue('leiras', 'en_us');
-
-            if ($termek->getValtozatok()) {
-                /** @var TermekFa $kat */
-                $kat = $termek->getTermekfa1();
+            if ($termek->getValtozatok() && count($termek->getValtozatok())) {
                 /** @var TermekValtozat $valtozat */
                 foreach ($termek->getValtozatok() as $valtozat) {
                     if (!$valtozat->getVonalkod()) {
-                        $excel->setActiveSheetIndex(0)
-                            ->setCellValue('A' . $sor, \mkw\store::getParameter(\mkw\consts::GS1Datasource))
-                            ->setCellValue('B' . $sor, \mkw\store::getParameter(\mkw\consts::GS1DatasourceName))
-                            ->setCellValue('C' . $sor, 'Alap')
-                            ->setCellValue('E' . $sor, '10003707')
-                            ->setCellValue('F' . $sor, 'MUGENRACE')
-                            ->setCellValue('G' . $sor, $termek->getLocalizedFieldValue('nev', 'en_us')) // Almárka
-                            ->setCellValue('H' . $sor, $kat->getLocalizedFieldValue('nev', 'en_us'))
-                            ->setCellValue('I' . $sor, 'Angol')
-                            ->setCellValue('J' . $sor, $valtozat->getSzin() . ' ' . $valtozat->getMeret())
-                            ->setCellValue('K' . $sor, 'Angol')
-                            ->setCellValue('L' . $sor, 1)
-                            ->setCellValue('M' . $sor, 'Piece')
-                            ->setCellValue(
-                                'N' . $sor,
-                                '=CONCATENATE(F' . $sor . '," ",G' . $sor . '," ",H' . $sor . '," ",J' . $sor . '," ",L' . $sor . '," ",M' . $sor . ')'
-                            )
-                            ->setCellValue('O' . $sor, 'Angol')
-                            ->setCellValue('P' . $sor, 'Igen')
-                            ->setCellValue('Q' . $sor, 'Alaptermék')
-                            ->setCellValue('R' . $sor, $valtozat->getCikkszam())
-                            ->setCellValue('S' . $sor, 'Beszállító által kiadott (Belső azonosító)')
-                            ->setCellValue('T' . $sor, $termek->getSuly())
-                            ->setCellValue('U' . $sor, 'Kilogramm')
-                            ->setCellValue('V' . $sor, $termek->getMagassag())
-                            ->setCellValue('W' . $sor, 'Centiméter')
-                            ->setCellValue('X' . $sor, $termek->getHosszusag())
-                            ->setCellValue('Y' . $sor, 'Centiméter')
-                            ->setCellValue('Z' . $sor, $termek->getSzelesseg())
-                            ->setCellValue('AA' . $sor, 'Centiméter')
-                            ->setCellValue('AB' . $sor, 'Nem')
-                            ->setCellValue('AC' . $sor, 'Nem')
-                            ->setCellValue('AD' . $sor, $valtozat->getId());
-                        $sor++;
+                        $this->gs1ExportSor(
+                            $sheet,
+                            $sor++,
+                            $termek,
+                            trim($valtozat->getSzin() . ' ' . $valtozat->getMeret()),
+                            $valtozat->getCikkszam(),
+                            $valtozat->getId(),
+                            self::GS1AZONOSITOTIPUS_VALTOZAT
+                        );
                     }
                 }
             } elseif (!$termek->getVonalkod()) {
-                $excel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $sor, $termek->getId())
-                    ->setCellValue('C' . $sor, $termek->getCikkszam())
-                    ->setCellValue('D' . $sor, $nev)
-                    ->setCellValue('E' . $sor, $leiras)
-                    ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
-                    ->setCellValue('J' . $sor, $termek->getVonalkod());
-                $sor++;
+                $this->gs1ExportSor(
+                    $sheet,
+                    $sor++,
+                    $termek,
+                    '',
+                    $termek->getCikkszam(),
+                    $termek->getId(),
+                    self::GS1AZONOSITOTIPUS_TERMEK
+                );
             }
         }
 
@@ -2167,6 +2152,162 @@ class termekController extends \mkwhelpers\MattableController
         readfile($filepath);
 
         \unlink($filepath);
+    }
+
+    /**
+     * Egy sor a GS1 exportba. A GTIN oszlopot (C) szándékosan üresen hagyjuk: azt adja ki a GS1.
+     *
+     * A márkanév, az almárka és a funkcionális név hármasát a termék angol nevéből bontjuk:
+     * az utolsó szó az almárka (modellnév), az előtte lévő rész a funkcionális név –
+     * "KEVLAR JEANS CHINOS" → "KEVLAR JEANS" + "CHINOS".
+     *
+     * @param \Entities\Termek $termek
+     */
+    private function gs1ExportSor($sheet, int $sor, $termek, string $variansnev, $cikkszam, $sajatid, string $azonositotipus): void
+    {
+        $nev = trim((string)$termek->getLocalizedFieldValue('nev', 'en_us'));
+        $szokoz = mb_strrpos($nev, ' ');
+        $almarka = ($szokoz === false) ? '' : mb_substr($nev, $szokoz + 1);
+        $funkcionalisnev = ($szokoz === false) ? $nev : mb_substr($nev, 0, $szokoz);
+
+        $kereskedelminev = implode(' ', array_filter([
+            self::GS1MARKANEV,
+            $almarka,
+            $funkcionalisnev,
+            $variansnev,
+            self::GS1NETTOMENNYISEG . ' Piece',
+        ], fn($v) => $v !== ''));
+
+        $sheet
+            ->setCellValue('A' . $sor, \mkw\store::getParameter(\mkw\consts::GS1Datasource))
+            ->setCellValue('B' . $sor, \mkw\store::getParameter(\mkw\consts::GS1DatasourceName))
+            ->setCellValue('D' . $sor, 'Igen')                  // Fogyasztói egység?
+            ->setCellValue('E' . $sor, 'Alaptermék')            // Csomagolási (hierarchia) szint
+            ->setCellValue('F' . $sor, 'Nem')                   // Változó mennyiségű egység?
+            ->setCellValue('G' . $sor, 'Igen')                  // Fizikai méretekkel rendelkező termék?
+            ->setCellValue('H' . $sor, $this->gs1Gpc($termek))
+            ->setCellValue('I' . $sor, self::GS1MARKANEV)
+            ->setCellValue('J' . $sor, $almarka)
+            ->setCellValue('K' . $sor, $funkcionalisnev)
+            ->setCellValue('L' . $sor, 'Angol')
+            ->setCellValue('M' . $sor, $variansnev)
+            ->setCellValue('N' . $sor, 'Angol')
+            ->setCellValue('O' . $sor, self::GS1NETTOMENNYISEG)
+            ->setCellValue('P' . $sor, 'Darab')
+            ->setCellValue('Q' . $sor, $kereskedelminev)
+            ->setCellValue('R' . $sor, 'Angol')
+            ->setCellValue('S' . $sor, $termek->getSuly())
+            ->setCellValue('T' . $sor, 'Kilogramm')
+            ->setCellValue('U' . $sor, 'Centiméter')            // mindhárom befoglaló méret egysége
+            ->setCellValue('V' . $sor, $termek->getMagassag())
+            ->setCellValue('W' . $sor, $termek->getHosszusag())
+            ->setCellValue('X' . $sor, $termek->getSzelesseg())
+            ->setCellValue('Y' . $sor, 'Alap')                  // Attribútum készlet
+            ->setCellValue('Z' . $sor, $cikkszam)
+            ->setCellValue('AA' . $sor, 'Beszállító által kiadott (Belső azonosító)')
+            ->setCellValue('AB' . $sor, $sajatid)
+            ->setCellValue('AC' . $sor, $azonositotipus);
+    }
+
+    /**
+     * A termék GS1 besorolása (GPC brick kód) a kategóriájából, a fastruktúrában felfelé
+     * keresve. Ha sehol nincs beállítva, üresen marad – a GS1 kötelező mezője, tehát a
+     * kategóriákon ki kell tölteni.
+     *
+     * @param \Entities\Termek $termek
+     */
+    private function gs1Gpc($termek): string
+    {
+        /** @var TermekFa|null $kat */
+        $kat = $termek->getTermekfa1();
+        return $kat ? $kat->getOroklottGpc() : '';
+    }
+
+    /**
+     * A GS1-től visszakapott számkiadási fájl visszatöltése: a C oszlopban álló GTIN a
+     * vonalkód, az AB oszlop a mi azonosítónk, az AC pedig megmondja, termékre vagy változatra
+     * vonatkozik (üresen – a régebbi exportoknál – változatra).
+     *
+     * Meglévő vonalkódot nem írunk felül, azt hibaként jelezzük vissza.
+     */
+    public function gs1import()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $filepath = \mkw\store::moveUploadedFile('toimport', 'gs1import', ['xls', 'xlsx']);
+        if (!$filepath) {
+            echo json_encode(['ok' => false, 'error' => t('Csak .xls vagy .xlsx fájl tölthető fel.')]);
+            return;
+        }
+
+        try {
+            $reader = IOFactory::createReader(IOFactory::identify($filepath));
+            $reader->setReadDataOnly(true);
+            $excel = $reader->load($filepath);
+        } catch (\Exception $e) {
+            \unlink($filepath);
+            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható táblázatként') . ': ' . $e->getMessage()]);
+            return;
+        }
+
+        $sheet = $excel->getSheetByName('Data') ?: $excel->getActiveSheet();
+        $maxrow = (int)$sheet->getHighestRow();
+
+        $sorok = 0;
+        $frissitett = 0;
+        $hibak = [];
+        for ($row = 3; $row <= $maxrow; ++$row) {
+            $vonalkod = trim((string)$sheet->getCell('C' . $row)->getValue());
+            $sajatid = (int)$sheet->getCell('AB' . $row)->getValue();
+            if (!$vonalkod && !$sajatid) {
+                continue;
+            }
+            $sorok++;
+            if (!$vonalkod) {
+                $hibak[] = sprintf(t('%d. sor: nincs kiadott GTIN.'), $row);
+                continue;
+            }
+            if (!$sajatid) {
+                $hibak[] = sprintf(t('%d. sor (%s): nincs benne a mi azonosítónk.'), $row, $vonalkod);
+                continue;
+            }
+
+            $tipus = trim((string)$sheet->getCell('AC' . $row)->getValue());
+            $egyed = ($tipus === self::GS1AZONOSITOTIPUS_TERMEK)
+                ? $this->getRepo()->find($sajatid)
+                : $this->getRepo(TermekValtozat::class)->find($sajatid);
+            if (!$egyed) {
+                $hibak[] = sprintf(t('%d. sor (%s): a hivatkozott azonosító (%d) nincs meg.'), $row, $vonalkod, $sajatid);
+                continue;
+            }
+            $regi = trim((string)$egyed->getVonalkod());
+            if ($regi === $vonalkod) {
+                continue;
+            }
+            if ($regi !== '') {
+                $hibak[] = sprintf(t('%d. sor: %s már kapott vonalkódot (%s), nem írjuk felül.'), $row, $sajatid, $regi);
+                continue;
+            }
+            $egyed->setVonalkod($vonalkod);
+            $this->getEm()->persist($egyed);
+            $frissitett++;
+        }
+        $this->getEm()->flush();
+        $excel->disconnectWorksheets();
+        \unlink($filepath);
+
+        echo json_encode([
+            'ok' => true,
+            'msg' => sprintf(t('%d sor feldolgozva, %d vonalkód került fel.'), $sorok, $frissitett),
+            'hibak' => $hibak,
+        ]);
+    }
+
+    public function gs1importView()
+    {
+        $view = $this->createView('gs1import.tpl');
+        $view->setVar('pagetitle', t('GS1 vonalkód import'));
+        $view->printTemplateResult();
     }
 
     public function colorexport()

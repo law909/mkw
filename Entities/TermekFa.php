@@ -193,6 +193,14 @@ class TermekFa
      */
     private $sketchfabmodelid;
 
+    /**
+     * GS1 termékbesorolás (GPC brick kód) – a GS1 számkiadási exportba megy. A termék a
+     * kategóriájától örökli; ha itt üres, a fastruktúrában feljebb keressük.
+     *
+     * @ORM\Column(type="string",length=20,nullable=true)
+     */
+    private $gpc;
+
     public function __toString()
     {
         return (string)$this->id . ' - ' . $this->nev;
@@ -1061,6 +1069,32 @@ class TermekFa
     public function setArukeresoid($arukeresoid)
     {
         $this->arukeresoid = $arukeresoid;
+    }
+
+    public function getGpc()
+    {
+        return $this->gpc;
+    }
+
+    public function setGpc($gpc)
+    {
+        $this->gpc = $gpc;
+    }
+
+    /**
+     * A kategória GS1 besorolása, a fastruktúrában felfelé keresve: ha ezen nincs beállítva,
+     * a szülőé érvényes.
+     */
+    public function getOroklottGpc(): string
+    {
+        $kat = $this;
+        while ($kat) {
+            if (trim((string)$kat->getGpc()) !== '') {
+                return trim((string)$kat->getGpc());
+            }
+            $kat = $kat->getParent();
+        }
+        return '';
     }
 
     /**
