@@ -701,18 +701,8 @@ class KoltsegszamlaJSONImportService
         return $em->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
     }
 
-    /** NAV paymentMethodType → az ebből létrehozott fizmód neve és típusa ('P' = készpénz) */
-    private const FIZMOD_NEVEK = [
-        'TRANSFER' => ['Átutalás', 'B'],
-        'CASH' => ['Készpénz', 'P'],
-        'CARD' => ['Bankkártya', 'B'],
-        'VOUCHER' => ['Utalvány', 'B'],
-        'OTHER' => ['Egyéb', 'B'],
-    ];
-
     /**
-     * Fizmód keresése a NAV paymentMethod (navtipus) alapján, hiány esetén létrehozása. A NAV
-     * ötféle fizetési módot ismer, ezekre kész nevünk van; egyébre a kapott kód lesz a név.
+     * Fizmód keresése a NAV paymentMethod (navtipus) alapján, hiány esetén létrehozása.
      *
      * Üres paymentMethod esetén null – ilyenkor a partnertől örökölt fizmód marad a bizonylaton.
      */
@@ -727,13 +717,11 @@ class KoltsegszamlaJSONImportService
         if ($fizmod) {
             return $fizmod;
         }
-        [$nev, $tipus] = self::FIZMOD_NEVEK[strtoupper($paymentMethod)] ?? [$paymentMethod, 'B'];
         $fizmod = new Fizmod();
-        $fizmod->setNev($nev);
-        $fizmod->setNevL1($nev);
-        $fizmod->setTipus($tipus);
+        $fizmod->setNev($paymentMethod);
+        $fizmod->setNevL1($paymentMethod);
+        $fizmod->setTipus('B');
         $fizmod->setNavtipus($paymentMethod);
-        // a szállítói számla fizetési módja nem való a webshop pénztárába
         $fizmod->setWebes(false);
         $em->persist($fizmod);
         $em->flush();
