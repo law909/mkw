@@ -17,7 +17,7 @@
         <div id="mattable-filterwrapper">
             <div class="matt-hseparator"></div>
             <div>
-                <label for="nevfilter">{at('Név')}: </label>
+                <label for="nevfilter">{at('Név')} {at('(cikkszám, vonalkód)')}: </label>
                 <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
             </div>
             <div class="matt-hseparator"></div>
