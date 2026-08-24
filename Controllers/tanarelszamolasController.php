@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
+use Entities\Idopontfoglalas;
 use Entities\JogaReszvetel;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
@@ -125,6 +126,16 @@ class tanarelszamolasController extends \mkwhelpers\Controller
 
             $sor++;
         }
+        foreach ($this->getIdopontMegjelenesek($tanarid, $tolstr, $igstr) as $idopont) {
+            $napokszama[$idopont['datum']] = 1;
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $sor, $idopont['datum'])
+                ->setCellValue('B' . $sor, $idopont['napnev'])
+                ->setCellValue('C' . $sor, $idopont['nev'])
+                ->setCellValue('D' . $sor, $idopont['tema']);
+            $sor++;
+        }
+
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A' . $sor, '')
             ->setCellValue('B' . $sor, '')
@@ -181,6 +192,47 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         $writer->save($filepath);
 
         return [$filepath, $filename];
+    }
+
+    /**
+     * A tanár időszakra eső, megérkezettnek jelölt időpont-foglalásai. A pubadminban a tanár
+     * jelöli meg őket (Idopontfoglalas.megjelent).
+     *
+     * Jutalék NEM tartozik hozzájuk: az időpontokra nincs jutalékszabály, ezért a részletezőben
+     * üresen marad a jutalék oszlop, és az összesítő számai sem változnak. A napi járulék
+     * levonásába viszont beleszámít a nap, hiszen a tanár aznap dolgozott.
+     *
+     * @return array[] datum, napnev, nev, tema
+     */
+    private function getIdopontMegjelenesek($tanarid, $tolstr, $igstr): array
+    {
+        if (!$tanarid) {
+            return [];
+        }
+        $filter = new FilterDescriptor();
+        $filter->addFilter('megjelent', '=', true);
+        $filter->addFilter('dolgozo.id', '=', $tanarid);
+        if ($tolstr) {
+            $filter->addFilter('datum', '>=', $tolstr);
+        }
+        if ($igstr) {
+            $filter->addFilter('datum', '<=', $igstr);
+        }
+        $foglalasok = $this->getRepo(Idopontfoglalas::class)
+            ->getWithJoins($filter, ['_xx.datum' => 'ASC', '_xx.id' => 'ASC']);
+
+        $ret = [];
+        /** @var Idopontfoglalas $foglalas */
+        foreach ($foglalasok as $foglalas) {
+            $idopont = $foglalas->getIdopont();
+            $ret[] = [
+                'datum' => $foglalas->getDatumStr(),
+                'napnev' => $foglalas->getNapNev(),
+                'nev' => $foglalas->getPartnerNev(),
+                'tema' => trim('Időpont: ' . $idopont?->getIdoponttemaNev() . ' ' . $idopont?->getIdotartamStr()),
+            ];
+        }
+        return $ret;
     }
 
     public function refresh()

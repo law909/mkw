@@ -15,6 +15,8 @@
     </div>
     <div id="oralist"></div>
     <div id="resztvevolist"></div>
+    <div id="idopontlist"></div>
+    <div id="idopontfoglalaslist"></div>
     <div class="modal fade" id="buyModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -29,6 +29,10 @@ $(document).ready(
             $('#oraselect').change();
         }
 
+        function refreshIdopontfoglalasList() {
+            $('#idopontselect').change();
+        }
+
         $('#buyModal').on('shown.bs.modal', function () {
             $('#aredit').trigger('focus');
         });
@@ -69,6 +73,7 @@ $(document).ready(
             .on('change', '#datumselect', function(e) {
                 const datum = $(this).val();
                 $('#resztvevolist').html('');
+                $('#idopontfoglalaslist').html('');
                 $.ajax({
                     method: 'GET',
                     url: '/pubadmin/oralist',
@@ -79,6 +84,51 @@ $(document).ready(
                         $('#oralist').html(data);
                     }
                 });
+                // az órák mellett az aznapi időpontok is
+                $.ajax({
+                    method: 'GET',
+                    url: '/pubadmin/idopontlist',
+                    data: {
+                        datum: datum
+                    },
+                    success: function(data) {
+                        $('#idopontlist').html(data);
+                    }
+                });
+            })
+            .on('change', '#idopontselect', function(e) {
+                if (!$(this).val()) {
+                    $('#idopontfoglalaslist').html('');
+                    return;
+                }
+                $.ajax({
+                    method: 'GET',
+                    url: '/pubadmin/idopontfoglalaslist',
+                    data: {
+                        idopontid: $(this).val(),
+                        datum: $('#datumselect').val()
+                    },
+                    success: function(data) {
+                        $('#idopontfoglalaslist').html(data);
+                    }
+                });
+            })
+            .on('click', '.js-setidopontmegjelent', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    method: 'POST',
+                    url: '/pubadmin/idopontfoglalasmegjelent',
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function() {
+                        refreshIdopontfoglalasList();
+                    }
+                });
+            })
+            .on('click', '.js-idopontrefresh', function(e) {
+                e.preventDefault();
+                refreshIdopontfoglalasList();
             })
             .on('change', '#oraselect', function(e) {
                 const oraid = $(this).val(),

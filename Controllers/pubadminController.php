@@ -11,6 +11,8 @@ use Entities\Dolgozo;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
 use Entities\JogaBejelentkezes;
+use Entities\Idopont;
+use Entities\Idopontfoglalas;
 use Entities\JogaBerlet;
 use Entities\Orarend;
 use Entities\Orarendhelyettesites;
@@ -162,6 +164,95 @@ class pubadminController extends mkwhelpers\Controller
             $view->setVar('lemondhato', $ora->getLemondhato());
         }
         $view->printTemplateResult();
+    }
+
+    /**
+     * A tanár aznapi időpontjai (a jóga órák mellett). Az ismétlődő időpont minden héten
+     * ugyanarra a napra esik, az egyszeri a saját dátumára – ezt az Idopont dönti el.
+     */
+    public function getIdopontlist()
+    {
+        $view = $this->createPubAdminView('idopontlist.tpl');
+        $idopontlista = [];
+
+        $dolgozo = $this->getRepo(Dolgozo::class)->find(\mkw\store::getPubAdminSession()->pk);
+        $datum = $this->datumParam();
+        if ($dolgozo && $datum) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('dolgozo', '=', $dolgozo);
+            $filter->addFilter('inaktiv', '=', false);
+            /** @var Idopont $idopont */
+            foreach ($this->getRepo(Idopont::class)->getAll($filter) as $idopont) {
+                if ($idopont->isValidOccurrenceDate($datum)) {
+                    $idopontlista[] = [
+                        'id' => $idopont->getId(),
+                        'nev' => trim($idopont->getIdotartamStr() . ' ' . $idopont->getIdoponttemaNev()),
+                    ];
+                }
+            }
+            usort($idopontlista, fn($a, $b) => strcmp($a['nev'], $b['nev']));
+        }
+        $view->setVar('idopontlista', $idopontlista);
+        $view->printTemplateResult();
+    }
+
+    /**
+     * Egy időpont adott napi foglalói – a jóga óra résztvevőlistájának mintájára, azzal a
+     * különbséggel, hogy itt csak a megérkezés jelölhető.
+     */
+    public function getIdopontfoglalaslist()
+    {
+        $view = $this->createPubAdminView('idopontfoglalaslist.tpl');
+        $foglalaslista = [];
+
+        $idopontid = $this->params->getIntRequestParam('idopontid');
+        $datum = $this->datumParam();
+        if ($idopontid && $datum) {
+            $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('idopont', '=', $idopontid);
+            $filter->addFilter('datum', '=', $datum->format(\mkw\store::$SQLDateFormat));
+            /** @var Idopontfoglalas $foglalas */
+            foreach ($this->getRepo(Idopontfoglalas::class)->getAll($filter, ['id' => 'ASC']) as $foglalas) {
+                $foglalaslista[] = [
+                    'id' => $foglalas->getId(),
+                    'nev' => $foglalas->getPartnerNev(),
+                    'email' => $foglalas->getPartnerEmail(),
+                    'telefon' => $foglalas->getPartnerTelefon(),
+                    'online' => $foglalas->isOnline(),
+                    'fizetve' => $foglalas->getFizetve(),
+                    'lemondva' => $foglalas->getLemondva(),
+                    'megjelent' => $foglalas->isMegjelent(),
+                ];
+            }
+        }
+        $view->setVar('foglalaslist', $foglalaslista);
+        $view->printTemplateResult();
+    }
+
+    /** A megérkezés jelölése egy időpont-foglaláson. */
+    public function setIdopontfoglalasMegjelent()
+    {
+        /** @var Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo(Idopontfoglalas::class)->find($this->params->getIntRequestParam('id'));
+        if ($foglalas) {
+            $foglalas->setMegjelent(!$foglalas->isMegjelent());
+            $this->getEm()->persist($foglalas);
+            $this->getEm()->flush();
+        }
+    }
+
+    /** @return \DateTime|null */
+    private function datumParam()
+    {
+        $datum = trim($this->params->getStringRequestParam('datum'));
+        if ($datum === '') {
+            return null;
+        }
+        try {
+            return new \DateTime($datum);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function setResztvevoMegjelent()

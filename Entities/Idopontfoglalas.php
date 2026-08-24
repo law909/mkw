@@ -62,6 +62,17 @@ class Idopontfoglalas
     /** @ORM\Column(type="text",nullable=true) */
     private $lemondasoka;
 
+    /**
+     * A tanár jelölte, hogy a foglaló megérkezett – a pubadmin időpont-listájáról állítható,
+     * és a tanárelszámolás részletezőjében ez alapján jelennek meg az időpontok.
+     *
+     * @ORM\Column(type="boolean",nullable=false)
+     */
+    private $megjelent = false;
+
+    /** @ORM\Column(type="datetime",nullable=true) */
+    private $megjelentido;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $fizetve = false;
 
@@ -358,6 +369,27 @@ class Idopontfoglalas
     public function setLemondasoka($lemondasoka)
     {
         $this->lemondasoka = $lemondasoka;
+    }
+
+    public function isMegjelent()
+    {
+        return $this->megjelent;
+    }
+
+    public function setMegjelent($megjelent)
+    {
+        $this->megjelent = (bool)$megjelent;
+        $this->megjelentido = $this->megjelent ? new \DateTime() : null;
+    }
+
+    public function getMegjelentido()
+    {
+        return $this->megjelentido;
+    }
+
+    public function getMegjelentidoStr()
+    {
+        return $this->megjelentido ? $this->megjelentido->format(\mkw\store::$DateTimeFormat) : '';
     }
 
     public function getFizetve()
