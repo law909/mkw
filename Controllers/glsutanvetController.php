@@ -162,6 +162,7 @@ class glsutanvetController extends \mkwhelpers\MattableController
         $maxrow = (int)$sheet->getHighestRow();
 
         $repo = $this->getRepo();
+        $sorok = 0;
         $beolvasott = 0;
         $ujdb = 0;
         $parositott = 0;
@@ -171,6 +172,7 @@ class glsutanvetController extends \mkwhelpers\MattableController
             if (!$csomagszam) {
                 continue;
             }
+            $sorok++;
             // csak a ténylegesen beszedett utánvét érdekes
             $osszeg = $this->importOsszeg($sheet->getCell(self::OSZLOP['osszeg'] . $row)->getValue());
             if (!$osszeg) {
@@ -207,8 +209,8 @@ class glsutanvetController extends \mkwhelpers\MattableController
         \unlink($filenev);
 
         echo json_encode([
-            'msg' => $beolvasott . ' beszedett utánvét sorból ' . $ujdb . ' új tétel keletkezett, ebből '
-                . $parositott . ' kapott bizonylatszámot.',
+            'msg' => $sorok . ' csomag a kimutatásban, ebből ' . $beolvasott . ' soron van beszedett utánvét; '
+                . $ujdb . ' új tétel keletkezett, ebből ' . $parositott . ' kapott bizonylatszámot.',
         ]);
     }
 

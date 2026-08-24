@@ -11,10 +11,14 @@ $(document).ready(function () {
                         processData: false,
                         contentType: false,
                         data: data,
+                        // a válasz application/json, ezért a jQuery már objektumot ad
                         success: function (d) {
-                            var adat = d ? JSON.parse(d) : null;
+                            var adat = (typeof d === 'string') ? (d ? JSON.parse(d) : null) : d;
                             alert((adat && adat.msg) ? adat.msg : 'Kész.');
                             document.location = '/admin/glsutanvet/viewlist';
+                        },
+                        error: function (xhr) {
+                            alert('Nem sikerült a feltöltés (' + xhr.status + ' ' + xhr.statusText + ').');
                         }
                     });
                 }).button();
