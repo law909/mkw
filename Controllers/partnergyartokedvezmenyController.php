@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Entities\Partner;
 use Entities\PartnerGyartoKedvezmeny;
 
 /**
@@ -40,7 +39,8 @@ class partnergyartokedvezmenyController extends \mkwhelpers\MattableController
         $x['gyartonev'] = $t->getGyartoNev();
         $x['kedvezmeny'] = $t->getKedvezmeny();
         if ($forKarb) {
-            $x['gyartolist'] = $this->getGyartoSelectList($t->getGyartoId());
+            // ugyanaz a szállítólista, amit a termék és a címke karbantartó is használ
+            $x['gyartolist'] = (new partnerController())->getSzallitoSelectList($t->getGyartoId());
         }
         return $x;
     }
@@ -50,26 +50,6 @@ class partnergyartokedvezmenyController extends \mkwhelpers\MattableController
         $view = $this->createView('partnergyartokedvezmenykarb.tpl');
         $view->setVar('kd', $this->loadVars(null, true));
         echo $view->getTemplateResult();
-    }
-
-    /**
-     * A választható gyártók: a szállítónak jelölt partnerek. Sima select, nem autocomplete –
-     * a szállítók száma kezelhető.
-     */
-    public function getGyartoSelectList($selid = null)
-    {
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('szallito', '=', true);
-        $res = [];
-        /** @var Partner $sor */
-        foreach ($this->getRepo(Partner::class)->getAll($filter, ['nev' => 'ASC']) as $sor) {
-            $res[] = [
-                'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
-                'selected' => ($sor->getId() == $selid),
-            ];
-        }
-        return $res;
     }
 
 }
