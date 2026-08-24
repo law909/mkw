@@ -175,8 +175,9 @@ class termekController extends \mkwhelpers\MattableController
                 $szinkepmap = [];
                 foreach ($t->getTermekSzinKepek() as $szinkep) {
                     $szinid = $szinkep->getSzinId();
-                    $kepid = $szinkep->getKepId();
-                    if ($szinid && $kepid) {
+                    // kép nélküli sor = a termék főképe (lásd termekkepController::FOKEP_ID)
+                    $kepid = $szinkep->getKepId() ?: termekkepController::FOKEP_ID;
+                    if ($szinid) {
                         $szinkepmap[$szinid][$kepid] = $szinkep->getSorrend();
                     }
                 }
@@ -186,7 +187,7 @@ class termekController extends \mkwhelpers\MattableController
                         'id' => $szin->getId(),
                         'nev' => $szin->getNev(),
                         //'kepids' => $selids,
-                        'kepek' => $kepCtrl->getSelectList($t, $selids)
+                        'kepek' => $kepCtrl->getSelectList($t, $selids, true)
                     ];
                 }
                 $x['szinkepek'] = $szinlista;
@@ -967,8 +968,8 @@ class termekController extends \mkwhelpers\MattableController
             $szinkepmap = [];
             foreach ($obj->getTermekSzinKepek() as $szinkep) {
                 $szinid = $szinkep->getSzinId();
-                $kepid = $szinkep->getKepId();
-                if ($szinid && $kepid) {
+                $kepid = $szinkep->getKepId() ?: termekkepController::FOKEP_ID;
+                if ($szinid) {
                     $szinkepmap[$szinid][$kepid] = $szinkep;
                 }
             }
@@ -1009,10 +1010,12 @@ class termekController extends \mkwhelpers\MattableController
                             if (!isset($existing[$kepid])) {
                                 // az űrlapon lévő kulcs alapján, nem az adatbázisból: új terméknél
                                 // a kép is most jött létre, és még nincs id-je
-                                $kep = $kepmap[(string)$kepid] ?? null;
-                                if ($kep) {
+                                $fokep = ($kepid === termekkepController::FOKEP_ID);
+                                $kep = $fokep ? null : ($kepmap[(string)$kepid] ?? null);
+                                if ($kep || $fokep) {
                                     $szinkep = new \Entities\TermekSzinKep();
                                     $szinkep->setSzin($szin);
+                                    // a főkép nem termekkep sor, ilyenkor a hivatkozás marad üres
                                     $szinkep->setKep($kep);
                                     if (isset($sorrendek[$index])) {
                                         $szinkep->setSorrend((int)$sorrendek[$index]);

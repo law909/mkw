@@ -578,16 +578,28 @@ class Termek
         foreach ($szinkepek as $szinkep) {
             if ($szinkep->getSzinId() == $szin->getId()) {
                 $kep = $szinkep->getKep();
-                $result['szinkepek'][] = [
-                    'id' => $kep->getId(),
-                    'kepurl' => $kep->getUrl(),
-                    'kepurllarge' => $kep->getUrlLarge(),
-                    'kepurlmedium' => $kep->getUrlMedium(),
-                    'kepurlsmall' => $kep->getUrlSmall(),
-                    'kepurlmini' => $kep->getUrlMini(),
-                    'kepurl400' => $kep->getUrl400(),
-                    'kepurl2000' => $kep->getUrl2000(),
-                ];
+                // kép nélküli sor = a termék főképe (a képválasztóban is így vehető fel)
+                $result['szinkepek'][] = $kep
+                    ? [
+                        'id' => $kep->getId(),
+                        'kepurl' => $kep->getUrl(),
+                        'kepurllarge' => $kep->getUrlLarge(),
+                        'kepurlmedium' => $kep->getUrlMedium(),
+                        'kepurlsmall' => $kep->getUrlSmall(),
+                        'kepurlmini' => $kep->getUrlMini(),
+                        'kepurl400' => $kep->getUrl400(),
+                        'kepurl2000' => $kep->getUrl2000(),
+                    ]
+                    : [
+                        'id' => 0,
+                        'kepurl' => $this->getKepurl(),
+                        'kepurllarge' => $this->getKepurlLarge(),
+                        'kepurlmedium' => $this->getKepurlMedium(),
+                        'kepurlsmall' => $this->getKepurlSmall(),
+                        'kepurlmini' => $this->getKepurlMini(),
+                        'kepurl400' => $this->getKepurl400(),
+                        'kepurl2000' => $this->getKepurl2000(),
+                    ];
             }
         }
         return $result;

@@ -7,6 +7,12 @@ use Entities\TermekKep;
 class termekkepController extends \mkwhelpers\MattableController
 {
 
+    /**
+     * A termék főképének álazonosítója a képválasztókban. A főkép a termék `kepurl` mezője,
+     * nem `termekkep` sor, ezért nincs valódi id-je; negatív, hogy soha ne ütközzön eggyel.
+     */
+    public const FOKEP_ID = -1;
+
     public function __construct()
     {
         $this->setEntityName(TermekKep::class);
@@ -138,15 +144,34 @@ class termekkepController extends \mkwhelpers\MattableController
         return $out;
     }
 
-    public function getSelectList($termek, $selid)
+    /**
+     * A termékhez választható képek.
+     *
+     * `$fokeppel` esetén az első elem a termék főképe: az nem `termekkep` sor, hanem a termék
+     * `kepurl` mezője, ezért kap egy negatív álazonosítót – enélkül a csak főképpel feltöltött
+     * terméknél nem lenne miből választani. Csak ott kapcsoljuk be, ahol a hivatkozás üresen is
+     * elmenthető (szín képek); a változat képe valódi `termekkep` sorra mutat.
+     */
+    public function getSelectList($termek, $selid, $fokeppel = false)
     {
         $kepek = $this->getRepo()->getByTermek($termek);
         $keplista = [];
         $selids = is_array($selid) ? $selid : [$selid];
+        if ($fokeppel && $termek && trim((string)$termek->getKepurl()) !== '') {
+            $keplista[] = [
+                'id' => self::FOKEP_ID,
+                'caption' => $termek->getKepurl(),
+                'fokep' => true,
+                'selected' => array_key_exists(self::FOKEP_ID, $selids),
+                'sorrend' => $selids[self::FOKEP_ID] ?? null,
+                'url' => $termek->getKepurlMini(),
+            ];
+        }
         foreach ($kepek as $kep) {
             $keplista[] = [
                 'id' => $kep->getId(),
                 'caption' => $kep->getUrl(),
+                'fokep' => false,
                 'selected' => array_key_exists($kep->getId(), $selids),
                 'sorrend' => $selids[$kep->getId()] ?? null,
                 'url' => $kep->getUrlMini()

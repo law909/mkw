@@ -656,6 +656,7 @@
                             <ul id="SzinKepEdit_{$szinkep.id}" class="valtozatkepedit js-szinkepedit">
                                 {foreach $szinkep.kepek as $kep}
                                     <li data-value="{$kep.id}" data-valtozatid="{$szinkep.id}"
+                                        title="{if ($kep.fokep)}{at('Főkép')}{else}{$kep.caption}{/if}"
                                         class="ui-state-default{if ($kep.selected)} ui-selected ui-state-highlight{/if}" style="height: 120px">
                                         {if ($kep.url)}<img src="{$mainurl}{$kep.url}" style="display: block; margin: 0 auto;" alt="{$kep.url}"/>{/if}
                                         <input class="js-szinkepsorrend" type="number" value="{$kep.sorrend}"
