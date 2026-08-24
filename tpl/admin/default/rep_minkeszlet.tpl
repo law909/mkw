@@ -1,7 +1,32 @@
 {extends "../rep_base.tpl"}
 
+{* A rep.css A4 állóra méretezi a riportokat; ez a lista ehhez túl széles, ezért fekvő
+   tájolással és a papír teljes szélességével nyomtat, a cellák pedig nem törnek sorba. *}
+{block "inhead"}
+    <style>
+        body {
+            width: auto;
+            max-width: none;
+            margin: 0 1cm;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table th,
+        table td {
+            white-space: nowrap;
+        }
+
+        @page {
+            size: landscape;
+            margin: 1cm;
+        }
+    </style>
+{/block}
+
 {block "body"}
-    <button class="noprint" onclick="window.print()">Nyomtatás</button>
     <h4>Minimum készlet alatt</h4>
     <h5>{$datumstr}</h5>
     <h5>{$raktar}</h5>
