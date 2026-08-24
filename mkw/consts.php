@@ -24,6 +24,16 @@ class consts
     const KezdoTermekKategoria3 = 'kezdotermekkategoria3';
     const KezdoTermekKategoria4 = 'kezdotermekkategoria4';
     const KezdoTermekKategoria5 = 'kezdotermekkategoria5';
+
+    /**
+     * Melyik menüfából épül a webshop menüje: '' = mindegy (mindkettő), 'termekmenu' vagy
+     * 'termekmenu2' (lásd \mkw\store::getTermekmenuControllers()).
+     */
+    const Termekmenutipus = 'termekmenutipus';
+    const Termekmenutipus2 = 'termekmenutipus2';
+    const Termekmenutipus3 = 'termekmenutipus3';
+    const Termekmenutipus4 = 'termekmenutipus4';
+    const Termekmenutipus5 = 'termekmenutipus5';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';

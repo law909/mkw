@@ -17,6 +17,7 @@ use Traits\GetsFieldValue;
  * indexes={
  * 		@ORM\index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"}),
  * 		@ORM\index(name="termekmenukarkod_idx",columns={"termekmenu1karkod"}),
+ * 		@ORM\index(name="termekmenu2karkod_idx",columns={"termekmenu2karkod"}),
  * 		@ORM\index(name="termekfacounter_idx",columns={"inaktiv","lathato"}),
  * 		@ORM\index(name="termekslug_idx",columns={"slug"}),
  *      @ORM\index(name="termekvonalkod_idx",columns={"vonalkod"}),
@@ -283,6 +284,18 @@ class Termek
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekmenu1karkod = '';
+
+    /**
+     * A második menüfa (TermekMenu2) besorolása. Az elsőtől független: a webshop beállítása
+     * dönti el, melyik fából épül a menüje.
+     *
+     * @ORM\ManyToOne(targetEntity="TermekMenu2",inversedBy="termekek1")
+     * @ORM\JoinColumn(name="termekmenu2_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $termekmenu2;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $termekmenu2karkod = '';
 
     /** @ORM\Column(type="text",nullable=true) */
     private $kepurl = '';
@@ -1839,6 +1852,48 @@ class Termek
         } else {
             $this->termekmenu1karkod = '';
         }
+    }
+
+    /**
+     * @return TermekMenu2
+     */
+    public function getTermekmenu2()
+    {
+        return $this->termekmenu2;
+    }
+
+    public function getTermekmenu2Nev()
+    {
+        if ($this->termekmenu2) {
+            if ($this->termekmenu2->getId() > 1) {
+                return $this->termekmenu2->getNev();
+            }
+        }
+        return '';
+    }
+
+    public function getTermekmenu2Id()
+    {
+        if ($this->termekmenu2) {
+            return $this->termekmenu2->getId();
+        }
+        return 1;
+    }
+
+    public function getTermekmenu2Path()
+    {
+        if ($this->termekmenu2) {
+            if ($this->termekmenu2->getId() > 1) {
+                return $this->termekmenu2->getPath($this->termekmenu2);
+            }
+        }
+        return [];
+    }
+
+    public function setTermekmenu2($termekmenu)
+    {
+        $this->termekmenu2 = $termekmenu;
+        $this->termekmenu2karkod = $termekmenu ? $termekmenu->getKarkod() : '';
     }
 
     public function getTermekKepek($csaklathato = false)

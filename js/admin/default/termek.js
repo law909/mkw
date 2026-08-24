@@ -739,7 +739,8 @@ $(document).ready(function () {
                     plugins: ['themeroller', 'json_data', 'ui'],
                     themeroller: {item: ''},
                     json_data: {
-                        ajax: {url: '/admin/termekmenu/jsonlist'}
+                        // melyik menüfa: a gomb data-url-je dönti el (menü 1 / menü 2)
+                        ajax: {url: edit.attr('data-url') || '/admin/termekmenu/jsonlist'}
                     },
                     ui: {select_limit: 1}
                 })

@@ -7,6 +7,7 @@ use Entities\Szin;
 use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekMenu;
+use Entities\TermekMenu2;
 use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -16,13 +17,24 @@ class termekmenuController extends \mkwhelpers\MattableController
 {
     use PublicTermekLista;
 
+    /**
+     * A második menüfa (termekmenu2Controller) ugyanezt a kódot használja, csak más entitással,
+     * táblával és sablonokkal – ezt a négy dolgot írja felül.
+     */
+    protected $entityClass = TermekMenu::class;
+    protected $tablaNev = 'termekmenu';
+    protected $listaTplName = 'termekmenulista.tpl';
+
+    /** a termék melyik mezője hivatkozik erre a fára (Termek.termekmenu1 / .termekmenu2) */
+    protected $termekMezo = 'termekmenu1';
+
     private $fatomb;
 
     public function __construct()
     {
-        $this->setEntityName(TermekMenu::class);
-        $this->setKarbFormTplName('termekmenukarbform.tpl');
-        $this->setKarbTplName('termekmenukarb.tpl');
+        $this->setEntityName($this->entityClass);
+        $this->setKarbFormTplName(str_replace('lista.tpl', 'karbform.tpl', $this->listaTplName));
+        $this->setKarbTplName(str_replace('lista.tpl', 'karb.tpl', $this->listaTplName));
         parent::__construct();
     }
 
@@ -36,7 +48,8 @@ class termekmenuController extends \mkwhelpers\MattableController
     {
         $x = [];
         if (!$t) {
-            $t = new \Entities\TermekMenu();
+            $cl = $this->entityClass;
+            $t = new $cl();
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
@@ -77,7 +90,7 @@ class termekmenuController extends \mkwhelpers\MattableController
 
     public function viewlist()
     {
-        $view = $this->createView('termekmenulista.tpl');
+        $view = $this->createView($this->listaTplName);
         $view->setVar('pagetitle', t('Termék menük'));
         $view->printTemplateResult();
     }
@@ -86,14 +99,17 @@ class termekmenuController extends \mkwhelpers\MattableController
     {
         $elotag = $this->params->getStringRequestParam('pre');
         if (!$elotag) {
-            $elotag = 'termekmenu_';
+            $elotag = $this->tablaNev . '_';
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('parent_id', 'parent_id');
         $rsm->addScalarResult('nev', 'nev');
         $rsm->addScalarResult('sorrend', 'sorrend');
-        $q = $this->getEm()->createNativeQuery('SELECT id,parent_id,nev,sorrend FROM termekmenu tf ORDER BY parent_id,sorrend,nev', $rsm);
+        $q = $this->getEm()->createNativeQuery(
+            'SELECT id,parent_id,nev,sorrend FROM ' . $this->tablaNev . ' tf ORDER BY parent_id,sorrend,nev',
+            $rsm
+        );
         $this->fatomb = $q->getScalarResult();
         $retomb = [
             'data' => ['title' => $this->fatomb[0]['nev'], 'attr' => ['id' => $elotag . $this->fatomb[0]['id']]],
@@ -174,7 +190,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         }
     }
 
-    public function getNavigator(TermekMenu $parent, $elsourlkell = true)
+    public function getNavigator(TermekMenu|TermekMenu2 $parent, $elsourlkell = true)
     {
         $navi = [];
         if ($elsourlkell) {
@@ -190,7 +206,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         return array_reverse($navi);
     }
 
-    public function getkatlista(TermekMenu $parent)
+    public function getkatlista(TermekMenu|TermekMenu2 $parent)
     {
         $repo = $this->getRepo();
         $children = $repo->getForParent($parent->getId(), 4);
@@ -266,7 +282,7 @@ class termekmenuController extends \mkwhelpers\MattableController
     /**
      * Mugenrace2026 terméklista a kategória / keresés / szűrő / márka nézetekhez.
      */
-    private function termeklistaMugenrace2026(\Entities\TermekMenu|null $parent, string|null $caller): array
+    private function termeklistaMugenrace2026(TermekMenu|TermekMenu2|null $parent, string|null $caller): array
     {
         $ret = [];
         $listVariations = true;

@@ -1,0 +1,299 @@
+$(document).ready(function () {
+    const dialogcenter = $('#dialogcenter');
+
+    function _new_edit(uj) {
+        let valasztottid = $('#termekmenu2').jstree('get_selected').children('a').attr('id'),
+            scrollPosition, adat;
+        if (!valasztottid) {
+            if (uj) {
+                dialogcenter.html('Válasszon szülő menüt').dialog({
+                    resizable: false, modal: true, buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            } else {
+                dialogcenter.html('Válasszon menüt').dialog({
+                    resizable: false, modal: true, buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+        if (uj) {
+            adat = {
+                parentid: valasztottid.split('_')[1],
+                oper: 'add'
+            };
+        } else {
+            adat = {
+                id: valasztottid.split('_')[1],
+                oper: 'edit'
+            };
+        }
+        $.ajax({
+            url: '/admin/termekmenu2/getkarb',
+            data: adat,
+            success: function (data) {
+                scrollPosition = $(document).scrollTop();
+                $(document).scrollTop(0);
+                $('#termekmenu2').hide();
+                $('#termekmenu2karb').append(data);
+                var karbsetup = new MattkarbConfig({
+                    name: '',
+                    independent: false,
+                    header: '#menukarb-header',
+                    form: '#menukarb-form',
+                    tab: '#menukarb-tabs',
+                    cancel: '#menukarb-cancelbutton',
+                    ok: '#menukarb-okbutton',
+                    viewUrl: '/admin/termekmenu2/getkarb',
+                    saveUrl: '/admin/termekmenu2/save',
+                    beforeShow: function () {
+                        if (!window.mkwIsMobile) {
+                            CKFinder.setupCKEditor(null, '/ckfinder/');
+                            $('.js-ckeditor').each(function () {
+                                $(this).ckeditor();
+                            });
+                        }
+                        $('#AltalanosTab').on('click', '#KepDelButton', function (e) {
+                            e.preventDefault();
+                            dialogcenter.html('Biztos, hogy törli a képet?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function () {
+                                        var kep = $('.js-termekmenu2kep');
+                                        $('#KepUrlEdit').val('');
+                                        $('#KepLeirasEdit').val('');
+                                        kep.attr('src', '/');
+                                        kep.parent().attr('href', '');
+                                        $(this).dialog('close');
+                                    },
+                                    'Nem': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        })
+                            .on('click', '#KepBrowseButton', function (e) {
+                                e.preventDefault();
+                                var finder = new CKFinder(),
+                                    $kepurl = $('#KepUrlEdit'),
+                                    path = $kepurl.val();
+                                if (path) {
+                                    finder.startupPath = 'Images:' + path.substring(path.indexOf('/', 1));
+                                }
+                                finder.selectActionFunction = function (fileUrl, data) {
+                                    var kep = $('.js-termekmenu2kep');
+                                    $.ajax({
+                                        url: '/admin/getsmallurl',
+                                        type: 'GET',
+                                        data: {
+                                            url: fileUrl
+                                        },
+                                        success: function (data) {
+                                            $kepurl.val(fileUrl);
+                                            kep.attr('src', data);
+                                            kep.parent().attr('href', fileUrl);
+                                        }
+                                    });
+                                };
+                                finder.popup();
+                            });
+                        $('#KepDelButton,#KepBrowseButton').button();
+                        if (!window.mkwIsMobile) {
+                            $('.js-toflyout').flyout();
+                        }
+                    },
+                    beforeHide: function () {
+                        if (!window.mkwIsMobile) {
+                            let editor;
+                            $('.js-ckeditor').each(function () {
+                                editor = $(this).ckeditorGet();
+                                if (editor) {
+                                    editor.destroy();
+                                }
+                            });
+                        }
+                    },
+                    onSubmit: function (data) {
+                        $('#termekmenu2karb').empty().hide();
+                        $('#termekmenu2').jstree('refresh');
+                        $('#termekmenu2').show();
+                        $(document).scrollTop(scrollPosition);
+                        alert('Ne felejtse el a termék kategóriák rendezését!');
+                    },
+                    onCancel: function () {
+                        $('#termekmenu2karb').empty().hide();
+                        $('#termekmenu2').show();
+                        $(document).scrollTop(scrollPosition);
+                    }
+                });
+                $('#termekmenu2karb').mattkarb(karbsetup);
+            }
+        });
+    };
+
+    $('#termekmenu2')
+        .on('loaded.jstree refresh.jstree', function (e, d) {
+            d.inst.open_all();
+        })
+        .jstree({
+            core: {animation: 100},
+            plugins: ['themeroller', 'json_data', 'contextmenu', 'ui', 'checkbox'],
+            themeroller: {item: ''},
+            json_data: {
+                ajax: {url: '/admin/termekmenu2/jsonlist'}
+            },
+            ui: {select_limit: 1},
+            contextmenu: {
+                select_node: true,
+                items: {
+                    create: false, rename: false, remove: false, ccp: false,
+                    _new: {
+                        label: 'Új',
+                        action: function (obj) {
+                            _new_edit(true);
+                        }
+                    },
+                    _edit: {
+                        label: 'Szerkeszt',
+                        action: function (obj) {
+                            _new_edit(false);
+                        }
+                    },
+                    _del: {
+                        label: 'Töröl',
+                        action: function (obj) {
+                            var valasztottid = $('#termekmenu2').jstree('get_selected').children('a').attr('id');
+                            if (!valasztottid) {
+                                dialogcenter.html('Válasszon kategóriát').dialog({
+                                    resizable: false, modal: true, buttons: {
+                                        'OK': function () {
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                });
+                                return false;
+                            }
+                            $.ajax({
+                                url: '/admin/termekmenu2/isdeletable',
+                                data: {
+                                    id: valasztottid.split('_')[1]
+                                },
+                                success: function (data) {
+                                    if (data === '1') {
+                                        dialogcenter.html('Biztosan törli a kategóriát?').dialog({
+                                            modal: true,
+                                            buttons: {
+                                                'Igen': function () {
+                                                    $(this).dialog('close');
+                                                    $.ajax({
+                                                        url: '/admin/termekmenu2/save',
+                                                        type: 'POST',
+                                                        data: {
+                                                            id: valasztottid.split('_')[1],
+                                                            oper: 'del'
+                                                        },
+                                                        success: function (data) {
+                                                            $('#termekmenu2').jstree('refresh');
+                                                            alert('Ne felejtse el a termék kategóriák rendezését!');
+                                                        }
+                                                    });
+                                                },
+                                                'Nem': function () {
+                                                    $(this).dialog('close');
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        dialogcenter.html('A kategória nem törölhető.').dialog({
+                                            modal: true, buttons: {
+                                                'OK': function () {
+                                                    $(this).dialog('close');
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    _move: {
+                        label: 'Áthelyez',
+                        action: function (obj) {
+                            var valasztottid = $('#termekmenu2').jstree('get_selected').children('a').attr('id');
+                            if (!valasztottid) {
+                                dialogcenter.html('Válasszon kategóriát').dialog({
+                                    resizable: false, modal: true, buttons: {
+                                        'OK': function () {
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                });
+                                return false;
+                            }
+                            dialogcenter.jstree({
+                                core: {animation: 100},
+                                plugins: ['themeroller', 'json_data', 'ui'],
+                                themeroller: {item: ''},
+                                json_data: {
+                                    ajax: {url: '/admin/termekmenu2/jsonlist'}
+                                },
+                                ui: {select_limit: 1}
+                            })
+                                .on('loaded.jstree', function (event, data) {
+                                    dialogcenter.jstree('open_node', $('#termekmenu2_1', dialogcenter).parent());
+                                });
+                            dialogcenter.dialog({
+                                resizable: true,
+                                height: 340,
+                                modal: true,
+                                buttons: {
+                                    'OK': function () {
+                                        var ideid = dialogcenter.jstree('get_selected').children('a').attr('id'),
+                                            $thisdialog = $(this);
+                                        $.ajax({
+                                            url: '/admin/termekmenu2/move',
+                                            type: 'POST',
+                                            data: {
+                                                eztid: valasztottid.split('_')[1],
+                                                ideid: ideid.split('_')[1]
+                                            },
+                                            success: function (data) {
+                                                $('#termekmenu2').jstree('refresh');
+                                                $thisdialog.dialog('close');
+                                                alert('Ne felejtse el a termék kategóriák rendezését!');
+                                            }
+                                        });
+                                    },
+                                    'Bezár': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        })
+        .on('change_state.jstree', function (e, data) {
+            $termekmenu2 = $(this);
+            $('li', $termekmenu2).each(function (i) {
+                $this = $(this);
+                if ($this.hasClass('jstree-unchecked')) {
+                    $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check');
+                } else if ($this.hasClass('jstree-checked')) {
+                    $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check').addClass('ui-icon ui-icon-circle-check');
+                } else if ($this.hasClass('jstree-undetermined')) {
+                    $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check').addClass('ui-icon ui-icon-check');
+                }
+            });
+        });
+});

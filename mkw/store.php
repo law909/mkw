@@ -7,6 +7,7 @@ use Controllers\kosarController;
 use Controllers\orszagController;
 use Controllers\popupController;
 use Controllers\termekfaController;
+use Controllers\termekmenu2Controller;
 use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
@@ -652,8 +653,11 @@ class store
             switch (true) {
                 case self::isMugenrace2026():
                 case self::isSuperzoneHu():
-                    $tmc = new termekmenuController();
-                    $v->setVar('menu1', $tmc->getTreeAsArray());
+                    $menu1 = [];
+                    foreach (self::getTermekmenuControllers() as $tmc) {
+                        $menu1 = array_merge($menu1, $tmc->getTreeAsArray());
+                    }
+                    $v->setVar('menu1', $menu1);
                     break;
                 default:
                     $tf = new termekfaController();
@@ -1739,6 +1743,22 @@ class store
     public static function getWebshopNum()
     {
         return self::getSetupValue('webshopnum', 1);
+    }
+
+    /**
+     * A webshop menüjét adó menüfá(k) vezérlői. Webshoponként beállítható, hogy a menü a
+     * `termekmenu`, a `termekmenu2` vagy – ha nincs megadva („mindegy") – mindkettő legyen.
+     *
+     * @return \Controllers\termekmenuController[]
+     */
+    public static function getTermekmenuControllers(): array
+    {
+        $tipus = (string)self::getParameter(self::getWebshopFieldName(\mkw\consts::Termekmenutipus), '');
+        return match ($tipus) {
+            'termekmenu' => [new termekmenuController()],
+            'termekmenu2' => [new termekmenu2Controller()],
+            default => [new termekmenuController(), new termekmenu2Controller()],
+        };
     }
 
     public static function getEnabledWebshops()

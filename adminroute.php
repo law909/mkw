@@ -1385,6 +1385,16 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/termekmenu/viewlist', 'termekmenuController#viewlist', 'admintermekmenuviewlist');
 $router->map('GET', '/admin/termekmenu/regenerateslug', 'termekmenuController#regenerateSlug', 'admintermekmenuregenerateslug');
 
+$router->map('GET', '/admin/termekmenu2/getkarb', 'termekmenu2Controller#getkarb', 'admintermekmenu2getkarb');
+$router->map('GET', '/admin/termekmenu2/jsonlist', 'termekmenu2Controller#jsonlist', 'admintermekmenu2jsonlist');
+$router->map('GET', '/admin/termekmenu2/isdeletable', 'termekmenu2Controller#isdeletable', 'admintermekmenu2isdeletable');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/termekmenu2/save', 'termekmenu2Controller#save', 'admintermekmenu2save');
+    $router->map('POST', '/admin/termekmenu2/move', 'termekmenu2Controller#move', 'admintermekmenu2move');
+}
+$router->map('GET', '/admin/termekmenu2/viewlist', 'termekmenu2Controller#viewlist', 'admintermekmenu2viewlist');
+$router->map('GET', '/admin/termekmenu2/regenerateslug', 'termekmenu2Controller#regenerateSlug', 'admintermekmenu2regenerateslug');
+
 $router->map('GET', '/admin/kosar/viewlist', 'kosarController#viewlist', 'adminkosarviewlist');
 $router->map('GET', '/admin/kosar/getlistbody', 'kosarController#getlistbody', 'adminkosargetlistbody');
 if (!\mkw\store::isClosed()) {

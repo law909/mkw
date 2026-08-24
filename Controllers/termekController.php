@@ -18,6 +18,7 @@ use Entities\TermekFa;
 use Entities\TermekKapcsolodo;
 use Entities\TermekKep;
 use Entities\TermekMenu;
+use Entities\TermekMenu2;
 use Entities\TermekMinkeszlet;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
@@ -102,6 +103,9 @@ class termekController extends \mkwhelpers\MattableController
         $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
         $x['termekmenu1'] = $t->getTermekmenu1Id();
         $x['termekmenu1path'] = implode(' / ', $t->getTermekmenu1Path());
+        $x['termekmenu2nev'] = $t->getTermekmenu2Nev();
+        $x['termekmenu2'] = $t->getTermekmenu2Id();
+        $x['termekmenu2path'] = implode(' / ', $t->getTermekmenu2Path());
 
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
@@ -576,6 +580,9 @@ class termekController extends \mkwhelpers\MattableController
         } else {
             $obj->setTermekmenu1(null);
         }
+        $menu2repo = \mkw\store::getEm()->getRepository(TermekMenu2::class);
+        $menu2 = $menu2repo->find($this->params->getIntRequestParam('termekmenu2'));
+        $obj->setTermekmenu2($menu2 ?: null);
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
         foreach ($cimkekpar as $cimkekod) {

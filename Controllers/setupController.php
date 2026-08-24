@@ -653,6 +653,12 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria5);
         $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria5', ($p ? $p->getErtek() : ''));
 
+        foreach ([\mkw\consts::Termekmenutipus, \mkw\consts::Termekmenutipus2, \mkw\consts::Termekmenutipus3,
+                     \mkw\consts::Termekmenutipus4, \mkw\consts::Termekmenutipus5] as $kulcs) {
+            $p = $repo->find($kulcs);
+            $view->setVar($kulcs . 'list', $this->getTermekmenutipusList($p ? $p->getErtek() : ''));
+        }
+
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
@@ -1090,6 +1096,19 @@ class setupController extends \mkwhelpers\Controller
     }
 
     // Kezdő termék kategória gombhoz: a rejtett input id-je + a gomb felirata (kategórianév).
+    /**
+     * A webshop menüjének forrása: melyik menüfából épüljön. Üres érték = mindegy, ilyenkor
+     * mindkét fa bekerül a menübe.
+     */
+    private function getTermekmenutipusList($sel): array
+    {
+        $ret = [];
+        foreach (['' => t('mindegy'), 'termekmenu' => t('Termék menü'), 'termekmenu2' => t('Termék menü 2')] as $id => $caption) {
+            $ret[] = ['id' => $id, 'caption' => $caption, 'selected' => ((string)$sel === (string)$id)];
+        }
+        return $ret;
+    }
+
     private function setKezdoKategoriaVars($view, $namebase, $katid)
     {
         $view->setVar($namebase . 'id', $katid ?: '');
@@ -1182,6 +1201,10 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::KezdoTermekKategoria3,
             \mkw\consts::KezdoTermekKategoria4,
             \mkw\consts::KezdoTermekKategoria5,
+            \mkw\consts::Termekmenutipus2,
+            \mkw\consts::Termekmenutipus3,
+            \mkw\consts::Termekmenutipus4,
+            \mkw\consts::Termekmenutipus5,
             \mkw\consts::Webshop2Price,
             \mkw\consts::Webshop2Discount,
             \mkw\consts::Webshop3Price,
@@ -2170,6 +2193,11 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::KezdoTermekKategoria3, $this->params->getStringRequestParam('kezdotermekkategoria3'));
         $this->setObj(\mkw\consts::KezdoTermekKategoria4, $this->params->getStringRequestParam('kezdotermekkategoria4'));
         $this->setObj(\mkw\consts::KezdoTermekKategoria5, $this->params->getStringRequestParam('kezdotermekkategoria5'));
+
+        foreach ([\mkw\consts::Termekmenutipus, \mkw\consts::Termekmenutipus2, \mkw\consts::Termekmenutipus3,
+                     \mkw\consts::Termekmenutipus4, \mkw\consts::Termekmenutipus5] as $kulcs) {
+            $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
+        }
 
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
         if ($arsav) {

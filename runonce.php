@@ -1598,6 +1598,66 @@ if ($DBVersion < '0131') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0131');
 }
 
+if ($DBVersion < '0132') {
+    // Második termékmenü-fa (termekmenu2). A DDL az entitásokból jön (./updateschema.sh).
+    // A menüpont az elsőtől örökli a láthatóságot: ahol a termékmenü nincs használatban,
+    // ott a másodikra sincs szükség.
+    $conn = \mkw\store::getEm()->getConnection();
+    $lathato = (int)$conn->fetchOne('SELECT lathato FROM menu WHERE url = "/admin/termekmenu/viewlist"');
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 3, "Termék menü 2", "/admin/termekmenu2/viewlist", "/admin/termekmenu2", 20, '
+        . $lathato . ', 1310, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/termekmenu2/viewlist") m)'
+    );
+    // a fa gyökere: a termekmenu 1-es sorának párja, enélkül a fa-szerkesztő üres
+    $conn->executeStatement(
+        'INSERT INTO termekmenu2 (id, nev, slug, karkod, lathato, lathato2, lathato3, lathato4, lathato5, lathato6,'
+        . ' lathato7, lathato8, lathato9, lathato10, lathato11, lathato12, lathato13, lathato14, lathato15)'
+        . ' SELECT 1, "Termék menü 2", "termekmenu2", "00001", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM termekmenu2 WHERE id = 1) m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0132');
+}
+
+if ($DBVersion < '0133') {
+    // superzoneb2b: a termékmenü a termékfából indul, és minden termék oda kerül, ahol a
+    // termékfában áll. A két tábla oszlopai megegyeznek (mindkettő ugyanabból a mintából jön),
+    // ezért a másolás egyenes; a megfeleltetést az idegenkod tartja ("termekfa-<id>").
+    if (\mkw\store::isSuperzoneB2B()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $mar = (int)$conn->fetchOne('SELECT COUNT(*) FROM termekmenu WHERE idegenkod LIKE "termekfa-%"');
+        if (!$mar) {
+            $mezok = 'nev, nev_l1, sorrend, slug, rovidleiras, rovidleiras_l1, leiras, leiras_l1,'
+                . ' leiras2, leiras2_l1, leiras3, leiras3_l1, menu1lathato, menu2lathato, menu3lathato,'
+                . ' menu4lathato, oldalcim, seodescription, kepurl, kepleiras, inaktiv, arukeresoid,'
+                . ' lathato, lathato2, lathato3, lathato4, lathato5, lathato6, lathato7, lathato8,'
+                . ' lathato9, lathato10, lathato11, lathato12, lathato13, lathato14, lathato15';
+            // a gyökér már megvan a menüben (id=1), ezért csak az alatta lévő kategóriák jönnek át;
+            // a szülő egyelőre mindenkinél a gyökér, a valódi szülőt a következő lépés köti be
+            $conn->executeStatement(
+                'INSERT INTO termekmenu (' . $mezok . ', idegenkod, parent_id)'
+                . ' SELECT ' . $mezok . ', CONCAT("termekfa-", f.id), 1'
+                . ' FROM termekfa f WHERE f.parent_id IS NOT NULL'
+            );
+            $conn->executeStatement(
+                'UPDATE termekmenu m'
+                . ' JOIN termekfa f ON m.idegenkod = CONCAT("termekfa-", f.id)'
+                . ' JOIN termekmenu p ON p.idegenkod = CONCAT("termekfa-", f.parent_id)'
+                . ' SET m.parent_id = p.id'
+            );
+            $conn->executeStatement(
+                'UPDATE termek t JOIN termekmenu m ON m.idegenkod = CONCAT("termekfa-", t.termekfa1_id)'
+                . ' SET t.termekmenu1_id = m.id'
+                . ' WHERE t.termekfa1_id IS NOT NULL'
+            );
+            // a karkod a fa szerkezetéből származik, a termékeké is innen frissül
+            \mkw\store::getEm()->getRepository(\Entities\TermekMenu::class)->regenerateKarKod();
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0133');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

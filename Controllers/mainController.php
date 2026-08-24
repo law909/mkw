@@ -140,10 +140,17 @@ class mainController extends \mkwhelpers\Controller
 
     public function termekmenu()
     {
-        $tf = new termekmenuController();
         $com = $this->params->getStringParam('slug');
-        /** @var TermekMenu $ag */
-        $ag = $tf->getRepo()->findOneBySlug($com);
+        // a slug abban a menüfában keresendő, amelyikből a webshop menüje épül
+        $tf = null;
+        $ag = null;
+        foreach (\mkw\store::getTermekmenuControllers() as $ctrl) {
+            $ag = $ctrl->getRepo()->findOneBySlug($com);
+            if ($ag) {
+                $tf = $ctrl;
+                break;
+            }
+        }
         if ($ag && !$ag->getInaktiv() && $ag->getLathato()) {
             if (count($ag->getChildren()) > 0) {
                 $this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');

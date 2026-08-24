@@ -68,9 +68,18 @@
                     <td><label>{at('Menü')}:</label></td>
                     <td>
                         <span id="TermekMenu1" class="js-termekmenubutton" data-text="{at('válasszon')}"
-                              data-name="termekmenu1"
+                              data-name="termekmenu1" data-url="/admin/termekmenu/jsonlist"
                               data-value="{$egyed.termekmenu1}">{if ($egyed.termekmenu1nev)}{$egyed.termekmenu1nev}{else}{at('válasszon')}{/if}</span>
                         <span>{$egyed.termekmenu1path}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>{at('Menü 2')}:</label></td>
+                    <td>
+                        <span id="TermekMenu2" class="js-termekmenubutton" data-text="{at('válasszon')}"
+                              data-name="termekmenu2" data-url="/admin/termekmenu2/jsonlist"
+                              data-value="{$egyed.termekmenu2}">{if ($egyed.termekmenu2nev)}{$egyed.termekmenu2nev}{else}{at('válasszon')}{/if}</span>
+                        <span>{$egyed.termekmenu2path}</span>
                     </td>
                 </tr>
                 </tbody>

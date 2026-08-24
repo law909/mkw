@@ -8,6 +8,7 @@ use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekMenu;
+use Entities\TermekMenu2;
 use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -221,24 +222,30 @@ trait PublicTermekLista
         return $filter;
     }
 
-    private function buildTermekmenuFilter(TermekMenu|array|null $termekmenu): FilterDescriptor
+    /**
+     * A termék melyik mezője hivatkozik a menüfára. A termekmenuController állítja be
+     * (`termekmenu1`), a második menüfa vezérlője pedig `termekmenu2`-re írja át.
+     */
+    private function getTermekmenuMezo(): string
+    {
+        return $this->termekMezo ?? 'termekmenu1';
+    }
+
+    private function buildTermekmenuFilter(TermekMenu|TermekMenu2|array|null $termekmenu): FilterDescriptor
     {
         $filter = new FilterDescriptor();
         if ($termekmenu) {
-            if (is_array($termekmenu)) {
-                $filter->addFilter('_xx.termekmenu1', '=', $termekmenu['id']);
-            } else {
-                $filter->addFilter('_xx.termekmenu1', '=', $termekmenu->getId());
-            }
+            $id = is_array($termekmenu) ? $termekmenu['id'] : $termekmenu->getId();
+            $filter->addFilter('_xx.' . $this->getTermekmenuMezo(), '=', $id);
         }
         return $filter;
     }
 
-    private function buildNativTermekmenuFilter(TermekMenu|null $termekmenu): FilterDescriptor
+    private function buildNativTermekmenuFilter(TermekMenu|TermekMenu2|null $termekmenu): FilterDescriptor
     {
         $filter = new FilterDescriptor();
         if ($termekmenu) {
-            $filter->addFilter('_xx.termekmenu1_id', '=', $termekmenu->getId());
+            $filter->addFilter('_xx.' . $this->getTermekmenuMezo() . '_id', '=', $termekmenu->getId());
         }
         return $filter;
     }

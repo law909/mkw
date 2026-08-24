@@ -1,0 +1,15 @@
+{extends "../base.tpl"}
+
+{block "inhead"}
+    {include 'ckeditor.tpl'}
+    {include "../partials/form.scripts.tpl"}
+    <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
+    <script type="text/javascript" src="/js/admin/default/termekmenu2lista.js"></script>
+{/block}
+
+{block "kozep"}
+    <div id="termekmenu2" class="ui-widget-content"></div>
+    <div id="termekmenu2karb"></div>
+{/block}
