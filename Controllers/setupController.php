@@ -659,6 +659,23 @@ class setupController extends \mkwhelpers\Controller
             $view->setVar($kulcs . 'list', $this->getTermekmenutipusList($p ? $p->getErtek() : ''));
         }
 
+        // Partner beállítások: új partner felvitelekor előre kitöltött értékek
+        $p = $repo->find(\mkw\consts::PartnerAlapTipus);
+        $view->setVar(
+            \mkw\consts::PartnerAlapTipus . 'list',
+            (new partnertipusController())->getSelectList($p ? $p->getErtek() : '')
+        );
+        $p = $repo->find(\mkw\consts::PartnerAlapBizonylatnyelv);
+        $view->setVar(
+            \mkw\consts::PartnerAlapBizonylatnyelv . 'list',
+            \mkw\store::getLocaleSelectList($p ? $p->getErtek() : '')
+        );
+        $p = $repo->find(\mkw\consts::PartnerAlapValutanem);
+        $view->setVar(
+            \mkw\consts::PartnerAlapValutanem . 'list',
+            (new valutanemController())->getSelectList($p ? $p->getErtek() : '')
+        );
+
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
@@ -2196,6 +2213,12 @@ class setupController extends \mkwhelpers\Controller
 
         foreach ([\mkw\consts::Termekmenutipus, \mkw\consts::Termekmenutipus2, \mkw\consts::Termekmenutipus3,
                      \mkw\consts::Termekmenutipus4, \mkw\consts::Termekmenutipus5] as $kulcs) {
+            $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
+        }
+
+        // üresen hagyva („válasszon") a beállítás törlődik
+        foreach ([\mkw\consts::PartnerAlapTipus, \mkw\consts::PartnerAlapBizonylatnyelv,
+                     \mkw\consts::PartnerAlapValutanem] as $kulcs) {
             $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
         }
 

@@ -881,6 +881,36 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow"><b>{at('Partner beállítások')}</b></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="PartnerAlapTipusEdit">{at('Alapértelmezett típus')}:</label></span>
+                            <select id="PartnerAlapTipusEdit" name="partneralaptipus">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $partneralaptipuslist as $_pa}
+                                    <option value="{$_pa.id}"{if ($_pa.selected)} selected="selected"{/if}>{$_pa.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="PartnerAlapBizonylatnyelvEdit">{at('Alapértelmezett bizonylat nyelv')}:</label></span>
+                            <select id="PartnerAlapBizonylatnyelvEdit" name="partneralapbizonylatnyelv">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $partneralapbizonylatnyelvlist as $_pa}
+                                    <option value="{$_pa.id}"{if ($_pa.selected)} selected="selected"{/if}>{$_pa.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="PartnerAlapValutanemEdit">{at('Alapértelmezett valutanem')}:</label></span>
+                            <select id="PartnerAlapValutanemEdit" name="partneralapvalutanem">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $partneralapvalutanemlist as $_pa}
+                                    <option value="{$_pa.id}"{if ($_pa.selected)} selected="selected"{/if}>{$_pa.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div id="TulajTab" class="mattkarb-page" data-visible="visible">
                     <table>

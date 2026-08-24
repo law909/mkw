@@ -505,6 +505,11 @@ class consts
 
     const DefaultPartner = 'defaultpartner';
     const DefaultTermek = 'defaulttermek';
+
+    /** Új partner felvitelekor előre kitöltött értékek (üresen hagyva nincs előtöltés) */
+    const PartnerAlapTipus = 'partneralaptipus';
+    const PartnerAlapBizonylatnyelv = 'partneralapbizonylatnyelv';
+    const PartnerAlapValutanem = 'partneralapvalutanem';
     const Boltivevo = 'boltivevo';
 
     const MPTNGYSzimpoziumTipus = 'mptngyszimpoziumtipus';

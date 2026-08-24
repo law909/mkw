@@ -524,6 +524,17 @@ class partnerController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    /**
+     * Új partneren a beállításokban megadott alapérték, meglévőn a partner saját értéke.
+     * Üres beállításnál nincs előtöltés.
+     *
+     * @param \Entities\Partner|null $partner
+     */
+    private function alapertelmezes($partner, $ertek, string $parameterkulcs)
+    {
+        return $partner ? $ertek : \mkw\store::getParameter($parameterkulcs, '');
+    }
+
     public function _getkarb($tplname)
     {
         $id = $this->params->getRequestParam('id', 0);
@@ -546,7 +557,10 @@ class partnerController extends \mkwhelpers\MattableController
         $uk = new uzletkotoController();
         $view->setVar('uzletkotolist', $uk->getSelectList($partner?->getUzletkotoId()));
         $valutanem = new valutanemController();
-        $view->setVar('valutanemlist', $valutanem->getSelectList($partner?->getValutanemId()));
+        $view->setVar(
+            'valutanemlist',
+            $valutanem->getSelectList($this->alapertelmezes($partner, $partner?->getValutanemId(), \mkw\consts::PartnerAlapValutanem))
+        );
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList($partner?->getArsav()?->getId()));
 
@@ -556,7 +570,10 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('orszaglist', $orszag->getSelectList($partner?->getOrszagId(), true));
         $view->setVar('szallorszaglist', $orszag->getSelectList($partner?->getSzallorszagId(), true));
         $partnertipus = new partnertipusController();
-        $view->setVar('partnertipuslist', $partnertipus->getSelectList($partner?->getPartnertipusId()));
+        $view->setVar(
+            'partnertipuslist',
+            $partnertipus->getSelectList($this->alapertelmezes($partner, $partner?->getPartnertipusId(), \mkw\consts::PartnerAlapTipus))
+        );
         $mpttagsagforma = new mpttagsagformaController();
         $view->setVar('mpttagsagformalist', $mpttagsagforma->getSelectList($partner?->getMptTagsagformaId()));
         $mptszekcio = new mptszekcioController();
@@ -566,7 +583,12 @@ class partnerController extends \mkwhelpers\MattableController
         $mpttagozat = new mpttagozatController();
         $view->setVar('mpttagozatlist', $mpttagozat->getSelectList($partner?->getMptTagozatId()));
 
-        $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList($partner?->getBizonylatnyelv()));
+        $view->setVar(
+            'bizonylatnyelvlist',
+            \mkw\store::getLocaleSelectList(
+                $this->alapertelmezes($partner, $partner?->getBizonylatnyelv(), \mkw\consts::PartnerAlapBizonylatnyelv)
+            )
+        );
 
         $telkorzetc = new korzetszamController();
         $view->setVar('telkorzetlist', $telkorzetc->getSelectList($partner?->getTelkorzet()));
