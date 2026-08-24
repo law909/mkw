@@ -15,10 +15,16 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 /**
- * A GLS utánvét-kimutatás importja, a bank tranzakció import mintájára.
+ * A GLS utánvét-kimutatások importja, a bank tranzakció import mintájára.
  *
- * A GLS „Actual pcl statuses" munkalapjából csak azok a sorok kerülnek be, amelyeken van
- * **beszedett** utánvét (Q oszlop) – a regisztrált, de be nem szedett összeg még nem pénz.
+ * Kétféle kimutatást fogad, és magától eldönti, melyikről van szó (lásd {@see FORMATUMOK}):
+ * a csomagonkénti státuszlistát („Actual pcl statuses") és a napi utalási jelentést („Daily").
+ * Mindkettőből csak a **beszedett** utánvétes sorok kerülnek be – a regisztrált, de be nem
+ * szedett összeg még nem pénz.
+ *
+ * Egy csomagszám csak egyszer kerül be, akármelyik formátumból jött: ugyanaz a tétel a két
+ * kimutatásban is szerepelhet.
+ *
  * Importáláskor megpróbáljuk kitalálni, melyik bizonylathoz tartozik a befizetés; az
  * eredmény a karbantartón kézzel javítható, és a „Párosít" gomb újra lefuttatja a keresést.
  */
@@ -26,25 +32,51 @@ class glsutanvetController extends \mkwhelpers\MattableController
 {
 
     /**
-     * A kimutatás oszlopkiosztása. A GLS mindig ugyanezt a lapot adja, ezért – a banki
-     * importtal ellentétben – nincs formátumválasztó.
+     * A felismert kimutatás-formátumok. A `fejlec` a felismerés kulcsa: az a sor a fejléc,
+     * amelyben ezek a cellák a megadott szöveggel kezdődnek – az adatok a következő sortól
+     * jönnek. Így a GLS-nek nem kell mindig ugyanabba a sorba tennie a fejlécet, és a
+     * felhasználónak sem kell formátumot választania.
+     *
+     * `nevbolcim`: a névoszlop név és cím egyben (napi jelentés), abból bontjuk ki a címet.
      */
-    private const ELSOSOR = 4;
-    private const OSZLOP = [
-        'csomagszam' => 'A',
-        'regisztraltosszeg' => 'B',
-        'statusz' => 'C',
-        'felvetel' => 'E',
-        'statuszdatum' => 'F',
-        'ugyfelhivatkozas' => 'H',
-        'utanvethivatkozas' => 'I',
-        'nev' => 'K',
-        'atvevo' => 'L',
-        'irszam' => 'M',
-        'varos' => 'N',
-        'utca' => 'O',
-        'orszag' => 'P',
-        'osszeg' => 'Q',
+    /** ennyi sorban keressük a fejlécet (a napi jelentésé a 8. sorban áll) */
+    private const FEJLECKERESES_SOR = 20;
+
+    private const FORMATUMOK = [
+        'statusz' => [
+            'nev' => 'csomag státusz lista',
+            'fejlec' => ['A' => 'Csomagszám', 'Q' => 'Beszedett utánvét'],
+            'oszlop' => [
+                'csomagszam' => 'A',
+                'regisztraltosszeg' => 'B',
+                'statusz' => 'C',
+                'felvetel' => 'E',
+                'statuszdatum' => 'F',
+                'ugyfelhivatkozas' => 'H',
+                'utanvethivatkozas' => 'I',
+                'nev' => 'K',
+                'atvevo' => 'L',
+                'irszam' => 'M',
+                'varos' => 'N',
+                'utca' => 'O',
+                'orszag' => 'P',
+                'osszeg' => 'Q',
+            ],
+        ],
+        'napi' => [
+            'nev' => 'napi utalási jelentés',
+            'fejlec' => ['B' => 'Csomagszám', 'E' => 'Utánvét összeg'],
+            'nevbolcim' => true,
+            // ebben nincs státuszoszlop: ami a jelentésben van, azt a GLS már átutalta
+            'statuszszoveg' => 'Utalva',
+            'oszlop' => [
+                'csomagszam' => 'B',
+                'utanvethivatkozas' => 'C',
+                'statuszdatum' => 'D',
+                'osszeg' => 'E',
+                'nev' => 'G',
+            ],
+        ],
     ];
 
     public function __construct()
@@ -158,28 +190,41 @@ class glsutanvetController extends \mkwhelpers\MattableController
             echo json_encode(['msg' => t('A fájl nem olvasható táblázatként') . ': ' . $e->getMessage()]);
             return;
         }
-        $sheet = $excel->getActiveSheet();
+
+        $talalat = $this->detectFormatum($excel);
+        if (!$talalat) {
+            $excel->disconnectWorksheets();
+            \unlink($filenev);
+            echo json_encode(['msg' => t('A fájl egyik ismert GLS kimutatásra sem hasonlít.')]);
+            return;
+        }
+        [$sheet, $formatum, $elsosor] = $talalat;
+        $oszlop = $formatum['oszlop'];
         $maxrow = (int)$sheet->getHighestRow();
 
         $repo = $this->getRepo();
         $sorok = 0;
         $beolvasott = 0;
         $ujdb = 0;
+        $marmegvolt = 0;
         $parositott = 0;
 
-        for ($row = self::ELSOSOR; $row <= $maxrow; ++$row) {
-            $csomagszam = trim((string)$sheet->getCell(self::OSZLOP['csomagszam'] . $row)->getValue());
+        for ($row = $elsosor; $row <= $maxrow; ++$row) {
+            $csomagszam = trim((string)$sheet->getCell($oszlop['csomagszam'] . $row)->getValue());
             if (!$csomagszam) {
+                // a napi jelentés végén összesítő sor áll, csomagszám nélkül
                 continue;
             }
             $sorok++;
             // csak a ténylegesen beszedett utánvét érdekes
-            $osszeg = $this->importOsszeg($sheet->getCell(self::OSZLOP['osszeg'] . $row)->getValue());
+            $osszeg = $this->importOsszeg($sheet->getCell($oszlop['osszeg'] . $row)->getValue());
             if (!$osszeg) {
                 continue;
             }
             $beolvasott++;
+            // a csomagszám a közös kulcs: ugyanaz a tétel a másik kimutatásban is szerepelhet
             if ($repo->findOneBy(['csomagszam' => $csomagszam])) {
+                $marmegvolt++;
                 continue;
             }
 
@@ -187,13 +232,27 @@ class glsutanvetController extends \mkwhelpers\MattableController
             $o->setCsomagszam($csomagszam);
             $o->setOsszeg($osszeg);
             $o->setRegisztraltosszeg(
-                $this->importOsszeg($sheet->getCell(self::OSZLOP['regisztraltosszeg'] . $row)->getValue())
+                isset($oszlop['regisztraltosszeg'])
+                    ? $this->importOsszeg($sheet->getCell($oszlop['regisztraltosszeg'] . $row)->getValue())
+                    : $osszeg
             );
             foreach (['statusz', 'ugyfelhivatkozas', 'utanvethivatkozas', 'nev', 'atvevo', 'irszam', 'varos', 'utca', 'orszag'] as $mezo) {
-                $o->{'set' . ucfirst($mezo)}(trim((string)$sheet->getCell(self::OSZLOP[$mezo] . $row)->getValue()));
+                $o->{'set' . ucfirst($mezo)}(
+                    isset($oszlop[$mezo]) ? trim((string)$sheet->getCell($oszlop[$mezo] . $row)->getValue()) : ''
+                );
             }
-            $o->setFelvetel($this->importDatum($sheet->getCell(self::OSZLOP['felvetel'] . $row)->getValue()));
-            $o->setStatuszdatum($this->importDatum($sheet->getCell(self::OSZLOP['statuszdatum'] . $row)->getValue()));
+            if (!isset($oszlop['statusz']) && isset($formatum['statuszszoveg'])) {
+                $o->setStatusz($formatum['statuszszoveg']);
+            }
+            if (!empty($formatum['nevbolcim'])) {
+                $this->splitNevCim($o);
+            }
+            $o->setFelvetel(
+                isset($oszlop['felvetel'])
+                    ? $this->importDatum($sheet->getCell($oszlop['felvetel'] . $row)->getValue())
+                    : null
+            );
+            $o->setStatuszdatum($this->importDatum($sheet->getCell($oszlop['statuszdatum'] . $row)->getValue()));
 
             $bizszamarr = $this->keresBizonylatszamok($o);
             if ($bizszamarr) {
@@ -209,9 +268,86 @@ class glsutanvetController extends \mkwhelpers\MattableController
         \unlink($filenev);
 
         echo json_encode([
-            'msg' => $sorok . ' csomag a kimutatásban, ebből ' . $beolvasott . ' soron van beszedett utánvét; '
-                . $ujdb . ' új tétel keletkezett, ebből ' . $parositott . ' kapott bizonylatszámot.',
+            'msg' => sprintf(
+                t('%s (%s): %d csomag, ebből %d soron van beszedett utánvét; %d új tétel keletkezett'
+                    . ' (%d már megvolt), ebből %d kapott bizonylatszámot.'),
+                $sheet->getTitle(),
+                $formatum['nev'],
+                $sorok,
+                $beolvasott,
+                $ujdb,
+                $marmegvolt,
+                $parositott
+            ),
         ]);
+    }
+
+    /**
+     * Melyik ismert kimutatás ez, és hányadik sorban kezdődnek az adatai? Végigjárjuk a
+     * munkalapokat, és az első olyat fogadjuk el, amelyiken megvan valamelyik formátum fejléce.
+     *
+     * @return array{0: \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet, 1: array, 2: int}|null
+     */
+    private function detectFormatum($excel)
+    {
+        foreach ($excel->getAllSheets() as $sheet) {
+            $maxrow = min((int)$sheet->getHighestRow(), self::FEJLECKERESES_SOR);
+            for ($row = 1; $row <= $maxrow; ++$row) {
+                foreach (self::FORMATUMOK as $formatum) {
+                    if ($this->isFejlecsor($sheet, $row, $formatum['fejlec'])) {
+                        return [$sheet, $formatum, $row + 1];
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /** A megadott sor cellái a formátum fejléc-szövegeivel kezdődnek-e. */
+    private function isFejlecsor($sheet, $row, array $fejlec): bool
+    {
+        foreach ($fejlec as $oszlop => $szoveg) {
+            $cella = trim((string)$sheet->getCell($oszlop . $row)->getValue());
+            if (mb_stripos($cella, $szoveg) !== 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * A napi jelentés egyetlen oszlopban adja a címzettet és a címét, például
+     * „Zádori Gábor GLS Automata Príma Fót HU-2151 FÓT Móricz Zsigmond út 23".
+     *
+     * Az ország-irányítószám (HU-2151) a fogódzó: előtte a név, utána a város és az utca áll.
+     * A név után a csomagpont neve is odakerülhet, azt a „GLS" szónál vágjuk le – e nélkül a
+     * név szerinti tartalék párosítás ({@see keresNevOsszegCim()}) sosem találna semmit.
+     */
+    private function splitNevCim(GLSUtanvet $o): void
+    {
+        $blob = trim((string)$o->getNev());
+        if ($blob === '') {
+            return;
+        }
+        if (!preg_match('/\b([A-Z]{2})-(\d{4,5})\b/u', $blob, $m, PREG_OFFSET_CAPTURE)) {
+            return;
+        }
+        // a találat határai ASCII karakterek, ezért a byte-offsettel vágás nem sérti az ékezeteket
+        $nev = trim(substr($blob, 0, $m[0][1]));
+        $utana = trim(substr($blob, $m[0][1] + strlen($m[0][0])));
+
+        $glspos = mb_stripos($nev, ' GLS ');
+        if ($glspos !== false) {
+            $o->setAtvevo(trim(mb_substr($nev, $glspos)));
+            $nev = trim(mb_substr($nev, 0, $glspos));
+        }
+        $o->setNev($nev);
+        $o->setOrszag($m[1][0]);
+        $o->setIrszam($m[2][0]);
+        // a maradékban a város az első szó, a többi az utca
+        $reszek = preg_split('/\s+/u', $utana, 2);
+        $o->setVaros(trim($reszek[0] ?? ''));
+        $o->setUtca(trim($reszek[1] ?? ''));
     }
 
     /**

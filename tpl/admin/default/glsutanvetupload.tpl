@@ -21,7 +21,7 @@
                         <input id="fileedit" name="toimport" type="file" accept=".xlsx,.xls">
                     </div>
                     <p class="mattkarb-hint">
-                        {at('A GLS "Actual pcl statuses" kimutatását várja. Csak azok a sorok kerülnek be, amelyeken van beszedett utánvét összeg; a már beimportált csomagszámok kimaradnak. Importáláskor a program megpróbálja megkeresni a befizetéshez tartozó bizonylatot – először a fuvarlevélszám, utána a név, az összeg és a cím alapján.')}
+                        {at('A GLS csomag státusz listáját ("Actual pcl statuses") és a napi utalási jelentését ("Daily") is fogadja – magától felismeri, melyikről van szó. Csak azok a sorok kerülnek be, amelyeken van beszedett utánvét összeg; a már beimportált csomagszámok kimaradnak, akkor is, ha a másik kimutatásból jöttek. Importáláskor a program megpróbálja megkeresni a befizetéshez tartozó bizonylatot – először a fuvarlevélszám, utána a név, az összeg és a cím alapján.')}
                     </p>
                 </div>
             </div>
