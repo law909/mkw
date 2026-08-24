@@ -285,9 +285,21 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         echo json_encode(['ok' => true, 'tetelek' => $tetelek, 'hibak' => $hibak]);
     }
 
+    /** FC-Moto rendelés csv: a fejlécben ezek a mezőnevek érdekelnek */
+    private const FCMOTO_MEZOK = ['barcode', 'supplierarticlenumber', 'productquantity'];
+
+    /** fejléc nélküli (régi) fájl oszlopsorrendje: barcode;supplierArticleNumber;productTitle;productQuantity */
+    private const FCMOTO_REGIOSZLOPOK = ['barcode' => 0, 'supplierarticlenumber' => 1, 'productquantity' => 3];
+
     /**
-     * FC-Moto rendelés csv sorai tételnek. Oszlopok pontosvesszővel:
-     * barcode;supplierArticleNumber;productTitle;productQuantity – az azonosítás vonalkód alapján megy.
+     * FC-Moto rendelés csv sorai tételnek, pontosvesszővel elválasztva.
+     *
+     * Az oszlopok a fejlécsor mezőneveiből oldódnak fel, mert az FC-Moto bővítette a fájlt
+     * (a régi négy oszlop helyett tizenegy, más sorrendben). Fejléc nélküli fájlnál a régi
+     * oszlopsorrend érvényes.
+     *
+     * Az azonosítás elsősorban cikkszám (supplierArticleNumber – nálunk ez a cikkszám),
+     * másodsorban vonalkód alapján megy.
      */
     public function importFcMoto()
     {
@@ -304,22 +316,28 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             return;
         }
 
+        $oszlop = null;
         $tetelek = [];
         $hibak = [];
         $row = 0;
         while (($sor = fgetcsv($handle, 0, ';')) !== false) {
             $row++;
-            $vonalkod = trim((string)($sor[0] ?? ''));
-            if ($vonalkod === '') {
+            if ($oszlop === null) {
+                $oszlop = $this->fcMotoOszlopok($sor);
+                if ($oszlop['fejleces']) {
+                    continue;
+                }
+            }
+            $vonalkod = trim((string)($sor[$oszlop['barcode']] ?? ''));
+            $cikkszam = trim((string)($sor[$oszlop['supplierarticlenumber']] ?? ''));
+            if (($vonalkod === '') && ($cikkszam === '')) {
                 continue;
             }
-            $mennyiseg = (float)str_replace(',', '.', (string)($sor[3] ?? ''));
+            $mennyiseg = (float)str_replace(',', '.', (string)($sor[$oszlop['productquantity']] ?? ''));
 
-            $talalat = $this->findTermek(0, 0, '', $vonalkod);
+            $talalat = $this->findTermek(0, 0, $cikkszam, $vonalkod);
             if (!$talalat) {
-                if ($row > 1) {
-                    $hibak[] = sprintf(t('%d. sor: nincs ilyen vonalkódú termék (%s)'), $row, $vonalkod);
-                }
+                $hibak[] = sprintf(t('%d. sor: nem azonosítható termék (%s)'), $row, trim($cikkszam . ' ' . $vonalkod));
                 continue;
             }
             $tetelek[] = $this->tetelAdat($talalat, $mennyiseg);
@@ -328,6 +346,30 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         \unlink($file);
 
         echo json_encode(['ok' => true, 'tetelek' => $tetelek, 'hibak' => $hibak]);
+    }
+
+    /**
+     * Az FC-Moto csv első sorából az oszlopsorszámok. A `fejleces` jelzi, hogy a sort fejlécként
+     * el kell dobni – enélkül nem tudnánk megkülönböztetni a fejléc nélküli régi fájltól.
+     *
+     * @return array{barcode: int, supplierarticlenumber: int, productquantity: int, fejleces: bool}
+     */
+    private function fcMotoOszlopok(array $elsosor): array
+    {
+        $nevek = [];
+        foreach ($elsosor as $i => $cella) {
+            // az első cellán BOM is lehet
+            $nev = strtolower(trim(preg_replace('/^\xEF\xBB\xBF/', '', (string)$cella)));
+            if (in_array($nev, self::FCMOTO_MEZOK, true)) {
+                $nevek[$nev] = $i;
+            }
+        }
+        if (!isset($nevek['barcode']) && !isset($nevek['supplierarticlenumber'])) {
+            return self::FCMOTO_REGIOSZLOPOK + ['fejleces' => false];
+        }
+        // fejléces fájlnál a hiányzó mező NEM a régi pozícióra esik vissza: ott már más adat áll
+        $hianyzo = array_fill_keys(self::FCMOTO_MEZOK, -1);
+        return $nevek + $hianyzo + ['fejleces' => true];
     }
 
     /**
