@@ -1572,6 +1572,21 @@ if ($DBVersion < '0129') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0129');
 }
 
+if ($DBVersion < '0130') {
+    // NAV bejövő számla import napló – a DDL az entitásból jön (./updateschema.sh).
+    // A láthatóságot magától az import menüpontjától örökli: ahol az nincs bekapcsolva,
+    // ott a naplója sem kell.
+    $conn = \mkw\store::getEm()->getConnection();
+    $lathato = (int)$conn->fetchOne('SELECT lathato FROM menu WHERE url = "/admin/koltsegszamlaimport/view"');
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "NAV import napló", "/admin/koltsegszamlaimportlog/viewlist", "/admin/koltsegszamlaimportlog", 40, '
+        . $lathato . ', 210, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/koltsegszamlaimportlog/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0130');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

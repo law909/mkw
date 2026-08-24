@@ -886,6 +886,14 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/koltsegszamlaimport/process', 'koltsegszamlaimportController#process', 'adminkoltsegszamlaimportprocess');
 }
 
+$router->map('GET', '/admin/koltsegszamlaimportlog/viewlist', 'koltsegszamlaimportlogController#viewlist', 'adminkoltsegszamlaimportlogviewlist');
+$router->map('GET', '/admin/koltsegszamlaimportlog/getlistbody', 'koltsegszamlaimportlogController#getlistbody', 'adminkoltsegszamlaimportloggetlistbody');
+$router->map('GET', '/admin/koltsegszamlaimportlog/getkarb', 'koltsegszamlaimportlogController#getkarb', 'adminkoltsegszamlaimportloggetkarb');
+$router->map('GET', '/admin/koltsegszamlaimportlog/viewkarb', 'koltsegszamlaimportlogController#viewkarb', 'adminkoltsegszamlaimportlogviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/koltsegszamlaimportlog/save', 'koltsegszamlaimportlogController#save', 'adminkoltsegszamlaimportlogsave');
+}
+
 if (\mkw\store::isUnas()) {
     $router->map('GET', '/admin/unastermekimport/view', 'unastermekimportController#view', 'adminunastermekimportview');
     $router->map('GET', '/admin/unastermekimport/nemtalalt', 'unastermekimportController#notFoundCsv', 'adminunastermekimportnemtalalt');

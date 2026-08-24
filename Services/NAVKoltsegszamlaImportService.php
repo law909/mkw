@@ -93,6 +93,7 @@ class NAVKoltsegszamlaImportService
                         'bizonylatszam' => $letezok[$d['szamlaszam']],
                         'uzenet' => '',
                     ];
+                $this->log($tol, $ig, $tetelek[$d['szamlaszam']], $d);
             } else {
                 $letoltendok[] = $d['szamlaszam'];
                 $tetelek[$d['szamlaszam']] = $d + ['statusz' => 'hiba', 'bizonylatszam' => '', 'uzenet' => ''];
@@ -105,14 +106,31 @@ class NAVKoltsegszamlaImportService
             foreach ($koteg as $szamlaszam) {
                 if (!isset($szamlak[$szamlaszam])) {
                     $tetelek[$szamlaszam]['uzenet'] = t('A számla adatai nem tölthetők le a NAV-tól.');
+                    $this->log($tol, $ig, $tetelek[$szamlaszam], $tetelek[$szamlaszam], [$tetelek[$szamlaszam]['uzenet']]);
                     continue;
                 }
                 try {
                     $fej = $this->importer->createFromArray($szamlak[$szamlaszam]);
                     $tetelek[$szamlaszam]['statusz'] = 'uj';
                     $tetelek[$szamlaszam]['bizonylatszam'] = $fej->getId();
+                    $this->log(
+                        $tol,
+                        $ig,
+                        $tetelek[$szamlaszam],
+                        $szamlak[$szamlaszam],
+                        $this->importer->getFejhibak(),
+                        $this->importer->getTetelhibak()
+                    );
                 } catch (\Exception $e) {
                     $tetelek[$szamlaszam]['uzenet'] = $e->getMessage();
+                    // ha a szakaszonkénti panaszgyűjtés nem fogta meg a hibát (pl. a törzsadatok
+                    // feloldása közben szállt el), legalább a kivétel üzenete kerüljön a naplóba
+                    $fejhibak = $this->importer->getFejhibak();
+                    $tetelhibak = $this->importer->getTetelhibak();
+                    if (!$fejhibak && !$tetelhibak) {
+                        $fejhibak = [$e->getMessage()];
+                    }
+                    $this->log($tol, $ig, $tetelek[$szamlaszam], $szamlak[$szamlaszam], $fejhibak, $tetelhibak);
                     \mkw\store::writelog('NAV költségszámla import hiba (' . $szamlaszam . '): ' . $e->getMessage());
                     if (!\mkw\store::getEm()->isOpen()) {
                         $megszakadt = true;
@@ -126,6 +144,7 @@ class NAVKoltsegszamlaImportService
             foreach ($tetelek as $szamlaszam => $tetel) {
                 if ($tetel['statusz'] === 'hiba' && $tetel['uzenet'] === '') {
                     $tetelek[$szamlaszam]['uzenet'] = t('A feldolgozás megszakadt, ez a számla nem került sorra.');
+                    $this->log($tol, $ig, $tetelek[$szamlaszam], $tetel, [$tetelek[$szamlaszam]['uzenet']]);
                 }
             }
         }
@@ -154,6 +173,44 @@ class NAVKoltsegszamlaImportService
             'datummentve' => $datummentve,
             'tetelek' => $tetelek,
         ];
+    }
+
+    /**
+     * Egy számla naplósora a `koltsegszamlaimportlog` táblába. A `navadat` mindig kitöltött
+     * (ez a NAV-tól kapott nyers adat), a fej-, illetve tételhiba csak akkor, ha volt probléma.
+     *
+     * Szándékosan nyers SQL: egy elakadt számla után az EntityManager zárva lehet, a naplót
+     * viszont épp ilyenkor a legfontosabb megírni. Ugyanezért nyeli el a saját hibáját is.
+     *
+     * @param array $tetel   az eredménylista sora (statusz, bizonylatszam, szallito)
+     * @param array $navadat amit a NAV-tól kaptunk (a számlalista sora vagy a teljes InvoiceData)
+     * @param string[] $fejhibak
+     * @param string[] $tetelhibak
+     */
+    private function log(
+        \DateTime $tol,
+        \DateTime $ig,
+        array $tetel,
+        array $navadat,
+        array $fejhibak = [],
+        array $tetelhibak = []
+    ): void {
+        try {
+            \mkw\store::getEm()->getConnection()->insert('koltsegszamlaimportlog', [
+                'created' => (new \DateTime())->format('Y-m-d H:i:s'),
+                'idoszaktol' => $tol->format(\mkw\store::$SQLDateFormat),
+                'idoszakig' => $ig->format(\mkw\store::$SQLDateFormat),
+                'szamlaszam' => $tetel['szamlaszam'],
+                'szallito' => $tetel['szallito'] ?? '',
+                'statusz' => $tetel['statusz'],
+                'bizonylatszam' => $tetel['bizonylatszam'],
+                'navadat' => json_encode($navadat, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'fejhiba' => $fejhibak ? implode("\n", array_unique($fejhibak)) : null,
+                'tetelhiba' => $tetelhibak ? implode("\n", array_unique($tetelhibak)) : null,
+            ]);
+        } catch (\Exception $e) {
+            \mkw\store::writelog('NAV importnapló írása nem sikerült: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -224,7 +281,6 @@ class NAVKoltsegszamlaImportService
                 }
             }
         }
-        \mkw\store::writelog(json_encode($eredmeny, JSON_PRETTY_PRINT));
         return $eredmeny;
     }
 

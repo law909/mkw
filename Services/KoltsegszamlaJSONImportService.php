@@ -42,6 +42,13 @@ class KoltsegszamlaJSONImportService
 {
     private const BIZONYLATTIPUS = 'koltsegszamla';
 
+    /** a legutóbbi createFromArray() panaszai – innen olvassa ki az importnapló */
+    private array $fejhibak = [];
+    private array $tetelhibak = [];
+
+    /** 'fej' vagy 'tetel': melyik szakaszban járunk, ha kivétel jön */
+    private string $fazis = 'fej';
+
     /** NAV unitOfMeasureType → nálunk használt mennyiségi egység megnevezés */
     private const ME_NEVEK = [
         'PIECE' => 'db',
@@ -85,8 +92,17 @@ class KoltsegszamlaJSONImportService
      */
     public function createFromArray(array $adat): Bizonylatfej
     {
+        $this->fejhibak = [];
+        $this->tetelhibak = [];
+        $this->fazis = 'fej';
+
         $fejadat = $this->olvasFejadat($adat);
+        $this->checkFejadat($fejadat);
+
+        $this->fazis = 'tetel';
         $tetelek = $this->olvasTetelek($adat, $fejadat);
+        $this->checkTetelek($tetelek);
+        $this->fazis = 'fej';
 
         $em = \mkw\store::getEm();
         $biztipus = $em->getRepository(Bizonylattipus::class)->find(self::BIZONYLATTIPUS);
@@ -111,8 +127,11 @@ class KoltsegszamlaJSONImportService
         // törzsadatokat sem, így azok nem maradnak érvénytelen azonosítóval a memóriában.
         $partner = $this->keresVagyLetrehozPartner($fejadat['supplier']);
         $valutanem = $this->keresVagyLetrehozValutanem($fejadat['currency']);
-        $fizmod = $this->keresFizmod($fejadat['paymentMethod']);
+        $fizmod = $this->keresVagyLetrehozFizmod($fejadat['paymentMethod']);
+
+        $this->fazis = 'tetel';
         $tetelek = $this->torzsadatokFeloldasa($tetelek);
+        $this->fazis = 'fej';
 
         $em->beginTransaction();
         try {
@@ -150,11 +169,13 @@ class KoltsegszamlaJSONImportService
             $fej->setSzallitasikoltsegbrutto(0);
 
             $forditott = false;
+            $this->fazis = 'tetel';
             foreach ($tetelek as $tetel) {
                 if ($this->addTetel($fej, $tetel, $koltsegtermek)) {
                     $forditott = true;
                 }
             }
+            $this->fazis = 'fej';
             if ($forditott) {
                 $fej->setForditottadozas(true);
             }
@@ -166,6 +187,7 @@ class KoltsegszamlaJSONImportService
             return $fej;
         } catch (\Exception $e) {
             $em->rollback();
+            $this->hiba($e->getMessage());
             // a fej és a tételei ilyenkor perzisztáltak, de mentetlenek: ha bent maradnának a
             // UnitOfWork-ben, a következő számla flush-e is rajtuk hibázna el
             $this->elenged($fej ?? null);
@@ -190,6 +212,95 @@ class KoltsegszamlaJSONImportService
             $em->detach($tetel);
         }
         $em->detach($fej);
+    }
+
+    /**
+     * A legutóbbi createFromArray() fej-, illetve tételszintű panaszai. Az importnapló
+     * (`koltsegszamlaimportlog`) ezekből tölti a fejhiba/tetelhiba mezőket; ha üresek,
+     * a számla adataival minden rendben volt.
+     *
+     * @return string[]
+     */
+    public function getFejhibak(): array
+    {
+        return $this->fejhibak;
+    }
+
+    /** @return string[] */
+    public function getTetelhibak(): array
+    {
+        return $this->tetelhibak;
+    }
+
+    /** Panasz rögzítése az éppen futó szakaszhoz ({@see $fazis}). */
+    private function hiba(string $uzenet): void
+    {
+        if ($this->fazis === 'tetel') {
+            $this->tetelhibak[] = $uzenet;
+        } else {
+            $this->fejhibak[] = $uzenet;
+        }
+    }
+
+    /**
+     * A fejadatok hiányosságai. Nem állítjuk meg az importot – a bizonylat így is elkészül,
+     * csak érdemes tudni, min kellett tippelnünk.
+     */
+    private function checkFejadat(array $fejadat): void
+    {
+        if ($fejadat['invoiceNumber'] === '') {
+            $this->hiba('Hiányzik a számlaszám.');
+        }
+        if (!$fejadat['issueDate']) {
+            $this->hiba('Hiányzik a számla kelte.');
+        }
+        if (!$fejadat['deliveryDate']) {
+            $this->hiba('Hiányzik a teljesítés dátuma.');
+        }
+        if ($fejadat['currency'] === '') {
+            $this->hiba('Hiányzik a valutanem, az alapértelmezett marad.');
+        }
+        if ($fejadat['paymentMethod'] === '') {
+            $this->hiba('Hiányzik a fizetési mód, a partneré marad.');
+        }
+        $s = $fejadat['supplier'];
+        if ($s['nev'] === '') {
+            $this->hiba('Hiányzik a szállító neve.');
+        }
+        if ($s['adoszam'] === '') {
+            $this->hiba('Hiányzik a szállító adószáma, a partnert csak név alapján keressük.');
+        }
+        if ($s['irszam'] === '' && $s['varos'] === '' && $s['utca'] === '') {
+            $this->hiba('Hiányzik a szállító címe.');
+        }
+    }
+
+    /**
+     * A tételadatok hiányosságai, tételenként. A tétel sorszáma a NAV-tól kapott sorrend.
+     *
+     * @param array[] $tetelek
+     */
+    private function checkTetelek(array $tetelek): void
+    {
+        if (!$tetelek) {
+            $this->hiba('A számlán nincs tétel.');
+            return;
+        }
+        foreach ($tetelek as $i => $t) {
+            $sorszam = $i + 1;
+            if ($t['desc'] === '') {
+                $this->hiba($sorszam . '. tétel: hiányzik a megnevezés.');
+            }
+            if ($t['qtyhianyzik']) {
+                $this->hiba($sorszam . '. tétel: hiányzik a mennyiség, 1-nek vettük.');
+            }
+            if ($t['egysar'] == 0) {
+                $this->hiba($sorszam . '. tétel: nem állapítható meg az egységár.');
+            }
+            if ($t['vatPercent'] == 0 && $t['vatCase'] === '' && !$t['reverse']) {
+                $this->hiba($sorszam . '. tétel: nem állapítható meg az ÁFA-kulcs.');
+            }
+        }
     }
 
     /**
@@ -287,7 +398,8 @@ class KoltsegszamlaJSONImportService
     private function olvasTetel(array $line, array $fejadat): array
     {
         $mennyiseg = $this->szam($line, 'quantity');
-        if ($mennyiseg == 0) {
+        $mennyiseghianyzik = ($mennyiseg == 0);
+        if ($mennyiseghianyzik) {
             $mennyiseg = 1;
         }
 
@@ -319,6 +431,7 @@ class KoltsegszamlaJSONImportService
         return [
             'desc' => $this->mezo($line, 'lineDescription'),
             'qty' => $mennyiseg,
+            'qtyhianyzik' => $mennyiseghianyzik,
             'unitNav' => $this->mezo($line, 'unitOfMeasure'),
             'unitOwn' => $this->mezo($line, 'unitOfMeasureOwn'),
             'egysar' => $ar,
@@ -588,17 +701,43 @@ class KoltsegszamlaJSONImportService
         return $em->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
     }
 
+    /** NAV paymentMethodType → az ebből létrehozott fizmód neve és típusa ('P' = készpénz) */
+    private const FIZMOD_NEVEK = [
+        'TRANSFER' => ['Átutalás', 'B'],
+        'CASH' => ['Készpénz', 'P'],
+        'CARD' => ['Bankkártya', 'B'],
+        'VOUCHER' => ['Utalvány', 'B'],
+        'OTHER' => ['Egyéb', 'B'],
+    ];
+
     /**
-     * Fizmód keresése a NAV paymentMethod (navtipus) alapján. Ha nincs egyértelmű találat,
-     * null-t ad – ilyenkor a partnertől örökölt fizmód marad a bizonylaton.
+     * Fizmód keresése a NAV paymentMethod (navtipus) alapján, hiány esetén létrehozása. A NAV
+     * ötféle fizetési módot ismer, ezekre kész nevünk van; egyébre a kapott kód lesz a név.
+     *
+     * Üres paymentMethod esetén null – ilyenkor a partnertől örökölt fizmód marad a bizonylaton.
      */
-    private function keresFizmod(string $paymentMethod): ?Fizmod
+    private function keresVagyLetrehozFizmod(string $paymentMethod): ?Fizmod
     {
         $paymentMethod = trim($paymentMethod);
         if ($paymentMethod === '') {
             return null;
         }
-        return \mkw\store::getEm()->getRepository(Fizmod::class)->findOneBy(['navtipus' => $paymentMethod]);
+        $em = \mkw\store::getEm();
+        $fizmod = $em->getRepository(Fizmod::class)->findOneBy(['navtipus' => $paymentMethod]);
+        if ($fizmod) {
+            return $fizmod;
+        }
+        [$nev, $tipus] = self::FIZMOD_NEVEK[strtoupper($paymentMethod)] ?? [$paymentMethod, 'B'];
+        $fizmod = new Fizmod();
+        $fizmod->setNev($nev);
+        $fizmod->setNevL1($nev);
+        $fizmod->setTipus($tipus);
+        $fizmod->setNavtipus($paymentMethod);
+        // a szállítói számla fizetési módja nem való a webshop pénztárába
+        $fizmod->setWebes(false);
+        $em->persist($fizmod);
+        $em->flush();
+        return $fizmod;
     }
 
     /**
