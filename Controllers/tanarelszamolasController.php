@@ -4,7 +4,7 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
-use Entities\Idopontfoglalas;
+use Entities\Idopontreszvetel;
 use Entities\JogaReszvetel;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
@@ -195,12 +195,13 @@ class tanarelszamolasController extends \mkwhelpers\Controller
     }
 
     /**
-     * A tanár időszakra eső, megérkezettnek jelölt időpont-foglalásai. A pubadminban a tanár
-     * jelöli meg őket (Idopontfoglalas.megjelent).
+     * A tanár időszakra eső időpont-részvételei. A pubadminban a tanár jelöli meg, hogy a foglaló
+     * megérkezett; abból keletkezik egy {@see \Entities\Idopontreszvetel} sor, és az elszámolás
+     * innen dolgozik – ugyanúgy, ahogy az órák a JogaReszvetel táblából.
      *
-     * Jutalék NEM tartozik hozzájuk: az időpontokra nincs jutalékszabály, ezért a részletezőben
-     * üresen marad a jutalék oszlop, és az összesítő számai sem változnak. A napi járulék
-     * levonásába viszont beleszámít a nap, hiszen a tanár aznap dolgozott.
+     * A jutalék mező egyelőre 0: az időpontokra nincs jutalékszabály, ezért a részletezőben üresen
+     * marad a jutalék oszlop, és az összesítő számai sem változnak. A napi járulék levonásába
+     * viszont beleszámít a nap, hiszen a tanár aznap dolgozott.
      *
      * @return array[] datum, napnev, nev, tema
      */
@@ -210,26 +211,25 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             return [];
         }
         $filter = new FilterDescriptor();
-        $filter->addFilter('megjelent', '=', true);
-        $filter->addFilter('dolgozo.id', '=', $tanarid);
+        $filter->addFilter('tanar', '=', $tanarid);
         if ($tolstr) {
             $filter->addFilter('datum', '>=', $tolstr);
         }
         if ($igstr) {
             $filter->addFilter('datum', '<=', $igstr);
         }
-        $foglalasok = $this->getRepo(Idopontfoglalas::class)
+        $reszvetelek = $this->getRepo(Idopontreszvetel::class)
             ->getWithJoins($filter, ['_xx.datum' => 'ASC', '_xx.id' => 'ASC']);
 
         $ret = [];
-        /** @var Idopontfoglalas $foglalas */
-        foreach ($foglalasok as $foglalas) {
-            $idopont = $foglalas->getIdopont();
+        /** @var Idopontreszvetel $reszvetel */
+        foreach ($reszvetelek as $reszvetel) {
             $ret[] = [
-                'datum' => $foglalas->getDatumStr(),
-                'napnev' => $foglalas->getNapNev(),
-                'nev' => $foglalas->getPartnerNev(),
-                'tema' => trim('Időpont: ' . $idopont?->getIdoponttemaNev() . ' ' . $idopont?->getIdotartamStr()),
+                'datum' => $reszvetel->getDatumStr(),
+                'napnev' => $reszvetel->getDatumNapnev(),
+                'nev' => $reszvetel->getPartnernev(),
+                'tema' => trim('Időpont: ' . $reszvetel->getIdoponttemaNev()
+                    . ' ' . $reszvetel->getIdopont()?->getIdotartamStr()),
             ];
         }
         return $ret;
