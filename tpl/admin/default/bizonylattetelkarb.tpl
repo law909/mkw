@@ -98,10 +98,23 @@
                     {/foreach}
                 </select></td>
         </tr>
+        <tr class="js-kiszerelesrow_{$tetel.id}"{if (!$tetel.gyujto && !$tetel.sordoboz)} style="display:none;"{/if}>
+            <td><label for="GyujtomennyisegEdit{$tetel.id}">{at('Gyűjtő')}:</label></td>
+            <td colspan="5">
+                <input id="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelgyujtomennyiseg_{$tetel.id}" type="number"
+                       step="any" value="{$tetel.gyujtomennyiseg}" size="6">
+                <label for="SordobozmennyisegEdit{$tetel.id}">{at('Sor/doboz')}:</label>
+                <input id="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelsordobozmennyiseg_{$tetel.id}" type="number"
+                       step="any" value="{$tetel.sordobozmennyiseg}" size="6">
+                <input class="js-kiszerelesgyujto" name="tetelgyujto_{$tetel.id}" type="hidden" value="{$tetel.gyujto}">
+                <input class="js-kiszerelessordoboz" name="tetelsordoboz_{$tetel.id}" type="hidden" value="{$tetel.sordoboz}">
+                <input class="js-kiszerelesbonthato" name="tetelbonthato_{$tetel.id}" type="hidden" value="{if ($tetel.bonthato)}1{else}0{/if}">
+            </td>
+        </tr>
         <tr>
             <td class="mattable-important"><label for="MennyisegEdit{$tetel.id}">{at('Mennyiség')}:</label></td>
             <td colspan="5"><input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number"
-                                   step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required">
+                                   step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required"{if (!$tetel.bonthato)} readonly="readonly"{/if}>
                 <select id="MESelect{$tetel.id}" name="tetelme_{$tetel.id}" required="required">
                     <option value="">{at('válasszon')}</option>
                     {foreach $tetel.melist as $_me}

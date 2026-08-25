@@ -536,6 +536,40 @@ let bizonylathelper = function ($) {
         });
     }
 
+    // A gyűjtő/sor-doboz kiszerelés mezői: a beírt darabszámokból számolt mennyiség kerül a
+    // mennyiség mezőbe. Nem bontható kiszerelésnél a mennyiség csak innen jöhet, ezért olvasható
+    // csak (a mentés a szerveren is újraszámolja).
+    function setKiszerelesMezok(sorid, gyujto, sordoboz, bonthato) {
+        let row = $('.js-kiszerelesrow_' + sorid),
+            menny = $('input[name="tetelmennyiseg_' + sorid + '"]');
+        $('input[name="tetelgyujto_' + sorid + '"]').val(gyujto || 0);
+        $('input[name="tetelsordoboz_' + sorid + '"]').val(sordoboz || 0);
+        $('input[name="tetelbonthato_' + sorid + '"]').val(bonthato ? 1 : 0);
+        if ((gyujto * 1) || (sordoboz * 1)) {
+            row.show();
+        } else {
+            row.hide();
+            $('input[name="tetelgyujtomennyiseg_' + sorid + '"]').val(0);
+            $('input[name="tetelsordobozmennyiseg_' + sorid + '"]').val(0);
+        }
+        menny.prop('readonly', !bonthato);
+        if (!bonthato) {
+            // a mennyiséget csak a darabszámok adhatják, a mentés is így számol – ne maradjon
+            // a mezőben az alapértelmezett mennyiség, ami mentéskor úgyis eltűnne
+            calcKiszerelesMennyiseg(sorid);
+        }
+    }
+
+    function calcKiszerelesMennyiseg(sorid) {
+        let gyujto = $('input[name="tetelgyujto_' + sorid + '"]').val() * 1,
+            sordoboz = $('input[name="tetelsordoboz_' + sorid + '"]').val() * 1,
+            gyujtodb = $('input[name="tetelgyujtomennyiseg_' + sorid + '"]').val() * 1,
+            sordobozdb = $('input[name="tetelsordobozmennyiseg_' + sorid + '"]').val() * 1;
+        $('input[name="tetelmennyiseg_' + sorid + '"]')
+            .val(gyujtodb * gyujto + sordobozdb * sordoboz * gyujto)
+            .change();
+    }
+
     function setEgyediAzonositoMezo(sorid, kell) {
         let row = $('.js-egyediazonositorow_' + sorid),
             input = $('input[name="teteltermekegyediazonosito_' + sorid + '"]'),
@@ -742,6 +776,7 @@ let bizonylathelper = function ($) {
             $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
         }
         setEgyediAzonositoMezo(sorid, termek.kellegyediazonosito);
+        setKiszerelesMezok(sorid, termek.gyujto, termek.sordoboz, termek.bonthato);
         vtsz.val(termek.vtsz);
         vtsz.change();
         afa.val(termek.afa);
@@ -1708,6 +1743,10 @@ let bizonylathelper = function ($) {
                         e.preventDefault();
                         let sorid = $(this).attr('name').split('_')[1];
                         calcArak(sorid);
+                    })
+                    .on('change', '.js-kiszerelesinput', function (e) {
+                        e.preventDefault();
+                        calcKiszerelesMennyiseg($(this).attr('name').split('_')[1]);
                     })
                     .on('change', '.js-tetelvaltozat', function (e) {
                         e.preventDefault();

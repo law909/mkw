@@ -659,6 +659,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         return $x;
     }
 
+    /**
+     * A tétel mennyisége a formról. A gyűjtő/sor-doboz darabszám is innen kerül a tételre, és nem
+     * bontható kiszerelésnél a mennyiséget a szerver számolja belőlük – a formról érkező érték
+     * ott csak a képernyőn kiszámolt másolat.
+     */
+    private function setTetelMennyiseg(Bizonylattetel $tetel, $tetelid): void
+    {
+        $tetel->setGyujtomennyiseg($this->params->getFloatRequestParam('tetelgyujtomennyiseg_' . $tetelid));
+        $tetel->setSordobozmennyiseg($this->params->getFloatRequestParam('tetelsordobozmennyiseg_' . $tetelid));
+        $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
+        $tetel->applyKiszerelesMennyiseg();
+    }
+
     private function bizonylatReferencia(\Entities\Bizonylatfej|null $b): array|null
     {
         if (!$b) {
@@ -1065,7 +1078,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                                     $tetel->setParbizonylattetel($parenttetel);
                                 }
                                 $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));
-                                $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
+                                $this->setTetelMennyiseg($tetel, $tetelid);
                                 $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                                 $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));
                                 $tetel->setEnettoegysar($this->params->getFloatRequestParam('tetelenettoegysar_' . $tetelid));
@@ -1158,7 +1171,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                                     $tetel->setVtsz($this->params->getIntRequestParam('tetelvtsz_' . $tetelid));
                                     $tetel->setAfa($this->params->getIntRequestParam('tetelafa_' . $tetelid));
                                     $tetel->setMekod($this->params->getIntRequestParam('tetelme_' . $tetelid));
-                                    $tetel->setMennyiseg($this->params->getFloatRequestParam('tetelmennyiseg_' . $tetelid));
+                                    $this->setTetelMennyiseg($tetel, $tetelid);
 
                                     $tetel->setNettoegysar($this->params->getFloatRequestParam('tetelnettoegysar_' . $tetelid));
                                     $tetel->setBruttoegysar($this->params->getFloatRequestParam('tetelbruttoegysar_' . $tetelid));

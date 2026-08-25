@@ -1471,6 +1471,9 @@ class termekController extends \mkwhelpers\MattableController
             'mainurl' => \mkw\store::getConfigValue('mainurl'),
             'nemlathato' => (!$termek->getXLathato() || $termek->getInaktiv() || $termek->getNemkaphato()),
             'defaultmennyiseg' => \mkw\store::getParameter(\mkw\consts::BizonylatMennyiseg, 0),
+            'gyujto' => (float)$termek->getGyujto(),
+            'sordoboz' => (float)$termek->getSordoboz(),
+            'bonthato' => (bool)$termek->getBonthato(),
             'kartonurl' => \mkw\store::getRouter()->generate('admintermekkartonview', false, [], ['id' => $termek->getId()])
         ];
         if (\mkw\store::isSuperzoneB2B()) {

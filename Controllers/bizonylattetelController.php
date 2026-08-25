@@ -54,6 +54,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $x['afahuf'] = $t->getAfaertekhuf() * -1;
             $x['bruttohuf'] = $t->getBruttohuf() * -1;
             $x['mennyiseg'] = $t->getMennyiseg() * -1;
+            $x['gyujtomennyiseg'] = $t->getGyujtomennyiseg() * -1;
+            $x['sordobozmennyiseg'] = $t->getSordobozmennyiseg() * -1;
         }
 
         $x['hataridostr'] = $t->getHataridoStr();

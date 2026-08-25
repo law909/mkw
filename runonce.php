@@ -1683,6 +1683,7 @@ if ($DBVersion < '0135') {
 if ($DBVersion < '0136') {
     // a bontható kiszerelés az alapértelmezés, a NOT NULL oszlop viszont 0-val jött létre
     \mkw\store::getEm()->getConnection()->executeStatement('UPDATE termek SET bonthato = 1');
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE bizonylattetel SET bonthato = 1');
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0136');
 }
 

@@ -163,6 +163,21 @@ class Bizonylattetel
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $gymennyiseg;
 
+    /** a termékről örökölt kiszerelés: hány darab van egy gyűjtőben @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $gyujto = 0;
+
+    /** a termékről örökölt kiszerelés: hány gyűjtő van egy sorban/dobozban @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $sordoboz = 0;
+
+    /** a termékről örökölt jelző; ha false, a mennyiség csak a gyűjtő/sor-doboz darabszámból jöhet @ORM\Column(type="boolean",nullable=false) */
+    private $bonthato = true;
+
+    /** hány gyűjtőt adunk el @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $gyujtomennyiseg = 0;
+
+    /** hány sort/dobozt adunk el @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $sordobozmennyiseg = 0;
+
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $mennyiseg;
 
@@ -721,6 +736,9 @@ class Bizonylattetel
                     $this->setEhparany($val->getHparany());
                     $this->setIdegencikkszam($val->getIdegencikkszam());
                     $this->setKiszereles($val->getKiszereles());
+                    $this->setGyujto($val->getGyujto());
+                    $this->setSordoboz($val->getSordoboz());
+                    $this->setBonthato($val->getBonthato());
                     $this->setMagassag($val->getMagassag());
                     $this->setMekod($val->getMekod());
                     $this->setME($val->getMe());
@@ -774,6 +792,9 @@ class Bizonylattetel
                 $this->ehparany = 0;
                 $this->idegencikkszam = '';
                 $this->kiszereles = 0;
+                $this->gyujto = 0;
+                $this->sordoboz = 0;
+                $this->bonthato = true;
                 $this->magassag = 0;
                 $this->me = '';
                 $this->osszehajthato = false;
@@ -1019,6 +1040,79 @@ class Bizonylattetel
     public function getGymennyiseg()
     {
         return $this->gymennyiseg;
+    }
+
+    public function getGyujto()
+    {
+        return $this->gyujto;
+    }
+
+    public function setGyujto($val)
+    {
+        $this->gyujto = $val;
+    }
+
+    public function getSordoboz()
+    {
+        return $this->sordoboz;
+    }
+
+    public function setSordoboz($val)
+    {
+        $this->sordoboz = $val;
+    }
+
+    public function getBonthato()
+    {
+        return $this->bonthato;
+    }
+
+    public function setBonthato($val)
+    {
+        $this->bonthato = $val;
+    }
+
+    public function getGyujtomennyiseg()
+    {
+        return $this->gyujtomennyiseg;
+    }
+
+    public function setGyujtomennyiseg($val)
+    {
+        $this->gyujtomennyiseg = $val;
+    }
+
+    public function getSordobozmennyiseg()
+    {
+        return $this->sordobozmennyiseg;
+    }
+
+    public function setSordobozmennyiseg($val)
+    {
+        $this->sordobozmennyiseg = $val;
+    }
+
+    /**
+     * A gyűjtő- és sor/doboz-darabszámból adódó mennyiség. Egy sor/doboz `sordoboz` gyűjtő,
+     * egy gyűjtő `gyujto` darab termék.
+     */
+    public function calcKiszerelesMennyiseg()
+    {
+        $gyujto = (float)$this->gyujto;
+        return (float)$this->gyujtomennyiseg * $gyujto
+            + (float)$this->sordobozmennyiseg * (float)$this->sordoboz * $gyujto;
+    }
+
+    /**
+     * Nem bontható kiszerelésnél a mennyiséget a gyűjtő/sor-doboz darabszám határozza meg – a
+     * formról érkező mennyiség ilyenkor csak a képernyőn kiszámolt érték, nem hihetünk neki.
+     * Bonthatónál a kézzel megadott mennyiség marad.
+     */
+    public function applyKiszerelesMennyiseg()
+    {
+        if (!$this->bonthato) {
+            $this->setMennyiseg($this->calcKiszerelesMennyiseg());
+        }
     }
 
     public function setGymennyiseg($val)
