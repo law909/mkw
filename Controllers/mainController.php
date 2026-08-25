@@ -142,15 +142,8 @@ class mainController extends \mkwhelpers\Controller
     {
         $com = $this->params->getStringParam('slug');
         // a slug abban a menüfában keresendő, amelyikből a webshop menüje épül
-        $tf = null;
-        $ag = null;
-        foreach (\mkw\store::getTermekmenuControllers() as $ctrl) {
-            $ag = $ctrl->getRepo()->findOneBySlug($com);
-            if ($ag) {
-                $tf = $ctrl;
-                break;
-            }
-        }
+        $tf = \mkw\store::getTermekmenuController();
+        $ag = $tf->getRepo()->findOneBySlug($com);
         if ($ag && !$ag->getInaktiv() && $ag->getLathato()) {
             if (count($ag->getChildren()) > 0) {
                 $this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');
@@ -341,8 +334,7 @@ class mainController extends \mkwhelpers\Controller
                                 $vtt[$valt->getSzinId()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getSzinId()]['kepurllarge'] = $valt->getKepurlLarge();
                                 $vtt[$valt->getSzinId()]['keszlet'] += $valt->getAvailableStock();
-                                $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || (($valt->getBeerkezesdatumStr(
-                                    )) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
+                                $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || (($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
                                 $vtt[$valt->getSzinId()]['link'] = \mkw\store::getRouter()->generate(
                                     'showtermekm',
                                     false,

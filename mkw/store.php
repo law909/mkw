@@ -653,11 +653,8 @@ class store
             switch (true) {
                 case self::isMugenrace2026():
                 case self::isSuperzoneHu():
-                    $menu1 = [];
-                    foreach (self::getTermekmenuControllers() as $tmc) {
-                        $menu1 = array_merge($menu1, $tmc->getTreeAsArray());
-                    }
-                    $v->setVar('menu1', $menu1);
+                    $tmc = self::getTermekmenuController();
+                    $v->setVar('menu1', $tmc->getTreeAsArray());
                     break;
                 default:
                     $tf = new termekfaController();
@@ -1745,19 +1742,12 @@ class store
         return self::getSetupValue('webshopnum', 1);
     }
 
-    /**
-     * A webshop menüjét adó menüfá(k) vezérlői. Webshoponként beállítható, hogy a menü a
-     * `termekmenu`, a `termekmenu2` vagy – ha nincs megadva („mindegy") – mindkettő legyen.
-     *
-     * @return \Controllers\termekmenuController[]
-     */
-    public static function getTermekmenuControllers(): array
+    public static function getTermekmenuController(): array
     {
         $tipus = (string)self::getParameter(self::getWebshopFieldName(\mkw\consts::Termekmenutipus), '');
         return match ($tipus) {
-            'termekmenu' => [new termekmenuController()],
-            'termekmenu2' => [new termekmenu2Controller()],
-            default => [new termekmenuController(), new termekmenu2Controller()],
+            'termekmenu2' => new termekmenu2Controller(),
+            default => new termekmenuController(),
         };
     }
 
