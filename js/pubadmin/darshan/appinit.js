@@ -130,6 +130,37 @@ $(document).ready(
                 e.preventDefault();
                 refreshIdopontfoglalasList();
             })
+            .on('click', '.js-idopontlemond', function(e) {
+                const $this = $(this);
+                e.preventDefault();
+                // a lemondás levelet küld a foglalóknak, ezért megerősítést kérünk
+                $('.js-idopontlemondok')
+                    .data('idopontid', $this.data('idopontid'))
+                    .data('idopontdatum', $this.data('idopontdatum'));
+                $('#idopontLemondModal').modal({
+                    backdrop: 'static'
+                });
+            })
+            .on('click', '.js-idopontlemondok', function(e) {
+                const $this = $(this);
+                e.preventDefault();
+                $('#idopontLemondModal').modal('hide');
+                $.ajax({
+                    method: 'POST',
+                    url: '/pubadmin/idopontlemond',
+                    data: {
+                        idopontid: $this.data('idopontid'),
+                        datum: $this.data('idopontdatum')
+                    },
+                    success: function(res) {
+                        const adat = (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
+                        if (adat && adat.msg) {
+                            alert(adat.msg);
+                        }
+                        refreshIdopontfoglalasList();
+                    }
+                });
+            })
             .on('change', '#oraselect', function(e) {
                 const oraid = $(this).val(),
                     datum = $('#datumselect').val();
@@ -243,49 +274,60 @@ $(document).ready(
             })
             .on('click', '.js-newpartner', function(e) {
                 e.preventDefault();
-                $('#partnerModal').modal({
+                // ugyanaz az ablak szolgálja ki az órát és az időpontot, a cél dönti el, hova megy
+                $('#partnerModal').data('cel', 'ora').modal({
+                    backdrop: 'static'
+                });
+            })
+            .on('click', '.js-newidopontpartner', function(e) {
+                e.preventDefault();
+                $('#partnerModal').data('cel', 'idopont').modal({
                     backdrop: 'static'
                 });
             })
             .on('click', '.js-partnerok', function(e) {
                 e.preventDefault();
+                const idopontra = $('#partnerModal').data('cel') === 'idopont';
                 $('#partnerModal').modal('hide');
                 const keresoedit = $('#keresoedit').find(':selected');
                 let partnerid = false;
                 if (keresoedit.length) {
                     partnerid = keresoedit[0].value;
                 }
+                let url, data;
                 if (partnerid) {
-                    $.ajax({
-                        method: 'POST',
-                        url: '/pubadmin/newbejelentkezes',
-                        data: {
-                            datum: $('#datumselect').val(),
-                            oraid: $('#oraselect').val(),
-                            partnerid: partnerid
-                        },
-                        success: function() {
-                            refreshResztvevoList();
-                            resetPartnerModal();
-                        }
-                    });
+                    url = idopontra ? '/pubadmin/newidopontfoglalas' : '/pubadmin/newbejelentkezes';
+                    data = {datum: $('#datumselect').val(), partnerid: partnerid};
+                } else {
+                    url = idopontra ? '/pubadmin/newpartnernewidopontfoglalas' : '/pubadmin/newpartnernewbejelentkezes';
+                    data = {
+                        datum: $('#datumselect').val(),
+                        nev: $('#nevedit').val(),
+                        email: $('#emailedit').val()
+                    };
                 }
-                else {
-                    $.ajax({
-                        method: 'POST',
-                        url: '/pubadmin/newpartnernewbejelentkezes',
-                        data: {
-                            datum: $('#datumselect').val(),
-                            oraid: $('#oraselect').val(),
-                            nev: $('#nevedit').val(),
-                            email: $('#emailedit').val()
-                        },
-                        success: function() {
-                            refreshResztvevoList();
-                            resetPartnerModal();
-                        }
-                    });
+                if (idopontra) {
+                    data.idopontid = $('#idopontselect').val();
+                } else {
+                    data.oraid = $('#oraselect').val();
                 }
+                $.ajax({
+                    method: 'POST',
+                    url: url,
+                    data: data,
+                    success: function(res) {
+                        const adat = (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
+                        if (adat && adat.msg) {
+                            alert(adat.msg);
+                        }
+                        if (idopontra) {
+                            refreshIdopontfoglalasList();
+                        } else {
+                            refreshResztvevoList();
+                        }
+                        resetPartnerModal();
+                    }
+                });
             })
             .on('click', '.js-partneredit', function(e) {
                 const $this = $(this);

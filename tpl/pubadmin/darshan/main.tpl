@@ -74,6 +74,23 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="idopontLemondModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alkalom lemondása</h5>
+                </div>
+                <div class="modal-body">
+                    Biztosan lemondod ezt az alkalmat? A foglalások lemondásra kerülnek, és a
+                    gyakorlók értesítő levelet kapnak.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary js-idopontlemondok">Lemondom</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="lemondokModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

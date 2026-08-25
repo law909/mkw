@@ -16,6 +16,9 @@ $router->map('GET', '/pubadmin/oralist', 'pubadminController#getOralist', 'pubad
 $router->map('GET', '/pubadmin/idopontlist', 'pubadminController#getIdopontlist', 'pubadmingetidopontlist');
 $router->map('GET', '/pubadmin/idopontfoglalaslist', 'pubadminController#getIdopontfoglalaslist', 'pubadmingetidopontfoglalaslist');
 $router->map('POST', '/pubadmin/idopontfoglalasmegjelent', 'pubadminController#setIdopontfoglalasMegjelent', 'pubadminsetidopontfoglalasmegjelent');
+$router->map('POST', '/pubadmin/idopontlemond', 'pubadminController#lemondIdopont', 'pubadminlemondidopont');
+$router->map('POST', '/pubadmin/newidopontfoglalas', 'pubadminController#newIdopontfoglalas', 'pubadminnewidopontfoglalas');
+$router->map('POST', '/pubadmin/newpartnernewidopontfoglalas', 'pubadminController#newIdopontfoglalasWNewPartner', 'pubadminnewpartnernewidopontfoglalas');
 $router->map('GET', '/pubadmin/partnerdata', 'pubadminController#getPartnerData', 'pubadmingetpartnerdata');
 $router->map('POST', '/pubadmin/newbejelentkezes', 'pubadminController#newBejelentkezes', 'pubadminnewbejelentkezes');
 $router->map('POST', '/pubadmin/newpartnernewbejelentkezes', 'pubadminController#newBejelentkezesWNewPartner', 'pubadminnewpartnernewbejelentkezes');

@@ -1,6 +1,10 @@
 <div class="row top-margin-10 bottom-margin-10">
     <div class="col">
         <button class="btn btn-darshan js-idopontrefresh">Frissít <i class="fas fa-sync-alt"></i></button>
+        {if ($idopontid)}
+            <button class="btn btn-darshan js-idopontlemond" data-idopontid="{$idopontid}"
+                    data-idopontdatum="{$idopontdatum}">Lemond <i class="fas fa-archive"></i></button>
+        {/if}
     </div>
 </div>
 {$sorszam = 1}
@@ -27,5 +31,12 @@
 {if (!$foglalaslist|@count)}
     <div class="row top-margin-10">
         <div class="col">Erre az időpontra nincs foglalás.</div>
+    </div>
+{/if}
+{if ($idopontid)}
+    <div class="row top-margin-10 bottom-margin-10">
+        <div class="col">
+            <button class="btn btn-darshan js-newidopontpartner">Új gyakorló</button>
+        </div>
     </div>
 {/if}

@@ -231,6 +231,9 @@ class pubadminController extends mkwhelpers\Controller
             }
         }
         $view->setVar('foglalaslist', $foglalaslista);
+        // a lemondás és az új foglalás gombjának kell
+        $view->setVar('idopontid', $idopont ? $idopont->getId() : 0);
+        $view->setVar('idopontdatum', $datum ? $datum->format(\mkw\store::$SQLDateFormat) : '');
         $view->printTemplateResult();
     }
 
@@ -254,6 +257,189 @@ class pubadminController extends mkwhelpers\Controller
                 $foglalas->createIdopontreszvetel();
             }
         }
+    }
+
+    /**
+     * Új foglalás egy létező partnerrel az időpontra – az óra „Új gyakorló" gombjának párja.
+     * A partnert a meglévő partnerkereső adja (`/pubadmin/partnerdata`).
+     */
+    public function newIdopontfoglalas()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        /** @var Partner|null $partner */
+        $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partnerid'));
+        if (!$partner) {
+            echo json_encode(['msg' => t('A gyakorló nem található.')]);
+            return;
+        }
+        echo json_encode(['msg' => $this->createIdopontfoglalas($partner)]);
+    }
+
+    /**
+     * Új foglalás új partnerrel: ha az emailcímhez már van partner, azt használjuk, különben
+     * felvesszük – ugyanúgy, ahogy az óráknál a bejelentkezésből lesz partner.
+     */
+    public function newIdopontfoglalasWNewPartner()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $nev = trim($this->params->getStringRequestParam('nev'));
+        $email = trim($this->params->getStringRequestParam('email'));
+        if (!$nev || !$email) {
+            echo json_encode(['msg' => t('A név és az emailcím megadása kötelező.')]);
+            return;
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['msg' => t('Az emailcím formátuma hibás.')]);
+            return;
+        }
+        /** @var Partner|null $partner */
+        $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
+        if (!$partner) {
+            $partner = new Partner();
+            $partner->setEmail($email);
+            $partner->setNev($nev);
+            $partner->setSzamlatipus(0);
+            $partner->setVatstatus(2);
+            $this->getEm()->persist($partner);
+            $this->getEm()->flush();
+        }
+        echo json_encode(['msg' => $this->createIdopontfoglalas($partner)]);
+    }
+
+    /**
+     * A foglalás létrehozása. A telt alkalomra és a duplikált foglalásra ugyanaz a szabály
+     * vonatkozik, mint a publikus foglalóűrlapon; a lemondott foglalás viszont újra élővé tehető.
+     *
+     * @return string a felhasználónak szóló üzenet
+     */
+    private function createIdopontfoglalas(Partner $partner): string
+    {
+        $datum = $this->datumParam();
+        $idopont = $this->getSajatIdopont($this->params->getIntRequestParam('idopontid'));
+        if (!$idopont || !$datum) {
+            return t('Az időpont nem található.');
+        }
+        if (!$idopont->isValidOccurrenceDate($datum)) {
+            return t('Erre a napra nincs ilyen időpont.');
+        }
+
+        /** @var Idopontfoglalas|null $meglevo */
+        $meglevo = $this->getRepo(Idopontfoglalas::class)->findOneBy([
+            'idopont' => $idopont,
+            'partner' => $partner,
+            'datum' => $datum,
+        ]);
+        if ($meglevo && !$meglevo->getLemondva()) {
+            return t('Ennek a gyakorlónak már van foglalása erre az alkalomra.');
+        }
+        if (!$idopont->isBookable($datum)) {
+            return t('Erre az alkalomra már nincs szabad hely.');
+        }
+
+        if ($meglevo) {
+            // lemondott foglalás újraélesztése – a unique kulcs miatt új sort úgysem lehetne
+            $meglevo->setLemondva(false);
+            $meglevo->setLemondasdatum(null);
+            $meglevo->setLemondasoka('');
+            $this->getEm()->persist($meglevo);
+            $this->getEm()->flush();
+            return t('A korábban lemondott foglalás visszaállítva.');
+        }
+
+        $foglalas = new Idopontfoglalas();
+        $foglalas->setIdopont($idopont);
+        $foglalas->setPartner($partner);
+        $foglalas->setDatum($datum);
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+        return t('A foglalás felvéve.');
+    }
+
+    /**
+     * Egy időpont adott napi alkalmának lemondása – az óra lemondásának párja. Az időpontnál nincs
+     * helyettesítés-nyilvántartás (ott az `Orarendhelyettesites` jelöli az elmaradást), ezért az
+     * alkalom lemondása a napra szóló foglalások lemondását jelenti; a foglalók levelet kapnak,
+     * ugyanazzal a sablonnal, mint az egyenkénti lemondásnál.
+     *
+     * A már lemondott foglalást nem bántjuk, és levelet sem küldünk rá újra.
+     */
+    public function lemondIdopont()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $datum = $this->datumParam();
+        $idopont = $this->getSajatIdopont($this->params->getIntRequestParam('idopontid'));
+        if (!$idopont || !$datum) {
+            echo json_encode(['msg' => t('Az időpont nem található.')]);
+            return;
+        }
+
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('idopont', '=', $idopont);
+        $filter->addFilter('datum', '=', $datum->format(\mkw\store::$SQLDateFormat));
+        $filter->addFilter('lemondva', '=', false);
+        $foglalasok = $this->getRepo(Idopontfoglalas::class)->getAll($filter, ['id' => 'ASC']);
+
+        $lemondva = 0;
+        $levelek = 0;
+        /** @var Idopontfoglalas $foglalas */
+        foreach ($foglalasok as $foglalas) {
+            $foglalas->setLemondva(true);
+            $foglalas->setLemondasdatum(new \DateTime());
+            $foglalas->setLemondasoka(t('Az alkalom elmarad.'));
+            // a megjelenés-jelölés és a hozzá tartozó részvétel is okafogyottá válik
+            if ($foglalas->isMegjelent()) {
+                $foglalas->setMegjelent(false);
+            }
+            $this->getEm()->persist($foglalas);
+            $this->getEm()->flush();
+            $foglalas->delIdopontreszvetel();
+            $lemondva++;
+            if ($this->sendLemondasEmail($foglalas)) {
+                $levelek++;
+            }
+        }
+
+        echo json_encode([
+            'msg' => sprintf(
+                t('Az alkalom lemondva: %d foglalás, ebből %d foglalónak ment értesítő.'),
+                $lemondva,
+                $levelek
+            ),
+        ]);
+    }
+
+    /**
+     * Lemondás-értesítő egy foglalónak. Ugyanazt a sablont használja, mint az admin oldali
+     * egyenkénti lemondás (\mkw\consts::IdopontfoglalasSablonLemondas).
+     */
+    private function sendLemondasEmail(Idopontfoglalas $foglalas): bool
+    {
+        $email = $foglalas->getPartnerEmail();
+        if (!$email || !\mkw\store::isSendableEmail($email)) {
+            return false;
+        }
+        /** @var \Entities\Emailtemplate|null $emailtpl */
+        $emailtpl = $this->getRepo(Emailtemplate::class)->find(
+            \mkw\store::getParameter(\mkw\consts::IdopontfoglalasSablonLemondas)
+        );
+        if (!$emailtpl) {
+            return false;
+        }
+        $tpldata = $foglalas->toLista();
+        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+        $subject->setVar('foglalas', $tpldata);
+        $body = \mkw\store::getTemplateFactory()->createMainView(
+            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+        );
+        $body->setVar('foglalas', $tpldata);
+
+        $mailer = \mkw\store::getMailer();
+        $mailer->addTo($email);
+        $mailer->setSubject($subject->getTemplateResult());
+        $mailer->setMessage($body->getTemplateResult());
+        $mailer->send();
+        return true;
     }
 
     /** @return Dolgozo|null */
