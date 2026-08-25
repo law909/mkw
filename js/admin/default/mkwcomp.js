@@ -74,6 +74,40 @@ function termekAutocompleteRenderer(ul, item) {
             }
         });
     };
+
+    /**
+     * Az autocomplete keresései kikerülnek a globális "Kérem várjon..." zárolásból.
+     *
+     * Miért kell: az appinit.js minden ajax kérésre $.blockUI-t hív, a blockUI pedig
+     * bindEvents:true-val elnyeli a keydown/keypress eseményeket a zároló réteg alatt.
+     * Emiatt a minLength (általában 4) elérése után a további leütések elvesztek: a
+     * karakter meg sem jelent a mezőben, és nem is került bele a keresésbe.
+     *
+     * A jelzőt a source körül állítjuk, nem az URL-ből ismerjük fel: a $.ajax hívás a
+     * source-on belül szinkron módon történik, így a prefilter biztosan a jelző alatt fut.
+     * Így a string source és a saját $.ajax-os source függvények is le vannak fedve.
+     */
+    var autocompleteDepth = 0;
+
+    $.ajaxPrefilter(function (options) {
+        if (autocompleteDepth > 0) {
+            options.global = false;
+        }
+    });
+
+    var originalInitSource = $.ui.autocomplete.prototype._initSource;
+    $.ui.autocomplete.prototype._initSource = function () {
+        originalInitSource.call(this);
+        var innerSource = this.source;
+        this.source = function (request, response) {
+            autocompleteDepth++;
+            try {
+                return innerSource.call(this, request, response);
+            } finally {
+                autocompleteDepth--;
+            }
+        };
+    };
 })(jQuery);
 
 var mkwcomp = (function ($) {

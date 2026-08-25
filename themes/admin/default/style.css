@@ -226,6 +226,15 @@ img {
     /*	overflow-x: hidden;*/
 }
 
+/* A keresés ideje alatt a jQuery UI ezt az osztályt teszi az inputra. A blockUI zárolása
+   az autocomplete kéréseknél ki van kapcsolva (mkwcomp.js), ez az egyetlen visszajelzés. */
+.ui-autocomplete-loading {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cg fill='none' stroke='%23666' stroke-width='2'%3E%3Ccircle cx='8' cy='8' r='6' opacity='.25'/%3E%3Cpath d='M8 2a6 6 0 0 1 6 6' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 8 8' to='360 8 8' dur='0.8s' repeatCount='indefinite'/%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    padding-right: 22px;
+}
+
 .guestpartner {
     color: red;
 }
