@@ -28,7 +28,7 @@ $(document).ready(function () {
                 }
             }).button();
 
-            $('.js-szinvarimport, .js-szcimkeimport, .js-szeanimport, .js-szmeretimport, .js-szcolorimport, '
+            $('.js-szinvarimport, .js-szcimkeimport, .js-szmeretimport, .js-szcolorimport, '
                 + '.js-fcmotoorderimport, .js-szinimport, .js-meretimport, .js-orszagimport').on('click', function (e) {
                 e.preventDefault();
                 var data = new FormData($('#mattkarb-form')[0]);
@@ -39,6 +39,11 @@ $(document).ready(function () {
                     contentType: false,
                     data: data
                 });
+            }).button();
+
+            $('.js-szeanimport').on('click', function (e) {
+                e.preventDefault();
+                window.location = $(this).attr('href');
             }).button();
 
             $('.js-termekfabutton').on('click', function (e) {

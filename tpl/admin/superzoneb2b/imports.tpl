@@ -45,7 +45,7 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <a href="/admin/import/szeanimport" class="js-szeanimport">Termékváltozat vonalkódok</a>
+                        <a href="/admin/termek/gs1importview" class="js-szeanimport">Termékváltozat vonalkódok</a>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>

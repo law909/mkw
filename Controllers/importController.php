@@ -6124,52 +6124,7 @@ class importController extends \mkwhelpers\Controller
             }
         }
     }
-
-    public function szeanimport()
-    {
-        $dbig = $this->params->getIntRequestParam('dbig', 0);
-        $dbtol = $this->params->getIntRequestParam('dbtol', 0);
-        if ($dbtol < 3) {
-            $dbtol = 3;
-        }
-
-        $filenev = \mkw\store::moveUploadedFile('toimport', 'import');
-        if (!$filenev) {
-            echo 'Hiányzó vagy nem elfogadott típusú fájl.';
-            return;
-        }
-        //pathinfo
-
-        $filetype = IOFactory::identify($filenev);
-        $reader = IOFactory::createReader($filetype);
-        $reader->setReadDataOnly(true);
-        $excel = $reader->load($filenev);
-        $sheet = $excel->getActiveSheet();
-        $maxrow = (int)$sheet->getHighestRow();
-        if (!$dbig) {
-            $dbig = $maxrow;
-        }
-        $maxcol = $sheet->getHighestColumn();
-
-        $tvr = $this->getRepo(TermekValtozat::class);
-
-        for ($row = $dbtol; $row <= $dbig; ++$row) {
-            $ean = $sheet->getCell('D' . $row)->getValue();
-            $tvid = $sheet->getCell('AD' . $row)->getValue();
-            if ($tvid) {
-                $tv = $tvr->find($tvid);
-                if ($tv && $ean) {
-                    $tv->setVonalkod($ean);
-                    $this->getEm()->persist($tv);
-                    if ($row % 100 == 0) {
-                        $this->getEm()->flush();
-                    }
-                }
-            }
-        }
-        $this->getEm()->flush();
-    }
-
+    
     public function szmeretimport()
     {
         $dbig = $this->params->getIntRequestParam('dbig', 0);
