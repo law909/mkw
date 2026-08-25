@@ -1171,7 +1171,7 @@ class Bizonylatfej
     }
 
     /** Stornó bizonylat, aminek megvan a szülője – az egyenlegét a szülőjén mutatjuk. */
-    private function isStornoGyerek()
+    public function isStornoGyerek()
     {
         return $this->getStorno() && $this->getParbizonylatfej();
     }

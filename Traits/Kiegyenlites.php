@@ -25,8 +25,10 @@ trait Kiegyenlites
     ];
 
     /**
-     * A bizonylat kiegyenlítésére nyíló rögzítő URL-je, vagy '' ha a bizonylathoz nem való
-     * gomb: nem képez folyószámlát, vagy nincs nyitott egyenlege.
+     * A bizonylat kiegyenlítésére nyíló rögzítő URL-je, vagy '' ha a bizonylathoz nem való gomb.
+     *
+     * A rontott és a szülővel bíró stornó bizonylat mindkét gombot kizárja: a folyószámlájuk a
+     * szülőn van, a getEgyenleg() is 0-t ad rájuk.
      *
      * @param \Entities\Bizonylatfej $bizonylat
      * @param float $egyenleg a listán mutatott egyenleg (pozitív, ha kiegyenlítetlen)
@@ -39,10 +41,17 @@ trait Kiegyenlites
     {
         // a pénztár- és bankbizonylat útvonalai csak bankpénztáras deployen élnek
         if (!\mkw\store::isBankpenztar() || !$bizonylat || !$bizonylat->getPenztmozgat()
-            || (abs($egyenleg * 1) < 0.005)) {
+            || $bizonylat->getRontott() || $bizonylat->isStornoGyerek()) {
             return '';
         }
-        $tipus = $tipus ?: $bizonylat->getFizmod()?->getTipus();
+        if (!$tipus) {
+            // a "Kiegyenlít" gombnak csak nyitott egyenlegnél van értelme; a két rögzítő gomb
+            // kiegyenlített bizonylaton is kell (utólagos befizetés, visszafizetés)
+            if (abs($egyenleg * 1) < 0.005) {
+                return '';
+            }
+            $tipus = $bizonylat->getFizmod()?->getTipus();
+        }
         if (!isset(self::$kiegyenlitesUtvonalak[$tipus])) {
             return '';
         }
@@ -59,8 +68,11 @@ trait Kiegyenlites
     }
 
     /**
-     * A "Kiegyenlít" gombbal indított rögzítő előtöltendő adatai, vagy null, ha a kérés nem
-     * onnan jött (illetve a bizonylat időközben kiegyenlítődött).
+     * A listasor gombjaival indított rögzítő előtöltendő adatai, vagy null, ha a kérés nem
+     * onnan jött.
+     *
+     * Kiegyenlített bizonylatról is jöhet a kérés (a két rögzítő gomb ott is látszik) – ilyenkor
+     * az összeg 0, a többi adat viszont kitöltődik, a felhasználó csak az összeget írja be.
      *
      * @param string $jogcimparameter a rögzítő automatikus jogcímének paraméterneve
      *
@@ -74,14 +86,13 @@ trait Kiegyenlites
         }
         /** @var \Entities\Bizonylatfej $bizonylat */
         $bizonylat = $this->getRepo(Bizonylatfej::class)->find($id);
-        if (!$bizonylat) {
+        // ugyanaz a szűrés, mint a gombok kiadásánál: kézzel összerakott kérésre se töltsön elő
+        if (!$bizonylat || !$bizonylat->getPenztmozgat()
+            || $bizonylat->getRontott() || $bizonylat->isStornoGyerek()) {
             return null;
         }
         // ugyanaz az előjelezés, mint a bizonylatlistán: pozitív, ha még kiegyenlítetlen
         $egyenleg = $bizonylat->getEgyenleg() * -1 * $bizonylat->getIrany();
-        if (abs($egyenleg) < 0.005) {
-            return null;
-        }
         // A pénzmozgás iránya a bizonylatéval ellentétes (a számlára befizetés jön), a
         // negatív egyenleg pedig megfordítja, mert a túlfizetést visszafizetjük. Így az
         // összeg mindig pozitív marad, az irányt a fej (pénztár) vagy a tétel (bank) hordozza.
