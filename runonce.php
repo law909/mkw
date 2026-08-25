@@ -1621,40 +1621,8 @@ if ($DBVersion < '0132') {
 }
 
 if ($DBVersion < '0133') {
-    // superzoneb2b: a termékmenü a termékfából indul, és minden termék oda kerül, ahol a
-    // termékfában áll. A két tábla oszlopai megegyeznek (mindkettő ugyanabból a mintából jön),
-    // ezért a másolás egyenes; a megfeleltetést az idegenkod tartja ("termekfa-<id>").
-    if (\mkw\store::isSuperzoneB2B()) {
-        $conn = \mkw\store::getEm()->getConnection();
-        $mar = (int)$conn->fetchOne('SELECT COUNT(*) FROM termekmenu WHERE idegenkod LIKE "termekfa-%"');
-        if (!$mar) {
-            $mezok = 'nev, nev_l1, sorrend, slug, rovidleiras, rovidleiras_l1, leiras, leiras_l1,'
-                . ' leiras2, leiras2_l1, leiras3, leiras3_l1, menu1lathato, menu2lathato, menu3lathato,'
-                . ' menu4lathato, oldalcim, seodescription, kepurl, kepleiras, inaktiv, arukeresoid,'
-                . ' lathato, lathato2, lathato3, lathato4, lathato5, lathato6, lathato7, lathato8,'
-                . ' lathato9, lathato10, lathato11, lathato12, lathato13, lathato14, lathato15';
-            // a gyökér már megvan a menüben (id=1), ezért csak az alatta lévő kategóriák jönnek át;
-            // a szülő egyelőre mindenkinél a gyökér, a valódi szülőt a következő lépés köti be
-            $conn->executeStatement(
-                'INSERT INTO termekmenu (' . $mezok . ', idegenkod, parent_id)'
-                . ' SELECT ' . $mezok . ', CONCAT("termekfa-", f.id), 1'
-                . ' FROM termekfa f WHERE f.parent_id IS NOT NULL'
-            );
-            $conn->executeStatement(
-                'UPDATE termekmenu m'
-                . ' JOIN termekfa f ON m.idegenkod = CONCAT("termekfa-", f.id)'
-                . ' JOIN termekmenu p ON p.idegenkod = CONCAT("termekfa-", f.parent_id)'
-                . ' SET m.parent_id = p.id'
-            );
-            $conn->executeStatement(
-                'UPDATE termek t JOIN termekmenu m ON m.idegenkod = CONCAT("termekfa-", t.termekfa1_id)'
-                . ' SET t.termekmenu1_id = m.id'
-                . ' WHERE t.termekfa1_id IS NOT NULL'
-            );
-            // a karkod a fa szerkezetéből származik, a termékeké is innen frissül
-            \mkw\store::getEm()->getRepository(\Entities\TermekMenu::class)->regenerateKarKod();
-        }
-    }
+    // Ez a blokk tévedésből az ELSŐ termékmenübe töltötte a termékfát; a helyes cél a második fa.
+    // A tényleges munka ezért a 0135-be került, ami a rosszul lefutott 0133-at is visszabontja.
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0133');
 }
 
@@ -1667,6 +1635,49 @@ if ($DBVersion < '0134') {
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/termekkarton/view") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0134');
+}
+
+if ($DBVersion < '0135') {
+    // superzoneb2b: a MÁSODIK termékmenü-fa (termekmenu2) a termékfából indul, és minden termék
+    // oda kerül, ahol a termékfában áll. A két tábla oszlopai megegyeznek (mindkettő ugyanabból a
+    // mintából jön), ezért a másolás egyenes; a megfeleltetést az idegenkod tartja ("termekfa-<id>").
+    //
+    // Az ELSŐ fához szándékosan hozzá sem nyúlunk. A hibás 0133 oda töltött, de az ottani sorokat
+    // nem lehet biztonságosan visszabontani: az idegenkod önmagában nem különbözteti meg őket a
+    // korábbi, jogos "termekfa-" hivatkozású menüpontoktól, a felülírt termekmenu1_id régi értéke
+    // pedig sehol nincs meg. Ez adatkérdés, kézzel kell rendezni.
+    if (\mkw\store::isSuperzoneB2B()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $mar = (int)$conn->fetchOne('SELECT COUNT(*) FROM termekmenu2 WHERE idegenkod LIKE "termekfa-%"');
+        if (!$mar) {
+            $mezok = 'nev, nev_l1, sorrend, slug, rovidleiras, rovidleiras_l1, leiras, leiras_l1,'
+                . ' leiras2, leiras2_l1, leiras3, leiras3_l1, menu1lathato, menu2lathato, menu3lathato,'
+                . ' menu4lathato, oldalcim, seodescription, kepurl, kepleiras, inaktiv, arukeresoid,'
+                . ' lathato, lathato2, lathato3, lathato4, lathato5, lathato6, lathato7, lathato8,'
+                . ' lathato9, lathato10, lathato11, lathato12, lathato13, lathato14, lathato15';
+            // a gyökér már megvan a második fában (id=1, lásd 0132), ezért csak az alatta lévő
+            // kategóriák jönnek át; a valódi szülőt a következő lépés köti be
+            $conn->executeStatement(
+                'INSERT INTO termekmenu2 (' . $mezok . ', idegenkod, parent_id)'
+                . ' SELECT ' . $mezok . ', CONCAT("termekfa-", f.id), 1'
+                . ' FROM termekfa f WHERE f.parent_id IS NOT NULL'
+            );
+            $conn->executeStatement(
+                'UPDATE termekmenu2 m'
+                . ' JOIN termekfa f ON m.idegenkod = CONCAT("termekfa-", f.id)'
+                . ' JOIN termekmenu2 p ON p.idegenkod = CONCAT("termekfa-", f.parent_id)'
+                . ' SET m.parent_id = p.id'
+            );
+            $conn->executeStatement(
+                'UPDATE termek t JOIN termekmenu2 m ON m.idegenkod = CONCAT("termekfa-", t.termekfa1_id)'
+                . ' SET t.termekmenu2_id = m.id'
+                . ' WHERE t.termekfa1_id IS NOT NULL'
+            );
+            // a karkod a fa szerkezetéből származik, a termékeké is innen frissül
+            \mkw\store::getEm()->getRepository(\Entities\TermekMenu2::class)->regenerateKarKod();
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0135');
 }
 
 /**
