@@ -6,7 +6,6 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\BizonylattetelKapcsolodokoltseg;
 use Entities\Kapcsolodokoltseg;
-use Entities\Termek;
 
 /**
  * A bizonylattételek kapcsolódó költségeinek újragenerálása. A tétel sorai a termékhez rendelt
@@ -42,32 +41,10 @@ class KapcsolodoKoltsegService
             $sor->setAr($koltseg->getAr());
             $sor->setNavfeladando($koltseg->getNavfeladando());
             $sor->setSzamitasalapertek($koltseg->getSzamitasalapErtek($termek));
-            $sor->setEgysertek($koltseg->calcErtek($termek));
             $sor->setErtek($koltseg->calcErtek($termek) * $mennyiseg);
             $tetel->addKapcsolodokoltseg($sor);
             \mkw\store::getEm()->persist($sor);
         }
-    }
-
-    /**
-     * A megadott kapcsolódó költségek összege egy darab termékre. A termékár-képlet használja:
-     * ott a képlet a termékhez rendelt költségek közül válogat.
-     *
-     * @param int[] $koltsegIdk
-     */
-    public static function sumEgysertek(Termek $termek, array $koltsegIdk): float
-    {
-        if (!$koltsegIdk) {
-            return 0;
-        }
-        $osszeg = 0;
-        /** @var Kapcsolodokoltseg $koltseg */
-        foreach ($termek->getKapcsolodokoltsegek() as $koltseg) {
-            if (in_array($koltseg->getId(), $koltsegIdk)) {
-                $osszeg += $koltseg->calcErtek($termek);
-            }
-        }
-        return $osszeg;
     }
 
 }

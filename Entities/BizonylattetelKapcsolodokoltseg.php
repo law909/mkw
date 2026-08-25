@@ -56,10 +56,7 @@ class BizonylattetelKapcsolodokoltseg
     /** a termék vonatkozó adata (ma a súlya), amivel az ár szorzódik @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $szamitasalapertek = 0;
 
-    /** egy darab termékre eső költség: ar * szamitasalapertek @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $egysertek = 0;
-
-    /** a tétel teljes mennyiségére eső költség @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** a tétel teljes mennyiségére eső költség: ar * szamitasalapertek * mennyiseg @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $ertek = 0;
 
     public function getId()
@@ -155,16 +152,6 @@ class BizonylattetelKapcsolodokoltseg
     public function setSzamitasalapertek($val)
     {
         $this->szamitasalapertek = $val;
-    }
-
-    public function getEgysertek()
-    {
-        return $this->egysertek;
-    }
-
-    public function setEgysertek($val)
-    {
-        $this->egysertek = $val;
     }
 
     public function getErtek()
