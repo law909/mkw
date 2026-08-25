@@ -11,6 +11,8 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylatnaplo;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
+use Entities\BizonylattetelKapcsolodokoltseg;
+use Entities\Kapcsolodokoltseg;
 use Entities\Feketelista;
 use Entities\Folyoszamla;
 use Entities\Jogcim;
@@ -57,6 +59,7 @@ class BizonylatfejListener
     private $bankbizonylattetelmd;
     private $bizonylattetelmd;
     private $folyoszamlamd;
+    private $kapcsolodokoltsegmd;
     private $kuponmd;
     private $bizonylatnaplomd;
 
@@ -161,6 +164,45 @@ class BizonylatfejListener
             }
         } else {
             $this->createFSzla($bizonylat, 0);
+        }
+    }
+
+    /**
+     * A tételek kapcsolódó költségei minden mentéskor újraképződnek: a mennyiség, a termék és a
+     * költségtörzs is változhatott. A hívás a költségtételek (szállítási, utánvét, kezelési)
+     * képzése UTÁN van, hogy azok is kapjanak sorokat.
+     *
+     * @param \Entities\Bizonylatfej $bizonylat
+     */
+    private function createKapcsolodoKoltseg($bizonylat)
+    {
+        /** @var \Entities\Bizonylattetel $tetel */
+        foreach ($bizonylat->getBizonylattetelek() as $tetel) {
+            foreach ($tetel->getKapcsolodokoltsegek() as $sor) {
+                $this->em->remove($sor);
+            }
+            $tetel->removeAllKapcsolodokoltseg();
+
+            $termek = $tetel->getTermek();
+            if (!$termek) {
+                continue;
+            }
+            $mennyiseg = (float)$tetel->getMennyiseg();
+            /** @var Kapcsolodokoltseg $koltseg */
+            foreach ($termek->getKapcsolodokoltsegek() as $koltseg) {
+                $sor = new BizonylattetelKapcsolodokoltseg();
+                $sor->setKapcsolodokoltseg($koltseg);
+                $sor->setNev($koltseg->getNev());
+                $sor->setCsoport($koltseg->getCsoport());
+                $sor->setSzamitasalap($koltseg->getSzamitasalap());
+                $sor->setAr($koltseg->getAr());
+                $sor->setNavfeladando($koltseg->getNavfeladando());
+                $sor->setSzamitasalapertek($koltseg->getSzamitasalapErtek($termek));
+                $sor->setErtek($koltseg->calcErtek($termek) * $mennyiseg);
+                $tetel->addKapcsolodokoltseg($sor);
+                $this->em->persist($sor);
+                $this->uow->computeChangeSet($this->kapcsolodokoltsegmd, $sor);
+            }
         }
     }
 
@@ -1204,6 +1246,7 @@ class BizonylatfejListener
         $this->bankbizonylatfejmd = $this->em->getClassMetadata(Bankbizonylatfej::class);
         $this->bankbizonylattetelmd = $this->em->getClassMetadata(Bankbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
+        $this->kapcsolodokoltsegmd = $this->em->getClassMetadata(BizonylattetelKapcsolodokoltseg::class);
         $this->kuponmd = $this->em->getClassMetadata(Kupon::class);
         $this->bizonylatnaplomd = $this->em->getClassMetadata(Bizonylatnaplo::class);
 
@@ -1267,6 +1310,7 @@ class BizonylatfejListener
                     $entity->setOsszegvaltozott($this->osszegValtozott($entity));
 
                     $this->createFolyoszamla($entity);
+                    $this->createKapcsolodoKoltseg($entity);
 
                     if (!$entity->getWebshopnum()) {
                         $entity->setWebshopnum(\mkw\store::getWebshopNum());

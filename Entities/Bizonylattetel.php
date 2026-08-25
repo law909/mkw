@@ -248,7 +248,7 @@ class Bizonylattetel
 
     /**
      * A tételre eső kapcsolódó költségek másolatai. A bizonylat mentése generálja újra őket,
-     * lásd \Services\KapcsolodoKoltsegService.
+     * lásd \Listeners\BizonylatfejListener::createKapcsolodoKoltseg().
      *
      * @ORM\OneToMany(targetEntity="BizonylattetelKapcsolodokoltseg", mappedBy="bizonylattetel",
      *  cascade={"persist","remove"},orphanRemoval=true)

@@ -35,7 +35,6 @@ use Services\BizonylatCalculatorService;
 use Services\BizonylatSliceService;
 use Services\PenzmozgasService;
 use Services\KeszletService;
-use Services\KapcsolodoKoltsegService;
 
 class bizonylatfejController extends \mkwhelpers\MattableController
 {
@@ -1250,12 +1249,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $oper = $this->params->getStringRequestParam('oper');
         parent::afterSave($o, $parancs);
         $this->logMentes($o, $parancs);
-        if ($parancs !== $this->delOperation) {
-            // a tételsorok mennyisége és terméke is változhatott, ezért a kapcsolódó költségek
-            // sorai mindig újraképződnek
-            KapcsolodoKoltsegService::regenerateBizonylat($o);
-            $this->getEm()->flush();
-        }
         if ($oper === 'storno') {
             $parentid = $this->params->getStringRequestParam('parentid');
             if ($parentid) {

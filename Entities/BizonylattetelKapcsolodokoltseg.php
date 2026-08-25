@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Egy bizonylattételre eső kapcsolódó költség. A törzs adatai (név, csoport, ár, …) és a termék
  * számítási alapja is át van másolva ide, hogy a bizonylat a törzs későbbi módosítása után is
- * ugyanazt mutassa. A sorokat a bizonylat mentése generálja újra
- * (`Services\KapcsolodoKoltsegService::regenerate()`).
+ * ugyanazt mutassa. A sorokat a bizonylat minden mentése újragenerálja
+ * (`Listeners\BizonylatfejListener::createKapcsolodoKoltseg()`).
  *
  * @ORM\Entity(repositoryClass="Entities\BizonylattetelKapcsolodokoltsegRepository")
  * @ORM\Table(name="bizonylattetelkapcsolodokoltseg",
