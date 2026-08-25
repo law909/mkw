@@ -334,6 +334,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function isStornoGyerek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isStornoGyerek', []);
+
+        return parent::isStornoGyerek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getKedvezmenyCount()
     {
 
