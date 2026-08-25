@@ -1687,6 +1687,16 @@ if ($DBVersion < '0136') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0136');
 }
 
+if ($DBVersion < '0137') {
+    // kapcsolódó költség törzs: a többi törzsképernyő mellé, az "Egyebek" csoportba
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 7, "Kapcsolódó költségek", "/admin/kapcsolodokoltseg/viewlist", "/admin/kapcsolodokoltseg", 20, 1, 1550, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/kapcsolodokoltseg/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0137');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

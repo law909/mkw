@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Afa;
+use Entities\Kapcsolodokoltseg;
 use Entities\Arsav;
 use Entities\ME;
 use Entities\Meret;
@@ -593,6 +594,13 @@ class termekController extends \mkwhelpers\MattableController
             $cimke = $this->getEm()->getRepository(Termekcimketorzs::class)->find($cimkekod);
             if ($cimke) {
                 $obj->addCimke($cimke);
+            }
+        }
+        $obj->removeAllKapcsolodokoltseg();
+        foreach ($this->params->getArrayRequestParam('kapcsolodokoltsegek') as $koltsegid) {
+            $koltseg = $this->getEm()->getRepository(Kapcsolodokoltseg::class)->find($koltsegid);
+            if ($koltseg) {
+                $obj->addKapcsolodokoltseg($koltseg);
             }
         }
         $obj->setBrutto($this->params->getNumRequestParam('brutto'));
@@ -1538,6 +1546,9 @@ class termekController extends \mkwhelpers\MattableController
         $tcc = new termekcimkekatController();
         $cimkek = $termek ? $termek->getAllCimkeId() : null;
         $view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
+
+        $kkc = new kapcsolodokoltsegController();
+        $view->setVar('kapcsolodokoltseglist', $kkc->getSelectList($termek ? $termek->getAllKapcsolodokoltsegId() : []));
 
         $view->setVar('egyed', $this->loadVars($termek, true));
 

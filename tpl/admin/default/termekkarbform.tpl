@@ -28,6 +28,7 @@
             {/if}
             <li><a href="#WebTab">{at('Webes adatok')}</a></li>
             <li><a href="#CsomagolasTab">{at('Csomagolási adatok')}</a></li>
+            <li><a href="#KapcsolodoKoltsegTab">{at('Kapcsolódó költségek')}</a></li>
             <li><a href="#DokTab">{at('Dokumentumok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
@@ -728,6 +729,26 @@
                                            name="bonthato"{if ($egyed.bonthato)} checked="checked"{/if}>{at('Bontható kiszerelés')}
                     </td>
                 </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="KapcsolodoKoltsegTab" class="mattkarb-page">
+            <table>
+                <tbody>
+                {foreach $kapcsolodokoltseglist as $_kk}
+                    <tr>
+                        <td><input id="KapcsolodoKoltseg{$_kk.id}" name="kapcsolodokoltsegek[]" type="checkbox"
+                                   value="{$_kk.id}"{if ($_kk.selected)} checked="checked"{/if}></td>
+                        <td><label for="KapcsolodoKoltseg{$_kk.id}">{$_kk.caption}</label></td>
+                        <td>{$_kk.csoportnev}</td>
+                        <td>{$_kk.szamitasalapnev}</td>
+                        <td class="mattable-rightaligned">{number_format($_kk.ar|default:0, 4, '.', ' ')}</td>
+                    </tr>
+                {foreachelse}
+                    <tr>
+                        <td>{at('Nincs kapcsolódó költség rögzítve.')}</td>
+                    </tr>
+                {/foreach}
                 </tbody>
             </table>
         </div>

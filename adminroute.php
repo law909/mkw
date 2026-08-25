@@ -44,6 +44,14 @@ $router->map('GET', '/admin/afa/navcaselist', 'afaController#navcaselist', 'admi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');
 }
+$router->map('GET', '/admin/kapcsolodokoltseg/viewlist', 'kapcsolodokoltsegController#viewlist', 'adminkapcsolodokoltsegviewlist');
+$router->map('GET', '/admin/kapcsolodokoltseg/getlistbody', 'kapcsolodokoltsegController#getlistbody', 'adminkapcsolodokoltseggetlistbody');
+$router->map('GET', '/admin/kapcsolodokoltseg/getkarb', 'kapcsolodokoltsegController#getkarb', 'adminkapcsolodokoltseggetkarb');
+$router->map('GET', '/admin/kapcsolodokoltseg/viewkarb', 'kapcsolodokoltsegController#viewkarb', 'adminkapcsolodokoltsegviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/kapcsolodokoltseg/save', 'kapcsolodokoltsegController#save', 'adminkapcsolodokoltsegsave');
+}
+
 $router->map('GET', '/admin/arfolyam/viewlist', 'arfolyamController#viewlist', 'adminarfolyamviewlist');
 $router->map('GET', '/admin/arfolyam/getlistbody', 'arfolyamController#getlistbody', 'adminarfolyamgetlistbody');
 $router->map('GET', '/admin/arfolyam/getkarb', 'arfolyamController#getkarb', 'adminarfolyamgetkarb');

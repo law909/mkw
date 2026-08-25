@@ -249,6 +249,15 @@ class Bizonylattetel
     /** @ORM\OneToMany(targetEntity="Bizonylattetel", mappedBy="parbizonylattetel",cascade={"persist"}) */
     private $szulobizonylattetelek;
 
+    /**
+     * A tételre eső kapcsolódó költségek másolatai. A bizonylat mentése generálja újra őket,
+     * lásd \Services\KapcsolodoKoltsegService.
+     *
+     * @ORM\OneToMany(targetEntity="BizonylattetelKapcsolodokoltseg", mappedBy="bizonylattetel",
+     *  cascade={"persist","remove"},orphanRemoval=true)
+     */
+    private $kapcsolodokoltsegek;
+
     /** @ORM\Column(type="date",nullable=true) */
     private $hatarido;
 
@@ -322,6 +331,35 @@ class Bizonylattetel
     public function __construct()
     {
         $this->szulobizonylattetelek = new ArrayCollection();
+        $this->kapcsolodokoltsegek = new ArrayCollection();
+    }
+
+    public function getKapcsolodokoltsegek()
+    {
+        return $this->kapcsolodokoltsegek;
+    }
+
+    public function addKapcsolodokoltseg(BizonylattetelKapcsolodokoltseg $koltseg)
+    {
+        if (!$this->kapcsolodokoltsegek->contains($koltseg)) {
+            $this->kapcsolodokoltsegek->add($koltseg);
+            $koltseg->setBizonylattetel($this);
+        }
+    }
+
+    public function removeAllKapcsolodokoltseg()
+    {
+        $this->kapcsolodokoltsegek->clear();
+    }
+
+    /** a tételre eső kapcsolódó költségek összege */
+    public function getKapcsolodokoltsegOsszeg(): float
+    {
+        $osszeg = 0;
+        foreach ($this->kapcsolodokoltsegek as $koltseg) {
+            $osszeg += (float)$koltseg->getErtek();
+        }
+        return $osszeg;
     }
 
     public function toBarionModel()

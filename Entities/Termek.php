@@ -99,6 +99,16 @@ class Termek
      */
     private $cimkek;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Kapcsolodokoltseg",inversedBy="termekek")
+     * @ORM\JoinTable(name="termek_kapcsolodokoltsegek",
+     *  options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+     *  joinColumns={@ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="kapcsolodokoltseg_id",referencedColumnName="id",onDelete="cascade")}
+     *  )
+     */
+    private $kapcsolodokoltsegek;
+
     /** @ORM\Column(type="text",nullable=true) */
     private $cimkenevek = '';
 
@@ -496,6 +506,7 @@ class Termek
     public function __construct()
     {
         $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->kapcsolodokoltsegek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekkepek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekszinkepek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->valtozatok = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1633,6 +1644,32 @@ class Termek
     public function getCimkek()
     {
         return $this->cimkek;
+    }
+
+    public function getKapcsolodokoltsegek()
+    {
+        return $this->kapcsolodokoltsegek;
+    }
+
+    public function getAllKapcsolodokoltsegId()
+    {
+        $res = [];
+        foreach ($this->kapcsolodokoltsegek as $koltseg) {
+            $res[] = $koltseg->getId();
+        }
+        return $res;
+    }
+
+    public function addKapcsolodokoltseg(Kapcsolodokoltseg $koltseg)
+    {
+        if (!$this->kapcsolodokoltsegek->contains($koltseg)) {
+            $this->kapcsolodokoltsegek->add($koltseg);
+        }
+    }
+
+    public function removeAllKapcsolodokoltseg()
+    {
+        $this->kapcsolodokoltsegek->clear();
     }
 
     public function getAllCimkeId()
