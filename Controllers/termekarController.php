@@ -33,6 +33,9 @@ class termekarController extends \mkwhelpers\MattableController
         if ($forKarb) {
             $x['valutanemlist'] = $valutanem->getSelectList($t->getValutanem()?->getId());
             $x['arsavlist'] = $arsav->getSelectList($t->getArsav()?->getId());
+            $x['forrasarsavlist'] = $arsav->getSelectList($t->getForrasarsavId());
+            $kkc = new kapcsolodokoltsegController();
+            $x['kepletkoltseglist'] = $kkc->getSelectList($t->getAllKepletkoltsegId());
         }
         return $x;
     }

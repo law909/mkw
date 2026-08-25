@@ -664,6 +664,10 @@ class termekController extends \mkwhelpers\MattableController
         }
 
         if (\mkw\store::isArsavok()) {
+            // a képletes sorok nettója nem a formról jön: a mentés is újraszámolja, hogy a tárolt
+            // ár és a képlet ne csúszhasson szét
+            // a súlyt a setFields ekkorra már ráírta a termékre, külön átadni nem kell
+            $kepletErtekek = \Services\TermekArKepletService::calc($this->getArsavSorokFromRequest(), $obj)['ertekek'];
             $arids = $this->params->getArrayRequestParam('arid');
             foreach ($arids as $arid) {
                 $oper = $this->params->getStringRequestParam('aroper_' . $arid);
@@ -672,34 +676,33 @@ class termekController extends \mkwhelpers\MattableController
                     $valutanem = $this->getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
                 }
                 $arsav = $this->getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav_' . $arid));
+                $kepletes = $this->params->getBoolRequestParam('arkepletes_' . $arid);
                 if ($oper == 'add') {
                     $ar = new \Entities\TermekAr();
                     $obj->addTermekAr($ar);
-                    $ar->setArsav($arsav);
+                } elseif ($oper == 'edit') {
+                    $ar = $this->getEm()->getRepository(TermekAr::class)->find($arid);
+                } else {
+                    continue;
+                }
+                if (!$ar) {
+                    continue;
+                }
+                $ar->setArsav($arsav);
+                if ($valutanem) {
+                    $ar->setValutanem($valutanem);
+                }
+                $this->setTermekArKeplet($ar, $arid, $kepletes);
+                if ($kepletes) {
+                    $ar->setNetto($kepletErtekek[$arid] ?? 0);
+                } else {
                     $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
                     $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
                     if ($brutto != 0) {
                         $ar->setBrutto($brutto);
                     }
-                    if ($valutanem) {
-                        $ar->setValutanem($valutanem);
-                    }
-                    $this->getEm()->persist($ar);
-                } elseif ($oper == 'edit') {
-                    $ar = $this->getEm()->getRepository(TermekAr::class)->find($arid);
-                    if ($ar) {
-                        $ar->setArsav($arsav);
-                        $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
-                        $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
-                        if ($brutto != 0) {
-                            $ar->setBrutto($brutto);
-                        }
-                        if ($valutanem) {
-                            $ar->setValutanem($valutanem);
-                        }
-                        $this->getEm()->persist($ar);
-                    }
                 }
+                $this->getEm()->persist($ar);
             }
         }
         if (\mkw\store::getSetupValue('kapcsolodotermekek')) {
@@ -1457,6 +1460,79 @@ class termekController extends \mkwhelpers\MattableController
      * @param \Entities\Termek $termek
      * @param int $valtozatid a kód alapján beazonosított változat, ha volt ilyen
      */
+    /** a képlet mezői a formról a termékár sorra */
+    private function setTermekArKeplet(TermekAr $ar, $arid, bool $kepletes): void
+    {
+        $ar->setKepletes($kepletes);
+        $ar->setForrasarsav($kepletes ? $this->params->getIntRequestParam('arforrasarsav_' . $arid) : null);
+        $ar->setSzazalek($this->params->getNumRequestParam('arszazalek_' . $arid));
+        $ar->setHozzaad($this->params->getNumRequestParam('arhozzaad_' . $arid));
+        $ar->setKivon($this->params->getNumRequestParam('arkivon_' . $arid));
+        $ar->removeAllKepletkoltseg();
+        if (!$kepletes) {
+            return;
+        }
+        foreach ($this->params->getArrayRequestParam('arkepletkoltseg_' . $arid) as $koltsegid) {
+            $koltseg = $this->getEm()->getRepository(Kapcsolodokoltseg::class)->find($koltsegid);
+            if ($koltseg) {
+                $ar->addKepletkoltseg($koltseg);
+            }
+        }
+    }
+
+    /**
+     * Az ársáv sorok a formról, a képletszámítás bemenetének alakjában.
+     */
+    private function getArsavSorokFromRequest(): array
+    {
+        $sorok = [];
+        foreach ($this->params->getArrayRequestParam('arid') as $arid) {
+            $sorok[] = [
+                'id' => $arid,
+                'arsav' => $this->params->getIntRequestParam('arsav_' . $arid),
+                'valutanem' => $this->params->getIntRequestParam('arvalutanem_' . $arid),
+                'netto' => $this->params->getNumRequestParam('arnetto_' . $arid),
+                'kepletes' => $this->params->getBoolRequestParam('arkepletes_' . $arid),
+                'forrasarsav' => $this->params->getIntRequestParam('arforrasarsav_' . $arid),
+                'szazalek' => $this->params->getNumRequestParam('arszazalek_' . $arid),
+                'hozzaad' => $this->params->getNumRequestParam('arhozzaad_' . $arid),
+                'kivon' => $this->params->getNumRequestParam('arkivon_' . $arid),
+                'koltsegek' => $this->params->getArrayRequestParam('arkepletkoltseg_' . $arid),
+            ];
+        }
+        return $sorok;
+    }
+
+    /**
+     * Az „Árak újraszámolása" gomb: a formon álló sorokból kiszámolja a képletes árakat, és
+     * visszaadja a nettó/bruttó értékeket. Nem ment – a beírás a képernyőn történik.
+     */
+    public function recalcArak()
+    {
+        $termek = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if (!$termek) {
+            $termek = new Termek();
+            $this->getEm()->detach($termek);
+        }
+        $afa = $this->getRepo(Afa::class)->find($this->params->getIntRequestParam('afa')) ?: $termek->getAfa();
+        $eredmeny = \Services\TermekArKepletService::calc(
+            $this->getArsavSorokFromRequest(),
+            $termek,
+            // a formon átírt, még mentetlen súly is számítson
+            $this->params->existsRequestParam('suly') ? (float)$this->params->getNumRequestParam('suly') : null
+        );
+
+        $arak = [];
+        foreach ($eredmeny['ertekek'] as $arid => $netto) {
+            $arak[] = [
+                'id' => $arid,
+                'netto' => round($netto, 2),
+                'brutto' => $afa ? round($afa->calcBrutto($netto), 2) : 0,
+            ];
+        }
+        echo json_encode(['arak' => $arak, 'hibak' => array_values($eredmeny['hibak'])]);
+    }
+
     public function getBizonylattetelAdat($termek, $valtozatid = 0)
     {
         $ret = [

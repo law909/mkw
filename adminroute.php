@@ -1020,6 +1020,7 @@ $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszam
 $router->map('GET', '/admin/termek/minkeszletexport', 'termekController#minKeszletExport', 'admintermekminkeszletexport');
 $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
 $router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
+$router->map('POST', '/admin/termek/recalcarak', 'termekController#recalcArak', 'admintermekrecalcarak');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termek/save', 'termekController#save', 'admintermeksave');
     $router->map('POST', '/admin/termek/gs1import', 'termekController#gs1import', 'admintermekgs1import');

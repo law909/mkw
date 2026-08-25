@@ -1,0 +1,120 @@
+<?php
+
+namespace Services;
+
+use Entities\Kapcsolodokoltseg;
+use Entities\Termek;
+
+/**
+ * A képlettel megadott termékárak kiszámítása.
+ *
+ * A képletes sor nettója: `forrás ársáv nettója * százalék / 100 - kivonandó + hozzáadandó +
+ * a kiválasztott kapcsolódó költségek egy darabra eső értéke`. A forrás csak azonos valutanemű
+ * ársáv lehet, és maga is lehet képletes – a feloldás ezért körökben megy, amíg van mit
+ * kiszámolni.
+ *
+ * A számítást a karbantartó „Árak újraszámolása" gombja és a termék mentése is használja, ezért
+ * a bemenet nem entitás, hanem a form soraiból összerakott tömb.
+ */
+class TermekArKepletService
+{
+
+    /**
+     * @param array $sorok soronként:
+     *   id, arsav (id), valutanem (id), netto (fix összeg), kepletes (bool),
+     *   forrasarsav (id), szazalek, hozzaad, kivon, koltsegek (költség id-k tömbje)
+     * @param Termek $termek a kapcsolódó költségek számítási alapjához
+     * @param float|null $suly a termék súlya, ha a formról frissebb érték jött
+     *
+     * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]]
+     */
+    public static function calc(array $sorok, Termek $termek, ?float $suly = null): array
+    {
+        // a formon átírt súly is számítson; a terméken csak a számítás idejére állítjuk át, mert
+        // a gomb nem ment (a mentés a maga útján úgyis beírja)
+        $eredetiSuly = $termek->getSuly();
+        if ($suly !== null) {
+            $termek->setSuly($suly);
+        }
+        try {
+            return self::calcSorok($sorok, $termek);
+        } finally {
+            $termek->setSuly($eredetiSuly);
+        }
+    }
+
+    private static function calcSorok(array $sorok, Termek $termek): array
+    {
+        $ertekek = [];
+        $hibak = [];
+        $kepletesek = [];
+        $arsavErtek = [];   // ársáv id => nettó, ezt keresik a képletek
+        $arsavValutanem = [];
+
+        foreach ($sorok as $sor) {
+            $arsavid = (int)($sor['arsav'] ?? 0);
+            $arsavValutanem[$arsavid] = (int)($sor['valutanem'] ?? 0);
+            if (empty($sor['kepletes'])) {
+                $ertekek[$sor['id']] = (float)($sor['netto'] ?? 0);
+                $arsavErtek[$arsavid] = $ertekek[$sor['id']];
+            } else {
+                $kepletesek[] = $sor;
+            }
+        }
+
+        // körönként legalább egy sor megoldódik, különben körkörös a hivatkozás
+        $korok = count($kepletesek);
+        for ($kor = 0; $kor < $korok && $kepletesek; $kor++) {
+            $maradek = [];
+            foreach ($kepletesek as $sor) {
+                $forras = (int)($sor['forrasarsav'] ?? 0);
+                if (!$forras || !array_key_exists($forras, $arsavValutanem)) {
+                    $hibak[$sor['id']] = t('A képlet forrás ársávja nincs a termék árai között.');
+                    $ertekek[$sor['id']] = 0;
+                    continue;
+                }
+                if ($arsavValutanem[$forras] !== (int)($sor['valutanem'] ?? 0)) {
+                    $hibak[$sor['id']] = t('A forrás ársáv valutaneme eltér.');
+                    $ertekek[$sor['id']] = 0;
+                    continue;
+                }
+                if (!array_key_exists($forras, $arsavErtek)) {
+                    $maradek[] = $sor;
+                    continue;
+                }
+                $ertek = $arsavErtek[$forras] * (float)($sor['szazalek'] ?? 100) / 100
+                    - (float)($sor['kivon'] ?? 0)
+                    + (float)($sor['hozzaad'] ?? 0)
+                    + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? []);
+                $ertekek[$sor['id']] = $ertek;
+                $arsavErtek[(int)($sor['arsav'] ?? 0)] = $ertek;
+            }
+            $kepletesek = $maradek;
+        }
+        foreach ($kepletesek as $sor) {
+            $hibak[$sor['id']] = t('A képlet forrás ársávja körkörösen hivatkozik.');
+            $ertekek[$sor['id']] = 0;
+        }
+        return ['ertekek' => $ertekek, 'hibak' => $hibak];
+    }
+
+    /**
+     * A kiválasztott kapcsolódó költségek egy darab termékre eső összege. A törzsből olvasunk, nem
+     * a termékhez rendelt halmazból: a karbantartón a hozzárendelés is lehet még mentetlen.
+     *
+     * @param int[] $koltsegIdk
+     */
+    private static function koltsegOsszeg(Termek $termek, array $koltsegIdk): float
+    {
+        $osszeg = 0;
+        foreach ($koltsegIdk as $id) {
+            /** @var Kapcsolodokoltseg|null $koltseg */
+            $koltseg = \mkw\store::getEm()->getRepository(Kapcsolodokoltseg::class)->find($id);
+            if ($koltseg) {
+                $osszeg += $koltseg->calcErtek($termek);
+            }
+        }
+        return $osszeg;
+    }
+
+}

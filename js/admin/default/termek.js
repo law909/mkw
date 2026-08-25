@@ -409,7 +409,7 @@ $(document).ready(function () {
                     success: function (data) {
                         var tbody = $('#ArsavTab');
                         tbody.append(data);
-                        $('.js-arnewbutton,.js-ardelbutton').button();
+                        $('.js-arnewbutton,.js-ardelbutton,.js-arrecalcbutton').button();
                         $this.remove();
                     }
                 });
@@ -446,8 +446,30 @@ $(document).ready(function () {
                             }
                         });
                     }
+                })
+                .on('change', '.js-arkepletes', function () {
+                    let $this = $(this);
+                    $('.js-arkepletrow_' + $this.data('id')).toggle($this.prop('checked'));
+                })
+                .on('click', '.js-arrecalcbutton', function (e) {
+                    e.preventDefault();
+                    // a formon álló (mentetlen) sorokból számol, az eredményt a nettó/bruttó
+                    // mezőkbe írja – menteni a szokásos OK gombbal kell
+                    $.ajax({
+                        url: '/admin/termek/recalcarak',
+                        type: 'POST',
+                        data: $('#mattkarb-form').serialize(),
+                        success: function (data) {
+                            let d = JSON.parse(data);
+                            $.each(d.arak, function (i, ar) {
+                                $('input[name="arnetto_' + ar.id + '"]').val(ar.netto);
+                                $('input[name="arbrutto_' + ar.id + '"]').val(ar.brutto);
+                            });
+                            $('.js-arrecalchibak').html(d.hibak.join('<br>'));
+                        }
+                    });
                 });
-            $('.js-arnewbutton,.js-ardelbutton').button();
+            $('.js-arnewbutton,.js-ardelbutton,.js-arrecalcbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();

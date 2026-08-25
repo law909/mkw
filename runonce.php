@@ -1697,6 +1697,16 @@ if ($DBVersion < '0137') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0137');
 }
 
+if ($DBVersion < '0138') {
+    // a meglévő termékárak fix összegű sorok maradnak; a képlet mezői az entitás
+    // alapértelmezéseit kapják (a NOT NULL kepletes 0-val jött létre, ez helyes)
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE termekar SET szazalek = 100, hozzaad = 0, kivon = 0'
+        . ' WHERE szazalek IS NULL OR hozzaad IS NULL OR kivon IS NULL'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0138');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

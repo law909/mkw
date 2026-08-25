@@ -60,6 +60,49 @@ class TermekAr
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $azonosito;
 
+    /**
+     * Képlettel számolt sor-e. Ha nem, a netto/brutto kézzel megadott fix összeg – ez marad az
+     * alapértelmezés.
+     *
+     * @ORM\Column(type="boolean",nullable=false)
+     */
+    private $kepletes = false;
+
+    /**
+     * A képlet forrás ársávja: ugyanennek a terméknek egy másik, AZONOS VALUTANEMŰ ára.
+     *
+     * @ORM\ManyToOne(targetEntity="Arsav")
+     * @ORM\JoinColumn(name="forrasarsav_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $forrasarsav;
+
+    /** @ORM\Column(type="decimal",precision=9,scale=4,nullable=true) */
+    private $szazalek = 100;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $hozzaad = 0;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $kivon = 0;
+
+    /**
+     * A képlethez hozzáadandó kapcsolódó költségek. A választék a termékhez rendelt költségekből
+     * jön, az érték a költség egy darab termékre eső része.
+     *
+     * @ORM\ManyToMany(targetEntity="Kapcsolodokoltseg")
+     * @ORM\JoinTable(name="termekar_kapcsolodokoltsegek",
+     *  options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+     *  joinColumns={@ORM\JoinColumn(name="termekar_id",referencedColumnName="id",onDelete="cascade")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="kapcsolodokoltseg_id",referencedColumnName="id",onDelete="cascade")}
+     *  )
+     */
+    private $kepletkoltsegek;
+
+    public function __construct()
+    {
+        $this->kepletkoltsegek = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -174,6 +217,90 @@ class TermekAr
     public function setAzonosito($val)
     {
         $this->azonosito = $val;
+    }
+
+    public function getKepletes()
+    {
+        return $this->kepletes;
+    }
+
+    public function setKepletes($val)
+    {
+        $this->kepletes = $val;
+    }
+
+    public function getForrasarsav()
+    {
+        return $this->forrasarsav;
+    }
+
+    public function getForrasarsavId()
+    {
+        return $this->forrasarsav?->getId();
+    }
+
+    public function setForrasarsav($val)
+    {
+        if ($val && !($val instanceof Arsav)) {
+            $val = \mkw\store::getEm()->getRepository(Arsav::class)->find($val);
+        }
+        $this->forrasarsav = $val ?: null;
+    }
+
+    public function getSzazalek()
+    {
+        return $this->szazalek;
+    }
+
+    public function setSzazalek($val)
+    {
+        $this->szazalek = $val;
+    }
+
+    public function getHozzaad()
+    {
+        return $this->hozzaad;
+    }
+
+    public function setHozzaad($val)
+    {
+        $this->hozzaad = $val;
+    }
+
+    public function getKivon()
+    {
+        return $this->kivon;
+    }
+
+    public function setKivon($val)
+    {
+        $this->kivon = $val;
+    }
+
+    public function getKepletkoltsegek()
+    {
+        return $this->kepletkoltsegek;
+    }
+
+    public function getAllKepletkoltsegId()
+    {
+        $res = [];
+        foreach ($this->kepletkoltsegek as $koltseg) {
+            $res[] = $koltseg->getId();
+        }
+        return $res;
+    }
+
+    public function addKepletkoltseg(Kapcsolodokoltseg $koltseg)
+    {
+        if (!$this->kepletkoltsegek->contains($koltseg)) {
+            $this->kepletkoltsegek->add($koltseg);
+        }
+    }
+
+    public function removeAllKepletkoltseg()
+    {
+        $this->kepletkoltsegek->clear();
     }
 
 }

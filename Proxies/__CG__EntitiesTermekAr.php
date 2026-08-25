@@ -67,10 +67,10 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'kepletes', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'forrasarsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'szazalek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'hozzaad', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'kivon', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'kepletkoltsegek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'id', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'created', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'lastmod', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'termek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'netto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'brutto', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'valutanem', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'arsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'azonosito', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'kepletes', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'forrasarsav', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'szazalek', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'hozzaad', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'kivon', '' . "\0" . 'Entities\\TermekAr' . "\0" . 'kepletkoltsegek'];
     }
 
     /**
@@ -388,6 +388,171 @@ class TermekAr extends \Entities\TermekAr implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAzonosito', [$val]);
 
         return parent::setAzonosito($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepletes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepletes', []);
+
+        return parent::getKepletes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKepletes($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKepletes', [$val]);
+
+        return parent::setKepletes($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getForrasarsav()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getForrasarsav', []);
+
+        return parent::getForrasarsav();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getForrasarsavId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getForrasarsavId', []);
+
+        return parent::getForrasarsavId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setForrasarsav($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setForrasarsav', [$val]);
+
+        return parent::setForrasarsav($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzazalek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzazalek', []);
+
+        return parent::getSzazalek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setSzazalek($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzazalek', [$val]);
+
+        return parent::setSzazalek($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHozzaad()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHozzaad', []);
+
+        return parent::getHozzaad();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHozzaad($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHozzaad', [$val]);
+
+        return parent::setHozzaad($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKivon()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKivon', []);
+
+        return parent::getKivon();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKivon($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKivon', [$val]);
+
+        return parent::setKivon($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKepletkoltsegek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKepletkoltsegek', []);
+
+        return parent::getKepletkoltsegek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAllKepletkoltsegId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAllKepletkoltsegId', []);
+
+        return parent::getAllKepletkoltsegId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addKepletkoltseg(\Entities\Kapcsolodokoltseg $koltseg)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addKepletkoltseg', [$koltseg]);
+
+        return parent::addKepletkoltseg($koltseg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeAllKepletkoltseg()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllKepletkoltseg', []);
+
+        return parent::removeAllKepletkoltseg();
     }
 
 }

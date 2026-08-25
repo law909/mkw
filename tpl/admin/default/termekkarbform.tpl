@@ -255,6 +255,8 @@
         {/if}
         {if ($setup.arsavok)}
             <div id="ArsavTab" class="mattkarb-page" data-visible="visible">
+                <a class="js-arrecalcbutton" href="#">{at('Árak újraszámolása')}</a>
+                <div class="js-arrecalchibak"></div>
                 {foreach $egyed.arak as $ar}
                     {include 'termektermekarkarb.tpl'}
                 {/foreach}
