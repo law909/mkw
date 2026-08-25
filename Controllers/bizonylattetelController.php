@@ -497,7 +497,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             return [$termek, $valtozat];
         }
 
-        foreach ([['cikkszam', $cikkszam], ['vonalkod', $vonalkod]] as [$mezo, $ertek]) {
+        foreach ([['vonalkod', $vonalkod], ['cikkszam', $cikkszam]] as [$mezo, $ertek]) {
             if ($ertek === '') {
                 continue;
             }
