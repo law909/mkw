@@ -629,7 +629,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['tetelek'] = $tetel;
         } else {
             $x['egyenleg'] = $t->getEgyenleg() * -1 * $t->getIrany();
-            // a nyitott egyenlegű, folyószámlát képző bizonylat mellé a listán a két rögzítő gomb kerül
+            // a nyitott egyenlegű bizonylat mellé a listán a "Kiegyenlít" gomb (a fizetési módjának
+            // megfelelő rögzítővel) és alatta a két rögzítő gomb kerül
+            $x['kiegyenlitesurl'] = $this->kiegyenlitesUrl($t, $x['egyenleg']);
             $x['ujpenztarbizonylaturl'] = $this->kiegyenlitesUrl($t, $x['egyenleg'], 'P');
             $x['ujbankbizonylaturl'] = $this->kiegyenlitesUrl($t, $x['egyenleg'], 'B');
             if (\mkw\store::isOsztottFizmod()) {

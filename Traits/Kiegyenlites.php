@@ -30,15 +30,20 @@ trait Kiegyenlites
      *
      * @param \Entities\Bizonylatfej $bizonylat
      * @param float $egyenleg a listán mutatott egyenleg (pozitív, ha kiegyenlítetlen)
-     * @param string $tipus 'P' = pénztárbizonylat, 'B' = bankbizonylat
+     * @param string|null $tipus 'P' = pénztárbizonylat, 'B' = bankbizonylat; üresen a bizonylat
+     *                           fizetési módja dönt – ez a „Kiegyenlít" gomb
      *
      * @return string
      */
-    protected function kiegyenlitesUrl($bizonylat, $egyenleg, $tipus)
+    protected function kiegyenlitesUrl($bizonylat, $egyenleg, $tipus = null)
     {
         // a pénztár- és bankbizonylat útvonalai csak bankpénztáras deployen élnek
         if (!\mkw\store::isBankpenztar() || !$bizonylat || !$bizonylat->getPenztmozgat()
-            || (abs($egyenleg * 1) < 0.005) || !isset(self::$kiegyenlitesUtvonalak[$tipus])) {
+            || (abs($egyenleg * 1) < 0.005)) {
+            return '';
+        }
+        $tipus = $tipus ?: $bizonylat->getFizmod()?->getTipus();
+        if (!isset(self::$kiegyenlitesUtvonalak[$tipus])) {
             return '';
         }
         return \mkw\store::getRouter()->generate(
