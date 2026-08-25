@@ -58,6 +58,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $x['sordobozmennyiseg'] = $t->getSordobozmennyiseg() * -1;
         }
 
+        // a kiszerelés bonthatósága a terméké, nem a tételé – a mennyiség mező ettől lesz readonly
+        $x['bonthato'] = $t->isBonthato();
         $x['hataridostr'] = $t->getHataridoStr();
         $x['mainurl'] = \mkw\store::getConfigValue('mainurl');
 

@@ -544,7 +544,6 @@ let bizonylathelper = function ($) {
             menny = $('input[name="tetelmennyiseg_' + sorid + '"]');
         $('input[name="tetelgyujto_' + sorid + '"]').val(gyujto || 0);
         $('input[name="tetelsordoboz_' + sorid + '"]').val(sordoboz || 0);
-        $('input[name="tetelbonthato_' + sorid + '"]').val(bonthato ? 1 : 0);
         if ((gyujto * 1) || (sordoboz * 1)) {
             row.show();
         } else {

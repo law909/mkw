@@ -108,7 +108,6 @@
                        step="any" value="{$tetel.sordobozmennyiseg}" size="6">
                 <input class="js-kiszerelesgyujto" name="tetelgyujto_{$tetel.id}" type="hidden" value="{$tetel.gyujto}">
                 <input class="js-kiszerelessordoboz" name="tetelsordoboz_{$tetel.id}" type="hidden" value="{$tetel.sordoboz}">
-                <input class="js-kiszerelesbonthato" name="tetelbonthato_{$tetel.id}" type="hidden" value="{if ($tetel.bonthato)}1{else}0{/if}">
             </td>
         </tr>
         <tr>

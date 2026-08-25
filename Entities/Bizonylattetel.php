@@ -169,9 +169,6 @@ class Bizonylattetel
     /** a termékről örökölt kiszerelés: hány gyűjtő van egy sorban/dobozban @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $sordoboz = 0;
 
-    /** a termékről örökölt jelző; ha false, a mennyiség csak a gyűjtő/sor-doboz darabszámból jöhet @ORM\Column(type="boolean",nullable=false) */
-    private $bonthato = true;
-
     /** hány gyűjtőt adunk el @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $gyujtomennyiseg = 0;
 
@@ -776,7 +773,6 @@ class Bizonylattetel
                     $this->setKiszereles($val->getKiszereles());
                     $this->setGyujto($val->getGyujto());
                     $this->setSordoboz($val->getSordoboz());
-                    $this->setBonthato($val->getBonthato());
                     $this->setMagassag($val->getMagassag());
                     $this->setMekod($val->getMekod());
                     $this->setME($val->getMe());
@@ -832,7 +828,6 @@ class Bizonylattetel
                 $this->kiszereles = 0;
                 $this->gyujto = 0;
                 $this->sordoboz = 0;
-                $this->bonthato = true;
                 $this->magassag = 0;
                 $this->me = '';
                 $this->osszehajthato = false;
@@ -1100,16 +1095,6 @@ class Bizonylattetel
         $this->sordoboz = $val;
     }
 
-    public function getBonthato()
-    {
-        return $this->bonthato;
-    }
-
-    public function setBonthato($val)
-    {
-        $this->bonthato = $val;
-    }
-
     public function getGyujtomennyiseg()
     {
         return $this->gyujtomennyiseg;
@@ -1142,13 +1127,22 @@ class Bizonylattetel
     }
 
     /**
+     * A termék kiszerelése bontható-e. Termék nélkül igen, hogy az üres sor mennyisége
+     * szerkeszthető maradjon.
+     */
+    public function isBonthato(): bool
+    {
+        return !$this->termek || (bool)$this->termek->getBonthato();
+    }
+
+    /**
      * Nem bontható kiszerelésnél a mennyiséget a gyűjtő/sor-doboz darabszám határozza meg – a
      * formról érkező mennyiség ilyenkor csak a képernyőn kiszámolt érték, nem hihetünk neki.
      * Bonthatónál a kézzel megadott mennyiség marad.
      */
     public function applyKiszerelesMennyiseg()
     {
-        if (!$this->bonthato) {
+        if (!$this->isBonthato()) {
             $this->setMennyiseg($this->calcKiszerelesMennyiseg());
         }
     }
