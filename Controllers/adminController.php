@@ -14,7 +14,7 @@ class adminController extends mkwhelpers\Controller
 
     private function checkForIE()
     {
-        $u_agent = $_SERVER['HTTP_USER_AGENT'];
+        $u_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
         $ub = false;
         if (preg_match('/MSIE/i', $u_agent)) {
             $view = $this->createView('noie.tpl');

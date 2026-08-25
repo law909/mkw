@@ -10,7 +10,7 @@ class generalDataLoader
 
     public function loadData($view)
     {
-        $useragent = $_SERVER['HTTP_USER_AGENT'];
+        $useragent = $_SERVER['HTTP_USER_AGENT'] ?? '';
         if (preg_match(
                 '/android|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i',
                 $useragent
