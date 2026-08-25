@@ -5,9 +5,9 @@ namespace Traits;
 use Entities\Bizonylatfej;
 
 /**
- * A bizonylatlista "Kiegyenlít" gombjának két vége.
+ * A bizonylatlista pénztár-/bankbizonylat gombjainak két vége.
  *
- * A listasor a gomb URL-jét kéri (kiegyenlitesUrl), a pénztár- ill. bankbizonylat rögzítője
+ * A listasor a gombok URL-jét kéri (kiegyenlitesUrl), a pénztár- ill. bankbizonylat rögzítője
  * pedig a form előtöltendő adatait (kiegyenlitendo). A kettőt a bizonylat sorszáma köti
  * össze: az URL-be csak az kerül, minden más adat a bizonylatból származik, így a rögzítő
  * nem tölthető ki a bizonylattal nem egyező összeggel/partnerrel.
@@ -18,33 +18,31 @@ trait Kiegyenlites
     /** a "Kiegyenlít" gomb kérésparaméterének neve (a kiegyenlítendő bizonylat sorszáma) */
     private static $kiegyenlitesParam = 'kiegyenlit';
 
+    /** fizetésimód-típus -> a hozzá tartozó rögzítő útvonala */
+    private static $kiegyenlitesUtvonalak = [
+        'P' => 'adminpenztarbizonylatfejviewkarb',
+        'B' => 'adminbankbizonylatfejviewkarb',
+    ];
+
     /**
      * A bizonylat kiegyenlítésére nyíló rögzítő URL-je, vagy '' ha a bizonylathoz nem való
-     * gomb: nincs nyitott egyenlege, vagy a fizetési módja nem készpénz ('P') / bank ('B').
+     * gomb: nem képez folyószámlát, vagy nincs nyitott egyenlege.
      *
      * @param \Entities\Bizonylatfej $bizonylat
      * @param float $egyenleg a listán mutatott egyenleg (pozitív, ha kiegyenlítetlen)
+     * @param string $tipus 'P' = pénztárbizonylat, 'B' = bankbizonylat
      *
      * @return string
      */
-    protected function kiegyenlitesUrl($bizonylat, $egyenleg)
+    protected function kiegyenlitesUrl($bizonylat, $egyenleg, $tipus)
     {
         // a pénztár- és bankbizonylat útvonalai csak bankpénztáras deployen élnek
-        if (!\mkw\store::isBankpenztar() || !$bizonylat || (abs($egyenleg * 1) < 0.005)) {
+        if (!\mkw\store::isBankpenztar() || !$bizonylat || !$bizonylat->getPenztmozgat()
+            || (abs($egyenleg * 1) < 0.005) || !isset(self::$kiegyenlitesUtvonalak[$tipus])) {
             return '';
         }
-        switch ($bizonylat->getFizmod()?->getTipus()) {
-            case 'P':
-                $utvonal = 'adminpenztarbizonylatfejviewkarb';
-                break;
-            case 'B':
-                $utvonal = 'adminbankbizonylatfejviewkarb';
-                break;
-            default:
-                return '';
-        }
         return \mkw\store::getRouter()->generate(
-            $utvonal,
+            self::$kiegyenlitesUtvonalak[$tipus],
             false,
             [],
             [

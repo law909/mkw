@@ -445,11 +445,17 @@
                     <td class="mattable-rightaligned pricenowrap {$cls}"><a href="#" data-id="{$_egyed.id}"
                                                                             class="js-folyoszamlabtn">{number_format($_egyed.egyenleg, 2, '.', ' ')}</a></td>
                 </tr>
-                {if ($_egyed.kiegyenlitesurl)}
+                {if ($_egyed.ujbankbizonylaturl || $_egyed.ujpenztarbizonylaturl)}
                     <tr>
                         <td colspan="2">
-                            <a class="js-kiegyenlit" href="{$_egyed.kiegyenlitesurl}" target="_blank"
-                               title="{at('Kiegyenlítő bizonylat rögzítése')}">{at('Kiegyenlít')}</a>
+                            {if ($_egyed.ujbankbizonylaturl)}
+                                <a class="js-kiegyenlit" href="{$_egyed.ujbankbizonylaturl}" target="_blank"
+                                   title="{at('Kiegyenlítő bizonylat rögzítése')}">{at('Új bankbizonylat')}</a>
+                            {/if}
+                            {if ($_egyed.ujpenztarbizonylaturl)}
+                                <a class="js-kiegyenlit" href="{$_egyed.ujpenztarbizonylaturl}" target="_blank"
+                                   title="{at('Kiegyenlítő bizonylat rögzítése')}">{at('Új pénztárbizonylat')}</a>
+                            {/if}
                         </td>
                     </tr>
                 {/if}
