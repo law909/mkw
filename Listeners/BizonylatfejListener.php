@@ -172,10 +172,16 @@ class BizonylatfejListener
      * költségtörzs is változhatott. A hívás a költségtételek (szállítási, utánvét, kezelési)
      * képzése UTÁN van, hogy azok is kapjanak sorokat.
      *
+     * Csak azokon a bizonylattípusokon fut, amelyeken a kellkapcsolodokoltsegetszamolni be van
+     * kapcsolva – a készletmozgásoknak (bevét, kivét, leltár, selejt) nincs rá szükségük.
+     *
      * @param \Entities\Bizonylatfej $bizonylat
      */
     private function createKapcsolodoKoltseg($bizonylat)
     {
+        if (!$bizonylat->getBizonylattipus()?->getKellkapcsolodokoltsegetszamolni()) {
+            return;
+        }
         /** @var \Entities\Bizonylattetel $tetel */
         foreach ($bizonylat->getBizonylattetelek() as $tetel) {
             foreach ($tetel->getKapcsolodokoltsegek() as $sor) {

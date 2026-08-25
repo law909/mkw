@@ -96,6 +96,13 @@ class Bizonylattipus
      * @ORM\Column(type="boolean",nullable=false)
      */
     private $autopenztarbizonylat = false;
+    /**
+     * Képződjenek-e a tételekhez a termék kapcsolódó költségei
+     * (\Listeners\BizonylatfejListener::createKapcsolodoKoltseg()).
+     *
+     * @ORM\Column(type="boolean",nullable=false)
+     */
+    private $kellkapcsolodokoltsegetszamolni = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showemailbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -640,6 +647,22 @@ class Bizonylattipus
     public function setAutopenztarbizonylat($autopenztarbizonylat)
     {
         $this->autopenztarbizonylat = $autopenztarbizonylat;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getKellkapcsolodokoltsegetszamolni()
+    {
+        return $this->kellkapcsolodokoltsegetszamolni;
+    }
+
+    /**
+     * @param bool $kellkapcsolodokoltsegetszamolni
+     */
+    public function setKellkapcsolodokoltsegetszamolni($kellkapcsolodokoltsegetszamolni)
+    {
+        $this->kellkapcsolodokoltsegetszamolni = $kellkapcsolodokoltsegetszamolni;
     }
 
     /**
