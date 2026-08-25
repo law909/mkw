@@ -63,8 +63,9 @@ class Idopontfoglalas
     private $lemondasoka;
 
     /**
-     * A tanár jelölte, hogy a foglaló megérkezett – a pubadmin időpont-listájáról állítható,
-     * és a tanárelszámolás részletezőjében ez alapján jelennek meg az időpontok.
+     * A tanár jelölte, hogy a foglaló megérkezett – a pubadmin időpont-listájáról állítható.
+     * A jelöléskor egy {@see Idopontreszvetel} sor is keletkezik: az elszámolás abból dolgozik,
+     * ez a mező csak a képernyő állapotát tartja (ugyanígy van a JogaBejelentkezesnél is).
      *
      * @ORM\Column(type="boolean",nullable=false)
      */
@@ -72,6 +73,13 @@ class Idopontfoglalas
 
     /** @ORM\Column(type="datetime",nullable=true) */
     private $megjelentido;
+
+    /**
+     * A megjelöléskor létrejött részvétel azonosítója – a visszavonás ez alapján törli.
+     *
+     * @ORM\Column(type="integer",nullable=true)
+     */
+    private $idopontreszvetelid;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $fizetve = false;
@@ -390,6 +398,60 @@ class Idopontfoglalas
     public function getMegjelentidoStr()
     {
         return $this->megjelentido ? $this->megjelentido->format(\mkw\store::$DateTimeFormat) : '';
+    }
+
+    public function getIdopontreszvetelid()
+    {
+        return $this->idopontreszvetelid;
+    }
+
+    public function setIdopontreszvetelid($idopontreszvetelid)
+    {
+        $this->idopontreszvetelid = $idopontreszvetelid;
+    }
+
+    /**
+     * A megjelenés rögzítése külön táblába, a JogaBejelentkezes::createJogaReszvetel() mintájára.
+     * A tanár az alkalomra beugró helyettes is lehet, ezért az időpont dolgozója kerül rá – az
+     * időpontnak nincs helyettesítés-nyilvántartása.
+     *
+     * Az időpontokra nincs jutalékszabály (az órákkal ellentétben), ezért a jutalék 0 marad; a
+     * mező azért van, hogy ha lesz szabály, csak ide kelljen beírni.
+     */
+    public function createIdopontreszvetel()
+    {
+        $idopont = $this->getIdopont();
+        $r = new Idopontreszvetel();
+        $r->setPartner($this->getPartner());
+        $r->setDatum($this->getDatum());
+        $r->setOnline($this->isOnline());
+        if ($idopont) {
+            $r->setIdopont($idopont);
+            $r->setTanar($idopont->getDolgozo());
+            $r->setIdoponttema($idopont->getIdoponttema());
+            $r->setJogahelyszin($idopont->getJogahelyszin());
+            $r->setBruttoegysar($idopont->getAr());
+        }
+        \mkw\store::getEm()->persist($r);
+        \mkw\store::getEm()->flush();
+        $this->setIdopontreszvetelid($r->getId());
+        \mkw\store::getEm()->persist($this);
+        \mkw\store::getEm()->flush();
+    }
+
+    public function delIdopontreszvetel()
+    {
+        if (!$this->getIdopontreszvetelid()) {
+            return;
+        }
+        $obj = \mkw\store::getEm()->getRepository(Idopontreszvetel::class)->find($this->getIdopontreszvetelid());
+        if ($obj) {
+            \mkw\store::getEm()->remove($obj);
+            \mkw\store::getEm()->flush();
+        }
+        $this->setIdopontreszvetelid(null);
+        \mkw\store::getEm()->persist($this);
+        \mkw\store::getEm()->flush();
     }
 
     public function getFizetve()

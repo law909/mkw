@@ -243,9 +243,16 @@ class pubadminController extends mkwhelpers\Controller
         /** @var Idopontfoglalas $foglalas */
         $foglalas = $this->getRepo(Idopontfoglalas::class)->find($this->params->getIntRequestParam('id'));
         if ($foglalas && $this->getSajatIdopont($foglalas->getIdopontId())) {
-            $foglalas->setMegjelent(!$foglalas->isMegjelent());
+            $megvolt = $foglalas->isMegjelent();
+            $foglalas->setMegjelent(!$megvolt);
             $this->getEm()->persist($foglalas);
             $this->getEm()->flush();
+            // a tényt külön táblába is: az elszámolás abból dolgozik
+            if ($megvolt) {
+                $foglalas->delIdopontreszvetel();
+            } else {
+                $foglalas->createIdopontreszvetel();
+            }
         }
     }
 
