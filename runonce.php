@@ -1706,6 +1706,15 @@ if ($DBVersion < '0138') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0138');
 }
 
+if ($DBVersion < '0139') {
+    // a kapcsolódó költség a számlázó bizonylattípusokon képződik; a készletmozgásokon nem
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattipus SET kellkapcsolodokoltsegetszamolni = 1'
+        . ' WHERE id IN ("szamla", "esetiszamla", "keziszamla")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0139');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
