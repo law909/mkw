@@ -1580,7 +1580,7 @@ if ($DBVersion < '0130') {
     $lathato = (int)$conn->fetchOne('SELECT lathato FROM menu WHERE url = "/admin/koltsegszamlaimport/view"');
     $conn->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-        . ' SELECT 9, "NAV import napló", "/admin/koltsegszamlaimportlog/viewlist", "/admin/koltsegszamlaimportlog", 40, '
+        . ' SELECT 9, "NAV bejövő számla import napló", "/admin/koltsegszamlaimportlog/viewlist", "/admin/koltsegszamlaimportlog", 40, '
         . $lathato . ', 210, ""'
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/koltsegszamlaimportlog/viewlist") m)'
     );
