@@ -119,6 +119,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['gyartonev'] = $t->getGyartoNev();
         $x['keszlet'] = $t->getKeszlet();
         $x['termekcsoportnev'] = $t->getTermekcsoportNev();
+        $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();
@@ -126,8 +127,8 @@ class termekController extends \mkwhelpers\MattableController
                     $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
                 }
             }
-            $x['valtozatkeszlet'] = $lvaltozat;
         }
+        $x['valtozatkeszlet'] = $lvaltozat;
         if ($forKarb) {
             $matrix = $this->getMinKeszletMatrix($t);
             $x['minkeszletraktarak'] = $matrix['raktarak'];
