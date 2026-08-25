@@ -206,6 +206,17 @@ class Bankbizonylatfej extends \Entities\Bankbizonylatfej implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function getTetelListaUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTetelListaUrl', []);
+
+        return parent::getTetelListaUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setId($val)
     {
 

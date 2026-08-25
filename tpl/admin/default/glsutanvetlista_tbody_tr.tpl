@@ -19,11 +19,27 @@
     </td>
     <td class="cell">{$_egyed.cim}</td>
     <td class="cell">
-        <div>{$_egyed.bizonylatszamok}</div>
-        {if ($_egyed.bankbizonylatkesz)}<div>{at('Bankbizonylat kész')}</div>{/if}
+        {foreach $_egyed.bizonylatszamlinkek as $_link}
+            <div>{if ($_link.url)}<a href="{$_link.url}" target="_blank">{$_link.szam}</a>{else}{$_link.szam}{/if}</div>
+        {/foreach}
+        {if ($_egyed.bankbizonylatkesz)}
+            <div>{at('Bankbizonylat')}:
+                {if ($_egyed.bankbizonylaturl)}
+                    <a href="{$_egyed.bankbizonylaturl}" target="_blank">{$_egyed.bankbizonylatszam}</a>
+                {else}
+                    {$_egyed.bankbizonylatszam|default:at('kész')}
+                {/if}
+            </div>
+        {/if}
     </td>
     <td class="cell">
-        <div>{$_egyed.ugyfelhivatkozas}</div>
-        <div>{$_egyed.utanvethivatkozas}</div>
+        {if ($_egyed.ugyfelhivatkozaslink)}
+            <div>{if ($_egyed.ugyfelhivatkozaslink.url)}<a href="{$_egyed.ugyfelhivatkozaslink.url}"
+                                                           target="_blank">{$_egyed.ugyfelhivatkozaslink.szam}</a>{else}{$_egyed.ugyfelhivatkozaslink.szam}{/if}</div>
+        {/if}
+        {if ($_egyed.utanvethivatkozaslink)}
+            <div>{if ($_egyed.utanvethivatkozaslink.url)}<a href="{$_egyed.utanvethivatkozaslink.url}"
+                                                            target="_blank">{$_egyed.utanvethivatkozaslink.szam}</a>{else}{$_egyed.utanvethivatkozaslink.szam}{/if}</div>
+        {/if}
     </td>
 </tr>

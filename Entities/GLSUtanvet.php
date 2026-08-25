@@ -93,6 +93,16 @@ class GLSUtanvet
     /** @ORM\Column(type="boolean") */
     private $bankbizonylatkesz = false;
 
+    /**
+     * A tételből képzett bankbizonylat. A bankbizonylatkesz jelzőt nem váltja ki: a régi,
+     * a mező bevezetése előtt képzett sorokon üresen marad.
+     *
+     * @ORM\ManyToOne(targetEntity="Bankbizonylatfej")
+     * @ORM\JoinColumn(name="bankbizonylatfej_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     * @var \Entities\Bankbizonylatfej
+     */
+    private $bankbizonylatfej;
+
     /** @ORM\Column(type="boolean") */
     private $inaktiv = false;
 
@@ -279,6 +289,27 @@ class GLSUtanvet
     public function setBankbizonylatkesz($val)
     {
         $this->bankbizonylatkesz = $val;
+    }
+
+    public function getBankbizonylatfej()
+    {
+        return $this->bankbizonylatfej;
+    }
+
+    public function setBankbizonylatfej($val)
+    {
+        $this->bankbizonylatfej = $val;
+    }
+
+    public function getBankbizonylatszam()
+    {
+        return $this->bankbizonylatfej ? $this->bankbizonylatfej->getId() : '';
+    }
+
+    /** a bankbizonylat tételeire szűrt tétellista URL-je, vagy null */
+    public function getBankbizonylatTetelListaUrl()
+    {
+        return $this->bankbizonylatfej ? $this->bankbizonylatfej->getTetelListaUrl() : null;
     }
 
     public function getInaktiv()

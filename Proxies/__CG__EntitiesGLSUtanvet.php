@@ -67,10 +67,10 @@ class GLSUtanvet extends \Entities\GLSUtanvet implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'id', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'created', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'csomagszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'ugyfelhivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utanvethivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statusz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'felvetel', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statuszdatum', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'nev', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'atvevo', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'irszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'varos', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utca', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'orszag', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'regisztraltosszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'osszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bankbizonylatkesz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'inaktiv'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'id', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'created', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'csomagszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'ugyfelhivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utanvethivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statusz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'felvetel', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statuszdatum', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'nev', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'atvevo', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'irszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'varos', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utca', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'orszag', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'regisztraltosszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'osszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bankbizonylatkesz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'inaktiv'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'id', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'created', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'csomagszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'ugyfelhivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utanvethivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statusz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'felvetel', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statuszdatum', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'nev', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'atvevo', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'irszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'varos', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utca', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'orszag', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'regisztraltosszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'osszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bankbizonylatkesz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'inaktiv'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'id', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'created', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'lastmod', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'csomagszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'ugyfelhivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utanvethivatkozas', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statusz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'felvetel', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'statuszdatum', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'nev', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'atvevo', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'irszam', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'varos', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'utca', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'orszag', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'regisztraltosszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'osszeg', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bizonylatszamok', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bankbizonylatkesz', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\GLSUtanvet' . "\0" . 'inaktiv'];
     }
 
     /**
@@ -586,6 +586,50 @@ class GLSUtanvet extends \Entities\GLSUtanvet implements \Doctrine\ORM\Proxy\Pro
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylatkesz', [$val]);
 
         return parent::setBankbizonylatkesz($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBankbizonylatfej()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatfej', []);
+
+        return parent::getBankbizonylatfej();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBankbizonylatfej($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylatfej', [$val]);
+
+        return parent::setBankbizonylatfej($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBankbizonylatszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatszam', []);
+
+        return parent::getBankbizonylatszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBankbizonylatTetelListaUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatTetelListaUrl', []);
+
+        return parent::getBankbizonylatTetelListaUrl();
     }
 
     /**

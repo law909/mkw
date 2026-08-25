@@ -99,7 +99,47 @@ class glsutanvetController extends \mkwhelpers\MattableController
         $x['felvetelstr'] = $t->getFelvetelStr();
         $x['statuszdatumstr'] = $t->getStatuszdatumStr();
         $x['cim'] = $t->getCim();
+        $x['bankbizonylatszam'] = $t->getBankbizonylatszam();
+        $x['bankbizonylaturl'] = $t->getBankbizonylatTetelListaUrl();
+        $x['bizonylatszamlinkek'] = $this->bizonylatLinkek(explode(';', (string)$t->getBizonylatszamok()));
+        $x['ugyfelhivatkozaslink'] = $this->bizonylatLink($t->getUgyfelhivatkozas());
+        $x['utanvethivatkozaslink'] = $this->bizonylatLink($t->getUtanvethivatkozas());
         return $x;
+    }
+
+    /**
+     * @return array[] soronként ['szam' => string, 'url' => string|null]
+     */
+    private function bizonylatLinkek(array $bizonylatszamok): array
+    {
+        $linkek = [];
+        foreach ($bizonylatszamok as $szam) {
+            $link = $this->bizonylatLink($szam);
+            if ($link) {
+                $linkek[] = $link;
+            }
+        }
+        return $linkek;
+    }
+
+    /**
+     * A bizonylatszámhoz a saját típusának listanézete, erre a számra előszűrve. Az url null,
+     * ha a szöveg nem létező bizonylatszám – a hivatkozás-mezőkben ez a gyakoribb eset.
+     *
+     * @return array|null ['szam' => string, 'url' => string|null], vagy null üres szövegre
+     */
+    private function bizonylatLink($szam): ?array
+    {
+        $szam = trim((string)$szam);
+        if ($szam === '') {
+            return null;
+        }
+        /** @var \Entities\Bizonylatfej|null $biz */
+        $biz = $this->getRepo(Bizonylatfej::class)->find($szam);
+        return [
+            'szam' => $szam,
+            'url' => $biz ? $biz->getListaUrl() : null,
+        ];
     }
 
     /**
@@ -461,6 +501,7 @@ class glsutanvetController extends \mkwhelpers\MattableController
             // A valutanemet CSAK a partner beállítása után szabad megadni
             $bb->setValutanem($valutanem);
             $tetel->setBankbizonylatkesz(true);
+            $tetel->setBankbizonylatfej($bb);
             $this->getEm()->persist($tetel);
             $this->getEm()->persist($bb);
             $this->getEm()->flush();

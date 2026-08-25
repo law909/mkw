@@ -156,6 +156,16 @@ class Bankbizonylatfej
         return $this->buildListaUrl('adminbankbizonylatfejviewlist');
     }
 
+    /**
+     * A bankbizonylat tételeire előszűrt tétellista URL-je. A null-szabály a getListaUrl()-lel azonos.
+     *
+     * @return string|null
+     */
+    public function getTetelListaUrl()
+    {
+        return $this->buildListaUrl('adminbankbizonylattetelviewlist');
+    }
+
     public function setId($val)
     {
         if (!$this->id) {
