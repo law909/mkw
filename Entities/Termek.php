@@ -321,6 +321,15 @@ class Termek
     /** @ORM\Column(type="boolean",nullable=false) */
     private $osszehajthato = false;
 
+    /** hány darab termék van egy gyűjtőben @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $gyujto = 0;
+
+    /** hány gyűjtő van egy sorban/dobozban @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $sordoboz = 0;
+
+    /** bontható-e a kiszerelés: ha nem, csak gyűjtőre / sorra lehet eladni @ORM\Column(type="boolean",nullable=false) */
+    private $bonthato = true;
+
     /** @ORM\OneToMany(targetEntity="TermekKep", mappedBy="termek", cascade={"persist"}) */
     private $termekkepek;
 
@@ -2091,6 +2100,36 @@ class Termek
     public function setSuly($suly)
     {
         $this->suly = $suly;
+    }
+
+    public function getGyujto()
+    {
+        return $this->gyujto;
+    }
+
+    public function setGyujto($val)
+    {
+        $this->gyujto = $val;
+    }
+
+    public function getSordoboz()
+    {
+        return $this->sordoboz;
+    }
+
+    public function setSordoboz($val)
+    {
+        $this->sordoboz = $val;
+    }
+
+    public function getBonthato()
+    {
+        return $this->bonthato;
+    }
+
+    public function setBonthato($val)
+    {
+        $this->bonthato = $val;
     }
 
     public function getValtozatok()

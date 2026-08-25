@@ -526,6 +526,9 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setHosszusag($this->params->getFloatRequestParam('hosszusag'));
         $obj->setSuly($this->params->getFloatRequestParam('suly'));
         $obj->setOsszehajthato($this->params->getBoolRequestParam('osszehajthato'));
+        $obj->setGyujto($this->params->getFloatRequestParam('gyujto'));
+        $obj->setSordoboz($this->params->getFloatRequestParam('sordoboz'));
+        $obj->setBonthato($this->params->getBoolRequestParam('bonthato'));
         $obj->setKepurl($this->params->getStringRequestParam('kepurl', ''));
         $obj->setKepleiras($this->params->getStringRequestParam('kepleiras', ''));
         $obj->setRegikepurl($this->params->getStringRequestParam('regikepurl', ''));

@@ -715,6 +715,19 @@
                     <td><label for="SulyEdit">{at('Súly')}:</label></td>
                     <td><input id="SulyEdit" type="text" name="suly" value="{$egyed.suly}"></td>
                 </tr>
+                <tr>
+                    <td><label for="GyujtoEdit">{at('Gyűjtő (db/gyűjtő)')}:</label></td>
+                    <td><input id="GyujtoEdit" type="number" step="any" name="gyujto" value="{$egyed.gyujto}"></td>
+                </tr>
+                <tr>
+                    <td><label for="SordobozEdit">{at('Sor/doboz (gyűjtő/sor)')}:</label></td>
+                    <td><input id="SordobozEdit" type="number" step="any" name="sordoboz" value="{$egyed.sordoboz}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input id="BonthatoEdit" type="checkbox"
+                                           name="bonthato"{if ($egyed.bonthato)} checked="checked"{/if}>{at('Bontható kiszerelés')}
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
