@@ -34,7 +34,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
     {
         $elotagok = ['biz_' . $biztip];
         if (\mkw\store::isPagedPdf()) {
-            $elotagok[] = 'biz_paged_' . $biztip;
+            $elotagok = ['biz_paged_' . $biztip];
         }
 
         $list = [];
