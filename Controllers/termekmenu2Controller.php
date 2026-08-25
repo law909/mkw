@@ -20,4 +20,9 @@ class termekmenu2Controller extends termekmenuController
     protected $listaTplName = 'termekmenu2lista.tpl';
     protected $termekMezo = 'termekmenu2';
 
+    protected function getMenuName(): string
+    {
+        return \mkw\store::getTermekmenu2Name();
+    }
+
 }

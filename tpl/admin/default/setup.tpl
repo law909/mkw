@@ -58,6 +58,14 @@
                 <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="TermekmenunevEdit">{at('Termékmenü neve')}:</label></span>
+                            <input id="TermekmenunevEdit" name="termekmenunev" type="text" value="{$termekmenunev}" placeholder="Termék menü">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="Termekmenu2nevEdit">{at('Termékmenü 2 neve')}:</label></span>
+                            <input id="Termekmenu2nevEdit" name="termekmenu2nev" type="text" value="{$termekmenu2nev}" placeholder="Termék menü 2">
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="OrszagEdit">{at('Ország')}:</label></span>
                             <select id="OrszagEdit" name="orszag">
                                 <option value="">{at('válasszon')}</option>

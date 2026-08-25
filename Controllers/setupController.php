@@ -15,6 +15,8 @@ use Entities\Raktar;
 use Entities\Statlap;
 use Entities\Szallitasimod;
 use Entities\Termek;
+use Entities\TermekMenu;
+use Entities\TermekMenu2;
 use Entities\Uzletkoto;
 use Entities\Valutanem;
 
@@ -659,6 +661,11 @@ class setupController extends \mkwhelpers\Controller
             $view->setVar($kulcs . 'list', $this->getTermekmenutipusList($p ? $p->getErtek() : ''));
         }
 
+        foreach ([\mkw\consts::TermekmenuNev, \mkw\consts::Termekmenu2Nev] as $kulcs) {
+            $p = $repo->find($kulcs);
+            $view->setVar($kulcs, ($p ? $p->getErtek() : ''));
+        }
+
         // Partner beállítások: új partner felvitelekor előre kitöltött értékek
         $p = $repo->find(\mkw\consts::PartnerAlapTipus);
         $view->setVar(
@@ -1120,10 +1127,32 @@ class setupController extends \mkwhelpers\Controller
     private function getTermekmenutipusList($sel): array
     {
         $ret = [];
-        foreach (['' => t('mindegy'), 'termekmenu' => t('Termék menü'), 'termekmenu2' => t('Termék menü 2')] as $id => $caption) {
+        foreach ([
+            '' => t('mindegy'),
+            'termekmenu' => \mkw\store::getTermekmenuName(),
+            'termekmenu2' => \mkw\store::getTermekmenu2Name(),
+        ] as $id => $caption) {
             $ret[] = ['id' => $id, 'caption' => $caption, 'selected' => ((string)$sel === (string)$id)];
         }
         return $ret;
+    }
+
+    /**
+     * A fa gyökérsorának átnevezése DQL UPDATE-tel, nem entitás-setterrel: a nev-en Gedmo slug
+     * ül, ami átnevezéskor újragenerálná a slugot és elrontaná a /categories/ útvonalat.
+     *
+     * Üres név esetén nem nyúlunk hozzá – különben a setup mentése visszaírná azt a gyökeret,
+     * amit valaki a fa-szerkesztőben nevezett át.
+     */
+    private function renameTermekmenuRoot(string $entityClass, string $nev): void
+    {
+        if ($nev === '') {
+            return;
+        }
+        \mkw\store::getEm()
+            ->createQuery('UPDATE ' . $entityClass . ' x SET x.nev = :nev WHERE x.id = 1')
+            ->setParameter('nev', $nev)
+            ->execute();
     }
 
     private function setKezdoKategoriaVars($view, $namebase, $katid)
@@ -2214,6 +2243,12 @@ class setupController extends \mkwhelpers\Controller
         foreach ([\mkw\consts::Termekmenutipus, \mkw\consts::Termekmenutipus2, \mkw\consts::Termekmenutipus3,
                      \mkw\consts::Termekmenutipus4, \mkw\consts::Termekmenutipus5] as $kulcs) {
             $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
+        }
+
+        foreach ([\mkw\consts::TermekmenuNev => TermekMenu::class, \mkw\consts::Termekmenu2Nev => TermekMenu2::class] as $kulcs => $entityClass) {
+            $nev = $this->params->getStringRequestParam($kulcs);
+            $this->setObj($kulcs, $nev);
+            $this->renameTermekmenuRoot($entityClass, $nev);
         }
 
         // üresen hagyva („válasszon") a beállítás törlődik

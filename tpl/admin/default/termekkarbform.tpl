@@ -65,7 +65,7 @@
             <table>
                 <tbody>
                 <tr>
-                    <td><label>{at('Menü')}:</label></td>
+                    <td><label>{$termekmenunev}:</label></td>
                     <td>
                         <span id="TermekMenu1" class="js-termekmenubutton" data-text="{at('válasszon')}"
                               data-name="termekmenu1" data-url="/admin/termekmenu/jsonlist"
@@ -74,7 +74,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><label>{at('Menü 2')}:</label></td>
+                    <td><label>{$termekmenu2nev}:</label></td>
                     <td>
                         <span id="TermekMenu2" class="js-termekmenubutton" data-text="{at('válasszon')}"
                               data-name="termekmenu2" data-url="/admin/termekmenu2/jsonlist"

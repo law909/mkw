@@ -121,13 +121,35 @@ class menuController extends \mkwhelpers\MattableController
                     'mcsid' => $mcsid,
                     'mcsnev' => $rek->getMenucsoportNev(),
                     'mcsnyitva' => $this->isMenucsoportNyitva($mcsid),
-                    'nev' => $rek->getNev(),
+                    'nev' => $this->menuNev($rek),
                     'url' => $rek->getUrl(),
                     'class' => $rek->getClass()
                 ];
             }
         }
         return $menu;
+    }
+
+    /**
+     * A két termékmenü-fa sora a beállított nevet viszi. A sorokat url, illetve class alapján
+     * azonosítjuk, nem a feliratuk szövege alapján: a "Termék menü 2" tartalmazza a
+     * "Termék menü"-t, szövegcserénél a sorrend elrontaná.
+     *
+     * A "rendezése" sor szándékosan az ELSŐ fa nevét viszi: az
+     * adminController::regeneratemenukarkod() ma csak a TermekMenu-t rendezi.
+     */
+    private function menuNev(\Entities\Menu $rek)
+    {
+        switch (true) {
+            case $rek->getUrl() === '/admin/termekmenu/viewlist':
+                return \mkw\store::getTermekmenuName();
+            case $rek->getUrl() === '/admin/termekmenu2/viewlist':
+                return \mkw\store::getTermekmenu2Name();
+            case $rek->getClass() === 'js-regeneratemenukarkod':
+                return \mkw\store::getTermekmenuName() . ' rendezése';
+            default:
+                return $rek->getNev();
+        }
     }
 
     private function isMenucsoportNyitva($mcsid)

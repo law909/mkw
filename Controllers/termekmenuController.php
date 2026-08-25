@@ -88,10 +88,16 @@ class termekmenuController extends \mkwhelpers\MattableController
         return $obj;
     }
 
+    /** a fa beállított neve; a második fa a sajátjára írja felül */
+    protected function getMenuName(): string
+    {
+        return \mkw\store::getTermekmenuName();
+    }
+
     public function viewlist()
     {
         $view = $this->createView($this->listaTplName);
-        $view->setVar('pagetitle', t('Termék menük'));
+        $view->setVar('pagetitle', $this->getMenuName());
         $view->printTemplateResult();
     }
 
@@ -134,7 +140,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
-        $view->setVar('pagetitle', t('Termék menü'));
+        $view->setVar('pagetitle', $this->getMenuName());
         $view->setVar('oper', $oper);
         $fa = $this->getRepo()->find($id);
         $fatomb = $this->loadVars($fa, true);

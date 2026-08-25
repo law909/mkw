@@ -65,6 +65,8 @@ class generalDataLoader
             $view->setVar('webshop' . $c . 'name', \mkw\store::getParameter('webshop' . $c . 'name', $c));
         }
         $view->setVar('enabledwebshops', \mkw\store::getEnabledWebshops());
+        $view->setVar('termekmenunev', \mkw\store::getTermekmenuName());
+        $view->setVar('termekmenu2nev', \mkw\store::getTermekmenu2Name());
         $view->setVar('uithemes', [
             'black-tie',
             'blitzer',

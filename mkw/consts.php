@@ -34,6 +34,10 @@ class consts
     const Termekmenutipus3 = 'termekmenutipus3';
     const Termekmenutipus4 = 'termekmenutipus4';
     const Termekmenutipus5 = 'termekmenutipus5';
+
+    /** a két termékmenü-fa beállítható neve; az alapértelmezés a \mkw\store olvasóiban van */
+    const TermekmenuNev = 'termekmenunev';
+    const Termekmenu2Nev = 'termekmenu2nev';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';

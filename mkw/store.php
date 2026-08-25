@@ -1742,6 +1742,16 @@ class store
         return self::getSetupValue('webshopnum', 1);
     }
 
+    public static function getTermekmenuName()
+    {
+        return self::getParameter(\mkw\consts::TermekmenuNev) ?: 'Termék menü';
+    }
+
+    public static function getTermekmenu2Name()
+    {
+        return self::getParameter(\mkw\consts::Termekmenu2Nev) ?: 'Termék menü 2';
+    }
+
     public static function getTermekmenuController()
     {
         $tipus = (string)self::getParameter(self::getWebshopFieldName(\mkw\consts::Termekmenutipus), '');
