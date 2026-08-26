@@ -111,6 +111,12 @@ $(document).ready(
                 url: '/admin/regeneratemenukarkod'
             });
         });
+        $('.js-regeneratemenu2karkod').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/regeneratemenu2karkod'
+            });
+        });
         $('.js-orarendprint').each(function () {
             $(this).attr('target', '_blank');
         });

@@ -1716,10 +1716,11 @@ if ($DBVersion < '0139') {
 }
 
 if ($DBVersion < '0140') {
+    $lathato = (\mkw\store::isGalad() || \mkw\store::isSuperzoneB2B()) ? 1 : 0;
     \mkw\store::getEm()->getConnection()->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
         . ' VALUES '
-        . '(7, "Termék menü 2 rendezése","","",40,0,800, "js-regeneratemenu2karkod")'
+        . '(9, "Termék menü 2 rendezése","","",40,' . $lathato . ',410, "js-regeneratemenu2karkod")'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0140');
 }
