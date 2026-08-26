@@ -8,8 +8,8 @@ use Entities\Termek;
 /**
  * A képlettel megadott termékárak kiszámítása.
  *
- * A képletes sor nettója: `forrás ársáv nettója * százalék / 100 - kivonandó + hozzáadandó +
- * a kiválasztott kapcsolódó költségek egy darabra eső értéke`. A forrás csak azonos valutanemű
+ * A képletes sor nettója: `forrás ársáv nettója * százalék / 100 + hozzáadandó + a kiválasztott
+ * kapcsolódó költségek egy darabra eső értéke`. A hozzáadandó negatív is lehet, az a levonás. A forrás csak azonos valutanemű
  * ársáv lehet, és maga is lehet képletes – a feloldás ezért körökben megy, amíg van mit
  * kiszámolni.
  *
@@ -22,7 +22,7 @@ class TermekArKepletService
     /**
      * @param array $sorok soronként:
      *   id, arsav (id), valutanem (id), netto (fix összeg), kepletes (bool),
-     *   forrasarsav (id), szazalek, hozzaad, kivon, koltsegek (költség id-k tömbje)
+     *   forrasarsav (id), szazalek, hozzaad, koltsegek (költség id-k tömbje)
      * @param Termek $termek a kapcsolódó költségek számítási alapjához
      * @param float|null $suly a termék súlya, ha a formról frissebb érték jött
      *
@@ -83,7 +83,6 @@ class TermekArKepletService
                     continue;
                 }
                 $ertek = $arsavErtek[$forras] * (float)($sor['szazalek'] ?? 100) / 100
-                    - (float)($sor['kivon'] ?? 0)
                     + (float)($sor['hozzaad'] ?? 0)
                     + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? []);
                 $ertekek[$sor['id']] = $ertek;

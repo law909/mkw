@@ -1467,7 +1467,6 @@ class termekController extends \mkwhelpers\MattableController
         $ar->setForrasarsav($kepletes ? $this->params->getIntRequestParam('arforrasarsav_' . $arid) : null);
         $ar->setSzazalek($this->params->getNumRequestParam('arszazalek_' . $arid));
         $ar->setHozzaad($this->params->getNumRequestParam('arhozzaad_' . $arid));
-        $ar->setKivon($this->params->getNumRequestParam('arkivon_' . $arid));
         $ar->removeAllKepletkoltseg();
         if (!$kepletes) {
             return;
@@ -1496,7 +1495,6 @@ class termekController extends \mkwhelpers\MattableController
                 'forrasarsav' => $this->params->getIntRequestParam('arforrasarsav_' . $arid),
                 'szazalek' => $this->params->getNumRequestParam('arszazalek_' . $arid),
                 'hozzaad' => $this->params->getNumRequestParam('arhozzaad_' . $arid),
-                'kivon' => $this->params->getNumRequestParam('arkivon_' . $arid),
                 'koltsegek' => $this->params->getArrayRequestParam('arkepletkoltseg_' . $arid),
             ];
         }

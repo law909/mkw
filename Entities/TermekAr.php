@@ -79,11 +79,8 @@ class TermekAr
     /** @ORM\Column(type="decimal",precision=9,scale=4,nullable=true) */
     private $szazalek = 100;
 
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /** levonáshoz negatív érték @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $hozzaad = 0;
-
-    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
-    private $kivon = 0;
 
     /**
      * A képlethez hozzáadandó kapcsolódó költségek. A választék a termékhez rendelt költségekből
@@ -265,16 +262,6 @@ class TermekAr
     public function setHozzaad($val)
     {
         $this->hozzaad = $val;
-    }
-
-    public function getKivon()
-    {
-        return $this->kivon;
-    }
-
-    public function setKivon($val)
-    {
-        $this->kivon = $val;
     }
 
     public function getKepletkoltsegek()

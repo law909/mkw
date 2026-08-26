@@ -46,8 +46,6 @@
             </select>
             <label for="SzazalekEdit{$ar.id}">{at('Szorzó')}:</label>
             <input id="SzazalekEdit{$ar.id}" type="number" step="any" size="6" name="arszazalek_{$ar.id}" value="{$ar.szazalek}"> %
-            <label for="KivonEdit{$ar.id}">{at('Kivonandó')}:</label>
-            <input id="KivonEdit{$ar.id}" type="number" step="any" size="8" name="arkivon_{$ar.id}" value="{$ar.kivon}">
             <label for="HozzaadEdit{$ar.id}">{at('Hozzáadandó')}:</label>
             <input id="HozzaadEdit{$ar.id}" type="number" step="any" size="8" name="arhozzaad_{$ar.id}" value="{$ar.hozzaad}">
         </td>
