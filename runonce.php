@@ -1736,6 +1736,30 @@ if ($DBVersion < '0141') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0141');
 }
 
+if ($DBVersion < '0142') {
+    // superzoneb2b: a szin torzs charkodja a valtozatertekek charkodjabol jon, a nev alapjan parositva
+    if (\mkw\store::isSuperzoneB2B()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $rows = $conn->fetchAllAssociative(
+            'SELECT s.id, MIN(v.charkod) AS charkod'
+            . ' FROM szin s JOIN termekvaltozatertek v ON LOWER(v.ertek) = LOWER(s.nev)'
+            . ' WHERE v.adattipus_id = 1 AND v.charkod IS NOT NULL AND v.charkod <> ""'
+            . ' GROUP BY s.id'
+        );
+        // egy kod csak egy szinhez kerulhet: a szin.charkod unique, a masodik parositas 1062-vel allna meg
+        $used = [];
+        foreach ($rows as $row) {
+            $charkod = $row['charkod'];
+            if (isset($used[$charkod])) {
+                continue;
+            }
+            $used[$charkod] = true;
+            $conn->executeStatement('UPDATE szin SET charkod = ? WHERE id = ?', [$charkod, $row['id']]);
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0142');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

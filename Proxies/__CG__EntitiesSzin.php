@@ -67,10 +67,10 @@ class Szin extends \Entities\Szin implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Szin' . "\0" . 'id', '' . "\0" . 'Entities\\Szin' . "\0" . 'nev', '' . "\0" . 'Entities\\Szin' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepleiras'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Szin' . "\0" . 'id', '' . "\0" . 'Entities\\Szin' . "\0" . 'nev', '' . "\0" . 'Entities\\Szin' . "\0" . 'charkod', '' . "\0" . 'Entities\\Szin' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepleiras'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Szin' . "\0" . 'id', '' . "\0" . 'Entities\\Szin' . "\0" . 'nev', '' . "\0" . 'Entities\\Szin' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepleiras'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Szin' . "\0" . 'id', '' . "\0" . 'Entities\\Szin' . "\0" . 'nev', '' . "\0" . 'Entities\\Szin' . "\0" . 'charkod', '' . "\0" . 'Entities\\Szin' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepurl', '' . "\0" . 'Entities\\Szin' . "\0" . 'kepleiras'];
     }
 
     /**
@@ -212,6 +212,28 @@ class Szin extends \Entities\Szin implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCharkod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCharkod', []);
+
+        return parent::getCharkod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCharkod($charkod)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCharkod', [$charkod]);
+
+        return parent::setCharkod($charkod);
     }
 
     /**

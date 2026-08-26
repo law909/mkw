@@ -17,6 +17,9 @@
         </table>
     </td>
     <td class="cell">
+        {$_szin.charkod}
+    </td>
+    <td class="cell">
         {$_szin.sorrend}
     </td>
 </tr>
