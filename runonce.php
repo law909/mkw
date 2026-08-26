@@ -1725,6 +1725,17 @@ if ($DBVersion < '0140') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0140');
 }
 
+if ($DBVersion < '0141') {
+    // superzoneb2b: a változatoknak nincs saját cikkszáma, a termékét használják
+    if (\mkw\store::isSuperzoneB2B()) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE termekvaltozat v JOIN termek t ON t.id = v.termek_id'
+            . ' SET v.cikkszam = t.cikkszam'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0141');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
