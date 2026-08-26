@@ -60,6 +60,11 @@ class meretController extends MattableController
                 'LIKE',
                 '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
+        if (!is_null($this->params->getRequestParam('charkodfilter', null))) {
+            $filter->addFilter(['charkod'],
+                'LIKE',
+                '%' . $this->params->getStringRequestParam('charkodfilter') . '%');
+        }
         $this->initPager($this->getRepo()->getCount($filter));
         $egyedek = $this->getRepo()->getAll(
             $filter,

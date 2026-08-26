@@ -47,6 +47,11 @@ class szinController extends \mkwhelpers\MattableController
                 'LIKE',
                 '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
+        if (!is_null($this->params->getRequestParam('charkodfilter', null))) {
+            $filter->addFilter(['charkod'],
+                'LIKE',
+                '%' . $this->params->getStringRequestParam('charkodfilter') . '%');
+        }
 
         $this->initPager($this->getRepo()->getCount($filter));
 

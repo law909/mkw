@@ -43,7 +43,7 @@ $(document).ready(function () {
     });
 
     if ($.fn.mattable) {
-        var lfilternames = ['#nevfilter'];
+        var lfilternames = ['#nevfilter', '#charkodfilter'];
         $('#mattable-select').mattable({
             name: 'meret',
             onGetTBody: function () {

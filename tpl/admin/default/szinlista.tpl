@@ -15,6 +15,10 @@
                 <label for="nevfilter">{at('Név')}: </label>
                 <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
             </div>
+            <div>
+                <label for="charkodfilter">{at('Charkód')}: </label>
+                <input id="charkodfilter" name="charkodfilter" type="text" size="30" maxlength="50">
+            </div>
         </div>
         <div class="mattable-pagerwrapper">
             <div class="mattable-order">
