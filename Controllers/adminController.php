@@ -404,6 +404,13 @@ class adminController extends mkwhelpers\Controller
         echo 'ok';
     }
 
+    public function regeneratemenu2karkod()
+    {
+        $menurepo = \mkw\store::getEm()->getRepository(Entities\TermekMenu2::class);
+        $menurepo->regenerateKarKod();
+        echo 'ok';
+    }
+
     public function sanitize()
     {
         echo \mkwhelpers\Filter::toPermalink($this->params->getStringRequestParam('text', ''));

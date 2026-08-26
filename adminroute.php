@@ -548,6 +548,7 @@ if (\mkw\store::isBankpenztar()) {
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');
 $router->map('GET', '/admin/regeneratemenukarkod', 'adminController#regeneratemenukarkod', 'adminregeneratemenukarkod');
+$router->map('GET', '/admin/regeneratemenu2karkod', 'adminController#regeneratemenu2karkod', 'adminregeneratemenu2karkod');
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
 $router->map('POST', '/admin/setlistparam', 'adminController#setListParam', 'adminsetlistparam');
 $router->map(
@@ -578,7 +579,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylattetel/importxlsx', 'bizonylattetelController#importXlsx', 'adminbizonylattetelimportxlsx');
     if (\mkw\store::isSuperzoneB2B()) {
         $router->map('POST', '/admin/bizonylattetel/importfcmoto', 'bizonylattetelController#importFcMoto', 'adminbizonylattetelimportfcmoto');
-    $router->map('POST', '/admin/bizonylattetel/importoxford', 'bizonylattetelController#importOxford', 'adminbizonylattetelimportoxford');
+        $router->map('POST', '/admin/bizonylattetel/importoxford', 'bizonylattetelController#importOxford', 'adminbizonylattetelimportoxford');
     }
 }
 $router->map('GET', '/admin/bizonylattetel/gettermeklist', 'termekController#getBizonylattetelSelectList', 'adminbizonylattetelgettermeklist');

@@ -147,6 +147,8 @@ class menuController extends \mkwhelpers\MattableController
                 return \mkw\store::getTermekmenu2Name();
             case $rek->getClass() === 'js-regeneratemenukarkod':
                 return \mkw\store::getTermekmenuName() . ' rendezése';
+            case $rek->getClass() === 'js-regeneratemenu2karkod':
+                return \mkw\store::getTermekmenu2Name() . ' rendezése';
             default:
                 return $rek->getNev();
         }
