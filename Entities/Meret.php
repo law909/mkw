@@ -17,6 +17,8 @@ class Meret
     private $id;
     /** @ORM\Column(type="string",length=255) */
     private $nev;
+    /** @ORM\Column(type="string",length=50,nullable=true,unique=true) */
+    private $charkod;
     /** @ORM\Column(type="integer",nullable=true) */
     private $sorrend;
     /** @ORM\Column(type="text",nullable=true) */
@@ -37,6 +39,17 @@ class Meret
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    public function getCharkod()
+    {
+        return $this->charkod;
+    }
+
+    public function setCharkod($charkod)
+    {
+        // az unique index miatt az ures ertek nem lehet '', csak NULL
+        $this->charkod = ($charkod === '' ? null : $charkod);
     }
 
     public function getSorrend()

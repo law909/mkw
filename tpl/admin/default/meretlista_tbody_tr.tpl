@@ -17,6 +17,9 @@
         </table>
     </td>
     <td class="cell">
+        {$_meret.charkod}
+    </td>
+    <td class="cell">
         {$_meret.sorrend}
     </td>
 </tr>

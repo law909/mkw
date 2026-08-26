@@ -19,6 +19,11 @@
                                            value="{$egyed.nev}" required autofocus></td>
                 </tr>
                 <tr>
+                    <td><label for="CharkodEdit">{at('Charkód')}:</label></td>
+                    <td colspan="3"><input id="CharkodEdit" name="charkod" type="text" size="20" maxlength="50"
+                                           value="{$egyed.charkod}"></td>
+                </tr>
+                <tr>
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td colspan="3"><input id="SorrendEdit" name="sorrend" type="number" size="6" maxlength="6" step="any"
                                            value="{$egyed.sorrend}"></td>

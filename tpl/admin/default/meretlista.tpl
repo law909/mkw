@@ -40,6 +40,7 @@
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
+                <th>{at('Charkód')}</th>
                 <th>{at('Sorrend')}</th>
             </tr>
             </thead>

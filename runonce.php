@@ -1750,14 +1750,33 @@ if ($DBVersion < '0142') {
         $used = [];
         foreach ($rows as $row) {
             $charkod = $row['charkod'];
-            if (isset($used[$charkod])) {
+            if (isset($used[mb_strtolower($charkod)])) {
                 continue;
             }
-            $used[$charkod] = true;
+            $used[mb_strtolower($charkod)] = true;
             $conn->executeStatement('UPDATE szin SET charkod = ? WHERE id = ?', [$charkod, $row['id']]);
         }
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0142');
+}
+
+if ($DBVersion < '0143') {
+    // superzoneb2b: a meret charkodja alapertelmezesben maga a nev (a mentes is igy potolja)
+    if (\mkw\store::isSuperzoneB2B()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $rows = $conn->fetchAllAssociative('SELECT id, nev FROM meret WHERE nev IS NOT NULL AND nev <> ""');
+        // egy kod csak egy merethez kerulhet: a meret.charkod unique, a masodik parositas 1062-vel allna meg
+        $used = [];
+        foreach ($rows as $row) {
+            $charkod = mb_substr($row['nev'], 0, 50);
+            if (isset($used[mb_strtolower($charkod)])) {
+                continue;
+            }
+            $used[mb_strtolower($charkod)] = true;
+            $conn->executeStatement('UPDATE meret SET charkod = ? WHERE id = ?', [$charkod, $row['id']]);
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0143');
 }
 
 /**

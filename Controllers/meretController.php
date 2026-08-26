@@ -42,7 +42,12 @@ class meretController extends MattableController
      */
     protected function setFields($obj)
     {
-        return $this->setEntityFieldsFromRequest($obj);
+        $this->setEntityFieldsFromRequest($obj);
+        if (!$obj->getCharkod()) {
+            // a nev 255, a charkod 50 karakter
+            $obj->setCharkod(mb_substr((string)$obj->getNev(), 0, 50));
+        }
+        return $obj;
     }
 
     public function getlistbody()
