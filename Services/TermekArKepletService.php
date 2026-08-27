@@ -30,8 +30,9 @@ class TermekArKepletService
      * @param float|null $suly a termék súlya, ha a formról frissebb érték jött
      * @param Afa|null $afa a kerekítés bruttó-nettó váltásához, ha a formról frissebb érték jött
      *
-     * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]] – a hibás sor
-     *   nem kerül bele az `ertekek`-be, hogy a hívó a meglévő árat érintetlenül hagyhassa
+     * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]] – az `ertekek`
+     *   CSAK a kiszámolt képletes sorokat tartalmazza: a fix sorhoz és a hibára futó képleteshez
+     *   a hívónak nem szabad hozzányúlnia
      */
     public static function calc(array $sorok, Termek $termek, ?float $suly = null, ?Afa $afa = null): array
     {
@@ -63,8 +64,8 @@ class TermekArKepletService
             $valutanem = (int)($sor['valutanem'] ?? 0);
             $arsavValutanemek[$arsavid][$valutanem] = true;
             if (empty($sor['kepletes'])) {
-                $ertekek[$sor['id']] = (float)($sor['netto'] ?? 0);
-                $arsavErtek[$arsavid . '|' . $valutanem] = $ertekek[$sor['id']];
+                // a fix sor ára a formon marad, csak a képletek forrásaként kell
+                $arsavErtek[$arsavid . '|' . $valutanem] = (float)($sor['netto'] ?? 0);
             } else {
                 $kepletesek[] = $sor;
             }

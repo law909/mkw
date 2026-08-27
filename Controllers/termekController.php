@@ -1531,7 +1531,8 @@ class termekController extends \mkwhelpers\MattableController
             return;
         }
 
-        // a ki nem számolható sor nincs az ertekek-ben: azt a képernyőn is érintetlenül hagyjuk
+        // az ertekek csak a kiszámolt képletes sorokat tartalmazza – a fix árakhoz és a hibára
+        // futó képletekhez a képernyőn sem nyúlunk
         $arak = [];
         foreach ($eredmeny['ertekek'] as $arid => $netto) {
             $arak[] = [
