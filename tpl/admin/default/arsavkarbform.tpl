@@ -13,6 +13,11 @@
                     <td><label for="NevEdit">{at('Név')}:</label></td>
                     <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
                 </tr>
+                <tr>
+                    <td><label for="KerekitesEdit">{at('Kerekítés képlettel')}:</label></td>
+                    <td><input id="KerekitesEdit" name="kerekites" type="number" step="any" size="10" value="{$egyed.kerekites}"
+                               title="{at('A képlettel számolt ár bruttóját ennek a többszörösére kerekíti (pl. 100). Üresen nincs kerekítés.')}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -27,6 +27,7 @@
             <tr>
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
+                <th>{at('Kerekítés képlettel')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

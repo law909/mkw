@@ -5,4 +5,5 @@
         <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a>
     </td>
+    <td class="cell">{$_egyed.kerekites}</td>
 </tr>

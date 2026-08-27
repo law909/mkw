@@ -67,10 +67,10 @@ class Arsav extends \Entities\Arsav implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Arsav' . "\0" . 'id', '' . "\0" . 'Entities\\Arsav' . "\0" . 'nev'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Arsav' . "\0" . 'id', '' . "\0" . 'Entities\\Arsav' . "\0" . 'nev', '' . "\0" . 'Entities\\Arsav' . "\0" . 'kerekites'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Arsav' . "\0" . 'id', '' . "\0" . 'Entities\\Arsav' . "\0" . 'nev'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Arsav' . "\0" . 'id', '' . "\0" . 'Entities\\Arsav' . "\0" . 'nev', '' . "\0" . 'Entities\\Arsav' . "\0" . 'kerekites'];
     }
 
     /**
@@ -212,6 +212,28 @@ class Arsav extends \Entities\Arsav implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKerekites()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKerekites', []);
+
+        return parent::getKerekites();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKerekites($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKerekites', [$val]);
+
+        return parent::setKerekites($val);
     }
 
 }
