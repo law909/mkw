@@ -36,6 +36,21 @@ class szinController extends \mkwhelpers\MattableController
         return $this->setEntityFieldsFromRequest($obj);
     }
 
+    /**
+     * @param \Entities\Szin $obj
+     */
+    protected function validate($obj, $parancs)
+    {
+        $charkod = $obj->getCharkod();
+        if ($charkod) {
+            $other = $this->getRepo()->findOneBy(['charkod' => $charkod]);
+            if ($other && $other->getId() !== $obj->getId()) {
+                return ['charkod' => sprintf(t('Ez a charkód már foglalt: "%s".'), $other->getNev())];
+            }
+        }
+        return [];
+    }
+
     public function getlistbody()
     {
         $view = $this->createView('szinlista_tbody.tpl');

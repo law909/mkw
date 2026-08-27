@@ -229,13 +229,13 @@ class boltieladasController extends \mkwhelpers\Controller
     {
         $partner = $this->getBoltivevo();
         if (!$partner) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs beállítva bolti vevő a setupban!')]);
+            $this->jsonFail(t('Nincs beállítva bolti vevő a setupban!'));
             return;
         }
 
         $termekids = $this->params->getArrayRequestParam('termekid');
         if (!$termekids) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs tétel a bizonylaton!')]);
+            $this->jsonFail(t('Nincs tétel a bizonylaton!'));
             return;
         }
         $valtozatids = $this->params->getArrayRequestParam('valtozatid');
@@ -248,7 +248,7 @@ class boltieladasController extends \mkwhelpers\Controller
 
         $biztipus = $this->getRepo(Bizonylattipus::class)->find(self::BIZTIPUS);
         if (!$biztipus) {
-            echo json_encode(['ok' => false, 'error' => t('Hiányzik a "Bolti eladás" bizonylattípus!')]);
+            $this->jsonFail(t('Hiányzik a "Bolti eladás" bizonylattípus!'));
             return;
         }
         $valutanem = $this->getDefaultValutanem();
@@ -321,7 +321,7 @@ class boltieladasController extends \mkwhelpers\Controller
 
             if (!$vantetel) {
                 $this->getEm()->rollback();
-                echo json_encode(['ok' => false, 'error' => t('Nincs érvényes tétel a bizonylaton!')]);
+                $this->jsonFail(t('Nincs érvényes tétel a bizonylaton!'));
                 return;
             }
 
@@ -331,7 +331,7 @@ class boltieladasController extends \mkwhelpers\Controller
             $this->getEm()->commit();
         } catch (\Exception $e) {
             $this->getEm()->rollback();
-            echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+            $this->jsonFail($e->getMessage());
             return;
         }
 
@@ -347,7 +347,7 @@ class boltieladasController extends \mkwhelpers\Controller
     {
         $termekids = $this->params->getArrayRequestParam('termekid');
         if (!$termekids) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs tétel a bizonylaton!')]);
+            $this->jsonFail(t('Nincs tétel a bizonylaton!'));
             return;
         }
         $valtozatids = $this->params->getArrayRequestParam('valtozatid');
@@ -375,7 +375,7 @@ class boltieladasController extends \mkwhelpers\Controller
             ];
         }
         if (!$tetelek) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs érvényes tétel a bizonylaton!')]);
+            $this->jsonFail(t('Nincs érvényes tétel a bizonylaton!'));
             return;
         }
 

@@ -163,14 +163,14 @@ class termekkartonController extends \mkwhelpers\Controller
         header('Content-Type: application/json; charset=utf-8');
         $azonosito = trim($this->params->getStringRequestParam('egyediazonosito'));
         if ($azonosito === '') {
-            echo json_encode(['ok' => false, 'error' => t('Adja meg az egyedi azonosítót.')]);
+            $this->jsonFail(t('Adja meg az egyedi azonosítót.'));
             return;
         }
         /** @var \Entities\Bizonylattetel|null $tetel */
         $tetel = $this->getRepo(Bizonylattetel::class)->findOneBy(['termekegyediazonosito' => $azonosito]);
         $termek = $tetel?->getTermek();
         if (!$termek) {
-            echo json_encode(['ok' => false, 'error' => sprintf(t('Nincs "%s" egyedi azonosítójú bizonylattétel.'), $azonosito)]);
+            $this->jsonFail(sprintf(t('Nincs "%s" egyedi azonosítójú bizonylattétel.'), $azonosito));
             return;
         }
         $tc = new termekController();

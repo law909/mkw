@@ -70,11 +70,45 @@
             }
         };
 
+        // A szerver mezőnév => üzenet térképet küldhet vissza (lásd MattableController::validate()).
+        // A hibás mezőt megjelöljük és odaírjuk az üzenetet; a modális ablakot a globális
+        // ajaxError kezelő adja, az összefoglaló szöveggel.
+        let hibasMezokTorlese = function () {
+            $('.js-mezohiba', setup.form).remove();
+            $('.mattkarb-hibasmezo', setup.form).removeClass('mattkarb-hibasmezo');
+        };
+
+        let hibasMezokJelolese = function (fields) {
+            hibasMezokTorlese();
+            let elso = null;
+            Object.keys(fields || {}).forEach(function (nev) {
+                let mezo = $('[name="' + nev + '"]', setup.form);
+                if (!mezo.length) {
+                    return;
+                }
+                mezo.addClass('mattkarb-hibasmezo')
+                    .last()
+                    .after($('<div>').addClass('js-mezohiba mattkarb-mezohiba').text(fields[nev]));
+                elso = elso || mezo.first();
+            });
+            if (!elso) {
+                return;
+            }
+            // a hibás mező másik fülön is lehet
+            let lap = elso.closest(setup.page),
+                tabs = $(setup.tab);
+            if (lap.length && tabs.hasClass('ui-tabs')) {
+                tabs.tabs('option', 'active', tabs.children('div').index(lap));
+            }
+            elso.trigger('focus');
+        };
+
         var showKarb = function () {
             $(setup.form).ajaxForm({
                 type: 'POST',
                 beforeSerialize: function (form, opt) {
                     var ret = true;
+                    hibasMezokTorlese();
                     if (typeof setup.beforeSerialize === 'function') {
                         ret = setup.beforeSerialize.call(this, form, opt, setup.quick);
                     }
@@ -101,6 +135,13 @@
                     return true;
                 },
                 success: function (data) {
+                    // A saját hibaágat futtató controllerek 200-nal, {ok:false}-szal is válaszolhatnak;
+                    // ilyenkor nincs mit frissíteni, és az önálló karb oldal sem írhatja ki, hogy
+                    // "A mentés sikerült". (Az üres válasz viszont jogos: pl. a setup mentése.)
+                    if (data && data.ok === false) {
+                        mkwHiba(data.error);
+                        return;
+                    }
                     if (typeof setup.beforeHide === 'function') {
                         setup.beforeHide.call(this);
                     }
@@ -111,6 +152,17 @@
                     // visszatérünk az előző URL-re (a lista nézetre), sikerüzenettel.
                     if (isStandaloneKarbPage()) {
                         returnToPreviousUrl(true);
+                    }
+                },
+                // Az üzenetet a globális ajaxError kezelő mutatja meg (appinit.js); itt a form
+                // nyitva marad a javításhoz, és a hibás mezők megjelölődnek.
+                error: function (xhr) {
+                    if ($.unblockUI) {
+                        $.unblockUI();
+                    }
+                    var valasz = mkwAjaxValasz(xhr);
+                    if (valasz && valasz.fields) {
+                        hibasMezokJelolese(valasz.fields);
                     }
                 }
             });

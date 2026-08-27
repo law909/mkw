@@ -50,6 +50,21 @@ class meretController extends MattableController
         return $obj;
     }
 
+    /**
+     * @param \Entities\Meret $obj
+     */
+    protected function validate($obj, $parancs)
+    {
+        $charkod = $obj->getCharkod();
+        if ($charkod) {
+            $other = $this->getRepo()->findOneBy(['charkod' => $charkod]);
+            if ($other && $other->getId() !== $obj->getId()) {
+                return ['charkod' => sprintf(t('Ez a charkód már foglalt: "%s".'), $other->getNev())];
+            }
+        }
+        return [];
+    }
+
     public function getlistbody()
     {
         $view = $this->createView('meretlista_tbody.tpl');

@@ -67,7 +67,7 @@ class termekkepController extends \mkwhelpers\MattableController
         /** @var \Entities\Termek|null $termek */
         $termek = $this->getRepo(\Entities\Termek::class)->find($this->params->getIntRequestParam('termek'));
         if (!$termek) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs ilyen termék.')]);
+            $this->jsonFail(t('Nincs ilyen termék.'));
             return;
         }
 

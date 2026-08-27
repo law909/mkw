@@ -120,50 +120,97 @@ class MattableController extends Controller
         return false;
     }
 
+    /**
+     * A törzs saját ellenőrzései mentés előtt. Üres tömb = rendben, egyébként a
+     * felhasználónak szóló hibaüzenetek.
+     *
+     * Itt még nyitva van az EntityManager, tehát szabad lekérdezni – flush közben elszállt
+     * kivétel után már nem lehet (a Doctrine lezárja), ezért ami előre ellenőrizhető, azt
+     * érdemes ide tenni, és nem az adatbázis hibájából visszafejteni.
+     *
+     * A szöveges kulcs mezőnévnek számít (a formon szereplő `name`): a kliens az ilyen mezőt
+     * megjelöli és odaírja az üzenetet. A számmal indexelt elemek általános üzenetek.
+     *
+     *     return ['charkod' => t('Ez a charkód már foglalt.')];
+     *
+     * @param object $obj a már kitöltött entitás
+     * @param string $parancs add / edit / …
+     *
+     * @return array
+     */
+    protected function validate($obj, $parancs)
+    {
+        return [];
+    }
+
+    private function checkValid($obj, $parancs)
+    {
+        $errors = $this->validate($obj, $parancs);
+        if (!$errors) {
+            return;
+        }
+        $fields = [];
+        foreach ($errors as $key => $message) {
+            if (is_string($key)) {
+                $fields[$key] = $message;
+            }
+        }
+        throw new \mkwhelpers\Exceptions\UserMessageException(implode(' ', $errors), $fields);
+    }
+
+    /** A setFields() a legtöbb helyen visszaadja az entitást, de nem mindenhol. */
+    private function fillFields($obj, $parancs)
+    {
+        $filled = $this->setFields($obj, $parancs);
+        return is_object($filled) ? $filled : $obj;
+    }
+
     protected function saveData()
     {
         $obj = null;
         $parancs = $this->params->getRequestParam($this->operationName, '');
         $id = $this->params->getRequestParam($this->idName, 0);
-        try {
-            switch ($parancs) {
-                case $this->addOperation:
-                case $this->addreopenOperation:
-                case $this->inheritOperation:
-                case $this->stornoOperation:
-                    $cl = $this->getEntityName();
-                    $obj = new $cl();
-                    $this->getEm()->persist($this->setFields($obj, $parancs));
-                    $this->getEm()->flush();
-                    $this->afterSave($obj, $parancs);
-                    break;
-                case $this->editOperation:
-                    $obj = $this->getRepo()->find($id);
-                    // a form csak olvasható állapotban is beküldhető kézzel összerakott kéréssel
+        switch ($parancs) {
+            case $this->addOperation:
+            case $this->addreopenOperation:
+            case $this->inheritOperation:
+            case $this->stornoOperation:
+                $cl = $this->getEntityName();
+                $obj = $this->fillFields(new $cl(), $parancs);
+                $this->checkValid($obj, $parancs);
+                $this->getEm()->persist($obj);
+                $this->getEm()->flush();
+                $this->afterSave($obj, $parancs);
+                break;
+            case $this->editOperation:
+                $obj = $this->getRepo()->find($id);
+                if (!$obj) {
+                    throw new \mkwhelpers\Exceptions\UserMessageException(t('A rekord nem található.'));
+                }
+                // a form csak olvasható állapotban is beküldhető kézzel összerakott kéréssel
+                if ($this->isReadonly($obj)) {
+                    throw new \mkwhelpers\Exceptions\UserMessageException(t('A rekord nem módosítható.'));
+                }
+                $obj = $this->fillFields($obj, $parancs);
+                $this->checkValid($obj, $parancs);
+                $this->getEm()->persist($obj);
+                $this->getEm()->flush();
+                $this->afterSave($obj, $parancs);
+                break;
+            case $this->delOperation:
+                $obj = $this->getRepo()->find($id);
+                if ($obj) {
                     if ($this->isReadonly($obj)) {
-                        throw new \RuntimeException(t('A rekord nem módosítható.'));
+                        throw new \mkwhelpers\Exceptions\UserMessageException(t('A rekord nem törölhető.'));
                     }
-                    $this->getEm()->persist($this->setFields($obj, $parancs));
+                    $this->beforeRemove($obj);
+                    $this->getEm()->remove($obj);
                     $this->getEm()->flush();
                     $this->afterSave($obj, $parancs);
-                    break;
-                case $this->delOperation:
-                    $obj = $this->getRepo()->find($id);
-                    if ($obj) {
-                        if ($this->isReadonly($obj)) {
-                            throw new \RuntimeException(t('A rekord nem törölhető.'));
-                        }
-                        $this->beforeRemove($obj);
-                        $this->getEm()->remove($obj);
-                        $this->getEm()->flush();
-                        $this->afterSave($obj, $parancs);
-                    }
-                    break;
-            }
-            return ['id' => $id, 'obj' => $obj, 'operation' => $parancs];
-        } catch (\Exception $e) {
-            throw $e;
+                }
+                break;
         }
+        return ['id' => $id, 'obj' => $obj, 'operation' => $parancs];
     }
 
     public function save()
@@ -182,8 +229,9 @@ class MattableController extends Controller
                 case $this->delOperation:
                     echo $ret['id'];
             }
-        } catch (\Exception $ex) {
-//            echo json_encode(array('error' => $ex->getMessage()));
+        } catch (\Throwable $ex) {
+            $error = \mkwhelpers\ErrorMessage::toUserMessage($ex);
+            $this->jsonError($error['message'], $error['status'], $error['fields']);
         }
     }
 

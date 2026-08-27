@@ -2338,7 +2338,7 @@ class termekController extends \mkwhelpers\MattableController
 
         $filepath = \mkw\store::moveUploadedFile('toimport', 'gs1import', ['xls', 'xlsx']);
         if (!$filepath) {
-            echo json_encode(['ok' => false, 'error' => t('Csak .xls vagy .xlsx fájl tölthető fel.')]);
+            $this->jsonFail(t('Csak .xls vagy .xlsx fájl tölthető fel.'));
             return;
         }
 
@@ -2348,7 +2348,7 @@ class termekController extends \mkwhelpers\MattableController
             $excel = $reader->load($filepath);
         } catch (\Exception $e) {
             \unlink($filepath);
-            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható táblázatként') . ': ' . $e->getMessage()]);
+            $this->jsonFail(t('A fájl nem olvasható táblázatként') . ': ' . $e->getMessage());
             return;
         }
 

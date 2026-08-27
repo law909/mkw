@@ -158,3 +158,15 @@
 #MinKeszletTab input[type="number"] {
     width: 5em;
 }
+
+/* Mentéskor visszautasított mező a karbantartó formon (lásd jquery.mattkarb.js) */
+.mattkarb-hibasmezo {
+    border: 1px solid #cd0a0a;
+    background-color: #fef1ec;
+}
+
+.mattkarb-mezohiba {
+    color: #cd0a0a;
+    font-size: .9em;
+    padding-top: 2px;
+}

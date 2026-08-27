@@ -619,6 +619,7 @@
                                     id: termeksor.attr(_dataattr.recordid),
                                     oper: 'del'
                                 },
+                                // hibánál a sor marad, az okot a globális ajaxError mondja el (appinit.js)
                                 success: function (data) {
                                     if (isNaN(data)) {
                                         $(setup.tableRow + data.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/])/g, '\\$1')).remove();

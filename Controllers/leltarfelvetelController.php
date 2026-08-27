@@ -166,12 +166,12 @@ class leltarfelvetelController extends \mkwhelpers\Controller
     {
         $leltar = $this->getNyitottLeltar();
         if (!$leltar) {
-            echo json_encode(['ok' => false, 'error' => t('A leltár nem nyitott.')]);
+            $this->jsonFail(t('A leltár nem nyitott.'));
             return;
         }
         $tetel = $this->getTetel($leltar);
         if (!$tetel) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs ilyen tétel a leltárban.')]);
+            $this->jsonFail(t('Nincs ilyen tétel a leltárban.'));
             return;
         }
         $tetel->setTenymennyiseg($this->params->getFloatRequestParam('mennyiseg'));
@@ -187,12 +187,12 @@ class leltarfelvetelController extends \mkwhelpers\Controller
     {
         $leltar = $this->getNyitottLeltar();
         if (!$leltar) {
-            echo json_encode(['ok' => false, 'error' => t('A leltár nem nyitott.')]);
+            $this->jsonFail(t('A leltár nem nyitott.'));
             return;
         }
         $tetel = $this->getTetel($leltar);
         if (!$tetel) {
-            echo json_encode(['ok' => false, 'error' => t('Nincs ilyen tétel a leltárban.')]);
+            $this->jsonFail(t('Nincs ilyen tétel a leltárban.'));
             return;
         }
         $tetelid = $tetel->getId();

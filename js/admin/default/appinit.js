@@ -16,6 +16,77 @@ function pleaseWait(msg) {
     });
 }
 
+/**
+ * Hibaüzenet modális ablakban. A szerver a {ok:false, error:'…'} válaszban küldi a szöveget,
+ * a globális ajaxError kezelő innen mutatja meg; kézből is hívható.
+ */
+function mkwHiba(uzenet) {
+    if ($.unblockUI) {
+        // a "Kérem várjon..." réteg alatt az ablak nem látszana
+        $.unblockUI();
+    }
+    $('#dialogcenter')
+        .empty()
+        .append($('<div>').text(uzenet || 'A művelet nem sikerült.'))
+        .dialog({
+            title: 'Hiba',
+            resizable: false,
+            modal: true,
+            width: 420,
+            buttons: {
+                'OK': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+}
+
+/** Semleges/sikeres visszajelzés a lap tetején, kattintásra eltűnik. */
+function mkwUzenet(uzenet) {
+    $('#messagecenter')
+        .text(uzenet)
+        .hide()
+        .addClass('matt-messagecenter ui-widget ui-state-highlight')
+        .one('click', messagecenterclick)
+        .slideToggle('slow');
+}
+
+/** A szerver JSON válasza a hibás kérésből, vagy null. */
+function mkwAjaxValasz(xhr) {
+    if (xhr.responseJSON) {
+        return xhr.responseJSON;
+    }
+    if (xhr.responseText) {
+        try {
+            return JSON.parse(xhr.responseText);
+        } catch (err) {
+            return null;
+        }
+    }
+    return null;
+}
+
+/** A hibás ajax válaszból a felhasználónak szóló szöveg. */
+function mkwAjaxHibaUzenet(xhr) {
+    let valasz = mkwAjaxValasz(xhr);
+    // az `error` a közös kulcs; a `hiba` néhány régebbi képernyőn (UNAS) él tovább
+    if (valasz && (valasz.error || valasz.hiba)) {
+        return valasz.error || valasz.hiba;
+    }
+    switch (xhr.status) {
+        case 0:
+            return 'A kiszolgáló nem válaszol. Ellenőrizze a kapcsolatot, majd próbálja újra.';
+        case 403:
+            return 'Nincs jogosultsága a művelethez.';
+        case 404:
+            return 'A kért művelet nem található.';
+        case 413:
+            return 'A küldött adat túl nagy.';
+        default:
+            return 'A művelet nem sikerült (' + (xhr.status || 'ismeretlen hiba') + ').';
+    }
+}
+
 function messagecenterclick(e) {
     e.preventDefault();
     $(this)
@@ -60,7 +131,7 @@ $(document).ready(
                 if (exception === 'abort' || xhr.statusText === 'abort' || xhr.readyState === 0) {
                     return;
                 }
-                alert('error in: ' + settings.url + ' \n' + 'error:\n' + exception);
+                mkwHiba(mkwAjaxHibaUzenet(xhr));
             })
             // A párbeszédek tartalmát négy különböző oldal tölti be ajaxszal, ezért a
             // gomb-megjelenést itt, központilag adjuk rá – a beszúrt html már a helyén
