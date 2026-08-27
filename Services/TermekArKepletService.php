@@ -52,15 +52,18 @@ class TermekArKepletService
         $ertekek = [];
         $hibak = [];
         $kepletesek = [];
-        $arsavErtek = [];   // ársáv id => nettó, ezt keresik a képletek
-        $arsavValutanem = [];
+        // ugyanaz az ársáv több valutanemben is szerepelhet a terméken, ezért a képlet forrását
+        // az ársáv ÉS a valutanem együtt azonosítja
+        $arsavErtek = [];   // ársáv id|valutanem id => nettó, ezt keresik a képletek
+        $arsavValutanemek = [];   // ársáv id => a terméken szereplő valutanemei
 
         foreach ($sorok as $sor) {
             $arsavid = (int)($sor['arsav'] ?? 0);
-            $arsavValutanem[$arsavid] = (int)($sor['valutanem'] ?? 0);
+            $valutanem = (int)($sor['valutanem'] ?? 0);
+            $arsavValutanemek[$arsavid][$valutanem] = true;
             if (empty($sor['kepletes'])) {
                 $ertekek[$sor['id']] = (float)($sor['netto'] ?? 0);
-                $arsavErtek[$arsavid] = $ertekek[$sor['id']];
+                $arsavErtek[$arsavid . '|' . $valutanem] = $ertekek[$sor['id']];
             } else {
                 $kepletesek[] = $sor;
             }
@@ -72,26 +75,27 @@ class TermekArKepletService
             $maradek = [];
             foreach ($kepletesek as $sor) {
                 $forras = (int)($sor['forrasarsav'] ?? 0);
-                if (!$forras || !array_key_exists($forras, $arsavValutanem)) {
+                $valutanem = (int)($sor['valutanem'] ?? 0);
+                if (!$forras || !isset($arsavValutanemek[$forras])) {
                     $hibak[$sor['id']] = t('A képlet forrás ársávja nincs a termék árai között.');
                     $ertekek[$sor['id']] = 0;
                     continue;
                 }
-                if ($arsavValutanem[$forras] !== (int)($sor['valutanem'] ?? 0)) {
+                if (!isset($arsavValutanemek[$forras][$valutanem])) {
                     $hibak[$sor['id']] = t('A forrás ársáv valutaneme eltér.');
                     $ertekek[$sor['id']] = 0;
                     continue;
                 }
-                if (!array_key_exists($forras, $arsavErtek)) {
+                if (!array_key_exists($forras . '|' . $valutanem, $arsavErtek)) {
                     $maradek[] = $sor;
                     continue;
                 }
-                $ertek = $arsavErtek[$forras] * (float)($sor['szazalek'] ?? 100) / 100
+                $ertek = $arsavErtek[$forras . '|' . $valutanem] * (float)($sor['szazalek'] ?? 100) / 100
                     + (float)($sor['hozzaad'] ?? 0)
                     + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? []);
                 $ertek = self::kerekit($ertek, (int)($sor['arsav'] ?? 0), $afa);
                 $ertekek[$sor['id']] = $ertek;
-                $arsavErtek[(int)($sor['arsav'] ?? 0)] = $ertek;
+                $arsavErtek[(int)($sor['arsav'] ?? 0) . '|' . $valutanem] = $ertek;
             }
             $kepletesek = $maradek;
         }
