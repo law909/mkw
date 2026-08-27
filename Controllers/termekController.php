@@ -1517,7 +1517,8 @@ class termekController extends \mkwhelpers\MattableController
             $this->getArsavSorokFromRequest(),
             $termek,
             // a formon átírt, még mentetlen súly is számítson
-            $this->params->existsRequestParam('suly') ? (float)$this->params->getNumRequestParam('suly') : null
+            $this->params->existsRequestParam('suly') ? (float)$this->params->getNumRequestParam('suly') : null,
+            $afa
         );
 
         $arak = [];

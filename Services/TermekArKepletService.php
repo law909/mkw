@@ -2,6 +2,8 @@
 
 namespace Services;
 
+use Entities\Afa;
+use Entities\Arsav;
 use Entities\Kapcsolodokoltseg;
 use Entities\Termek;
 
@@ -11,7 +13,8 @@ use Entities\Termek;
  * A képletes sor nettója: `forrás ársáv nettója * százalék / 100 + hozzáadandó + a kiválasztott
  * kapcsolódó költségek egy darabra eső értéke`. A hozzáadandó negatív is lehet, az a levonás. A forrás csak azonos valutanemű
  * ársáv lehet, és maga is lehet képletes – a feloldás ezért körökben megy, amíg van mit
- * kiszámolni.
+ * kiszámolni. Az eredmény bruttóját az ársáv kerekítés mezője kerekíti, és a visszaadott nettó
+ * már a kerekített bruttóból számolt érték.
  *
  * A számítást a karbantartó „Árak újraszámolása" gombja és a termék mentése is használja, ezért
  * a bemenet nem entitás, hanem a form soraiból összerakott tömb.
@@ -25,10 +28,11 @@ class TermekArKepletService
      *   forrasarsav (id), szazalek, hozzaad, koltsegek (költség id-k tömbje)
      * @param Termek $termek a kapcsolódó költségek számítási alapjához
      * @param float|null $suly a termék súlya, ha a formról frissebb érték jött
+     * @param Afa|null $afa a kerekítés bruttó-nettó váltásához, ha a formról frissebb érték jött
      *
      * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]]
      */
-    public static function calc(array $sorok, Termek $termek, ?float $suly = null): array
+    public static function calc(array $sorok, Termek $termek, ?float $suly = null, ?Afa $afa = null): array
     {
         // a formon átírt súly is számítson; a terméken csak a számítás idejére állítjuk át, mert
         // a gomb nem ment (a mentés a maga útján úgyis beírja)
@@ -37,13 +41,13 @@ class TermekArKepletService
             $termek->setSuly($suly);
         }
         try {
-            return self::calcSorok($sorok, $termek);
+            return self::calcSorok($sorok, $termek, $afa ?: $termek->getAfa());
         } finally {
             $termek->setSuly($eredetiSuly);
         }
     }
 
-    private static function calcSorok(array $sorok, Termek $termek): array
+    private static function calcSorok(array $sorok, Termek $termek, ?Afa $afa): array
     {
         $ertekek = [];
         $hibak = [];
@@ -85,6 +89,7 @@ class TermekArKepletService
                 $ertek = $arsavErtek[$forras] * (float)($sor['szazalek'] ?? 100) / 100
                     + (float)($sor['hozzaad'] ?? 0)
                     + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? []);
+                $ertek = self::kerekit($ertek, (int)($sor['arsav'] ?? 0), $afa);
                 $ertekek[$sor['id']] = $ertek;
                 $arsavErtek[(int)($sor['arsav'] ?? 0)] = $ertek;
             }
@@ -95,6 +100,24 @@ class TermekArKepletService
             $ertekek[$sor['id']] = 0;
         }
         return ['ertekek' => $ertekek, 'hibak' => $hibak];
+    }
+
+    /**
+     * A képlet eredményének bruttóját az ársáv kerekítés egységére kerekíti, és a kerekített
+     * bruttóhoz tartozó nettót adja vissza.
+     */
+    private static function kerekit(float $netto, int $arsavid, ?Afa $afa): float
+    {
+        if (!$afa || !$arsavid) {
+            return $netto;
+        }
+        /** @var Arsav|null $arsav */
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($arsavid);
+        $kerekites = (float)($arsav?->getKerekites() ?: 0);
+        if ($kerekites <= 0) {
+            return $netto;
+        }
+        return $afa->calcNetto(round($afa->calcBrutto($netto) / $kerekites) * $kerekites);
     }
 
     /**
