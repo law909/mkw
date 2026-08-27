@@ -9,6 +9,8 @@
                 <td>
                     <a class="mattable-editlink" href="#" data-meretid="{$_meret.id}" data-oper="edit"
                        title="{at('Szerkeszt')}">{$_meret.nev}</a>
+                    <a class="js-termeklistabutton" href="#" data-egyedid="{$_meret.id}" title="{at('Termékek')}"><span
+                            class="ui-icon ui-icon-search"></span></a>
                     <a class="mattable-dellink" href="#" data-meretid="{$_meret.id}" data-oper="del" title="{at('Töröl')}"><span
                             class="ui-icon ui-icon-circle-minus"></span></a>
                 </td>
@@ -21,9 +23,5 @@
     </td>
     <td class="cell">
         {$_meret.sorrend}
-    </td>
-    <td class="cell">
-        <a class="js-termeklistabutton" href="#" data-egyedid="{$_meret.id}" title="{at('Termékek')}"><span
-                    class="ui-icon ui-icon-search"></span></a>
     </td>
 </tr>

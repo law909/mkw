@@ -50,6 +50,7 @@ $(document).ready(function () {
                 if (!window.mkwIsMobile) {
                     $('.js-toflyout').flyout();
                 }
+                $('.js-termeklistabutton').button();
             },
             filter: {
                 fields: lfilternames,
