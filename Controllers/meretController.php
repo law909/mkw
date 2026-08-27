@@ -8,9 +8,16 @@ use mkwhelpers\FilterDescriptor;
 use mkwhelpers\MattableController;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Traits\ValtozatTermekLista;
 
 class meretController extends MattableController
 {
+    use ValtozatTermekLista;
+
+    protected function getValtozatFieldName(): string
+    {
+        return 'meret';
+    }
 
     public function __construct()
     {

@@ -91,6 +91,24 @@ $(document).ready(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
 
+        $('#mattable-table').on('click', '.js-termeklistabutton', (e) => {
+            e.preventDefault();
+            $.get('/admin/szin/gettermeklista', {id: $(e.currentTarget).data('egyedid')}, (data) => {
+                dialogcenter.html(JSON.parse(data).html).dialog({
+                    title: 'Termékek',
+                    resizable: true,
+                    height: 400,
+                    width: 600,
+                    modal: true,
+                    buttons: {
+                        'Bezár': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            });
+        });
+
     } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb(szin);

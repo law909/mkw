@@ -4,9 +4,16 @@ namespace Controllers;
 
 use Entities\Szin;
 use mkwhelpers\FilterDescriptor;
+use Traits\ValtozatTermekLista;
 
 class szinController extends \mkwhelpers\MattableController
 {
+    use ValtozatTermekLista;
+
+    protected function getValtozatFieldName(): string
+    {
+        return 'szin';
+    }
 
     public function __construct()
     {

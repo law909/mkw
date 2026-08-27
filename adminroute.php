@@ -984,6 +984,7 @@ $router->map('GET', '/admin/szin/getlistbody', 'szinController#getlistbody', 'ad
 $router->map('GET', '/admin/szin/getautocomplete', 'szinController#getAutocompleteList', 'adminszingetautocomplete');
 $router->map('GET', '/admin/szin/getkarb', 'szinController#getkarb', 'adminszingetkarb');
 $router->map('GET', '/admin/szin/viewkarb', 'szinController#viewkarb', 'adminszinviewkarb');
+$router->map('GET', '/admin/szin/gettermeklista', 'szinController#getTermekList', 'adminszingettermeklista');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szin/save', 'szinController#save', 'adminszinsave');
 }
@@ -993,6 +994,7 @@ $router->map('GET', '/admin/meret/htmllist', 'meretController#htmllist', 'adminm
 $router->map('GET', '/admin/meret/getlistbody', 'meretController#getlistbody', 'adminmeretgetlistbody');
 $router->map('GET', '/admin/meret/getkarb', 'meretController#getkarb', 'adminmeretgetkarb');
 $router->map('GET', '/admin/meret/viewkarb', 'meretController#viewkarb', 'adminmeretviewkarb');
+$router->map('GET', '/admin/meret/gettermeklista', 'meretController#getTermekList', 'adminmeretgettermeklista');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/meret/save', 'meretController#save', 'adminmeretsave');
 }

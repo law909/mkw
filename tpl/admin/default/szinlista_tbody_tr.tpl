@@ -22,4 +22,8 @@
     <td class="cell">
         {$_szin.sorrend}
     </td>
+    <td class="cell">
+        <a class="js-termeklistabutton" href="#" data-egyedid="{$_szin.id}" title="{at('Termékek')}"><span
+                    class="ui-icon ui-icon-search"></span></a>
+    </td>
 </tr>

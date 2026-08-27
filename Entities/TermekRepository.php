@@ -636,6 +636,27 @@ class TermekRepository extends \mkwhelpers\Repository
         return $result;
     }
 
+    /**
+     * Azok a termékek, amelyeknek valamelyik változata a megadott méret / szín.
+     *
+     * @param string $field a TermekValtozat mezője: 'meret' vagy 'szin'
+     *
+     * @return \Entities\Termek[]
+     */
+    public function getTermekListByValtozat(string $field, int $id): array
+    {
+        // a mező a DQL-be interpolálódik, ezért csak az itt felsorolt kettő lehet
+        if (!in_array($field, ['meret', 'szin'], true) || !$id) {
+            return [];
+        }
+        return $this->_em->createQuery(
+            'SELECT DISTINCT _xx FROM Entities\Termek _xx'
+            . ' JOIN _xx.valtozatok v'
+            . ' WHERE v.' . $field . ' = :id'
+            . ' ORDER BY _xx.nev ASC'
+        )->setParameter('id', $id)->getResult();
+    }
+
     public function getTermekIds($filter, $order = [])
     {
         $this->addAktivLathatoFilter($filter);

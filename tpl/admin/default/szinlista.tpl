@@ -46,6 +46,7 @@
                 <th>{at('Név')}</th>
                 <th>{at('Charkód')}</th>
                 <th>{at('Sorrend')}</th>
+                <th>{at('Termékek')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>
