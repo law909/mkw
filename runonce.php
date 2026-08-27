@@ -1779,6 +1779,14 @@ if ($DBVersion < '0143') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0143');
 }
 
+if ($DBVersion < '0144') {
+    // a setup-beli fanev csak megjelenitett nev; a gyoker elem neve visszaall a torzserteker
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement('UPDATE termekmenu SET nev = "Termék menü" WHERE id = 1');
+    $conn->executeStatement('UPDATE termekmenu2 SET nev = "Termék menü 2" WHERE id = 1');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0144');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

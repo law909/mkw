@@ -15,8 +15,6 @@ use Entities\Raktar;
 use Entities\Statlap;
 use Entities\Szallitasimod;
 use Entities\Termek;
-use Entities\TermekMenu;
-use Entities\TermekMenu2;
 use Entities\Uzletkoto;
 use Entities\Valutanem;
 
@@ -1144,17 +1142,6 @@ class setupController extends \mkwhelpers\Controller
      * Üres név esetén nem nyúlunk hozzá – különben a setup mentése visszaírná azt a gyökeret,
      * amit valaki a fa-szerkesztőben nevezett át.
      */
-    private function renameTermekmenuRoot(string $entityClass, string $nev): void
-    {
-        if ($nev === '') {
-            return;
-        }
-        \mkw\store::getEm()
-            ->createQuery('UPDATE ' . $entityClass . ' x SET x.nev = :nev WHERE x.id = 1')
-            ->setParameter('nev', $nev)
-            ->execute();
-    }
-
     private function setKezdoKategoriaVars($view, $namebase, $katid)
     {
         $view->setVar($namebase . 'id', $katid ?: '');
@@ -2245,10 +2232,9 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
         }
 
-        foreach ([\mkw\consts::TermekmenuNev => TermekMenu::class, \mkw\consts::Termekmenu2Nev => TermekMenu2::class] as $kulcs => $entityClass) {
-            $nev = $this->params->getStringRequestParam($kulcs);
-            $this->setObj($kulcs, $nev);
-            $this->renameTermekmenuRoot($entityClass, $nev);
+        // a fa megjelenített neve beállítás, nem törzsadat: a gyökér elem nevéhez nem nyúlunk
+        foreach ([\mkw\consts::TermekmenuNev, \mkw\consts::Termekmenu2Nev] as $kulcs) {
+            $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
         }
 
         // üresen hagyva („válasszon") a beállítás törlődik
