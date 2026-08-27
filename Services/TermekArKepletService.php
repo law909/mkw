@@ -92,7 +92,7 @@ class TermekArKepletService
                 $ertek = $arsavErtek[$forras . '|' . $valutanem] * (float)($sor['szazalek'] ?? 100) / 100
                     + (float)($sor['hozzaad'] ?? 0)
                     + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? []);
-                $ertek = self::kerekit($ertek, (int)($sor['arsav'] ?? 0), $afa);
+                $ertek = self::roundBrutto($ertek, (int)($sor['arsav'] ?? 0), $afa);
                 $ertekek[$sor['id']] = $ertek;
                 $arsavErtek[(int)($sor['arsav'] ?? 0) . '|' . $valutanem] = $ertek;
             }
@@ -108,7 +108,7 @@ class TermekArKepletService
      * A képlet eredményének bruttóját az ársáv kerekítés egységére kerekíti, és a kerekített
      * bruttóhoz tartozó nettót adja vissza.
      */
-    private static function kerekit(float $netto, int $arsavid, ?Afa $afa): float
+    private static function roundBrutto(float $netto, int $arsavid, ?Afa $afa): float
     {
         if (!$afa || !$arsavid) {
             return $netto;
