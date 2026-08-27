@@ -710,6 +710,7 @@ class pubadminController extends mkwhelpers\Controller
 
                     $mailer->send();
 
+                    $bfcontroller = new bizonylatfejController();
                     $bfcontroller->setNyomtatva($szamlafej->getId(), true);
 
                     \unlink($filepath);
