@@ -262,6 +262,7 @@ abstract class Controller
                     break;
                 case 'datetime':
                 case 'date':
+                case 'time':
                     $value = $this->params->getStringRequestParam($fieldName);
                     break;
                 default:

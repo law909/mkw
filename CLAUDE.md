@@ -93,7 +93,7 @@ Two base classes in `mkwhelpers/`:
     - `loadVars($t, $forKarb = false)` — entity → template array (`getEntityFieldsArray($t)` plus relation/date extras)
     - `setFields($obj)` — request → entity. `setEntityFieldsFromRequest($obj)` maps every scalar field automatically,
       **including booleans** (an unchecked checkbox is absent from the POST and correctly becomes `false`). What it does
-      *not* do: associations, and `date`/`datetime` fields (it passes the raw string, so convert to `\DateTime` yourself).
+      *not* do: associations. `date`/`datetime`/`time` fields get the raw string, so the setter has to convert to `\DateTime`.
     - `getlistbody()` — the list `<tbody>` + pager JSON; this is where list filtering is written inline
     - `viewlist()` — the list page
     - `_getkarb($tplname)` — assemble the edit form (**lowercase `k`**; called by the base `getkarb()`/`viewkarb()`)
