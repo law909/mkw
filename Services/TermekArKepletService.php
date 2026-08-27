@@ -30,7 +30,8 @@ class TermekArKepletService
      * @param float|null $suly a termék súlya, ha a formról frissebb érték jött
      * @param Afa|null $afa a kerekítés bruttó-nettó váltásához, ha a formról frissebb érték jött
      *
-     * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]]
+     * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]] – a hibás sor
+     *   nem kerül bele az `ertekek`-be, hogy a hívó a meglévő árat érintetlenül hagyhassa
      */
     public static function calc(array $sorok, Termek $termek, ?float $suly = null, ?Afa $afa = null): array
     {
@@ -78,12 +79,10 @@ class TermekArKepletService
                 $valutanem = (int)($sor['valutanem'] ?? 0);
                 if (!$forras || !isset($arsavValutanemek[$forras])) {
                     $hibak[$sor['id']] = t('A képlet forrás ársávja nincs a termék árai között.');
-                    $ertekek[$sor['id']] = 0;
                     continue;
                 }
                 if (!isset($arsavValutanemek[$forras][$valutanem])) {
                     $hibak[$sor['id']] = t('A forrás ársáv valutaneme eltér.');
-                    $ertekek[$sor['id']] = 0;
                     continue;
                 }
                 if (!array_key_exists($forras . '|' . $valutanem, $arsavErtek)) {
@@ -101,7 +100,6 @@ class TermekArKepletService
         }
         foreach ($kepletesek as $sor) {
             $hibak[$sor['id']] = t('A képlet forrás ársávja körkörösen hivatkozik.');
-            $ertekek[$sor['id']] = 0;
         }
         return ['ertekek' => $ertekek, 'hibak' => $hibak];
     }

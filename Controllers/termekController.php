@@ -694,7 +694,10 @@ class termekController extends \mkwhelpers\MattableController
                 }
                 $this->setTermekArKeplet($ar, $arid, $kepletes);
                 if ($kepletes) {
-                    $ar->setNetto($kepletErtekek[$arid] ?? 0);
+                    // ha a képlet nem volt kiszámolható, a korábbi ár marad – nem nullázzuk
+                    if (array_key_exists($arid, $kepletErtekek)) {
+                        $ar->setNetto($kepletErtekek[$arid]);
+                    }
                 } else {
                     $ar->setNetto($this->params->getNumRequestParam('arnetto_' . $arid));
                     $brutto = $this->params->getNumRequestParam('arbrutto_' . $arid);
@@ -1513,14 +1516,22 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->detach($termek);
         }
         $afa = $this->getRepo(Afa::class)->find($this->params->getIntRequestParam('afa')) ?: $termek->getAfa();
-        $eredmeny = \Services\TermekArKepletService::calc(
-            $this->getArsavSorokFromRequest(),
-            $termek,
-            // a formon átírt, még mentetlen súly is számítson
-            $this->params->existsRequestParam('suly') ? (float)$this->params->getNumRequestParam('suly') : null,
-            $afa
-        );
+        try {
+            $eredmeny = \Services\TermekArKepletService::calc(
+                $this->getArsavSorokFromRequest(),
+                $termek,
+                // a formon átírt, még mentetlen súly is számítson
+                $this->params->existsRequestParam('suly') ? (float)$this->params->getNumRequestParam('suly') : null,
+                $afa
+            );
+        } catch (\Exception $e) {
+            // a képernyőn álló árakhoz nem nyúlunk, csak megmondjuk, hogy nem sikerült
+            \mkw\store::writelog('recalcArak: ' . $e->getMessage());
+            echo json_encode(['arak' => [], 'hibak' => [t('Az árak újraszámolása nem sikerült.')]]);
+            return;
+        }
 
+        // a ki nem számolható sor nincs az ertekek-ben: azt a képernyőn is érintetlenül hagyjuk
         $arak = [];
         foreach ($eredmeny['ertekek'] as $arid => $netto) {
             $arak[] = [
