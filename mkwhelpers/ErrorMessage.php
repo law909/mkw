@@ -17,7 +17,7 @@ use mkwhelpers\Exceptions\UserMessageException;
 class ErrorMessage
 {
 
-    const LOGFILE = 'hiba.txt';
+    const LOGFILE = 'hiba.log';
 
     /**
      * A `fields` (mezőnév => üzenet) csak akkor van kitöltve, ha a hiba forrása ismerte a
@@ -27,6 +27,8 @@ class ErrorMessage
      */
     public static function toUserMessage(\Throwable $e)
     {
+        $id = strtoupper(substr(md5(uniqid('', true)), 0, 6));
+        self::log($id, $e);
         if ($e instanceof UserMessageException) {
             return ['message' => $e->getMessage(), 'status' => 400, 'fields' => $e->getFields()];
         }
@@ -57,17 +59,15 @@ class ErrorMessage
                 'fields' => [],
             ];
         }
-        return ['message' => self::unexpected($e), 'status' => 500, 'fields' => []];
+        return ['message' => self::unexpected($e, $id), 'status' => 500, 'fields' => []];
     }
 
     /**
-     * Az ismeretlen hiba a naplóba megy, a felhasználó csak egy azonosítót lát, amit be tud
-     * diktálni. Fejlesztői módban a valódi üzenet is odakerül.
+     * Az ismeretlen hiba után a felhasználó csak egy azonosítót lát, amit be tud diktálni –
+     * a naplóban ugyanez az azonosító áll. Fejlesztői módban a valódi üzenet is odakerül.
      */
-    private static function unexpected(\Throwable $e)
+    private static function unexpected(\Throwable $e, $id)
     {
-        $id = strtoupper(substr(md5(uniqid('', true)), 0, 6));
-        self::log($id, $e);
         $message = sprintf(t('A művelet nem sikerült. Hibaazonosító: %s'), $id);
         if (\mkw\store::isDeveloper()) {
             $message .= ' - ' . get_class($e) . ': ' . $e->getMessage();
@@ -75,18 +75,29 @@ class ErrorMessage
         return $message;
     }
 
+    /**
+     * A kezelt (felhasználónak fordított) hibák is naplóba mennek, mert a fordítás elrejti,
+     * mi történt valójában. A kivétellánc végigjárva kerül bele: a Doctrine üzenete mögött
+     * a driver eredeti hibája (SQL, paraméterek) áll.
+     */
     private static function log($id, \Throwable $e)
     {
-        \mkw\store::writelog(
-            implode(' ## ', [
-                $id,
-                $_SERVER['REQUEST_URI'] ?? '',
-                self::getUserName(),
-                get_class($e) . ': ' . $e->getMessage(),
-                $e->getFile() . ':' . $e->getLine(),
-            ]),
-            self::LOGFILE
-        );
+        $parts = [
+            $id,
+            $_SERVER['REQUEST_URI'] ?? '',
+            self::getUserName(),
+        ];
+        for ($t = $e; $t !== null; $t = $t->getPrevious()) {
+            $parts[] = get_class($t) . ': ' . self::oneLine($t->getMessage());
+            $parts[] = $t->getFile() . ':' . $t->getLine();
+        }
+        \mkw\store::writelog(implode(' ## ', $parts), self::LOGFILE);
+    }
+
+    /** A napló soralapú, a DBAL üzenetében viszont több soros SQL is lehet. */
+    private static function oneLine($text)
+    {
+        return trim(preg_replace('/\s+/', ' ', $text));
     }
 
     /**
