@@ -247,7 +247,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     {
         $file = $this->getUploadedFile();
         if (!$file) {
-            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
+            $this->jsonFail(t('Nem érkezett feltöltött fájl.'));
             return;
         }
 
@@ -257,7 +257,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $sheet = $reader->load($file)->getActiveSheet();
         } catch (\Exception $e) {
             \unlink($file);
-            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható táblázatként.')]);
+            $this->jsonFail(t('A fájl nem olvasható táblázatként.'));
             return;
         }
 
@@ -309,14 +309,14 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     {
         $file = $this->getUploadedFile();
         if (!$file) {
-            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
+            $this->jsonFail(t('Nem érkezett feltöltött fájl.'));
             return;
         }
 
         $handle = fopen($file, 'r');
         if (!$handle) {
             \unlink($file);
-            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható.')]);
+            $this->jsonFail(t('A fájl nem olvasható.'));
             return;
         }
 
@@ -393,7 +393,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     {
         $file = $this->getUploadedFile();
         if (!$file) {
-            echo json_encode(['ok' => false, 'error' => t('Nem érkezett feltöltött fájl.')]);
+            $this->jsonFail(t('Nem érkezett feltöltött fájl.'));
             return;
         }
 
@@ -403,7 +403,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $excel = $reader->load($file);
         } catch (\Exception $e) {
             \unlink($file);
-            echo json_encode(['ok' => false, 'error' => t('A fájl nem olvasható táblázatként.')]);
+            $this->jsonFail(t('A fájl nem olvasható táblázatként.'));
             return;
         }
         \unlink($file);
@@ -419,7 +419,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $sheet = $excel->getSheetByName($sheetnev);
         if (!$sheet) {
             $excel->disconnectWorksheets();
-            echo json_encode(['ok' => false, 'error' => sprintf(t('Nincs "%s" nevű munkalap a fájlban.'), $sheetnev)]);
+            $this->jsonFail(sprintf(t('Nincs "%s" nevű munkalap a fájlban.'), $sheetnev));
             return;
         }
 

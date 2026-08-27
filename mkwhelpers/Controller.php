@@ -132,6 +132,41 @@ abstract class Controller
         $this->templateFactory = $path;
     }
 
+    /**
+     * Egységes hibaválasz az admin ajax hívásoknak: a JS oldalon a globális ajaxError
+     * kezelő olvassa ki az `error` kulcsot (lásd appinit.js).
+     *
+     * @param string $message a felhasználónak szóló üzenet
+     * @param int $status HTTP státuszkód (400 hibás adat, 403 jogosultság, 409 ütközés, 500 egyéb)
+     * @param array $fields mezőnév => üzenet; a karbantartó form ezeket jelöli meg
+     */
+    protected function jsonError($message, $status = 400, array $fields = [])
+    {
+        if (!headers_sent()) {
+            http_response_code($status);
+            header('Content-Type: application/json; charset=utf-8');
+        }
+        $result = ['ok' => false, 'error' => $message];
+        if ($fields) {
+            $result['fields'] = $fields;
+        }
+        echo json_encode($result);
+    }
+
+    /**
+     * Hibaválasz a saját hibaágat futtató képernyőknek (import, bolti eladás, leltárfelvétel):
+     * a kérés sikeres, a válasz mondja meg, hogy a művelet nem ment végbe, és a képernyő a
+     * maga helyén jeleníti meg az üzenetet.
+     *
+     * A jsonError() párja – ott a HTTP státuszkód hordozza a hibát, és a globális ajaxError
+     * kezelő ad rá ablakot. Itt szándékosan nincs se státuszkód, se fejléc: a hívó képernyők
+     * jQuery-je a válasz típusára is épít.
+     */
+    protected function jsonFail($message)
+    {
+        echo json_encode(['ok' => false, 'error' => $message]);
+    }
+
     protected function getEntityFieldsArray($entity, $prefilled = null)
     {
         $result = [];

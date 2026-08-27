@@ -22,7 +22,7 @@ class minkeszletimportController extends \mkwhelpers\Controller
 
         $filepath = \mkw\store::moveUploadedFile('toimport', 'minkeszletimport');
         if (!$filepath) {
-            echo json_encode(['ok' => false, 'error' => t('Hiányzó vagy nem elfogadott típusú fájl.')]);
+            $this->jsonFail(t('Hiányzó vagy nem elfogadott típusú fájl.'));
             return;
         }
 
@@ -30,7 +30,7 @@ class minkeszletimportController extends \mkwhelpers\Controller
             $eredmeny = (new \Services\MinKeszletExcelService())->import($filepath);
         } catch (\Exception $e) {
             \unlink($filepath);
-            echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
+            $this->jsonFail($e->getMessage());
             return;
         }
         \unlink($filepath);
