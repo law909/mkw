@@ -46,7 +46,7 @@ class dokumentumtarController extends \mkwhelpers\Controller
             ]);
             $this->json(['ok' => true, 'html' => $view->getTemplateResult(), 'url' => $res['url']]);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 

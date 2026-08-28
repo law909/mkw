@@ -76,7 +76,7 @@ class mediatarController extends \mkwhelpers\Controller
             $res['ok'] = true;
             $this->json($res);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 
@@ -172,7 +172,7 @@ class mediatarController extends \mkwhelpers\Controller
             $res['ok'] = true;
             $this->json($res);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 
@@ -221,7 +221,7 @@ class mediatarController extends \mkwhelpers\Controller
             $path = $mediatar->createFolder($this->getOrig('path', '/'), $this->getOrig('name', ''));
             $this->json(['ok' => true, 'path' => $path]);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 
@@ -243,7 +243,7 @@ class mediatarController extends \mkwhelpers\Controller
             );
             $this->json(['ok' => true, 'name' => $newname]);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 
@@ -260,7 +260,7 @@ class mediatarController extends \mkwhelpers\Controller
             $cnt = $mediatar->delete($this->getOrig('path', '/'), $this->getOrigArray('names'));
             $this->json(['ok' => true, 'deleted' => $cnt]);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 
@@ -274,7 +274,7 @@ class mediatarController extends \mkwhelpers\Controller
             $mediatar->deleteFolder($this->getOrig('path', '/'), $this->getOrig('name', ''));
             $this->json(['ok' => true]);
         } catch (\Exception $e) {
-            $this->jsonError($e->getMessage());
+            $this->jsonFail($e->getMessage());
         }
     }
 

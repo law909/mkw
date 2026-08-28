@@ -18,10 +18,10 @@ trait MediatarGuard
         if (\mkw\store::getAdminSession()->pk) {
             return;
         }
-        http_response_code(403);
         if ($json) {
-            $this->jsonError(t('Nincs bejelentkezve'));
+            $this->jsonError(t('Nincs bejelentkezve'), 403);
         } else {
+            http_response_code(403);
             header('Content-Type: text/plain; charset=utf-8');
             echo t('Nincs bejelentkezve');
         }
@@ -33,8 +33,7 @@ trait MediatarGuard
         if (!\mkw\store::isClosed()) {
             return;
         }
-        http_response_code(403);
-        $this->jsonError(t('A rendszer zárolva van'));
+        $this->jsonError(t('A rendszer zárolva van'), 403);
         exit;
     }
 
@@ -71,8 +70,7 @@ trait MediatarGuard
         @file_put_contents(\mkw\store::logsPath('mediatar.log'), $msg, FILE_APPEND);
 
         if (\mkw\store::getSetupValue('mediatarstrictorigin')) {
-            http_response_code(403);
-            $this->jsonError(t('Érvénytelen kérés eredete'));
+            $this->jsonError(t('Érvénytelen kérés eredete'), 403);
             exit;
         }
     }
@@ -93,15 +91,15 @@ trait MediatarGuard
         }
     }
 
+    /**
+     * Sikeres válasz. A művelet nem sikerült ágán \mkwhelpers\Controller::jsonFail() jár:
+     * a választó a 200-as válasz `ok`/`error` kulcsait olvassa, a jsonError() 4xx-e ott
+     * néhány gombnál (mappa létrehozás, átnevezés, törlés) néma hibába futna.
+     */
     protected function json($data)
     {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data);
-    }
-
-    protected function jsonError($msg)
-    {
-        $this->json(['ok' => false, 'error' => $msg]);
     }
 
 }
