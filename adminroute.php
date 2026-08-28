@@ -295,13 +295,20 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idopontfoglalas/fizet', 'idopontfoglalasController#fizet', 'adminidopontfoglalasfizet');
     $router->map('POST', '/admin/idopontfoglalas/szamlaz', 'idopontfoglalasController#szamlaz', 'adminidopontfoglalasszamlaz');
 }
-$router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
-$router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
-$router->map('GET', '/admin/rendezvenyallapot/getkarb', 'rendezvenyallapotController#getkarb', 'adminrendezvenyallapotgetkarb');
-$router->map('GET', '/admin/rendezvenyallapot/viewkarb', 'rendezvenyallapotController#viewkarb', 'adminrendezvenyallapotviewkarb');
-$router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
+$router->map('GET', '/admin/idopontallapot/viewlist', 'idopontallapotController#viewlist', 'adminidopontallapotviewlist');
+$router->map('GET', '/admin/idopontallapot/getlistbody', 'idopontallapotController#getlistbody', 'adminidopontallapotgetlistbody');
+$router->map('GET', '/admin/idopontallapot/getkarb', 'idopontallapotController#getkarb', 'adminidopontallapotgetkarb');
+$router->map('GET', '/admin/idopontallapot/viewkarb', 'idopontallapotController#viewkarb', 'adminidopontallapotviewkarb');
+$router->map('GET', '/admin/idopontallapot/htmllist', 'idopontallapotController#htmllist', 'adminidopontallapothtmllist');
+// a régi URL-ek élő könyvjelzőkben és mentett linkekben vannak, ezért aliasként megmaradnak
+$router->map('GET', '/admin/rendezvenyallapot/viewlist', 'idopontallapotController#viewlist', 'adminrendezvenyallapotviewlist');
+$router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'idopontallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
+$router->map('GET', '/admin/rendezvenyallapot/getkarb', 'idopontallapotController#getkarb', 'adminrendezvenyallapotgetkarb');
+$router->map('GET', '/admin/rendezvenyallapot/viewkarb', 'idopontallapotController#viewkarb', 'adminrendezvenyallapotviewkarb');
+$router->map('GET', '/admin/rendezvenyallapot/htmllist', 'idopontallapotController#htmllist', 'adminrendezvenyallapothtmllist');
 if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
+    $router->map('POST', '/admin/idopontallapot/save', 'idopontallapotController#save', 'adminidopontallapotsave');
+    $router->map('POST', '/admin/rendezvenyallapot/save', 'idopontallapotController#save', 'adminrendezvenyallapotsave');
 }
 
 $router->map('GET', '/admin/arsav/viewlist', 'arsavController#viewlist', 'adminarsavviewlist');

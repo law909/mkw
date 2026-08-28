@@ -1,6 +1,6 @@
 $(document).ready(function () {
     const mattkarbconfig = new MattkarbConfig({
-        entityName: 'rendezvenyallapot'
+        entityName: 'idopontallapot'
     });
 
     if ($.fn.mattable) {
@@ -9,7 +9,7 @@ $(document).ready(function () {
                 fields: ['#nevfilter']
             },
             tablebody: {
-                url: '/admin/rendezvenyallapot/getlistbody'
+                url: '/admin/idopontallapot/getlistbody'
             },
             karb: mattkarbconfig
         });

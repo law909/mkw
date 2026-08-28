@@ -1787,6 +1787,39 @@ if ($DBVersion < '0144') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0144');
 }
 
+if ($DBVersion < '0145') {
+    // a Rendezvenyallapot entitás Idopontallapot lett, és a táblája a félrevezető rendezvenytipus
+    // helyett idopontallapot. A schema-tool nem tud átnevezni, ezért itt kell megtenni – és mert a
+    // runonce megelőzheti a kézi ./updateschema.sh-t, a marker csak sikeres átnevezés után lép.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vanTabla = function ($tabla) use ($conn) {
+        return (int)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.TABLES'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [$tabla]
+        )->fetchOne();
+    };
+    // friss telepítésen is le kell futnia: a menüsort a 1075. sori blokk még a régi URL-lel szúrja be
+    $conn->executeStatement(
+        'UPDATE menu SET nev = "Időpont állapotok", url = "/admin/idopontallapot/viewlist",'
+        . ' routename = "/admin/idopontallapot"'
+        . ' WHERE url = "/admin/rendezvenyallapot/viewlist"'
+    );
+    if ($vanTabla('rendezvenytipus')) {
+        // ha az updateschema már lefutott, üresen létrehozta az új táblát – az útban van az átnevezésnek
+        if ($vanTabla('idopontallapot')
+            && (int)$conn->executeQuery('SELECT COUNT(*) FROM idopontallapot')->fetchOne() === 0) {
+            $conn->executeStatement('DROP TABLE idopontallapot');
+        }
+        if (!$vanTabla('idopontallapot')) {
+            $conn->executeStatement('RENAME TABLE rendezvenytipus TO idopontallapot');
+            \mkw\store::setParameter(\mkw\consts::DBVersion, '0145');
+        }
+    } else {
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0145');
+    }
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

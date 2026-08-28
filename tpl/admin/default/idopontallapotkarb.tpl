@@ -2,11 +2,11 @@
 
 {block "inhead"}
     {include "../partials/form.scripts.tpl"}
-    <script type="text/javascript" src="/js/admin/default/rendezvenyallapot.js"></script>
+    <script type="text/javascript" src="/js/admin/default/idopontallapot.js"></script>
 {/block}
 
 {block "kozep"}
     <div id="mattkarb">
-        {include 'rendezvenyallapotkarbform.tpl'}
+        {include 'idopontallapotkarbform.tpl'}
     </div>
 {/block}

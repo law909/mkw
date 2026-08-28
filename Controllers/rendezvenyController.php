@@ -8,7 +8,7 @@ use Entities\Jogahelyszin;
 use Entities\Jogaterem;
 use Entities\Partner;
 use Entities\Rendezveny;
-use Entities\Rendezvenyallapot;
+use Entities\Idopontallapot;
 use Entities\RendezvenyDok;
 use Entities\RendezvenyJelentkezes;
 use Entities\Termek;
@@ -86,7 +86,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         if ($ck) {
             $obj->setTanar($ck);
         }
-        $ck = \mkw\store::getEm()->getRepository(Rendezvenyallapot::class)->find($this->params->getIntRequestParam('rendezvenyallapot', 0));
+        $ck = \mkw\store::getEm()->getRepository(Idopontallapot::class)->find($this->params->getIntRequestParam('rendezvenyallapot', 0));
         if ($ck) {
             $obj->setRendezvenyallapot($ck);
         }
@@ -202,7 +202,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $view->setVar('tanarlist', $dcs->getSelectList());
         $termek = new termekController();
         $view->setVar('termeklist', $termek->getSelectList(null));
-        $rcs = new rendezvenyallapotController();
+        $rcs = new idopontallapotController();
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList());
         $jtcs = new jogateremController();
         $view->setVar('jogateremlist', $jtcs->getSelectList());
@@ -226,7 +226,7 @@ class rendezvenyController extends \mkwhelpers\MattableController
         $view->setVar('tanarlist', $tanar->getSelectList($record?->getTanar()?->getId()));
         $termek = new termekController();
         $view->setVar('termeklist', $termek->getSelectList($record?->getTermek()?->getId()));
-        $rcs = new rendezvenyallapotController();
+        $rcs = new idopontallapotController();
         $view->setVar('rendezvenyallapotlist', $rcs->getSelectList($record?->getRendezvenyallapot()?->getId()));
         $jtcs = new jogateremController();
         $view->setVar('jogateremlist', $jtcs->getSelectList($record?->getJogaterem()?->getId()));

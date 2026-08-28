@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-    <h3>{at('Rendezvény állapot')}</h3>
+    <h3>{at('Időpont állapot')}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
     <div id="mattkarb-tabs">

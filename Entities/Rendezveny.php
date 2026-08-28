@@ -75,7 +75,7 @@ class Rendezveny
     private $ar;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Rendezvenyallapot")
+     * @ORM\ManyToOne(targetEntity="Idopontallapot")
      * @ORM\JoinColumn(name="rendezvenyallapot_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $rendezvenyallapot;
