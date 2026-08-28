@@ -3,11 +3,18 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
+use Entities\Emailtemplate;
 use Entities\Idopont;
+use Entities\IdopontDok;
+use Entities\Idopontallapot;
 use Entities\Idopontfoglalas;
 use Entities\Idoponttema;
 use Entities\Jogahelyszin;
+use Entities\Jogaterem;
+use Entities\Partner;
+use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
+use Services\PartnerWriterService;
 
 class idopontController extends \mkwhelpers\MattableController
 {
@@ -39,6 +46,10 @@ class idopontController extends \mkwhelpers\MattableController
         $x['idoponttemanev'] = $t->getIdoponttemaNev();
         $x['jogahelyszinnev'] = $t->getJogahelyszinNev();
         $x['jogahelyszincim'] = $t->getJogahelyszinCim();
+        $x['jogateremnev'] = $t->getJogateremNev();
+        $x['termeknev'] = $t->getTermekNev();
+        $x['idopontallapotnev'] = $t->getIdopontallapotNev();
+        $x['teljesnev'] = $t->getTeljesNev();
         $x['kezdet'] = $t->getKezdetStr();
         $x['veg'] = $t->getVegStr();
         $x['kezdetinput'] = $t->getKezdetInputStr();
@@ -47,6 +58,11 @@ class idopontController extends \mkwhelpers\MattableController
         $x['vegido'] = $t->getVegidoStr();
         $x['napnev'] = $t->getNapNev();
         $x['idotartam'] = $t->getIdotartamStr();
+        $x['earlybirdvege'] = $t->getEarlybirdvegeStr();
+        // az ügyfél weboldalaiba beágyazott snippet – a fájlnév és a paraméterek nem változhatnak
+        $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue(
+                'main.theme'
+            ) . '/rendezvenyregloader.js?r=' . $t->getUid() . '&i=' . $t->getId() . '\'></script>';
         // ismétlődőnél a hely naponként telik be, egyetlen összesített szám félrevezető lenne
         if (!$t->isIsmetlodo() && $t->getId()) {
             $x['foglalasdb'] = $t->getBookedCount();
@@ -54,6 +70,15 @@ class idopontController extends \mkwhelpers\MattableController
         } else {
             $x['foglalasdb'] = 0;
             $x['szabadhely'] = $t->getMaxresztvevo();
+        }
+
+        if ($forKarb) {
+            $dokCtrl = new idopontdokController();
+            $dok = [];
+            foreach ($t->getIdopontDokok() as $dokje) {
+                $dok[] = $dokCtrl->loadVars($dokje);
+            }
+            $x['dokok'] = $dok;
         }
         return $x;
     }
@@ -63,12 +88,9 @@ class idopontController extends \mkwhelpers\MattableController
      *
      * @return \Entities\Idopont
      */
-    protected function setFields($obj)
+    protected function setFields($obj, $oper = null)
     {
         $obj = $this->setEntityFieldsFromRequest($obj);
-        if ($obj->getMaxresztvevo() < 1) {
-            $obj->setMaxresztvevo(1);
-        }
         // a két ág kizárja egymást: a nem használt oldal mezőit ürítjük
         if ($this->params->getBoolRequestParam('ismetlodo')) {
             $obj->setKezdet(null);
@@ -80,9 +102,36 @@ class idopontController extends \mkwhelpers\MattableController
             $obj->setKezdetido(null);
             $obj->setVegido(null);
         }
+        $obj->setEarlybirdvege($this->params->getStringRequestParam('earlybirdvege'));
         $obj->setDolgozo($this->getRepo(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo')));
         $obj->setIdoponttema($this->getRepo(Idoponttema::class)->find($this->params->getIntRequestParam('idoponttema')));
         $obj->setJogahelyszin($this->getRepo(Jogahelyszin::class)->find($this->params->getIntRequestParam('jogahelyszin')));
+        $obj->setJogaterem($this->getRepo(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem')));
+        $obj->setIdopontallapot($this->getRepo(Idopontallapot::class)->find($this->params->getIntRequestParam('idopontallapot')));
+        $obj->setTermek($this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termek')));
+
+        $dokids = $this->params->getArrayRequestParam('dokid');
+        foreach ($dokids as $dokid) {
+            if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') === '') &&
+                ($this->params->getStringRequestParam('dokpath_' . $dokid, '') === '')) {
+                continue;
+            }
+            $dokoper = $this->params->getStringRequestParam('dokoper_' . $dokid);
+            if ($dokoper === 'add') {
+                $dok = new IdopontDok();
+                $obj->addIdopontDok($dok);
+            } elseif ($dokoper === 'edit') {
+                $dok = $this->getRepo(IdopontDok::class)->find($dokid);
+            } else {
+                continue;
+            }
+            if ($dok) {
+                $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
+                $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
+                $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
+                $this->getEm()->persist($dok);
+            }
+        }
         return $obj;
     }
 
@@ -99,12 +148,19 @@ class idopontController extends \mkwhelpers\MattableController
         $view = $this->createView('idopontlista_tbody.tpl');
 
         $filter = new FilterDescriptor();
+        $f = $this->params->getStringRequestParam('tipusfilter');
+        if ($f) {
+            $filter->addFilter('tipus', '=', $f);
+        }
+        if (!is_null($this->params->getRequestParam('nevfilter', null))) {
+            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+        }
         // a dátumszűrő csak az egyszeri időpontokra értelmezhető, az ismétlődők mindig bent maradnak
-        $f = $this->params->getStringRequestParam('datumtolfilter');
+        $f = $this->params->getStringRequestParam('datumtolfilter') ?: $this->params->getStringRequestParam('tol');
         if ($f) {
             $filter->addFilter('kezdet', '>=', new \DateTime(\mkw\store::convDate($f) . ' 00:00:00'));
         }
-        $f = $this->params->getStringRequestParam('datumigfilter');
+        $f = $this->params->getStringRequestParam('datumigfilter') ?: $this->params->getStringRequestParam('ig');
         if ($f) {
             $filter->addFilter('kezdet', '<=', new \DateTime(\mkw\store::convDate($f) . ' 23:59:59'));
         }
@@ -120,6 +176,12 @@ class idopontController extends \mkwhelpers\MattableController
         }
         if (!is_null($this->params->getRequestParam('jogahelyszinfilter', null))) {
             $filter->addFilter('jogahelyszin', '=', $this->params->getIntRequestParam('jogahelyszinfilter'));
+        }
+        if (!is_null($this->params->getRequestParam('jogateremfilter', null))) {
+            $filter->addFilter('jogaterem', '=', $this->params->getIntRequestParam('jogateremfilter'));
+        }
+        if (!is_null($this->params->getRequestParam('idopontallapotfilter', null))) {
+            $filter->addFilter('idopontallapot', '=', $this->params->getIntRequestParam('idopontallapotfilter'));
         }
         $f = $this->params->getNumRequestParam('inaktivfilter', 9);
         if ($f != 9) {
@@ -144,10 +206,15 @@ class idopontController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('Időpontok'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
-        $view->setVar('dolgozolist', (new dolgozoController())->getSelectList());
-        $view->setVar('idoponttemalist', (new idoponttemaController())->getSelectList());
-        $view->setVar('jogahelyszinlist', (new jogahelyszinController())->getSelectList());
+        $this->setTorzsListak($view);
         $view->printTemplateResult();
+    }
+
+    public function viewselect()
+    {
+        $view = $this->createView('idopontlista.tpl');
+        $view->setVar('pagetitle', t('Időpontok'));
+        $view->printTemplateResult(false);
     }
 
     protected function _getkarb($tplname)
@@ -155,6 +222,7 @@ class idopontController extends \mkwhelpers\MattableController
         $view = $this->createView($tplname);
         $view->setVar('pagetitle', t('Időpont'));
         $view->setVar('oper', $this->params->getRequestParam('oper', ''));
+        $view->setVar('formaction', '/admin/idopont/save');
 
         /** @var \Entities\Idopont $idopont */
         $idopont = $this->getRepo()->findWithJoins($this->params->getRequestParam('id', 0));
@@ -183,9 +251,22 @@ class idopontController extends \mkwhelpers\MattableController
                 $idopont ? $idopont->getJogahelyszinNev() : ''
             )
         );
+        $view->setVar('jogateremlist', (new jogateremController())->getSelectList($idopont?->getJogaterem()?->getId()));
+        $view->setVar('idopontallapotlist', (new idopontallapotController())->getSelectList($idopont?->getIdopontallapot()?->getId()));
+        $view->setVar('termeklist', (new termekController())->getSelectList($idopont?->getTermek()?->getId()));
         $view->setVar('naplist', \mkw\store::getDaynameSelectList($idopont ? $idopont->getNap() : 0));
 
         return $view->getTemplateResult();
+    }
+
+    private function setTorzsListak($view)
+    {
+        $view->setVar('dolgozolist', (new dolgozoController())->getSelectList());
+        $view->setVar('idoponttemalist', (new idoponttemaController())->getSelectList());
+        $view->setVar('jogahelyszinlist', (new jogahelyszinController())->getSelectList());
+        $view->setVar('jogateremlist', (new jogateremController())->getSelectList());
+        $view->setVar('idopontallapotlist', (new idopontallapotController())->getSelectList());
+        $view->setVar('termeklist', (new termekController())->getSelectList(null));
     }
 
     /**
@@ -207,7 +288,7 @@ class idopontController extends \mkwhelpers\MattableController
     }
 
     /**
-     * Az admin foglalás-felvitel időpont választója; a nap/dátum ellenőrzéséhez az ismétlődés
+     * Az admin jelentkezés-felvitel időpont választója; a nap/dátum ellenőrzéséhez az ismétlődés
      * adatait is visszaadja.
      */
     public function getSelectList($selid = null, $csakaktiv = true)
@@ -216,16 +297,17 @@ class idopontController extends \mkwhelpers\MattableController
         if ($csakaktiv) {
             $filter->addFilter('inaktiv', '=', false);
         }
-        $rec = $this->getRepo()->getWithJoins($filter, ['ismetlodo' => 'ASC', 'kezdet' => 'ASC', 'nap' => 'ASC', 'kezdetido' => 'ASC']);
+        $rec = $this->getRepo()->getWithJoins($filter, ['ismetlodo' => 'ASC', 'kezdet' => 'DESC', 'nap' => 'ASC', 'kezdetido' => 'ASC']);
         $res = [];
         /** @var \Entities\Idopont $sor */
         foreach ($rec as $sor) {
             $mikor = $sor->isIsmetlodo()
                 ? t('minden') . ' ' . $sor->getNapNev() . ' ' . $sor->getIdotartamStr()
                 : $sor->getDatumStr() . ' ' . $sor->getIdotartamStr();
+            $megnevezes = $sor->getNev() !== '' ? $sor->getNev() : $sor->getIdoponttemaNev();
             $res[] = [
                 'id' => $sor->getId(),
-                'caption' => trim($mikor . ' – ' . $sor->getIdoponttemaNev() . ' (' . $sor->getDolgozoNev() . ')'),
+                'caption' => trim($mikor . ' – ' . $megnevezes . ' (' . $sor->getDolgozoNev() . ')'),
                 'selected' => ($sor->getId() == $selid),
                 'ismetlodo' => $sor->isIsmetlodo() ? 1 : 0,
                 'nap' => $sor->getNap(),
@@ -247,6 +329,33 @@ class idopontController extends \mkwhelpers\MattableController
                     break;
                 case 'onlinevalaszthato':
                     $obj->setOnlinevalaszthato($kibe);
+                    break;
+                case 'todonaptar':
+                    $obj->setTodonaptar($kibe);
+                    break;
+                case 'todowebposzt':
+                    $obj->setTodowebposzt($kibe);
+                    break;
+                case 'todowebslider':
+                    $obj->setTodowebslider($kibe);
+                    break;
+                case 'todourlap':
+                    $obj->setTodourlap($kibe);
+                    break;
+                case 'todofbevent':
+                    $obj->setTodofbevent($kibe);
+                    break;
+                case 'todofbhirdetes':
+                    $obj->setTodofbhirdetes($kibe);
+                    break;
+                case 'todoplakat':
+                    $obj->setTodoplakat($kibe);
+                    break;
+                case 'todofotobe':
+                    $obj->setTodofotobe($kibe);
+                    break;
+                case 'todoleirasbe':
+                    $obj->setTodoleirasbe($kibe);
                     break;
             }
             $this->getEm()->persist($obj);
@@ -301,7 +410,8 @@ class idopontController extends \mkwhelpers\MattableController
             $datumstr = $datum->format(\mkw\store::$SQLDateFormat);
             $nap = $datum->format('N');
             $foglalasdb = $foglalasdbk[$item->getId()][$datumstr] ?? 0;
-            $szabadhely = max(0, $item->getMaxresztvevo() - $foglalasdb);
+            $korlatlan = !$item->hasLetszamkorlat();
+            $szabadhely = $korlatlan ? null : max(0, (int)$item->getMaxresztvevo() - $foglalasdb);
             if (!array_key_exists($nap, $idopontok)) {
                 $idopontok[$nap] = [
                     'napnev' => \mkw\store::getDayname($nap),
@@ -327,7 +437,7 @@ class idopontController extends \mkwhelpers\MattableController
                 'maxresztvevo' => $item->getMaxresztvevo(),
                 'foglalasdb' => $foglalasdb,
                 'szabadhely' => $szabadhely,
-                'megvanhely' => $szabadhely > 0
+                'megvanhely' => $korlatlan || $szabadhely > 0
             ];
         }
         ksort($idopontok);
@@ -349,12 +459,15 @@ class idopontController extends \mkwhelpers\MattableController
 
     /**
      * Az ismétlődők minden hétre érvényesek, ezért csak az egyszerieket szűrjük a hét dátumaira.
+     * A heti foglalónézet csak az időpontokat mutatja: a rendezvények a saját regisztrációs
+     * űrlapjukon és az órarend exportban jelennek meg.
      *
      * @return array
      */
     private function getIdopontokForWeek($ismetlodo, $startdatum, $vegdatum, $tanarkod, $temakod)
     {
         $filter = new FilterDescriptor();
+        $filter->addFilter('tipus', '=', Idopont::TIPUS_IDOPONT);
         $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter('ismetlodo', '=', $ismetlodo);
         if (!$ismetlodo) {
@@ -368,6 +481,213 @@ class idopontController extends \mkwhelpers\MattableController
             $filter->addFilter('idoponttema', '=', $temakod);
         }
         return $this->getRepo()->getWithJoins($filter, $ismetlodo ? ['nap' => 'ASC', 'kezdetido' => 'ASC'] : ['kezdet' => 'ASC']);
+    }
+
+    /**
+     * A publikus regisztrációs űrlap. Az útvonal (/rendezveny/reg), a sablonnév és a mezőnevek
+     * változatlanok: ügyfél weboldalakba ágyazott iframe hívja.
+     */
+    public function regView()
+    {
+        $idopont = $this->findByUid($this->params->getStringRequestParam('r'));
+        if (!$idopont) {
+            return;
+        }
+        $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
+        $v->setVar('uid', $idopont->getUid());
+        $v->setVar('kellszamlazasiadat', $idopont->getKellszamlazasiadat());
+        $v->setVar('rendezvenynev', $idopont->getTeljesNev());
+        $v->setVar('szabadhelykovetes', $idopont->hasLetszamkorlat());
+        $v->setVar('varolistavan', $idopont->isVarolistavan());
+        $v->setVar('szabadhelyszam', $idopont->getFreePlaces() ?? 0);
+        $v->setVar('csomag', $idopont->isCsomag());
+        echo $v->getTemplateResult();
+    }
+
+    public function regSave()
+    {
+        $kellszamlazasiadat = $this->params->getBoolRequestParam('kellszamlazasiadat', false);
+        $idopont = $this->findByUid($this->params->getStringRequestParam('r'));
+        if (!$idopont) {
+            return;
+        }
+        $sendemails = false;
+        $email = $this->params->getStringRequestParam('email');
+
+        /** @var Idopontfoglalas $jel */
+        $jel = $this->getRepo(Idopontfoglalas::class)->findOneBy([
+            'idopont' => $idopont,
+            'partneremail' => $email
+        ]);
+
+        $szabadhely = $idopont->getFreePlaces();
+
+        if (!$jel) {
+            $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
+            if (!$partner) {
+                $partner = new Partner();
+                $partner->setVatstatus(2);
+            }
+            (new PartnerWriterService($partner, $this->params))->nev()->kapcsolat()->munkahely()->hirlevel()->szamlacim();
+
+            if (!$kellszamlazasiadat) {
+                $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
+            }
+            $this->getEm()->persist($partner);
+
+            $jel = new Idopontfoglalas();
+            $jel->setPartner($partner);
+            $jel->setIdopont($idopont);
+            $jel->setDatum($idopont->getKezdet() ?: '');
+            $jel->setEmailkoszono(true);
+            $jel->setVarolistas($idopont->isVarolistavan() && $szabadhely !== null && $szabadhely < 1);
+            $this->getEm()->persist($jel);
+
+            $this->getEm()->flush();
+            $sendemails = true;
+        } elseif (!$jel->getLemondva() && $jel->isVarolistas() && ($szabadhely === null || $szabadhely > 0)) {
+            $jel->setVarolistas(false);
+            $this->getEm()->persist($jel);
+            $this->getEm()->flush();
+            $sendemails = true;
+        }
+
+        if ($sendemails) {
+            $this->sendRegEmail($jel, \mkw\consts::RendezvenySablonRegKoszono, $jel->getPartnerEmail(), 'rendezvenyregkoszonoemail.html');
+            $this->sendRegEmail(
+                $jel,
+                \mkw\consts::RendezvenySablonRegErtesito,
+                \mkw\store::getParameter(\mkw\consts::RendezvenyRegErtesitoEmail),
+                'rendezvenyregertesitoemail.html'
+            );
+        }
+
+        $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
+        $v->setVar('kellszamlazasiadat', $kellszamlazasiadat);
+        $v->setVar('jelentkezes', $jel->toLista());
+        echo $v->getTemplateResult();
+    }
+
+    public function regLemond()
+    {
+        $idopont = $this->findByUid($this->params->getStringRequestParam('rid'));
+        /** @var Idopontfoglalas $jel */
+        $jel = $idopont
+            ? $this->getRepo(Idopontfoglalas::class)->findOneBy([
+                'idopont' => $idopont,
+                'partneremail' => $this->params->getStringRequestParam('email')
+            ])
+            : null;
+        if (!$jel) {
+            if ($idopont) {
+                header(
+                    'Location: ' . \mkw\store::getRouter()->generate(
+                        'showrendezvenyreg',
+                        true,
+                        [],
+                        ['r' => $idopont->getUid(), 'i' => $idopont->getId()]
+                    )
+                );
+            }
+            return;
+        }
+
+        $jel->setLemondva(true);
+        $jel->setVarolistas(false);
+        $jel->setLemondasdatum();
+        $this->getEm()->persist($jel);
+        $this->getEm()->flush();
+
+        $this->sendRegEmail($jel, \mkw\consts::RendezvenySablonRegKoszono, $jel->getPartnerEmail(), 'rendezvenyregkoszonoemail.html', true);
+        $this->sendRegEmail(
+            $jel,
+            \mkw\consts::RendezvenySablonRegErtesito,
+            \mkw\store::getParameter(\mkw\consts::RendezvenyRegErtesitoEmail),
+            'rendezvenyregertesitoemail.html',
+            true
+        );
+
+        // a felszabadult helyre a várólistások értesítést kapnak
+        $ifc = new idopontfoglalasController();
+        $filter = new FilterDescriptor();
+        $filter->addFilter('idopont', '=', $idopont);
+        $filter->addFilter('lemondva', '=', false);
+        $filter->addFilter('varolistas', '=', true);
+        foreach ($this->getRepo(Idopontfoglalas::class)->getAll($filter) as $varolistas) {
+            $ifc->sendFelszabadultHelyEmail($varolistas->getId());
+        }
+
+        $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
+        $v->setVar('lemondas', true);
+        $v->setVar('jelentkezes', $jel->toLista());
+        echo $v->getTemplateResult();
+    }
+
+    public function sendKezdesEmail()
+    {
+        $ret = ['msg' => at('A kezdés emlékeztető levelek kiküldve.')];
+        $idopont = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($idopont) {
+            $ifc = new idopontfoglalasController();
+            $filter = new FilterDescriptor();
+            $filter->addFilter('idopont', '=', $idopont);
+            $filter->addFilter('lemondva', '=', false);
+            $filter->addFilter('varolistas', '=', false);
+            foreach ($this->getRepo(Idopontfoglalas::class)->getAll($filter) as $jel) {
+                $ifc->sendKezdesEmail($jel->getId());
+            }
+        }
+        echo json_encode($ret);
+    }
+
+    /**
+     * Üres uid-re nem keresünk: a beolvasztott sorok uid-ja generált, de egy üres `r` paraméter
+     * véletlenül eltalálhatna egy sort.
+     *
+     * @return \Entities\Idopont|null
+     */
+    private function findByUid($uid)
+    {
+        $uid = trim((string)$uid);
+        return $uid === '' ? null : $this->getRepo()->findOneBy(['uid' => $uid]);
+    }
+
+    /**
+     * A regisztrációs és lemondó levelek. A Smarty változó neve `jelentkezes` marad: a DB-ben tárolt,
+     * ügyfél által szerkesztett sablonok erre hivatkoznak.
+     */
+    private function sendRegEmail($jel, $parameter, $cimzett, $logfile, $lemondas = false)
+    {
+        $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter($parameter));
+        if (!$emailtpl || !$cimzett) {
+            return;
+        }
+        $tpldata = $jel->toLista();
+        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+        $body = \mkw\store::getTemplateFactory()->createMainView(
+            'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+        );
+        foreach ([$subject, $body] as $v) {
+            $v->setVar('jelentkezes', $tpldata);
+            $v->setVar('foglalas', $tpldata);
+            if ($lemondas) {
+                $v->setVar('lemondas', true);
+            }
+        }
+        $helyszin = $jel->getIdopont()?->getJogahelyszin();
+        if ($helyszin) {
+            $body->setVar('helyszin', $helyszin->getEmailsablon());
+        }
+        if (\mkw\store::getConfigValue('developer')) {
+            \mkw\store::writelog($subject->getTemplateResult(), $logfile);
+            \mkw\store::writelog($body->getTemplateResult(), $logfile);
+            return;
+        }
+        $mailer = \mkw\store::getMailer();
+        $mailer->addTo($cimzett);
+        $mailer->setSubject($subject->getTemplateResult());
+        $mailer->setMessage($body->getTemplateResult());
+        $mailer->send();
     }
 
 }

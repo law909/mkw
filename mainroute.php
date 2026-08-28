@@ -128,9 +128,11 @@ $router->map('GET', '/termekertekeles', 'termekertekelesController#showErtekeles
 $router->map('POST', '/termekertekeles/save', 'termekertekelesController#pubSave', 'pubsaveertekeles');
 $router->map('GET', '/termekertekeles/koszonjuk', 'termekertekelesController#thanks', 'termekertekeleskoszonjuk');
 
-$router->map('GET', '/rendezveny/reg', 'rendezvenyController#regView', 'showrendezvenyreg');
-$router->map('POST', '/rendezveny/reg/save', 'rendezvenyController#regSave', 'saverendezvenyreg');
-$router->map('GET', '/rendezveny/lemond', 'rendezvenyController#regLemond', 'lemondrendezvenyreg');
+// az útvonalak, a nevük és a hozzájuk tartozó sablonok NEM változhatnak: ügyfél weboldalakba
+// ágyazott iframe hívja őket a js/main/{theme}/rendezvenyregloader.js-en keresztül
+$router->map('GET', '/rendezveny/reg', 'idopontController#regView', 'showrendezvenyreg');
+$router->map('POST', '/rendezveny/reg/save', 'idopontController#regSave', 'saverendezvenyreg');
+$router->map('GET', '/rendezveny/lemond', 'idopontController#regLemond', 'lemondrendezvenyreg');
 
 $router->map('POST', '/kosar/add', 'kosarController#add', 'kosaradd');
 $router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultiadd');

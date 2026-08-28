@@ -9,7 +9,7 @@ use Entities\Jogaoratipus;
 use Entities\Jogaterem;
 use Entities\Orarend;
 use Entities\Orarendhelyettesites;
-use Entities\Rendezveny;
+use Entities\Idopont;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -335,23 +335,25 @@ class orarendController extends \mkwhelpers\MattableController
             $orarend[$item->getNap()]['napdatum'] = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
             $orarend[$item->getNap()]['orak'][] = $orak;
         }
+        // csak a rendezvények kerülnek az órarendbe; a foglalható időpontoknak saját heti nézetük van
         $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('tipus', '=', Idopont::TIPUS_RENDEZVENY);
         $filter->addFilter('orarendbenszerepel', '=', true);
-        $filter->addFilter('ra.orarendbenszerepel', '=', true);
+        $filter->addFilter('idopontallapot.orarendbenszerepel', '=', true);
         if ($helyszinkod) {
-            $filter->addFilter('helyszin', '=', $helyszinkod);
+            $filter->addFilter('jogahelyszin', '=', $helyszinkod);
         }
-        $rec = $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
-        /** @var \Entities\Rendezveny $item */
+        $rec = $this->getRepo(Idopont::class)->getWithJoins($filter, ['kezdet' => 'ASC']);
+        /** @var \Entities\Idopont $item */
         foreach ($rec as $item) {
             $orak = [
                 'id' => $item->getId(),
-                'kezdet' => $item->getKezdoido(),
-                'veg' => '',
+                'kezdet' => $item->getStartTimeStr(),
+                'veg' => $item->getEndTimeStr(),
                 'oranev' => $item->getTeljesNev(),
                 'oraurl' => $item->getUrl(),
-                'tanar' => $item->getTanar()?->getNev(),
-                'tanarurl' => $item->getTanar()?->getUrl(),
+                'tanar' => $item->getDolgozoNev(),
+                'tanarurl' => $item->getDolgozoUrl(),
                 'teremclass' => '',
                 'helyettesito' => '',
                 'helyettesitourl' => '',
@@ -371,7 +373,7 @@ class orarendController extends \mkwhelpers\MattableController
             ];
             if (!array_key_exists($item->getNap(), $orarend)) {
                 $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
-                $orarend[$item->getNap()]['napdatum'] = $item->getKezdodatumStr();
+                $orarend[$item->getNap()]['napdatum'] = $item->getDatumStr();
             }
             $orarend[$item->getNap()]['orak'][] = $orak;
         }

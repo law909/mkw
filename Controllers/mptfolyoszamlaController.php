@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Entities\MPTFolyoszamla;
 use Entities\Partner;
-use Entities\Rendezveny;
 
 class mptfolyoszamlaController extends \mkwhelpers\MattableController
 {

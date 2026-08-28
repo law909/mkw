@@ -225,7 +225,7 @@ class partnermergeController extends \mkwhelpers\MattableController
             $st->executeStatement();
 
             $st = $conn->prepare(
-                'UPDATE rendezvenyjelentkezes SET'
+                'UPDATE idopontfoglalas SET'
                 . ' partner_id=' . $partnerreid
                 . ', partnernev="' . $partnerre->getNev() . '"'
                 . ', partneremail="' . $partnerre->getEmail() . '"'

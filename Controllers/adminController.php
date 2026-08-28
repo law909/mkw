@@ -78,8 +78,6 @@ class adminController extends mkwhelpers\Controller
                 $view->setVar('jogateremlist', $terem->getSelectList());
                 $ot = new jogaoratipusController();
                 $view->setVar('jogaoratipuslist', $ot->getSelectList());
-                $rendezveny = new rendezvenyController();
-                $view->setVar('rendezvenylist', $rendezveny->getSelectList());
                 $view->setVar('datumstr', date(\mkw\store::$DateFormat));
 
                 $view->setVar('keltstr', date(\mkw\store::$DateFormat));

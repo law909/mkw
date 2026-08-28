@@ -2,14 +2,14 @@
 
 namespace Controllers;
 
-use Entities\RendezvenyDok;
+use Entities\IdopontDok;
 
-class rendezvenydokController extends \mkwhelpers\MattableController
+class idopontdokController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
-        $this->setEntityName(RendezvenyDok::class);
+        $this->setEntityName(IdopontDok::class);
 //		$this->setKarbFormTplName('?howto?karbform.tpl');
 //		$this->setKarbTplName('?howto?karb.tpl');
 //		$this->setListBodyRowTplName('?howto?lista_tbody_tr.tpl');
@@ -21,7 +21,7 @@ class rendezvenydokController extends \mkwhelpers\MattableController
     {
         $x = [];
         if (!$t) {
-            $t = new \Entities\RendezvenyDok();
+            $t = new \Entities\IdopontDok();
             $this->getEm()->detach($t);
             $x['oper'] = 'add';
             $x['id'] = \mkw\store::createUID();
@@ -50,9 +50,9 @@ class rendezvenydokController extends \mkwhelpers\MattableController
         echo $view->getTemplateResult();
     }
 
-    public function getSelectList($rendezveny, $selid)
+    public function getSelectList($idopont, $selid)
     {
-        $dokok = $this->getRepo()->getByRendezveny($rendezveny);
+        $dokok = $this->getRepo()->getByIdopont($idopont);
         $doklista = [];
         foreach ($dokok as $dok) {
             $doklista[] = [

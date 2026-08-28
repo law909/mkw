@@ -513,7 +513,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
     public function fizet()
     {
-        /** @var \Entities\RendezvenyJelentkezes $r */
+        /** @var \Entities\JogaReszvetel $r */
         $r = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         /** @var \Entities\Fizmod $fizmod */
         $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
@@ -566,7 +566,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
                 $bt->setJogcim($jogcim);
                 $bt->setBrutto($osszeg);
-                $bt->setSzoveg($r->getRendezveny()?->getTeljesNev());
+                // a bizonylattétel szövege az óra típusa; korábban egy nem létező getRendezveny()-t hívott
+                $bt->setSzoveg($r->getJogaoratipus()?->getNev());
                 $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
 
                 $this->getEm()->persist($biz);

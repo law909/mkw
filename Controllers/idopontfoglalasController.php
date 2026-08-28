@@ -58,7 +58,27 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $x['idoponttemanev'] = $idopont ? $idopont->getIdoponttemaNev() : '';
         $x['idopontdolgozonev'] = $idopont ? $idopont->getDolgozoNev() : '';
         $x['idoponthelyszinnev'] = $idopont ? $idopont->getJogahelyszinNev() : '';
+        $x['idopontnev'] = $idopont ? $idopont->getNev() : '';
+        $x['idopontteljesnev'] = $idopont ? $idopont->getTeljesNev() : '';
+        $x['idopontdatum'] = $idopont ? $idopont->getDatumStr() : '';
+        $x['idoponttipus'] = $idopont ? $idopont->getTipus() : '';
+        $x['partnercim'] = $t->getPartner()?->getCim();
+        $x['partnervezeteknev'] = $t->getPartner()?->getVezeteknev();
+        $x['partnerkeresztnev'] = $t->getPartner()?->getKeresztnev();
+        $x['partnerirszam'] = $t->getPartner()?->getIrszam();
+        $x['partnervaros'] = $t->getPartner()?->getVaros();
+        $x['partnerutca'] = $t->getPartner()?->getUtca();
+        $x['partnerhazszam'] = $t->getPartner()?->getHazszam();
         $x['emailemlekeztetodatum'] = $t->getEmailemlekeztetodatumStr();
+        $x['emaildijbekerodatum'] = $t->getEmaildijbekerodatumStr();
+        $x['visszautalasdatum'] = $t->getVisszautalasdatumStr();
+        $x['visszautalaspenztarnev'] = $t->getVisszautalaspenztar()?->getNev();
+        $x['visszautalasbankszamlaszam'] = $t->getVisszautalasbankszamla()?->getSzamlaszam();
+        $x['visszautalasfizmodnev'] = $t->getVisszautalasfizmod()?->getNev();
+        $x['visszautalaspenztarbizonylatszamlink'] =
+            $this->getBizonylatUrl($t->getVisszautalaspenztarbizonylatszam(), Penztarbizonylatfej::class);
+        $x['visszautalasbankbizonylatszamlink'] =
+            $this->getBizonylatUrl($t->getVisszautalasbankbizonylatszam(), Bankbizonylatfej::class);
         $x['lemondasdatum'] = $t->getLemondasdatumStr();
         $x['fizetesdatum'] = $t->getFizetesdatumStr();
         $x['fizmodnev'] = $t->getFizmodNev();
@@ -94,7 +114,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     protected function setVars($view)
     {
         $view->setVar('emlekeztetosablonvan', (bool)\mkw\store::getParameter(\mkw\consts::IdopontfoglalasSablonEmlekezteto));
-        $view->setVar('szamlazhato', (bool)\mkw\store::getParameter(\mkw\consts::IdopontfoglalasTermek));
+        // a rendezvény eredetű soroknál az időpont saját terméke is számlázhatóvá teszi a jelentkezést
+        $view->setVar('szamlazhato', true);
+        $view->setVar('dijbekerosablonvan', (bool)\mkw\store::getParameter(\mkw\consts::RendezvenySablonDijbekero));
+        $view->setVar('kezdessablonvan', (bool)\mkw\store::getParameter(\mkw\consts::RendezvenySablonKezdesEmlekezteto));
     }
 
     /**
@@ -109,7 +132,31 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     protected function setFields($obj, $oper = null)
     {
         $obj->setOnline($this->params->getBoolRequestParam('online'));
+        $obj->setVarolistas($this->params->getBoolRequestParam('varolistas'));
+        $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+        $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
+        if ($fizmod) {
+            $obj->setFizmod($fizmod);
+        }
+
         if ($oper !== $this->addOperation) {
+            // rendezvény eredetű jelentkezésnél az időpont/partner/dátum hármas eddig is szerkeszthető
+            // volt, időpont foglalásnál viszont az a foglalás azonossága
+            if ($obj->getIdopont()?->isRendezveny()) {
+                $ujidopont = $this->getRepo(Idopont::class)->find($this->params->getIntRequestParam('idopont', 0));
+                if ($ujidopont) {
+                    $obj->setIdopont($ujidopont);
+                }
+                $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner', 0));
+                if ($partner) {
+                    $obj->setPartner($partner);
+                }
+                $datum = $this->params->getStringRequestParam('datum');
+                if ($datum !== '') {
+                    $obj->setDatum($datum);
+                }
+                return $obj;
+            }
             if (!$obj->getIdopont() || !$obj->getPartner()) {
                 throw new \RuntimeException(t('A foglalás hiányos.'));
             }
@@ -241,13 +288,30 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view = $this->createView('idopontfoglalaslista_tbody.tpl');
 
         $filter = new FilterDescriptor();
+        $f = $this->params->getIntRequestParam('idfilter');
+        if ($f) {
+            $filter->addFilter('id', '=', $f);
+        }
+        // a jelentkezéskori pillanatképre szűrünk: a partnertörzs neve azóta változhatott
         $f = $this->params->getStringRequestParam('partnernevfilter');
         if ($f) {
-            $filter->addFilter('partner.nev', 'LIKE', '%' . $f . '%');
+            $filter->addFilter('partnernev', 'LIKE', '%' . $f . '%');
         }
         $f = $this->params->getStringRequestParam('partneremailfilter');
         if ($f) {
-            $filter->addFilter('partner.email', 'LIKE', '%' . $f . '%');
+            $filter->addFilter('partneremail', 'LIKE', '%' . $f . '%');
+        }
+        $f = $this->params->getStringRequestParam('tipusfilter');
+        if ($f) {
+            $filter->addFilter('idopont.tipus', '=', $f);
+        }
+        $f = $this->params->getIntRequestParam('fizmodfilter');
+        if ($f) {
+            $filter->addFilter('fizmod', '=', $f);
+        }
+        $f = $this->params->getIntRequestParam('varolistasfilter', 9);
+        if ($f !== 9) {
+            $filter->addFilter('varolistas', '=', $f);
         }
         $f = $this->params->getStringRequestParam('datumtolfilter');
         if ($f) {
@@ -294,23 +358,46 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('jogcimlist', (new jogcimController())->getSelectList());
         $view->setVar('penztarlist', (new penztarController())->getSelectList());
         $view->setVar('bankszamlalist', (new bankszamlaController())->getSelectList());
+        if (!\mkw\store::isPartnerAutocomplete()) {
+            $view->setVar('partnerlist', (new partnerController())->getSelectList());
+        }
+        $this->setVars($view);
         $view->printTemplateResult();
+    }
+
+    public function viewselect()
+    {
+        $view = $this->createView('idopontfoglalaslista.tpl');
+        $view->setVar('pagetitle', t('Időpont jelentkezések'));
+        $view->setVar('idopontlist', (new idopontController())->getSelectList(null, false));
+        $view->setVar('fizmodlist', (new fizmodController())->getSelectList(null, null, null, false));
+        if (!\mkw\store::isPartnerAutocomplete()) {
+            $view->setVar('partnerlist', (new partnerController())->getSelectList());
+        }
+        $view->printTemplateResult(false);
     }
 
     protected function _getkarb($tplname)
     {
         $view = $this->createView($tplname);
         $oper = $this->params->getRequestParam('oper', '');
-        $view->setVar('pagetitle', t('Időpont foglalás'));
+        $view->setVar('pagetitle', t('Időpont jelentkezés'));
         $view->setVar('oper', $oper);
+        $view->setVar('formaction', '/admin/idopontfoglalas/save');
         /** @var \Entities\Idopontfoglalas $record */
         $record = $this->getRepo()->findWithJoins($this->params->getRequestParam('id', 0));
         $view->setVar('egyed', $this->loadVars($record, true));
+        $view->setVar('fizmodlist', (new fizmodController())->getSelectList($record?->getFizmod()?->getId()));
+        $view->setVar('jogcimlist', (new jogcimController())->getSelectList());
+        // felvitelnél csak az aktív időpontok közül lehet választani, meglévő rendezvény
+        // jelentkezésnél az inaktívak is kellenek, hogy a rekord menthető maradjon
         if ($oper === $this->addOperation) {
             $view->setVar('idopontlist', (new idopontController())->getSelectList());
-            if (!\mkw\store::isPartnerAutocomplete()) {
-                $view->setVar('partnerlist', (new partnerController())->getSelectList());
-            }
+        } else {
+            $view->setVar('idopontlist', (new idopontController())->getSelectList($record?->getIdopontId(), false));
+        }
+        if (!\mkw\store::isPartnerAutocomplete()) {
+            $view->setVar('partnerlist', (new partnerController())->getSelectList($record?->getPartner()?->getId()));
         }
         return $view->getTemplateResult();
     }
@@ -356,6 +443,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $foglalas->setLemondva(true);
         $foglalas->setLemondasdatum($this->params->getStringRequestParam('datum'));
         $foglalas->setLemondasoka($this->params->getStringRequestParam('ok'));
+        $foglalas->setVarolistas(false);
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
 
@@ -363,7 +451,101 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         if ($this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonLemondas, 'idopontfoglalaslemondasemail.html')) {
             $msg .= ' ' . at('A lemondásról levél ment ki.');
         }
+        $this->ertesitVarolistasokat($foglalas->getIdopont());
         echo json_encode(['msg' => $msg]);
+    }
+
+    /**
+     * A felszabadult helyre a várólistások értesítést kapnak – a rendezvény oldalról átvéve.
+     */
+    private function ertesitVarolistasokat($idopont)
+    {
+        if (!$idopont || !$idopont->isVarolistavan()) {
+            return;
+        }
+        $filter = new FilterDescriptor();
+        $filter->addFilter('idopont', '=', $idopont);
+        $filter->addFilter('lemondva', '=', false);
+        $filter->addFilter('varolistas', '=', true);
+        foreach ($this->getRepo()->getAll($filter) as $varolistas) {
+            $this->sendFelszabadultHelyEmail($varolistas->getId());
+        }
+    }
+
+    /**
+     * A lista sorának „Díjbekérő email" gombja.
+     */
+    public function sendDijbekeroEmail()
+    {
+        /** @var \Entities\Idopontfoglalas $jel */
+        $jel = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        if (!$jel) {
+            echo json_encode(['msg' => at('A jelentkezés nem található.')]);
+            return;
+        }
+        if (!$this->sendFoglalasEmail($jel, \mkw\consts::RendezvenySablonDijbekero, 'rendezvenydijbekeroemail.html')) {
+            echo json_encode(['msg' => at('Díjbekérő levél sablon nem található, vagy a jelentkezőnek nincs emailcíme.')]);
+            return;
+        }
+        $jel->setEmaildijbekero(true);
+        $jel->setEmaildijbekerodatum('');
+        $this->getEm()->persist($jel);
+        $this->getEm()->flush();
+        echo json_encode(['msg' => at('A díjbekérő levél kiküldve.')]);
+    }
+
+    /**
+     * Kezdés emlékeztető. Az időpont képernyő tömegesen is hívja, ezért van id paramétere.
+     */
+    public function sendKezdesEmail($id = null)
+    {
+        $kellecho = !$id;
+        $id = $id ?: $this->params->getIntRequestParam('id');
+        /** @var \Entities\Idopontfoglalas $jel */
+        $jel = $this->getRepo()->findWithJoins($id);
+        $ret = ['msg' => at('A kezdés emlékeztető levél kiküldve.')];
+        if (!$jel) {
+            $ret['msg'] = at('A jelentkezés nem található.');
+        } elseif (!$this->sendFoglalasEmail($jel, \mkw\consts::RendezvenySablonKezdesEmlekezteto, 'rendezvenykezdesemail.html')) {
+            $ret['msg'] = at('Kezdés emlékeztető levél sablon nem található.');
+        } else {
+            $jel->setEmailemlekezteto(true);
+            $jel->setEmailemlekeztetodatum('');
+            $this->getEm()->persist($jel);
+            $this->getEm()->flush();
+        }
+        if ($kellecho) {
+            echo json_encode($ret);
+        }
+    }
+
+    public function sendFelszabadultHelyEmail($id = null)
+    {
+        $kellecho = !$id;
+        $id = $id ?: $this->params->getIntRequestParam('id');
+        /** @var \Entities\Idopontfoglalas $jel */
+        $jel = $this->getRepo()->findWithJoins($id);
+        $ret = ['msg' => at('A felszabadult helyről szóló levél kiküldve.')];
+        if (!$jel) {
+            $ret['msg'] = at('A jelentkezés nem található.');
+        } elseif (!$this->sendFoglalasEmail(
+            $jel,
+            \mkw\consts::RendezvenySablonFelszabadultHelyErtesito,
+            'rendezvenyfelszabadulthelyemail.html'
+        )) {
+            $ret['msg'] = at('Felszabadult hely értesítő levél sablon nem található.');
+        }
+        if ($kellecho) {
+            echo json_encode($ret);
+        }
+    }
+
+    /**
+     * A lemondott, kifizetett jelentkezés visszautalása – a rendezvény oldalon is csonk volt.
+     */
+    public function visszautal()
+    {
+        echo json_encode(['result' => 'error', 'msg' => at('A visszautalás még nincs megvalósítva.')]);
     }
 
     /**
@@ -395,7 +577,8 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A kifizető doboz ezzel tölti fel az összeget: az alkalom ára.
+     * A kifizető doboz ezzel tölti fel az összeget: az alkalom (early bird szerinti) ára,
+     * ár híján a hozzárendelt termék bruttó ára a partner árkategóriájával.
      */
     public function getar()
     {
@@ -405,7 +588,18 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             echo json_encode(['result' => 'error', 'msg' => at('A foglalás nem található.')]);
             return;
         }
-        echo json_encode(['result' => 'ok', 'price' => $foglalas->getIdopont()?->getAr() ?: 0]);
+        $ar = $foglalas->getErvenyesAr();
+        if ($ar) {
+            echo json_encode(['result' => 'ok', 'price' => $ar]);
+            return;
+        }
+        $termek = $foglalas->getIdopont()?->getTermek();
+        $partner = $foglalas->getPartner();
+        if ($termek && $partner) {
+            echo json_encode(['result' => 'ok', 'price' => $termek->getBruttoAr(null, $partner)]);
+            return;
+        }
+        echo json_encode(['result' => 'ok', 'price' => 0]);
     }
 
     /**
@@ -554,10 +748,12 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             echo json_encode(['result' => 'error', 'msg' => at('A foglalás már ki van számlázva.')]);
             return;
         }
+        // a rendezvény eredetű időpontnak saját terméke van; ennek híján a beállításbeli termék
         /** @var \Entities\Termek $termek */
-        $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::IdopontfoglalasTermek));
+        $termek = $foglalas->getIdopont()?->getTermek()
+            ?: $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::IdopontfoglalasTermek));
         if (!$termek) {
-            echo json_encode(['result' => 'error', 'msg' => at('Nincs beállítva az időpont foglalás termék a beállításokban.')]);
+            echo json_encode(['result' => 'error', 'msg' => at('Nincs termék az időponton, és nincs beállítva időpont foglalás termék sem.')]);
             return;
         }
         if (!$biztipus || !$kelt || !$teljesites || !$osszeg) {
@@ -761,11 +957,18 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         }
         $tpldata = $foglalas->toLista();
         $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-        $subject->setVar('foglalas', $tpldata);
         $body = \mkw\store::getTemplateFactory()->createMainView(
             'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
         );
-        $body->setVar('foglalas', $tpldata);
+        foreach ([$subject, $body] as $v) {
+            $v->setVar('foglalas', $tpldata);
+            // a rendezvény sablonok ezen a néven hivatkoznak ugyanerre
+            $v->setVar('jelentkezes', $tpldata);
+        }
+        $helyszin = $foglalas->getIdopont()?->getJogahelyszin();
+        if ($helyszin) {
+            $body->setVar('helyszin', $helyszin->getEmailsablon());
+        }
         if (\mkw\store::getConfigValue('developer')) {
             \mkw\store::writelog($subject->getTemplateResult(), $logfile);
             \mkw\store::writelog($body->getTemplateResult(), $logfile);
