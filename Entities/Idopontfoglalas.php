@@ -3,14 +3,19 @@
 namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
+ * Egy partner jelentkezése egy meghirdetett alkalomra: a korábbi rendezvény jelentkezés és
+ * időpont foglalás egyesítve.
+ *
+ * Nincs egyedi index az (idopont, partner, datum) hármason: az átvett rendezvény jelentkezések
+ * között van ugyanarra az alkalomra kétszer felvitt partner. A duplikátumszűrés
+ * alkalmazásszinten, az idopontfoglalasController::validateNewBooking()-ban történik.
+ *
  * @ORM\Entity(repositoryClass="Entities\IdopontfoglalasRepository")
  * @ORM\Table(name="idopontfoglalas",
- * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
- * uniqueConstraints={
- *      @ORM\UniqueConstraint(name="idopontfoglalas_uq",columns={"idopont_id","partner_id","datum"})
- * })
+ * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class Idopontfoglalas
 {
@@ -23,21 +28,22 @@ class Idopontfoglalas
 
     /**
      * @ORM\ManyToOne(targetEntity="Idopont", inversedBy="foglalasok")
-     * @ORM\JoinColumn(name="idopont_id",referencedColumnName="id",nullable=false,onDelete="cascade")
+     * @ORM\JoinColumn(name="idopont_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $idopont;
 
     /**
      * @ORM\ManyToOne(targetEntity="Partner")
-     * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",nullable=false,onDelete="restrict")
+     * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $partner;
 
     /** Az alkalom napja: ismétlődő időpontnál ez választja szét a heti alkalmakat. */
-    /** @ORM\Column(type="date",nullable=false) */
+    /** @ORM\Column(type="date",nullable=true) */
     private $datum;
 
-    /** @ORM\Column(type="datetime",nullable=false) */
+    /** A jelentkezés/foglalás beérkezésének ideje. */
+    /** @ORM\Column(type="datetime",nullable=true) */
     private $foglalasido;
 
     /** @ORM\Column(type="boolean", nullable=false) */
@@ -141,6 +147,116 @@ class Idopontfoglalas
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $szamlazvaosszeghuf;
 
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $created;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $lastmod;
+
+    /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="createdby", referencedColumnName="id")
+     */
+    private $createdby;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="updatedby", referencedColumnName="id")
+     */
+    private $updatedby;
+
+    /** A partner adatainak pillanatképe a jelentkezés idejéből – a törzsadat később változhat. */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $partnernev;
+
+    /** @ORM\Column(type="string",length=100,nullable=true) */
+    private $partneremail = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $partnertelefon = '';
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $megjegyzes;
+
+    /** Várólistás jelentkezés nem foglal helyet – lásd IdopontfoglalasRepository::getCountForIdopont(). */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $varolistas = false;
+
+    /**
+     * @Gedmo\Blameable(on="change", field={"fizetve"})
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="fizetesbejegyzo", referencedColumnName="id")
+     */
+    private $fizetesbejegyzo;
+
+    /**
+     * @Gedmo\Blameable(on="change", field={"szamlazva"})
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="szamlazasbejegyzo", referencedColumnName="id")
+     */
+    private $szamlazasbejegyzo;
+
+    /**
+     * @Gedmo\Blameable(on="change", field={"lemondva"})
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="lemondasbejegyzo", referencedColumnName="id")
+     */
+    private $lemondasbejegyzo;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $visszautalva = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $visszautalasdatum;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Fizmod")
+     * @ORM\JoinColumn(name="visszautalasfizmod_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $visszautalasfizmod;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $visszautalasosszeghuf;
+
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $visszautalasbankbizonylatszam;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bankszamla")
+     * @ORM\JoinColumn(name="visszautalasbankszamla_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $visszautalasbankszamla;
+
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $visszautalaspenztarbizonylatszam;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Penztar")
+     * @ORM\JoinColumn(name="penztar_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $visszautalaspenztar;
+
+    /**
+     * @Gedmo\Blameable(on="change", field={"visszautalva"})
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="visszautalasbejegyzo", referencedColumnName="id")
+     */
+    private $visszautalasbejegyzo;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $emaildijbekero = false;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $emaildijbekerodatum;
+
     public function __construct()
     {
         $this->foglalasido = new \DateTime();
@@ -188,33 +304,51 @@ class Idopontfoglalas
         return '';
     }
 
+    /**
+     * A jelentkezéskori pillanatkép a mérvadó – a partnertörzs neve/elérhetősége azóta változhatott.
+     */
     public function getPartnerNev()
     {
-        if ($this->partner) {
-            return $this->partner->getNev();
-        }
-        return '';
+        return $this->partnernev ?: ($this->partner ? $this->partner->getNev() : '');
+    }
+
+    public function setPartnernev($nev)
+    {
+        $this->partnernev = $nev;
     }
 
     public function getPartnerEmail()
     {
-        if ($this->partner) {
-            return $this->partner->getEmail();
-        }
-        return '';
+        return $this->partneremail ?: ($this->partner ? $this->partner->getEmail() : '');
+    }
+
+    public function setPartneremail($email)
+    {
+        $this->partneremail = $email;
     }
 
     public function getPartnerTelefon()
     {
-        if ($this->partner) {
-            return $this->partner->getTelefon();
-        }
-        return '';
+        return $this->partnertelefon ?: ($this->partner ? $this->partner->getTelefon() : '');
+    }
+
+    public function setPartnertelefon($telefon)
+    {
+        $this->partnertelefon = $telefon;
     }
 
     public function setPartner($partner)
     {
         $this->partner = $partner;
+        if ($partner) {
+            $this->partnernev = $partner->getNev();
+            $this->partneremail = $partner->getEmail();
+            $this->partnertelefon = $partner->getTelefon();
+        } else {
+            $this->partnernev = null;
+            $this->partneremail = null;
+            $this->partnertelefon = null;
+        }
     }
 
     public function getDatum()
@@ -666,6 +800,238 @@ class Idopontfoglalas
         $this->szamlazvaosszeghuf = $osszeg;
     }
 
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getCreatedStr()
+    {
+        return $this->created ? $this->created->format(\mkw\store::$DateTimeFormat) : '';
+    }
+
+    public function getLastmod()
+    {
+        return $this->lastmod;
+    }
+
+    public function getLastmodStr()
+    {
+        return $this->lastmod ? $this->lastmod->format(\mkw\store::$DateTimeFormat) : '';
+    }
+
+    public function getCreatedby()
+    {
+        return $this->createdby;
+    }
+
+    public function getCreatedbyNev()
+    {
+        return $this->createdby ? $this->createdby->getNev() : '';
+    }
+
+    public function getUpdatedby()
+    {
+        return $this->updatedby;
+    }
+
+    public function getUpdatedbyNev()
+    {
+        return $this->updatedby ? $this->updatedby->getNev() : '';
+    }
+
+    public function getMegjegyzes()
+    {
+        return $this->megjegyzes;
+    }
+
+    public function setMegjegyzes($megjegyzes)
+    {
+        $this->megjegyzes = $megjegyzes;
+    }
+
+    public function isVarolistas()
+    {
+        return $this->varolistas;
+    }
+
+    public function getVarolistas()
+    {
+        return $this->varolistas;
+    }
+
+    public function setVarolistas($varolistas)
+    {
+        $this->varolistas = $varolistas;
+    }
+
+    public function getFizetesbejegyzo()
+    {
+        return $this->fizetesbejegyzo;
+    }
+
+    public function getFizetesbejegyzoNev()
+    {
+        return $this->fizetesbejegyzo ? $this->fizetesbejegyzo->getNev() : '';
+    }
+
+    public function getSzamlazasbejegyzo()
+    {
+        return $this->szamlazasbejegyzo;
+    }
+
+    public function getSzamlazasbejegyzoNev()
+    {
+        return $this->szamlazasbejegyzo ? $this->szamlazasbejegyzo->getNev() : '';
+    }
+
+    public function getLemondasbejegyzo()
+    {
+        return $this->lemondasbejegyzo;
+    }
+
+    public function getLemondasbejegyzoNev()
+    {
+        return $this->lemondasbejegyzo ? $this->lemondasbejegyzo->getNev() : '';
+    }
+
+    public function getVisszautalasbejegyzo()
+    {
+        return $this->visszautalasbejegyzo;
+    }
+
+    public function getVisszautalasbejegyzoNev()
+    {
+        return $this->visszautalasbejegyzo ? $this->visszautalasbejegyzo->getNev() : '';
+    }
+
+    public function getVisszautalva()
+    {
+        return $this->visszautalva;
+    }
+
+    public function setVisszautalva($visszautalva)
+    {
+        $this->visszautalva = $visszautalva;
+    }
+
+    public function getVisszautalasdatum()
+    {
+        return $this->visszautalasdatum;
+    }
+
+    public function getVisszautalasdatumStr()
+    {
+        return $this->visszautalasdatum ? $this->visszautalasdatum->format(\mkw\store::$DateFormat) : '';
+    }
+
+    public function setVisszautalasdatum($datum = '')
+    {
+        $this->visszautalasdatum = self::toDate($datum);
+    }
+
+    public function getVisszautalasfizmod()
+    {
+        return $this->visszautalasfizmod;
+    }
+
+    public function setVisszautalasfizmod($fizmod)
+    {
+        $this->visszautalasfizmod = $fizmod;
+    }
+
+    public function getVisszautalasosszeghuf()
+    {
+        return $this->visszautalasosszeghuf;
+    }
+
+    public function setVisszautalasosszeghuf($osszeg)
+    {
+        $this->visszautalasosszeghuf = $osszeg;
+    }
+
+    public function getVisszautalasbankbizonylatszam()
+    {
+        return $this->visszautalasbankbizonylatszam;
+    }
+
+    public function setVisszautalasbankbizonylatszam($szam)
+    {
+        $this->visszautalasbankbizonylatszam = $szam;
+    }
+
+    public function getVisszautalasbankszamla()
+    {
+        return $this->visszautalasbankszamla;
+    }
+
+    public function setVisszautalasbankszamla($bankszamla)
+    {
+        $this->visszautalasbankszamla = $bankszamla;
+    }
+
+    public function getVisszautalaspenztarbizonylatszam()
+    {
+        return $this->visszautalaspenztarbizonylatszam;
+    }
+
+    public function setVisszautalaspenztarbizonylatszam($szam)
+    {
+        $this->visszautalaspenztarbizonylatszam = $szam;
+    }
+
+    public function getVisszautalaspenztar()
+    {
+        return $this->visszautalaspenztar;
+    }
+
+    public function setVisszautalaspenztar($penztar)
+    {
+        $this->visszautalaspenztar = $penztar;
+    }
+
+    public function getEmaildijbekero()
+    {
+        return $this->emaildijbekero;
+    }
+
+    public function setEmaildijbekero($emaildijbekero)
+    {
+        $this->emaildijbekero = $emaildijbekero;
+    }
+
+    public function getEmaildijbekerodatum()
+    {
+        return $this->emaildijbekerodatum;
+    }
+
+    public function getEmaildijbekerodatumStr()
+    {
+        return $this->emaildijbekerodatum ? $this->emaildijbekerodatum->format(\mkw\store::$DateFormat) : '';
+    }
+
+    public function setEmaildijbekerodatum($datum = '')
+    {
+        $this->emaildijbekerodatum = self::toDate($datum);
+    }
+
+    /**
+     * Az érvényes ár: early bird időszakban a kedvezményes, különben az időpont ára.
+     */
+    public function getErvenyesAr()
+    {
+        $idopont = $this->getIdopont();
+        if (!$idopont) {
+            return null;
+        }
+        $ebvege = $idopont->getEarlybirdvege();
+        $viszonyitas = $this->getFoglalasido() ?: $this->getDatum();
+        if ($ebvege && $idopont->getEarlybirdar() && $viszonyitas && $ebvege >= $viszonyitas) {
+            return $idopont->getEarlybirdar();
+        }
+        return $idopont->getAr();
+    }
+
     /**
      * @param bool $uresmaiNap üres értékre a mai nap (a bejegyzés dátumánál kell), különben null
      *
@@ -687,23 +1053,51 @@ class Idopontfoglalas
     }
 
     /**
-     * A foglalás leveleinek Smarty adatai – a sablonokban a `foglalas` változó.
+     * A jelentkezés leveleinek Smarty adatai.
+     *
+     * A DB-ben tárolt, ügyfél által szerkesztett rendezvény sablonok a `rendezveny*` kulcsokra
+     * hivatkoznak, ezért azok az új `idopont*` nevek mellett megmaradnak.
      */
     public function toLista()
     {
         $idopont = $this->getIdopont();
-        return [
+        $partner = $this->getPartner();
+        $ar = $this->getErvenyesAr();
+        $x = [
             'id' => $this->getId(),
             'datum' => $this->getDatumStr(),
             'napnev' => $this->getNapNev(),
             'foglalasido' => $this->getFoglalasidoStr(),
+            'megjegyzes' => $this->getMegjegyzes(),
             'online' => $this->isOnline(),
-            'emailkoszono' => $this->getEmailkoszono(),
-            'emailemlekezteto' => $this->getEmailemlekezteto(),
-            'emailemlekeztetodatum' => $this->getEmailemlekeztetodatumStr(),
-            'lemondva' => $this->getLemondva(),
-            'lemondasdatum' => $this->getLemondasdatumStr(),
-            'lemondasoka' => $this->getLemondasoka(),
+            'varolistas' => $this->isVarolistas(),
+
+            'idopontid' => $this->getIdopontId(),
+            'idopontnev' => $idopont?->getNev(),
+            'idopontteljesnev' => $idopont?->getTeljesNev(),
+            'idopontido' => $idopont?->getIdotartamStr(),
+            'idopontkezdet' => $idopont?->getKezdetStr(),
+            'idopontar' => $ar,
+            'temanev' => $idopont?->getIdoponttemaNev(),
+            'tanarnev' => $idopont?->getDolgozoNev(),
+            'helyszinnev' => $idopont?->getJogahelyszinNev(),
+            'helyszincim' => $idopont?->getJogahelyszinCim(),
+            'ar' => $ar,
+            'kellszamlazasiadat' => $idopont?->getKellszamlazasiadat(),
+            'csomag' => $idopont?->isCsomag(),
+
+            'partnerid' => $this->getPartnerId(),
+            'partnernev' => $this->getPartnerNev(),
+            'partneremail' => $this->getPartnerEmail(),
+            'partnertelefon' => $this->getPartnerTelefon(),
+            'partnercim' => $partner?->getCim(),
+            'partnervezeteknev' => $partner?->getVezeteknev(),
+            'partnerkeresztnev' => $partner?->getKeresztnev(),
+            'partnerirszam' => $partner?->getIrszam(),
+            'partnervaros' => $partner?->getVaros(),
+            'partnerutca' => $partner?->getUtca(),
+            'partnerhazszam' => $partner?->getHazszam(),
+
             'fizetve' => $this->getFizetve(),
             'fizetesdatum' => $this->getFizetesdatumStr(),
             'fizetveosszeghuf' => $this->getFizetveosszeghuf(),
@@ -712,24 +1106,45 @@ class Idopontfoglalas
             'fizetvepenztarbizonylatszam' => $this->getFizetvepenztarbizonylatszam(),
             'fizetvebankszamlaszam' => $this->getFizetvebankszamla()?->getSzamlaszam(),
             'fizetvebankbizonylatszam' => $this->getFizetvebankbizonylatszam(),
+
             'szamlazva' => $this->getSzamlazva(),
             'szamlazasdatum' => $this->getSzamlazasdatumStr(),
             'szamlaszam' => $this->getSzamlaszam(),
             'szamlazvakelt' => $this->getSzamlazvakeltStr(),
             'szamlazvateljesites' => $this->getSzamlazvateljesitesStr(),
             'szamlazvaosszeghuf' => $this->getSzamlazvaosszeghuf(),
-            'partnerid' => $this->getPartnerId(),
-            'partnernev' => $this->getPartnerNev(),
-            'partneremail' => $this->getPartnerEmail(),
-            'partnertelefon' => $this->getPartnerTelefon(),
-            'idopontid' => $this->getIdopontId(),
-            'idopontido' => $idopont?->getIdotartamStr(),
-            'temanev' => $idopont?->getIdoponttemaNev(),
-            'tanarnev' => $idopont?->getDolgozoNev(),
-            'helyszinnev' => $idopont?->getJogahelyszinNev(),
-            'helyszincim' => $idopont?->getJogahelyszinCim(),
-            'ar' => $idopont?->getAr(),
+
+            'lemondva' => $this->getLemondva(),
+            'lemondasdatum' => $this->getLemondasdatumStr(),
+            'lemondasoka' => $this->getLemondasoka(),
+
+            'visszautalva' => $this->getVisszautalva(),
+            'visszautalasdatum' => $this->getVisszautalasdatumStr(),
+            'visszautalaspenztarnev' => $this->getVisszautalaspenztar()?->getNev(),
+            'visszautalaspenztarbizonylatszam' => $this->getVisszautalaspenztarbizonylatszam(),
+            'visszautalasbankszamlaszam' => $this->getVisszautalasbankszamla()?->getSzamlaszam(),
+            'visszautalasbankbizonylatszam' => $this->getVisszautalasbankbizonylatszam(),
+            'visszautalasosszeghuf' => $this->getVisszautalasosszeghuf(),
+            'visszautalasfizmodnev' => $this->getVisszautalasfizmod()?->getNev(),
+
+            'emailkoszono' => $this->getEmailkoszono(),
+            'emailemlekezteto' => $this->getEmailemlekezteto(),
+            'emailemlekeztetodatum' => $this->getEmailemlekeztetodatumStr(),
+            'emaildijbekero' => $this->getEmaildijbekero(),
+            'emaildijbekerodatum' => $this->getEmaildijbekerodatumStr(),
         ];
+
+        // a meglévő ügyfél levélsablonok kulcsai
+        $x['rendezvenynev'] = $x['idopontnev'];
+        $x['rendezvenyteljesnev'] = $x['idopontteljesnev'];
+        $x['rendezvenykezdodatum'] = $idopont?->getDatumStr();
+        $x['rendezvenykezdoido'] = $idopont?->getStartTimeStr();
+        $x['rendezvenytanarnev'] = $x['tanarnev'];
+        $x['rendezvenyar'] = $ar;
+        $x['emailregkoszono'] = $x['emailkoszono'];
+        $x['emailrendezvenykezdes'] = $x['emailemlekezteto'];
+
+        return $x;
     }
 
 }
