@@ -182,7 +182,9 @@ class pubadminController extends mkwhelpers\Controller
         $dolgozo = $this->getBejelentkezettTanar();
         $datum = $this->datumParam();
         if ($dolgozo && $datum) {
+            // a tanári képernyő a foglalható időpontokról szól; a rendezvények nem tartoznak ide
             $filter = new \mkwhelpers\FilterDescriptor();
+            $filter->addFilter('tipus', '=', Idopont::TIPUS_IDOPONT);
             $filter->addFilter('dolgozo', '=', $dolgozo);
             $filter->addFilter('inaktiv', '=', false);
             /** @var Idopont $idopont */
@@ -516,7 +518,7 @@ class pubadminController extends mkwhelpers\Controller
         }
         /** @var Idopont|null $idopont */
         $idopont = $this->getRepo(Idopont::class)->find($idopontid);
-        if (!$idopont || ((int)$idopont->getDolgozoId() !== (int)$dolgozo->getId())) {
+        if (!$idopont || $idopont->isRendezveny() || ((int)$idopont->getDolgozoId() !== (int)$dolgozo->getId())) {
             return null;
         }
         return $idopont;
