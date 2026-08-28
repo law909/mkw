@@ -2,6 +2,7 @@
 
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
+    <script type="text/javascript" src="/js/admin/default/clipboard.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/idopont.js"></script>
 {/block}
 
@@ -9,6 +10,20 @@
     <div id="mattable-select" data-theme="{$theme}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Időpontok')}"></div>
         <div id="mattable-filterwrapper">
+            <div>
+                <label for="tipusfilter">{at('Típus')}: </label>
+                <select id="tipusfilter" name="tipusfilter">
+                    <option value="">{at('mindegy')}</option>
+                    <option value="rendezveny">{at('Rendezvény')}</option>
+                    <option value="idopont">{at('Időpont')}</option>
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="nevfilter">{at('Név')}: </label>
+                <input id="nevfilter" name="nevfilter" type="text" size="20">
+            </div>
+            <div class="matt-hseparator"></div>
             <div>
                 <label for="datumtolfilter">{at('Dátum -tól')}: </label>
                 <input id="datumtolfilter" name="datumtolfilter" type="text" size="12">
@@ -47,6 +62,26 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
+                <label for="jogateremfilter">{at('Terem')}: </label>
+                <select id="jogateremfilter" name="jogateremfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $jogateremlist as $_d}
+                        <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="idopontallapotfilter">{at('Állapot')}: </label>
+                <select id="idopontallapotfilter" name="idopontallapotfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $idopontallapotlist as $_d}
+                        <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
                 <select id="inaktivfilter" name="inaktivfilter">
                     <option value="0">{at('Aktív')}</option>
                     <option value="1">{at('Inaktív')}</option>
@@ -75,7 +110,9 @@
                 <th><input class="js-maincheckbox" type="checkbox"></th>
                 <th>{at('Időpont')}</th>
                 <th>{at('Adatok')}</th>
+                <th>{at('Állapot')}</th>
                 <th>{at('Jellemzők')}</th>
+                <th>{at('Teendők')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

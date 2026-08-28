@@ -347,7 +347,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     public function viewlist()
     {
         $view = $this->createView('idopontfoglalaslista.tpl');
-        $view->setVar('pagetitle', t('Időpont foglalások'));
+        $view->setVar('pagetitle', t('Időpont jelentkezések'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->setVar('dolgozolist', (new dolgozoController())->getSelectList());
