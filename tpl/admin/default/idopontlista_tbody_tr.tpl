@@ -11,9 +11,7 @@
             <div>{$_egyed.napnev}</div>
             {if ($_egyed.veg)}<div>{at('Vége')}: {$_egyed.veg}</div>{/if}
         {/if}
-        {if ($_egyed.tipus == 'rendezveny')}
-            <div><a class="js-emailkezdes" href="#" data-egyedid="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a></div>
-        {/if}
+        <div><a class="js-emailkezdes" href="#" data-egyedid="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a></div>
     </td>
     <td class="cell">
         <table>
@@ -55,30 +53,28 @@
                     {if ($_egyed.varolistavan)} – {at('van várólista')}{/if}
                 </td>
             </tr>
-            {if ($_egyed.tipus == 'rendezveny')}
-                {if ($_egyed.url)}
-                    <tr>
-                        <td>{at('Webcím')}: <a href="{$_egyed.url}" target="_blank">{$_egyed.url}</a></td>
-                    </tr>
-                {/if}
-                {if ($_egyed.termeknev)}
-                    <tr>
-                        <td>{at('Termék a számlán')}: {$_egyed.termeknev}</td>
-                    </tr>
-                {/if}
+            {if ($_egyed.url)}
                 <tr>
-                    <td>{at('Számlázási adat bekérés')}: {if ($_egyed.kellszamlazasiadat)}{at('van')}{else}{at('nincs')}{/if}</td>
-                </tr>
-                <tr>
-                    <td>{at('Regisztrációs form')}:
-                        <a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">{at('Másolás vágólapra')}</a></td>
+                    <td>{at('Webcím')}: <a href="{$_egyed.url}" target="_blank">{$_egyed.url}</a></td>
                 </tr>
             {/if}
+            {if ($_egyed.termeknev)}
+                <tr>
+                    <td>{at('Termék a számlán')}: {$_egyed.termeknev}</td>
+                </tr>
+            {/if}
+            <tr>
+                <td>{at('Számlázási adat bekérés')}: {if ($_egyed.kellszamlazasiadat)}{at('van')}{else}{at('nincs')}{/if}</td>
+            </tr>
+            <tr>
+                <td>{at('Regisztrációs form')}:
+                    <a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">{at('Másolás vágólapra')}</a></td>
+            </tr>
             </tbody>
         </table>
     </td>
     <td class="cell">
-        {if ($_egyed.tipus == 'rendezveny')}{$_egyed.idopontallapotnev}{/if}
+        {$_egyed.idopontallapotnev}
     </td>
     <td class="cell">
         <table>
@@ -90,6 +86,9 @@
             <tr>
                 <td><a href="#" data-id="{$_egyed.id}" data-flag="onlinevalaszthato"
                        class="js-flagcheckbox{if ($_egyed.onlinevalaszthato)} ui-state-hover{/if}">{at('Online választható')}</a></td>
+            </tr>
+            <tr>
+                <td>{if ($_egyed.tipus == 'rendezveny')}{at('Rendezvény')}{else}{at('Időpont (foglalható)')}{/if}</td>
             </tr>
             <tr>
                 <td>{if ($_egyed.ismetlodo)}{at('Ismétlődő (heti)')}{else}{at('Egyszeri')}{/if}</td>
