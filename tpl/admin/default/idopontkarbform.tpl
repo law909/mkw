@@ -166,10 +166,6 @@
                     <td><label for="KellszamlazasiadatEdit">{at('Számlázási adat bekérés')}:</label></td>
                     <td><input id="KellszamlazasiadatEdit" name="kellszamlazasiadat" type="checkbox"{if ($egyed.kellszamlazasiadat)} checked="checked"{/if}></td>
                 </tr>
-                <tr>
-                    <td><label for="OrarendbenszerepelEdit">{at('Órarendben szerepel')}:</label></td>
-                    <td><input id="OrarendbenszerepelEdit" name="orarendbenszerepel" type="checkbox"{if ($egyed.orarendbenszerepel)} checked="checked"{/if}></td>
-                </tr>
                 {if ($egyed.id)}
                     <tr>
                         <td>{at('Regisztrációs form')}:</td>

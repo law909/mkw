@@ -70,9 +70,6 @@
                     <td>{at('Számlázási adat bekérés')}: {if ($_egyed.kellszamlazasiadat)}{at('van')}{else}{at('nincs')}{/if}</td>
                 </tr>
                 <tr>
-                    <td>{at('Órarendben szerepel')}: {if ($_egyed.orarendbenszerepel)}{at('igen')}{else}{at('nem')}{/if}</td>
-                </tr>
-                <tr>
                     <td>{at('Regisztrációs form')}:
                         <a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">{at('Másolás vágólapra')}</a></td>
                 </tr>

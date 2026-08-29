@@ -147,9 +147,6 @@ class Idopont
     /** @ORM\Column(type="boolean",nullable=false) */
     private $kellszamlazasiadat = true;
 
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $orarendbenszerepel = true;
-
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
@@ -692,16 +689,6 @@ class Idopont
     public function setKellszamlazasiadat($kellszamlazasiadat)
     {
         $this->kellszamlazasiadat = $kellszamlazasiadat;
-    }
-
-    public function getOrarendbenszerepel()
-    {
-        return $this->orarendbenszerepel;
-    }
-
-    public function setOrarendbenszerepel($orarendbenszerepel)
-    {
-        $this->orarendbenszerepel = $orarendbenszerepel;
     }
 
     public function getUrl()

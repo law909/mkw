@@ -321,7 +321,6 @@ class orarendController extends \mkwhelpers\MattableController
         // csak a rendezvények kerülnek az órarendbe; a foglalható időpontoknak saját heti nézetük van
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('tipus', '=', Idopont::TIPUS_RENDEZVENY);
-        $filter->addFilter('orarendbenszerepel', '=', true);
         $filter->addFilter('idopontallapot.orarendbenszerepel', '=', true);
         if ($helyszinkod) {
             $filter->addFilter('jogahelyszin', '=', $helyszinkod);
