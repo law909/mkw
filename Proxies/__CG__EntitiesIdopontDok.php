@@ -67,10 +67,10 @@ class IdopontDok extends \Entities\IdopontDok implements \Doctrine\ORM\Proxy\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\IdopontDok' . "\0" . 'idopont'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\IdopontDok' . "\0" . 'idopont', '' . "\0" . 'Entities\\IdopontDok' . "\0" . 'rendezvenyid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\IdopontDok' . "\0" . 'idopont'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\IdopontDok' . "\0" . 'idopont', '' . "\0" . 'Entities\\IdopontDok' . "\0" . 'rendezvenyid'];
     }
 
     /**

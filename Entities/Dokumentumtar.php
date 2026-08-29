@@ -8,7 +8,10 @@ use mkw\store;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="dokumentumtar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @ORM\Table(name="dokumentumtar",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
+ * indexes={
+ *      @ORM\Index(name="IDX_EF1B20CBEA538532",columns={"rendezveny_id"})
+ * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="osztaly", type="string", length=30)
  * @ORM\DiscriminatorMap({"idopont"="IdopontDok", "partner"="PartnerDok", "termek"="TermekDok", "bizonylat"="BizonylatDok"})

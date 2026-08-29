@@ -15,6 +15,15 @@ class IdopontDok extends Dokumentumtar {
      */
     private $idopont;
 
+    /**
+     * Átmeneti: a rendezvény modul összevonása előtti kapcsolóoszlop. Csak azért van leképezve, hogy a
+     * schema-tool ne dobja el, mielőtt a runonce 0148 átmásolja az idopont_id-be – utána elhagyható
+     * (entitásból törölni + egy runonce blokk DROP COLUMN-nal).
+     *
+     * @ORM\Column(type="integer",name="rendezveny_id",nullable=true)
+     */
+    private $rendezvenyid;
+
     public function getIdopont() {
         return $this->idopont;
     }

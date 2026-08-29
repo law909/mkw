@@ -1297,7 +1297,7 @@ if ($DBVersion < '0113') {
     // a mai globális min.bolti készlet az alapraktár cellájába kerül, hogy a raktáras mátrix
     // a jelenlegi állapotot mutassa; a globális oszlop marad a többi raktár fallbackje
     $conn = \mkw\store::getEm()->getConnection();
-    // a runonce az első admin kérésen fut, ami megelőzheti a kézi ./updateschema.sh-t:
+    // élesben a ./updateschema.sh mindig megelőzi a runonce-t, de fejlesztői gépen felcserélődhet:
     // hiányzó táblára az INSERT minden admin kérést fatalra vinne
     $tablakvannak = $conn->executeQuery(
         'SELECT COUNT(*) FROM information_schema.TABLES'
@@ -1353,7 +1353,7 @@ if ($DBVersion < '0116') {
     // lépett; a meglévő sorokat átemeljük. A régi táblákat NEM dobjuk el: az updateschema
     // --complete nélkül fut, tehát megmaradnak, és kézzel eldobhatók, ha a napló rendben van.
     $conn = \mkw\store::getEm()->getConnection();
-    // a runonce az első admin kérésen fut, ami megelőzheti a kézi ./updateschema.sh-t
+    // élesben a ./updateschema.sh mindig megelőzi a runonce-t, de fejlesztői gépen felcserélődhet
     $vanujtabla = $conn->executeQuery(
         'SELECT COUNT(*) FROM information_schema.TABLES'
         . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
@@ -1788,9 +1788,12 @@ if ($DBVersion < '0144') {
 }
 
 if ($DBVersion < '0145') {
-    // a Rendezvenyallapot entitás Idopontallapot lett, és a táblája a félrevezető rendezvenytipus
-    // helyett idopontallapot. A schema-tool nem tud átnevezni, ezért itt kell megtenni – és mert a
-    // runonce megelőzheti a kézi ./updateschema.sh-t, a marker csak sikeres átnevezés után lép.
+    // A rendezvény modul beolvad az időpontba. A blokkok a ./updateschema.sh utáni sémára épülnek:
+    // az entitások táblái és oszlopai már megvannak, a leképezetlen régi táblák (rendezveny,
+    // rendezvenyjelentkezes, rendezvenytipus) érintetlenek – innen csak adatot mozgatunk.
+    //
+    // Az állapottörzs: a rendezvenytipus sorai id-hűen átkerülnek az idopontallapot-ba, így a
+    // rendezveny.rendezvenyallapot_id értékek a beolvasztás után is a helyes törzssorra mutatnak.
     $conn = \mkw\store::getEm()->getConnection();
     $vanTabla = function ($tabla) use ($conn) {
         return (int)$conn->executeQuery(
@@ -1799,32 +1802,28 @@ if ($DBVersion < '0145') {
             [$tabla]
         )->fetchOne();
     };
-    // friss telepítésen is le kell futnia: a menüsort a 1075. sori blokk még a régi URL-lel szúrja be
-    $conn->executeStatement(
-        'UPDATE menu SET nev = "Időpont állapotok", url = "/admin/idopontallapot/viewlist",'
-        . ' routename = "/admin/idopontallapot"'
-        . ' WHERE url = "/admin/rendezvenyallapot/viewlist"'
-    );
-    if ($vanTabla('rendezvenytipus')) {
-        // ha az updateschema már lefutott, üresen létrehozta az új táblát – az útban van az átnevezésnek
-        if ($vanTabla('idopontallapot')
+
+    if ($vanTabla('idopontallapot')) {
+        if ($vanTabla('rendezvenytipus')
             && (int)$conn->executeQuery('SELECT COUNT(*) FROM idopontallapot')->fetchOne() === 0) {
-            $conn->executeStatement('DROP TABLE idopontallapot');
+            $conn->executeStatement(
+                'INSERT INTO idopontallapot (id, nev, sorrend, orarendbenszerepel)'
+                . ' SELECT id, nev, sorrend, orarendbenszerepel FROM rendezvenytipus'
+            );
         }
-        if (!$vanTabla('idopontallapot')) {
-            $conn->executeStatement('RENAME TABLE rendezvenytipus TO idopontallapot');
-            \mkw\store::setParameter(\mkw\consts::DBVersion, '0145');
-        }
-    } else {
+        $conn->executeStatement(
+            'UPDATE menu SET nev = "Időpont állapotok", url = "/admin/idopontallapot/viewlist",'
+            . ' routename = "/admin/idopontallapot"'
+            . ' WHERE url = "/admin/rendezvenyallapot/viewlist"'
+        );
         \mkw\store::setParameter(\mkw\consts::DBVersion, '0145');
     }
 }
 
 if ($DBVersion < '0146') {
-    // A rendezvény modul beolvad az időpontba: a rendezveny táblából lesz az idopont, tehát a 183 sor
-    // és az id-k – köztük a publikus regisztrációs linkek uid-jai – változatlanul maradnak. A mai kis
-    // idopont/idopontfoglalas tartalom a 0147-ben, új id-kkel költözik be. A schema-tool nem tud
-    // átnevezni, ezért ennek a blokknak meg kell előznie az új oszlopok felvételét.
+    // A rendezvény sorok átemelése az idopont táblába, az id-k megtartásával: a publikus regisztrációs
+    // linkek uid-ja és az admin könyvjelzők így érvényben maradnak. A már meglévő (időpont) sorok
+    // előbb a rendezvény id-k fölé csúsznak, hogy ne ütközzenek.
     $conn = \mkw\store::getEm()->getConnection();
     $vanTabla = function ($tabla) use ($conn) {
         return (int)$conn->executeQuery(
@@ -1841,111 +1840,61 @@ if ($DBVersion < '0146') {
         )->fetchOne();
     };
 
-    if (!$vanTabla('rendezveny')) {
-        // friss telepítés: a schema-tool már a végleges idopont táblát hozta létre
-        \mkw\store::setParameter(\mkw\consts::DBVersion, '0146');
-    } else {
-        if ($vanTabla('idopont')) {
-            // az idopontreszvetel FK-ja követné az átnevezést az idopont_regi-re, pedig az entitás
-            // továbbra is az idopont-ra képez – ezért eldobjuk, az updateschema újra létrehozza
-            foreach ($conn->executeQuery(
-                'SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
-                . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND REFERENCED_TABLE_NAME = ?',
-                ['idopontreszvetel', 'idopont']
-            )->fetchFirstColumn() as $fk) {
-                $conn->executeStatement('ALTER TABLE idopontreszvetel DROP FOREIGN KEY ' . $fk);
-            }
-            $conn->executeStatement('RENAME TABLE idopont TO idopont_regi');
-        }
-        if ($vanTabla('idopontfoglalas')) {
-            $conn->executeStatement('RENAME TABLE idopontfoglalas TO idopontfoglalas_regi');
-        }
-
-        $conn->executeStatement('RENAME TABLE rendezveny TO idopont');
-        $conn->executeStatement('RENAME TABLE rendezvenyjelentkezes TO idopontfoglalas');
-
-        // az oszlopnevek az időpont oldali elnevezésre állnak; a CHANGE megőrzi a tartalmat
-        $conn->executeStatement(
-            'ALTER TABLE idopont'
-            . ' CHANGE tanar_id dolgozo_id INT DEFAULT NULL,'
-            . ' CHANGE helyszin_id jogahelyszin_id INT DEFAULT NULL,'
-            . ' CHANGE maxferohely maxresztvevo INT DEFAULT NULL,'
-            . ' CHANGE rendezvenyallapot_id idopontallapot_id INT DEFAULT NULL'
-        );
-        // a jelentkezés napja a foglalasido-ba megy át; a datum ezentúl az alkalom napja
-        $conn->executeStatement(
-            'ALTER TABLE idopontfoglalas'
-            . ' CHANGE rendezveny_id idopont_id INT DEFAULT NULL,'
-            . ' CHANGE datum foglalasido_regi DATE DEFAULT NULL,'
-            . ' CHANGE emailregkoszono emailkoszono TINYINT(1) NOT NULL,'
-            . ' CHANGE emailrendezvenykezdes emailemlekezteto TINYINT(1) NOT NULL'
-        );
-
-        // a dokumentumtár single-table öröklés: a diszkriminátor és a kapcsolóoszlop is átáll
-        if ($vanOszlop('dokumentumtar', 'rendezveny_id')) {
-            $conn->executeStatement('ALTER TABLE dokumentumtar CHANGE rendezveny_id idopont_id INT DEFAULT NULL');
-        }
-        $conn->executeStatement("UPDATE dokumentumtar SET osztaly = 'idopont' WHERE osztaly = 'rendezveny'");
-
-        // a félretett táblák megtartották a régi idegen kulcsaik nevét, az pedig MySQL-ben
-        // séma-globális: a schema-tool nem tudná ugyanazon a néven létrehozni az újakat
-        foreach (['idopont_regi', 'idopontfoglalas_regi'] as $tabla) {
-            if (!$vanTabla($tabla)) {
-                continue;
-            }
-            foreach ($conn->executeQuery(
-                'SELECT DISTINCT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
-                . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND REFERENCED_TABLE_NAME IS NOT NULL',
-                [$tabla]
-            )->fetchFirstColumn() as $fk) {
-                $conn->executeStatement('ALTER TABLE ' . $tabla . ' DROP FOREIGN KEY ' . $fk);
-            }
-        }
-
-        \mkw\store::setParameter(\mkw\consts::DBVersion, '0146');
-    }
-}
-
-if ($DBVersion < '0147') {
-    // A régi mezők átszámítása az új oszlopokba. Az új oszlopokat itt, nyers SQL-lel vesszük fel:
-    // a schema-tool egyetlen utasításban adná hozzá a kezdet/veg-et és dobná el a kezdodatum/kezdoido-t,
-    // tehát ha ő futna előbb, a konvertálandó adat már nem lenne meg.
-    $conn = \mkw\store::getEm()->getConnection();
-    $vanTabla = function ($tabla) use ($conn) {
-        return (int)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.TABLES'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
-            [$tabla]
-        )->fetchOne();
-    };
-    $vanOszlop = function ($tabla, $oszlop) use ($conn) {
-        return (int)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.COLUMNS'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
-            [$tabla, $oszlop]
-        )->fetchOne();
-    };
-
-    if ($vanTabla('idopont')) {
+    if ($vanOszlop('idopont', 'tipus') && $vanOszlop('idopont', 'uid')) {
         $naplo = [];
+        if ($vanTabla('rendezveny')) {
+            $maxrend = (int)$conn->executeQuery('SELECT COALESCE(MAX(id), 0) FROM rendezveny')->fetchOne();
+            // A meglévő időpontok kikerülnek az útból, és a rájuk hivatkozó sorokat is átvezetjük.
+            // A sort és a gyerekeit csak egymás után lehet átírni, ezért az ellenőrzés a ciklus
+            // idejére kikapcsol – a párok együtt mozdulnak, árva sor nem keletkezik.
+            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
+            try {
+                foreach ($conn->executeQuery(
+                    'SELECT id FROM idopont WHERE id <= ? ORDER BY id DESC',
+                    [$maxrend]
+                )->fetchFirstColumn() as $regiid) {
+                    $ujid = (int)$conn->executeQuery('SELECT COALESCE(MAX(id), 0) + 1 FROM idopont')->fetchOne();
+                    if ($ujid <= $maxrend) {
+                        $ujid = $maxrend + 1;
+                    }
+                    $conn->executeStatement('UPDATE idopont SET id = ? WHERE id = ?', [$ujid, $regiid]);
+                    $conn->executeStatement(
+                        'UPDATE idopontfoglalas SET idopont_id = ? WHERE idopont_id = ?',
+                        [$ujid, $regiid]
+                    );
+                    $conn->executeStatement(
+                        'UPDATE idopontreszvetel SET idopont_id = ? WHERE idopont_id = ?',
+                        [$ujid, $regiid]
+                    );
+                    $naplo[] = 'idopont id eltolva: #' . $regiid . ' -> #' . $ujid;
+                }
+            } finally {
+                $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
+            }
+            $conn->executeStatement("UPDATE idopont SET tipus = 'idopont' WHERE tipus IS NULL OR tipus = ''");
 
-        if ($vanOszlop('idopont', 'kezdodatum')) {
-            if (!$vanOszlop('idopont', 'tipus')) {
-                $conn->executeStatement(
-                    "ALTER TABLE idopont ADD tipus VARCHAR(20) DEFAULT 'idopont' NOT NULL"
-                );
-            }
-            if (!$vanOszlop('idopont', 'kezdet')) {
-                $conn->executeStatement(
-                    'ALTER TABLE idopont ADD kezdet DATETIME DEFAULT NULL, ADD veg DATETIME DEFAULT NULL'
-                );
-            }
-            // ekkor még csak az átnevezett rendezvény sorok vannak a táblában
-            $conn->executeStatement("UPDATE idopont SET tipus = 'rendezveny'");
+            $conn->executeStatement(
+                'INSERT INTO idopont (id, tipus, nev, uid, url, onlineurl, ar, earlybirdar, earlybirdvege,'
+                . ' maxresztvevo, varolistavan, csomag, kellszamlazasiadat, orarendbenszerepel,'
+                . ' dolgozo_id, jogahelyszin_id, jogaterem_id, termek_id, idopontallapot_id,'
+                . ' createdby, updatedby, created, lastmod,'
+                . ' todonaptar, todowebposzt, todourlap, todowebslider, todofbevent, todofbhirdetes,'
+                . ' todoplakat, todofotobe, todoleirasbe,'
+                . ' onlinevalaszthato, ismetlodo, nap, inaktiv)'
+                . " SELECT id, 'rendezveny', nev, uid, url, onlineurl, ar, earlybirdar, earlybirdvege,"
+                . ' maxferohely, varolistavan, csomag, kellszamlazasiadat, orarendbenszerepel,'
+                . ' tanar_id, helyszin_id, jogaterem_id, termek_id, rendezvenyallapot_id,'
+                . ' createdby, updatedby, created, lastmod,'
+                . ' todonaptar, todowebposzt, todourlap, todowebslider, todofbevent, todofbhirdetes,'
+                . ' todoplakat, todofotobe, todoleirasbe,'
+                . ' 0, 0, 0, 0'
+                . ' FROM rendezveny'
+            );
 
             // a kezdoido szabadszöveg volt: "18:00", "9.30", "19:15-20:45" vagy üres
-            $rekordok = $conn->executeQuery('SELECT id, kezdodatum, kezdoido FROM idopont')->fetchAllAssociative();
-            foreach ($rekordok as $sor) {
+            foreach ($conn->executeQuery(
+                'SELECT id, kezdodatum, kezdoido FROM rendezveny'
+            )->fetchAllAssociative() as $sor) {
                 if (!$sor['kezdodatum']) {
                     $naplo[] = 'idopont #' . $sor['id'] . ': nincs kezdodatum, a kezdet üresen marad';
                     continue;
@@ -1972,27 +1921,120 @@ if ($DBVersion < '0147') {
                     ]
                 );
             }
-            $conn->executeStatement('ALTER TABLE idopont DROP kezdodatum, DROP kezdoido');
         }
-
-        if ($vanOszlop('idopontfoglalas', 'foglalasido_regi')) {
-            if (!$vanOszlop('idopontfoglalas', 'foglalasido')) {
-                $conn->executeStatement(
-                    'ALTER TABLE idopontfoglalas ADD foglalasido DATETIME DEFAULT NULL,'
-                    . ' ADD datum DATE DEFAULT NULL'
-                );
-            }
-            // a régi datum a jelentkezés napja volt; az új datum az alkalom napja
-            $conn->executeStatement(
-                'UPDATE idopontfoglalas SET foglalasido = COALESCE(foglalasido_regi, DATE(created), NOW())'
-                . ' WHERE foglalasido IS NULL'
+        // üres uid-re a publikus reg-oldal véletlenül rátalálna
+        foreach ($conn->executeQuery(
+            "SELECT id FROM idopont WHERE uid IS NULL OR uid = ''"
+        )->fetchFirstColumn() as $id) {
+            $conn->executeStatement('UPDATE idopont SET uid = ? WHERE id = ?', [uniqid('', true), $id]);
+        }
+        if ($naplo) {
+            @file_put_contents(
+                \mkw\store::logsPath('idopontosszevonas.log'),
+                date('Y-m-d H:i:s') . "\n" . implode("\n", $naplo) . "\n",
+                FILE_APPEND
             );
+        }
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0146');
+    }
+}
+
+if ($DBVersion < '0147') {
+    // A rendezvény jelentkezések átemelése, szintén id-hűen. A régi datum a jelentkezés napja volt,
+    // az új datum viszont az alkalom napja – ezért a régi érték a foglalasido-ba megy át.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vanTabla = function ($tabla) use ($conn) {
+        return (int)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.TABLES'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [$tabla]
+        )->fetchOne();
+    };
+    $vanOszlop = function ($tabla, $oszlop) use ($conn) {
+        return (int)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.COLUMNS'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
+            [$tabla, $oszlop]
+        )->fetchOne();
+    };
+
+    if ($vanOszlop('idopontfoglalas', 'varolistas') && $vanOszlop('idopontfoglalas', 'partnernev')) {
+        if ($vanTabla('rendezvenyjelentkezes')) {
+            $maxjel = (int)$conn->executeQuery(
+                'SELECT COALESCE(MAX(id), 0) FROM rendezvenyjelentkezes'
+            )->fetchOne();
+            foreach ($conn->executeQuery(
+                'SELECT id FROM idopontfoglalas WHERE id <= ? ORDER BY id DESC',
+                [$maxjel]
+            )->fetchFirstColumn() as $regiid) {
+                $ujid = (int)$conn->executeQuery(
+                    'SELECT COALESCE(MAX(id), 0) + 1 FROM idopontfoglalas'
+                )->fetchOne();
+                if ($ujid <= $maxjel) {
+                    $ujid = $maxjel + 1;
+                }
+                $conn->executeStatement('UPDATE idopontfoglalas SET id = ? WHERE id = ?', [$ujid, $regiid]);
+            }
+
+            $conn->executeStatement(
+                'INSERT INTO idopontfoglalas (id, idopont_id, partner_id, foglalasido,'
+                . ' partnernev, partneremail, partnertelefon, megjegyzes, varolistas,'
+                . ' fizmod_id, fizetve, fizetesdatum, fizetveosszeghuf,'
+                . ' fizetvepenztar_id, fizetvepenztarbizonylatszam, fizetvepenztartetelid,'
+                . ' fizetvebankszamla_id, fizetvebankbizonylatszam, fizetvebanktetelid, fizetesbejegyzo,'
+                . ' szamlazva, szamlazasdatum, szamlaszam, szamlazvabizonylattipus, szamlazvakelt,'
+                . ' szamlazvateljesites, szamlazvaosszeghuf, szamlazasbejegyzo,'
+                . ' lemondva, lemondasdatum, lemondasoka, lemondasbejegyzo,'
+                . ' visszautalva, visszautalasdatum, visszautalasosszeghuf, visszautalasfizmod_id,'
+                . ' visszautalasbankszamla_id, visszautalasbankbizonylatszam,'
+                . ' penztar_id, visszautalaspenztarbizonylatszam, visszautalasbejegyzo,'
+                . ' emailkoszono, emaildijbekero, emaildijbekerodatum, emailemlekezteto,'
+                . ' createdby, updatedby, created, lastmod, online, megjelent)'
+                . ' SELECT id, rendezveny_id, partner_id, COALESCE(datum, DATE(created), NOW()),'
+                . ' partnernev, partneremail, partnertelefon, megjegyzes, varolistas,'
+                . ' fizmod_id, fizetve, fizetesdatum, fizetveosszeghuf,'
+                . ' fizetvepenztar_id, fizetvepenztarbizonylatszam, fizetvepenztartetelid,'
+                . ' fizetvebankszamla_id, fizetvebankbizonylatszam, fizetvebanktetelid, fizetesbejegyzo,'
+                . ' szamlazva, szamlazasdatum, szamlaszam, szamlazvabizonylattipus, szamlazvakelt,'
+                . ' szamlazvateljesites, szamlazvaosszeghuf, szamlazasbejegyzo,'
+                . ' lemondva, lemondasdatum, lemondasoka, lemondasbejegyzo,'
+                . ' visszautalva, visszautalasdatum, visszautalasosszeghuf, visszautalasfizmod_id,'
+                . ' visszautalasbankszamla_id, visszautalasbankbizonylatszam,'
+                . ' penztar_id, visszautalaspenztarbizonylatszam, visszautalasbejegyzo,'
+                . ' emailregkoszono, emaildijbekero, emaildijbekerodatum, emailrendezvenykezdes,'
+                . ' createdby, updatedby, created, lastmod, 0, 0'
+                . ' FROM rendezvenyjelentkezes'
+            );
+            // az alkalom napja a szülő időpont kezdetéből
             $conn->executeStatement(
                 'UPDATE idopontfoglalas f JOIN idopont i ON i.id = f.idopont_id'
                 . ' SET f.datum = DATE(i.kezdet) WHERE f.datum IS NULL AND i.kezdet IS NOT NULL'
             );
-            $conn->executeStatement('ALTER TABLE idopontfoglalas DROP foglalasido_regi');
         }
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0147');
+    }
+}
+
+if ($DBVersion < '0148') {
+    // A dokumentumtár átkötése: az idopont id-k a rendezvényével egyeznek, ezért csak másolás.
+    // A rendezveny_id oszlop az IdopontDok átmeneti mezője miatt maradt meg idáig.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vanOszlop = function ($tabla, $oszlop) use ($conn) {
+        return (int)$conn->executeQuery(
+            'SELECT COUNT(*) FROM information_schema.COLUMNS'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
+            [$tabla, $oszlop]
+        )->fetchOne();
+    };
+
+    if ($vanOszlop('dokumentumtar', 'idopont_id')) {
+        if ($vanOszlop('dokumentumtar', 'rendezveny_id')) {
+            $conn->executeStatement(
+                'UPDATE dokumentumtar SET idopont_id = rendezveny_id'
+                . " WHERE osztaly = 'rendezveny' AND idopont_id IS NULL AND rendezveny_id IS NOT NULL"
+            );
+        }
+        $conn->executeStatement("UPDATE dokumentumtar SET osztaly = 'idopont' WHERE osztaly = 'rendezveny'");
 
         $conn->executeStatement(
             'UPDATE menu SET nev = "Időpontok", url = "/admin/idopont/viewlist", routename = "/admin/idopont"'
@@ -2010,106 +2052,8 @@ if ($DBVersion < '0147') {
             . ' GROUP BY url) k ON k.url = m.url AND m.id > k.elso'
         );
 
-        if ($naplo) {
-            @file_put_contents(
-                \mkw\store::logsPath('idopontosszevonas.log'),
-                date('Y-m-d H:i:s') . "\n" . implode("\n", $naplo) . "\n",
-                FILE_APPEND
-            );
-        }
-        \mkw\store::setParameter(\mkw\consts::DBVersion, '0147');
-    }
-}
-
-if ($DBVersion < '0148') {
-    // A félretett időpont adat beolvasztása. Ehhez már kell a ./updateschema.sh, mert az uniós
-    // oszlopokba (online, megjelent, ismetlodo…) írunk – amíg nincsenek meg, a marker nem lép.
-    $conn = \mkw\store::getEm()->getConnection();
-    $vanTabla = function ($tabla) use ($conn) {
-        return (int)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.TABLES'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
-            [$tabla]
-        )->fetchOne();
-    };
-    $vanOszlop = function ($tabla, $oszlop) use ($conn) {
-        return (int)$conn->executeQuery(
-            'SELECT COUNT(*) FROM information_schema.COLUMNS'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
-            [$tabla, $oszlop]
-        )->fetchOne();
-    };
-
-    if ($vanOszlop('idopont', 'ismetlodo') && $vanOszlop('idopontfoglalas', 'varolistas')) {
-        $naplo = [];
-
-        // új id-kkel költöznek be, a foglalások és a részvételek átkötésével
-        if ($vanTabla('idopont_regi')) {
-            foreach ($conn->executeQuery(
-                'SELECT id, dolgozo_id, idoponttema_id, jogahelyszin_id, created, lastmod, onlinevalaszthato,'
-                . ' kezdet, veg, ar, maxresztvevo, inaktiv, ismetlodo, nap, kezdetido, vegido FROM idopont_regi'
-            )->fetchAllAssociative() as $regi) {
-                $regiid = $regi['id'];
-                unset($regi['id']);
-                // a rendezvény oldalról jött NOT NULL oszlopoknak nincs DB-alapértéke (az entitásban van)
-                $conn->insert('idopont', $regi + [
-                    'tipus' => 'idopont',
-                    'nev' => '',
-                    'uid' => uniqid('', true),
-                    'onlineurl' => '',
-                    'kellszamlazasiadat' => 1,
-                    'orarendbenszerepel' => 0,
-                    'varolistavan' => 0,
-                    'csomag' => 0,
-                    'todonaptar' => 0,
-                    'todowebposzt' => 0,
-                    'todourlap' => 0,
-                    'todowebslider' => 0,
-                    'todofbevent' => 0,
-                    'todofbhirdetes' => 0,
-                    'todoplakat' => 0,
-                    'todofotobe' => 0,
-                    'todoleirasbe' => 0,
-                ]);
-                $ujid = (int)$conn->lastInsertId();
-                if ($vanTabla('idopontfoglalas_regi')) {
-                    $conn->executeStatement(
-                        'UPDATE idopontfoglalas_regi SET idopont_id = ? WHERE idopont_id = ?',
-                        [$ujid, $regiid]
-                    );
-                }
-                $conn->executeStatement(
-                    'UPDATE idopontreszvetel SET idopont_id = ? WHERE idopont_id = ?',
-                    [$ujid, $regiid]
-                );
-                $naplo[] = 'idopont beolvasztva: régi #' . $regiid . ' -> #' . $ujid;
-            }
-        }
-
-        if ($vanTabla('idopontfoglalas_regi')) {
-            $oszlopok = 'idopont_id, partner_id, datum, foglalasido, online,'
-                . ' emailkoszono, emailemlekezteto, emailemlekeztetodatum, lemondva, lemondasdatum, lemondasoka,'
-                . ' megjelent, megjelentido, idopontreszvetelid, fizmod_id, fizetvepenztar_id, fizetvebankszamla_id,'
-                . ' fizetve, fizetesdatum, fizetveosszeghuf, fizetvepenztarbizonylatszam, fizetvepenztartetelid,'
-                . ' fizetvebankbizonylatszam, fizetvebanktetelid, szamlazva, szamlazasdatum, szamlaszam,'
-                . ' szamlazvabizonylattipus, szamlazvakelt, szamlazvateljesites, szamlazvaosszeghuf';
-            $conn->executeStatement(
-                'INSERT INTO idopontfoglalas (' . $oszlopok . ', varolistas, visszautalva, emaildijbekero)'
-                . ' SELECT ' . $oszlopok . ', 0, 0, 0 FROM idopontfoglalas_regi'
-            );
-            $naplo[] = 'idopontfoglalas beolvasztva: ' . $conn->executeQuery(
-                'SELECT COUNT(*) FROM idopontfoglalas_regi'
-            )->fetchOne() . ' sor';
-        }
-
-        // a _regi táblákat szándékosan nem dobjuk el: kézi ellenőrzés után törölhetők
-        if ($naplo) {
-            @file_put_contents(
-                \mkw\store::logsPath('idopontosszevonas.log'),
-                date('Y-m-d H:i:s') . "\n" . implode("\n", $naplo) . "\n",
-                FILE_APPEND
-            );
-        }
+        // a rendezveny / rendezvenyjelentkezes / rendezvenytipus táblákat szándékosan nem dobjuk el:
+        // kézi ellenőrzés után törölhetők
         \mkw\store::setParameter(\mkw\consts::DBVersion, '0148');
     }
 }
