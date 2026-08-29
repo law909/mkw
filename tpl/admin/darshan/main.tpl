@@ -68,13 +68,6 @@
                     <div>
                         <label for="JRDatumEdit">{at('Dátum')}:</label>
                         <input id="JRDatumEdit" name="datum" type="text" size="12" data-datum="{$datumstr}" class="mattable-important" required="required">
-                        <label for="JRJogateremEdit">{at('Terem')}:</label>
-                        <select id="JRJogateremEdit" name="jogaterem" class="mattable-important" required="required">
-                            <option value="">{at('válassz')}</option>
-                            {foreach $jogateremlist as $e}
-                                <option value="{$e.id}"{if ($e.selected)} selected="selected"{/if}>{$e.caption}</option>
-                            {/foreach}
-                        </select>
                         <label for="JRJogaoratipusEdit">{at('Óra típus')}:</label>
                         <select id="JRJogaoratipusEdit" name="jogaoratipus" class="mattable-important" required="required">
                             <option value="">{at('válassz')}</option>

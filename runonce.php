@@ -2025,6 +2025,16 @@ if ($DBVersion < '0148') {
     }
 }
 
+if ($DBVersion < '0149') {
+    // A terem (Jogaterem) fogalma megszűnt: az órarend, a jóga részvétel és a szakmai anyag is csak
+    // helyszínt tart nyilván. A menüpont útvonala már nincs regisztrálva, ezért üres oldalt adna.
+    // A jogaterem tábla marad, a nevek onnan visszakereshetők.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DELETE FROM menu WHERE url = "/admin/jogaterem/viewlist"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0149');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

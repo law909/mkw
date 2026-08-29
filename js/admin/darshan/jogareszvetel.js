@@ -126,7 +126,6 @@ function jogareszvetel() {
         mkwcomp.datumEdit.clear('#JRDatumEdit');
         $('.js-reszveteltable').remove();
 
-        $('#JRJogateremEdit')[0].selectedIndex = 0;
         $('#JRJogaoratipusEdit')[0].selectedIndex = 0;
         $('#JRTanarEdit')[0].selectedIndex = 0;
         reszveteldb = 0;

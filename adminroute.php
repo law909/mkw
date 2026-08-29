@@ -230,14 +230,6 @@ $router->map('GET', '/admin/szotar/htmllist', 'szotarController#htmllist', 'admi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');
 }
-$router->map('GET', '/admin/jogaterem/viewlist', 'jogateremController#viewlist', 'adminjogateremviewlist');
-$router->map('GET', '/admin/jogaterem/getlistbody', 'jogateremController#getlistbody', 'adminjogateremgetlistbody');
-$router->map('GET', '/admin/jogaterem/getkarb', 'jogateremController#getkarb', 'adminjogateremgetkarb');
-$router->map('GET', '/admin/jogaterem/viewkarb', 'jogateremController#viewkarb', 'adminjogateremviewkarb');
-$router->map('GET', '/admin/jogaterem/htmllist', 'jogateremController#htmllist', 'adminjogateremhtmllist');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'adminjogateremsave');
-}
 $router->map('GET', '/admin/jogaoratipus/viewlist', 'jogaoratipusController#viewlist', 'adminjogaoratipusviewlist');
 $router->map('GET', '/admin/jogaoratipus/getlistbody', 'jogaoratipusController#getlistbody', 'adminjogaoratipusgetlistbody');
 $router->map('GET', '/admin/jogaoratipus/getkarb', 'jogaoratipusController#getkarb', 'adminjogaoratipusgetkarb');

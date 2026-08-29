@@ -21,10 +21,9 @@ class OrarendRepository extends \mkwhelpers\Repository
     public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
-            'SELECT _xx,dolgozo,jogaterem,jogaoratipus'
+            'SELECT _xx,dolgozo,jogaoratipus'
             . ' FROM Entities\Orarend _xx'
             . ' LEFT JOIN _xx.dolgozo dolgozo'
-            . ' LEFT JOIN _xx.jogaterem jogaterem'
             . ' LEFT JOIN _xx.jogaoratipus jogaoratipus'
             . $this->getFilterString($filter)
             . $this->getOrderString($order)
@@ -45,7 +44,6 @@ class OrarendRepository extends \mkwhelpers\Repository
             'SELECT COUNT(_xx)'
             . ' FROM Entities\Orarend _xx'
             . ' LEFT JOIN _xx.dolgozo dolgozo'
-            . ' LEFT JOIN _xx.jogaterem jogaterem'
             . ' LEFT JOIN _xx.jogaoratipus jogaoratipus'
             . $this->getFilterString($filter)
         );
