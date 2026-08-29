@@ -1084,7 +1084,6 @@ class Idopontfoglalas
             'helyszincim' => $idopont?->getJogahelyszinCim(),
             'ar' => $ar,
             'kellszamlazasiadat' => $idopont?->getKellszamlazasiadat(),
-            'csomag' => $idopont?->isCsomag(),
 
             'partnerid' => $this->getPartnerId(),
             'partnernev' => $this->getPartnerNev(),

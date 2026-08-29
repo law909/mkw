@@ -465,7 +465,6 @@ class idopontController extends \mkwhelpers\MattableController
         $v->setVar('szabadhelykovetes', $idopont->hasLetszamkorlat());
         $v->setVar('varolistavan', $idopont->isVarolistavan());
         $v->setVar('szabadhelyszam', $idopont->getFreePlaces() ?? 0);
-        $v->setVar('csomag', $idopont->isCsomag());
         echo $v->getTemplateResult();
     }
 

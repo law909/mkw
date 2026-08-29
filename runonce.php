@@ -1863,12 +1863,12 @@ if ($DBVersion < '0146') {
 
             $conn->executeStatement(
                 'INSERT INTO idopont (id, tipus, nev, uid, url, onlineurl, ar, earlybirdar, earlybirdvege,'
-                . ' maxresztvevo, varolistavan, csomag, kellszamlazasiadat,'
+                . ' maxresztvevo, varolistavan, kellszamlazasiadat,'
                 . ' dolgozo_id, jogahelyszin_id, termek_id, idopontallapot_id,'
                 . ' createdby, updatedby, created, lastmod,'
                 . ' onlinevalaszthato, ismetlodo, nap, inaktiv)'
                 . " SELECT id, 'rendezveny', nev, uid, url, onlineurl, ar, earlybirdar, earlybirdvege,"
-                . ' maxferohely, varolistavan, csomag, kellszamlazasiadat,'
+                . ' maxferohely, varolistavan, kellszamlazasiadat,'
                 . ' tanar_id, helyszin_id, termek_id, rendezvenyallapot_id,'
                 . ' createdby, updatedby, created, lastmod,'
                 . ' 0, 0, 0, 0'

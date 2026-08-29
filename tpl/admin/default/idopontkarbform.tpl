@@ -156,10 +156,6 @@
                         </select></td>
                 </tr>
                 <tr>
-                    <td><label for="CsomagEdit">{at('Csomag')}:</label></td>
-                    <td><input id="CsomagEdit" name="csomag" type="checkbox"{if ($egyed.csomag)} checked="checked"{/if}></td>
-                </tr>
-                <tr>
                     <td><label for="UrlEdit">{at('Webcím')}:</label></td>
                     <td colspan="3"><input id="UrlEdit" name="url" type="text" size="83" maxlength="255"
                                            value="{$egyed.url}"></td>

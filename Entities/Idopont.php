@@ -142,9 +142,6 @@ class Idopont
     private $varolistavan = true;
 
     /** @ORM\Column(type="boolean",nullable=false) */
-    private $csomag = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
     private $kellszamlazasiadat = true;
 
     /** @ORM\Column(type="boolean", nullable=false) */
@@ -215,9 +212,6 @@ class Idopont
     public function getTeljesNev()
     {
         $r = $this->nev !== '' ? $this->nev : $this->getIdoponttemaNev();
-        if ($this->csomag) {
-            return $r;
-        }
         if ($this->getDatumStr()) {
             $r .= ' ' . $this->getDatumStr();
         } elseif ($this->getNapNev()) {
@@ -669,16 +663,6 @@ class Idopont
     public function setVarolistavan($varolistavan): void
     {
         $this->varolistavan = $varolistavan;
-    }
-
-    public function isCsomag()
-    {
-        return $this->csomag;
-    }
-
-    public function setCsomag($csomag): void
-    {
-        $this->csomag = $csomag;
     }
 
     public function getKellszamlazasiadat()
