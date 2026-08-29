@@ -23,12 +23,11 @@ class IdopontRepository extends \mkwhelpers\Repository
     public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
-            'SELECT _xx,dolgozo,idoponttema,jogahelyszin,jogaterem,termek,idopontallapot'
+            'SELECT _xx,dolgozo,idoponttema,jogahelyszin,termek,idopontallapot'
             . ' FROM Entities\Idopont _xx'
             . ' LEFT JOIN _xx.dolgozo dolgozo'
             . ' LEFT JOIN _xx.idoponttema idoponttema'
             . ' LEFT JOIN _xx.jogahelyszin jogahelyszin'
-            . ' LEFT JOIN _xx.jogaterem jogaterem'
             . ' LEFT JOIN _xx.termek termek'
             . ' LEFT JOIN _xx.idopontallapot idopontallapot'
             . $this->getFilterString($filter)
@@ -63,7 +62,6 @@ class IdopontRepository extends \mkwhelpers\Repository
             . ' LEFT JOIN _xx.dolgozo dolgozo'
             . ' LEFT JOIN _xx.idoponttema idoponttema'
             . ' LEFT JOIN _xx.jogahelyszin jogahelyszin'
-            . ' LEFT JOIN _xx.jogaterem jogaterem'
             . ' LEFT JOIN _xx.termek termek'
             . ' LEFT JOIN _xx.idopontallapot idopontallapot'
             . $this->getFilterString($filter)

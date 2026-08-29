@@ -60,15 +60,6 @@
                             {/foreach}
                         </select></td>
                 </tr>
-                <tr>
-                    <td><label for="JogateremEdit">{at('Terem')}:</label></td>
-                    <td><select id="JogateremEdit" name="jogaterem">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $jogateremlist as $_d}
-                                <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
                 </tbody>
             </table>
             {* a két blokk kizárja egymást, az ismétlődő jelölő kapcsol köztük (idopont.js) *}

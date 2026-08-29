@@ -357,8 +357,9 @@ class orarendController extends \mkwhelpers\MattableController
                 'teremclass' => '',
                 'helyettesito' => '',
                 'helyettesitourl' => '',
-                'terem' => $item->getJogaterem()?->getNev(),
-                'class' => $item->getJogaterem()?->getOrarendclass(),
+                // az időpontnak nincs terme, csak helyszíne
+                'terem' => $item->getJogahelyszinNev(),
+                'class' => '',
                 'delelott' => false,
                 'elmarad' => false,
                 'multilang' => false,

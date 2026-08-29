@@ -10,7 +10,6 @@ use Entities\Idopontallapot;
 use Entities\Idopontfoglalas;
 use Entities\Idoponttema;
 use Entities\Jogahelyszin;
-use Entities\Jogaterem;
 use Entities\Partner;
 use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
@@ -46,7 +45,6 @@ class idopontController extends \mkwhelpers\MattableController
         $x['idoponttemanev'] = $t->getIdoponttemaNev();
         $x['jogahelyszinnev'] = $t->getJogahelyszinNev();
         $x['jogahelyszincim'] = $t->getJogahelyszinCim();
-        $x['jogateremnev'] = $t->getJogateremNev();
         $x['termeknev'] = $t->getTermekNev();
         $x['idopontallapotnev'] = $t->getIdopontallapotNev();
         $x['teljesnev'] = $t->getTeljesNev();
@@ -106,7 +104,6 @@ class idopontController extends \mkwhelpers\MattableController
         $obj->setDolgozo($this->getRepo(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo')));
         $obj->setIdoponttema($this->getRepo(Idoponttema::class)->find($this->params->getIntRequestParam('idoponttema')));
         $obj->setJogahelyszin($this->getRepo(Jogahelyszin::class)->find($this->params->getIntRequestParam('jogahelyszin')));
-        $obj->setJogaterem($this->getRepo(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem')));
         $obj->setIdopontallapot($this->getRepo(Idopontallapot::class)->find($this->params->getIntRequestParam('idopontallapot')));
         $obj->setTermek($this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termek')));
 
@@ -176,9 +173,6 @@ class idopontController extends \mkwhelpers\MattableController
         }
         if (!is_null($this->params->getRequestParam('jogahelyszinfilter', null))) {
             $filter->addFilter('jogahelyszin', '=', $this->params->getIntRequestParam('jogahelyszinfilter'));
-        }
-        if (!is_null($this->params->getRequestParam('jogateremfilter', null))) {
-            $filter->addFilter('jogaterem', '=', $this->params->getIntRequestParam('jogateremfilter'));
         }
         if (!is_null($this->params->getRequestParam('idopontallapotfilter', null))) {
             $filter->addFilter('idopontallapot', '=', $this->params->getIntRequestParam('idopontallapotfilter'));
@@ -251,7 +245,6 @@ class idopontController extends \mkwhelpers\MattableController
                 $idopont ? $idopont->getJogahelyszinNev() : ''
             )
         );
-        $view->setVar('jogateremlist', (new jogateremController())->getSelectList($idopont?->getJogaterem()?->getId()));
         $view->setVar('idopontallapotlist', (new idopontallapotController())->getSelectList($idopont?->getIdopontallapot()?->getId()));
         $view->setVar('termeklist', (new termekController())->getSelectList($idopont?->getTermek()?->getId()));
         $view->setVar('naplist', \mkw\store::getDaynameSelectList($idopont ? $idopont->getNap() : 0));
@@ -264,7 +257,6 @@ class idopontController extends \mkwhelpers\MattableController
         $view->setVar('dolgozolist', (new dolgozoController())->getSelectList());
         $view->setVar('idoponttemalist', (new idoponttemaController())->getSelectList());
         $view->setVar('jogahelyszinlist', (new jogahelyszinController())->getSelectList());
-        $view->setVar('jogateremlist', (new jogateremController())->getSelectList());
         $view->setVar('idopontallapotlist', (new idopontallapotController())->getSelectList());
         $view->setVar('termeklist', (new termekController())->getSelectList(null));
     }

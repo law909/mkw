@@ -87,12 +87,6 @@ class Idopont
     private $jogahelyszin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Jogaterem")
-     * @ORM\JoinColumn(name="jogaterem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
-     */
-    private $jogaterem;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Termek")
      * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -379,24 +373,6 @@ class Idopont
     public function setJogahelyszin($jogahelyszin)
     {
         $this->jogahelyszin = $jogahelyszin;
-    }
-
-    public function getJogaterem()
-    {
-        return $this->jogaterem;
-    }
-
-    public function getJogateremNev()
-    {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getNev();
-        }
-        return '';
-    }
-
-    public function setJogaterem($jogaterem)
-    {
-        $this->jogaterem = $jogaterem;
     }
 
     public function getTermek()

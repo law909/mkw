@@ -112,7 +112,6 @@ $(document).ready(function () {
                     '#dolgozofilter',
                     '#idoponttemafilter',
                     '#jogahelyszinfilter',
-                    '#jogateremfilter',
                     '#idopontallapotfilter',
                     '#inaktivfilter',
                     '#ismetlodofilter'

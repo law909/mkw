@@ -32,7 +32,7 @@
                 <td>{at('Tanár')}: {$_egyed.dolgozonev}</td>
             </tr>
             <tr>
-                <td>{at('Helyszín')}: {$_egyed.jogahelyszinnev}{if ($_egyed.jogateremnev)} / {$_egyed.jogateremnev}{/if}</td>
+                <td>{at('Helyszín')}: {$_egyed.jogahelyszinnev}</td>
             </tr>
             <tr>
                 <td>{at('Ár')}: <span class="pricenowrap">{number_format($_egyed.ar|default:0, 2, '.', ' ')}</span></td>

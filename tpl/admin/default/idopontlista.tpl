@@ -62,16 +62,6 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
-                <label for="jogateremfilter">{at('Terem')}: </label>
-                <select id="jogateremfilter" name="jogateremfilter">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $jogateremlist as $_d}
-                        <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
-                    {/foreach}
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
                 <label for="idopontallapotfilter">{at('Állapot')}: </label>
                 <select id="idopontallapotfilter" name="idopontallapotfilter">
                     <option value="">{at('válasszon')}</option>
