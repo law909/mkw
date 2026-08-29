@@ -43,7 +43,9 @@
                         {if ($idopont['ar'] > 0)}
                             <div class="margin-bottom-5">{$idopont['ar']|number_format:0:",":" "} Ft</div>
                         {/if}
-                        <div>{$idopont['szabadhely']} szabad hely</div>
+                        {if ($idopont['szabadhely'] !== null)}
+                            <div>{$idopont['szabadhely']} szabad hely</div>
+                        {/if}
                     </div>
                     <div class="dtttanar">
                         {if ($idopont['megvanhely'])}
