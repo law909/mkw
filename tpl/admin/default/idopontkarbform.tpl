@@ -96,29 +96,36 @@
                 </tr>
                 </tbody>
             </table>
+            <fieldset class="mattkarb-doboz">
+                <legend>{at('Ár és számlázás')}</legend>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td><label for="ArEdit">{at('Ár')}:</label></td>
+                        <td><input id="ArEdit" name="ar" type="number" step="any" value="{$egyed.ar}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="EarlybirdarEdit">{at('Early bird ár')}:</label></td>
+                        <td><input id="EarlybirdarEdit" name="earlybirdar" type="number" step="any" value="{$egyed.earlybirdar}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="EarlybirdvegeEdit">{at('Early bird vége')}:</label></td>
+                        <td><input id="EarlybirdvegeEdit" name="earlybirdvege" data-datum="{$egyed.earlybirdvege}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="TermekEdit">{at('Termék a számlán')}:</label></td>
+                        <td><select id="TermekEdit" name="termek">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $termeklist as $_d}
+                                    <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
+                                {/foreach}
+                            </select></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
             <table>
                 <tbody>
-                <tr>
-                    <td><label for="ArEdit">{at('Ár')}:</label></td>
-                    <td><input id="ArEdit" name="ar" type="number" step="any" value="{$egyed.ar}"></td>
-                </tr>
-                <tr>
-                    <td><label for="EarlybirdarEdit">{at('Early bird ár')}:</label></td>
-                    <td><input id="EarlybirdarEdit" name="earlybirdar" type="number" step="any" value="{$egyed.earlybirdar}"></td>
-                </tr>
-                <tr>
-                    <td><label for="EarlybirdvegeEdit">{at('Early bird vége')}:</label></td>
-                    <td><input id="EarlybirdvegeEdit" name="earlybirdvege" data-datum="{$egyed.earlybirdvege}"></td>
-                </tr>
-                <tr>
-                    <td><label for="TermekEdit">{at('Termék a számlán')}:</label></td>
-                    <td><select id="TermekEdit" name="termek">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $termeklist as $_d}
-                                <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
                 <tr>
                     <td><label for="MaxresztvevoEdit">{at('Max. résztvevő szám')}:</label></td>
                     <td><input id="MaxresztvevoEdit" name="maxresztvevo" type="number" step="1" min="0"
