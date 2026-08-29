@@ -21,18 +21,19 @@
                     <div class="dttidopont{if ($idopont['delelott'])} delelott{/if}">{$idopont['kezdet']}-{$idopont['veg']}</div>
                     <div class="dttoranev">
                         {* a saját webcím erősebb a témáénál: az az alkalom kiírása a wordpress oldalon *}
+                        {* a törzsekben relatív útvonalak állnak, ezért megy mindegyik prefixUrl-lel *}
                         <div class="margin-bottom-5">
                             {if ($idopont['url'])}
                                 <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent">{$idopont['nev']}</a>
                             {elseif ($idopont['temaurl'])}
-                                <a href="{$idopont['temaurl']}" target="_parent">{$idopont['nev']}</a>
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['temaurl'])}" target="_parent">{$idopont['nev']}</a>
                             {else}
                                 {$idopont['nev']}
                             {/if}
                         </div>
                         <div class="margin-bottom-5">
                             {if ($idopont['tanarurl'])}
-                                <a href="{$idopont['tanarurl']}" target="_parent">{$idopont['tanar']}</a>
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['tanarurl'])}" target="_parent">{$idopont['tanar']}</a>
                             {else}
                                 {$idopont['tanar']}
                             {/if}
