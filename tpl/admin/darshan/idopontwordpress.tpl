@@ -20,11 +20,14 @@
                 <div class="dttora">
                     <div class="dttidopont{if ($idopont['delelott'])} delelott{/if}">{$idopont['kezdet']}-{$idopont['veg']}</div>
                     <div class="dttoranev">
+                        {* a saját webcím erősebb a témáénál: az az alkalom kiírása a wordpress oldalon *}
                         <div class="margin-bottom-5">
-                            {if ($idopont['temaurl'])}
-                                <a href="{$idopont['temaurl']}" target="_parent">{$idopont['temanev']}</a>
+                            {if ($idopont['url'])}
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent">{$idopont['nev']}</a>
+                            {elseif ($idopont['temaurl'])}
+                                <a href="{$idopont['temaurl']}" target="_parent">{$idopont['nev']}</a>
                             {else}
-                                {$idopont['temanev']}
+                                {$idopont['nev']}
                             {/if}
                         </div>
                         <div class="margin-bottom-5">
@@ -44,8 +47,13 @@
                     </div>
                     <div class="dtttanar">
                         {if ($idopont['megvanhely'])}
-                            <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                               class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                            {if ($idopont['url'])}
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent"
+                                   class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                            {else}
+                                <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
+                                   class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                            {/if}
                         {else}
                             <div class="pirosszoveg">BETELT</div>
                         {/if}
