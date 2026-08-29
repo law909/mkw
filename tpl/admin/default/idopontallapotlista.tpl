@@ -28,7 +28,6 @@
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
                 <th>{at('Sorrend')}</th>
-                <th>{at('Órarendben')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

@@ -6,5 +6,4 @@
                     class="ui-icon ui-icon-circle-minus"></span></a>
     </td>
     <td class="cell">{$_egyed.sorrend}</td>
-    <td class="cell">{if ($_egyed.orarendbenszerepel)}{at('igen')}{else}{at('nem')}{/if}</td>
 </tr>

@@ -1807,8 +1807,8 @@ if ($DBVersion < '0145') {
         if ($vanTabla('rendezvenytipus')
             && (int)$conn->executeQuery('SELECT COUNT(*) FROM idopontallapot')->fetchOne() === 0) {
             $conn->executeStatement(
-                'INSERT INTO idopontallapot (id, nev, sorrend, orarendbenszerepel)'
-                . ' SELECT id, nev, sorrend, orarendbenszerepel FROM rendezvenytipus'
+                'INSERT INTO idopontallapot (id, nev, sorrend)'
+                . ' SELECT id, nev, sorrend FROM rendezvenytipus'
             );
         }
         $conn->executeStatement(
