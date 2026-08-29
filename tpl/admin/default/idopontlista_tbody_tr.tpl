@@ -100,49 +100,4 @@
             </tbody>
         </table>
     </td>
-    <td class="cell">
-        {if ($_egyed.tipus == 'rendezveny')}
-            {* a teendőknél a kiemelés azt jelenti, hogy még nincs kész – ezért data-invert *}
-            <table>
-                <tbody>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todonaptar" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todonaptar)} ui-state-hover{/if}">{at('Naptár frissítés')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todofotobe" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todofotobe)} ui-state-hover{/if}">{at('Fotó bekérés')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todoleirasbe" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todoleirasbe)} ui-state-hover{/if}">{at('Leírás bekérés')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todoplakat" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todoplakat)} ui-state-hover{/if}">{at('Plakát')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todowebposzt" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todowebposzt)} ui-state-hover{/if}">{at('Poszt a weboldalra')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todowebslider" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todowebslider)} ui-state-hover{/if}">{at('Új dia weboldal sliderbe')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todourlap" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todourlap)} ui-state-hover{/if}">{at('Űrlap jelentkezéshez')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todofbevent" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todofbevent)} ui-state-hover{/if}">{at('Facebook event')}</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#" data-id="{$_egyed.id}" data-flag="todofbhirdetes" data-invert="1"
-                           class="js-flagcheckbox{if (!$_egyed.todofbhirdetes)} ui-state-hover{/if}">{at('Facebook hirdetés')}</a></td>
-                </tr>
-                </tbody>
-            </table>
-        {/if}
-    </td>
 </tr>

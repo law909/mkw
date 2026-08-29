@@ -1864,15 +1864,11 @@ if ($DBVersion < '0146') {
                 . ' maxresztvevo, varolistavan, csomag, kellszamlazasiadat, orarendbenszerepel,'
                 . ' dolgozo_id, jogahelyszin_id, jogaterem_id, termek_id, idopontallapot_id,'
                 . ' createdby, updatedby, created, lastmod,'
-                . ' todonaptar, todowebposzt, todourlap, todowebslider, todofbevent, todofbhirdetes,'
-                . ' todoplakat, todofotobe, todoleirasbe,'
                 . ' onlinevalaszthato, ismetlodo, nap, inaktiv)'
                 . " SELECT id, 'rendezveny', nev, uid, url, onlineurl, ar, earlybirdar, earlybirdvege,"
                 . ' maxferohely, varolistavan, csomag, kellszamlazasiadat, orarendbenszerepel,'
                 . ' tanar_id, helyszin_id, jogaterem_id, termek_id, rendezvenyallapot_id,'
                 . ' createdby, updatedby, created, lastmod,'
-                . ' todonaptar, todowebposzt, todourlap, todowebslider, todofbevent, todofbhirdetes,'
-                . ' todoplakat, todofotobe, todoleirasbe,'
                 . ' 0, 0, 0, 0'
                 . ' FROM rendezveny'
             );

@@ -330,33 +330,6 @@ class idopontController extends \mkwhelpers\MattableController
                 case 'onlinevalaszthato':
                     $obj->setOnlinevalaszthato($kibe);
                     break;
-                case 'todonaptar':
-                    $obj->setTodonaptar($kibe);
-                    break;
-                case 'todowebposzt':
-                    $obj->setTodowebposzt($kibe);
-                    break;
-                case 'todowebslider':
-                    $obj->setTodowebslider($kibe);
-                    break;
-                case 'todourlap':
-                    $obj->setTodourlap($kibe);
-                    break;
-                case 'todofbevent':
-                    $obj->setTodofbevent($kibe);
-                    break;
-                case 'todofbhirdetes':
-                    $obj->setTodofbhirdetes($kibe);
-                    break;
-                case 'todoplakat':
-                    $obj->setTodoplakat($kibe);
-                    break;
-                case 'todofotobe':
-                    $obj->setTodofotobe($kibe);
-                    break;
-                case 'todoleirasbe':
-                    $obj->setTodoleirasbe($kibe);
-                    break;
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();

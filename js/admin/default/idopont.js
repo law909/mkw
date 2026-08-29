@@ -25,7 +25,7 @@ $(document).ready(function () {
             $('#IsmetlodoCheck').on('change', toggleIsmetlodo);
             toggleIsmetlodo();
 
-            // a rendezvény-specifikus blokk (állapot, webcímek, órarend, teendők) csak ott kell
+            // a rendezvény-specifikus blokk (állapot, webcímek, órarend) csak ott kell
             function toggleTipus() {
                 $('.js-rendezvenyblokk').toggle($('#TipusEdit').val() === 'rendezveny');
             }
@@ -136,17 +136,13 @@ $(document).ready(function () {
             .on('click', '.js-flagcheckbox', function (e) {
                 e.preventDefault();
                 const $this = $(this);
-                // a teendő jelölőknél a kiemelés azt jelenti, hogy MÉG NINCS kész, az
-                // inaktív/online jelölőnél viszont azt, hogy be van kapcsolva
-                const hover = $this.is('.ui-state-hover');
-                const jelenlegiErtek = $this.data('invert') ? !hover : hover;
                 $.ajax({
                     url: '/admin/idopont/setflag',
                     type: 'POST',
                     data: {
                         id: $this.attr('data-id'),
                         flag: $this.attr('data-flag'),
-                        kibe: !jelenlegiErtek
+                        kibe: !$this.is('.ui-state-hover')
                     },
                     success: function () {
                         $this.toggleClass('ui-state-hover');

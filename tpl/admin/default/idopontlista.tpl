@@ -112,7 +112,6 @@
                 <th>{at('Adatok')}</th>
                 <th>{at('Állapot')}</th>
                 <th>{at('Jellemzők')}</th>
-                <th>{at('Teendők')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

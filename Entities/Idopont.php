@@ -159,33 +159,6 @@ class Idopont
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todonaptar = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todowebposzt = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todourlap = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todowebslider = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todofbevent = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todofbhirdetes = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todoplakat = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todofotobe = false;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $todoleirasbe = false;
-
     /** @ORM\OneToMany(targetEntity="IdopontDok", mappedBy="idopont", cascade={"persist", "remove"}) */
     private $idopontdokok;
 
@@ -783,96 +756,6 @@ class Idopont
     public function setInaktiv($inaktiv)
     {
         $this->inaktiv = $inaktiv;
-    }
-
-    public function getTodonaptar()
-    {
-        return $this->todonaptar;
-    }
-
-    public function setTodonaptar($todonaptar)
-    {
-        $this->todonaptar = $todonaptar;
-    }
-
-    public function getTodowebposzt()
-    {
-        return $this->todowebposzt;
-    }
-
-    public function setTodowebposzt($todowebposzt)
-    {
-        $this->todowebposzt = $todowebposzt;
-    }
-
-    public function getTodourlap()
-    {
-        return $this->todourlap;
-    }
-
-    public function setTodourlap($todourlap)
-    {
-        $this->todourlap = $todourlap;
-    }
-
-    public function getTodowebslider()
-    {
-        return $this->todowebslider;
-    }
-
-    public function setTodowebslider($todowebslider)
-    {
-        $this->todowebslider = $todowebslider;
-    }
-
-    public function getTodofbevent()
-    {
-        return $this->todofbevent;
-    }
-
-    public function setTodofbevent($todofbevent)
-    {
-        $this->todofbevent = $todofbevent;
-    }
-
-    public function getTodofbhirdetes()
-    {
-        return $this->todofbhirdetes;
-    }
-
-    public function setTodofbhirdetes($todofbhirdetes)
-    {
-        $this->todofbhirdetes = $todofbhirdetes;
-    }
-
-    public function getTodoplakat()
-    {
-        return $this->todoplakat;
-    }
-
-    public function setTodoplakat($todoplakat)
-    {
-        $this->todoplakat = $todoplakat;
-    }
-
-    public function getTodofotobe()
-    {
-        return $this->todofotobe;
-    }
-
-    public function setTodofotobe($todofotobe)
-    {
-        $this->todofotobe = $todofotobe;
-    }
-
-    public function getTodoleirasbe()
-    {
-        return $this->todoleirasbe;
-    }
-
-    public function setTodoleirasbe($todoleirasbe)
-    {
-        $this->todoleirasbe = $todoleirasbe;
     }
 
     public function getIdopontDokok()
