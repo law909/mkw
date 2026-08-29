@@ -23,7 +23,7 @@
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <input id="OnlinevalaszthatoCheck" name="onlinevalaszthato" type="checkbox"
-                   {if ($egyed.onlinevalaszthato)}checked="checked"{/if}>{at('Online is választható')}
+                   {if ($egyed.onlinevalaszthato)}checked="checked"{/if}>{at('"Online" is választható')}
             <input id="IsmetlodoCheck" name="ismetlodo" type="checkbox"
                    {if ($egyed.ismetlodo)}checked="checked"{/if}>{at('Ismétlődő (heti)')}
             <table>
