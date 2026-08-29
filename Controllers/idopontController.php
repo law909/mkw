@@ -330,7 +330,8 @@ class idopontController extends \mkwhelpers\MattableController
 
     /**
      * Publikus, wordpress iframe-be szánt heti nézet – az órarendé (orarendController::exportToWordpress) mintájára.
-     * Az egyszeri időpontok a saját napjukon, az ismétlődők minden héten a `nap` mezőjük szerint jelennek meg.
+     * Mindkét típus (időpont és rendezvény) megjelenik benne. Az egyszeriek a saját napjukon, az
+     * ismétlődők minden héten a `nap` mezőjük szerint.
      * URL paraméterek: o = hetek eltolása, t = tanár (dolgozo) id, tema = időpont téma id.
      */
     public function exportToWordpress()
@@ -424,15 +425,12 @@ class idopontController extends \mkwhelpers\MattableController
 
     /**
      * Az ismétlődők minden hétre érvényesek, ezért csak az egyszerieket szűrjük a hét dátumaira.
-     * A heti foglalónézet csak az időpontokat mutatja: a rendezvények a saját regisztrációs
-     * űrlapjukon és az órarend exportban jelennek meg.
      *
      * @return array
      */
     private function getIdopontokForWeek($ismetlodo, $startdatum, $vegdatum, $tanarkod, $temakod)
     {
         $filter = new FilterDescriptor();
-        $filter->addFilter('tipus', '=', Idopont::TIPUS_IDOPONT);
         $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter('ismetlodo', '=', $ismetlodo);
         if (!$ismetlodo) {
