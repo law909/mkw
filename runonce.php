@@ -1822,8 +1822,8 @@ if ($DBVersion < '0145') {
 
 if ($DBVersion < '0146') {
     // A rendezvény sorok átemelése az idopont táblába, az id-k megtartásával: a publikus regisztrációs
-    // linkek uid-ja és az admin könyvjelzők így érvényben maradnak. A már meglévő (időpont) sorok
-    // előbb a rendezvény id-k fölé csúsznak, hogy ne ütközzenek.
+    // linkek uid-ja és az admin könyvjelzők így érvényben maradnak. Az eddigi idopont/idopontfoglalas
+    // tartalom csak tesztadat volt, ezért az átemelés előtt kiürül – így nincs id-ütközés sem.
     $conn = \mkw\store::getEm()->getConnection();
     $vanTabla = function ($tabla) use ($conn) {
         return (int)$conn->executeQuery(
@@ -1843,35 +1843,21 @@ if ($DBVersion < '0146') {
     if ($vanOszlop('idopont', 'tipus') && $vanOszlop('idopont', 'uid')) {
         $naplo = [];
         if ($vanTabla('rendezveny')) {
-            $maxrend = (int)$conn->executeQuery('SELECT COALESCE(MAX(id), 0) FROM rendezveny')->fetchOne();
-            // A meglévő időpontok kikerülnek az útból, és a rájuk hivatkozó sorokat is átvezetjük.
-            // A sort és a gyerekeit csak egymás után lehet átírni, ezért az ellenőrzés a ciklus
-            // idejére kikapcsol – a párok együtt mozdulnak, árva sor nem keletkezik.
-            $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
-            try {
-                foreach ($conn->executeQuery(
-                    'SELECT id FROM idopont WHERE id <= ? ORDER BY id DESC',
-                    [$maxrend]
-                )->fetchFirstColumn() as $regiid) {
-                    $ujid = (int)$conn->executeQuery('SELECT COALESCE(MAX(id), 0) + 1 FROM idopont')->fetchOne();
-                    if ($ujid <= $maxrend) {
-                        $ujid = $maxrend + 1;
-                    }
-                    $conn->executeStatement('UPDATE idopont SET id = ? WHERE id = ?', [$ujid, $regiid]);
-                    $conn->executeStatement(
-                        'UPDATE idopontfoglalas SET idopont_id = ? WHERE idopont_id = ?',
-                        [$ujid, $regiid]
-                    );
-                    $conn->executeStatement(
-                        'UPDATE idopontreszvetel SET idopont_id = ? WHERE idopont_id = ?',
-                        [$ujid, $regiid]
-                    );
-                    $naplo[] = 'idopont id eltolva: #' . $regiid . ' -> #' . $ujid;
-                }
-            } finally {
-                $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
+            // az eddigi időpont tartalom tesztadat; a gyerekek előbb, az idegen kulcsok miatt.
+            // A törölt sorok azonosítóit naplózzuk, hogy utólag is látszódjon, mi esett ki.
+            foreach ($conn->executeQuery(
+                'SELECT f.id, f.idopont_id, f.partner_id, f.datum FROM idopontfoglalas f'
+            )->fetchAllAssociative() as $sor) {
+                $naplo[] = 'törölt teszt foglalás: #' . $sor['id'] . ' (idopont #' . $sor['idopont_id']
+                    . ', partner #' . $sor['partner_id'] . ', ' . $sor['datum'] . ')';
             }
-            $conn->executeStatement("UPDATE idopont SET tipus = 'idopont' WHERE tipus IS NULL OR tipus = ''");
+            foreach ($conn->executeQuery('SELECT id, kezdet, nap FROM idopont')->fetchAllAssociative() as $sor) {
+                $naplo[] = 'törölt teszt időpont: #' . $sor['id']
+                    . ' (kezdet ' . ($sor['kezdet'] ?: '-') . ', nap ' . $sor['nap'] . ')';
+            }
+            $conn->executeStatement('DELETE FROM idopontfoglalas');
+            $conn->executeStatement('DELETE FROM idopontreszvetel');
+            $conn->executeStatement('DELETE FROM idopont');
 
             $conn->executeStatement(
                 'INSERT INTO idopont (id, tipus, nev, uid, url, onlineurl, ar, earlybirdar, earlybirdvege,'
@@ -1960,22 +1946,7 @@ if ($DBVersion < '0147') {
 
     if ($vanOszlop('idopontfoglalas', 'varolistas') && $vanOszlop('idopontfoglalas', 'partnernev')) {
         if ($vanTabla('rendezvenyjelentkezes')) {
-            $maxjel = (int)$conn->executeQuery(
-                'SELECT COALESCE(MAX(id), 0) FROM rendezvenyjelentkezes'
-            )->fetchOne();
-            foreach ($conn->executeQuery(
-                'SELECT id FROM idopontfoglalas WHERE id <= ? ORDER BY id DESC',
-                [$maxjel]
-            )->fetchFirstColumn() as $regiid) {
-                $ujid = (int)$conn->executeQuery(
-                    'SELECT COALESCE(MAX(id), 0) + 1 FROM idopontfoglalas'
-                )->fetchOne();
-                if ($ujid <= $maxjel) {
-                    $ujid = $maxjel + 1;
-                }
-                $conn->executeStatement('UPDATE idopontfoglalas SET id = ? WHERE id = ?', [$ujid, $regiid]);
-            }
-
+            // a tábla a 0146-ban kiürült, tehát az eredeti id-k szabadok
             $conn->executeStatement(
                 'INSERT INTO idopontfoglalas (id, idopont_id, partner_id, foglalasido,'
                 . ' partnernev, partneremail, partnertelefon, megjegyzes, varolistas,'
