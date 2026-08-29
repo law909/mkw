@@ -391,6 +391,7 @@ class idopontController extends \mkwhelpers\MattableController
                 'kezdet' => $item->getStartTimeStr(),
                 'veg' => $item->getEndTimeStr(),
                 'ismetlodo' => $item->isIsmetlodo(),
+                'rendezveny' => $item->isRendezveny(),
                 'temanev' => $item->getIdoponttemaNev(),
                 'temaurl' => $item->getIdoponttemaUrl(),
                 'tanar' => $item->getDolgozoNev(),

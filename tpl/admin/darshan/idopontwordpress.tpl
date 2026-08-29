@@ -45,7 +45,7 @@
                     <div class="dtttanar">
                         {if ($idopont['megvanhely'])}
                             <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                               class="dttorarendbutton">Foglalok</a>
+                               class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
                         {else}
                             <div class="pirosszoveg">BETELT</div>
                         {/if}
