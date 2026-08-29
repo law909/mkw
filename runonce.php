@@ -1845,9 +1845,11 @@ if ($DBVersion < '0146') {
         if ($vanTabla('rendezveny')) {
             // az eddigi időpont tartalom tesztadat; a gyerekek előbb, az idegen kulcsok miatt.
             // A törölt sorok azonosítóit naplózzuk, hogy utólag is látszódjon, mi esett ki.
-            foreach ($conn->executeQuery(
-                'SELECT f.id, f.idopont_id, f.partner_id, f.datum FROM idopontfoglalas f'
-            )->fetchAllAssociative() as $sor) {
+            foreach (
+                $conn->executeQuery(
+                    'SELECT f.id, f.idopont_id, f.partner_id, f.datum FROM idopontfoglalas f'
+                )->fetchAllAssociative() as $sor
+            ) {
                 $naplo[] = 'törölt teszt foglalás: #' . $sor['id'] . ' (idopont #' . $sor['idopont_id']
                     . ', partner #' . $sor['partner_id'] . ', ' . $sor['datum'] . ')';
             }
@@ -1874,9 +1876,11 @@ if ($DBVersion < '0146') {
             );
 
             // a kezdoido szabadszöveg volt: "18:00", "9.30", "19:15-20:45" vagy üres
-            foreach ($conn->executeQuery(
-                'SELECT id, kezdodatum, kezdoido FROM rendezveny'
-            )->fetchAllAssociative() as $sor) {
+            foreach (
+                $conn->executeQuery(
+                    'SELECT id, kezdodatum, kezdoido FROM rendezveny'
+                )->fetchAllAssociative() as $sor
+            ) {
                 if (!$sor['kezdodatum']) {
                     $naplo[] = 'idopont #' . $sor['id'] . ': nincs kezdodatum, a kezdet üresen marad';
                     continue;
@@ -1905,9 +1909,11 @@ if ($DBVersion < '0146') {
             }
         }
         // üres uid-re a publikus reg-oldal véletlenül rátalálna
-        foreach ($conn->executeQuery(
-            "SELECT id FROM idopont WHERE uid IS NULL OR uid = ''"
-        )->fetchFirstColumn() as $id) {
+        foreach (
+            $conn->executeQuery(
+                "SELECT id FROM idopont WHERE uid IS NULL OR uid = ''"
+            )->fetchFirstColumn() as $id
+        ) {
             $conn->executeStatement('UPDATE idopont SET uid = ? WHERE id = ?', [uniqid('', true), $id]);
         }
         if ($naplo) {
@@ -2044,14 +2050,12 @@ if ($DBVersion < '0150') {
         . ' WHERE table_schema = DATABASE() AND table_name = "jogaterem"'
     );
     if ($vantabla) {
-        $sorok = $conn->fetchAllAssociative('SELECT * FROM jogaterem');
-        if ($sorok) {
-            \mkw\store::writelog(json_encode($sorok, JSON_UNESCAPED_UNICODE), 'jogaterem_tabla_eldobas.log');
-        }
-        foreach ($conn->fetchAllAssociative(
-            'SELECT DISTINCT TABLE_NAME, CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
-            . ' WHERE TABLE_SCHEMA = DATABASE() AND REFERENCED_TABLE_NAME = "jogaterem"'
-        ) as $fk) {
+        foreach (
+            $conn->fetchAllAssociative(
+                'SELECT DISTINCT TABLE_NAME, CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
+                . ' WHERE TABLE_SCHEMA = DATABASE() AND REFERENCED_TABLE_NAME = "jogaterem"'
+            ) as $fk
+        ) {
             $conn->executeStatement(
                 'ALTER TABLE ' . $fk['TABLE_NAME'] . ' DROP FOREIGN KEY ' . $fk['CONSTRAINT_NAME']
             );
