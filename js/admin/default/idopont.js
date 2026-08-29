@@ -25,14 +25,6 @@ $(document).ready(function () {
             $('#IsmetlodoCheck').on('change', toggleIsmetlodo);
             toggleIsmetlodo();
 
-            // a rendezvény-specifikus blokk (állapot, webcímek, órarend) csak ott kell
-            function toggleTipus() {
-                $('.js-rendezvenyblokk').toggle($('#TipusEdit').val() === 'rendezveny');
-            }
-
-            $('#TipusEdit').on('change', toggleTipus);
-            toggleTipus();
-
             const doktab = $('#DokTab');
             doktab
                 .on('click', '.js-doknewbutton', function (e) {

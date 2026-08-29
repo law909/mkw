@@ -137,8 +137,7 @@
                 </tbody>
             </table>
 
-            {* csak a rendezvény típusnál van értelme: publikus regisztráció, órarend, szervezési teendők *}
-            <table class="js-rendezvenyblokk"{if ($egyed.tipus != 'rendezveny')} style="display:none;"{/if}>
+            <table>
                 <tbody>
                 <tr>
                     <td><label for="AllapotEdit">{at('Állapot')}:</label></td>
