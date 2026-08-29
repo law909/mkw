@@ -8,7 +8,6 @@ use Entities\Jogahelyszin;
 use Entities\Jogaoratipus;
 use Entities\Orarend;
 use Entities\Orarendhelyettesites;
-use Entities\Idopont;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -316,48 +315,6 @@ class orarendController extends \mkwhelpers\MattableController
             $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
             $xdatum = clone $startdatum;
             $orarend[$item->getNap()]['napdatum'] = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
-            $orarend[$item->getNap()]['orak'][] = $orak;
-        }
-        // csak a rendezvények kerülnek az órarendbe; a foglalható időpontoknak saját heti nézetük van
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('tipus', '=', Idopont::TIPUS_RENDEZVENY);
-        $filter->addFilter('idopontallapot.orarendbenszerepel', '=', true);
-        if ($helyszinkod) {
-            $filter->addFilter('jogahelyszin', '=', $helyszinkod);
-        }
-        $rec = $this->getRepo(Idopont::class)->getWithJoins($filter, ['kezdet' => 'ASC']);
-        /** @var \Entities\Idopont $item */
-        foreach ($rec as $item) {
-            $orak = [
-                'id' => $item->getId(),
-                'kezdet' => $item->getStartTimeStr(),
-                'veg' => $item->getEndTimeStr(),
-                'oranev' => $item->getTeljesNev(),
-                'oraurl' => $item->getUrl(),
-                'tanar' => $item->getDolgozoNev(),
-                'tanarurl' => $item->getDolgozoUrl(),
-                'teremclass' => '',
-                'helyettesito' => '',
-                'helyettesitourl' => '',
-                // az időpontnak nincs terme, csak helyszíne
-                'terem' => $item->getJogahelyszinNev(),
-                'class' => '',
-                'delelott' => false,
-                'elmarad' => false,
-                'multilang' => false,
-                'onlineurl' => $item->getOnlineurl(),
-                'bejelentkezeskell' => false,
-                'datum' => '',
-                'bejelentkezesdb' => 0,
-                'maxbejelentkezes' => 0,
-                'megvanhely' => true,
-                'szabadhely' => 0,
-                'lemondhato' => false
-            ];
-            if (!array_key_exists($item->getNap(), $orarend)) {
-                $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
-                $orarend[$item->getNap()]['napdatum'] = $item->getDatumStr();
-            }
             $orarend[$item->getNap()]['orak'][] = $orak;
         }
 
