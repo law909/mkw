@@ -2031,7 +2031,14 @@ if ($DBVersion < '0148') {
     }
 }
 
-if ($DBVersion < '0149') {
+// A 0145–0148 elhalaszthatja magát, ha a ./updateschema.sh még nem futott le (fejlesztői gépen
+// előfordul). Az utánuk jövő blokkok nem léphetik át őket: a $DBVersion a kör elején olvasódik, így
+// egy feltétel nélküli marker-léptetés véglegesen kihagyná a migrációt. Ezért a tárolt értéket nézik.
+$idopontMigracioKesz = static function () {
+    return \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0148';
+};
+
+if ($DBVersion < '0149' && $idopontMigracioKesz()) {
     // A terem (Jogaterem) fogalma megszűnt: az órarend, a jóga részvétel és a szakmai anyag is csak
     // helyszínt tart nyilván. A menüpont útvonala már nincs regisztrálva, ezért üres oldalt adna.
     \mkw\store::getEm()->getConnection()->executeStatement(
@@ -2040,7 +2047,7 @@ if ($DBVersion < '0149') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0149');
 }
 
-if ($DBVersion < '0150') {
+if ($DBVersion < '0150' && $idopontMigracioKesz()) {
     // A jogaterem tábla eldobása. Leképezetlen, ezért a schema-tool nem nyúl hozzá – viszont a
     // már törölt kapcsolatok idegen kulcsai (és a leképezetlen archív táblákéi) még rajta lógnak,
     // azokat előbb bontani kell. Eldobás előtt a tartalom a naplóba megy, a helyszin (0127) mintájára.
@@ -2063,6 +2070,56 @@ if ($DBVersion < '0150') {
         $conn->executeStatement('DROP TABLE jogaterem');
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0150');
+}
+
+if ($DBVersion < '0151' && $idopontMigracioKesz()) {
+    // Az összevonás forrástáblái. Eldobni csak akkor szabad, ha minden soruk át is került: a runonce
+    // blokkjai egy körben futnak, a $DBVersion a kör elején olvasódik, tehát ha a 0146/0147 az
+    // updateschema hiányában kimaradt, a forrásadat még itt van. Ezért nem a markerre, hanem magára
+    // az adatra ellenőrzünk – enélkül ez a blokk elvinné azt, amit a migráció még nem mentett át.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vanTabla = function ($tabla) use ($conn) {
+        return (int)$conn->fetchOne(
+            'SELECT COUNT(*) FROM information_schema.TABLES'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+            [$tabla]
+        );
+    };
+    $mindAtkerult = function ($regi, $uj) use ($conn, $vanTabla) {
+        if (!$vanTabla($regi)) {
+            return true;
+        }
+        if (!$vanTabla($uj)) {
+            // a céltábla sincs meg: a migráció biztosan nem futott le
+            return false;
+        }
+        return (int)$conn->fetchOne(
+            'SELECT COUNT(*) FROM ' . $regi . ' r LEFT JOIN ' . $uj . ' u ON u.id = r.id WHERE u.id IS NULL'
+        ) === 0;
+    };
+
+    if ($mindAtkerult('rendezvenytipus', 'idopontallapot')
+        && $mindAtkerult('rendezveny', 'idopont')
+        && $mindAtkerult('rendezvenyjelentkezes', 'idopontfoglalas')) {
+        foreach (['rendezvenyjelentkezes', 'rendezveny', 'rendezvenytipus'] as $tabla) {
+            if (!$vanTabla($tabla)) {
+                continue;
+            }
+            foreach (
+                $conn->fetchAllAssociative(
+                    'SELECT DISTINCT TABLE_NAME, CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
+                    . ' WHERE TABLE_SCHEMA = DATABASE() AND REFERENCED_TABLE_NAME = ?',
+                    [$tabla]
+                ) as $fk
+            ) {
+                $conn->executeStatement(
+                    'ALTER TABLE ' . $fk['TABLE_NAME'] . ' DROP FOREIGN KEY ' . $fk['CONSTRAINT_NAME']
+                );
+            }
+            $conn->executeStatement('DROP TABLE ' . $tabla);
+        }
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0151');
+    }
 }
 
 /**
