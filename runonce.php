@@ -2028,11 +2028,37 @@ if ($DBVersion < '0148') {
 if ($DBVersion < '0149') {
     // A terem (Jogaterem) fogalma megszűnt: az órarend, a jóga részvétel és a szakmai anyag is csak
     // helyszínt tart nyilván. A menüpont útvonala már nincs regisztrálva, ezért üres oldalt adna.
-    // A jogaterem tábla marad, a nevek onnan visszakereshetők.
     \mkw\store::getEm()->getConnection()->executeStatement(
         'DELETE FROM menu WHERE url = "/admin/jogaterem/viewlist"'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0149');
+}
+
+if ($DBVersion < '0150') {
+    // A jogaterem tábla eldobása. Leképezetlen, ezért a schema-tool nem nyúl hozzá – viszont a
+    // már törölt kapcsolatok idegen kulcsai (és a leképezetlen archív táblákéi) még rajta lógnak,
+    // azokat előbb bontani kell. Eldobás előtt a tartalom a naplóba megy, a helyszin (0127) mintájára.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vantabla = $conn->fetchOne(
+        'SELECT COUNT(*) FROM information_schema.tables'
+        . ' WHERE table_schema = DATABASE() AND table_name = "jogaterem"'
+    );
+    if ($vantabla) {
+        $sorok = $conn->fetchAllAssociative('SELECT * FROM jogaterem');
+        if ($sorok) {
+            \mkw\store::writelog(json_encode($sorok, JSON_UNESCAPED_UNICODE), 'jogaterem_tabla_eldobas.log');
+        }
+        foreach ($conn->fetchAllAssociative(
+            'SELECT DISTINCT TABLE_NAME, CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
+            . ' WHERE TABLE_SCHEMA = DATABASE() AND REFERENCED_TABLE_NAME = "jogaterem"'
+        ) as $fk) {
+            $conn->executeStatement(
+                'ALTER TABLE ' . $fk['TABLE_NAME'] . ' DROP FOREIGN KEY ' . $fk['CONSTRAINT_NAME']
+            );
+        }
+        $conn->executeStatement('DROP TABLE jogaterem');
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0150');
 }
 
 /**
