@@ -1638,16 +1638,11 @@ $router->map('GET', '/admin/rendezveny/viewlist', 'idopontController#viewlist', 
 $router->map('GET', '/admin/rendezveny/getlistbody', 'idopontController#getlistbody', 'adminrendezvenygetlistbody');
 $router->map('GET', '/admin/rendezveny/getkarb', 'idopontController#getkarb', 'adminrendezvenygetkarb');
 $router->map('GET', '/admin/rendezveny/viewkarb', 'idopontController#viewkarb', 'adminrendezvenyviewkarb');
-// a partner dokumentum fül is ezt hívja (js/admin/default/partner.js), ezért a név nem változik
-$router->map('GET', '/admin/rendezvenydok/getemptyrow', 'idopontdokController#getemptyrow', 'adminrendezvenydokgetemptyrow');
-$router->map('GET', '/admin/idopontdok/getemptyrow', 'idopontdokController#getemptyrow', 'adminidopontdokgetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/rendezveny/save', 'idopontController#save', 'adminrendezvenysave');
     $router->map('POST', '/admin/rendezveny/setflag', 'idopontController#setflag', 'adminrendezvenysetflag');
     $router->map('POST', '/admin/idopont/email/kezdes', 'idopontController#sendKezdesEmail', 'adminsendidopontkezdesemail');
     $router->map('POST', '/admin/rendezveny/email/kezdes', 'idopontController#sendKezdesEmail', 'adminsendrendezvenykezdesemail');
-    $router->map('POST', '/admin/rendezvenydok/del', 'idopontdokController#del', 'adminrendezvenydokdel');
-    $router->map('POST', '/admin/idopontdok/del', 'idopontdokController#del', 'adminidopontdokdel');
 }
 
 $router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'idopontfoglalasController#viewlist', 'adminrendezvenyjelentkezesviewlist');

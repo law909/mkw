@@ -5,7 +5,6 @@ namespace Controllers;
 use Entities\Dolgozo;
 use Entities\Emailtemplate;
 use Entities\Idopont;
-use Entities\IdopontDok;
 use Entities\Idopontallapot;
 use Entities\Idopontfoglalas;
 use Entities\Idoponttema;
@@ -69,15 +68,6 @@ class idopontController extends \mkwhelpers\MattableController
             $x['foglalasdb'] = 0;
             $x['szabadhely'] = $t->getMaxresztvevo();
         }
-
-        if ($forKarb) {
-            $dokCtrl = new idopontdokController();
-            $dok = [];
-            foreach ($t->getIdopontDokok() as $dokje) {
-                $dok[] = $dokCtrl->loadVars($dokje);
-            }
-            $x['dokok'] = $dok;
-        }
         return $x;
     }
 
@@ -106,29 +96,6 @@ class idopontController extends \mkwhelpers\MattableController
         $obj->setJogahelyszin($this->getRepo(Jogahelyszin::class)->find($this->params->getIntRequestParam('jogahelyszin')));
         $obj->setIdopontallapot($this->getRepo(Idopontallapot::class)->find($this->params->getIntRequestParam('idopontallapot')));
         $obj->setTermek($this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termek')));
-
-        $dokids = $this->params->getArrayRequestParam('dokid');
-        foreach ($dokids as $dokid) {
-            if (($this->params->getStringRequestParam('dokurl_' . $dokid, '') === '') &&
-                ($this->params->getStringRequestParam('dokpath_' . $dokid, '') === '')) {
-                continue;
-            }
-            $dokoper = $this->params->getStringRequestParam('dokoper_' . $dokid);
-            if ($dokoper === 'add') {
-                $dok = new IdopontDok();
-                $obj->addIdopontDok($dok);
-            } elseif ($dokoper === 'edit') {
-                $dok = $this->getRepo(IdopontDok::class)->find($dokid);
-            } else {
-                continue;
-            }
-            if ($dok) {
-                $dok->setUrl($this->params->getStringRequestParam('dokurl_' . $dokid));
-                $dok->setPath($this->params->getStringRequestParam('dokpath_' . $dokid));
-                $dok->setLeiras($this->params->getStringRequestParam('dokleiras_' . $dokid));
-                $this->getEm()->persist($dok);
-            }
-        }
         return $obj;
     }
 

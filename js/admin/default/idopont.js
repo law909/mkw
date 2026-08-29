@@ -25,61 +25,6 @@ $(document).ready(function () {
             $('#IsmetlodoCheck').on('change', toggleIsmetlodo);
             toggleIsmetlodo();
 
-            const doktab = $('#DokTab');
-            doktab
-                .on('click', '.js-doknewbutton', function (e) {
-                    const $this = $(this);
-                    e.preventDefault();
-                    $.ajax({
-                        url: '/admin/idopontdok/getemptyrow',
-                        type: 'GET',
-                        success: function (data) {
-                            doktab.append(data);
-                            $('.js-doknewbutton,.js-dokdelbutton,.js-dokbrowsebutton,.js-dokopenbutton,.js-dokopen2button').button();
-                            $this.remove();
-                        }
-                    });
-                })
-                .on('click', '.js-dokdelbutton', function (e) {
-                    e.preventDefault();
-                    const $this = $(this);
-                    dialogcenter.html('Biztos, hogy törli a dokumentumot?').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'Igen': function () {
-                                $.ajax({
-                                    url: '/admin/idopontdok/del',
-                                    type: 'POST',
-                                    data: {id: $this.attr('data-id')},
-                                    success: function (data) {
-                                        $('#doktable_' + data).remove();
-                                    }
-                                });
-                                $(this).dialog('close');
-                            },
-                            'Nem': function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                })
-                .on('click', '.js-dokbrowsebutton', function (e) {
-                    e.preventDefault();
-                    const finder = new CKFinder(),
-                        $dokpathedit = $('#DokPathEdit_' + $(this).attr('data-id')),
-                        path = $dokpathedit.val();
-                    finder.resourceType = 'Images';
-                    if (path) {
-                        finder.startupPath = path.substring(path.indexOf('/', 1));
-                    }
-                    finder.selectActionFunction = function (fileUrl) {
-                        $dokpathedit.val(fileUrl);
-                    };
-                    finder.popup();
-                });
-            $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton,.js-dokopen2button').button();
             mkwcomp.datumEdit.init('#EarlybirdvegeEdit');
             new ClipboardJS('.js-uidcopy');
         }

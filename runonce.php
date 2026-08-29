@@ -1989,8 +1989,9 @@ if ($DBVersion < '0147') {
 }
 
 if ($DBVersion < '0148') {
-    // A dokumentumtár átkötése: az idopont id-k a rendezvényével egyeznek, ezért csak másolás.
-    // A rendezveny_id oszlop az IdopontDok átmeneti mezője miatt maradt meg idáig.
+    // A menüpontok átkötése az egyesített időpont modulra. A dokumentumtár átkötése kikerült innen:
+    // az IdopontDok azóta megszűnt, a sorait a 0152 törli. Emiatt az oszlopra sem lehet kapuzni –
+    // a jelzés, hogy az updateschema.sh lefutott, az idopont.tipus, mint a 0146-ban.
     $conn = \mkw\store::getEm()->getConnection();
     $vanOszlop = function ($tabla, $oszlop) use ($conn) {
         return (int)$conn->executeQuery(
@@ -2000,15 +2001,7 @@ if ($DBVersion < '0148') {
         )->fetchOne();
     };
 
-    if ($vanOszlop('dokumentumtar', 'idopont_id')) {
-        if ($vanOszlop('dokumentumtar', 'rendezveny_id')) {
-            $conn->executeStatement(
-                'UPDATE dokumentumtar SET idopont_id = rendezveny_id'
-                . " WHERE osztaly = 'rendezveny' AND idopont_id IS NULL AND rendezveny_id IS NOT NULL"
-            );
-        }
-        $conn->executeStatement("UPDATE dokumentumtar SET osztaly = 'idopont' WHERE osztaly = 'rendezveny'");
-
+    if ($vanOszlop('idopont', 'tipus')) {
         $conn->executeStatement(
             'UPDATE menu SET nev = "Időpontok", url = "/admin/idopont/viewlist", routename = "/admin/idopont"'
             . ' WHERE url = "/admin/rendezveny/viewlist"'
@@ -2120,6 +2113,27 @@ if ($DBVersion < '0151' && $idopontMigracioKesz()) {
         }
         \mkw\store::setParameter(\mkw\consts::DBVersion, '0151');
     }
+}
+
+if ($DBVersion < '0152' && $idopontMigracioKesz()) {
+    // Az időpont dokumentum fül megszűnt: az IdopontDok osztály kikerült a Dokumentumtar
+    // discriminator mapjéből, ezért a sorai betöltéskor kivételt dobnának. A kapcsolóoszlopokat
+    // a schema-tool már eldobta, így csak az osztaly szerint azonosíthatók. A tartalom naplóba megy.
+    $conn = \mkw\store::getEm()->getConnection();
+    $naplo = [];
+    foreach (
+        $conn->fetchAllAssociative(
+            "SELECT id, osztaly, url, path, leiras FROM dokumentumtar WHERE osztaly IN ('idopont', 'rendezveny')"
+        ) as $sor
+    ) {
+        $naplo[] = 'törölt időpont dokumentum: #' . $sor['id'] . ' (' . $sor['osztaly'] . ', url '
+            . ($sor['url'] ?: '-') . ', path ' . ($sor['path'] ?: '-') . ', ' . ($sor['leiras'] ?: '-') . ')';
+    }
+    if ($naplo) {
+        \mkw\store::writelog(implode(PHP_EOL, $naplo), 'idopontdok_torles.log');
+    }
+    $conn->executeStatement("DELETE FROM dokumentumtar WHERE osztaly IN ('idopont', 'rendezveny')");
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0152');
 }
 
 /**

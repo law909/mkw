@@ -147,16 +147,12 @@ class Idopont
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
-    /** @ORM\OneToMany(targetEntity="IdopontDok", mappedBy="idopont", cascade={"persist", "remove"}) */
-    private $idopontdokok;
-
     /** @ORM\OneToMany(targetEntity="Idopontfoglalas", mappedBy="idopont",cascade={"persist"}) */
     private $foglalasok;
 
     public function __construct()
     {
         $this->foglalasok = new ArrayCollection();
-        $this->idopontdokok = new ArrayCollection();
     }
 
     public function getId()
@@ -703,26 +699,6 @@ class Idopont
     public function setInaktiv($inaktiv)
     {
         $this->inaktiv = $inaktiv;
-    }
-
-    public function getIdopontDokok()
-    {
-        return $this->idopontdokok;
-    }
-
-    public function addIdopontDok(IdopontDok $dok)
-    {
-        $this->idopontdokok->add($dok);
-        $dok->setIdopont($this);
-    }
-
-    public function removeIdopontDok(IdopontDok $dok)
-    {
-        if ($this->idopontdokok->removeElement($dok)) {
-            $dok->removeIdopont($this);
-            return true;
-        }
-        return false;
     }
 
     /**

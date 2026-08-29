@@ -67,10 +67,10 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'tipus', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontallapot', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'termek', '' . "\0" . 'Entities\\Idopont' . "\0" . 'uid', '' . "\0" . 'Entities\\Idopont' . "\0" . 'url', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdvege', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontdokok', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'tipus', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontallapot', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'termek', '' . "\0" . 'Entities\\Idopont' . "\0" . 'uid', '' . "\0" . 'Entities\\Idopont' . "\0" . 'url', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdvege', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'tipus', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontallapot', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'termek', '' . "\0" . 'Entities\\Idopont' . "\0" . 'uid', '' . "\0" . 'Entities\\Idopont' . "\0" . 'url', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdvege', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontdokok', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'tipus', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontallapot', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'termek', '' . "\0" . 'Entities\\Idopont' . "\0" . 'uid', '' . "\0" . 'Entities\\Idopont' . "\0" . 'url', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdvege', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
     }
 
     /**
@@ -1114,39 +1114,6 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getIdopontDokok()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdopontDokok', []);
-
-        return parent::getIdopontDokok();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addIdopontDok(\Entities\IdopontDok $dok)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addIdopontDok', [$dok]);
-
-        return parent::addIdopontDok($dok);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeIdopontDok(\Entities\IdopontDok $dok)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeIdopontDok', [$dok]);
-
-        return parent::removeIdopontDok($dok);
     }
 
     /**
