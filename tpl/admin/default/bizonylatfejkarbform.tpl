@@ -14,7 +14,9 @@
           data-defaulttermek="{$defaulttermek|default}"
           data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}"
           data-eredetifizmod="{$egyed.fizmod}" data-eredetipenztmozgat="{if ($egyed.penztmozgat)}1{else}0{/if}"
-          data-readonly="{if ($readonly|default)}1{else}0{/if}">
+          data-readonly="{if ($readonly|default)}1{else}0{/if}"
+          data-nyomtatni="{if ($nyomtatni|default)}1{else}0{/if}" data-sendemail="{if ($sendemail|default)}1{else}0{/if}"
+          data-editprinted="{if ($tipuseditprinted|default)}1{else}0{/if}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
