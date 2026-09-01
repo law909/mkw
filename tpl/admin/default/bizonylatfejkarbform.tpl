@@ -536,6 +536,10 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
                     >{at('Bevét')}</a>
                 {/if}
+                {if ($showszallmegrbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szallmegrfej" data-oper="inherit"
+                       title="{at('Szállítói megrendelés')}">{at('Szállítói megrendelés')}</a>
+                {/if}
             {/if}
         </div>
     </form>
