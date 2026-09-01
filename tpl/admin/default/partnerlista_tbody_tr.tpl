@@ -136,6 +136,9 @@
         {/foreach}
     </td>
     <td class="cell">
+        {include 'dokumentumlinkek.tpl' doklinkek=$_partner.doklinkek}
+    </td>
+    <td class="cell">
         <table>
             <tbody>
             <tr>

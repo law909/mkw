@@ -118,6 +118,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['createdstr'] = $t->getCreatedStr();
 
         $x['gyartonev'] = $t->getGyartoNev();
+        $x['doklinkek'] = $this->getDokLinkek($t->getTermekDokok());
         $x['keszlet'] = $t->getKeszlet();
         $x['termekcsoportnev'] = $t->getTermekcsoportNev();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();

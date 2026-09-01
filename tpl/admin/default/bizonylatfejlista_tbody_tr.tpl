@@ -403,6 +403,9 @@
         </div>
     </td>
     <td class="cell">
+        {include 'dokumentumlinkek.tpl' doklinkek=$_egyed.doklinkek}
+    </td>
+    <td class="cell">
         <table>
             <tbody>
             {if ($_egyed.fizetve)}

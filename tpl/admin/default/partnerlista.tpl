@@ -171,6 +171,7 @@
                 {/if}
                 <th>{at('Megjegyzés')}</th>
                 <th>{at('Címkék')}</th>
+                <th>{at('Dokumentumok')}</th>
                 <th></th>
             </tr>
             </thead>

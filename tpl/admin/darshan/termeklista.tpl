@@ -77,6 +77,7 @@
                 <th>{at('Név')}</th>
                 <th>{at('Címkék')}</th>
                 <th>{at('Jellemzők')}</th>
+                <th>{at('Dokumentumok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

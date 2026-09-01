@@ -83,6 +83,7 @@ class partnerController extends \mkwhelpers\MattableController
             ? $t->getCimkeNevek()
             : ($this->cimkenevekcache[$t->getId()] ?? []);
         $x['fizmodnev'] = $t->getFizmodNev();
+        $x['doklinkek'] = $this->getDokLinkek($t->getPartnerDokok());
         $x['uzletkotonev'] = $t->getUzletkotoNev();
         $x['szallcim'] = $t->getSzallcim();
         $x['szuletesiidostr'] = $t->getSzuletesiidoStr();

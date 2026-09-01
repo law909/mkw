@@ -228,6 +228,7 @@
                 <th></th>
                 <th></th>
                 <th>{at('Kapcsolódó bizonylatok')}</th>
+                <th>{at('Dokumentumok')}</th>
                 <th class="js-sumcol"></th>
                 {if ($setup.osztottfizmod)}
                     <th></th>
