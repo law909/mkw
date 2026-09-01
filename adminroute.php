@@ -1554,6 +1554,7 @@ $router->map('GET', '/admin/rlbcsvexport/export', 'rlbexportController#RLBCSVExp
 $router->map('GET', '/admin/pdfszamlaexport/view', 'pdfszamlaexportController#view', 'adminpdfszamlaexportview');
 $router->map('POST', '/admin/pdfszamlaexport/sendemail', 'pdfszamlaexportController#sendEmail', 'adminpdfszamlasendemail');
 $router->map('GET', '/admin/pdfszamlaexport/download', 'pdfszamlaexportController#download', 'adminpdfszamladownload');
+$router->map('GET', '/admin/pdfszamlaexport/getutolso', 'pdfszamlaexportController#getUtolso', 'adminpdfszamlagetutolso');
 
 $router->map('GET', '/admin/xmlszamlaexport/view', 'xmlszamlaexportController#view', 'adminxmlszamlaexportview');
 $router->map('POST', '/admin/xmlszamlaexport/sendemail', 'xmlszamlaexportController#sendEmail', 'adminxmlszamlasendemail');
