@@ -1941,7 +1941,7 @@ let bizonylathelper = function ($) {
                 jelolDefaultTetelek();
 
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email,' +
-                    '.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton').button();
+                    '.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton,.js-tetelellenorzes').button();
 
                 $('.js-inheritbizonylat').each(function () {
                     let $this = $(this);
@@ -2215,7 +2215,7 @@ let bizonylathelper = function ($) {
                 tablebody: {
                     url: '/admin/' + entityName + '/getlistbody',
                     onStyle: function () {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
+                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
                             '.js-kiegyenlit, .js-mirexport').button();

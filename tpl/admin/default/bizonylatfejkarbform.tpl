@@ -521,6 +521,10 @@
                 <input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
             {/if}
             <a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
+            {if ($oper == 'edit' && $egyed.id && $egyed.nemrossz)}
+                <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$egyed.id|escape:'url'}" target="_blank"
+                   title="{at('Tételek ellenőrzése')}">{at('Tételek ellenőrzése')}</a>
+            {/if}
             {if (!$egyed.hibas && $egyed.nemrossz)}
                 {if ($showszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"

@@ -22,6 +22,10 @@
             {$_egyed.id}
         {/if}
         <a class="js-statusznaplobtn" href="#" data-id="{$_egyed.id}" title="{at('Bizonylat napló')}"><span class="ui-icon ui-icon-clipboard"></span></a>
+        {if ($_egyed.nemrossz)}
+            <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$_egyed.id|escape:'url'}" target="_blank"
+               title="{at('Tételek ellenőrzése')}"><span class="ui-icon ui-icon-check"></span></a>
+        {/if}
         {if (!$_egyed.hibas)}
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
                title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>

@@ -624,6 +624,11 @@ $router->map('GET', '/admin/bizonylatfej/getfolyoszamla', 'bizonylatfejControlle
 $router->map('GET', '/admin/bizonylatfej/getstatusznaplo', 'bizonylatfejController#getStatuszNaplo', 'admingetstatusznaplo');
 $router->map('GET', '/admin/bizonylatfej/kapcsolodopenzmozgas', 'bizonylatfejController#getKapcsolodoPenzmozgas', 'adminkapcsolodopenzmozgas');
 $router->map('GET', '/admin/bizonylatfej/gettarsbizonylatlist', 'bizonylatfejController#getTarsbizonylatList', 'adminbizonylatfejgettarsbizonylatlist');
+// a mentett bizonylat tételeinek vonalkódos ellenőrzése
+$router->map('GET', '/admin/bizonylatellenorzes/view', 'bizonylatellenorzesController#view', 'adminbizonylatellenorzesview');
+$router->map('GET', '/admin/bizonylatellenorzes/findtermek', 'bizonylatellenorzesController#findtermek', 'adminbizonylatellenorzesfindtermek');
+$router->map('GET', '/admin/bizonylatellenorzes/kereses', 'bizonylatellenorzesController#kereses', 'adminbizonylatellenorzeskereses');
+$router->map('GET', '/admin/bizonylatellenorzes/gettermek', 'bizonylatellenorzesController#gettermek', 'adminbizonylatellenorzesgettermek');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');
