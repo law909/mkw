@@ -651,6 +651,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $x['penzugyistatusz'] = \mkw\store::getPenzugyiStatusz($t->getEsedekesseg(), $x['egyenleg']);
             }
             $x['parbizonylat'] = $this->bizonylatReferencia($t->getParbizonylatfej());
+            $x['tarsbizonylat'] = $this->bizonylatReferencia($t->getTarsbizonylat());
             $szarmazok = [];
             foreach ($t->getSzulobizonylatfejek() as $gyerek) {
                 $szarmazok[] = $this->bizonylatReferencia($gyerek);

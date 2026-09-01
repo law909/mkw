@@ -354,6 +354,28 @@
                 </table>
             {/if}
         </div>
+        {if ($_egyed.tarsbizonylat)}
+            <div class="kapcsbiz-szulo">
+                <span>{at('Társbizonylat')}:</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {if ($_egyed.tarsbizonylat.listaurl)}
+                                <a href="{$_egyed.tarsbizonylat.listaurl}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.tarsbizonylat.id}</a>
+                            {else}
+                                {$_egyed.tarsbizonylat.id}
+                            {/if}
+                        </td>
+                        <td>{$_egyed.tarsbizonylat.tipusnev}</td>
+                        <td>{$_egyed.tarsbizonylat.keltstr}</td>
+                        <td>{$_egyed.tarsbizonylat.createdstr}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        {/if}
         <div class="kapcsbiz-szarmazo">
             <span>{at('Keletkezett bizonylatok')}:</span>
             {if (!$_egyed.szarmazobizonylatcount)}<strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}
