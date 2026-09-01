@@ -180,8 +180,19 @@ trait PartnerDataProvider
 
     public function getSzallitoSelectList($selid)
     {
+        return $this->getFlaggedSelectList('szallito', $selid);
+    }
+
+    /** A gyártónak jelölt partnerek (partner.gyarto) – a termék gyártó választójához és szűrőihez. */
+    public function getGyartoSelectList($selid)
+    {
+        return $this->getFlaggedSelectList('gyarto', $selid);
+    }
+
+    private function getFlaggedSelectList($field, $selid)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('szallito', '=', true);
+        $filter->addFilter($field, '=', true);
         $rec = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {

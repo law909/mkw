@@ -1160,7 +1160,7 @@ class TermekRepository extends \mkwhelpers\Repository
     public function getForImport($gyarto, $inaktiv = null)
     {
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('gyarto', '=', $gyarto);
+        $filter->addFilter('beszallito', '=', $gyarto);
         if ($inaktiv === false || $inaktiv === true) {
             $filter->addFilter('inaktiv', '=', $inaktiv);
         }
@@ -1176,7 +1176,7 @@ class TermekRepository extends \mkwhelpers\Repository
     public function getWithValtozatokForImport($gyarto)
     {
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('gyarto', '=', $gyarto);
+        $filter->addFilter('beszallito', '=', $gyarto);
         $q = $this->_em->createQuery(
             'SELECT _xx, v'
             . ' FROM Entities\Termek _xx'

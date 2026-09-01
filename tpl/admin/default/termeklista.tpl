@@ -26,6 +26,14 @@
                             value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
+                <label for="beszallitofilter">{at('Beszállító')}: </label>
+                <select id="beszallitofilter" name="beszallitofilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $beszallitolist as $_beszallito}
+                        <option
+                            value="{$_beszallito.id}"{if ($_beszallito.selected)} selected="selected"{/if}>{$_beszallito.caption}</option>
+                    {/foreach}
+                </select>
             </div>
             <div class="matt-hseparator"></div>
             <div>

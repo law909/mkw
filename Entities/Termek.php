@@ -392,6 +392,15 @@ class Termek
      */
     private $gyarto;
 
+    /**
+     * A termék beszállítója (partner.szallito jelölésű partner). A gyarto mező eddig ezt is jelentette;
+     * a runonce 0156 másolta át, azóta a gyarto csak a tényleges gyártó (partner.gyarto).
+     * @var Partner
+     * @ORM\ManyToOne(targetEntity="Partner")
+     * @ORM\JoinColumn(name="beszallito_id",referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $beszallito;
+
     /** @ORM\Column(type="integer",nullable=true) */
     private $szallitasiido;
 
@@ -2774,6 +2783,26 @@ class Termek
         $this->gyarto = $gyarto;
     }
 
+    public function getBeszallito()
+    {
+        return $this->beszallito;
+    }
+
+    public function getBeszallitoNev()
+    {
+        return $this->beszallito ? $this->beszallito->getNev() : '';
+    }
+
+    public function getBeszallitoId()
+    {
+        return $this->beszallito ? $this->beszallito->getId() : '';
+    }
+
+    public function setBeszallito($beszallito)
+    {
+        $this->beszallito = $beszallito;
+    }
+
     public function getFuggoben()
     {
         return $this->fuggoben;
@@ -3004,6 +3033,8 @@ class Termek
                 if ($szallitasiido === 0) {
                     if ($this->szallitasiido) {
                         $szallitasiido = $this->szallitasiido;
+                    } elseif ($this->beszallito && $this->beszallito->getSzallitasiido()) {
+                        $szallitasiido = $this->beszallito->getSzallitasiido();
                     } elseif ($this->gyarto && $this->gyarto->getSzallitasiido()) {
                         $szallitasiido = $this->gyarto->getSzallitasiido();
                     }

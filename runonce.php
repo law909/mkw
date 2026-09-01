@@ -2189,6 +2189,18 @@ if ($DBVersion < '0155') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0155');
 }
 
+if ($DBVersion < '0156') {
+    // A termek.gyarto eddig a beszállítót jelentette: átmásoljuk az új beszallito mezőbe, és a gyarto
+    // csak ott marad meg, ahol gyártónak jelölt partnerre mutat. A DDL az entitásból jön (./updateschema.sh).
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement('UPDATE termek SET beszallito_id = gyarto_id WHERE beszallito_id IS NULL AND gyarto_id IS NOT NULL');
+    $conn->executeStatement(
+        'UPDATE termek t LEFT JOIN partner p ON (p.id = t.gyarto_id)'
+        . ' SET t.gyarto_id = NULL WHERE t.gyarto_id IS NOT NULL AND (p.id IS NULL OR p.gyarto = 0)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0156');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -40,7 +40,7 @@ class partnergyartokedvezmenyController extends \mkwhelpers\MattableController
         $x['kedvezmeny'] = $t->getKedvezmeny();
         if ($forKarb) {
             // ugyanaz a szállítólista, amit a termék és a címke karbantartó is használ
-            $x['gyartolist'] = (new partnerController())->getSzallitoSelectList($t->getGyartoId());
+            $x['gyartolist'] = (new partnerController())->getGyartoSelectList($t->getGyartoId());
         }
         return $x;
     }

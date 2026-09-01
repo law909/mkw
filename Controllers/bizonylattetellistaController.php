@@ -39,7 +39,7 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         $view->setVar('raktarlista', $rc->getSelectList());
         $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
-        $view->setVar('gyartolist', $partner->getSzallitoSelectList(0));
+        $view->setVar('gyartolist', $partner->getGyartoSelectList(0));
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
 
