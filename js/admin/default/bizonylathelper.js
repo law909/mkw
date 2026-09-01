@@ -1689,11 +1689,13 @@ let bizonylathelper = function ($) {
                             },
                             type: 'GET',
                             success: function (data) {
-                                $('.js-bizonylatosszesito').before(data);
+                                const $sor = $(data);
+                                $('.js-bizonylatosszesito').before($sor);
                                 $('.js-quicktetelnewbutton,.js-teteldelbutton').button();
                                 $('.js-termekselect').autocomplete(quicktermekAutocompleteConfig())
                                     .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
+                                $sor.find('.js-termekselect').first().trigger('focus');
                             }
                         });
                     })
@@ -1713,11 +1715,13 @@ let bizonylathelper = function ($) {
                             },
                             type: 'GET',
                             success: function (data) {
-                                $('.js-bizonylatosszesito').before(data);
+                                const $sor = $(data);
+                                $('.js-bizonylatosszesito').before($sor);
                                 $('.js-tetelnewbutton,.js-teteldelbutton').button();
                                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                                     .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
+                                $sor.find('.js-termekselect').first().trigger('focus');
                             }
                         });
                     })
