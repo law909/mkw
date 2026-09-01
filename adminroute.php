@@ -1640,6 +1640,9 @@ $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyoserte
 $router->map('GET', '/admin/rendbevlista/view', 'rendbevlistaController#view', 'adminrendbevlistaview');
 $router->map('GET', '/admin/rendbevlista/refresh', 'rendbevlistaController#refresh', 'adminrendbevlistarefresh');
 $router->map('GET', '/admin/rendbevlista/export', 'rendbevlistaController#export', 'adminrendbevlistaexport');
+$router->map('GET', '/admin/szallmegrpenzugylista/view', 'szallmegrpenzugylistaController#view', 'adminszallmegrpenzugylistaview');
+$router->map('GET', '/admin/szallmegrpenzugylista/refresh', 'szallmegrpenzugylistaController#refresh', 'adminszallmegrpenzugylistarefresh');
+$router->map('GET', '/admin/szallmegrpenzugylista/export', 'szallmegrpenzugylistaController#export', 'adminszallmegrpenzugylistaexport');
 
 $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
 

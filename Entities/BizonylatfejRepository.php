@@ -1352,6 +1352,66 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $ret;
     }
 
+    /**
+     * Szállítói megrendelések pénzügyi állása: a megrendelés értéke, a hozzá társbizonylatként kapcsolt
+     * (nem rontott) bizonylatok – bevét, szállítói előleg – és a rájuk, illetve magára a megrendelésre
+     * könyvelt pénzügyi teljesítés. A "még fizetendő" a megrendelés értéke mínusz az összes teljesítés.
+     * A teljesítés a listákkal azonos egyenlegből jön (Bizonylatfej::getEgyenleg), csak a pénzt mozgató
+     * bizonylaton értelmezett.
+     */
+    public function getSzallmegrPenzugyiLista($partnerid, $datumtol, $datumig)
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bizonylattipus', '=', 'szallmegr');
+        $filter->addFilter('rontott', '=', false);
+        if ($partnerid) {
+            $filter->addFilter('partner', '=', $partnerid);
+        }
+        if ($datumtol) {
+            $filter->addFilter('teljesites', '>=', $datumtol);
+        }
+        if ($datumig) {
+            $filter->addFilter('teljesites', '<=', $datumig);
+        }
+
+        $ret = [];
+        /** @var \Entities\Bizonylatfej $megr */
+        foreach ($this->getAll($filter, ['kelt' => 'DESC', 'id' => 'DESC']) as $megr) {
+            $sor = $this->penzugyiSor($megr);
+            $sor['partnernev'] = $megr->getPartnernev();
+            $sor['kapcsoltak'] = [];
+            $osszesfizetve = $sor['fizetve'];
+            $kfilter = new FilterDescriptor();
+            $kfilter->addFilter('tarsbizonylat', '=', $megr->getId());
+            $kfilter->addFilter('rontott', '=', false);
+            foreach ($this->getAll($kfilter, ['kelt' => 'ASC', 'id' => 'ASC']) as $kapcsolt) {
+                $ksor = $this->penzugyiSor($kapcsolt);
+                $osszesfizetve += $ksor['fizetve'];
+                $sor['kapcsoltak'][] = $ksor;
+            }
+            $sor['osszesfizetve'] = $osszesfizetve;
+            $sor['hatravan'] = $sor['brutto'] - $osszesfizetve;
+            $ret[] = $sor;
+        }
+        return $ret;
+    }
+
+    private function penzugyiSor(\Entities\Bizonylatfej $b)
+    {
+        $egyenleg = $b->getPenztmozgat() ? $b->getEgyenleg() * -1 * $b->getIrany() : 0;
+        return [
+            'id' => $b->getId(),
+            'listaurl' => $b->getListaUrl(),
+            'tipusnev' => $b->getBizonylattipus() ? $b->getBizonylattipus()->getNev() : $b->getBizonylatnev(),
+            'keltstr' => $b->getKeltStr(),
+            'valutanemnev' => $b->getValutanemnev(),
+            'penztmozgat' => (bool)$b->getPenztmozgat(),
+            'brutto' => (float)$b->getBrutto(),
+            'egyenleg' => (float)$egyenleg,
+            'fizetve' => $b->getPenztmozgat() ? (float)$b->getBrutto() - (float)$egyenleg : 0,
+        ];
+    }
+
     public function getAllFakeKifizetes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
     {
         $filter = new FilterDescriptor();

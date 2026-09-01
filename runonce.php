@@ -2179,6 +2179,16 @@ if ($DBVersion < '0154') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0154');
 }
 
+if ($DBVersion < '0155') {
+    // Szállítói megrendelések pénzügyi kimutatása – a Rendelt / beérkezett mellé
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 4, "Száll. megrendelés pénzügy", "/admin/szallmegrpenzugylista/view", "/admin/szallmegrpenzugylista", 40, 1, 1110, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/szallmegrpenzugylista/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0155');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
