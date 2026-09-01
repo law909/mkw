@@ -57,6 +57,8 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showszallmegrbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $sendemail = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $showuzenet = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showszallitasicim = false;
@@ -394,6 +396,16 @@ class Bizonylattipus
     public function setShowszallmegrbutton($val)
     {
         $this->showszallmegrbutton = $val;
+    }
+
+    public function getSendemail()
+    {
+        return $this->sendemail;
+    }
+
+    public function setSendemail($val)
+    {
+        $this->sendemail = $val;
     }
 
     public function getShowszallitobutton()

@@ -2136,6 +2136,12 @@ if ($DBVersion < '0152' && $idopontMigracioKesz()) {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0152');
 }
 
+if ($DBVersion < '0153') {
+    // a számla mentése után a karb felajánlja az emailes küldést (Bizonylattipus.sendemail)
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE bizonylattipus SET sendemail = 1 WHERE id = "szamla"');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0153');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
