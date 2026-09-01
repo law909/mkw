@@ -41,6 +41,27 @@ class FolyoszamlaRepository extends \mkwhelpers\Repository
         $this->setEntityname(Folyoszamla::class);
     }
 
+    /**
+     * Az adott típusú, nyitott egyenlegű bizonylatok sorszámai. Az egyenleg ugyanaz, mint a
+     * bizonylat listán (Bizonylatfej::getEgyenleg() a bizonylat irányával előjelezve): a bizonylat
+     * és az élő stornói sorainak összege, pozitív = még fizetendő. A lista szűrője ezt a listát
+     * IN / NOT IN feltétellel használja, mert a csoportosított egyenleg DQL-ben nem írható le.
+     *
+     * @return string[]
+     */
+    public function getNyitottBizonylatszamok($bizonylattipusid)
+    {
+        $sql = 'SELECT ' . self::CSOPORTBIZ . ' AS biz,'
+            . ' SUM(f.brutto * f.irany * bf.irany * -1) AS egyenleg'
+            . ' FROM folyoszamla f'
+            . self::STORNOJOIN . ' AND (sbf.rontott = 0) AND (sbf.parbizonylatfej_id IS NOT NULL)'
+            . ' JOIN bizonylatfej bf ON (bf.id = ' . self::CSOPORTBIZ . ')'
+            . ' WHERE (f.rontott = 0) AND (bf.bizonylattipus_id = ?)'
+            . ' GROUP BY biz'
+            . ' HAVING egyenleg > 0.005';
+        return $this->_em->getConnection()->fetchFirstColumn($sql, [$bizonylattipusid]);
+    }
+
     public function getAllByHivatkozottBizonylat($bizszam)
     {
         $filter = new FilterDescriptor();

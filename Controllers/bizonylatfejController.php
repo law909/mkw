@@ -356,6 +356,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 break;
         }
 
+        $this->addEgyenlegFilter($filter);
+
         $cf = $this->params->getArrayRequestParam('cimkefilter');
         if ($cf) {
             $filter->addJoin('JOIN _xx.partner p');
@@ -391,6 +393,41 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
 
         return $filter;
+    }
+
+    /**
+     * Egyenleg (kiegyenlített / kiegyenlítetlen) és lejárat (lejárt / nem járt le) szűrő. A nyitott
+     * bizonylatok sorszámait a folyószámla adja (FolyoszamlaRepository::getNyitottBizonylatszamok),
+     * ugyanazzal az egyenleggel, mint ami a listán látszik. Csak a pénzt mozgató, nem rontott
+     * bizonylatra értelmes; a stornó bizonylat egyenlege a szülőjén számolódik el.
+     */
+    private function addEgyenlegFilter(\mkwhelpers\FilterDescriptor $filter)
+    {
+        $egyenleg = $this->params->getIntRequestParam('egyenlegfilter');
+        $lejart = $this->params->getIntRequestParam('lejartfilter');
+        if (!$egyenleg && !$lejart) {
+            return;
+        }
+        $nyitottak = $this->getRepo(Folyoszamla::class)->getNyitottBizonylatszamok($this->biztipusid);
+        $filter->addFilter('penztmozgat', '=', true);
+        $filter->addFilter('rontott', '=', false);
+        $filter->addSql('NOT (_xx.storno = true AND _xx.parbizonylatfej IS NOT NULL)');
+        if ($egyenleg === 1) {
+            if ($nyitottak) {
+                $filter->addFilter('id', 'NOT IN', $nyitottak);
+            }
+        } elseif ($egyenleg === 2 || $lejart) {
+            if ($nyitottak) {
+                $filter->addFilter('id', 'IN', $nyitottak);
+            } else {
+                $filter->addSql('1 = 0');
+            }
+        }
+        if ($lejart === 1) {
+            $filter->addSql('_xx.esedekesseg < CURRENT_DATE()');
+        } elseif ($lejart === 2) {
+            $filter->addSql('_xx.esedekesseg >= CURRENT_DATE()');
+        }
     }
 
     protected function loadVars($t, $forKarb = false, $oper = false)

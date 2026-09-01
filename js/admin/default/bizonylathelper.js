@@ -2175,6 +2175,8 @@ let bizonylathelper = function ($) {
                         '#bizonylatstatuszfilter',
                         '#bizonylatstatuszcsoportfilter',
                         '#bizonylatrontottfilter',
+                        '#egyenlegfilter',
+                        '#lejartfilter',
                         '#fizmodfilter',
                         '#valutanemfilter',
                         '#raktarfilter',
