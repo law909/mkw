@@ -294,7 +294,7 @@
                     <tr>
                         <td>
                             <label for="ValtozatTermekKepCB">{at('A kép a termék főképe')}:</label>
-                            <input id="ValtozatTermekKepCB" form="valtozatgeneratorform" name="valtozattermek"
+                            <input id="ValtozatTermekKepCB" form="valtozatgeneratorform" name="valtozattermekfokep"
                                    type="checkbox">
                         </td>
                     </tr>
