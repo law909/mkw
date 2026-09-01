@@ -1,5 +1,5 @@
 <div id="mattkarb-header">
-    <h3>{at('Rendezvény állapot')}</h3>
+    <h3>{at('Időpont állapot')}</h3>
 </div>
 <form id="mattkarb-form" method="post" action="{$formaction}">
     <div id="mattkarb-tabs">
@@ -16,10 +16,6 @@
                 <tr>
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td><input id="SorrendEdit" name="sorrend" type="number" step="1" value="{$egyed.sorrend}"></td>
-                </tr>
-                <tr>
-                    <td><label for="OrarendbenszerepelEdit">{at('Órarendben szerepel')}:</label></td>
-                    <td><input id="OrarendbenszerepelEdit" name="orarendbenszerepel" type="checkbox"{if ($egyed.orarendbenszerepel)} checked="checked"{/if}></td>
                 </tr>
                 </tbody>
             </table>

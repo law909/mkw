@@ -17,9 +17,6 @@
                             <td>{$_orarend.dolgozonev}</td>
                         </tr>
                         <tr>
-                            <td>{$_orarend.jogateremnev}</td>
-                        </tr>
-                        <tr>
                             <td>{$_orarend.kezdet} - {$_orarend.veg}</td>
                         </tr>
                         <tr>

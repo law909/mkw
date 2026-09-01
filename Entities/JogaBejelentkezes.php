@@ -104,7 +104,6 @@ class JogaBejelentkezes
         $jr->setOnline($this->getOnline());
         $jr->setDatum($this->getDatum());
         $jr->setJogaoratipus($this->getOrarend()->getJogaoratipus());
-        $jr->setJogaterem($this->getOrarend()->getJogaterem());
         $hr = \mkw\store::getEm()->getRepository(Orarendhelyettesites::class);
         $helyettesito = $hr->getHelyettesito($this->getOrarend(), $this->getDatum());
         if ($helyettesito) {

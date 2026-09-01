@@ -7,6 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
+ * Meghirdetett alkalom: a korábbi rendezvény és időpont modul egyesítve. A `tipus` csak azt mondja
+ * meg, melyik felületen jelenik meg (órarend export és regisztrációs űrlap, vagy a heti foglalónézet),
+ * az adatmodell közös.
+ *
  * @ORM\Entity(repositoryClass="Entities\IdopontRepository")
  * @ORM\Table(name="idopont",
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
@@ -16,6 +20,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Idopont
 {
+
+    const TIPUS_RENDEZVENY = 'rendezveny';
+    const TIPUS_IDOPONT = 'idopont';
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -36,6 +43,26 @@ class Idopont
     private $lastmod;
 
     /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="createdby", referencedColumnName="id")
+     */
+    private $createdby;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Dolgozo")
+     * @ORM\JoinColumn(name="updatedby", referencedColumnName="id")
+     */
+    private $updatedby;
+
+    /** @ORM\Column(type="string",length=20,nullable=false,options={"default":"idopont"}) */
+    private $tipus = self::TIPUS_IDOPONT;
+
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $nev = '';
+
+    /**
      * @ORM\ManyToOne(targetEntity="Dolgozo", fetch = "EAGER")
      * @ORM\JoinColumn(name="dolgozo_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -48,10 +75,32 @@ class Idopont
     private $idoponttema;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Idopontallapot")
+     * @ORM\JoinColumn(name="idopontallapot_id",referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $idopontallapot;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Jogahelyszin")
      * @ORM\JoinColumn(name="jogahelyszin_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
     private $jogahelyszin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Termek")
+     * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $termek;
+
+    /** A publikus regisztrációs link tokenje – ügyféloldali beágyazásokban él, nem képezhető újra. */
+    /** @ORM\Column(type="string", length=23, nullable=false) */
+    private $uid = '';
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $url;
+
+    /** @ORM\Column(type="string",length=255,nullable=false) */
+    private $onlineurl = '';
 
     /** @ORM\Column(type="boolean", nullable=false) */
     private $onlinevalaszthato = false;
@@ -79,8 +128,21 @@ class Idopont
     /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $ar = 0;
 
-    /** @ORM\Column(type="integer",nullable=false,options={"default":1}) */
-    private $maxresztvevo = 1;
+    /** @ORM\Column(type="date",nullable=true) */
+    private $earlybirdvege;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $earlybirdar;
+
+    /** 0 vagy NULL = nincs létszámkorlát (a rendezvény oldali maxferohely jelentése). */
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $maxresztvevo = 0;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $varolistavan = true;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $kellszamlazasiadat = true;
 
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
@@ -101,6 +163,63 @@ class Idopont
     public function getFoglalasok()
     {
         return $this->foglalasok;
+    }
+
+    public function generateUId()
+    {
+        $this->uid = uniqid('', true);
+        return $this->uid;
+    }
+
+    public function getUid()
+    {
+        return $this->uid;
+    }
+
+    public function getTipus()
+    {
+        return $this->tipus;
+    }
+
+    public function setTipus($tipus)
+    {
+        $this->tipus = ($tipus === self::TIPUS_RENDEZVENY) ? self::TIPUS_RENDEZVENY : self::TIPUS_IDOPONT;
+    }
+
+    public function isRendezveny()
+    {
+        return $this->tipus === self::TIPUS_RENDEZVENY;
+    }
+
+    public function getNev()
+    {
+        return $this->nev;
+    }
+
+    public function setNev($nev)
+    {
+        $this->nev = (string)$nev;
+    }
+
+    /**
+     * A bizonylattételek szövege és a levelek megszólítása is ezt használja, ezért időpontnál
+     * (ahol nincs saját név) a témára esik vissza.
+     */
+    public function getTeljesNev()
+    {
+        $r = $this->nev !== '' ? $this->nev : $this->getIdoponttemaNev();
+        if ($this->getDatumStr()) {
+            $r .= ' ' . $this->getDatumStr();
+        } elseif ($this->getNapNev()) {
+            $r .= ' ' . $this->getNapNev();
+        }
+        if ($this->getStartTimeStr()) {
+            $r .= ' ' . $this->getStartTimeStr();
+        }
+        if ($this->getDolgozoNev()) {
+            $r .= ' (' . $this->getDolgozoNev() . ')';
+        }
+        return $r;
     }
 
     /**
@@ -186,6 +305,27 @@ class Idopont
     }
 
     /**
+     * @return Idopontallapot
+     */
+    public function getIdopontallapot()
+    {
+        return $this->idopontallapot;
+    }
+
+    public function getIdopontallapotNev()
+    {
+        if ($this->idopontallapot) {
+            return $this->idopontallapot->getNev();
+        }
+        return '';
+    }
+
+    public function setIdopontallapot($idopontallapot)
+    {
+        $this->idopontallapot = $idopontallapot;
+    }
+
+    /**
      * @return Jogahelyszin
      */
     public function getJogahelyszin()
@@ -222,6 +362,111 @@ class Idopont
         $this->jogahelyszin = $jogahelyszin;
     }
 
+    public function getTermek()
+    {
+        return $this->termek;
+    }
+
+    public function getTermekNev()
+    {
+        if ($this->termek) {
+            return $this->termek->getNev();
+        }
+        return '';
+    }
+
+    public function setTermek($val)
+    {
+        if ($val) {
+            $this->termek = $val;
+        } else {
+            $this->termek = null;
+        }
+    }
+
+    public function removeTermek()
+    {
+        $this->termek = null;
+    }
+
+    public function getCreatedby()
+    {
+        return $this->createdby;
+    }
+
+    public function getCreatedbyId()
+    {
+        if ($this->createdby) {
+            return $this->createdby->getId();
+        }
+        return '';
+    }
+
+    public function getCreatedbyNev()
+    {
+        if ($this->createdby) {
+            return $this->createdby->getNev();
+        }
+        return '';
+    }
+
+    public function getUpdatedby()
+    {
+        return $this->updatedby;
+    }
+
+    public function getUpdatedbyId()
+    {
+        if ($this->updatedby) {
+            return $this->updatedby->getId();
+        }
+        return '';
+    }
+
+    public function getUpdatedbyNev()
+    {
+        if ($this->updatedby) {
+            return $this->updatedby->getNev();
+        }
+        return '';
+    }
+
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    public function getCreatedStr()
+    {
+        if ($this->created) {
+            return $this->created->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
+    }
+
+    public function clearCreated()
+    {
+        $this->created = null;
+    }
+
+    public function getLastmod()
+    {
+        return $this->lastmod;
+    }
+
+    public function getLastmodStr()
+    {
+        if ($this->lastmod) {
+            return $this->lastmod->format(\mkw\store::$DateTimeFormat);
+        }
+        return '';
+    }
+
+    public function clearLastmod()
+    {
+        $this->lastmod = null;
+    }
+
     public function isOnlinevalaszthato()
     {
         return $this->onlinevalaszthato;
@@ -244,6 +489,9 @@ class Idopont
 
     public function getNap()
     {
+        if (!$this->ismetlodo) {
+            return $this->kezdet ? (int)$this->kezdet->format('N') : 0;
+        }
         return $this->nap;
     }
 
@@ -353,6 +601,38 @@ class Idopont
         $this->ar = $ar;
     }
 
+    public function getEarlybirdvege()
+    {
+        return $this->earlybirdvege;
+    }
+
+    public function getEarlybirdvegeStr()
+    {
+        if ($this->earlybirdvege) {
+            return $this->earlybirdvege->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setEarlybirdvege($adat = '')
+    {
+        if ($adat != '') {
+            $this->earlybirdvege = new \DateTime(\mkw\store::convDate($adat));
+        } else {
+            $this->earlybirdvege = null;
+        }
+    }
+
+    public function getEarlybirdar()
+    {
+        return $this->earlybirdar;
+    }
+
+    public function setEarlybirdar($earlybirdar): void
+    {
+        $this->earlybirdar = $earlybirdar;
+    }
+
     public function getMaxresztvevo()
     {
         return $this->maxresztvevo;
@@ -361,6 +641,54 @@ class Idopont
     public function setMaxresztvevo($maxresztvevo)
     {
         $this->maxresztvevo = $maxresztvevo;
+    }
+
+    /**
+     * Van-e egyáltalán létszámkorlát: a rendezvényeknél a 0 azt jelenti, hogy nincs.
+     */
+    public function hasLetszamkorlat()
+    {
+        return (int)$this->maxresztvevo > 0;
+    }
+
+    public function isVarolistavan()
+    {
+        return $this->varolistavan;
+    }
+
+    public function setVarolistavan($varolistavan): void
+    {
+        $this->varolistavan = $varolistavan;
+    }
+
+    public function getKellszamlazasiadat()
+    {
+        return $this->kellszamlazasiadat;
+    }
+
+    public function setKellszamlazasiadat($kellszamlazasiadat)
+    {
+        $this->kellszamlazasiadat = $kellszamlazasiadat;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+    public function getOnlineurl()
+    {
+        return $this->onlineurl;
+    }
+
+    public function setOnlineurl($onlineurl)
+    {
+        $this->onlineurl = (string)$onlineurl;
     }
 
     public function getInaktiv()
@@ -386,13 +714,8 @@ class Idopont
 
     public function getNapNev()
     {
-        if ($this->ismetlodo) {
-            return $this->nap ? \mkw\store::getDayname($this->nap) : '';
-        }
-        if ($this->kezdet) {
-            return \mkw\store::getDayname($this->kezdet->format('N'));
-        }
-        return '';
+        $nap = $this->getNap();
+        return $nap ? \mkw\store::getDayname($nap) : '';
     }
 
     /**
@@ -485,14 +808,26 @@ class Idopont
             ->getCountForIdopont($this->id, $datum ?: $this->kezdet);
     }
 
+    /**
+     * Korlát nélküli időpontnál (maxresztvevo 0 vagy NULL) nincs értelmezhető szabad helyszám.
+     */
     public function getFreePlaces($datum = null)
     {
-        return $this->maxresztvevo - $this->getBookedCount($datum);
+        if (!$this->hasLetszamkorlat()) {
+            return null;
+        }
+        return max((int)$this->maxresztvevo - $this->getBookedCount($datum), 0);
     }
 
     public function isBookable($datum = null)
     {
-        return !$this->inaktiv && $this->getFreePlaces($datum) > 0;
+        if ($this->inaktiv) {
+            return false;
+        }
+        if (!$this->hasLetszamkorlat()) {
+            return true;
+        }
+        return $this->getFreePlaces($datum) > 0;
     }
 
     /**

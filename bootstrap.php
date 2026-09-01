@@ -26,7 +26,7 @@ use Listeners\JogareszvetelListener;
 use Listeners\KuponListener;
 use Listeners\PartnerListener;
 use Listeners\PenztarbizonylatfejListener;
-use Listeners\RendezvenyListener;
+use Listeners\IdopontListener;
 use Listeners\MPTNGYSzakmaianyagListener;
 use Listeners\UnasOutboxListener;
 use Doctrine\DBAL\Event\Listeners;
@@ -121,7 +121,7 @@ $evm->addEventListener(['onFlush', 'prePersist'], new BankbizonylatfejListener()
 $evm->addEventListener(['onFlush', 'prePersist'], new PenztarbizonylatfejListener());
 $evm->addEventListener([Events::onFlush, Events::postFlush], new BizonylattetelListener());
 $evm->addEventListener(['prePersist'], new KuponListener());
-$evm->addEventListener(['prePersist'], new RendezvenyListener());
+$evm->addEventListener(['prePersist'], new IdopontListener());
 $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());

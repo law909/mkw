@@ -408,12 +408,6 @@ class MPTNGYSzakmaianyag
     private $pluszbiralokell = false;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Jogaterem")
-     * @ORM\JoinColumn(name="terem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
-     */
-    private $terem;
-
-    /**
      * @ORM\ManyToOne(targetEntity="MPTNGYEgyetem")
      * @ORM\JoinColumn(name="egyetem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -1778,21 +1772,6 @@ class MPTNGYSzakmaianyag
     public function setPluszbiralokell($pluszbiralokell): void
     {
         $this->pluszbiralokell = $pluszbiralokell;
-    }
-
-    public function getTerem()
-    {
-        return $this->terem;
-    }
-
-    public function setTerem($terem)
-    {
-        $this->terem = $terem;
-    }
-
-    public function removeTerem()
-    {
-        $this->terem = null;
     }
 
     /**

@@ -6,7 +6,8 @@
         <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a>
         <div>{$_egyed.napnev}</div>
-        <div>{$_egyed.idoponttemanev}</div>
+        {if ($_egyed.idopontnev)}<div>{$_egyed.idopontnev}</div>{/if}
+        {if ($_egyed.idoponttemanev)}<div>{$_egyed.idoponttemanev}</div>{/if}
         <div>{$_egyed.idopontdolgozonev}</div>
         <div>{$_egyed.idoponthelyszinnev}</div>
     </td>
@@ -14,9 +15,13 @@
         <div>{$_egyed.partnernev}</div>
         <div>{$_egyed.partneremail}</div>
         <div>{$_egyed.partnertelefon}</div>
+        {if ($_egyed.megjegyzes)}<div class="mattable-note">{$_egyed.megjegyzes}</div>{/if}
     </td>
     <td class="cell">{$_egyed.foglalasido}</td>
-    <td class="cell">{if ($_egyed.online)}{at('online')}{else}{at('élő')}{/if}</td>
+    <td class="cell">
+        {if ($_egyed.online)}{at('online')}{else}{at('élő')}{/if}
+        {if ($_egyed.varolistas)}<div><span class="mattable-important">{at('Várólistás')}</span></div>{/if}
+    </td>
     <td class="cell">
         {if ($_egyed.lemondva)}
             <div>
@@ -59,10 +64,29 @@
                 {at('Kért teljesítés')}: {$_egyed.szamlazvateljesites}
             </div>
         {/if}
+        {if ($_egyed.visszautalva)}
+            <div>
+                <span class="mattable-important">{at('Visszautalva')}</span> ({$_egyed.visszautalasdatum}): {bizformat($_egyed.visszautalasosszeghuf)}<br>
+                {$_egyed.visszautalasfizmodnev}<br>
+                {if ($_egyed.visszautalaspenztarbizonylatszamlink)}
+                    <a href="{$_egyed.visszautalaspenztarbizonylatszamlink}" target="_blank"
+                       title="{at('Ugrás a bizonylathoz')}">{$_egyed.visszautalaspenztarbizonylatszam}</a>
+                {elseif ($_egyed.visszautalasbankbizonylatszamlink)}
+                    <a href="{$_egyed.visszautalasbankbizonylatszamlink}" target="_blank"
+                       title="{at('Ugrás a bizonylathoz')}">{$_egyed.visszautalasbankbizonylatszam}</a>
+                {/if}
+            </div>
+        {/if}
     </td>
     <td class="cell">
         {if ($_egyed.emailkoszono)}
-            <div>{at('Foglalás megköszönve')}</div>
+            <div>{at('Jelentkezés megköszönve')}</div>
+        {/if}
+        {if ($dijbekerosablonvan && !$_egyed.lemondva && !$_egyed.fizetve)}
+            {if ($_egyed.emaildijbekero)}
+                <div>{at('Díjbekérő')}: {$_egyed.emaildijbekerodatum}</div>
+            {/if}
+            <div><a class="js-emaildijbekero" href="#" data-id="{$_egyed.id}">{at('Díjbekérő email')}</a></div>
         {/if}
         {if ($emlekeztetosablonvan && !$_egyed.lemondva)}
             {if ($_egyed.emailemlekezteto)}

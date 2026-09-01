@@ -74,12 +74,8 @@ class adminController extends mkwhelpers\Controller
                 $felh = new dolgozoController();
                 $view->setVar('felhasznalolist', $felh->getSelectList());
                 $view->setVar('tanarlist', $felh->getSelectList());
-                $terem = new jogateremController();
-                $view->setVar('jogateremlist', $terem->getSelectList());
                 $ot = new jogaoratipusController();
                 $view->setVar('jogaoratipuslist', $ot->getSelectList());
-                $rendezveny = new rendezvenyController();
-                $view->setVar('rendezvenylist', $rendezveny->getSelectList());
                 $view->setVar('datumstr', date(\mkw\store::$DateFormat));
 
                 $view->setVar('keltstr', date(\mkw\store::$DateFormat));

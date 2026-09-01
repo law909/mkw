@@ -4,12 +4,6 @@ $(document).ready(function () {
     var orarend = new MattkarbConfig({
         entityName: 'orarend',
         beforeShow: function (form, opt) {
-            $('#JogateremEdit').on('blur', function (e) {
-                var $mfe = $('#MaxferohelyEdit');
-                if ($mfe.val() * 1 === 0) {
-                    $mfe.val($('option:selected', $(this)).data('maxferohely'));
-                }
-            });
             $('#JogaoratipusEdit').on('blur', function (e) {
                 var $mfe = $('#NevEdit');
                 if ($mfe.val() === '') {
@@ -25,7 +19,7 @@ $(document).ready(function () {
             onGetTBody: function () {
             },
             filter: {
-                fields: ['#nevfilter', '#inaktivfilter', '#multilangfilter', '#napfilter', '#jogateremfilter', '#jogaoratipusfilter', '#dolgozofilter']
+                fields: ['#nevfilter', '#inaktivfilter', '#multilangfilter', '#napfilter', '#jogaoratipusfilter', '#dolgozofilter']
             },
             tablebody: {
                 url: '/admin/orarend/getlistbody',

@@ -67,10 +67,10 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelent', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelentido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopontreszvetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvaosszeghuf'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelent', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelentido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopontreszvetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvaosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'created', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partneremail', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'varolistas', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazasbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasfizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasbankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasbankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalaspenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalaspenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emaildijbekero', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emaildijbekerodatum'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelent', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelentido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopontreszvetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvaosszeghuf'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopont', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partner', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'datum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'foglalasido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'online', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailkoszono', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekezteto', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emailemlekeztetodatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasoka', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelent', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjelentido', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'idopontreszvetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetve', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetveosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvepenztartetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetvebanktetelid', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlaszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvabizonylattipus', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvakelt', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvateljesites', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazvaosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'created', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partnernev', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partneremail', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'partnertelefon', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'varolistas', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'fizetesbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'szamlazasbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'lemondasbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalva', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasdatum', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasfizmod', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasosszeghuf', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasbankbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasbankszamla', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalaspenztarbizonylatszam', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalaspenztar', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'visszautalasbejegyzo', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emaildijbekero', '' . "\0" . 'Entities\\Idopontfoglalas' . "\0" . 'emaildijbekerodatum'];
     }
 
     /**
@@ -261,6 +261,17 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
+    public function setPartnernev($nev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnernev', [$nev]);
+
+        return parent::setPartnernev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getPartnerEmail()
     {
 
@@ -272,12 +283,34 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
+    public function setPartneremail($email)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartneremail', [$email]);
+
+        return parent::setPartneremail($email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getPartnerTelefon()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerTelefon', []);
 
         return parent::getPartnerTelefon();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartnertelefon($telefon)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnertelefon', [$telefon]);
+
+        return parent::setPartnertelefon($telefon);
     }
 
     /**
@@ -1026,6 +1059,490 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzamlazvaosszeghuf', [$osszeg]);
 
         return parent::setSzamlazvaosszeghuf($osszeg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
+
+        return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
+
+        return parent::getLastmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastmodStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmodStr', []);
+
+        return parent::getLastmodStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedby()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedby', []);
+
+        return parent::getCreatedby();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedbyNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedbyNev', []);
+
+        return parent::getCreatedbyNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedby()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedby', []);
+
+        return parent::getUpdatedby();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedbyNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedbyNev', []);
+
+        return parent::getUpdatedbyNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMegjegyzes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMegjegyzes', []);
+
+        return parent::getMegjegyzes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMegjegyzes($megjegyzes)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', [$megjegyzes]);
+
+        return parent::setMegjegyzes($megjegyzes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isVarolistas()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isVarolistas', []);
+
+        return parent::isVarolistas();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVarolistas()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVarolistas', []);
+
+        return parent::getVarolistas();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVarolistas($varolistas)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVarolistas', [$varolistas]);
+
+        return parent::setVarolistas($varolistas);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetesbejegyzo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetesbejegyzo', []);
+
+        return parent::getFizetesbejegyzo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizetesbejegyzoNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizetesbejegyzoNev', []);
+
+        return parent::getFizetesbejegyzoNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzamlazasbejegyzo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlazasbejegyzo', []);
+
+        return parent::getSzamlazasbejegyzo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSzamlazasbejegyzoNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzamlazasbejegyzoNev', []);
+
+        return parent::getSzamlazasbejegyzoNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLemondasbejegyzo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasbejegyzo', []);
+
+        return parent::getLemondasbejegyzo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLemondasbejegyzoNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasbejegyzoNev', []);
+
+        return parent::getLemondasbejegyzoNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasbejegyzo()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbejegyzo', []);
+
+        return parent::getVisszautalasbejegyzo();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasbejegyzoNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbejegyzoNev', []);
+
+        return parent::getVisszautalasbejegyzoNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalva()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalva', []);
+
+        return parent::getVisszautalva();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalva($visszautalva)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalva', [$visszautalva]);
+
+        return parent::setVisszautalva($visszautalva);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasdatum()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasdatum', []);
+
+        return parent::getVisszautalasdatum();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasdatumStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasdatumStr', []);
+
+        return parent::getVisszautalasdatumStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalasdatum($datum = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalasdatum', [$datum]);
+
+        return parent::setVisszautalasdatum($datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasfizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasfizmod', []);
+
+        return parent::getVisszautalasfizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalasfizmod($fizmod)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalasfizmod', [$fizmod]);
+
+        return parent::setVisszautalasfizmod($fizmod);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasosszeghuf()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasosszeghuf', []);
+
+        return parent::getVisszautalasosszeghuf();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalasosszeghuf($osszeg)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalasosszeghuf', [$osszeg]);
+
+        return parent::setVisszautalasosszeghuf($osszeg);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasbankbizonylatszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbankbizonylatszam', []);
+
+        return parent::getVisszautalasbankbizonylatszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalasbankbizonylatszam($szam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalasbankbizonylatszam', [$szam]);
+
+        return parent::setVisszautalasbankbizonylatszam($szam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalasbankszamla()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalasbankszamla', []);
+
+        return parent::getVisszautalasbankszamla();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalasbankszamla($bankszamla)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalasbankszamla', [$bankszamla]);
+
+        return parent::setVisszautalasbankszamla($bankszamla);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalaspenztarbizonylatszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalaspenztarbizonylatszam', []);
+
+        return parent::getVisszautalaspenztarbizonylatszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalaspenztarbizonylatszam($szam)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalaspenztarbizonylatszam', [$szam]);
+
+        return parent::setVisszautalaspenztarbizonylatszam($szam);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVisszautalaspenztar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVisszautalaspenztar', []);
+
+        return parent::getVisszautalaspenztar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVisszautalaspenztar($penztar)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVisszautalaspenztar', [$penztar]);
+
+        return parent::setVisszautalaspenztar($penztar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmaildijbekero()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmaildijbekero', []);
+
+        return parent::getEmaildijbekero();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmaildijbekero($emaildijbekero)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmaildijbekero', [$emaildijbekero]);
+
+        return parent::setEmaildijbekero($emaildijbekero);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmaildijbekerodatum()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmaildijbekerodatum', []);
+
+        return parent::getEmaildijbekerodatum();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmaildijbekerodatumStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmaildijbekerodatumStr', []);
+
+        return parent::getEmaildijbekerodatumStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmaildijbekerodatum($datum = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmaildijbekerodatum', [$datum]);
+
+        return parent::setEmaildijbekerodatum($datum);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getErvenyesAr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getErvenyesAr', []);
+
+        return parent::getErvenyesAr();
     }
 
     /**

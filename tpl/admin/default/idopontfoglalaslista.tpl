@@ -7,8 +7,19 @@
 
 {block "kozep"}
     <div id="mattable-select" data-theme="{$theme}">
-        <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Időpont foglalások')}"></div>
+        <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Időpont jelentkezések')}"></div>
         <div id="mattable-filterwrapper">
+            <div>
+                <label for="tipusfilter">{at('Típus')}: </label>
+                <select id="tipusfilter" name="tipusfilter">
+                    <option value="">{at('mindegy')}</option>
+                    <option value="rendezveny">{at('Rendezvény')}</option>
+                    <option value="idopont">{at('Időpont')}</option>
+                </select>
+                <label for="idfilter">{at('Azonosító')}: </label>
+                <input id="idfilter" name="idfilter" type="text" size="8">
+            </div>
+            <div class="matt-hseparator"></div>
             <div>
                 <label for="partnernevfilter">{at('Név')}: </label>
                 <input id="partnernevfilter" name="partnernevfilter" type="text" size="30" maxlength="255">
@@ -37,6 +48,22 @@
                     {foreach $idoponttemalist as $_d}
                         <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
                     {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
+                <label for="fizmodfilter">{at('Fizetési mód')}: </label>
+                <select id="fizmodfilter" name="fizmodfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $fizmodlist as $_d}
+                        <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
+                    {/foreach}
+                </select>
+                <label for="varolistasfilter">{at('Várólista')}: </label>
+                <select id="varolistasfilter" name="varolistasfilter">
+                    <option value="9">{at('mindegy')}</option>
+                    <option value="0">{at('nem')}</option>
+                    <option value="1">{at('igen')}</option>
                 </select>
             </div>
             <div class="matt-hseparator"></div>

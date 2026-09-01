@@ -229,9 +229,11 @@ $(document).ready(function () {
 
     const mattkarbconfig = new MattkarbConfig({
         entityName: 'idopontfoglalas',
-        // a szerver a mentést is elutasítja (409), de a hibaüzenetet itt tudjuk megmutatni
+        // a szerver a mentést is elutasítja (409), de a hibaüzenetet itt tudjuk megmutatni.
+        // Csak felvitelnél kell: szerkesztéskor a rendezvény jelentkezésnek is van időpont
+        // választója, de ott a saját sora lenne a "már meglévő foglalás"
         beforeSubmit: function (arr, form) {
-            if (!$('.js-idopontedit').length) {
+            if (!$('.js-idopontedit').length || $(form).find('[name="oper"]').val() !== 'add') {
                 return true;
             }
             let ok = true;
@@ -305,6 +307,10 @@ $(document).ready(function () {
         $('#mattable-select').mattable({
             filter: {
                 fields: [
+                    '#tipusfilter',
+                    '#idfilter',
+                    '#fizmodfilter',
+                    '#varolistasfilter',
                     '#partnernevfilter',
                     '#partneremailfilter',
                     '#datumtolfilter',
@@ -317,7 +323,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/idopontfoglalas/getlistbody',
                 onStyle: function () {
-                    $('.js-emailemlekezteto, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz').button();
+                    $('.js-emailemlekezteto, .js-emaildijbekero, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz').button();
                 }
             },
             karb: mattkarbconfig
@@ -326,6 +332,10 @@ $(document).ready(function () {
             .on('click', '.js-emailemlekezteto', function (e) {
                 e.preventDefault();
                 sorMuvelet('/admin/idopontfoglalas/email/emlekezteto', $(this).data('id'), true);
+            })
+            .on('click', '.js-emaildijbekero', function (e) {
+                e.preventDefault();
+                sorMuvelet('/admin/idopontfoglalas/email/dijbekero', $(this).data('id'), true);
             })
             .on('click', '.js-lemond', function (e) {
                 e.preventDefault();

@@ -230,14 +230,6 @@ $router->map('GET', '/admin/szotar/htmllist', 'szotarController#htmllist', 'admi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szotar/save', 'szotarController#save', 'adminszotarsave');
 }
-$router->map('GET', '/admin/jogaterem/viewlist', 'jogateremController#viewlist', 'adminjogateremviewlist');
-$router->map('GET', '/admin/jogaterem/getlistbody', 'jogateremController#getlistbody', 'adminjogateremgetlistbody');
-$router->map('GET', '/admin/jogaterem/getkarb', 'jogateremController#getkarb', 'adminjogateremgetkarb');
-$router->map('GET', '/admin/jogaterem/viewkarb', 'jogateremController#viewkarb', 'adminjogateremviewkarb');
-$router->map('GET', '/admin/jogaterem/htmllist', 'jogateremController#htmllist', 'adminjogateremhtmllist');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/jogaterem/save', 'jogateremController#save', 'adminjogateremsave');
-}
 $router->map('GET', '/admin/jogaoratipus/viewlist', 'jogaoratipusController#viewlist', 'adminjogaoratipusviewlist');
 $router->map('GET', '/admin/jogaoratipus/getlistbody', 'jogaoratipusController#getlistbody', 'adminjogaoratipusgetlistbody');
 $router->map('GET', '/admin/jogaoratipus/getkarb', 'jogaoratipusController#getkarb', 'adminjogaoratipusgetkarb');
@@ -295,13 +287,20 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idopontfoglalas/fizet', 'idopontfoglalasController#fizet', 'adminidopontfoglalasfizet');
     $router->map('POST', '/admin/idopontfoglalas/szamlaz', 'idopontfoglalasController#szamlaz', 'adminidopontfoglalasszamlaz');
 }
-$router->map('GET', '/admin/rendezvenyallapot/viewlist', 'rendezvenyallapotController#viewlist', 'adminrendezvenyallapotviewlist');
-$router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'rendezvenyallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
-$router->map('GET', '/admin/rendezvenyallapot/getkarb', 'rendezvenyallapotController#getkarb', 'adminrendezvenyallapotgetkarb');
-$router->map('GET', '/admin/rendezvenyallapot/viewkarb', 'rendezvenyallapotController#viewkarb', 'adminrendezvenyallapotviewkarb');
-$router->map('GET', '/admin/rendezvenyallapot/htmllist', 'rendezvenyallapotController#htmllist', 'adminrendezvenyallapothtmllist');
+$router->map('GET', '/admin/idopontallapot/viewlist', 'idopontallapotController#viewlist', 'adminidopontallapotviewlist');
+$router->map('GET', '/admin/idopontallapot/getlistbody', 'idopontallapotController#getlistbody', 'adminidopontallapotgetlistbody');
+$router->map('GET', '/admin/idopontallapot/getkarb', 'idopontallapotController#getkarb', 'adminidopontallapotgetkarb');
+$router->map('GET', '/admin/idopontallapot/viewkarb', 'idopontallapotController#viewkarb', 'adminidopontallapotviewkarb');
+$router->map('GET', '/admin/idopontallapot/htmllist', 'idopontallapotController#htmllist', 'adminidopontallapothtmllist');
+// a régi URL-ek élő könyvjelzőkben és mentett linkekben vannak, ezért aliasként megmaradnak
+$router->map('GET', '/admin/rendezvenyallapot/viewlist', 'idopontallapotController#viewlist', 'adminrendezvenyallapotviewlist');
+$router->map('GET', '/admin/rendezvenyallapot/getlistbody', 'idopontallapotController#getlistbody', 'adminrendezvenyallapotgetlistbody');
+$router->map('GET', '/admin/rendezvenyallapot/getkarb', 'idopontallapotController#getkarb', 'adminrendezvenyallapotgetkarb');
+$router->map('GET', '/admin/rendezvenyallapot/viewkarb', 'idopontallapotController#viewkarb', 'adminrendezvenyallapotviewkarb');
+$router->map('GET', '/admin/rendezvenyallapot/htmllist', 'idopontallapotController#htmllist', 'adminrendezvenyallapothtmllist');
 if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/rendezvenyallapot/save', 'rendezvenyallapotController#save', 'adminrendezvenyallapotsave');
+    $router->map('POST', '/admin/idopontallapot/save', 'idopontallapotController#save', 'adminidopontallapotsave');
+    $router->map('POST', '/admin/rendezvenyallapot/save', 'idopontallapotController#save', 'adminrendezvenyallapotsave');
 }
 
 $router->map('GET', '/admin/arsav/viewlist', 'arsavController#viewlist', 'adminarsavviewlist');
@@ -1633,42 +1632,51 @@ $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalControll
 
 $router->map('POST', '/admin/konyveloexport', 'bankbizonylatfejController#exportKonyvelo', 'adminkonyveloexport');
 
-$router->map('GET', '/admin/rendezveny/viewlist', 'rendezvenyController#viewlist', 'adminrendezvenyviewlist');
-$router->map('GET', '/admin/rendezveny/getlistbody', 'rendezvenyController#getlistbody', 'adminrendezvenygetlistbody');
-$router->map('GET', '/admin/rendezveny/getkarb', 'rendezvenyController#getkarb', 'adminrendezvenygetkarb');
-$router->map('GET', '/admin/rendezveny/viewkarb', 'rendezvenyController#viewkarb', 'adminrendezvenyviewkarb');
-$router->map('GET', '/admin/rendezvenydok/getemptyrow', 'rendezvenydokController#getemptyrow', 'adminrendezvenydokgetemptyrow');
+// a rendezvény modul beolvadt az időpontba; a régi URL-ek aliasként megmaradnak, mert élő
+// könyvjelzőkben és mentett linkekben vannak
+$router->map('GET', '/admin/rendezveny/viewlist', 'idopontController#viewlist', 'adminrendezvenyviewlist');
+$router->map('GET', '/admin/rendezveny/getlistbody', 'idopontController#getlistbody', 'adminrendezvenygetlistbody');
+$router->map('GET', '/admin/rendezveny/getkarb', 'idopontController#getkarb', 'adminrendezvenygetkarb');
+$router->map('GET', '/admin/rendezveny/viewkarb', 'idopontController#viewkarb', 'adminrendezvenyviewkarb');
 if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/rendezveny/save', 'rendezvenyController#save', 'adminrendezvenysave');
-    $router->map('POST', '/admin/rendezveny/setflag', 'rendezvenyController#setflag', 'adminrendezvenysetflag');
-    $router->map('POST', '/admin/rendezveny/email/kezdes', 'rendezvenyController#sendKezdesEmail', 'adminsendrendezvenykezdesemail');
-    $router->map('POST', '/admin/rendezvenydok/del', 'rendezvenydokController#del', 'adminrendezvenydokdel');
+    $router->map('POST', '/admin/rendezveny/save', 'idopontController#save', 'adminrendezvenysave');
+    $router->map('POST', '/admin/rendezveny/setflag', 'idopontController#setflag', 'adminrendezvenysetflag');
+    $router->map('POST', '/admin/idopont/email/kezdes', 'idopontController#sendKezdesEmail', 'adminsendidopontkezdesemail');
+    $router->map('POST', '/admin/rendezveny/email/kezdes', 'idopontController#sendKezdesEmail', 'adminsendrendezvenykezdesemail');
 }
 
-$router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'rendezvenyjelentkezesController#viewlist', 'adminrendezvenyjelentkezesviewlist');
-$router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'rendezvenyjelentkezesController#getlistbody', 'adminrendezvenyjelentkezesgetlistbody');
-$router->map('GET', '/admin/rendezvenyjelentkezes/getkarb', 'rendezvenyjelentkezesController#getkarb', 'adminrendezvenyjelentkezesgetkarb');
-$router->map('GET', '/admin/rendezvenyjelentkezes/viewkarb', 'rendezvenyjelentkezesController#viewkarb', 'adminrendezvenyjelentkezesviewkarb');
-$router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'rendezvenyjelentkezesController#getar', 'adminrendezvenyjelentkezesgetar');
+$router->map('GET', '/admin/rendezvenyjelentkezes/viewlist', 'idopontfoglalasController#viewlist', 'adminrendezvenyjelentkezesviewlist');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getlistbody', 'idopontfoglalasController#getlistbody', 'adminrendezvenyjelentkezesgetlistbody');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getkarb', 'idopontfoglalasController#getkarb', 'adminrendezvenyjelentkezesgetkarb');
+$router->map('GET', '/admin/rendezvenyjelentkezes/viewkarb', 'idopontfoglalasController#viewkarb', 'adminrendezvenyjelentkezesviewkarb');
+$router->map('GET', '/admin/rendezvenyjelentkezes/getar', 'idopontfoglalasController#getar', 'adminrendezvenyjelentkezesgetar');
 $router->map(
     'GET',
     '/admin/rendezvenyjelentkezes/getfizetettosszeg',
-    'rendezvenyjelentkezesController#getfizetettosszeg',
+    'idopontfoglalasController#getfizetettosszeg',
     'adminrendezvenyjelentkezesgetfizetettosszeg'
 );
 if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/rendezvenyjelentkezes/save', 'rendezvenyjelentkezesController#save', 'adminrendezvenyjelentkezessave');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/fizet', 'rendezvenyjelentkezesController#fizet', 'adminrendezvenyjelentkezesfizet');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/szamlaz', 'rendezvenyjelentkezesController#szamlaz', 'adminrendezvenyjelentkezesszamlaz');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/lemond', 'rendezvenyjelentkezesController#lemond', 'adminrendezvenyjelentkezeslemond');
-    $router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'rendezvenyjelentkezesController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/save', 'idopontfoglalasController#save', 'adminrendezvenyjelentkezessave');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/fizet', 'idopontfoglalasController#fizet', 'adminrendezvenyjelentkezesfizet');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/szamlaz', 'idopontfoglalasController#szamlaz', 'adminrendezvenyjelentkezesszamlaz');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/lemond', 'idopontfoglalasController#lemond', 'adminrendezvenyjelentkezeslemond');
+    $router->map('POST', '/admin/idopontfoglalas/visszautal', 'idopontfoglalasController#visszautal', 'adminidopontfoglalasvisszautal');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/visszautal', 'idopontfoglalasController#visszautal', 'adminrendezvenyjelentkezesvisszautal');
+    $router->map(
+        'POST',
+        '/admin/idopontfoglalas/email/dijbekero',
+        'idopontfoglalasController#sendDijbekeroEmail',
+        'adminidopontfoglalasdijbekeroemail'
+    );
     $router->map(
         'POST',
         '/admin/rendezvenyjelentkezes/email/dijbekero',
-        'rendezvenyjelentkezesController#sendDijbekeroEmail',
+        'idopontfoglalasController#sendDijbekeroEmail',
         'adminsendrendezvenyjeldijbekeroemail'
     );
-    $router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'rendezvenyjelentkezesController#sendKezdesEmail', 'adminsendrendezvenyjelkezdesemail');
+    $router->map('POST', '/admin/idopontfoglalas/email/kezdes', 'idopontfoglalasController#sendKezdesEmail', 'adminidopontfoglalaskezdesemail');
+    $router->map('POST', '/admin/rendezvenyjelentkezes/email/kezdes', 'idopontfoglalasController#sendKezdesEmail', 'adminsendrendezvenyjelkezdesemail');
 }
 
 $router->map('GET', '/admin/termekertekeles/viewlist', 'termekertekelesController#viewlist', 'admintermekertekelesviewlist');

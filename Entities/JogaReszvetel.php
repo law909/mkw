@@ -71,12 +71,6 @@ class JogaReszvetel
     private $tanar;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Jogaterem")
-     * @ORM\JoinColumn(name="jogaterem_id",referencedColumnName="id",nullable=true,onDelete="restrict")
-     */
-    private $jogaterem;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Jogaoratipus")
      * @ORM\JoinColumn(name="jogaoratipus_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -314,24 +308,6 @@ class JogaReszvetel
         if ($this->tanar !== null) {
             $this->tanar = null;
         }
-    }
-
-    public function getJogaterem()
-    {
-        return $this->jogaterem;
-    }
-
-    public function getJogateremOrarendclass()
-    {
-        if ($this->jogaterem) {
-            return $this->jogaterem->getOrarendclass();
-        }
-        return '';
-    }
-
-    public function setJogaterem($jogaterem)
-    {
-        $this->jogaterem = $jogaterem;
     }
 
     public function getJogaoratipus()

@@ -4,7 +4,7 @@ namespace Listeners;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
-class RendezvenyListener
+class IdopontListener
 {
 
     private $em;
@@ -16,7 +16,7 @@ class RendezvenyListener
         $this->uow = $this->em->getUnitOfWork();
 
         $entity = $args->getObject();
-        if ($entity instanceof \Entities\Rendezveny) {
+        if ($entity instanceof \Entities\Idopont) {
             $entity->generateUId();
         }
     }

@@ -49,7 +49,7 @@
                     {if ($setup.unas)}
                         <li><a href="#UnasTab">{at('UNAS')}</a></li>
                     {/if}
-                    <li><a href="#RendezvenyTab">{at('Rendezvények')}</a></li>
+                    <li><a href="#RendezvenyTab">{at('Időpontok, rendezvények')}</a></li>
                     <li><a href="#IdTab">{at('Azonosítók, kódok')}</a></li>
                     <li><a href="#EmailTab">{at('Email')}</a></li>
                     <li><a href="#FeedTab">{at('Feed beállítások')}</a></li>

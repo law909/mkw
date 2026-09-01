@@ -2,17 +2,17 @@
 
 namespace Controllers;
 
-use Entities\Rendezvenyallapot;
+use Entities\Idopontallapot;
 
-class rendezvenyallapotController extends \mkwhelpers\MattableController
+class idopontallapotController extends \mkwhelpers\MattableController
 {
 
     public function __construct()
     {
-        $this->setEntityName(Rendezvenyallapot::class);
-        $this->setKarbFormTplName('rendezvenyallapotkarbform.tpl');
-        $this->setKarbTplName('rendezvenyallapotkarb.tpl');
-        $this->setListBodyRowTplName('rendezvenyallapotlista_tbody_tr.tpl');
+        $this->setEntityName(Idopontallapot::class);
+        $this->setKarbFormTplName('idopontallapotkarbform.tpl');
+        $this->setKarbTplName('idopontallapotkarb.tpl');
+        $this->setListBodyRowTplName('idopontallapotlista_tbody_tr.tpl');
         $this->setListBodyRowVarName('_egyed');
         parent::__construct();
     }
@@ -20,7 +20,7 @@ class rendezvenyallapotController extends \mkwhelpers\MattableController
     public function loadVars($t, $forKarb = false)
     {
         if (!$t) {
-            $t = new Rendezvenyallapot();
+            $t = new Idopontallapot();
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
@@ -28,9 +28,9 @@ class rendezvenyallapotController extends \mkwhelpers\MattableController
     }
 
     /**
-     * @param \Entities\Rendezvenyallapot $obj
+     * @param \Entities\Idopontallapot $obj
      *
-     * @return \Entities\Rendezvenyallapot
+     * @return \Entities\Idopontallapot
      */
     protected function setFields($obj)
     {
@@ -41,7 +41,7 @@ class rendezvenyallapotController extends \mkwhelpers\MattableController
 
     public function getlistbody()
     {
-        $view = $this->createView('rendezvenyallapotlista_tbody.tpl');
+        $view = $this->createView('idopontallapotlista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
@@ -66,9 +66,9 @@ class rendezvenyallapotController extends \mkwhelpers\MattableController
 
     public function viewlist()
     {
-        $view = $this->createView('rendezvenyallapotlista.tpl');
+        $view = $this->createView('idopontallapotlista.tpl');
 
-        $view->setVar('pagetitle', t('Rendezvény állapotok'));
+        $view->setVar('pagetitle', t('Időpont állapotok'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $view->printTemplateResult();
@@ -80,8 +80,8 @@ class rendezvenyallapotController extends \mkwhelpers\MattableController
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
 
-        $view->setVar('pagetitle', t('Rendezvény állapot'));
-        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminrendezvenyallapotsave'));
+        $view->setVar('pagetitle', t('Időpont állapot'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminidopontallapotsave'));
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
         $view->setVar('egyed', $this->loadVars($record, true));

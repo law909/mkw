@@ -20,16 +20,20 @@
                 <div class="dttora">
                     <div class="dttidopont{if ($idopont['delelott'])} delelott{/if}">{$idopont['kezdet']}-{$idopont['veg']}</div>
                     <div class="dttoranev">
+                        {* a saját webcím erősebb a témáénál: az az alkalom kiírása a wordpress oldalon *}
+                        {* a törzsekben relatív útvonalak állnak, ezért megy mindegyik prefixUrl-lel *}
                         <div class="margin-bottom-5">
-                            {if ($idopont['temaurl'])}
-                                <a href="{$idopont['temaurl']}" target="_parent">{$idopont['temanev']}</a>
+                            {if ($idopont['url'])}
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent">{$idopont['nev']}</a>
+                            {elseif ($idopont['temaurl'])}
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['temaurl'])}" target="_parent">{$idopont['nev']}</a>
                             {else}
-                                {$idopont['temanev']}
+                                {$idopont['nev']}
                             {/if}
                         </div>
                         <div class="margin-bottom-5">
                             {if ($idopont['tanarurl'])}
-                                <a href="{$idopont['tanarurl']}" target="_parent">{$idopont['tanar']}</a>
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['tanarurl'])}" target="_parent">{$idopont['tanar']}</a>
                             {else}
                                 {$idopont['tanar']}
                             {/if}
@@ -40,12 +44,19 @@
                         {if ($idopont['ar'] > 0)}
                             <div class="margin-bottom-5">{$idopont['ar']|number_format:0:",":" "} Ft</div>
                         {/if}
-                        <div>{$idopont['szabadhely']} szabad hely</div>
+                        {if ($idopont['szabadhely'] !== null)}
+                            <div>{$idopont['szabadhely']} szabad hely</div>
+                        {/if}
                     </div>
                     <div class="dtttanar">
                         {if ($idopont['megvanhely'])}
-                            <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                               class="dttorarendbutton">Foglalok</a>
+                            {if ($idopont['url'])}
+                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent"
+                                   class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                            {else}
+                                <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
+                                   class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                            {/if}
                         {else}
                             <div class="pirosszoveg">BETELT</div>
                         {/if}

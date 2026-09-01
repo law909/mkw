@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    const dialogcenter = $('#dialogcenter');
+
     const mattkarbconfig = new MattkarbConfig({
         entityName: 'idopont',
         beforeShow: function () {
@@ -10,17 +12,21 @@ $(document).ready(function () {
                 }
             });
 
-            // az egyszeri és az ismétlődő megadás kizárja egymást
+            // az egyszeri és az ismétlődő megadás kizárja egymást. A vég nem kötelező: az átvett
+            // rendezvényeknek csak kezdő időpontjuk volt
             function toggleIsmetlodo() {
                 const ismetlodo = $('#IsmetlodoCheck').is(':checked');
                 $('.js-egyszeriblokk').toggle(!ismetlodo);
                 $('.js-ismetlodoblokk').toggle(ismetlodo);
-                $('#KezdetEdit, #VegEdit').prop('required', !ismetlodo);
-                $('#NapEdit, #KezdetidoEdit, #VegidoEdit').prop('required', ismetlodo);
+                $('#KezdetEdit').prop('required', !ismetlodo);
+                $('#NapEdit, #KezdetidoEdit').prop('required', ismetlodo);
             }
 
             $('#IsmetlodoCheck').on('change', toggleIsmetlodo);
             toggleIsmetlodo();
+
+            mkwcomp.datumEdit.init('#EarlybirdvegeEdit');
+            new ClipboardJS('.js-uidcopy');
         }
     });
 
@@ -36,17 +42,24 @@ $(document).ready(function () {
         $('#mattable-select').mattable({
             filter: {
                 fields: [
+                    '#tipusfilter',
+                    '#nevfilter',
                     '#datumtolfilter',
                     '#datumigfilter',
                     '#dolgozofilter',
                     '#idoponttemafilter',
                     '#jogahelyszinfilter',
+                    '#idopontallapotfilter',
                     '#inaktivfilter',
                     '#ismetlodofilter'
                 ]
             },
             tablebody: {
-                url: '/admin/idopont/getlistbody'
+                url: '/admin/idopont/getlistbody',
+                onStyle: function () {
+                    new ClipboardJS('.js-uidcopy');
+                    $('.js-emailkezdes').button();
+                }
             },
             karb: mattkarbconfig
         });
@@ -55,22 +68,45 @@ $(document).ready(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });
 
-        $('#mattable-body').on('click', '.js-flagcheckbox', function (e) {
-            e.preventDefault();
-            const $this = $(this);
-            $.ajax({
-                url: '/admin/idopont/setflag',
-                type: 'POST',
-                data: {
-                    id: $this.attr('data-id'),
-                    flag: $this.attr('data-flag'),
-                    kibe: !$this.is('.ui-state-hover')
-                },
-                success: function () {
-                    $this.toggleClass('ui-state-hover');
-                }
+        $('#mattable-body')
+            .on('click', '.js-flagcheckbox', function (e) {
+                e.preventDefault();
+                const $this = $(this);
+                $.ajax({
+                    url: '/admin/idopont/setflag',
+                    type: 'POST',
+                    data: {
+                        id: $this.attr('data-id'),
+                        flag: $this.attr('data-flag'),
+                        kibe: !$this.is('.ui-state-hover')
+                    },
+                    success: function () {
+                        $this.toggleClass('ui-state-hover');
+                    }
+                });
+            })
+            .on('click', '.js-emailkezdes', function (e) {
+                e.preventDefault();
+                const $gomb = $(this);
+                $.ajax({
+                    url: '/admin/idopont/email/kezdes',
+                    type: 'POST',
+                    data: {id: $gomb.data('egyedid')},
+                    success: function (data) {
+                        const d = JSON.parse(data);
+                        dialogcenter.html(d.msg).dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
             });
-        });
     } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb(mattkarbconfig);

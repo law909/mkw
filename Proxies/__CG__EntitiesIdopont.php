@@ -67,10 +67,10 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'tipus', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontallapot', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'termek', '' . "\0" . 'Entities\\Idopont' . "\0" . 'uid', '' . "\0" . 'Entities\\Idopont' . "\0" . 'url', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdvege', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopont' . "\0" . 'id', '' . "\0" . 'Entities\\Idopont' . "\0" . 'created', '' . "\0" . 'Entities\\Idopont' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Idopont' . "\0" . 'createdby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Idopont' . "\0" . 'tipus', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopont' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idoponttema', '' . "\0" . 'Entities\\Idopont' . "\0" . 'idopontallapot', '' . "\0" . 'Entities\\Idopont' . "\0" . 'jogahelyszin', '' . "\0" . 'Entities\\Idopont' . "\0" . 'termek', '' . "\0" . 'Entities\\Idopont' . "\0" . 'uid', '' . "\0" . 'Entities\\Idopont' . "\0" . 'url', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlineurl', '' . "\0" . 'Entities\\Idopont' . "\0" . 'onlinevalaszthato', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ismetlodo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'nap', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdetido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'vegido', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kezdet', '' . "\0" . 'Entities\\Idopont' . "\0" . 'veg', '' . "\0" . 'Entities\\Idopont' . "\0" . 'ar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdvege', '' . "\0" . 'Entities\\Idopont' . "\0" . 'earlybirdar', '' . "\0" . 'Entities\\Idopont' . "\0" . 'maxresztvevo', '' . "\0" . 'Entities\\Idopont' . "\0" . 'varolistavan', '' . "\0" . 'Entities\\Idopont' . "\0" . 'kellszamlazasiadat', '' . "\0" . 'Entities\\Idopont' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idopont' . "\0" . 'foglalasok'];
     }
 
     /**
@@ -206,6 +206,94 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function generateUId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'generateUId', []);
+
+        return parent::generateUId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUid()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUid', []);
+
+        return parent::getUid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTipus', []);
+
+        return parent::getTipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTipus($tipus)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTipus', [$tipus]);
+
+        return parent::setTipus($tipus);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isRendezveny()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isRendezveny', []);
+
+        return parent::isRendezveny();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
+
+        return parent::getNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNev($nev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
+
+        return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTeljesNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTeljesNev', []);
+
+        return parent::getTeljesNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getDolgozo()
     {
 
@@ -327,6 +415,39 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getIdopontallapot()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdopontallapot', []);
+
+        return parent::getIdopontallapot();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdopontallapotNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdopontallapotNev', []);
+
+        return parent::getIdopontallapotNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdopontallapot($idopontallapot)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdopontallapot', [$idopontallapot]);
+
+        return parent::setIdopontallapot($idopontallapot);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getJogahelyszin()
     {
 
@@ -377,6 +498,182 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setJogahelyszin', [$jogahelyszin]);
 
         return parent::setJogahelyszin($jogahelyszin);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTermek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermek', []);
+
+        return parent::getTermek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTermekNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTermekNev', []);
+
+        return parent::getTermekNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTermek($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTermek', [$val]);
+
+        return parent::setTermek($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeTermek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTermek', []);
+
+        return parent::removeTermek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedby()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedby', []);
+
+        return parent::getCreatedby();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedbyId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedbyId', []);
+
+        return parent::getCreatedbyId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedbyNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedbyNev', []);
+
+        return parent::getCreatedbyNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedby()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedby', []);
+
+        return parent::getUpdatedby();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedbyId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedbyId', []);
+
+        return parent::getUpdatedbyId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdatedbyNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdatedbyNev', []);
+
+        return parent::getUpdatedbyNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', []);
+
+        return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function clearCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearCreated', []);
+
+        return parent::clearCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmod', []);
+
+        return parent::getLastmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLastmodStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLastmodStr', []);
+
+        return parent::getLastmodStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function clearLastmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'clearLastmod', []);
+
+        return parent::clearLastmod();
     }
 
     /**
@@ -624,6 +921,61 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getEarlybirdvege()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEarlybirdvege', []);
+
+        return parent::getEarlybirdvege();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEarlybirdvegeStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEarlybirdvegeStr', []);
+
+        return parent::getEarlybirdvegeStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEarlybirdvege($adat = '')
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEarlybirdvege', [$adat]);
+
+        return parent::setEarlybirdvege($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEarlybirdar()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEarlybirdar', []);
+
+        return parent::getEarlybirdar();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEarlybirdar($earlybirdar): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEarlybirdar', [$earlybirdar]);
+
+        parent::setEarlybirdar($earlybirdar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getMaxresztvevo()
     {
 
@@ -641,6 +993,105 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMaxresztvevo', [$maxresztvevo]);
 
         return parent::setMaxresztvevo($maxresztvevo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function hasLetszamkorlat()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'hasLetszamkorlat', []);
+
+        return parent::hasLetszamkorlat();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isVarolistavan()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isVarolistavan', []);
+
+        return parent::isVarolistavan();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVarolistavan($varolistavan): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVarolistavan', [$varolistavan]);
+
+        parent::setVarolistavan($varolistavan);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKellszamlazasiadat()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKellszamlazasiadat', []);
+
+        return parent::getKellszamlazasiadat();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKellszamlazasiadat($kellszamlazasiadat)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKellszamlazasiadat', [$kellszamlazasiadat]);
+
+        return parent::setKellszamlazasiadat($kellszamlazasiadat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUrl', []);
+
+        return parent::getUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUrl($url)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUrl', [$url]);
+
+        return parent::setUrl($url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOnlineurl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOnlineurl', []);
+
+        return parent::getOnlineurl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setOnlineurl($onlineurl)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOnlineurl', [$onlineurl]);
+
+        return parent::setOnlineurl($onlineurl);
     }
 
     /**

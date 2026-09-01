@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Entities\Dolgozo;
-use Entities\Jogaterem;
 use Entities\MPTNGYSzakmaianyag;
 use Entities\MPTNGYSzakmaianyagtipus;
 use Entities\MPTNGYTema;
@@ -114,9 +113,6 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $x['biralo3pont'] = $t->calcB3pont();
         $x['osszespont'] = $t->calcPont();
 
-        $x['terem'] = $t->getTerem()?->getId();
-        $x['teremnev'] = $t->getTerem()?->getNev();
-
         $x['tema'] = $t->getTema()?->getId();
         $x['temanev'] = $t->getTema()?->getNev();
         return $x;
@@ -182,13 +178,6 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         }
 
         if (!$pub) {
-            $terem = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('terem'));
-            if ($terem) {
-                $obj->setTerem($terem);
-            } else {
-                $obj->removeTerem();
-            }
-
             $tema = \mkw\store::getEm()->getRepository(MPTNGYTema::class)->find($this->params->getIntRequestParam('tema'));
             if ($tema) {
                 $obj->setTema($tema);
@@ -481,10 +470,6 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
             $filter->addFilter('tipus', '=', $this->params->getIntRequestParam('tipusfilter'));
         }
 
-        if (!is_null($this->params->getRequestParam('teremfilter', null))) {
-            $filter->addFilter('terem', '=', $this->params->getIntRequestParam('teremfilter'));
-        }
-
         if (!is_null($this->params->getRequestParam('temafilter', null))) {
             $filter->addFilter('tema', '=', $this->params->getIntRequestParam('temafilter'));
         }
@@ -518,8 +503,6 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         $view->setVar('temakor1list', $tk->getSelectList());
         $tc = new mptngyszakmaianyagtipusController();
         $view->setVar('tipuslist', $tc->getSelectList());
-        $jt = new jogateremController();
-        $view->setVar('teremlist', $jt->getSelectList());
         $tx = new mptngytemaController();
         $view->setVar('temalist', $tx->getSelectList());
 
@@ -540,9 +523,6 @@ class mptngyszakmaianyagController extends \mkwhelpers\MattableController
         // loadVars utan nem abc sorrendben adja vissza
         $tc = new mptngyszakmaianyagtipusController();
         $view->setVar('tipuslist', $tc->getSelectList($anyag?->getTipus()?->getId()));
-
-        $jt = new jogateremController();
-        $view->setVar('teremlist', $jt->getSelectList($anyag?->getTerem()?->getId()));
 
         $xt = new mptngytemaController();
         $view->setVar('temalist', $xt->getSelectList($anyag?->getTema()?->getId()));

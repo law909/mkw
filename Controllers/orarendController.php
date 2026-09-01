@@ -6,10 +6,8 @@ use Entities\Dolgozo;
 use Entities\JogaBejelentkezes;
 use Entities\Jogahelyszin;
 use Entities\Jogaoratipus;
-use Entities\Jogaterem;
 use Entities\Orarend;
 use Entities\Orarendhelyettesites;
-use Entities\Rendezveny;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
 
@@ -42,7 +40,6 @@ class orarendController extends \mkwhelpers\MattableController
         $x = $this->getEntityFieldsArray($t);
         $x['dolgozonev'] = $t->getDolgozoNev();
         $x['jogahelyszinnev'] = $t->getJogahelyszinNev();
-        $x['jogateremnev'] = $t->getJogateremNev();
         $x['jogaoratipusnev'] = $t->getJogaoratipusNev();
         $x['napnev'] = $t->getNapNev();
         $x['kezdet'] = $t->getKezdetStr();
@@ -67,12 +64,6 @@ class orarendController extends \mkwhelpers\MattableController
         }
         $jogahelyszin = \mkw\store::getEm()->getRepository(Jogahelyszin::class)->find($this->params->getIntRequestParam('jogahelyszin'));
         $obj->setJogahelyszin($jogahelyszin ?: null);
-        $jogaterem = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem'));
-        if ($jogaterem) {
-            $obj->setJogaterem($jogaterem);
-        } else {
-            $obj->setJogaterem(null);
-        }
         $jogaoratipus = \mkw\store::getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus'));
         if ($jogaoratipus) {
             $obj->setJogaoratipus($jogaoratipus);
@@ -103,9 +94,6 @@ class orarendController extends \mkwhelpers\MattableController
         }
         if (!is_null($this->params->getRequestParam('jogaoratipusfilter', null))) {
             $filter->addFilter('jogaoratipus', '=', $this->params->getIntRequestParam('jogaoratipusfilter'));
-        }
-        if (!is_null($this->params->getRequestParam('jogateremfilter', null))) {
-            $filter->addFilter('jogaterem', '=', $this->params->getIntRequestParam('jogateremfilter'));
         }
         if (!is_null($this->params->getRequestParam('dolgozofilter', null))) {
             $filter->addFilter('dolgozo', '=', $this->params->getIntRequestParam('dolgozofilter'));
@@ -179,9 +167,6 @@ class orarendController extends \mkwhelpers\MattableController
         $jhc = new jogahelyszinController();
         $view->setVar('jogahelyszinlist', $jhc->getSelectList());
 
-        $jtc = new jogateremController();
-        $view->setVar('jogateremlist', $jtc->getSelectList());
-
         $jotc = new jogaoratipusController();
         $view->setVar('jogaoratipuslist', $jotc->getSelectList());
 
@@ -207,9 +192,6 @@ class orarendController extends \mkwhelpers\MattableController
         $jhc = new jogahelyszinController();
         // a rekordon már beállított helyszín akkor is bent marad, ha időközben inaktívvá tették
         $view->setVar('jogahelyszinlist', $jhc->getSelectList(($ora ? $ora->getJogahelyszinId() : 0), !$ora?->getJogahelyszin()?->getInaktiv()));
-
-        $jtc = new jogateremController();
-        $view->setVar('jogateremlist', $jtc->getSelectList(($ora ? $ora->getJogateremId() : 0)));
 
         $jotc = new jogaoratipusController();
         $view->setVar('jogaoratipuslist', $jotc->getSelectList(($ora ? $ora->getJogaoratipusId() : 0)));
@@ -290,11 +272,11 @@ class orarendController extends \mkwhelpers\MattableController
                 'oraurl' => $item->getJogaoratipusUrl(),
                 'tanar' => $item->getDolgozoNev(),
                 'tanarurl' => $item->getDolgozoUrl(),
-                'teremclass' => $item->getJogateremOrarendclass(),
+                'teremclass' => '',
                 'helyettesito' => '',
                 'helyettesitourl' => '',
-                'terem' => $item->getJogateremNev(),
-                'class' => $item->getJogateremOrarendclass(),
+                'terem' => '',
+                'class' => '',
                 'delelott' => $item->isDelelottKezdodik(),
                 'elmarad' => false,
                 'multilang' => $item->getMultilang(),
@@ -335,46 +317,6 @@ class orarendController extends \mkwhelpers\MattableController
             $orarend[$item->getNap()]['napdatum'] = $xdatum->add(new \DateInterval('P' . ($item->getNap() - 1) . 'D'))->format(\mkw\store::$DateFormat);
             $orarend[$item->getNap()]['orak'][] = $orak;
         }
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('orarendbenszerepel', '=', true);
-        $filter->addFilter('ra.orarendbenszerepel', '=', true);
-        if ($helyszinkod) {
-            $filter->addFilter('helyszin', '=', $helyszinkod);
-        }
-        $rec = $this->getRepo(Rendezveny::class)->getWithJoins($filter, ['kezdodatum' => 'ASC', 'kezdoido' => 'ASC']);
-        /** @var \Entities\Rendezveny $item */
-        foreach ($rec as $item) {
-            $orak = [
-                'id' => $item->getId(),
-                'kezdet' => $item->getKezdoido(),
-                'veg' => '',
-                'oranev' => $item->getTeljesNev(),
-                'oraurl' => $item->getUrl(),
-                'tanar' => $item->getTanar()?->getNev(),
-                'tanarurl' => $item->getTanar()?->getUrl(),
-                'teremclass' => '',
-                'helyettesito' => '',
-                'helyettesitourl' => '',
-                'terem' => $item->getJogaterem()?->getNev(),
-                'class' => $item->getJogaterem()?->getOrarendclass(),
-                'delelott' => false,
-                'elmarad' => false,
-                'multilang' => false,
-                'onlineurl' => $item->getOnlineurl(),
-                'bejelentkezeskell' => false,
-                'datum' => '',
-                'bejelentkezesdb' => 0,
-                'maxbejelentkezes' => 0,
-                'megvanhely' => true,
-                'szabadhely' => 0,
-                'lemondhato' => false
-            ];
-            if (!array_key_exists($item->getNap(), $orarend)) {
-                $orarend[$item->getNap()]['napnev'] = \mkw\store::getDayname($item->getNap());
-                $orarend[$item->getNap()]['napdatum'] = $item->getKezdodatumStr();
-            }
-            $orarend[$item->getNap()]['orak'][] = $orak;
-        }
 
         foreach ($orarend as $elem) {
             uasort($elem['orak'], function ($a, $b) {
@@ -410,8 +352,8 @@ class orarendController extends \mkwhelpers\MattableController
                 'oraurl' => $item->getJogaoratipusUrl(),
                 'tanar' => $item->getDolgozoNev(),
                 'tanarurl' => $item->getDolgozoUrl(),
-                'terem' => $item->getJogateremNev(),
-                'class' => $item->getJogateremOrarendclass(),
+                'terem' => '',
+                'class' => '',
                 'delelott' => $item->isDelelottKezdodik(),
                 'atlagresztvevoszam' => $item->getAtlagresztvevoszam(),
                 'multilang' => $item->getMultilang(),

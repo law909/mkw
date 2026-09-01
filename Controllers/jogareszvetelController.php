@@ -10,7 +10,6 @@ use Entities\Fizmod;
 use Entities\JogaBerlet;
 use Entities\Jogaoratipus;
 use Entities\JogaReszvetel;
-use Entities\Jogaterem;
 use Entities\Jogcim;
 use Entities\Partner;
 use Entities\Penztar;
@@ -54,8 +53,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $x['tanar'] = $t->getTanar()?->getId();
         $x['tanarnev'] = $t->getTanar()?->getNev();
 
-        $x['jogaterem'] = $t->getJogaterem()?->getId();
-        $x['jogateremnev'] = $t->getJogaterem()?->getNev();
 
         $x['jogaoratipus'] = $t->getJogaoratipus()?->getId();
         $x['jogaoratipusnev'] = $t->getJogaoratipus()?->getNev();
@@ -81,8 +78,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
             $x['penztarlist'] = $penztar->getSelectList();
             $tanar = new dolgozoController();
             $x['tanarlist'] = $tanar->getSelectList();
-            $terem = new jogateremController();
-            $x['jogateremlist'] = $terem->getSelectList();
             $ot = new jogaoratipusController();
             $x['jogaoratipuslist'] = $ot->getSelectList();
             $partner = new partnerController();
@@ -145,10 +140,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod', 0));
         if ($ck) {
             $obj->setFizmod($ck);
-        }
-        $ck = \mkw\store::getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem', 0));
-        if ($ck) {
-            $obj->setJogaterem($ck);
         }
         $ck = \mkw\store::getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus', 0));
         if ($ck) {
@@ -408,11 +399,10 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
     public function quickSave()
     {
-        $terem = $this->getEm()->getRepository(Jogaterem::class)->find($this->params->getIntRequestParam('jogaterem'));
         $oratipus = $this->getEm()->getRepository(Jogaoratipus::class)->find($this->params->getIntRequestParam('jogaoratipus', 0));
         $tanar = $this->getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('tanar', 0));
         $jrids = $this->params->getArrayRequestParam('jrid');
-        if ($terem && $oratipus && $tanar) {
+        if ($oratipus && $tanar) {
             foreach ($jrids as $jrid) {
                 $uresterem = $this->params->getBoolRequestParam('uresterem_' . $jrid);
                 $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek_' . $jrid, 0));
@@ -493,7 +483,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                             $jr->setPartnernev('Üres terem');
                         }
                         $jr->setJogaoratipus($oratipus);
-                        $jr->setJogaterem($terem);
                         $jr->setTermek($termek);
                         $jr->setBruttoegysar($this->params->getNumRequestParam('ar_' . $jrid));
                         $jr->setTanar($tanar);
@@ -513,7 +502,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
     public function fizet()
     {
-        /** @var \Entities\RendezvenyJelentkezes $r */
+        /** @var \Entities\JogaReszvetel $r */
         $r = $this->getRepo()->find($this->params->getIntRequestParam('id'));
         /** @var \Entities\Fizmod $fizmod */
         $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
@@ -566,7 +555,8 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
                 $bt->setJogcim($jogcim);
                 $bt->setBrutto($osszeg);
-                $bt->setSzoveg($r->getRendezveny()?->getTeljesNev());
+                // a bizonylattétel szövege az óra típusa; korábban egy nem létező getRendezveny()-t hívott
+                $bt->setSzoveg($r->getJogaoratipus()?->getNev());
                 $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
 
                 $this->getEm()->persist($biz);

@@ -4,10 +4,10 @@ namespace Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Doctrine\ORM\Mapping\Entity(repositoryClass="Entities\RendezvenyallapotRepository")
- * @Doctrine\ORM\Mapping\Table(name="rendezvenytipus",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
+ * @ORM\Entity(repositoryClass="Entities\IdopontallapotRepository")
+ * @ORM\Table(name="idopontallapot",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
-class Rendezvenyallapot {
+class Idopontallapot {
 
     /**
      * @ORM\Id
@@ -23,9 +23,6 @@ class Rendezvenyallapot {
 
     /** @ORM\Column(type="integer",nullable=true) */
     private $sorrend;
-
-    /** @ORM\Column(type="boolean",nullable=false) */
-    private $orarendbenszerepel = true;
 
     /**
      * @return mixed
@@ -60,20 +57,6 @@ class Rendezvenyallapot {
      */
     public function setSorrend($sorrend) {
         $this->sorrend = $sorrend;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOrarendbenszerepel() {
-        return $this->orarendbenszerepel;
-    }
-
-    /**
-     * @param bool $orarendbenszerepel
-     */
-    public function setOrarendbenszerepel($orarendbenszerepel) {
-        $this->orarendbenszerepel = $orarendbenszerepel;
     }
 
 }

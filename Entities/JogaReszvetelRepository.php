@@ -30,9 +30,8 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository
     public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(
-            'SELECT _xx,jt,jot,f,p,ta,pa,t '
+            'SELECT _xx,jot,f,p,ta,pa,t '
             . ' FROM Entities\JogaReszvetel _xx'
-            . ' LEFT JOIN _xx.jogaterem jt'
             . ' LEFT JOIN _xx.jogaoratipus jot'
             . ' LEFT JOIN _xx.fizmod f'
             . ' LEFT JOIN _xx.penztar p'
@@ -57,7 +56,6 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository
         $q = $this->_em->createQuery(
             'SELECT COUNT(_xx)'
             . ' FROM Entities\JogaReszvetel _xx'
-            . ' LEFT JOIN _xx.jogaterem jt'
             . ' LEFT JOIN _xx.jogaoratipus jot'
             . ' LEFT JOIN _xx.fizmod f'
             . ' LEFT JOIN _xx.penztar p'
