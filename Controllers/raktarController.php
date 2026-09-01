@@ -88,12 +88,24 @@ class raktarController extends \mkwhelpers\MattableController
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null)
+    /**
+     * Az inaktív (archív) raktárak nem választhatók, de a már kiválasztott akkor is a listán marad,
+     * ha időközben inaktív lett – különben a régi bizonylat mentése némán másik raktárra kerülne.
+     */
+    public function getSelectList($selid = null, $onlyActive = true)
     {
-        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
         $res = [];
+        $vanselected = false;
+        $rec = $onlyActive ? $this->getRepo()->getAllActive() : $this->getRepo()->getAll([], ['nev' => 'ASC']);
         foreach ($rec as $sor) {
             $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
+            $vanselected = $vanselected || ($sor->getId() == $selid);
+        }
+        if ($selid && !$vanselected) {
+            $sor = $this->getRepo()->find($selid);
+            if ($sor) {
+                $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev() . ' (' . t('inaktív') . ')', 'selected' => true];
+            }
         }
         return $res;
     }

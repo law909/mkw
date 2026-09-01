@@ -134,7 +134,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('valutanemlist', $fmc->getSelectList());
 
         $raktar = new raktarController();
-        $view->setVar('raktarlist', $raktar->getSelectList());
+        // a szűrő az inaktív raktárakat is kínálja: a régi bizonylatokat is meg kell találni
+        $view->setVar('raktarlist', $raktar->getSelectList(null, false));
 
         $felh = new dolgozoController();
         $view->setVar('felhasznalolist', $felh->getSelectList());

@@ -18,7 +18,7 @@
                     <td><input id="MozgatEdit" name="mozgat" type="checkbox"{if ($egyed.mozgat)} checked="checked"{/if}></td>
                 </tr>
                 <tr>
-                    <td><label for="ArchivEdit">{at('Archív')}:</label></td>
+                    <td><label for="ArchivEdit">{at('Inaktív')}:</label></td>
                     <td><input id="ArchivEdit" name="archiv" type="checkbox"{if ($egyed.archiv)} checked="checked"{/if}></td>
                 </tr>
                 <tr>
