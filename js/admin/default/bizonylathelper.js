@@ -1458,7 +1458,7 @@ let bizonylathelper = function ($) {
             $(this).dialog('close');
             kesz();
         };
-        $('#dialogcenter').html('A bizonylat elmentve (' + egyedid + '). Nyomtatja, illetve elküldi emailben?').dialog({
+        $('#dialogcenter').html('A bizonylat elmentve (' + egyedid + ').<br>Nyomtatja, illetve elküldi emailben?').dialog({
             title: 'Nyomtatás, küldés',
             resizable: false,
             modal: true,
