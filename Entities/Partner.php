@@ -243,6 +243,9 @@ class Partner
     /** @ORM\Column(type="boolean") */
     private $szallito = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $gyarto = false;
+
     /** @ORM\Column(type="boolean") */
     private $exportbacsakkeszlet = false;
 
@@ -1401,6 +1404,16 @@ class Partner
     public function getSzallito()
     {
         return $this->szallito;
+    }
+
+    public function getGyarto()
+    {
+        return $this->gyarto;
+    }
+
+    public function setGyarto($val)
+    {
+        $this->gyarto = $val;
     }
 
     public function setSzallito($val)
