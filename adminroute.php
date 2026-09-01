@@ -866,6 +866,18 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/bevetfej/print', 'bevetfejController#doPrint', 'adminbevetfejprint');
 
+$router->map('GET', '/admin/szallitoielolegfej/viewlist', 'szallitoielolegfejController#viewlist', 'adminszallitoielolegfejviewlist');
+$router->map('GET', '/admin/szallitoielolegfej/getlistbody', 'szallitoielolegfejController#getlistbody', 'adminszallitoielolegfejgetlistbody');
+$router->map('GET', '/admin/szallitoielolegfej/getkarb', 'szallitoielolegfejController#getkarb', 'adminszallitoielolegfejgetkarb');
+$router->map('GET', '/admin/szallitoielolegfej/viewkarb', 'szallitoielolegfejController#viewkarb', 'adminszallitoielolegfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/szallitoielolegfej/save', 'szallitoielolegfejController#save', 'adminszallitoielolegfejsave');
+    $router->map('POST', '/admin/szallitoielolegfej/ront', 'szallitoielolegfejController#ront', 'adminszallitoielolegfejront');
+    $router->map('POST', '/admin/szallitoielolegfej/fejexport', 'szallitoielolegfejController#fejexport', 'adminszallitoielolegfejfejexport');
+    $router->map('POST', '/admin/szallitoielolegfej/tetelexport', 'szallitoielolegfejController#tetelexport', 'adminszallitoielolegfejtetelexport');
+}
+$router->map('GET', '/admin/szallitoielolegfej/print', 'szallitoielolegfejController#doPrint', 'adminszallitoielolegfejprint');
+
 $router->map('GET', '/admin/leltartobbletfej/viewlist', 'leltartobbletfejController#viewlist', 'adminleltartobbletfejviewlist');
 $router->map('GET', '/admin/leltartobbletfej/getlistbody', 'leltartobbletfejController#getlistbody', 'adminleltartobbletfejgetlistbody');
 $router->map('GET', '/admin/leltartobbletfej/getkarb', 'leltartobbletfejController#getkarb', 'adminleltartobbletfejgetkarb');
