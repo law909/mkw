@@ -239,6 +239,17 @@ class BizonylatDok extends \Entities\BizonylatDok implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function toLinkArray()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLinkArray', []);
+
+        return parent::toLinkArray();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUrl()
     {
 

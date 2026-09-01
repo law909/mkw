@@ -239,6 +239,17 @@ class PartnerDok extends \Entities\PartnerDok implements \Doctrine\ORM\Proxy\Pro
     /**
      * {@inheritDoc}
      */
+    public function toLinkArray()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toLinkArray', []);
+
+        return parent::toLinkArray();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getUrl()
     {
 
