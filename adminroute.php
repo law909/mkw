@@ -1576,6 +1576,7 @@ $router->map('GET', '/admin/pdfszamlaexport/getutolso', 'pdfszamlaexportControll
 $router->map('GET', '/admin/xmlszamlaexport/view', 'xmlszamlaexportController#view', 'adminxmlszamlaexportview');
 $router->map('POST', '/admin/xmlszamlaexport/sendemail', 'xmlszamlaexportController#sendEmail', 'adminxmlszamlasendemail');
 $router->map('GET', '/admin/xmlszamlaexport/download', 'xmlszamlaexportController#download', 'adminxmlszamladownload');
+$router->map('GET', '/admin/xmlszamlaexport/getutolso', 'xmlszamlaexportController#getUtolso', 'adminxmlszamlagetutolso');
 
 $router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt');
 $router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
