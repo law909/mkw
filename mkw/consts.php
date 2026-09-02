@@ -541,6 +541,8 @@ class consts
 
     const Napijelentes2DefaultRaktar = 'napijelentes2defaultraktar';
 
+    const NyomtatasiKerdesMenteskor = 'nyomtatasikerdesmenteskor';
+
     const FCMoto = 'fcmoto';
     const MaximoMoto = 'maximomoto';
 

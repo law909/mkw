@@ -1428,13 +1428,15 @@ let bizonylathelper = function ($) {
     }
 
     // Mentés után a bizonylattípus szerint (nyomtatni / sendemail) felajánljuk a nyomtatást
-    // vagy az emailes küldést; a kesz() zárja le a karbot (visszalépés a listára).
+    // vagy az emailes küldést; a kesz() zárja le a karbot (visszalépés a listára). A kérdés a
+    // "Nyomtatási kérdés számla mentéskor" beállítás mögött van (consts::NyomtatasiKerdesMenteskor).
     function mentesUtaniNyomtatasKerdes(entityName, egyedid, kesz) {
         const $form = $('#mattkarb-form'),
+            kerdezni = $form.data('nyomtatasikerdes') * 1 === 1,
             nyomtatni = $form.data('nyomtatni') * 1 === 1,
             sendemail = $form.data('sendemail') * 1 === 1,
             kellkerdezni = $form.data('editprinted') * 1 !== 1;
-        if (!egyedid || (!nyomtatni && !sendemail)) {
+        if (!egyedid || !kerdezni || (!nyomtatni && !sendemail)) {
             kesz();
             return;
         }

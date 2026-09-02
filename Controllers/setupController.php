@@ -681,6 +681,9 @@ class setupController extends \mkwhelpers\Controller
             (new valutanemController())->getSelectList($p ? $p->getErtek() : '')
         );
 
+        $p = $repo->find(\mkw\consts::NyomtatasiKerdesMenteskor);
+        $view->setVar(\mkw\consts::NyomtatasiKerdesMenteskor, ($p ? $p->getErtek() : 0));
+
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
@@ -2242,6 +2245,11 @@ class setupController extends \mkwhelpers\Controller
                      \mkw\consts::PartnerAlapValutanem] as $kulcs) {
             $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
         }
+
+        $this->setObj(
+            \mkw\consts::NyomtatasiKerdesMenteskor,
+            $this->params->getBoolRequestParam(\mkw\consts::NyomtatasiKerdesMenteskor)
+        );
 
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
         if ($arsav) {

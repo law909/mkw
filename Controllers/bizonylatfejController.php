@@ -1717,6 +1717,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             );
 
             $this->biztipus->setTemplateVars($view);
+            // a mentés utáni nyomtatás/küldés kérdése beállítás mögött van
+            $view->setVar('nyomtatasikerdes', \mkw\store::getParameter(\mkw\consts::NyomtatasiKerdesMenteskor));
 
             if (!\mkw\store::isPartnerAutocomplete()) {
                 $partnerc = new partnerController();
