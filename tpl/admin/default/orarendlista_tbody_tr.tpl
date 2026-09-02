@@ -14,6 +14,9 @@
                             <td>{$_orarend.napnev}</td>
                         </tr>
                         <tr>
+                            <td>{$_orarend.jogahelyszinnev|escape}</td>
+                        </tr>
+                        <tr>
                             <td>{$_orarend.dolgozonev}</td>
                         </tr>
                         <tr>
