@@ -84,7 +84,7 @@
                     <tr class="tetelsor">
                         <td class="dashedline"></td>
                         <td colspan="8"
-                            class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}
+                            class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}
                             ({$tetel.vtszszam})
                         </td>
                     </tr>

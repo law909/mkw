@@ -58,7 +58,7 @@
 {block "itemrows"}
     <tr class="tetelsor">
         <td width="{$w.cikkszam}">{$tetel.cikkszam}</td>
-        <td width="{$w.termek}">{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek} {/foreach}</td>
+        <td width="{$w.termek}">{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek} {/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}</td>
         <td width="{$w.mennyiseg}" class="textalignright">{number_format($tetel.mennyiseg,2,',',' ')} {$tetel.me}</td>
         <td width="{$w.egysar}" class="textalignright">{number_format($tetel.nettoegysar,2,',',' ')}</td>
         <td width="{$w.netto}" class="textalignright">{number_format($tetel.netto,2,',',' ')}</td>

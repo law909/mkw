@@ -96,7 +96,7 @@
                         <td>{$teteldb + 1}</td>
                         <td width="150px" class="textaligncenter"><img src="{$mainurl}{$tetel.kiskepurl}" alt="{$tetel.termeknev}"></td>
                         <td colspan={if ($egyed.kedvezmenycount > 0)}"10"{else}"8"{/if}
-                        class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}
+                        class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}
                         ({$tetel.vtszszam})</td>
                     </tr>
                     <tr class="tetelsor">

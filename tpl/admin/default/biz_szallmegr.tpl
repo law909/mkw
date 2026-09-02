@@ -64,7 +64,7 @@
             {foreach $egyed.tetellista as $tetel}
                 <tr class="tetelsor">
                     <td>{$tetel.cikkszam}</td>
-                    <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}</td>
+                    <td>{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}</td>
                     <td class="textalignright">{number_format($tetel.mennyiseg,0,'',' ')} {$tetel.me}</td>
                     <td class="textalignright">{number_format($tetel.nettoegysar,0,'',' ')}</td>
                     <td class="textalignright">{number_format($tetel.netto,0,'',' ')}</td>
