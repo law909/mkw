@@ -1115,6 +1115,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
 
         /** @var \Entities\Idopont $idopont */
         $view->setVar('idopontid', $idopont ? $idopont->getId() : 0);
+        $view->setVar('idopontuid', $idopont ? $idopont->getUid() : '');
         $view->setVar('datum', $datum ? $datum->format(\mkw\store::$DateFormat) : '');
         $view->setVar('datumparam', $datum ? $datum->format(\mkw\store::$SQLDateFormat) : '');
         $view->setVar('napnev', $datum ? \mkw\store::getDayname($datum->format('N')) : '');

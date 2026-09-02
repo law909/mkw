@@ -154,6 +154,28 @@
         cursor: pointer;
     }
 
+    .lemondasbtn {
+        color: #80008C;
+        background-color: #fff;
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid #80008C;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        cursor: pointer;
+    }
+
+    .lemondasblokk {
+        border-top: 1px solid #ded4d4;
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+
     .foglalasfejlec {
         background-color: #fff9f7;
         border-radius: 3px;
