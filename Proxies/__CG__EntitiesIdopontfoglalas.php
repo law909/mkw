@@ -1548,6 +1548,17 @@ class Idopontfoglalas extends \Entities\Idopontfoglalas implements \Doctrine\ORM
     /**
      * {@inheritDoc}
      */
+    public function getLemondasUrl()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLemondasUrl', []);
+
+        return parent::getLemondasUrl();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toLista()
     {
 

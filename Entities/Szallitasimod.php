@@ -54,6 +54,13 @@ class Szallitasimod
     /** @ORM\Column(type="boolean") */
     private $webes4 = false;
     /**
+     * A szállítási díjat a szolgáltató (pl. Fedex) adja meg, nem az összeghatár tábla:
+     * a bizonylat mentésekor a szállítási költséget nem képezzük újra.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $szolgaltatoiszallitasidij = false;
+    /**
      * @ORM\ManyToOne(targetEntity="Termek")
      * @ORM\JoinColumn(name="termek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Termek
@@ -219,6 +226,21 @@ class Szallitasimod
     public function setWebes4($webes4)
     {
         $this->webes4 = $webes4;
+    }
+
+    public function isSzolgaltatoiszallitasidij()
+    {
+        return $this->szolgaltatoiszallitasidij;
+    }
+
+    public function getSzolgaltatoiszallitasidij()
+    {
+        return $this->szolgaltatoiszallitasidij;
+    }
+
+    public function setSzolgaltatoiszallitasidij($ertek)
+    {
+        $this->szolgaltatoiszallitasidij = $ertek;
     }
 
     public function getTermek()
