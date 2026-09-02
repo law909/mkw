@@ -21,11 +21,11 @@
         {if ($showgarancialisadatok)}
             <tr>
                 <td><label for="MegjegyzesEdit{$tetel.id}">{at('Termék leírás')}</label></td>
-                <td><input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes}"></td>
+                <td><input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes|escape}"></td>
             </tr>
             <tr>
                 <td><label for="Megjegyzes2Edit{$tetel.id}">{at('Hiba leírás')}</label></td>
-                <td><input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2}"></td>
+                <td><input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2|escape}"></td>
             </tr>
             <tr>
                 <td><label for="VasarlasdatumEdit{$tetel.id}">{at('Vásárlás dátuma')}</label></td>
@@ -42,7 +42,7 @@
                         {$tetel.termeknev}
                     {else}
                         <input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}"
-                               class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
+                               class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev|escape}" required="required">
                     {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
                     {include 'bizonylatteteltermekgombok.tpl'}
@@ -56,7 +56,7 @@
                         <select class="js-termekselectreal js-termekid" name="teteltermek_{$tetel.id}">
                             <option value="">{t('válasszon')}</option>
                             {foreach $tetel.termeklist as $_termekadat}
-                                <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption}</option>
+                                <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption|escape}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td><label for="NevEdit{$tetel.id}">{at('Név')}:</label></td>
-            <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}"
+            <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
                                    required="required"></td>
         </tr>
         <tr>
@@ -81,7 +81,7 @@
         </tr>
         <tr>
             <td><label for="CikkszamEdit{$tetel.id}">{at('Cikkszám')}:</label></td>
-            <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam}"></td>
+            <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}"></td>
             <td><label for="VtszSelect{$tetel.id}">{at('VTSZ')}:</label></td>
             <td><select id="VtszSelect{$tetel.id}" name="tetelvtsz_{$tetel.id}" class="js-vtszselect" required="required">
                     <option value="">{at('válasszon')}</option>
@@ -125,7 +125,7 @@
             <td class="mattable-important"><label for="TermekegyediazonositoEdit{$tetel.id}">{at('Egyedi azonosító')}:</label></td>
             <td colspan="5">
                 <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
-                       value="{$tetel.termekegyediazonosito|default}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
+                       value="{$tetel.termekegyediazonosito|default|escape}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
                 <input class="js-egyediazonositokell" name="tetelkellegyediazonosito_{$tetel.id}" type="hidden"
                        value="{if ($tetel.kellegyediazonosito|default)}1{else}0{/if}">
             </td>

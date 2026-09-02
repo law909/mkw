@@ -12,12 +12,12 @@
  */
 function partnerAutocompleteRenderer(ul, item) {
     return $('<li>')
-        .append($('<div>').html(item.value))
+        .append($('<div>').text(item.value))
         .appendTo(ul);
 }
 
 function termekAutocompleteRenderer(ul, item) {
-    var $item = $('<div>').html(item.label);
+    var $item = $('<div>').text(item.label);
     if (item.nemlathato) {
         $item.addClass('nemelerhetovaltozat');
     }

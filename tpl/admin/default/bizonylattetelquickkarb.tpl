@@ -8,7 +8,7 @@
 <tr>
     <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{at('Termék')}:</label></td>
     <td colspan="5">
-        <input id="TermekSelect{$tetel.id}" type="text" name="qteteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
+        <input id="TermekSelect{$tetel.id}" type="text" name="qteteltermeknev_{$tetel.id}" class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev|escape}" required="required">
         <input class="js-termekid" name="qteteltermek_{$tetel.id}" type="hidden">
         <input name="qtetelafa_{$tetel.id}" type="hidden">
         <input name="qtetelme_{$tetel.id}" type="hidden">
@@ -21,7 +21,7 @@
 </tr>
 <tr>
     <td><label for="CikkszamEdit{$tetel.id}">{at('Cikkszám')}:</label></td>
-    <td><input id="CikkszamEdit{$tetel.id}" name="qtetelcikkszam_{$tetel.id}" type="text" maxlength="50" value="{$tetel.cikkszam}"></td>
+    <td><input id="CikkszamEdit{$tetel.id}" name="qtetelcikkszam_{$tetel.id}" type="text" maxlength="50" value="{$tetel.cikkszam|escape}"></td>
 </tr>
 <tr>
     <td></td>
