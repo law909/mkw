@@ -97,7 +97,7 @@
                             class="ui-icon ui-icon-alert"></span></a>
                 {/if}
                 {if ($showstorno)}
-                    {if ($_egyed.naveredmeny=='DONE')}
+                    {if ($_egyed.naveredmeny=='DONE' || $_egyed.naveredmeny=='TESZT')}
                         <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
                            title="{at('Számlával egy tekintet alá eső okirat')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                         <a class="js-stornobizonylat2" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
