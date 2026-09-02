@@ -56,6 +56,13 @@ if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
     $router->map('GET', '/riders/[:slug]', 'versenyzoController#show', 'versenyzo');
 }
 
+if (\mkw\store::isMPT()) {
+    // a tagi felület a főoldal (main.tpl), ezek az adatvégpontjai
+    $router->map('GET', '/adataim/adatok', 'mptpartnerController#getAdataim', 'mptgetadataim');
+    $router->map('POST', '/adataim/ment', 'mptpartnerController#saveAdataim', 'mptsaveadataim');
+    $router->map('POST', '/jelszo/ment', 'mptpartnerController#savePassword', 'mptsavepassword');
+}
+
 if (\mkw\store::isMPTNGY()) {
     $router->map('GET', '/szerepkorlist', 'mptngyszerepkorController#getApiList', 'mptngygetszerepkorlist');
     $router->map('GET', '/szakmaianyagtipuslist', 'mptngyszakmaianyagtipusController#getApiList', 'mptngygetszakmaianyagtipuslist');

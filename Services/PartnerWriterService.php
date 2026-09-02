@@ -263,6 +263,44 @@ class PartnerWriterService
         return $this;
     }
 
+    /**
+     * A tagi felületről módosítható MPT mezők. Az MPT() ennél többet ír (belépési
+     * azonosító, tagkártya, tagság kezdete): azokat csak az iroda állíthatja.
+     */
+    public function MPTPublic(): self
+    {
+        $this->partner->setMptMegszolitas($this->params->getStringRequestParam('mpt_megszolitas'));
+        $this->partner->setMptPrivatemail($this->params->getStringRequestParam('mpt_privatemail'));
+        $this->partner->setMptSzamlazasinev($this->params->getStringRequestParam('mpt_szamlazasinev'));
+        $this->partner->setMptMunkahelynev($this->params->getStringRequestParam('mpt_munkahelynev'));
+        $this->partner->setMptMunkahelyirszam($this->params->getStringRequestParam('mpt_munkahelyirszam'));
+        $this->partner->setMptMunkahelyvaros($this->params->getStringRequestParam('mpt_munkahelyvaros'));
+        $this->partner->setMptMunkahelyutca($this->params->getStringRequestParam('mpt_munkahelyutca'));
+        $this->partner->setMptMunkahelyhazszam($this->params->getStringRequestParam('mpt_munkahelyhazszam'));
+        $this->partner->setMptLakcimirszam($this->params->getStringRequestParam('mpt_lakcimirszam'));
+        $this->partner->setMptLakcimvaros($this->params->getStringRequestParam('mpt_lakcimvaros'));
+        $this->partner->setMptLakcimutca($this->params->getStringRequestParam('mpt_lakcimutca'));
+        $this->partner->setMptLakcimhazszam($this->params->getStringRequestParam('mpt_lakcimhazszam'));
+        $this->partner->setMptVegzettseg($this->params->getStringRequestParam('mpt_vegzettseg'));
+        $this->partner->setMptFokozat($this->params->getStringRequestParam('mpt_fokozat'));
+        $this->partner->setMptSzuleteseve($this->params->getIntRequestParam('mpt_szuleteseve'));
+        $this->partner->setMptDiplomaeve($this->params->getIntRequestParam('mpt_diplomaeve'));
+        $this->partner->setMptDiplomahely($this->params->getStringRequestParam('mpt_diplomahely'));
+        $this->partner->setMptEgyebdiploma($this->params->getStringRequestParam('mpt_egyebdiploma'));
+        $this->partner->setMptTagsagforma(
+            $this->em->getRepository(MPTTagsagforma::class)->find($this->params->getIntRequestParam('mpt_tagsagforma', 0))
+        );
+        $this->partner->setMptTagozat(
+            $this->em->getRepository(MPTTagozat::class)->find($this->params->getIntRequestParam('mpt_tagozat', 0))
+        );
+        $szekciorepo = $this->em->getRepository(MPTSzekcio::class);
+        $this->partner->setMptSzekcio1($szekciorepo->find($this->params->getIntRequestParam('mpt_szekcio1', 0)));
+        $this->partner->setMptSzekcio2($szekciorepo->find($this->params->getIntRequestParam('mpt_szekcio2', 0)));
+        $this->partner->setMptSzekcio3($szekciorepo->find($this->params->getIntRequestParam('mpt_szekcio3', 0)));
+
+        return $this;
+    }
+
     public function MPTNGYPublic(): self
     {
         $this->partner->setNev($this->params->getStringRequestParam('nev'));
