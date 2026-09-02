@@ -92,6 +92,9 @@ class orarendController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('napfilter', null))) {
             $filter->addFilter('nap', '=', $this->params->getIntRequestParam('napfilter'));
         }
+        if (!is_null($this->params->getRequestParam('jogahelyszinfilter', null))) {
+            $filter->addFilter('jogahelyszin', '=', $this->params->getIntRequestParam('jogahelyszinfilter'));
+        }
         if (!is_null($this->params->getRequestParam('jogaoratipusfilter', null))) {
             $filter->addFilter('jogaoratipus', '=', $this->params->getIntRequestParam('jogaoratipusfilter'));
         }
@@ -165,7 +168,8 @@ class orarendController extends \mkwhelpers\MattableController
         $view->setVar('dolgozolist', $dc->getSelectList());
 
         $jhc = new jogahelyszinController();
-        $view->setVar('jogahelyszinlist', $jhc->getSelectList());
+        // a szűrő az inaktív helyszíneket is kínálja: a régi órarendi sorokat is meg kell találni
+        $view->setVar('jogahelyszinlist', $jhc->getSelectList(null, false));
 
         $jotc = new jogaoratipusController();
         $view->setVar('jogaoratipuslist', $jotc->getSelectList());

@@ -19,7 +19,8 @@ $(document).ready(function () {
             onGetTBody: function () {
             },
             filter: {
-                fields: ['#nevfilter', '#inaktivfilter', '#multilangfilter', '#napfilter', '#jogaoratipusfilter', '#dolgozofilter']
+                fields: ['#nevfilter', '#inaktivfilter', '#multilangfilter', '#napfilter', '#jogahelyszinfilter',
+                    '#jogaoratipusfilter', '#dolgozofilter']
             },
             tablebody: {
                 url: '/admin/orarend/getlistbody',

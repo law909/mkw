@@ -27,6 +27,17 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
+                <label for="jogahelyszinfilter">{at('Helyszín')}: </label>
+                <select id="jogahelyszinfilter" name="jogahelyszinfilter">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $jogahelyszinlist as $_d}
+                        <option
+                            value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption|escape}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
+            <div>
                 <label for="jogaoratipusfilter">{at('Óratípus')}: </label>
                 <select id="jogaoratipusfilter" name="jogaoratipusfilter">
                     <option value="">{at('válasszon')}</option>
