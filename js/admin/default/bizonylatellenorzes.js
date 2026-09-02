@@ -48,10 +48,8 @@ $(document).ready(function () {
                     osszElvart += elvart;
                     osszSzamolt += szamolt;
                     $sor.find('.js-ellelteres').text(fmt(elteres));
-                    $sor.removeClass('greentext redtext');
-                    if (Math.abs(elteres) < TURES) {
-                        $sor.addClass('greentext');
-                    } else {
+                    $sor.removeClass('redtext');
+                    if (Math.abs(elteres) >= TURES) {
                         $sor.addClass('redtext');
                         elteroSorok++;
                     }
@@ -59,9 +57,9 @@ $(document).ready(function () {
                 $cont.find('.js-ellosszelvart').text(fmt(osszElvart));
                 $cont.find('.js-ellosszszamolt').text(fmt(osszSzamolt));
                 $cont.find('.js-ellosszelteres').text(fmt(osszSzamolt - osszElvart));
-                const $ossz = $cont.find('.js-ellosszegzes').removeClass('greentext redtext');
+                const $ossz = $cont.find('.js-ellosszegzes').removeClass('redtext');
                 if (elteroSorok === 0) {
-                    $ossz.addClass('greentext').text('Minden tétel egyezik a bizonylattal.');
+                    $ossz.text('Minden tétel egyezik a bizonylattal.');
                 } else {
                     $ossz.addClass('redtext').text(elteroSorok + ' tétel eltér a bizonylattól.');
                 }
