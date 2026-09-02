@@ -55,12 +55,12 @@
                 <tr>
                     <td><label for="SzallitoEdit">{at('Beszállító')}:</label></td>
                     <td><input id="SzallitoEdit" name="szallito" type="checkbox"{if ($partner.szallito==1)} checked="checked"{/if}></td>
-                    <td><label for="EzuzletkotoEdit">{at('Üzletkötő')}:</label></td>
-                    <td><input id="EzuzletkotoEdit" name="ezuzletkoto" type="checkbox"{if ($partner.ezuzletkoto==1)} checked="checked"{/if}></td>
-                </tr>
-                <tr>
                     <td><label for="GyartoEdit">{at('Gyártó')}:</label></td>
                     <td><input id="GyartoEdit" name="gyarto" type="checkbox"{if ($partner.gyarto==1)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
+                    <td><label for="EzuzletkotoEdit">{at('Üzletkötő')}:</label></td>
+                    <td><input id="EzuzletkotoEdit" name="ezuzletkoto" type="checkbox"{if ($partner.ezuzletkoto==1)} checked="checked"{/if}></td>
                     <td></td>
                     <td></td>
                 </tr>

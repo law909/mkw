@@ -435,6 +435,10 @@ class partnerController extends \mkwhelpers\MattableController
         if ($f != 9) {
             $filter->addFilter('szallito', '=', $f);
         }
+        $f = $this->params->getNumRequestParam('gyartofilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('gyarto', '=', $f);
+        }
         if (!is_null($this->params->getRequestParam('partnertipusfilter', null))) {
             $filter->addFilter('partnertipus', '=', $this->params->getIntRequestParam('partnertipusfilter'));
         }

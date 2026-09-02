@@ -2087,8 +2087,8 @@ if ($DBVersion < '0151' && $idopontMigracioKesz()) {
             return false;
         }
         return (int)$conn->fetchOne(
-            'SELECT COUNT(*) FROM ' . $regi . ' r LEFT JOIN ' . $uj . ' u ON u.id = r.id WHERE u.id IS NULL'
-        ) === 0;
+                'SELECT COUNT(*) FROM ' . $regi . ' r LEFT JOIN ' . $uj . ' u ON u.id = r.id WHERE u.id IS NULL'
+            ) === 0;
     };
 
     if ($mindAtkerult('rendezvenytipus', 'idopontallapot')
@@ -2190,9 +2190,8 @@ if ($DBVersion < '0155') {
 }
 
 if ($DBVersion < '0156') {
-    // A termek.gyarto eddig a beszállítót jelentette: átmásoljuk az új beszallito mezőbe, és a gyarto
-    // csak ott marad meg, ahol gyártónak jelölt partnerre mutat. A DDL az entitásból jön (./updateschema.sh).
     $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement('UPDATE partner SET gyarto = 1 WHERE szallito = 1');
     $conn->executeStatement('UPDATE termek SET beszallito_id = gyarto_id WHERE beszallito_id IS NULL AND gyarto_id IS NOT NULL');
     $conn->executeStatement(
         'UPDATE termek t LEFT JOIN partner p ON (p.id = t.gyarto_id)'
