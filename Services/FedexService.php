@@ -178,6 +178,128 @@ class FedexService
         return implode(', ', $result);
     }
 
+    /**
+     * A kosár tartalmára és a pénztárnál megadott szállítási címre kért Fedex díjak.
+     * Az eredményt a munkamenetbe is eltesszük: a szállítási költséghez a vevő
+     * választását innen olvassuk vissza, hogy ne kelljen kosárfrissítésenként újra hívni.
+     *
+     * @param array $cim szallnev, szallirszam, szallvaros, szallutca, szallorszag, telefon, email
+     */
+    public function getRatesForKosar($szallitasimodid, array $cim)
+    {
+        $fej = $this->createKosarBizonylatfej($szallitasimodid, $cim);
+        if (!$fej) {
+            return ['error' => 'Üres a kosár, vagy hiányos a szállítási cím'];
+        }
+        $rates = $this->getApi()->getRates($fej->toFedexRateAPI());
+        if (!$rates) {
+            $error = $this->getApi()->getLasterrors();
+            \mkw\store::writelog('Fedex rate API error: ' . json_encode($error), 'fedex_api_error.txt');
+            \mkw\store::getMainSession()->fedexrates = [];
+            return ['error' => ($error ? $this->errorText($error) : 'A Fedex nem adott díjat erre a küldeményre')];
+        }
+
+        $tarolt = [];
+        foreach ($rates as $i => $rate) {
+            $rates[$i]['szallitasidij'] = $this->convertToWebshopValuta($rate['brutto'], $rate['valutanem']);
+            $tarolt[$rate['servicetype']] = $rates[$i];
+        }
+        \mkw\store::getMainSession()->fedexrates = $tarolt;
+
+        return ['rates' => array_values($rates)];
+    }
+
+    /**
+     * A vevő által választott Fedex szolgáltatás szállítási díja a webshop valutanemében.
+     *
+     * @return float|false
+     */
+    public function getKosarSzallitasiDij($servicetype)
+    {
+        $rates = \mkw\store::getMainSession()->fedexrates;
+        if (!$servicetype || !is_array($rates) || !array_key_exists($servicetype, $rates)) {
+            return false;
+        }
+        return $rates[$servicetype]['szallitasidij'];
+    }
+
+    /**
+     * A Fedex a saját (számla)valutanemében adja a díjat, a kosár a webshopéban számol.
+     */
+    private function convertToWebshopValuta($osszeg, $valutanemnev)
+    {
+        $webshopvaluta = \mkw\store::getWebshopValutanem();
+        if (!$valutanemnev || !$webshopvaluta || $valutanemnev === $webshopvaluta->getNev()) {
+            return (float)$osszeg;
+        }
+        $repo = \mkw\store::getEm()->getRepository(\Entities\Valutanem::class);
+        $dijvaluta = $repo->findOneBy(['nev' => $valutanemnev]);
+        if (!$dijvaluta) {
+            \mkw\store::writelog(
+                'Fedex rate: ismeretlen valutanem: ' . $valutanemnev,
+                'fedex_api_error.txt'
+            );
+            return (float)$osszeg;
+        }
+        $arfrepo = \mkw\store::getEm()->getRepository(\Entities\Arfolyam::class);
+        $ma = date_create();
+        $dijarfolyam = (float)$arfrepo->getActualArfolyam($dijvaluta, $ma)->getArfolyam();
+        $webshoparfolyam = (float)$arfrepo->getActualArfolyam($webshopvaluta, $ma)->getArfolyam();
+        if ($webshoparfolyam <= 0) {
+            return (float)$osszeg;
+        }
+        return round($osszeg * $dijarfolyam / $webshoparfolyam, 2);
+    }
+
+    /**
+     * A kosárból és a pénztár szállítási címéből összerakott, nem perzisztált bizonylat:
+     * csak azért van, hogy a Fedex díjlekérdezés ugyanazt a kérésképzőt használhassa,
+     * mint a már rögzített megrendelés (Bizonylatfej::toFedexRateAPI()).
+     *
+     * @return \Entities\Bizonylatfej|null
+     */
+    private function createKosarBizonylatfej($szallitasimodid, array $cim)
+    {
+        $em = \mkw\store::getEm();
+        $kosartetelek = $em->getRepository(\Entities\Kosar::class)->getDataBySessionId(\mkw\session::getId());
+        if (!$kosartetelek || !$cim['szallirszam'] || !$cim['szallvaros'] || !$cim['szallorszag']) {
+            return null;
+        }
+
+        $fej = new Bizonylatfej();
+        $fej->setPersistentData();
+        $fej->setKelt('');
+        $fej->setSzallitasimod($em->getRepository(\Entities\Szallitasimod::class)->find($szallitasimodid));
+        $valutanem = \mkw\store::getWebshopValutanem();
+        $fej->setValutanem($valutanem);
+        $fej->setArfolyam(
+            $em->getRepository(\Entities\Arfolyam::class)->getActualArfolyam($valutanem, $fej->getKelt())->getArfolyam()
+        );
+        $fej->setPartnerszallorszag($cim['szallorszag']);
+        $fej->setPartnernev($cim['szallnev']);
+        $fej->setPartnertelefon($cim['telefon']);
+        $fej->setPartneremail($cim['email']);
+        $fej->setSzallnev($cim['szallnev']);
+        $fej->setSzallirszam($cim['szallirszam']);
+        $fej->setSzallvaros($cim['szallvaros']);
+        $fej->setSzallutca($cim['szallutca']);
+
+        /** @var \Entities\Kosar $kt */
+        foreach ($kosartetelek as $kt) {
+            $tetel = new \Entities\Bizonylattetel();
+            $tetel->setBizonylatfej($fej);
+            $tetel->setPersistentData();
+            $tetel->setTermek($kt->getTermek());
+            $tetel->setTermekvaltozat($kt->getTermekvaltozat());
+            $tetel->setMennyiseg($kt->getMennyiseg());
+            $tetel->setNettoegysar($kt->getNettoegysar());
+            $tetel->setBruttoegysar($kt->getBruttoegysar());
+            $tetel->calc();
+        }
+
+        return $fej;
+    }
+
     protected function getApi()
     {
         if ($this->fedexapi) {

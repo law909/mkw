@@ -233,7 +233,7 @@
                                             {foreach $szallitasimodlist as $szallitasimod}
                                                 <label class="radio">
                                                     <input type="radio" name="szallitasimod"
-                                                           class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}"
+                                                           class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}{if ($szallitasimod.fedex)} js-fedexchk{/if}"
                                                            value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if}
                                                            data-caption="{$szallitasimod.caption}">
                                                     {$szallitasimod.caption}
@@ -243,6 +243,9 @@
                                                 {/if}
                                                 {if ($szallitasimod.foxpost)}
                                                     <div class="js-foxpostterminalcontainer chk-foxpostcontainer"></div>
+                                                {/if}
+                                                {if ($szallitasimod.fedex)}
+                                                    <div class="js-fedexratecontainer chk-fedexcontainer"></div>
                                                 {/if}
                                             {/foreach}
                                         </div>

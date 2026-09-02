@@ -150,6 +150,7 @@ $router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList
 $router->map('GET', '/checkout/getszallmodfizmodlist', 'checkoutController#getSzallmodFizmodList', 'checkoutgetszallmodfizmod');
 $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
 $router->map('GET', '/checkout/gettetellistdata', 'checkoutController#getTetelListData', 'checkoutgettetellistdata');
+$router->map('GET', '/checkout/getfedexrates', 'checkoutController#getFedexRates', 'checkoutgetfedexrates');
 
 switch (true) {
     case \mkw\store::isMindentkapni():

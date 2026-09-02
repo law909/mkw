@@ -241,6 +241,7 @@ class mindentkapniCheckoutController extends checkoutController
             $megrendfej->setKupon($kuponkod);
             $megrendfej->setFizmod($fizmod);
             $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
+            $megrendfej->setFedexservicetype($this->params->getStringRequestParam('fedexservice'));
             $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
             $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
             $megrendfej->setValutanem($valutanem);

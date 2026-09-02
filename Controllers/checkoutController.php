@@ -9,6 +9,7 @@ use Entities\Kosar;
 use Entities\Kupon;
 use Entities\SzallitasimodFizmodNovelo;
 use mkw\store;
+use Services\FedexService;
 
 class checkoutController extends \mkwhelpers\MattableController
 {
@@ -234,6 +235,64 @@ class checkoutController extends \mkwhelpers\MattableController
         ]);
     }
 
+    /**
+     * A pénztárnál választott Fedex szállítási módhoz a Fedex által kínált szolgáltatások
+     * és díjaik. A vevő ezek közül választ, a szállítási költséget a választott díj adja.
+     */
+    public function getFedexRates()
+    {
+        $szallitasimod = $this->params->getIntRequestParam('szallitasimod');
+        if (!\mkw\store::isFedexSzallitasimod($szallitasimod)) {
+            \mkw\store::getMainSession()->fedexrates = [];
+            echo json_encode(['html' => '']);
+            return;
+        }
+
+        $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfedexratelist.tpl');
+        \mkw\store::fillTemplate($view);
+        $view->setVar('valutanemnev', \mkw\store::getWebshopValutanem()?->getNev());
+        $view->setVar('hiba', '');
+        $view->setVar('fedexratelist', []);
+
+        $result = (new FedexService())->getRatesForKosar($szallitasimod, [
+            'szallnev' => $this->params->getStringRequestParam('szallnev'),
+            'szallirszam' => $this->params->getStringRequestParam('szallirszam'),
+            'szallvaros' => $this->params->getStringRequestParam('szallvaros'),
+            'szallutca' => $this->params->getStringRequestParam('szallutca'),
+            'szallorszag' => $this->params->getIntRequestParam('szallorszag'),
+            'telefon' => $this->params->getStringRequestParam('telefon'),
+            'email' => $this->params->getStringRequestParam('kapcsemail')
+        ]);
+
+        if (array_key_exists('error', $result)) {
+            $view->setVar('hiba', $result['error']);
+        } else {
+            $view->setVar('fedexratelist', $this->markSelectedRate(
+                $result['rates'],
+                $this->params->getStringRequestParam('fedexservice')
+            ));
+        }
+
+        echo json_encode(['html' => $view->getTemplateResult()]);
+    }
+
+    /**
+     * A korábban választott szolgáltatás marad kijelölve, ha a Fedex most is kínálja;
+     * egyébként az első (legolcsóbb sorrendben kapott) szolgáltatásra esik a választás.
+     */
+    private function markSelectedRate($rates, $valasztott)
+    {
+        $vanvalasztott = false;
+        foreach ($rates as $i => $rate) {
+            $rates[$i]['selected'] = ($rate['servicetype'] === $valasztott);
+            $vanvalasztott = $vanvalasztott || $rates[$i]['selected'];
+        }
+        if (!$vanvalasztott && $rates) {
+            $rates[0]['selected'] = true;
+        }
+        return $rates;
+    }
+
     public function getTetelList()
     {
         $data = $this->_getTetelListData();
@@ -286,7 +345,8 @@ class checkoutController extends \mkwhelpers\MattableController
         $this->getRepo(Kosar::class)->createSzallitasiKtg(
             $this->params->getIntRequestParam('szallitasimod'),
             $this->params->getIntRequestParam('fizmod'),
-            $kuponkod
+            $kuponkod,
+            $this->params->getStringRequestParam('fedexservice')
         );
         $this->getRepo(Kosar::class)->createUtanvetKtg(
             $this->params->getIntRequestParam('szallitasimod'),

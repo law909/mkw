@@ -202,6 +202,7 @@ class mugenraceCheckoutController extends checkoutController
 
             $megrendfej->setFizmod($fizmod);
             $megrendfej->setSzallitasimod($this->getEm()->getRepository(Szallitasimod::class)->find($szallitasimod));
+            $megrendfej->setFedexservicetype($this->params->getStringRequestParam('fedexservice'));
             $megrendfej->setRaktar($this->getRepo(Raktar::class)->find(\mkw\store::getParameter(\mkw\consts::Raktar)));
 
             $megrendfej->setWebshopmessage($webshopmessage);

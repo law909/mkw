@@ -234,7 +234,7 @@
                                             {foreach $szallitasimodlist as $szallitasimod}
                                                 <label class="radio">
                                                     <input type="radio" name="szallitasimod"
-                                                           class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}{if ($szallitasimod.tof)} js-tofchk{/if}{if ($szallitasimod.gls)} js-glschk{/if}"
+                                                           class="js-chkrefresh{if ($szallitasimod.foxpost)} js-foxpostchk{/if}{if ($szallitasimod.fedex)} js-fedexchk{/if}{if ($szallitasimod.tof)} js-tofchk{/if}{if ($szallitasimod.gls)} js-glschk{/if}"
                                                            value="{$szallitasimod.id}"{if ($szallitasimod.selected)} checked{/if}
                                                            data-caption="{$szallitasimod.caption}">
                                                     {$szallitasimod.caption} (díja: {number_format($szallitasimod.brutto,0,',',' ')} Ft)
@@ -244,6 +244,9 @@
                                                 {/if}
                                                 {if ($szallitasimod.foxpost)}
                                                     <div class="js-foxpostterminalcontainer chk-foxpostcontainer"></div>
+                                                {/if}
+                                                {if ($szallitasimod.fedex)}
+                                                    <div class="js-fedexratecontainer chk-fedexcontainer"></div>
                                                 {/if}
                                                 {if ($szallitasimod.tof)}
                                                     <div class="js-tofmapcontainer"></div>

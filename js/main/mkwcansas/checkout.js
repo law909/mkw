@@ -188,6 +188,7 @@ var checkout = (function($, guid) {
 			data: {
 				szallitasimod: $('input[name="szallitasimod"]:checked').val(),
                 fizmod: $('input[name="fizetesimod"]:checked').val(),
+                fedexservice: $('input[name="fedexservice"]:checked').val(),
                 kupon: $('input[name="kupon"]').val()
 			},
             success: function(data) {
@@ -197,6 +198,37 @@ var checkout = (function($, guid) {
                 if (d.kuponszoveg) {
                     $('.js-kuponszoveg').text(d.kuponszoveg);
                 }
+            }
+        });
+    }
+
+    // Fedex szállítási módnál a Fedex adja a díjat: a lehetséges szolgáltatásokat a
+    // szállítási cím ismeretében kérdezzük le, a vevő ezek közül választ.
+    function loadFedexRates() {
+        const $chk = $('input[name="szallitasimod"]:checked'),
+            $container = $('.js-fedexratecontainer');
+        if (!$chk.hasClass('js-fedexchk')) {
+            $container.empty().hide();
+            return;
+        }
+        $.ajax({
+            url: '/checkout/getfedexrates',
+            data: {
+                szallitasimod: $chk.val(),
+                fedexservice: $('input[name="fedexservice"]:checked').val(),
+                szallnev: $('input[name="szallnev"]').val(),
+                szallirszam: $('input[name="szallirszam"]').val(),
+                szallvaros: $('input[name="szallvaros"]').val(),
+                szallutca: $('input[name="szallutca"]').val(),
+                szallorszag: $('select[name="szallorszag"]').val(),
+                telefon: $('input[name="telefon"]').val(),
+                kapcsemail: $('input[name="kapcsemail"]').val()
+            },
+            success: function (data) {
+                const d = JSON.parse(data);
+                $container.html(d.html).show();
+                loadTetelList();
+                refreshAttekintes();
             }
         });
     }
@@ -552,6 +584,7 @@ var checkout = (function($, guid) {
 
 			loadFizmodList();
             loadCsomagterminalData(true);
+            loadFedexRates();
 
 			$checkout
             .on('change', 'select[name="foxpostcsoport"]', function() {
@@ -569,7 +602,18 @@ var checkout = (function($, guid) {
 			.on('change', 'input[name="szallitasimod"]', function(e) {
 				loadFizmodList();
                 loadCsomagterminalData(true);
+                loadFedexRates();
 			})
+            .on('change', 'input[name="fedexservice"]', function() {
+                loadTetelList();
+                refreshAttekintes();
+            })
+            .on('blur', 'input[name="szallirszam"],input[name="szallvaros"],input[name="szallutca"]', function() {
+                loadFedexRates();
+            })
+            .on('change', 'select[name="szallorszag"]', function() {
+                loadFedexRates();
+            })
             .on('change', 'input[name="fizetesimod"]', function(e) {
                 loadTetelList();
             })

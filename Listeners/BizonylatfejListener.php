@@ -305,6 +305,11 @@ class BizonylatfejListener
         if (!$bizfej->isKellszallitasikoltsegetszamolni()) {
             return;
         }
+        // a szolgáltatótól (pl. Fedextől) jövő díjat sosem képezzük újra: ami a bizonylatra
+        // a webshopból rákerült, az marad
+        if ($bizfej->getSzallitasimod()?->isSzolgaltatoiszallitasidij()) {
+            return;
+        }
         $szamol = true;
 
         $bizsum = $bizfej->calcBruttoWithoutKtgs();

@@ -665,6 +665,7 @@ var checkout = (function ($, guid) {
             url: '/checkout/gettetellist',
             data: {
                 szallitasimod: $('input[name="szallitasimod"]:checked').val(),
+                fedexservice: $('input[name="fedexservice"]:checked').val(),
                 kupon: $('input[name="kupon"]').val()
             },
             success: function (data) {
@@ -674,6 +675,37 @@ var checkout = (function ($, guid) {
                 if (d.kuponszoveg) {
                     $('.js-kuponszoveg').text(d.kuponszoveg);
                 }
+            }
+        });
+    }
+
+    // Fedex szállítási módnál a Fedex adja a díjat: a lehetséges szolgáltatásokat a
+    // szállítási cím ismeretében kérdezzük le, a vevő ezek közül választ.
+    function loadFedexRates() {
+        const $chk = $('input[name="szallitasimod"]:checked'),
+            $container = $('.js-fedexratecontainer');
+        if (!$chk.hasClass('js-fedexchk')) {
+            $container.empty().hide();
+            return;
+        }
+        $.ajax({
+            url: '/checkout/getfedexrates',
+            data: {
+                szallitasimod: $chk.val(),
+                fedexservice: $('input[name="fedexservice"]:checked').val(),
+                szallnev: $('input[name="szallnev"]').val(),
+                szallirszam: $('input[name="szallirszam"]').val(),
+                szallvaros: $('input[name="szallvaros"]').val(),
+                szallutca: $('input[name="szallutca"]').val(),
+                szallorszag: $('select[name="szallorszag"]').val(),
+                telefon: $('input[name="telefon"]').val(),
+                kapcsemail: $('input[name="kapcsemail"]').val()
+            },
+            success: function (data) {
+                const d = JSON.parse(data);
+                $container.html(d.html).show();
+                loadTetelList();
+                refreshAttekintes();
             }
         });
     }
@@ -776,6 +808,7 @@ var checkout = (function ($, guid) {
 
             loadFizmodList();
             loadFoxpostCsoportData(true);
+            loadFedexRates();
 
             $checkout
                 .on('change', 'select[name="foxpostcsoport"]', function () {
@@ -784,6 +817,14 @@ var checkout = (function ($, guid) {
                 .on('change', 'input[name="szallitasimod"]', function () {
                     loadFizmodList();
                     loadFoxpostCsoportData(true);
+                    loadFedexRates();
+                })
+                .on('change', 'input[name="fedexservice"]', function () {
+                    loadTetelList();
+                    refreshAttekintes();
+                })
+                .on('blur', 'input[name="szallirszam"],input[name="szallvaros"],input[name="szallutca"]', function () {
+                    loadFedexRates();
                 })
                 .on('blur', 'input[name="kupon"]', function () {
                     loadTetelList();
@@ -1086,11 +1127,12 @@ var checkout = (function ($, guid) {
     };
 
 })(jQuery, guid);
-var cart = (function($) {
+var cart = (function ($) {
 
-	function submitMennyEdit(f) {
-		var db = $('input[name="mennyiseg"]', f).val(),
+    function submitMennyEdit(f) {
+        let db = $('input[name="mennyiseg"]', f).val(),
             menny = Math.round(db);
+        let wasActive = $('.side-cart').hasClass('active');
         $.ajax({
             url: f.attr('action'),
             type: 'POST',
@@ -1098,10 +1140,10 @@ var cart = (function($) {
                 id: $('input[name="id"]', f).val(),
                 mennyiseg: menny
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 //mkw.showMessage(mkwmsg.KosarMennyisegModositas);
             },
-            success: function(data) {
+            success: function (data) {
                 var d = JSON.parse(data);
                 $('#minikosar').html(d.minikosar);
                 $('#minikosaringyenes').html(d.minikosaringyenes);
@@ -1109,68 +1151,68 @@ var cart = (function($) {
                 //mkw.initTooltips();
                 $('#ertek_' + $('input[name="id"]', f).val()).text(d.tetelertek);
                 $('#kosarsum').text(d.kosarertek);
+                if (wasActive) {
+                    $('.side-cart').addClass('active');
+                }
             },
-            complete: function() {
+            complete: function () {
                 //mkw.closeMessage();
             }
         });
-	}
+    }
 
-	function initUI() {
-		// Event delegation: document-re kötjük, .js-cart a szűrő
-		$(document)
-			.on('input', '.js-cart input[name="mennyiseg"]', $.debounce(300, function() {
+    function initUI() {
+        $(document)
+            .on('input', '.js-cart input[name="mennyiseg"]', $.debounce(300, function (e) {
+                e.preventDefault();
                 console.log('cart input 1');
-				var $this = $(this);
-				if ((Math.round($this.val()) != 0)) {
-					submitMennyEdit($this.parents('form.kosarform'));
-				}
-			}))
-            .on('blur', '.js-cart input[name="mennyiseg"]', function() {
-				var $this = $(this);
+                var $this = $(this);
+                if ((Math.round($this.val()) !== 0)) {
+                    submitMennyEdit($this.parents('form.kosarform'));
+                }
+            }))
+            .on('blur', '.js-cart input[name="mennyiseg"]', function (e) {
+                e.preventDefault();
+                var $this = $(this);
                 console.log('cart input blur 1');
-                if (Math.round($this.val()) == 0) {
+                if (Math.round($this.val()) === 0) {
                     $this.val($this.data('org'));
                     submitMennyEdit($this.parents('form.kosarform'));
                     mkw.showDialog(mkwmsg.KosarMennyisegNulla);
-                }
-                else {
-					submitMennyEdit($this.parents('form.kosarform'));
+                } else {
+                    submitMennyEdit($this.parents('form.kosarform'));
                 }
             })
-			.on('submit', '.js-cart .kosarform', function() {
+            .on('submit', '.js-cart .kosarform', function () {
                 console.log('cart input submit 1');
-				submitMennyEdit($(this));
-				return false;
-			})
-			// Törlés a becsúszó kosárból: ne navigáljon a kosár oldalra,
-			// csak frissítse a becsúszó kosarat (a .side-cart-ra szűrünk, hogy
-			// a teljes kosár oldal viselkedése változatlan maradjon).
-			.on('click', '.side-cart .js-kosardelbtn', function(e) {
-				e.preventDefault();
-				var wasActive = $('.side-cart').hasClass('active');
-				$.ajax({
-					url: $(this).attr('href'),
-					type: 'POST',
-					data: {
-						jax: 1
-					},
-					success: function(data) {
-						var d = JSON.parse(data);
-						$('#minikosar').html(d.minikosar);
-						$('#minikosaringyenes').html(d.minikosaringyenes);
-						if (wasActive) {
-							$('.side-cart').addClass('active');
-						}
-					}
-				});
-				return false;
-			});
-	}
+                submitMennyEdit($(this));
+                return false;
+            })
+            .on('click', '.side-cart .js-kosardelbtn', function (e) {
+                e.preventDefault();
+                var wasActive = $('.side-cart').hasClass('active');
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: 'POST',
+                    data: {
+                        jax: 1
+                    },
+                    success: function (data) {
+                        let d = JSON.parse(data);
+                        $('#minikosar').html(d.minikosar);
+                        $('#minikosaringyenes').html(d.minikosaringyenes);
+                        if (wasActive) {
+                            $('.side-cart').addClass('active');
+                        }
+                    }
+                });
+                return false;
+            });
+    }
 
-	return {
-		initUI: initUI
-	};
+    return {
+        initUI: initUI
+    };
 
 })(jQuery);
 var fiok = (function($) {

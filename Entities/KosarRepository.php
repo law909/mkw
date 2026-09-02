@@ -474,12 +474,15 @@ class KosarRepository extends \mkwhelpers\Repository
         }
     }
 
-    public function createSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null)
+    public function createSzallitasiKtg($szallmod = null, $fizmod = null, $kuponkod = null, $fedexservice = null)
     {
         $szamol = true;
+        $szolgaltatoidij = false;
         if ($szallmod) {
+            /** @var Szallitasimod $szm */
             $szm = $this->getRepo(Szallitasimod::class)->find($szallmod);
             $szamol = $szm->getVanszallitasiktg();
+            $szolgaltatoidij = $szm->isSzolgaltatoiszallitasidij();
         }
         $termekid = \mkw\store::getParameter(\mkw\consts::SzallitasiKtgTermek);
         $termek = $this->getRepo(Termek::class)->find($termekid);
@@ -496,12 +499,18 @@ class KosarRepository extends \mkwhelpers\Repository
 
             if ($szamol) {
                 if ($cnt != 0) {
-                    $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
-                        $szallmod,
-                        \mkw\store::getOrszagId(),
-                        \mkw\store::getWebshopValutanem(),
-                        $ertek
-                    );
+                    if ($szolgaltatoidij) {
+                        // a díjat a szolgáltató adja: a vevő által választott szolgáltatás díja,
+                        // választás híján nincs szállítási költség sor
+                        $ktg = (new \Services\FedexService())->getKosarSzallitasiDij($fedexservice);
+                    } else {
+                        $ktg = $this->getRepo(Szallitasimod::class)->getSzallitasiKoltseg(
+                            $szallmod,
+                            \mkw\store::getOrszagId(),
+                            \mkw\store::getWebshopValutanem(),
+                            $ertek
+                        );
+                    }
                     if ($ktg) {
                         $this->add($termekid, null, $ktg);
                     } else {

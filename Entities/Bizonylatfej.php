@@ -94,6 +94,10 @@ class Bizonylatfej
     /** @ORM\Column(type="text",nullable=true) */
     private $fedexparcellabelurl;
 
+    /** A vevő által a webshopban választott Fedex szolgáltatás (rate). */
+    /** @ORM\Column(type="string", length=50, nullable=true) */
+    private $fedexservicetype;
+
     /** @ORM\Column(type="date",nullable=true) */
     private $shipdate;
 
@@ -1431,7 +1435,8 @@ class Bizonylatfej
             ],
             'requestedShipment' => [
                 'shipDatestamp' => $this->getShipdate() ? $this->getShipdate()->format('Y-m-d') : date('Y-m-d'),
-                'serviceType' => \mkw\store::getParameter(\mkw\consts::FedexServiceType) ?: 'INTERNATIONAL_PRIORITY',
+                'serviceType' => $this->getFedexservicetype()
+                    ?: (\mkw\store::getParameter(\mkw\consts::FedexServiceType) ?: 'INTERNATIONAL_PRIORITY'),
                 'packagingType' => \mkw\store::getParameter(\mkw\consts::FedexPackagingType) ?: 'YOUR_PACKAGING',
                 'pickupType' => \mkw\store::getParameter(\mkw\consts::FedexPickupType) ?: 'USE_SCHEDULED_PICKUP',
                 'blockInsightVisibility' => false,
@@ -6088,6 +6093,16 @@ class Bizonylatfej
             $fedexparcellabelurl = implode("\n", $fedexparcellabelurl);
         }
         $this->fedexparcellabelurl = $fedexparcellabelurl;
+    }
+
+    public function getFedexservicetype()
+    {
+        return $this->fedexservicetype;
+    }
+
+    public function setFedexservicetype($fedexservicetype)
+    {
+        $this->fedexservicetype = $fedexservicetype;
     }
 
     public function getShipdate(): \DateTime|null
