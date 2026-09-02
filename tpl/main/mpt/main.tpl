@@ -280,6 +280,10 @@
                     <h2>{t('Jelszó módosítás')}</h2>
                     <div class="mpt-hiba" x-show="jelszohiba" x-text="jelszohiba"></div>
                     <div class="mpt-grid">
+                        <div class="mpt-field mpt-field-wide">
+                            <label class="mpt-label" for="JelszoRegiEdit">{t('Jelenlegi jelszó')}</label>
+                            <input id="JelszoRegiEdit" class="mpt-input" type="password" x-model="jelszo.jelszoregi">
+                        </div>
                         <div class="mpt-field">
                             <label class="mpt-label" for="Jelszo1Edit">{t('Új jelszó')}</label>
                             <input id="Jelszo1Edit" class="mpt-input" type="password" x-model="jelszo.jelszo1">

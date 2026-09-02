@@ -11,7 +11,7 @@ document.addEventListener('alpine:init', () => {
         tagozatlist: [],
         szekciolist: [],
         folyoszamla: {egyenleg: 0, tetelek: []},
-        jelszo: {jelszo1: '', jelszo2: ''},
+        jelszo: {jelszoregi: '', jelszo1: '', jelszo2: ''},
         jelszohiba: '',
         jelszouzenet: '',
 
@@ -112,6 +112,7 @@ document.addEventListener('alpine:init', () => {
                         this.jelszohiba = data.hiba;
                         return;
                     }
+                    this.jelszo.jelszoregi = '';
                     this.jelszo.jelszo1 = '';
                     this.jelszo.jelszo2 = '';
                     this.jelszouzenet = data.uzenet;

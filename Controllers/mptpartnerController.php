@@ -107,6 +107,11 @@ class mptpartnerController extends partnerController
         }
         $jelszo1 = $this->params->getStringRequestParam('jelszo1');
         $jelszo2 = $this->params->getStringRequestParam('jelszo2');
+        // az eltérített munkamenet enélkül végleg átvehetné a fiókot
+        if (!$p->checkJelszo($this->params->getStringRequestParam('jelszoregi'))) {
+            echo json_encode(['hiba' => t('A jelenlegi jelszó nem megfelelő.')]);
+            return;
+        }
         if (mb_strlen($jelszo1) < 8) {
             echo json_encode(['hiba' => t('A jelszó legalább 8 karakter legyen.')]);
             return;
