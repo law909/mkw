@@ -42,6 +42,7 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/idopont/wp', 'idopontController#exportToWordpress', 'idopontexporttowordpress');
     $router->map('GET', '/idopont/foglalas', 'idopontfoglalasController#showBookingForm', 'idopontfoglalasform');
     $router->map('POST', '/idopont/foglalas/ment', 'idopontfoglalasController#saveBooking', 'idopontfoglalassave');
+    $router->map('GET', '/idopont/lemond', 'idopontfoglalasController#cancelBooking', 'idopontfoglalaslemond');
     $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
     $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
     $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');

@@ -936,6 +936,57 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
     }
 
     /**
+     * Publikus lemondás – a köszönő levél lemondás linkje és a foglalási űrlap "Lemondom"
+     * gombja hozza ide. Az azonosítás ugyanaz, mint a rendezvény jelentkezésnél
+     * (idopontController::regLemond): az alkalom uid-ja és a foglaló emailcíme.
+     */
+    public function cancelBooking()
+    {
+        $uid = trim($this->params->getStringRequestParam('rid'));
+        /** @var \Entities\Idopont $idopont */
+        $idopont = $uid === '' ? null : $this->getRepo(Idopont::class)->findOneBy(['uid' => $uid]);
+        $datum = $this->getOccurrenceDatum($idopont);
+        $email = trim($this->params->getStringRequestParam('email'));
+
+        $foglalas = null;
+        if ($idopont && $email) {
+            $keres = ['idopont' => $idopont, 'partneremail' => $email];
+            if ($datum) {
+                $keres['datum'] = $datum;
+            }
+            /** @var \Entities\Idopontfoglalas $foglalas */
+            $foglalas = $this->getRepo()->findOneBy($keres);
+        }
+
+        $view = $this->createView('idopontfoglalaslemondas.tpl');
+        $this->setBookingFormVars($view, $idopont, $datum);
+        $view->setVar('hiba', '');
+        $view->setVar('partnernev', $foglalas ? $foglalas->getPartnerNev() : '');
+        if (!$foglalas) {
+            $view->setVar('hiba', t('Ezzel az emailcímmel nem találunk foglalást erre az alkalomra.'));
+            $view->printTemplateResult();
+            return;
+        }
+        if ($foglalas->getLemondva()) {
+            $view->setVar('hiba', t('Ez a foglalás már le van mondva.'));
+            $view->printTemplateResult();
+            return;
+        }
+
+        $foglalas->setLemondva(true);
+        $foglalas->setLemondasdatum();
+        $foglalas->setLemondasoka(t('A foglaló mondta le a weboldalon.'));
+        $foglalas->setVarolistas(false);
+        $this->getEm()->persist($foglalas);
+        $this->getEm()->flush();
+
+        $this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonLemondas, 'idopontfoglalaslemondasemail.html');
+        $this->ertesitVarolistasokat($idopont);
+
+        $view->printTemplateResult();
+    }
+
+    /**
      * A foglalás levelei egy helyen: a sablont a paraméter adja, a Smarty változó neve
      * mindig `foglalas`. Sablon vagy emailcím híján nem küldünk semmit.
      *

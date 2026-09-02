@@ -1058,6 +1058,27 @@ class Idopontfoglalas
      * A DB-ben tárolt, ügyfél által szerkesztett rendezvény sablonok a `rendezveny*` kulcsokra
      * hivatkoznak, ezért azok az új `idopont*` nevek mellett megmaradnak.
      */
+    /**
+     * A köszönő/emlékeztető levelek lemondás linkje. A publikus lemondás az alkalom uid-ja
+     * és a foglaló emailcíme alapján keres, ugyanúgy, mint a rendezvény jelentkezésé.
+     */
+    public function getLemondasUrl()
+    {
+        $idopont = $this->getIdopont();
+        $email = $this->getPartnerEmail();
+        if (!$idopont || !$idopont->getUid() || !$email) {
+            return '';
+        }
+        $params = ['rid' => $idopont->getUid(), 'email' => $email];
+        if ($this->datum) {
+            $params['d'] = $this->datum->format(\mkw\store::$SQLDateFormat);
+        }
+        return \mkw\store::getFullUrl(
+            '/idopont/lemond?' . http_build_query($params),
+            \mkw\store::getConfigValue('mainurl')
+        );
+    }
+
     public function toLista()
     {
         $idopont = $this->getIdopont();
@@ -1116,6 +1137,7 @@ class Idopontfoglalas
             'lemondva' => $this->getLemondva(),
             'lemondasdatum' => $this->getLemondasdatumStr(),
             'lemondasoka' => $this->getLemondasoka(),
+            'lemondasurl' => $this->getLemondasUrl(),
 
             'visszautalva' => $this->getVisszautalva(),
             'visszautalasdatum' => $this->getVisszautalasdatumStr(),
