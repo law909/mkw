@@ -90,6 +90,23 @@
                 </select>
             </div>
             <div class="matt-hseparator"></div>
+            {if ($setup.bankpenztar)}
+                <div>
+                    <label for="egyenlegfilter">{at('Egyenleg')}:</label>
+                    <select id="egyenlegfilter" name="egyenlegfilter">
+                        <option value="0">{at('Mindegy')}</option>
+                        <option value="1">{at('kiegyenlített')}</option>
+                        <option value="2">{at('kiegyenlítetlen')}</option>
+                    </select>
+                    <label for="lejartfilter">{at('Lejárat')}:</label>
+                    <select id="lejartfilter" name="lejartfilter">
+                        <option value="0">{at('Mindegy')}</option>
+                        <option value="1">{at('lejárt')}</option>
+                        <option value="2">{at('nem járt le')}</option>
+                    </select>
+                </div>
+                <div class="matt-hseparator"></div>
+            {/if}
             <div>
                 <label for="fizmodfilter">{at('Fiz.mód')}:</label>
                 <select id="fizmodfilter" name="fizmodfilter">
@@ -211,6 +228,7 @@
                 <th></th>
                 <th></th>
                 <th>{at('Kapcsolódó bizonylatok')}</th>
+                <th>{at('Dokumentumok')}</th>
                 <th class="js-sumcol"></th>
                 {if ($setup.osztottfizmod)}
                     <th></th>

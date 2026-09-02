@@ -150,8 +150,16 @@
                     }
                     // Önálló (saját URL-es / viewkarb) karb oldalon a mentés után
                     // visszatérünk az előző URL-re (a lista nézetre), sikerüzenettel.
-                    if (isStandaloneKarbPage()) {
-                        returnToPreviousUrl(true);
+                    var lezar = function () {
+                        if (isStandaloneKarbPage()) {
+                            returnToPreviousUrl(true);
+                        }
+                    };
+                    // az afterSave kérdezhet még a felhasználótól (pl. nyomtatás), a lezárást ő hívja
+                    if (typeof setup.afterSave === 'function') {
+                        setup.afterSave.call(this, data, lezar);
+                    } else {
+                        lezar();
                     }
                 },
                 // Az üzenetet a globális ajaxError kezelő mutatja meg (appinit.js); itt a form

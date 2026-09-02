@@ -292,7 +292,7 @@ class galadOxfordImportController extends \mkwhelpers\Controller
                 $termek->setMekod($me);
             }
             if ($gyarto) {
-                $termek->setGyarto($gyarto);
+                $termek->setBeszallito($gyarto);
             }
             if (!$termek->getVtsz() && $vtsz) {
                 $termek->setVtsz($vtsz);

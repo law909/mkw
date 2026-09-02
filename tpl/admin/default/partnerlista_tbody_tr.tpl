@@ -7,7 +7,7 @@
                 <a class="js-anonym" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{at('Anonymizál')}">{at('Anonym')}</a>
             {/if}
             <a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{at('Töröl')}"><span
-                        class="ui-icon ui-icon-circle-minus"></span></a>
+                    class="ui-icon ui-icon-circle-minus"></span></a>
         </div>
         <table class="fullwidth">
             <tbody>
@@ -56,6 +56,18 @@
                 <tr>
                     <td>{at('Ársáv')}:</td>
                     <td>{$_partner.arsavnev}</td>
+                </tr>
+            {/if}
+            {if ($_partner.gyarto)}
+                <tr>
+                    <td>Gyártó</td>
+                    <td></td>
+                </tr>
+            {/if}
+            {if ($_partner.szallito)}
+                <tr>
+                    <td>Beszállító</td>
+                    <td></td>
                 </tr>
             {/if}
             {if ($_partner.apinev)}
@@ -134,6 +146,9 @@
         {foreach $_partner.cimkek as $_cimke}
             {$_cimke.nev};
         {/foreach}
+    </td>
+    <td class="cell">
+        {include 'dokumentumlinkek.tpl' doklinkek=$_partner.doklinkek}
     </td>
     <td class="cell">
         <table>

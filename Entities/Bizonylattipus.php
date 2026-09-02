@@ -55,6 +55,10 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showbevetbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $showszallmegrbutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $sendemail = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $showuzenet = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showszallitasicim = false;
@@ -138,6 +142,10 @@ class Bizonylattipus
             'showszallitobutton' => $this->getShowszallitobutton(),
             'showkivetbutton' => $this->getShowkivetbutton(),
             'showbevetbutton' => $this->getShowbevetbutton(),
+            'showszallmegrbutton' => $this->getShowszallmegrbutton(),
+            'nyomtatni' => $this->getNyomtatni(),
+            'tipuseditprinted' => $this->getEditprinted(),
+            'sendemail' => $this->getSendemail(),
             'showuzenet' => $this->getShowuzenet(),
             'showszallitasicim' => $this->getShowszallitasicim(),
             'showerbizonylatszam' => $this->getShowerbizonylatszam(),
@@ -381,6 +389,26 @@ class Bizonylattipus
     public function setShowbevetbutton($val)
     {
         $this->showbevetbutton = $val;
+    }
+
+    public function getShowszallmegrbutton()
+    {
+        return $this->showszallmegrbutton;
+    }
+
+    public function setShowszallmegrbutton($val)
+    {
+        $this->showszallmegrbutton = $val;
+    }
+
+    public function getSendemail()
+    {
+        return $this->sendemail;
+    }
+
+    public function setSendemail($val)
+    {
+        $this->sendemail = $val;
     }
 
     public function getShowszallitobutton()

@@ -96,6 +96,20 @@ class MattableController extends Controller
     {
     }
 
+    /**
+     * A törzshöz kapcsolt dokumentumok linkjei a lista dokumentum-oszlopához (dokumentumlinkek.tpl).
+     *
+     * @param iterable<\Entities\Dokumentumtar> $dokok
+     */
+    protected function getDokLinkek($dokok)
+    {
+        $ret = [];
+        foreach ($dokok as $dok) {
+            $ret[] = $dok->toLinkArray();
+        }
+        return $ret;
+    }
+
     protected function beforeRemove($o)
     {
     }

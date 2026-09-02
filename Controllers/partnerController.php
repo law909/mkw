@@ -83,6 +83,7 @@ class partnerController extends \mkwhelpers\MattableController
             ? $t->getCimkeNevek()
             : ($this->cimkenevekcache[$t->getId()] ?? []);
         $x['fizmodnev'] = $t->getFizmodNev();
+        $x['doklinkek'] = $this->getDokLinkek($t->getPartnerDokok());
         $x['uzletkotonev'] = $t->getUzletkotoNev();
         $x['szallcim'] = $t->getSzallcim();
         $x['szuletesiidostr'] = $t->getSzuletesiidoStr();
@@ -433,6 +434,10 @@ class partnerController extends \mkwhelpers\MattableController
         $f = $this->params->getNumRequestParam('beszallitofilter', 9);
         if ($f != 9) {
             $filter->addFilter('szallito', '=', $f);
+        }
+        $f = $this->params->getNumRequestParam('gyartofilter', 9);
+        if ($f != 9) {
+            $filter->addFilter('gyarto', '=', $f);
         }
         if (!is_null($this->params->getRequestParam('partnertipusfilter', null))) {
             $filter->addFilter('partnertipus', '=', $this->params->getIntRequestParam('partnertipusfilter'));

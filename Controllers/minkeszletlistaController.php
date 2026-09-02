@@ -128,7 +128,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     {
         $feltetelek = [];
         if ($this->gyarto) {
-            $feltetelek[] = 't.gyarto_id = :gyarto';
+            $feltetelek[] = 't.beszallito_id = :gyarto';
         }
         if ($this->faszuro) {
             $agak = [];

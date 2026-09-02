@@ -128,7 +128,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $ckat = new termekcimkekatController();
         $view->setVar('cimkecsoportlist', $ckat->getSelectList(0));
         $gyarto = new partnerController();
-        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
+        $view->setVar('gyartolist', $gyarto->getGyartoSelectList(0));
         $view->printTemplateResult();
     }
 
@@ -147,7 +147,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
         $ckat = new termekcimkekatController();
         $view->setVar('cimkecsoportlist', $ckat->getSelectList($record?->getKategoria()?->getId()));
         $gyarto = new partnerController();
-        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList($record?->getGyarto()?->getId()));
+        $view->setVar('gyartolist', $gyarto->getGyartoSelectList($record?->getGyarto()?->getId()));
         return $view->getTemplateResult();
     }
 

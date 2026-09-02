@@ -2087,8 +2087,8 @@ if ($DBVersion < '0151' && $idopontMigracioKesz()) {
             return false;
         }
         return (int)$conn->fetchOne(
-            'SELECT COUNT(*) FROM ' . $regi . ' r LEFT JOIN ' . $uj . ' u ON u.id = r.id WHERE u.id IS NULL'
-        ) === 0;
+                'SELECT COUNT(*) FROM ' . $regi . ' r LEFT JOIN ' . $uj . ' u ON u.id = r.id WHERE u.id IS NULL'
+            ) === 0;
     };
 
     if ($mindAtkerult('rendezvenytipus', 'idopontallapot')
@@ -2134,6 +2134,70 @@ if ($DBVersion < '0152' && $idopontMigracioKesz()) {
     }
     $conn->executeStatement("DELETE FROM dokumentumtar WHERE osztaly IN ('idopont', 'rendezveny')");
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0152');
+}
+
+if ($DBVersion < '0153') {
+    // a számla mentése után a karb felajánlja az emailes küldést (Bizonylattipus.sendemail)
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE bizonylattipus SET sendemail = 1 WHERE id = "szamla"');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0153');
+}
+
+if ($DBVersion < '0154') {
+    // Szállítói előleg a bevét mintájára: a szállítói megrendeléshez társbizonylatként kapcsolódik,
+    // készletet nem mozgat, pénzt igen. A kapcsolókat a telepítés saját bevét típusáról másoljuk.
+    $em = \mkw\store::getEm();
+    $biztipusrepo = $em->getRepository(\Entities\Bizonylattipus::class);
+    $bevet = $biztipusrepo->find('bevet');
+    if ($bevet && !$biztipusrepo->find('szallitoieloleg')) {
+        $md = $em->getClassMetadata(\Entities\Bizonylattipus::class);
+        $eloleg = new \Entities\Bizonylattipus();
+        foreach ($md->getFieldNames() as $mezo) {
+            $md->setFieldValue($eloleg, $mezo, $md->getFieldValue($bevet, $mezo));
+        }
+        $eloleg->setId('szallitoieloleg');
+        $eloleg->setNev('Szállítói előleg');
+        $eloleg->setAzonosito('SZEL');
+        $eloleg->setKezdosorszam(1);
+        $eloleg->setMozgat(false);
+        $eloleg->setFoglal(false);
+        $eloleg->setPenztmozgat(true);
+        // az előlegből nem képződik további bizonylat
+        $eloleg->setShowkivetbutton(false);
+        $eloleg->setShowszamlabutton(false);
+        $eloleg->setShowteljesites(true);
+        $eloleg->setShowesedekesseg(true);
+        $eloleg->setTplname('biz_bevet.tpl');
+        $em->persist($eloleg);
+        $em->flush();
+
+        $em->getConnection()->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' SELECT 1, "Szállítói előlegek", "/admin/szallitoielolegfej/viewlist", "/admin/szallitoielolegfej", 40, 1, 160, ""'
+            . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/szallitoielolegfej/viewlist") m)'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0154');
+}
+
+if ($DBVersion < '0155') {
+    // Szállítói megrendelések pénzügyi kimutatása – a Rendelt / beérkezett mellé
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 4, "Száll. megrendelés pénzügy", "/admin/szallmegrpenzugylista/view", "/admin/szallmegrpenzugylista", 40, 1, 1110, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/szallmegrpenzugylista/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0155');
+}
+
+if ($DBVersion < '0156') {
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement('UPDATE partner SET gyarto = 1 WHERE szallito = 1');
+    $conn->executeStatement('UPDATE termek SET beszallito_id = gyarto_id WHERE beszallito_id IS NULL AND gyarto_id IS NOT NULL');
+    $conn->executeStatement(
+        'UPDATE termek t LEFT JOIN partner p ON (p.id = t.gyarto_id)'
+        . ' SET t.gyarto_id = NULL WHERE t.gyarto_id IS NOT NULL AND (p.id IS NULL OR p.gyarto = 0)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0156');
 }
 
 /**

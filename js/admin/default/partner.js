@@ -506,6 +506,7 @@ $(document).ready(function () {
                     '#szamlazasivarosfilter',
                     '#szamlazasiutcafilter',
                     '#beszallitofilter',
+                    '#gyartofilter',
                     '#partnertipusfilter',
                     '#orszagfilter',
                     '#szallorszagfilter',

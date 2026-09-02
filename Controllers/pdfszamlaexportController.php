@@ -99,9 +99,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
                     $mailer->send();
 
-
-                    \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);
-                    \mkw\store::setParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam, $this->esetimar);
+                    $this->storeUtolso();
                     $res['msg'] = at('Az email sikeresen elküldve.');
                 } else {
                     $res['msg'] = at('Nincs megadva könyvelő levél sablon!');
@@ -111,13 +109,35 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
             }
             @unlink(\mkw\store::storagePath($zipname));
         }
-        echo json_encode($res);
+        echo json_encode($res + $this->getUtolsoArray());
+    }
+
+    private function storeUtolso()
+    {
+        \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);
+        \mkw\store::setParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam, $this->esetimar);
+    }
+
+    private function getUtolsoArray()
+    {
+        return [
+            'utolsoszamla' => \mkw\store::getParameter(\mkw\consts::PDFUtolsoSzamlaszam),
+            'utolsoesetiszamla' => \mkw\store::getParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam),
+        ];
+    }
+
+    /** A letöltés új lapon megy, a form ezen keresztül frissíti az utolsó feladott sorszámokat. */
+    public function getUtolso()
+    {
+        echo json_encode($this->getUtolsoArray());
     }
 
     public function download()
     {
         $zipname = $this->createZip();
         if ($zipname) {
+            // a letöltött csomag is feladásnak számít, különben a következő export újra a régi számtól indul
+            $this->storeUtolso();
             header("Pragma: public");
             header("Expires: 0");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");

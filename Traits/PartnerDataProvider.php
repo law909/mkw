@@ -20,22 +20,39 @@ trait PartnerDataProvider
         $f = new FilterDescriptor();
         $f->addFilter('inaktiv', '=', false);
         if ($filter) {
-            $f->merge($filter);
+            // a merge() új leírót ad vissza, nem a hívottat bővíti
+            $f = $f->merge($filter);
         }
         $rec = $this->getRepo()->getAllForSelectList($f, ['nev' => 'ASC']);
         $res = [];
+        $vanselected = false;
         foreach ($rec as $sor) {
-            $res[] = [
-                'id' => $sor['id'],
-                'caption' => $sor['nev'] . ' ' . $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
-                'nevvaros' => $sor['nev'] . ' ' . $sor['varos'],
-                'nev' => $sor['nev'],
-                'cim' => $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
-                'email' => $sor['email'],
-                'selected' => ($sor['id'] == $selid)
-            ];
+            $res[] = $this->selectListItem($sor, $selid);
+            $vanselected = $vanselected || ($sor['id'] == $selid);
+        }
+        // A kiválasztott partner (pl. a forrás bizonylaté) akkor is legyen a listán, ha a szűrő
+        // (inaktív, nem beszállító) kirostálná – különben a form üres partnerrel jön fel.
+        if ($selid && !$vanselected) {
+            $sf = new FilterDescriptor();
+            $sf->addFilter('id', '=', $selid);
+            foreach ($this->getRepo()->getAllForSelectList($sf, []) as $sor) {
+                $res[] = $this->selectListItem($sor, $selid);
+            }
         }
         return $res;
+    }
+
+    private function selectListItem($sor, $selid)
+    {
+        return [
+            'id' => $sor['id'],
+            'caption' => $sor['nev'] . ' ' . $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
+            'nevvaros' => $sor['nev'] . ' ' . $sor['varos'],
+            'nev' => $sor['nev'],
+            'cim' => $sor['irszam'] . ' ' . $sor['varos'] . ' ' . $sor['utca'] . ' ' . $sor['hazszam'],
+            'email' => $sor['email'],
+            'selected' => ($sor['id'] == $selid)
+        ];
     }
 
     public function getBizonylatfejSelectList()
@@ -163,8 +180,19 @@ trait PartnerDataProvider
 
     public function getSzallitoSelectList($selid)
     {
+        return $this->getFlaggedSelectList('szallito', $selid);
+    }
+
+    /** A gyártónak jelölt partnerek (partner.gyarto) – a termék gyártó választójához és szűrőihez. */
+    public function getGyartoSelectList($selid)
+    {
+        return $this->getFlaggedSelectList('gyarto', $selid);
+    }
+
+    private function getFlaggedSelectList($field, $selid)
+    {
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('szallito', '=', true);
+        $filter->addFilter($field, '=', true);
         $rec = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {

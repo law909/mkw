@@ -78,7 +78,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -205,7 +205,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -325,7 +325,7 @@ class exportController extends \mkwhelpers\Controller
         $res = $tr->getAllForExport();
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -387,7 +387,7 @@ class exportController extends \mkwhelpers\Controller
         $res = $tr->getAllForExport();
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -447,7 +447,7 @@ class exportController extends \mkwhelpers\Controller
         $res = $tr->getAllForExport();
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -506,7 +506,7 @@ class exportController extends \mkwhelpers\Controller
         $res = $tr->getAllForExport();
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -566,7 +566,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -627,7 +627,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -692,7 +692,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -784,7 +784,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;
@@ -1144,7 +1144,7 @@ class exportController extends \mkwhelpers\Controller
         /** @var \Entities\Termek $t */
         foreach ($res as $t) {
             $termekmehet = true;
-            $keszletetnezni = $this->kellKeszletetNezni($t->getGyartoId());
+            $keszletetnezni = $this->kellKeszletetNezni($t->getBeszallitoId());
             $valtozatok = $t->getValtozatok();
             if ($keszletetnezni) {
                 $termekmehet = false;

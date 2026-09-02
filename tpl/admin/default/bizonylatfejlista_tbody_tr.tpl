@@ -22,6 +22,10 @@
             {$_egyed.id}
         {/if}
         <a class="js-statusznaplobtn" href="#" data-id="{$_egyed.id}" title="{at('Bizonylat napló')}"><span class="ui-icon ui-icon-clipboard"></span></a>
+        {if ($_egyed.nemrossz)}
+            <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$_egyed.id|escape:'url'}" target="_blank"
+               title="{at('Tételek ellenőrzése')}"><span class="ui-icon ui-icon-check"></span></a>
+        {/if}
         {if (!$_egyed.hibas)}
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
                title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
@@ -79,6 +83,10 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
                     ><span{if (!$bizonylattipuslist['bevet'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['bevet']['azonosito']}</span></a>
                 {/if}
+                {if ($showszallmegrbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szallmegrfej" data-oper="inherit"
+                       title="{at('Szállítói megrendelés')}"><span{if (!$bizonylattipuslist['szallmegr'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['szallmegr']['azonosito']}</span></a>
+                {/if}
                 {if ($showcsomagbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
                     ><span{if (!$bizonylattipuslist['csomag'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['csomag']['azonosito']}</span></a>
@@ -89,7 +97,7 @@
                             class="ui-icon ui-icon-alert"></span></a>
                 {/if}
                 {if ($showstorno)}
-                    {if ($_egyed.naveredmeny=='DONE')}
+                    {if ($_egyed.naveredmeny=='DONE' || $_egyed.naveredmeny=='TESZT')}
                         <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
                            title="{at('Számlával egy tekintet alá eső okirat')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                         <a class="js-stornobizonylat2" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
@@ -350,6 +358,28 @@
                 </table>
             {/if}
         </div>
+        {if ($_egyed.tarsbizonylat)}
+            <div class="kapcsbiz-szulo">
+                <span>{at('Társbizonylat')}:</span>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            {if ($_egyed.tarsbizonylat.listaurl)}
+                                <a href="{$_egyed.tarsbizonylat.listaurl}" target="_blank"
+                                   title="{at('Ugrás a bizonylathoz')}">{$_egyed.tarsbizonylat.id}</a>
+                            {else}
+                                {$_egyed.tarsbizonylat.id}
+                            {/if}
+                        </td>
+                        <td>{$_egyed.tarsbizonylat.tipusnev}</td>
+                        <td>{$_egyed.tarsbizonylat.keltstr}</td>
+                        <td>{$_egyed.tarsbizonylat.createdstr}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        {/if}
         <div class="kapcsbiz-szarmazo">
             <span>{at('Keletkezett bizonylatok')}:</span>
             {if (!$_egyed.szarmazobizonylatcount)}<strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}
@@ -375,6 +405,9 @@
                 </table>
             {/if}
         </div>
+    </td>
+    <td class="cell">
+        {include 'dokumentumlinkek.tpl' doklinkek=$_egyed.doklinkek}
     </td>
     <td class="cell">
         <table>

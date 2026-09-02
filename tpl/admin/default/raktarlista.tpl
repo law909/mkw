@@ -28,7 +28,7 @@
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
                 <th>{at('Készletet mozgat')}</th>
-                <th>{at('Archív')}</th>
+                <th>{at('Inaktív')}</th>
                 <th>{at('Idegen kód')}</th>
             </tr>
             </thead>

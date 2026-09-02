@@ -1359,10 +1359,123 @@ let bizonylathelper = function ($) {
         return !!vanemailtemplate && !!vanpartneremail;
     }
 
+    // A "Sikerült a nyomtatás/küldés?" kérdés: igen esetén a bizonylat nyomtatott státuszú lesz.
+    // A kesz() a válasz után (Nem esetén is) fut le; ha nem kell kérdezni, azonnal.
+    function kerdezNyomtatvaLett(egyedid, kellkerdezni, kerdes, kesz) {
+        kesz = kesz || function () {
+        };
+        if (!kellkerdezni) {
+            kesz();
+            return;
+        }
+        $('#dialogcenter').html(kerdes).dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                'Igen': function () {
+                    $.ajax({
+                        url: '/admin/bizonylatfej/setnyomtatva',
+                        type: 'POST',
+                        data: {
+                            id: egyedid,
+                            printed: true
+                        },
+                        success: function (r) {
+                            if (r) {
+                                $('#naverrordialog').html(r).dialog({
+                                    resizable: true,
+                                    height: 160,
+                                    modal: true,
+                                    buttons: {
+                                        'OK': function () {
+                                            $(this).dialog('close');
+                                        }
+                                    }
+                                });
+                            }
+                            $('.mattable-tablerefresh').click();
+                            kesz();
+                        }
+                    });
+                    $(this).dialog('close');
+                },
+                'Nem': function () {
+                    $(this).dialog('close');
+                    kesz();
+                }
+            }
+        });
+    }
+
+    // Nyomtatás új ablakban, utána a nyomtatva-kérdés – a listából és a karb mentése után is ez fut.
+    function nyomtatBizonylat(url, egyedid, kellkerdezni, kesz) {
+        window.open(url);
+        kerdezNyomtatvaLett(egyedid, kellkerdezni, 'Sikerült a nyomtatás?', kesz);
+    }
+
+    function kuldEmailPdf(egyedid, kellkerdezni, kesz) {
+        $.ajax({
+            url: '/admin/bizonylatfej/emailpdf',
+            type: 'POST',
+            data: {
+                id: egyedid
+            },
+            success: function () {
+                kerdezNyomtatvaLett(egyedid, kellkerdezni, 'Sikerült a küldés?', kesz);
+            }
+        });
+    }
+
+    // Mentés után a bizonylattípus szerint (nyomtatni / sendemail) felajánljuk a nyomtatást
+    // vagy az emailes küldést; a kesz() zárja le a karbot (visszalépés a listára). A kérdés a
+    // "Nyomtatási kérdés számla mentéskor" beállítás mögött van (consts::NyomtatasiKerdesMenteskor).
+    function mentesUtaniNyomtatasKerdes(entityName, egyedid, kesz) {
+        const $form = $('#mattkarb-form'),
+            kerdezni = $form.data('nyomtatasikerdes') * 1 === 1,
+            nyomtatni = $form.data('nyomtatni') * 1 === 1,
+            sendemail = $form.data('sendemail') * 1 === 1,
+            kellkerdezni = $form.data('editprinted') * 1 !== 1;
+        if (!egyedid || !kerdezni || (!nyomtatni && !sendemail)) {
+            kesz();
+            return;
+        }
+        if ($.unblockUI) {
+            $.unblockUI();
+        }
+        const gombok = {};
+        if (nyomtatni) {
+            gombok['Nyomtat'] = function () {
+                $(this).dialog('close');
+                nyomtatBizonylat('/admin/' + entityName + '/print?id=' + egyedid, egyedid, kellkerdezni, kesz);
+            };
+        }
+        if (sendemail) {
+            gombok['Email'] = function () {
+                $(this).dialog('close');
+                kuldEmailPdf(egyedid, kellkerdezni, kesz);
+            };
+        }
+        gombok['Nem'] = function () {
+            $(this).dialog('close');
+            kesz();
+        };
+        $('#dialogcenter').html('A bizonylat elmentve (' + egyedid + ').<br>Nyomtatja, illetve elküldi emailben?').dialog({
+            title: 'Nyomtatás, küldés',
+            resizable: false,
+            modal: true,
+            buttons: gombok
+        });
+    }
+
     function getMattKarbConfig(bizonylattipus) {
         const entityName = bizonylattipus + 'fej';
         return new MattkarbConfig({
             entityName: entityName,
+            afterSave: function (data, kesz) {
+                const valasz = (typeof data === 'string' && data) ? JSON.parse(data) : (data || {});
+                mentesUtaniNyomtatasKerdes(entityName, valasz.id, kesz);
+            },
             beforeShow: function () {
                 let keltedit = $('#KeltEdit'),
                     teljesitesedit = $('#TeljesitesEdit'),
@@ -1578,11 +1691,13 @@ let bizonylathelper = function ($) {
                             },
                             type: 'GET',
                             success: function (data) {
-                                $('.js-bizonylatosszesito').before(data);
+                                const $sor = $(data);
+                                $('.js-bizonylatosszesito').before($sor);
                                 $('.js-quicktetelnewbutton,.js-teteldelbutton').button();
                                 $('.js-termekselect').autocomplete(quicktermekAutocompleteConfig())
                                     .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
+                                $sor.find('.js-termekselect').first().trigger('focus');
                             }
                         });
                     })
@@ -1602,11 +1717,13 @@ let bizonylathelper = function ($) {
                             },
                             type: 'GET',
                             success: function (data) {
-                                $('.js-bizonylatosszesito').before(data);
+                                const $sor = $(data);
+                                $('.js-bizonylatosszesito').before($sor);
                                 $('.js-tetelnewbutton,.js-teteldelbutton').button();
                                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                                     .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
+                                $sor.find('.js-termekselect').first().trigger('focus');
                             }
                         });
                     })
@@ -1826,7 +1943,7 @@ let bizonylathelper = function ($) {
                 jelolDefaultTetelek();
 
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email,' +
-                    '.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton').button();
+                    '.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton,.js-tetelellenorzes').button();
 
                 $('.js-inheritbizonylat').each(function () {
                     let $this = $(this);
@@ -2060,6 +2177,8 @@ let bizonylathelper = function ($) {
                         '#bizonylatstatuszfilter',
                         '#bizonylatstatuszcsoportfilter',
                         '#bizonylatrontottfilter',
+                        '#egyenlegfilter',
+                        '#lejartfilter',
                         '#fizmodfilter',
                         '#valutanemfilter',
                         '#raktarfilter',
@@ -2098,7 +2217,7 @@ let bizonylathelper = function ($) {
                 tablebody: {
                     url: '/admin/' + entityName + '/getlistbody',
                     onStyle: function () {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, ' +
+                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
                             '.js-kiegyenlit, .js-mirexport').button();
@@ -2625,55 +2744,8 @@ let bizonylathelper = function ($) {
                         modal: true,
                         buttons: {
                             'OK': function () {
-                                let dial = $(this);
-                                $.ajax({
-                                    url: '/admin/bizonylatfej/emailpdf',
-                                    type: 'POST',
-                                    data: {
-                                        id: $this.data('egyedid')
-                                    },
-                                    success: function () {
-                                        dial.dialog('close');
-                                        if ($this.data('kellkerdezni') == 1) {
-                                            dialogcenter.html('Sikerült a küldés?').dialog({
-                                                resizable: false,
-                                                height: 140,
-                                                modal: true,
-                                                buttons: {
-                                                    'Igen': function () {
-                                                        $.ajax({
-                                                            url: '/admin/bizonylatfej/setnyomtatva',
-                                                            type: 'POST',
-                                                            data: {
-                                                                id: $this.data('egyedid'),
-                                                                printed: true
-                                                            },
-                                                            success: function (r) {
-                                                                if (r) {
-                                                                    $('#naverrordialog').html(r).dialog({
-                                                                        resizable: true,
-                                                                        height: 160,
-                                                                        modal: true,
-                                                                        buttons: {
-                                                                            'OK': function () {
-                                                                                $(this).dialog('close');
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                }
-                                                                $('.mattable-tablerefresh').click();
-                                                            }
-                                                        });
-                                                        $(this).dialog('close');
-                                                    },
-                                                    'Nem': function () {
-                                                        $(this).dialog('close');
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
+                                $(this).dialog('close');
+                                kuldEmailPdf($this.data('egyedid'), $this.data('kellkerdezni') == 1);
                             },
                             'Mégsem': function () {
                                 $(this).dialog('close');
@@ -2828,45 +2900,7 @@ let bizonylathelper = function ($) {
                 .on('click', '.js-printbizonylat, .js-pdf', function (e) {
                     let $this = $(this);
                     e.preventDefault();
-                    window.open($this.attr('href'));
-                    if ($this.data('kellkerdezni') == 1) {
-                        dialogcenter.html('Sikerült a nyomtatás?').dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'Igen': function () {
-                                    $.ajax({
-                                        url: '/admin/bizonylatfej/setnyomtatva',
-                                        type: 'POST',
-                                        data: {
-                                            id: $this.data('egyedid'),
-                                            printed: true
-                                        },
-                                        success: function (r) {
-                                            if (r) {
-                                                $('#naverrordialog').html(r).dialog({
-                                                    resizable: true,
-                                                    height: 160,
-                                                    modal: true,
-                                                    buttons: {
-                                                        'OK': function () {
-                                                            $(this).dialog('close');
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                            $('.mattable-tablerefresh').click();
-                                        }
-                                    });
-                                    $(this).dialog('close');
-                                },
-                                'Nem': function () {
-                                    $(this).dialog('close');
-                                }
-                            }
-                        });
-                    }
+                    nyomtatBizonylat($this.attr('href'), $this.data('egyedid'), $this.data('kellkerdezni') == 1);
                 })
                 .on('click', '.js-delglsparcel', function (e) {
                     e.preventDefault();

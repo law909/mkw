@@ -16,6 +16,6 @@ class RaktarRepository extends \mkwhelpers\Repository {
 	    $filter = new \mkwhelpers\FilterDescriptor();
 	    // az archiv nullable és alapérték nélküli: a puszta `<> 1` a NULL sorokat is kizárná
 	    $filter->addSql('((_xx.archiv IS NULL) OR (_xx.archiv <> 1))');
-	    return $this->getAll($filter);
+	    return $this->getAll($filter, ['nev' => 'ASC']);
     }
 }

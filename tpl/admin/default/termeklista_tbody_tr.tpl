@@ -34,6 +34,10 @@
                             <td>{$_termek.gyartonev}</td>
                         </tr>
                         <tr>
+                            <td>{at('Beszállító')}:</td>
+                            <td>{$_termek.beszallitonev}</td>
+                        </tr>
+                        <tr>
                             <td>{at('Megtekintve')}:</td>
                             <td>{$_termek.megtekintesdb}</td>
                             <td>{at('Megvásárolva')}:</td>
@@ -194,5 +198,8 @@
             </tr>
             </tbody>
         </table>
+    </td>
+    <td class="cell">
+        {include 'dokumentumlinkek.tpl' doklinkek=$_termek.doklinkek}
     </td>
 </tr>

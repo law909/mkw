@@ -40,6 +40,17 @@ abstract class Dokumentumtar {
         return $this->id;
     }
 
+    /** A listák dokumentum-oszlopa: link szöveg a leírásból, annak híján a fájlnévből vagy a címből. */
+    public function toLinkArray() {
+        $url = $this->getUrl();
+        $path = (string)$this->path;
+        return [
+            'url' => $url,
+            'path' => $path,
+            'nev' => $this->leiras ?: ($path ? basename($path) : $url),
+        ];
+    }
+
     public function getUrl() {
         if ($this->url) {
             return $this->url;

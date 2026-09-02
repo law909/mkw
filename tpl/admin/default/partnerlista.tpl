@@ -45,6 +45,12 @@
                     <option value="0">{at('Nem')}</option>
                     <option value="1">{at('Igen')}</option>
                 </select>
+                <label for="gyartofilter">{at('Gyártó')}:</label>
+                <select id="gyartofilter" name="gyartofilter">
+                    <option value="9">{at('Mindegy')}</option>
+                    <option value="0">{at('Nem')}</option>
+                    <option value="1">{at('Igen')}</option>
+                </select>
                 <label for="partnertipusfilter">{at('Partner típus')}: </label>
                 <select id="partnertipusfilter" name="partnertipusfilter">
                     <option value="">{at('válasszon')}</option>
@@ -171,6 +177,7 @@
                 {/if}
                 <th>{at('Megjegyzés')}</th>
                 <th>{at('Címkék')}</th>
+                <th>{at('Dokumentumok')}</th>
                 <th></th>
             </tr>
             </thead>

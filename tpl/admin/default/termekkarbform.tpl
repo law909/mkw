@@ -168,6 +168,16 @@
                             {/foreach}
                         </select></td>
                 </tr>
+                <tr>
+                    <td><label for="BeszallitoEdit">{at('Beszállító')}:</label></td>
+                    <td colspan="3"><select id="BeszallitoEdit" name="beszallito">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $beszallitolist as $_beszallito}
+                                <option
+                                    value="{$_beszallito.id}"{if ($_beszallito.selected)} selected="selected"{/if}>{$_beszallito.caption}</option>
+                            {/foreach}
+                        </select></td>
+                </tr>
                 </tbody>
             </table>
             <table>
@@ -469,7 +479,7 @@
                     <tr>
                         <td>
                             <label for="ValtozatTermekKepCB">{at('A kép a termék főképe')}:</label>
-                            <input id="ValtozatTermekKepCB" form="valtozatgeneratorform" name="valtozattermek"
+                            <input id="ValtozatTermekKepCB" form="valtozatgeneratorform" name="valtozattermekfokep"
                                    type="checkbox">
                         </td>
                     </tr>

@@ -40,6 +40,7 @@ class MattkarbConfig {
             beforeShow: noop,
             beforeHide: noop,
             onSubmit: noop,
+            afterSave: null,
             onCancel: noop
         };
         if (entityName) {

@@ -919,6 +919,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow"><b>{at('Bizonylat beállítások')}</b></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label
+                                    for="NyomtatasiKerdesMenteskorEdit">{at('Nyomtatási kérdés számla mentéskor')}:</label></span>
+                            <input id="NyomtatasiKerdesMenteskorEdit" name="nyomtatasikerdesmenteskor"
+                                   type="checkbox"{if ($nyomtatasikerdesmenteskor)} checked="checked"{/if}>
+                        </div>
+                    </div>
                 </div>
                 <div id="TulajTab" class="mattkarb-page" data-visible="visible">
                     <table>

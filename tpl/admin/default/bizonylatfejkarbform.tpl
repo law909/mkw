@@ -14,7 +14,10 @@
           data-defaulttermek="{$defaulttermek|default}"
           data-tipuspenztmozgat="{if ($egyed.tipuspenztmozgat|default)}1{else}0{/if}"
           data-eredetifizmod="{$egyed.fizmod}" data-eredetipenztmozgat="{if ($egyed.penztmozgat)}1{else}0{/if}"
-          data-readonly="{if ($readonly|default)}1{else}0{/if}">
+          data-readonly="{if ($readonly|default)}1{else}0{/if}"
+          data-nyomtatasikerdes="{if ($nyomtatasikerdes|default)}1{else}0{/if}"
+          data-nyomtatni="{if ($nyomtatni|default)}1{else}0{/if}" data-sendemail="{if ($sendemail|default)}1{else}0{/if}"
+          data-editprinted="{if ($tipuseditprinted|default)}1{else}0{/if}">
         <div id="mattkarb-tabs">
             <ul>
                 <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
@@ -519,6 +522,10 @@
                 <input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
             {/if}
             <a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
+            {if ($oper == 'edit' && $egyed.id && $egyed.nemrossz)}
+                <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$egyed.id|escape:'url'}" target="_blank"
+                   title="{at('Tételek ellenőrzése')}">{at('Tételek ellenőrzése')}</a>
+            {/if}
             {if (!$egyed.hibas && $egyed.nemrossz)}
                 {if ($showszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"
@@ -535,6 +542,10 @@
                 {if ($showbevetbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="bevetfej" data-oper="inherit" title="{at('Bevét')}"
                     >{at('Bevét')}</a>
+                {/if}
+                {if ($showszallmegrbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szallmegrfej" data-oper="inherit"
+                       title="{at('Szállítói megrendelés')}">{at('Szállítói megrendelés')}</a>
                 {/if}
             {/if}
         </div>

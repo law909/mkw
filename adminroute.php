@@ -624,6 +624,11 @@ $router->map('GET', '/admin/bizonylatfej/getfolyoszamla', 'bizonylatfejControlle
 $router->map('GET', '/admin/bizonylatfej/getstatusznaplo', 'bizonylatfejController#getStatuszNaplo', 'admingetstatusznaplo');
 $router->map('GET', '/admin/bizonylatfej/kapcsolodopenzmozgas', 'bizonylatfejController#getKapcsolodoPenzmozgas', 'adminkapcsolodopenzmozgas');
 $router->map('GET', '/admin/bizonylatfej/gettarsbizonylatlist', 'bizonylatfejController#getTarsbizonylatList', 'adminbizonylatfejgettarsbizonylatlist');
+// a mentett bizonylat tételeinek vonalkódos ellenőrzése
+$router->map('GET', '/admin/bizonylatellenorzes/view', 'bizonylatellenorzesController#view', 'adminbizonylatellenorzesview');
+$router->map('GET', '/admin/bizonylatellenorzes/findtermek', 'bizonylatellenorzesController#findtermek', 'adminbizonylatellenorzesfindtermek');
+$router->map('GET', '/admin/bizonylatellenorzes/kereses', 'bizonylatellenorzesController#kereses', 'adminbizonylatellenorzeskereses');
+$router->map('GET', '/admin/bizonylatellenorzes/gettermek', 'bizonylatellenorzesController#gettermek', 'adminbizonylatellenorzesgettermek');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');
@@ -865,6 +870,18 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bevetfej/tetelexport', 'bevetfejController#tetelexport', 'adminbevetfejtetelexport');
 }
 $router->map('GET', '/admin/bevetfej/print', 'bevetfejController#doPrint', 'adminbevetfejprint');
+
+$router->map('GET', '/admin/szallitoielolegfej/viewlist', 'szallitoielolegfejController#viewlist', 'adminszallitoielolegfejviewlist');
+$router->map('GET', '/admin/szallitoielolegfej/getlistbody', 'szallitoielolegfejController#getlistbody', 'adminszallitoielolegfejgetlistbody');
+$router->map('GET', '/admin/szallitoielolegfej/getkarb', 'szallitoielolegfejController#getkarb', 'adminszallitoielolegfejgetkarb');
+$router->map('GET', '/admin/szallitoielolegfej/viewkarb', 'szallitoielolegfejController#viewkarb', 'adminszallitoielolegfejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/szallitoielolegfej/save', 'szallitoielolegfejController#save', 'adminszallitoielolegfejsave');
+    $router->map('POST', '/admin/szallitoielolegfej/ront', 'szallitoielolegfejController#ront', 'adminszallitoielolegfejront');
+    $router->map('POST', '/admin/szallitoielolegfej/fejexport', 'szallitoielolegfejController#fejexport', 'adminszallitoielolegfejfejexport');
+    $router->map('POST', '/admin/szallitoielolegfej/tetelexport', 'szallitoielolegfejController#tetelexport', 'adminszallitoielolegfejtetelexport');
+}
+$router->map('GET', '/admin/szallitoielolegfej/print', 'szallitoielolegfejController#doPrint', 'adminszallitoielolegfejprint');
 
 $router->map('GET', '/admin/leltartobbletfej/viewlist', 'leltartobbletfejController#viewlist', 'adminleltartobbletfejviewlist');
 $router->map('GET', '/admin/leltartobbletfej/getlistbody', 'leltartobbletfejController#getlistbody', 'adminleltartobbletfejgetlistbody');
@@ -1554,10 +1571,12 @@ $router->map('GET', '/admin/rlbcsvexport/export', 'rlbexportController#RLBCSVExp
 $router->map('GET', '/admin/pdfszamlaexport/view', 'pdfszamlaexportController#view', 'adminpdfszamlaexportview');
 $router->map('POST', '/admin/pdfszamlaexport/sendemail', 'pdfszamlaexportController#sendEmail', 'adminpdfszamlasendemail');
 $router->map('GET', '/admin/pdfszamlaexport/download', 'pdfszamlaexportController#download', 'adminpdfszamladownload');
+$router->map('GET', '/admin/pdfszamlaexport/getutolso', 'pdfszamlaexportController#getUtolso', 'adminpdfszamlagetutolso');
 
 $router->map('GET', '/admin/xmlszamlaexport/view', 'xmlszamlaexportController#view', 'adminxmlszamlaexportview');
 $router->map('POST', '/admin/xmlszamlaexport/sendemail', 'xmlszamlaexportController#sendEmail', 'adminxmlszamlasendemail');
 $router->map('GET', '/admin/xmlszamlaexport/download', 'xmlszamlaexportController#download', 'adminxmlszamladownload');
+$router->map('GET', '/admin/xmlszamlaexport/getutolso', 'xmlszamlaexportController#getUtolso', 'adminxmlszamlagetutolso');
 
 $router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt');
 $router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
@@ -1627,6 +1646,9 @@ $router->map('GET', '/admin/bizomanyosertekesiteslista/refresh', 'bizomanyoserte
 $router->map('GET', '/admin/rendbevlista/view', 'rendbevlistaController#view', 'adminrendbevlistaview');
 $router->map('GET', '/admin/rendbevlista/refresh', 'rendbevlistaController#refresh', 'adminrendbevlistarefresh');
 $router->map('GET', '/admin/rendbevlista/export', 'rendbevlistaController#export', 'adminrendbevlistaexport');
+$router->map('GET', '/admin/szallmegrpenzugylista/view', 'szallmegrpenzugylistaController#view', 'adminszallmegrpenzugylistaview');
+$router->map('GET', '/admin/szallmegrpenzugylista/refresh', 'szallmegrpenzugylistaController#refresh', 'adminszallmegrpenzugylistarefresh');
+$router->map('GET', '/admin/szallmegrpenzugylista/export', 'szallmegrpenzugylistaController#export', 'adminszallmegrpenzugylistaexport');
 
 $router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
 
