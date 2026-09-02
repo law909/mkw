@@ -401,17 +401,25 @@ class JogaBerlet
         }
     }
 
+    /**
+     * A lejárat a vásárlás napjától a termék érvényességével számolódik: hét, annak híján nap.
+     * Ha a terméken egyik sincs kitöltve, nincs mihez képest számolni – ilyenkor a bérleten
+     * álló (kézzel megadott) lejárat marad. Korábban ez az ág üres napszámmal állította össze
+     * az intervallumot ("PD"), és a mentés kivétellel elszállt.
+     */
     public function calcLejaratDatum()
     {
-        if ($this->getVasarlasnapja()) {
-            $x = clone $this->getVasarlasnapja();
-            if ($this->getErvenyesseg()) {
-                $x->add(new \DateInterval('P' . $this->getErvenyesseg() . 'W'));
-            } else {
-                $x->add(new \DateInterval('P' . $this->getErvenyessegnap() . 'D'));
-            }
-            $this->setLejaratdatum($x);
+        if (!$this->getVasarlasnapja()) {
+            return;
         }
+        $ervenyesseg = (int)$this->getErvenyesseg();
+        $ervenyessegnap = (int)$this->getErvenyessegnap();
+        if (!$ervenyesseg && !$ervenyessegnap) {
+            return;
+        }
+        $x = clone $this->getVasarlasnapja();
+        $x->add(new \DateInterval($ervenyesseg ? 'P' . $ervenyesseg . 'W' : 'P' . $ervenyessegnap . 'D'));
+        $this->setLejaratdatum($x);
     }
 
     /**
