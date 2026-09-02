@@ -142,8 +142,8 @@
                 <th>{at('Név')}</th>
                 <th>{at('Címkék')}</th>
                 <th>{at('Készlet')}</th>
-                <th>{at('Jellemzők')}</th>
                 <th>{at('Dokumentumok')}</th>
+                <th>{at('Jellemzők')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

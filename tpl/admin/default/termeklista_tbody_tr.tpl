@@ -128,6 +128,9 @@
         </table>
     </td>
     <td class="cell">
+        {include 'dokumentumlinkek.tpl' doklinkek=$_termek.doklinkek}
+    </td>
+    <td class="cell">
         <table>
             <tbody>
             <tr>
@@ -198,8 +201,5 @@
             </tr>
             </tbody>
         </table>
-    </td>
-    <td class="cell">
-        {include 'dokumentumlinkek.tpl' doklinkek=$_termek.doklinkek}
     </td>
 </tr>
