@@ -234,7 +234,7 @@
                     <th>NAV állapot</th>
                 {/if}
                 {if ($showbizonylatstatuszeditor)}
-                    <th>Állapot</th>
+                    <th>{at('Státusz')}</th>
                 {/if}
                 {if ($showmunkalapadatok)}
                     <th>{at('Munkalap')}</th>
