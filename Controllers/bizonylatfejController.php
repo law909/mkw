@@ -702,7 +702,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             foreach ($t->getSzulobizonylatfejek() as $gyerek) {
                 $szarmazok[] = $this->bizonylatReferencia($gyerek);
             }
-            $x['szarmazobizonylatok'] = $szarmazok;
+            // a gyűjtemény keletkezési sorrendben jön, a listán a legújabb kell felülre
+            $x['szarmazobizonylatok'] = array_reverse($szarmazok);
             $x['szarmazobizonylatcount'] = count($szarmazok);
         }
         return $x;
