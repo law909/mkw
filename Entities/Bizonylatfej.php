@@ -583,18 +583,9 @@ class Bizonylatfej
 
     /**
      * A munkalap saját mezői. Csak a munkalap jellegű bizonylattípusokon látszanak
-     * (Bizonylattipus::showmunkalapadatok), a többi típuson üresen maradnak.
+     * (Bizonylattipus::showmunkalapadatok), a többi típuson üresen maradnak. A státusza a
+     * bizonylatstatusz, a munkalapra beállított bizonylattípussal szűrve.
      *
-     * @ORM\ManyToOne(targetEntity="Munkalapstatusz")
-     * @ORM\JoinColumn(name="munkalapstatusz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
-     * @var \Entities\Munkalapstatusz
-     */
-    private $munkalapstatusz;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $munkalapstatusznev;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Termek")
      * @ORM\JoinColumn(name="munkalaptermek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      * @var \Entities\Termek
@@ -1902,7 +1893,6 @@ class Bizonylatfej
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['sysmegjegyzes'] = $this->getSysmegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
-        $ret['munkalapstatusznev'] = $this->getMunkalapstatusznev();
         $ret['munkalaptermeknev'] = $this->getMunkalaptermeknev();
         $ret['munkalaptermekvaltozatnev'] = $this->getMunkalaptermekvaltozatnev();
         $ret['munkalapegyediazonosito'] = $this->getMunkalapegyediazonosito();
@@ -4434,66 +4424,6 @@ class Bizonylatfej
             if (!$this->duplication) {
                 $this->bizonylatstatusznev = '';
                 $this->bizonylatstatuszcsoport = '';
-            }
-        }
-    }
-
-    /** @return \Entities\Munkalapstatusz|null */
-    public function getMunkalapstatusz()
-    {
-        return $this->munkalapstatusz;
-    }
-
-    public function getMunkalapstatuszId()
-    {
-        $ms = $this->getMunkalapstatusz();
-        if ($ms) {
-            return $ms->getId();
-        }
-        return '';
-    }
-
-    public function getMunkalapstatusznev()
-    {
-        if (!$this->munkalapstatusznev) {
-            $ms = $this->getMunkalapstatusz();
-            if ($ms) {
-                return $ms->getNev();
-            }
-            return '';
-        }
-        return $this->munkalapstatusznev;
-    }
-
-    public function setMunkalapstatusznev($val)
-    {
-        $this->munkalapstatusznev = $val;
-    }
-
-    /** @param \Entities\Munkalapstatusz|int|null $val */
-    public function setMunkalapstatusz($val)
-    {
-        if (!($val instanceof \Entities\Munkalapstatusz)) {
-            $val = $val ? \mkw\store::getEm()->getRepository(Munkalapstatusz::class)->find($val) : null;
-        }
-        if ($this->munkalapstatusz !== $val) {
-            if (!$val) {
-                $this->removeMunkalapstatusz();
-            } else {
-                $this->munkalapstatusz = $val;
-                if (!$this->duplication) {
-                    $this->munkalapstatusznev = $val->getNev();
-                }
-            }
-        }
-    }
-
-    public function removeMunkalapstatusz()
-    {
-        if ($this->munkalapstatusz !== null) {
-            $this->munkalapstatusz = null;
-            if (!$this->duplication) {
-                $this->munkalapstatusznev = '';
             }
         }
     }

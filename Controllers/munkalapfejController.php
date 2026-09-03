@@ -4,7 +4,6 @@ namespace Controllers;
 
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
-use Entities\Munkalapstatusz;
 use Entities\Termek;
 use Entities\TermekValtozat;
 
@@ -15,6 +14,9 @@ use Entities\TermekValtozat;
  * A jármű kétféleképpen választható: a tételekével azonos termékválasztóval (+ változat), vagy egy
  * bizonylattételen szereplő egyedi azonosítóval. Az azonosító az erősebb: ha ki van töltve, a
  * terméket és a változatot mentéskor abból oldjuk fel, mert az konkrét példányt jelöl.
+ *
+ * A státusza a közös bizonylatstatusz törzsből jön: a munkalap bizonylattípusához kötött és a
+ * bizonylattípus nélküli státuszok közül lehet választani.
  *
  * Zárási szabályok:
  *  - felvett munkalap nem törölhető, csak rontható (a bizonylatlistán nincs törlés gomb),
@@ -33,20 +35,9 @@ class munkalapfejController extends bizonylatfejController
         $this->setPluralPageTitle('Munkalapok');
     }
 
-    public function setVars($view)
-    {
-        parent::setVars($view);
-        $msc = new munkalapstatuszController();
-        $view->setVar('munkalapstatuszszurolist', $msc->getSelectList());
-    }
-
     protected function loadFilters($filter)
     {
         $filter = parent::loadFilters($filter);
-        $f = $this->params->getIntRequestParam('munkalapstatuszfilter');
-        if ($f) {
-            $filter->addFilter('munkalapstatusz', '=', $f);
-        }
         $f = $this->params->getStringRequestParam('munkalapegyediazonositofilter');
         if ($f) {
             $filter->addFilter('munkalapegyediazonosito', 'LIKE', '%' . $f . '%');
@@ -57,10 +48,6 @@ class munkalapfejController extends bizonylatfejController
     protected function loadVars($t, $forKarb = false, $oper = false)
     {
         $x = parent::loadVars($t, $forKarb, $oper);
-        $msc = new munkalapstatuszController();
-        $x['munkalapstatusz'] = $t ? $t->getMunkalapstatuszId() : '';
-        $x['munkalapstatusznev'] = $t ? $t->getMunkalapstatusznev() : '';
-        $x['munkalapstatuszlist'] = $msc->getSelectList($x['munkalapstatusz']);
         $x['munkalaptermek'] = $t ? $t->getMunkalaptermekId() : '';
         $x['munkalaptermeknev'] = $t ? $t->getMunkalaptermeknev() : '';
         $x['munkalaptermekvaltozat'] = $t ? $t->getMunkalaptermekvaltozatId() : '';
@@ -89,7 +76,6 @@ class munkalapfejController extends bizonylatfejController
     {
         $obj = parent::setFields($obj, $parancs);
 
-        $obj->setMunkalapstatusz($this->params->getIntRequestParam('munkalapstatusz'));
         $azonosito = trim($this->params->getStringRequestParam('munkalapegyediazonosito'));
         $obj->setMunkalapegyediazonosito($azonosito);
         if ($azonosito) {
@@ -138,14 +124,6 @@ class munkalapfejController extends bizonylatfejController
         return parent::isReadonly($record) || ((bool)$record && $record->isKiszamlazva());
     }
 
-    protected function afterSave($o, $parancs = null)
-    {
-        parent::afterSave($o, $parancs);
-        if ($this->params->getBoolRequestParam('munkalapstatuszertesito')) {
-            $this->sendStatuszEmail($o);
-        }
-    }
-
     public function ront()
     {
         /** @var Bizonylatfej|null $bf */
@@ -155,29 +133,6 @@ class munkalapfejController extends bizonylatfejController
             return;
         }
         parent::ront();
-    }
-
-    /** Státuszváltás a munkalap listáról – a bizonylatfejController::setStatusz() párja. */
-    public function setMunkalapstatusz()
-    {
-        /** @var Bizonylatfej|null $bf */
-        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
-        if (!$bf) {
-            return;
-        }
-        if ($bf->isKiszamlazva()) {
-            $this->jsonError(t('A kiszámlázott munkalap nem módosítható.'), 409);
-            return;
-        }
-        $statusz = $this->getRepo(Munkalapstatusz::class)->find($this->params->getIntRequestParam('statusz'));
-        $bf->setKellszallitasikoltsegetszamolni(false);
-        $bf->setSimpleedit(true);
-        $bf->setMunkalapstatusz($statusz);
-        $this->getEm()->persist($bf);
-        $this->getEm()->flush();
-        if ($statusz && $this->params->getBoolRequestParam('munkalapstatuszertesito')) {
-            $this->sendStatuszEmail($bf);
-        }
     }
 
     /**
@@ -227,14 +182,6 @@ class munkalapfejController extends bizonylatfejController
             $this->params->getIntRequestParam('termekid'),
             $this->params->getIntRequestParam('valtozatid')
         ));
-    }
-
-    private function sendStatuszEmail(Bizonylatfej $bf)
-    {
-        $statusz = $bf->getMunkalapstatusz();
-        if ($statusz) {
-            $bf->sendStatuszEmail($statusz->getEmailtemplate());
-        }
     }
 
 }

@@ -28,7 +28,7 @@
             <td>{$egyed.keltstr|default:"&nbsp;"}</td>
             <td>{$egyed.teljesitesstr|default:"&nbsp;"}</td>
             <td>{$egyed.hataridostr|default:"&nbsp;"}</td>
-            <td>{$egyed.munkalapstatusznev|default:"&nbsp;"}</td>
+            <td>{$egyed.allapotnev|default:"&nbsp;"}</td>
             <td>{$egyed.valutanemnev|default:"&nbsp;"}</td>
             <td class="textalignright">{$egyed.id}</td>
         </tr>

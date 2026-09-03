@@ -1927,6 +1927,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         /** @var Bizonylatfej $bf */
         $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
         if ($bf) {
+            // a kiszámlázott munkalap zárt: a listán a választója is tiltott
+            if ($bf->getBizonylattipus()?->getShowmunkalapadatok() && $bf->isKiszamlazva()) {
+                $this->jsonError(t('A kiszámlázott munkalap nem módosítható.'), 409);
+                return;
+            }
             $statusz = $this->getRepo(Bizonylatstatusz::class)->find($this->params->getIntRequestParam('statusz'));
             if ($statusz) {
                 $bf->setKellszallitasikoltsegetszamolni(false);

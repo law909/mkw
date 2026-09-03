@@ -39,15 +39,6 @@
                         <table>
                             <tbody>
                             <tr>
-                                <td class="mattable-important"><label for="MunkalapStatuszEdit">{at('Státusz')}:</label></td>
-                                <td colspan="3"><select id="MunkalapStatuszEdit" name="munkalapstatusz" class="js-munkalapstatuszedit">
-                                        <option value="">{at('válasszon')}</option>
-                                        {foreach $egyed.munkalapstatuszlist as $_ms}
-                                            <option value="{$_ms.id}" data-vanemailtemplate="{if ($_ms.vanemailtemplate)}1{else}0{/if}"{if ($_ms.selected)} selected="selected"{/if}>{$_ms.caption|escape}</option>
-                                        {/foreach}
-                                    </select></td>
-                            </tr>
-                            <tr>
                                 <td class="mattable-important"><label for="MunkalapTermekEdit">{at('Jármű')}:</label></td>
                                 {if ($setup.termekautocomplete)}
                                     <td>
@@ -100,12 +91,6 @@
                 {/if}
                 <table>
                     <tbody>
-                    {if ($showmunkalapadatok)}
-                        <tr>
-                            <td><label for="MunkalapStatuszErtesitoEdit">{at('Értesítés kell')}:</label></td>
-                            <td><input id="MunkalapStatuszErtesitoEdit" type="checkbox" name="munkalapstatuszertesito"></td>
-                        </tr>
-                    {/if}
                     {if ($showforditottadozas)}
                         <tr>
                             <td><label for="ForditottadozasEdit">Fordított adózás:</label></td>

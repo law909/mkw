@@ -36,7 +36,6 @@ class BizonylatfejListener
      */
     private const NAPLOZOTTMEZOK = [
         'bizonylatstatusz' => 'Státusz',
-        'munkalapstatusz' => 'Munkalap státusz',
         'fizmod' => 'Fizetési mód',
         'penztmozgat' => 'Kintlévőséget/tartozást képez',
         'penztar' => 'Pénztár',

@@ -6,7 +6,7 @@
     {if ($showbizonylatstatuszeditor)}
         <td class="cell">
             <select id="BizonylatStatuszFuggobenEdit" name="bizonylatstatusz" class="js-bizonylatstatuszedit"
-                    data-vanpartneremail="{if ($_egyed.partneremail)}1{else}0{/if}">
+                    data-vanpartneremail="{if ($_egyed.partneremail)}1{else}0{/if}"{if ($_egyed.munkalapkiszamlazva|default:false)} disabled="disabled"{/if}>
                 <option value="">{at('válasszon')}</option>
                 {foreach $_egyed.bizonylatstatuszlist as $_role}
                     <option value="{$_role.id}"
@@ -17,14 +17,6 @@
     {/if}
     {if ($showmunkalapadatok)}
         <td class="cell">
-            <select name="munkalapstatusz" class="js-munkalapstatuszedit"
-                    data-vanpartneremail="{if ($_egyed.partneremail)}1{else}0{/if}"{if ($_egyed.munkalapkiszamlazva)} disabled="disabled"{/if}>
-                <option value="">{at('válasszon')}</option>
-                {foreach $_egyed.munkalapstatuszlist as $_ms}
-                    <option value="{$_ms.id}"
-                            data-vanemailtemplate="{if ($_ms.vanemailtemplate)}1{else}0{/if}"{if ($_ms.selected)} selected="selected"{/if}>{$_ms.caption|escape}</option>
-                {/foreach}
-            </select>
             <table>
                 <tbody>
                 <tr>

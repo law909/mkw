@@ -2272,12 +2272,41 @@ if ($DBVersion < '0160') {
         . ' SELECT 1, "Munkalapok", "/admin/munkalapfej/viewlist", "/admin/munkalapfej", 40, 1, 280, ""'
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/munkalapfej/viewlist") m)'
     );
-    $conn->executeStatement(
-        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-        . ' SELECT 7, "Munkalap státusz", "/admin/munkalapstatusz/viewlist", "/admin/munkalapstatusz", 40, 1, 2950, ""'
-        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/munkalapstatusz/viewlist") m)'
-    );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0160');
+}
+
+if ($DBVersion < '0161') {
+    // A munkalapnak nincs többé saját státusztörzse: a közös bizonylatstatuszt használja, a
+    // munkalap bizonylattípusához kötött és a típus nélküli státuszok közül választva. A 0160
+    // által felvett "Munkalap státusz" menüpont mögül a képernyő eltűnt.
+    //
+    // A munkalapstatusz tábla és a rá mutató oszlopok elbontása ITT történik, nem az
+    // updateschema.sh-ban: a schema-tool a bizonylatfej idegen kulcsát nem bontja el az oszlop
+    // előtt, ezért ott hibára fut. Emiatt ennél a verziónál ez a blokk az updateschema.sh ELŐTT
+    // futtatandó (elég egy admin oldalt betölteni).
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement('UPDATE bizonylattipus SET showbizonylatstatuszeditor=1 WHERE id="munkalap"');
+    $conn->executeStatement('DELETE FROM menu WHERE url="/admin/munkalapstatusz/viewlist"');
+    $fk = $conn->fetchOne(
+        'SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
+        . ' WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME="bizonylatfej" AND COLUMN_NAME="munkalapstatusz_id"'
+        . ' AND REFERENCED_TABLE_NAME IS NOT NULL'
+    );
+    if ($fk) {
+        $conn->executeStatement('ALTER TABLE bizonylatfej DROP FOREIGN KEY `' . $fk . '`');
+    }
+    foreach (['munkalapstatusz_id', 'munkalapstatusznev'] as $oszlop) {
+        $van = $conn->fetchOne(
+            'SELECT COLUMN_NAME FROM information_schema.COLUMNS'
+            . ' WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME="bizonylatfej" AND COLUMN_NAME=?',
+            [$oszlop]
+        );
+        if ($van) {
+            $conn->executeStatement('ALTER TABLE bizonylatfej DROP COLUMN `' . $oszlop . '`');
+        }
+    }
+    $conn->executeStatement('DROP TABLE IF EXISTS munkalapstatusz');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0161');
 }
 
 /**

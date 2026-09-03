@@ -2127,12 +2127,6 @@ let bizonylathelper = function ($) {
                             kellEmailErtesitestKerdezni($(this), $('input[name="partneremail"]').val())
                         );
                     })
-                    .on('change', '.js-munkalapstatuszedit', function (e) {
-                        $('input[name="munkalapstatuszertesito"]').prop(
-                            'checked',
-                            kellEmailErtesitestKerdezni($(this), $('input[name="partneremail"]').val())
-                        );
-                    })
                     .on('change', '.js-munkalaptermekselectreal', function (e) {
                         $('.js-munkalapazonosito').val('');
                         munkalapUtolsoAzonosito = '';
@@ -2438,7 +2432,6 @@ let bizonylathelper = function ($) {
                         '#datumigfilter',
                         '#bizonylatstatuszfilter',
                         '#bizonylatstatuszcsoportfilter',
-                        '#munkalapstatuszfilter',
                         '#munkalapegyediazonositofilter',
                         '#bizonylatrontottfilter',
                         '#egyenlegfilter',
@@ -2829,47 +2822,6 @@ let bizonylathelper = function ($) {
                         statusz = $this.val();
                     // csak akkor van értelme rákérdezni, ha a választott státuszhoz tartozik
                     // email sablon és a bizonylaton van partner email — egyébként nincs mit kiküldeni
-                    if (!kellEmailErtesitestKerdezni($this)) {
-                        sendQ(id, statusz, false);
-                        return;
-                    }
-                    dialogcenter.html('Küld email értesítést a változásról?').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        buttons: {
-                            'Igen': function () {
-                                sendQ(id, statusz, true);
-                                $(this).dialog('close');
-                            },
-                            'Nem': function () {
-                                sendQ(id, statusz, false);
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                })
-                .on('change', '.js-munkalapstatuszedit', function (e) {
-                    e.preventDefault();
-
-                    function sendQ(id, s, ertesit) {
-                        $.ajax({
-                            url: '/admin/' + entityName + '/setmunkalapstatusz',
-                            type: 'POST',
-                            data: {
-                                id: id,
-                                statusz: s,
-                                munkalapstatuszertesito: ertesit
-                            },
-                            success: function () {
-                                $('.mattable-tablerefresh').click();
-                            }
-                        });
-                    }
-
-                    let $this = $(this),
-                        id = $this.parents('tr').data('egyedid'),
-                        statusz = $this.val();
                     if (!kellEmailErtesitestKerdezni($this)) {
                         sendQ(id, statusz, false);
                         return;
