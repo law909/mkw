@@ -288,10 +288,6 @@
                 <label for="SzamlazasSendemailEdit">{at('Küldés emailben')}:</label>
                 <input id="SzamlazasSendemailEdit" name="sendemail" type="checkbox">
             </div>
-            <div>
-                <label for="SzamlazasSendnavEdit">{at('Beküldés a NAV-hoz')}:</label>
-                <input id="SzamlazasSendnavEdit" name="sendnav" type="checkbox">
-            </div>
         </div>
     {/if}
     <div id="mattkarb">

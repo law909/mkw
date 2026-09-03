@@ -29,7 +29,8 @@ class bizsablonfejController extends bizonylatfejController
 
     /**
      * Csoportos számlázás: a kijelölt sablonokból, kijelölés híján a rendszeresekből számla
-     * készül. A kész számlák — kérésre — kimennek emailben és beküldésre kerülnek a NAV-hoz.
+     * készül. Kérésre a kész számlák ki is mennek emailben; a kiküldött számla nyomtatottá
+     * válik, és ezzel megy a NAV beküldés is — külön NAV kapcsoló ezért nincs.
      */
     public function szamlazas()
     {
@@ -45,13 +46,9 @@ class bizsablonfejController extends bizonylatfejController
         if ($this->params->getBoolRequestParam('sendemail')) {
             foreach ($res['szamlaszamok'] as $szamlaszam) {
                 $this->sendPDFTo($szamlaszam);
-            }
-        }
-        if ($this->params->getBoolRequestParam('sendnav')) {
-            foreach ($res['szamlaszamok'] as $szamlaszam) {
-                $navhiba = $this->sendToNAV($szamlaszam);
-                if ($navhiba) {
-                    $res['hibak'][] = $szamlaszam . ' NAV: ' . strip_tags($navhiba);
+                $hiba = $this->getPrintService()->setNyomtatva($szamlaszam, true);
+                if ($hiba) {
+                    $res['hibak'][] = $szamlaszam . ': ' . strip_tags($hiba);
                 }
             }
         }

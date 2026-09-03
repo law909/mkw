@@ -2286,8 +2286,7 @@ let bizonylathelper = function ($) {
                                     tetelnevtoldat: $('#SzamlazasTetelnevtoldatEdit').val(),
                                     mennyiseg: $('#SzamlazasMennyisegEdit').val(),
                                     teljesitesazesedekesseg: $('#SzamlazasTeljesitesEdit').prop('checked') ? 1 : 0,
-                                    sendemail: $('#SzamlazasSendemailEdit').prop('checked') ? 1 : 0,
-                                    sendnav: $('#SzamlazasSendnavEdit').prop('checked') ? 1 : 0
+                                    sendemail: $('#SzamlazasSendemailEdit').prop('checked') ? 1 : 0
                                 },
                                 success: function (d) {
                                     dial.dialog('close');
