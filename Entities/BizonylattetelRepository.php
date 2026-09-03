@@ -158,4 +158,28 @@ class BizonylattetelRepository extends \mkwhelpers\Repository
         return $this->findOneBy(['termekegyediazonosito' => $azonosito]);
     }
 
+    /**
+     * Az a bizonylattétel, amelyikről a példány gazdája (a munkalap partnere) olvasható. Ugyanaz az
+     * azonosító a bevéten (szállító) és az eladáson (vevő) is szerepel, ezért a kimenő irányú
+     * bizonylatok mennek előre, azok közül a legutolsó. Rontott, stornó és stornózott bizonylat
+     * nem jöhet szóba.
+     *
+     * @return \Entities\Bizonylattetel|null
+     */
+    public function findOwnerBizonylattetel($azonosito)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT bt FROM Entities\Bizonylattetel bt'
+            . ' JOIN bt.bizonylatfej bf'
+            . ' WHERE bt.termekegyediazonosito = :azonosito'
+            . ' AND bf.rontott = false AND bf.storno = false AND bf.stornozott = false'
+            . ' AND bf.partner IS NOT NULL'
+            . ' ORDER BY bf.irany ASC, bf.kelt DESC, bt.id DESC'
+        );
+        $q->setParameter('azonosito', $azonosito);
+        $q->setMaxResults(1);
+        $res = $q->getResult();
+        return $res ? $res[0] : null;
+    }
+
 }

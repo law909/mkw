@@ -863,6 +863,7 @@ $router->map('GET', '/admin/munkalapfej/getkarb', 'munkalapfejController#getkarb
 $router->map('GET', '/admin/munkalapfej/viewkarb', 'munkalapfejController#viewkarb', 'adminmunkalapfejviewkarb');
 $router->map('GET', '/admin/munkalapfej/egyediazonositolista', 'munkalapfejController#egyediAzonositoLista', 'adminmunkalapfejegyediazonositolista');
 $router->map('GET', '/admin/munkalapfej/valtozatlista', 'munkalapfejController#valtozatLista', 'adminmunkalapfejvaltozatlista');
+$router->map('GET', '/admin/munkalapfej/jarmuadat', 'munkalapfejController#jarmuAdat', 'adminmunkalapfejjarmuadat');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/munkalapfej/save', 'munkalapfejController#save', 'adminmunkalapfejsave');
     $router->map('POST', '/admin/munkalapfej/ront', 'munkalapfejController#ront', 'adminmunkalapfejront');

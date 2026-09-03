@@ -1,5 +1,5 @@
 {*
-    Munkalap nyomtatási képe. A számláéra hasonlít, csak a fejlécben a gép adatai (egyedi
+    Munkalap nyomtatási képe. A számláéra hasonlít, csak a fejlécben a jármű adatai (egyedi
     azonosító, km óra állás, hiba leírása, következő szerviz) is szerepelnek, és nincs
     fizetendő végösszeg: a munkalap nem pénzügyi bizonylat, abból a számla készül.
 
@@ -39,7 +39,7 @@
     <table class="fullwidth" cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td width="25%" style="padding: 0 5px;">Egyedi azonosító: <span class="bold">{$egyed.munkalapegyediazonosito|default:"&nbsp;"}</span></td>
-            <td width="45%" style="padding: 0 5px;">Gép: <span class="bold">{$egyed.munkalaptermeknev|default:"&nbsp;"}{if ($egyed.munkalaptermekvaltozatnev)} ({$egyed.munkalaptermekvaltozatnev}){/if}</span></td>
+            <td width="45%" style="padding: 0 5px;">Jármű: <span class="bold">{$egyed.munkalaptermeknev|default:"&nbsp;"}{if ($egyed.munkalaptermekvaltozatnev)} ({$egyed.munkalaptermekvaltozatnev}){/if}</span></td>
             <td width="30%" style="padding: 0 5px;">Km óra állás: <span class="bold">{$egyed.munkalapkmoraallas|default:"&nbsp;"}</span></td>
         </tr>
     </table>

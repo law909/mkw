@@ -121,7 +121,7 @@ class Bizonylattipus
     private $showeddigimegrendeleseiurl = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showgarancialisadatok = false;
-    /** A munkalap saját fejadatai: gépjármű, km óra, hiba, következő szerviz, munkalap státusz. */
+    /** A munkalap saját fejadatai: jármű, km óra, hiba, következő szerviz, munkalap státusz. */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showmunkalapadatok = false;
 

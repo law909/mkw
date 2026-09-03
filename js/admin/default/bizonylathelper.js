@@ -536,22 +536,39 @@ let bizonylathelper = function ($) {
         });
     }
 
-    // A munkalap fejében a gép kétféleképpen választható: a tételekével azonos termékválasztóval,
+    // A munkalap fejében a jármű kétféleképpen választható: a tételekével azonos termékválasztóval,
     // vagy egy bizonylattételen szereplő egyedi azonosítóval. A kettő követi egymást: termékre
-    // szűkül az azonosítólista, azonosítóra beáll a termék és a változata. A mentés szerveroldalon
-    // ugyanezt teszi, ezért a kézzel beírt azonosító is jó.
+    // szűkül az azonosítólista, azonosítóra beáll a termék, a változata és a partner. A mentés
+    // szerveroldalon ugyanígy oldja fel az azonosítót, ezért a kézzel beírt azonosító is jó.
+
+    // Az az azonosító, amire a járműadat már betöltődött – enélkül a select és a rá következő
+    // change kétszer kérdezné le ugyanazt, és a szerkesztésre nyitott munkalapon a betöltött
+    // azonosító azonnal felülírná a kézzel átírt partnert.
+    let munkalapUtolsoAzonosito = null;
+
     function munkalapTermekId() {
         return $('.js-munkalaptermekid').val();
     }
 
-    // A gép változatlistája a kiválasztott termékhez; $sel a megtartandó (vagy beállítandó) változat.
-    function loadMunkalapValtozatList(termekid, sel) {
+    function fillMunkalapValtozatList(valtozatok, sel) {
         const $valtozat = $('.js-munkalapvaltozat');
         if (!$valtozat.length) {
             return;
         }
         $valtozat.empty().append($('<option></option>').attr('value', '').text('válasszon'));
+        $.each(valtozatok || [], function (i, v) {
+            $valtozat.append($('<option></option>').attr('value', v.id).text(v.caption));
+        });
+        $valtozat.val(sel || '');
+    }
+
+    // A jármű változatlistája a kiválasztott termékhez; sel a megtartandó (vagy beállítandó) változat.
+    function loadMunkalapValtozatList(termekid, sel) {
+        if (!$('.js-munkalapvaltozat').length) {
+            return;
+        }
         if (!termekid) {
+            fillMunkalapValtozatList([], '');
             return;
         }
         $.ajax({
@@ -560,10 +577,54 @@ let bizonylathelper = function ($) {
             dataType: 'json',
             data: {termekid: termekid, valtozatid: sel || ''},
             success: function (valtozatok) {
-                $.each(valtozatok || [], function (i, v) {
-                    $valtozat.append($('<option></option>').attr('value', v.id).text(v.caption));
-                });
-                $valtozat.val(sel || '');
+                fillMunkalapValtozatList(valtozatok, sel);
+            }
+        });
+    }
+
+    // A jármű gazdája a fej partnerébe. A kitöltést a partnerválasztó saját change kezelője
+    // végzi, ugyanúgy, mint kézi választáskor.
+    function setMunkalapPartner(partnerid, partnernev) {
+        const $pid = $('.js-partnerid');
+        if (!$pid.length || !partnerid) {
+            return;
+        }
+        if (isPartnerAutocomplete()) {
+            $('.js-partnerautocomplete').val(partnernev || '');
+        } else if (!$pid.find('option[value="' + partnerid + '"]').length) {
+            // inaktív partner nincs benne a legördülőben, de a bizonylatán ott kell lennie
+            $pid.append($('<option></option>').attr('value', partnerid).text(partnernev || ''));
+        }
+        $pid.val(partnerid).change();
+    }
+
+    // Az egyedi azonosítóhoz tartozó jármű (termék, változat) és a gazdája betöltése.
+    function loadMunkalapJarmuAdat(azonosito) {
+        const uzenet = $('.js-munkalapazonositouzenet');
+        azonosito = $.trim(azonosito || '');
+        if (azonosito === munkalapUtolsoAzonosito) {
+            return;
+        }
+        munkalapUtolsoAzonosito = azonosito;
+        uzenet.text('');
+        if (!azonosito) {
+            return;
+        }
+        $.ajax({
+            url: '/admin/munkalapfej/jarmuadat',
+            type: 'GET',
+            dataType: 'json',
+            data: {munkalapegyediazonosito: azonosito},
+            success: function (res) {
+                if (!res || !res.ok) {
+                    uzenet.text((res && res.error) ? res.error : 'A keresés nem sikerült.');
+                    return;
+                }
+                $('.js-munkalaptermekid').val(res.termekid);
+                $('.js-munkalaptermekselect').val(res.termeknev);
+                $('.js-munkalaptermekselectreal').val(res.termekid);
+                fillMunkalapValtozatList(res.valtozatlista, res.valtozatid);
+                setMunkalapPartner(res.partnerid, res.partnernev);
             }
         });
     }
@@ -583,8 +644,9 @@ let bizonylathelper = function ($) {
                     return;
                 }
                 $('.js-munkalaptermekid').val(termek.id);
-                // a korábbi gép azonosítója nem tartozik az újhoz
+                // a korábbi jármű azonosítója nem tartozik az újhoz
                 $('.js-munkalapazonosito').val('');
+                munkalapUtolsoAzonosito = '';
                 loadMunkalapValtozatList(termek.id, termek.valtozat);
             }
         }).autocompleteRenderer(termekAutocompleteRenderer);
@@ -608,22 +670,23 @@ let bizonylathelper = function ($) {
                             return {
                                 label: sor.azonosito + ' - ' + sor.termeknev
                                     + (sor.valtozatnev ? ' (' + sor.valtozatnev + ')' : ''),
-                                value: sor.azonosito,
-                                termekid: sor.termekid,
-                                termeknev: sor.termeknev,
-                                valtozatid: sor.valtozatid
+                                value: sor.azonosito
                             };
                         }));
                     }
                 });
             },
             select: function (event, ui) {
-                $('.js-munkalaptermekid').val(ui.item.termekid);
-                $('.js-munkalaptermekselect').val(ui.item.termeknev);
-                $('.js-munkalaptermekselectreal').val(ui.item.termekid);
-                loadMunkalapValtozatList(ui.item.termekid, ui.item.valtozatid);
+                loadMunkalapJarmuAdat(ui.item.value);
             }
         });
+        // a kézzel beírt azonosítóra ugyanaz a betöltés fut le
+        input.on('change', function () {
+            loadMunkalapJarmuAdat($(this).val());
+        });
+        // a form betöltésekor a mentett azonosító már fel van dolgozva – nem írjuk felül vele
+        // a bizonylaton szereplő partnert
+        munkalapUtolsoAzonosito = $.trim(input.val() || '');
     }
 
     // A gyűjtő/sor-doboz kiszerelés mezői: a beírt darabszámokból számolt mennyiség kerül a
@@ -1980,6 +2043,7 @@ let bizonylathelper = function ($) {
                     })
                     .on('change', '.js-munkalaptermekselectreal', function (e) {
                         $('.js-munkalapazonosito').val('');
+                        munkalapUtolsoAzonosito = '';
                         loadMunkalapValtozatList($(this).val(), '');
                     })
                     .on('change', '.js-quickmennyiseginput', function (e) {

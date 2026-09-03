@@ -12,7 +12,7 @@ use Entities\TermekValtozat;
  * Munkalap: a bizonylat gépezetét használó, saját fejadatokkal bővített bizonylattípus.
  * A tételei bizonylattételek, ezért a "Számla" gombbal a szokásos módon képezhető belőlük számla.
  *
- * A gép kétféleképpen választható: a tételekével azonos termékválasztóval (+ változat), vagy egy
+ * A jármű kétféleképpen választható: a tételekével azonos termékválasztóval (+ változat), vagy egy
  * bizonylattételen szereplő egyedi azonosítóval. Az azonosító az erősebb: ha ki van töltve, a
  * terméket és a változatot mentéskor abból oldjuk fel, mert az konkrét példányt jelöl.
  *
@@ -93,7 +93,7 @@ class munkalapfejController extends bizonylatfejController
         $azonosito = trim($this->params->getStringRequestParam('munkalapegyediazonosito'));
         $obj->setMunkalapegyediazonosito($azonosito);
         if ($azonosito) {
-            // az azonosító konkrét példányt jelöl, ezért a gépet mindig abból oldjuk fel –
+            // az azonosító konkrét példányt jelöl, ezért a járművet mindig abból oldjuk fel –
             // a formról jövő termék csak a képernyőn látszó név forrása volt
             $tetel = $this->getRepo(Bizonylattetel::class)->findByEgyediazonosito($azonosito);
             $obj->setMunkalaptermek($tetel?->getTermek());
@@ -128,7 +128,7 @@ class munkalapfejController extends bizonylatfejController
             }
         } elseif (!$obj->getMunkalaptermek()) {
             $mezo = \mkw\store::isTermekAutocomplete() ? 'munkalaptermeknev' : 'munkalaptermek';
-            $hibak[$mezo] = t('Válassza ki a gépet, vagy adja meg az egyedi azonosítóját.');
+            $hibak[$mezo] = t('Válassza ki a járművet, vagy adja meg az egyedi azonosítóját.');
         }
         return $hibak;
     }
@@ -182,7 +182,7 @@ class munkalapfejController extends bizonylatfejController
 
     /**
      * A munkalap egyedi azonosító autocomplete-je: a bizonylattételeken szereplő azonosítók.
-     * Kiválasztott géppel csak az adott termék azonosítóit kínálja.
+     * Kiválasztott járművel csak az adott termék azonosítóit kínálja.
      */
     public function egyediAzonositoLista()
     {
@@ -195,7 +195,30 @@ class munkalapfejController extends bizonylatfejController
         );
     }
 
-    /** A választott gép változatai a fej termékválasztója után. */
+    /**
+     * Egy egyedi azonosító teljes járműadata a formhoz: termék, változat (a változatlistával
+     * együtt), és a példány gazdája arról a bizonylatról, amelyiken az azonosító szerepel.
+     */
+    public function jarmuAdat()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $azonosito = trim($this->params->getStringRequestParam('munkalapegyediazonosito'));
+        $rep = $this->getRepo(Bizonylattetel::class);
+        $adat = $azonosito ? $rep->egyediazonositoAdat($rep->findByEgyediazonosito($azonosito)) : null;
+        if (!$adat) {
+            $this->jsonFail(sprintf(t('Nincs "%s" egyedi azonosítójú bizonylattétel.'), $azonosito));
+            return;
+        }
+        $termekCtrl = new termekController();
+        $adat['ok'] = true;
+        $adat['valtozatlista'] = $termekCtrl->getValtozatList($adat['termekid'], $adat['valtozatid']);
+        $partner = $rep->findOwnerBizonylattetel($azonosito)?->getBizonylatfej()?->getPartner();
+        $adat['partnerid'] = $partner ? $partner->getId() : '';
+        $adat['partnernev'] = $partner ? $partner->getNev() : '';
+        echo json_encode($adat);
+    }
+
+    /** A választott jármű változatai a fej termékválasztója után. */
     public function valtozatLista()
     {
         header('Content-Type: application/json; charset=utf-8');
