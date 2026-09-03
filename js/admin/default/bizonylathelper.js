@@ -1577,16 +1577,20 @@ let bizonylathelper = function ($) {
         kerdezNyomtatvaLett(egyedid, kellkerdezni, 'Sikerült a nyomtatás?', kesz);
     }
 
-    function kuldEmailPdf(egyedid, kellkerdezni, kesz) {
+    function emailPdfKuldes(egyedid, kesz) {
         $.ajax({
             url: '/admin/bizonylatfej/emailpdf',
             type: 'POST',
             data: {
                 id: egyedid
             },
-            success: function () {
-                kerdezNyomtatvaLett(egyedid, kellkerdezni, 'Sikerült a küldés?', kesz);
-            }
+            success: kesz
+        });
+    }
+
+    function kuldEmailPdf(egyedid, kellkerdezni, kesz) {
+        emailPdfKuldes(egyedid, function () {
+            kerdezNyomtatvaLett(egyedid, kellkerdezni, 'Sikerült a küldés?', kesz);
         });
     }
 
@@ -1617,6 +1621,17 @@ let bizonylathelper = function ($) {
             gombok['Email'] = function () {
                 $(this).dialog('close');
                 kuldEmailPdf(egyedid, kellkerdezni, kesz);
+            };
+        }
+        if (nyomtatni && sendemail) {
+            gombok['Küldés emailben és nyomtatás'] = function () {
+                $(this).dialog('close');
+                // a nyomtatás ablaka még a kattintás alatt nyílik: az ajax válaszából indítva
+                // a böngésző popup blokkolója megfogná
+                window.open('/admin/' + entityName + '/print?id=' + egyedid);
+                emailPdfKuldes(egyedid, function () {
+                    kerdezNyomtatvaLett(egyedid, kellkerdezni, 'Sikerült a küldés és a nyomtatás?', kesz);
+                });
             };
         }
         gombok['Nem'] = function () {
