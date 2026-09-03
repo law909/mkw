@@ -335,7 +335,17 @@ class boltieladasController extends \mkwhelpers\Controller
             return;
         }
 
-        echo json_encode(['ok' => true, 'id' => $fej->getId()]);
+        // a karbon a form data attribútumai hozzák ugyanezt: itt a főoldali kosárnak a válasz adja
+        echo json_encode([
+            'ok' => true,
+            'id' => $fej->getId(),
+            'nyomtatas' => [
+                'nyomtatasikerdes' => \mkw\store::getParameter(\mkw\consts::NyomtatasiKerdesMenteskor) ? 1 : 0,
+                'nyomtatni' => $biztipus->getNyomtatni() ? 1 : 0,
+                'sendemail' => $biztipus->getSendemail() ? 1 : 0,
+                'editprinted' => $biztipus->getEditprinted() ? 1 : 0,
+            ],
+        ]);
     }
 
     /**

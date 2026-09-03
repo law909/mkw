@@ -235,6 +235,7 @@ var boltieladas = (function ($) {
                     recalcTotals($cont);
                     $uzenet.removeClass('boltieladas-hiba').text('Rögzítve: ' + res.id);
                     $cont.find('.js-boltieladas-vonalkod').val('').focus();
+                    nyomtatasKerdes($cont, res);
                 } else {
                     $uzenet.addClass('boltieladas-hiba').text((res && res.error) ? res.error : 'Hiba a rögzítés közben.');
                 }
@@ -242,6 +243,17 @@ var boltieladas = (function ($) {
             error: function () {
                 $uzenet.addClass('boltieladas-hiba').text('Hiba a rögzítés közben.');
             }
+        });
+    }
+
+    // Rögzítés után a bizonylat karbjával azonos nyomtatás/küldés kérdés; a kapcsolókat a
+    // mentés válasza hozza. A kérdés után a vonalkód mezőben folytatható a következő eladás.
+    function nyomtatasKerdes($cont, res) {
+        if (typeof bizonylathelper === 'undefined' || !res.nyomtatas) {
+            return;
+        }
+        bizonylathelper.nyomtatasKerdes('boltieladasfej', res.id, res.nyomtatas, function () {
+            $cont.find('.js-boltieladas-vonalkod').focus();
         });
     }
 

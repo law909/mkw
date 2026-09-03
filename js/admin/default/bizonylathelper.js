@@ -1663,12 +1663,13 @@ let bizonylathelper = function ($) {
     // Mentés után a bizonylattípus szerint (nyomtatni / sendemail) felajánljuk a nyomtatást
     // vagy az emailes küldést; a kesz() zárja le a karbot (visszalépés a listára). A kérdés a
     // "Nyomtatási kérdés számla mentéskor" beállítás mögött van (consts::NyomtatasiKerdesMenteskor).
-    function mentesUtaniNyomtatasKerdes(entityName, egyedid, kesz) {
-        const $form = $('#mattkarb-form'),
-            kerdezni = $form.data('nyomtatasikerdes') * 1 === 1,
-            nyomtatni = $form.data('nyomtatni') * 1 === 1,
-            sendemail = $form.data('sendemail') * 1 === 1,
-            kellkerdezni = $form.data('editprinted') * 1 !== 1;
+    // A kapcsolókat a hívó adja: a bizonylat karbon a form data attribútumaiból, a főoldali
+    // bolti eladásnál a mentés json válaszából.
+    function nyomtatasKerdes(entityName, egyedid, kapcsolok, kesz) {
+        const kerdezni = kapcsolok.nyomtatasikerdes * 1 === 1,
+            nyomtatni = kapcsolok.nyomtatni * 1 === 1,
+            sendemail = kapcsolok.sendemail * 1 === 1,
+            kellkerdezni = kapcsolok.editprinted * 1 !== 1;
         if (!egyedid || !kerdezni || (!nyomtatni && !sendemail)) {
             kesz();
             return;
@@ -1710,6 +1711,16 @@ let bizonylathelper = function ($) {
             modal: true,
             buttons: gombok
         });
+    }
+
+    function mentesUtaniNyomtatasKerdes(entityName, egyedid, kesz) {
+        const $form = $('#mattkarb-form');
+        nyomtatasKerdes(entityName, egyedid, {
+            nyomtatasikerdes: $form.data('nyomtatasikerdes'),
+            nyomtatni: $form.data('nyomtatni'),
+            sendemail: $form.data('sendemail'),
+            editprinted: $form.data('editprinted')
+        }, kesz);
     }
 
     function getMattKarbConfig(bizonylattipus) {
@@ -3340,7 +3351,8 @@ let bizonylathelper = function ($) {
     return {
         createMattable: createMattable,
         getMattKarbConfig: getMattKarbConfig,
-        checkTetelOsszegek: checkTetelOsszegek
+        checkTetelOsszegek: checkTetelOsszegek,
+        nyomtatasKerdes: nyomtatasKerdes
     };
 
 }(jQuery);
