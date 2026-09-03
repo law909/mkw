@@ -2014,6 +2014,29 @@ class termekController extends \mkwhelpers\MattableController
         $mc->show404('HTTP/1.1 410 Gone');
     }
 
+    /**
+     * Egy termék(változat) vonalkódos címkéje PDF-ben (lásd \Services\VonalkodCimkeService).
+     * Változat nélküli terméknél a termék adatai kerülnek a címkére.
+     */
+    public function doCimke()
+    {
+        /** @var \Entities\Termek|null $termek */
+        $termek = $this->getRepo()->find($this->params->getIntRequestParam('termek'));
+        if (!$termek) {
+            return;
+        }
+        /** @var \Entities\TermekValtozat|null $valtozat */
+        $valtozat = $this->getRepo(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
+        if ($valtozat && $valtozat->getTermek()?->getId() != $termek->getId()) {
+            $valtozat = null;
+        }
+        $svc = new \Services\VonalkodCimkeService();
+        $svc->output(
+            $svc->getTermekCimkek($termek, $valtozat, $this->params->getIntRequestParam('db', 1)),
+            'cimke-' . \mkw\store::urlize($termek->getId()) . '.pdf'
+        );
+    }
+
     public function getKeszletByRaktar()
     {
         $termekid = $this->params->getIntRequestParam('termekid');

@@ -10,6 +10,8 @@
             <td><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.ertek2}</a></td>
             <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
             <td class="keszletoszlop">{$vk.foglaltmennyiseg}</td>
+            <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}&valtozat={$vk.id|escape:'url'}" target="_blank"
+                   title="{at('Címke nyomtatás')}"><span class="ui-icon ui-icon-tag"></span></a></td>
         </tr>
     {/foreach}
 {else}
@@ -20,5 +22,7 @@
         <td colspan="2"></td>
         <td class="keszletoszlop"><a href="#" data-id="{$termek.id}" class="js-keszletreszletezobutton">{$termek.keszlet}</a></td>
         <td class="keszletoszlop">{$termek.foglaltmennyiseg}</td>
+        <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}" target="_blank"
+               title="{at('Címke nyomtatás')}"><span class="ui-icon ui-icon-tag"></span></a></td>
     </tr>
 {/if}

@@ -523,6 +523,7 @@
                     <th colspan="2">{at('Változat')}</th>
                     <th class="keszletoszlop">{at('Készlet')}</th>
                     <th class="keszletoszlop">{at('Foglalt')}</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>

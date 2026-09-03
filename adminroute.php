@@ -1067,6 +1067,7 @@ $router->map('GET', '/admin/termek/colorexport', 'termekController#colorexport',
 $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszamosexport', 'admintermekcikkszamosexport');
 $router->map('GET', '/admin/termek/minkeszletexport', 'termekController#minKeszletExport', 'admintermekminkeszletexport');
 $router->map('GET', '/admin/termek/getkeszletbyraktar', 'termekController#getKeszletByRaktar', 'admingetkeszletbyraktar');
+$router->map('GET', '/admin/termek/cimke', 'termekController#doCimke', 'admintermekcimke');
 $router->map('GET', '/admin/termek/getkapcsolodolist', 'termekController#getKapcsolodoSelectList', 'admingettermekkapcsolodolist');
 $router->map('POST', '/admin/termek/recalcarak', 'termekController#recalcArak', 'admintermekrecalcarak');
 if (!\mkw\store::isClosed()) {
