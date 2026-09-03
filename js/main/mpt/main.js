@@ -1,3 +1,6 @@
+// ennyi ideig marad a képernyőn a sikeres mentés visszajelzése
+const UZENET_IDO = 15000;
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('mptadatok', () => ({
         lap: 'adataim',
@@ -14,6 +17,7 @@ document.addEventListener('alpine:init', () => {
         jelszo: {jelszoregi: '', jelszo1: '', jelszo2: ''},
         jelszohiba: '',
         jelszouzenet: '',
+        uzenetidozito: null,
 
         init() {
             this.betolt();
@@ -28,6 +32,14 @@ document.addEventListener('alpine:init', () => {
         // value-jával (string) hasonlít össze
         azonosito(ertek) {
             return ertek ? String(ertek) : '';
+        },
+
+        uzenetKiir(szoveg) {
+            this.uzenet = szoveg;
+            clearTimeout(this.uzenetidozito);
+            this.uzenetidozito = setTimeout(() => {
+                this.uzenet = '';
+            }, UZENET_IDO);
         },
 
         osszeg(ertek) {
@@ -68,6 +80,7 @@ document.addEventListener('alpine:init', () => {
 
         ment() {
             this.hiba = '';
+            clearTimeout(this.uzenetidozito);
             this.uzenet = '';
             this.hibak = {};
             this.mentesfolyik = true;
@@ -88,7 +101,7 @@ document.addEventListener('alpine:init', () => {
                         return;
                     }
                     this.partnerBeallit(data.partner);
-                    this.uzenet = 'Az adatokat elmentettük.';
+                    this.uzenetKiir('Az adatokat elmentettük.');
                 })
                 .catch(() => {
                     this.hiba = 'A mentés nem sikerült.';
