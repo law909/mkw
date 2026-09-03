@@ -44,6 +44,16 @@ $router->map('GET', '/admin/afa/navcaselist', 'afaController#navcaselist', 'admi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/afa/save', 'afaController#save', 'adminafasave');
 }
+// a hozzáférést a controller ellenőrzi (csak sysadmin), nem az útvonal: a session
+// megnyitása itt minden kérésre – a webshopéra is – admin munkamenetet indítana
+$router->map('GET', '/admin/bizonylattipus/viewlist', 'bizonylattipusController#viewlist', 'adminbizonylattipusviewlist');
+$router->map('GET', '/admin/bizonylattipus/getlistbody', 'bizonylattipusController#getlistbody', 'adminbizonylattipusgetlistbody');
+$router->map('GET', '/admin/bizonylattipus/getkarb', 'bizonylattipusController#getkarb', 'adminbizonylattipusgetkarb');
+$router->map('GET', '/admin/bizonylattipus/viewkarb', 'bizonylattipusController#viewkarb', 'adminbizonylattipusviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/bizonylattipus/save', 'bizonylattipusController#save', 'adminbizonylattipussave');
+}
+
 $router->map('GET', '/admin/kapcsolodokoltseg/viewlist', 'kapcsolodokoltsegController#viewlist', 'adminkapcsolodokoltsegviewlist');
 $router->map('GET', '/admin/kapcsolodokoltseg/getlistbody', 'kapcsolodokoltsegController#getlistbody', 'adminkapcsolodokoltseggetlistbody');
 $router->map('GET', '/admin/kapcsolodokoltseg/getkarb', 'kapcsolodokoltsegController#getkarb', 'adminkapcsolodokoltseggetkarb');

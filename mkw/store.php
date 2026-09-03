@@ -1855,6 +1855,16 @@ class store
         return 0;
     }
 
+    /**
+     * A beépített sysadmin belépés (dolgozoController::login). Nincs Dolgozó sora, ezért
+     * a munkamenetben -1 az azonosítója — a jog szintje önmagában nem elég, azt egy
+     * munkakörre is rá lehet állítani.
+     */
+    public static function isSysadmin()
+    {
+        return (int)self::getAdminSession()->pk === -1;
+    }
+
     public static function translate($mit, $mire = null)
     {
         $sz = [
