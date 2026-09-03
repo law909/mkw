@@ -43,17 +43,11 @@
         width: 100%;
     }
 
-    .dttadatok {
-        display: flex;
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-
     .dttidopont {
         text-align: center;
         margin: 0 1%;
         padding: 0 2px;
-        flex: 0 0 20%;
+        flex-basis: 16%;
         border-radius: 3px;
         color: white;
         font-weight: bold;
@@ -73,14 +67,14 @@
     .dttoranev {
         padding: 10px 0;
         margin-right: 1%;
-        flex: 1 1 auto;
+        flex-basis: 60%;
         text-align: left;
     }
 
     .dttgombok {
         padding: 10px 0;
         margin-right: 1%;
-        flex: 0 0 26%;
+        flex-basis: 26%;
         text-align: center;
     }
 
@@ -200,13 +194,12 @@
         .dttlapozo {
             flex-direction: column;
         }
+    }
 
-        .dttora, .dttadatok {
+    /* a naptár 660 px-es iframe-be kerül, ott még az órarendhez hasonló hasábos sor kell */
+    @media all and (max-width: 479px) {
+        .dttora {
             flex-direction: column;
-        }
-
-        .dttidopont {
-            flex: 0 0 auto;
         }
     }
 </style>
