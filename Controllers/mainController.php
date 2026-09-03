@@ -321,8 +321,22 @@ class mainController extends \mkwhelpers\Controller
                 }
                 break;
 
-            case \mkw\store::isSuperzoneB2B():
             case \mkw\store::isGalad():
+                // egylépcsős: a terméklapon mindjárt az összes változat választható, nincs
+                // külön szín, majd méret oldal
+                $com = $this->params->getStringParam('slug');
+                $tc = new termekController();
+                /** @var Termek $termek */
+                $termek = $tc->getRepo()->findOneBySlug($com);
+                if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
+                    $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
+                    $this->showB2BTermeklap($termek);
+                } else {
+                    \mkw\store::redirectTo404($com);
+                }
+                break;
+
+            case \mkw\store::isSuperzoneB2B():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController();
                 /** @var Termek $termek */
@@ -373,79 +387,84 @@ class mainController extends \mkwhelpers\Controller
     public function termekm()
     {
         $com = $this->params->getStringParam('slug');
-        $szinid = $this->params->getIntRequestParam('szin');
-        $szinobj = $this->getRepo(Szin::class)->find($szinid);
         $tc = new termekController();
         /** @var \Entities\Termek $termek */
         $termek = $tc->getRepo()->findOneBySlug($com);
-        if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
-            $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
-            \mkw\store::fillTemplate($this->view);
-            $this->view->setVar('pagetitle', $termek->getShowOldalcim());
-            $this->view->setVar('seodescription', $termek->getShowSeodescription());
-            $t = [];
-            $vtt = [];
-            $t['id'] = $termek->getId();
-            $t['caption'] = $termek->getLocalizedFieldValue('nev');
-            $t['cikkszam'] = $termek->getCikkszam();
-            $t['leiras'] = $termek->getLocalizedFieldValue('leiras');
-            $t['szin'] = $szinobj?->getNev();
-            $partner = \mkw\store::getLoggedInUser();
-            if ($partner) {
-                $this->view->setVar('showkeszlet', $partner->isMennyisegetlathat());
-                $this->view->setVar('nemrendelhet', $partner->isXNemrendelhet());
-            } else {
-                $this->view->setVar('showkeszlet', false);
-                $this->view->setVar('nemrendelhet', false);
-            }
-            $valutanem = $termek->getArValutanem(null, $partner);
-            if ($valutanem) {
-                $t['valutanemnev'] = $valutanem->getNev();
-            } else {
-                $t['valutanemnev'] = 'X';
-            }
-
-            $afaoverride = false;
-            if ($partner) {
-                $afaoverride = $partner->getAFAOverride();
-            }
-            if ($afaoverride) {
-                $netto = $termek->getNettoAr(null, $partner, $valutanem);
-                $kedvnelkulinetto = $termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem);
-                $t['ar'] = $afaoverride->calcBrutto($netto);
-                $t['eredetiar'] = $afaoverride->calcBrutto($kedvnelkulinetto);
-            } else {
-                $t['ar'] = $termek->getBruttoAr(null, $partner, $valutanem);
-                $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
-            }
-
-            $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
-            $valtozatok = $termek->getValtozatok();
-            $ma = new \DateTime();
-            /** @var TermekValtozat $valt */
-            foreach ($valtozatok as $valt) {
-                if ($valt->getXElerheto() && $valt->getXLathato()) {
-                    if ($valt->getSzinId() == $szinid) {
-                        // a sablon keszlet <= 0-t tesztel, ezért itt nincs nullára vágás
-                        $valtkeszlet = $valt->getAvailableStock(null, null, null, false);
-                        $t['kepurllarge'] = $valt->getKepurlLarge();
-                        $t['kepurlmedium'] = $valt->getKepurlMedium();
-                        $vtt[] = [
-                            'id' => $valt->getId(),
-                            'caption' => $valt->getMeretNev(),
-                            'keszlet' => $valtkeszlet,
-                            'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
-                            'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma)) ? true : false
-                        ];
-                    }
-                }
-            }
-            $t['valtozatok'] = $vtt;
-            $this->view->setVar('termek', $t);
-            $this->view->printTemplateResult(true);
-        } else {
+        if (!$termek || $termek->getInaktiv() || !$termek->getXLathato() || $termek->getFuggoben()) {
             \mkw\store::redirectTo404($com);
+            return;
         }
+        $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
+        $this->showB2BTermeklap($termek, $this->params->getIntRequestParam('szin'));
+    }
+
+    /**
+     * A b2b termékoldal kirenderelése az előre beállított nézetbe: fejadatok, a belépett
+     * partner kedvezményével számolt ár, és a rendelhető változatok.
+     *
+     * @param int|null $szinid csak az adott szín változatai (superzoneb2b kétlépcsős szín →
+     *                         méret útja); null esetén a termék összes változata
+     */
+    private function showB2BTermeklap(Termek $termek, $szinid = null)
+    {
+        \mkw\store::fillTemplate($this->view);
+        $this->view->setVar('pagetitle', $termek->getShowOldalcim());
+        $this->view->setVar('seodescription', $termek->getShowSeodescription());
+
+        $partner = \mkw\store::getLoggedInUser();
+        $this->view->setVar('showkeszlet', $partner ? $partner->isMennyisegetlathat() : false);
+        $this->view->setVar('nemrendelhet', $partner ? $partner->isXNemrendelhet() : false);
+
+        $t = [];
+        $t['id'] = $termek->getId();
+        $t['caption'] = $termek->getLocalizedFieldValue('nev');
+        $t['cikkszam'] = $termek->getCikkszam();
+        $t['leiras'] = $termek->getLocalizedFieldValue('leiras');
+        $t['szin'] = $szinid ? $this->getRepo(Szin::class)->find($szinid)?->getNev() : '';
+        $t['kepurllarge'] = $termek->getKepurlLarge();
+        $t['kepurlmedium'] = $termek->getKepurlMedium();
+
+        $valutanem = $termek->getArValutanem(null, $partner);
+        $t['valutanemnev'] = $valutanem ? $valutanem->getNev() : 'X';
+
+        $afaoverride = $partner ? $partner->getAFAOverride() : false;
+        if ($afaoverride) {
+            $t['ar'] = $afaoverride->calcBrutto($termek->getNettoAr(null, $partner, $valutanem));
+            $t['eredetiar'] = $afaoverride->calcBrutto($termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem));
+        } else {
+            $t['ar'] = $termek->getBruttoAr(null, $partner, $valutanem);
+            $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
+        }
+        $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
+
+        $vtt = [];
+        $ma = new \DateTime();
+        /** @var TermekValtozat $valt */
+        foreach ($termek->getValtozatok() as $valt) {
+            if (!$valt->getXElerheto() || !$valt->getXLathato()) {
+                continue;
+            }
+            if ($szinid && $valt->getSzinId() != $szinid) {
+                continue;
+            }
+            // a sablon keszlet <= 0-t tesztel, ezért itt nincs nullára vágás
+            $valtkeszlet = $valt->getAvailableStock(null, null, null, false);
+            if ($valt->getKepurlLarge()) {
+                $t['kepurllarge'] = $valt->getKepurlLarge();
+                $t['kepurlmedium'] = $valt->getKepurlMedium();
+            }
+            $vtt[] = [
+                'id' => $valt->getId(),
+                // szín szerinti oldalon a szín adott, ott elég a méret; egyébként a teljes változatnév
+                'caption' => $szinid ? $valt->getMeretNev() : $valt->getNev(),
+                'keszlet' => $valtkeszlet,
+                'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
+                'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma)) ? true : false
+            ];
+        }
+        $t['valtozatok'] = $vtt;
+        $this->view->setVar('termek', $t);
+        $this->view->printTemplateResult(true);
     }
 
     public function valtozatar()
