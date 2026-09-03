@@ -857,6 +857,20 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/garanciaugyfej/print', 'garanciaugyfejController#doPrint', 'admingaranciaugyfejprint');
 
+$router->map('GET', '/admin/munkalapfej/viewlist', 'munkalapfejController#viewlist', 'adminmunkalapfejviewlist');
+$router->map('GET', '/admin/munkalapfej/getlistbody', 'munkalapfejController#getlistbody', 'adminmunkalapfejgetlistbody');
+$router->map('GET', '/admin/munkalapfej/getkarb', 'munkalapfejController#getkarb', 'adminmunkalapfejgetkarb');
+$router->map('GET', '/admin/munkalapfej/viewkarb', 'munkalapfejController#viewkarb', 'adminmunkalapfejviewkarb');
+$router->map('GET', '/admin/munkalapfej/egyediazonositolista', 'munkalapfejController#egyediAzonositoLista', 'adminmunkalapfejegyediazonositolista');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/munkalapfej/save', 'munkalapfejController#save', 'adminmunkalapfejsave');
+    $router->map('POST', '/admin/munkalapfej/ront', 'munkalapfejController#ront', 'adminmunkalapfejront');
+    $router->map('POST', '/admin/munkalapfej/setmunkalapstatusz', 'munkalapfejController#setMunkalapstatusz', 'adminmunkalapfejsetmunkalapstatusz');
+    $router->map('POST', '/admin/munkalapfej/fejexport', 'munkalapfejController#fejexport', 'adminmunkalapfejfejexport');
+    $router->map('POST', '/admin/munkalapfej/tetelexport', 'munkalapfejController#tetelexport', 'adminmunkalapfejtetelexport');
+}
+$router->map('GET', '/admin/munkalapfej/print', 'munkalapfejController#doPrint', 'adminmunkalapfejprint');
+
 $router->map('GET', '/admin/szallmegrfej/viewlist', 'szallmegrfejController#viewlist', 'adminszallmegrfejviewlist');
 $router->map('GET', '/admin/szallmegrfej/getlistbody', 'szallmegrfejController#getlistbody', 'adminszallmegrfejgetlistbody');
 $router->map('GET', '/admin/szallmegrfej/getkarb', 'szallmegrfejController#getkarb', 'adminszallmegrfejgetkarb');
@@ -1562,6 +1576,14 @@ $router->map('GET', '/admin/bizonylatstatusz/getkarb', 'bizonylatstatuszControll
 $router->map('GET', '/admin/bizonylatstatusz/viewkarb', 'bizonylatstatuszController#viewkarb', 'adminbizonylatstatuszviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatstatusz/save', 'bizonylatstatuszController#save', 'adminbizonylatstatuszsave');
+}
+
+$router->map('GET', '/admin/munkalapstatusz/viewlist', 'munkalapstatuszController#viewlist', 'adminmunkalapstatuszviewlist');
+$router->map('GET', '/admin/munkalapstatusz/getlistbody', 'munkalapstatuszController#getlistbody', 'adminmunkalapstatuszgetlistbody');
+$router->map('GET', '/admin/munkalapstatusz/getkarb', 'munkalapstatuszController#getkarb', 'adminmunkalapstatuszgetkarb');
+$router->map('GET', '/admin/munkalapstatusz/viewkarb', 'munkalapstatuszController#viewkarb', 'adminmunkalapstatuszviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/munkalapstatusz/save', 'munkalapstatuszController#save', 'adminmunkalapstatuszsave');
 }
 
 $router->map('GET', '/admin/jogaberlet/viewlist', 'jogaberletController#viewlist', 'adminjogaberletviewlist');

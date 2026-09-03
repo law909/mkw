@@ -581,6 +581,43 @@ class Bizonylatfej
     /** @ORM\Column(type="string",length=255, nullable=true) */
     private $bizonylatstatuszcsoport;
 
+    /**
+     * A munkalap saját mezői. Csak a munkalap jellegű bizonylattípusokon látszanak
+     * (Bizonylattipus::showmunkalapadatok), a többi típuson üresen maradnak.
+     *
+     * @ORM\ManyToOne(targetEntity="Munkalapstatusz")
+     * @ORM\JoinColumn(name="munkalapstatusz_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Munkalapstatusz
+     */
+    private $munkalapstatusz;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $munkalapstatusznev;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Termek")
+     * @ORM\JoinColumn(name="munkalaptermek_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Termek
+     */
+    private $munkalaptermek;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $munkalaptermeknev;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $munkalapegyediazonosito;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $munkalapkmoraallas;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $munkalaphibaleiras;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $munkalapkovetkezoszerviz;
+
+    /** @ORM\Column(type="integer",nullable=true) */
+    private $munkalapkovetkezoszervizkm;
 
     /**
      * @ORM\ManyToOne(targetEntity="Bizonylatfej",inversedBy="szulobizonylatfejek")
@@ -1855,6 +1892,13 @@ class Bizonylatfej
         $ret['megjegyzes'] = $this->getMegjegyzes();
         $ret['sysmegjegyzes'] = $this->getSysmegjegyzes();
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
+        $ret['munkalapstatusznev'] = $this->getMunkalapstatusznev();
+        $ret['munkalaptermeknev'] = $this->getMunkalaptermeknev();
+        $ret['munkalapegyediazonosito'] = $this->getMunkalapegyediazonosito();
+        $ret['munkalapkmoraallas'] = $this->getMunkalapkmoraallas();
+        $ret['munkalaphibaleiras'] = $this->getMunkalaphibaleiras();
+        $ret['munkalapkovetkezoszervizstr'] = $this->getMunkalapkovetkezoszervizStr();
+        $ret['munkalapkovetkezoszervizkm'] = $this->getMunkalapkovetkezoszervizkm();
         $ret['fuvarlevelszam'] = $this->getFuvarlevelszam();
         $ret['glsparcelid'] = $this->getGlsparcelid();
         $ret['foxpostbarcode'] = $this->getFoxpostBarcode();
@@ -4381,6 +4425,215 @@ class Bizonylatfej
                 $this->bizonylatstatuszcsoport = '';
             }
         }
+    }
+
+    /** @return \Entities\Munkalapstatusz|null */
+    public function getMunkalapstatusz()
+    {
+        return $this->munkalapstatusz;
+    }
+
+    public function getMunkalapstatuszId()
+    {
+        $ms = $this->getMunkalapstatusz();
+        if ($ms) {
+            return $ms->getId();
+        }
+        return '';
+    }
+
+    public function getMunkalapstatusznev()
+    {
+        if (!$this->munkalapstatusznev) {
+            $ms = $this->getMunkalapstatusz();
+            if ($ms) {
+                return $ms->getNev();
+            }
+            return '';
+        }
+        return $this->munkalapstatusznev;
+    }
+
+    public function setMunkalapstatusznev($val)
+    {
+        $this->munkalapstatusznev = $val;
+    }
+
+    /** @param \Entities\Munkalapstatusz|int|null $val */
+    public function setMunkalapstatusz($val)
+    {
+        if (!($val instanceof \Entities\Munkalapstatusz)) {
+            $val = $val ? \mkw\store::getEm()->getRepository(Munkalapstatusz::class)->find($val) : null;
+        }
+        if ($this->munkalapstatusz !== $val) {
+            if (!$val) {
+                $this->removeMunkalapstatusz();
+            } else {
+                $this->munkalapstatusz = $val;
+                if (!$this->duplication) {
+                    $this->munkalapstatusznev = $val->getNev();
+                }
+            }
+        }
+    }
+
+    public function removeMunkalapstatusz()
+    {
+        if ($this->munkalapstatusz !== null) {
+            $this->munkalapstatusz = null;
+            if (!$this->duplication) {
+                $this->munkalapstatusznev = '';
+            }
+        }
+    }
+
+    /** @return \Entities\Termek|null */
+    public function getMunkalaptermek()
+    {
+        return $this->munkalaptermek;
+    }
+
+    public function getMunkalaptermekId()
+    {
+        $t = $this->getMunkalaptermek();
+        if ($t) {
+            return $t->getId();
+        }
+        return '';
+    }
+
+    public function getMunkalaptermeknev()
+    {
+        if (!$this->munkalaptermeknev) {
+            $t = $this->getMunkalaptermek();
+            if ($t) {
+                return $t->getNev();
+            }
+            return '';
+        }
+        return $this->munkalaptermeknev;
+    }
+
+    public function setMunkalaptermeknev($val)
+    {
+        $this->munkalaptermeknev = $val;
+    }
+
+    /** @param \Entities\Termek|int|null $val */
+    public function setMunkalaptermek($val)
+    {
+        if (!($val instanceof \Entities\Termek)) {
+            $val = $val ? \mkw\store::getEm()->getRepository(Termek::class)->find($val) : null;
+        }
+        if ($this->munkalaptermek !== $val) {
+            if (!$val) {
+                $this->removeMunkalaptermek();
+            } else {
+                $this->munkalaptermek = $val;
+                if (!$this->duplication) {
+                    $this->munkalaptermeknev = $val->getNev();
+                }
+            }
+        }
+    }
+
+    public function removeMunkalaptermek()
+    {
+        if ($this->munkalaptermek !== null) {
+            $this->munkalaptermek = null;
+            if (!$this->duplication) {
+                $this->munkalaptermeknev = '';
+            }
+        }
+    }
+
+    public function getMunkalapegyediazonosito()
+    {
+        return $this->munkalapegyediazonosito;
+    }
+
+    public function setMunkalapegyediazonosito($val)
+    {
+        $this->munkalapegyediazonosito = $val;
+    }
+
+    public function getMunkalapkmoraallas()
+    {
+        return $this->munkalapkmoraallas;
+    }
+
+    public function setMunkalapkmoraallas($val)
+    {
+        $this->munkalapkmoraallas = $val ?: null;
+    }
+
+    public function getMunkalaphibaleiras()
+    {
+        return $this->munkalaphibaleiras;
+    }
+
+    public function setMunkalaphibaleiras($val)
+    {
+        $this->munkalaphibaleiras = $val;
+    }
+
+    public function getMunkalapkovetkezoszerviz()
+    {
+        return $this->munkalapkovetkezoszerviz;
+    }
+
+    public function getMunkalapkovetkezoszervizStr()
+    {
+        if ($this->getMunkalapkovetkezoszerviz()) {
+            return $this->getMunkalapkovetkezoszerviz()->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setMunkalapkovetkezoszerviz($adat = '')
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->munkalapkovetkezoszerviz = $adat;
+        } else {
+            $this->munkalapkovetkezoszerviz = $adat ? new \DateTime(\mkw\store::convDate($adat)) : null;
+        }
+    }
+
+    public function getMunkalapkovetkezoszervizkm()
+    {
+        return $this->munkalapkovetkezoszervizkm;
+    }
+
+    public function setMunkalapkovetkezoszervizkm($val)
+    {
+        $this->munkalapkovetkezoszervizkm = $val ?: null;
+    }
+
+    /**
+     * Készült-e már a bizonylatból (közvetlenül vagy közvetve) élő számla. A munkalap ettől
+     * válik zárttá: nem rontható és nem módosítható.
+     */
+    public function isKiszamlazva(): bool
+    {
+        $sor = [$this];
+        $latott = [$this->getId() => true];
+        while ($sor) {
+            $aktualis = array_shift($sor);
+            foreach ($aktualis->getSzulobizonylatfejek() as $gyerek) {
+                if (isset($latott[$gyerek->getId()])) {
+                    continue;
+                }
+                $latott[$gyerek->getId()] = true;
+                if ($gyerek->getStorno() || $gyerek->getRontott() || $gyerek->getStornozott()) {
+                    continue;
+                }
+                if ($gyerek->getBizonylattipus()?->isSzamlajellegu()) {
+                    return true;
+                }
+                $sor[] = $gyerek;
+            }
+        }
+        return false;
     }
 
     public function getFuvarlevelszam()

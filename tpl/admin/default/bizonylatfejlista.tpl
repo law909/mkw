@@ -76,6 +76,17 @@
                         {/foreach}
                     </select>
                 {/if}
+                {if ($showmunkalapadatok)}
+                    <label for="munkalapstatuszfilter">{at('Munkalap státusz')}:</label>
+                    <select id="munkalapstatuszfilter" name="munkalapstatuszfilter">
+                        <option value="">{at('Mindegy')}</option>
+                        {foreach $munkalapstatuszszurolist as $_ms}
+                            <option value="{$_ms.id}">{$_ms.caption|escape}</option>
+                        {/foreach}
+                    </select>
+                    <label for="munkalapegyediazonositofilter">{at('Egyedi azonosító')}:</label>
+                    <input id="munkalapegyediazonositofilter" name="munkalapegyediazonositofilter" type="text" size="20">
+                {/if}
                 <label for="bizonylatrontottfilter">{at('Rontott')}:</label>
                 <select id="bizonylatrontottfilter" name="bizonylatrontottfilter">
                     <option value="0">{at('Mindegy')}</option>
@@ -224,6 +235,9 @@
                 {/if}
                 {if ($showbizonylatstatuszeditor)}
                     <th>Állapot</th>
+                {/if}
+                {if ($showmunkalapadatok)}
+                    <th>{at('Munkalap')}</th>
                 {/if}
                 <th></th>
                 <th></th>

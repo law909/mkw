@@ -1,10 +1,16 @@
 {if ($nostorno)}
     <h3>A számla még nincs beküldve a NAV-hoz, nem stornózhatja! Várja meg a beküldés eredményét.</h3>
+{elseif ($noinherit|default:false)}
+    <h3>{at('Rontott vagy stornózott bizonylatból nem képezhető újabb bizonylat.')}</h3>
 {else}
     <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-irany="{$egyed.irany|default:0}">
         <h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
         {if ($readonly|default)}
-            <div class="mattkarb-readonly-uzenet">{at('A bizonylat ki van nyomtatva, ezért már nem módosítható.')}</div>
+            {if ($showmunkalapadatok && $egyed.munkalapkiszamlazva)}
+                <div class="mattkarb-readonly-uzenet">{at('A munkalap ki van számlázva, ezért már nem módosítható.')}</div>
+            {else}
+                <div class="mattkarb-readonly-uzenet">{at('A bizonylat ki van nyomtatva, ezért már nem módosítható.')}</div>
+            {/if}
         {/if}
     </div>
     <form id="mattkarb-form" method="post" action="{$formaction}" data-lastname="{$loggedinuser['lastname']}"
@@ -49,6 +55,19 @@
                                 </select></td>
                             <td><label for="BizonylatStatuszErtesitoEdit">Értesítés kell:</label></td>
                             <td><input id="BizonylatStatuszErtesitoEdit" type="checkbox" name="bizonylatstatuszertesito"></td>
+                        </tr>
+                    {/if}
+                    {if ($showmunkalapadatok)}
+                        <tr>
+                            <td class="mattable-important"><label for="MunkalapStatuszEdit">{at('Munkalap státusz')}:</label></td>
+                            <td><select id="MunkalapStatuszEdit" name="munkalapstatusz" class="js-munkalapstatuszedit">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $egyed.munkalapstatuszlist as $_ms}
+                                        <option value="{$_ms.id}" data-vanemailtemplate="{if ($_ms.vanemailtemplate)}1{else}0{/if}"{if ($_ms.selected)} selected="selected"{/if}>{$_ms.caption|escape}</option>
+                                    {/foreach}
+                                </select></td>
+                            <td><label for="MunkalapStatuszErtesitoEdit">{at('Értesítés kell')}:</label></td>
+                            <td><input id="MunkalapStatuszErtesitoEdit" type="checkbox" name="munkalapstatuszertesito"></td>
                         </tr>
                     {/if}
                     {if ($setup.fakekintlevoseg)}
@@ -413,6 +432,32 @@
                         <td><label for="SzallitasiktgkellEdit">{at('Szállítási költséget kell számolni')}:</label></td>
                         <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>
                     </tr>
+                    {if ($showmunkalapadatok)}
+                        <tr>
+                            <td class="mattable-important"><label for="MunkalapEgyediazonositoEdit">{at('Egyedi azonosító')}:</label></td>
+                            <td><input id="MunkalapEgyediazonositoEdit" name="munkalapegyediazonosito" type="text" size="30" maxlength="255"
+                                       value="{$egyed.munkalapegyediazonosito|escape}" class="js-munkalapazonosito mattable-important"
+                                       required="required" autocomplete="off"></td>
+                            <td><label for="MunkalapTermeknevEdit">{at('Gép')}:</label></td>
+                            <td colspan="5"><input id="MunkalapTermeknevEdit" class="js-munkalaptermeknev" type="text" size="60"
+                                                   value="{$egyed.munkalaptermeknev|escape}" readonly="readonly"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MunkalapKmoraallasEdit">{at('Km óra állás')}:</label></td>
+                            <td><input id="MunkalapKmoraallasEdit" name="munkalapkmoraallas" type="number" step="1" min="0" size="10"
+                                       value="{$egyed.munkalapkmoraallas}"></td>
+                            <td><label for="MunkalapKovetkezoSzervizEdit">{at('Következő szerviz')}:</label></td>
+                            <td><input id="MunkalapKovetkezoSzervizEdit" name="munkalapkovetkezoszerviz" type="text" size="12"
+                                       data-datum="{$egyed.munkalapkovetkezoszervizstr}"></td>
+                            <td><label for="MunkalapKovetkezoSzervizKmEdit">{at('Következő szerviz km')}:</label></td>
+                            <td colspan="3"><input id="MunkalapKovetkezoSzervizKmEdit" name="munkalapkovetkezoszervizkm" type="number" step="1" min="0"
+                                                   size="10" value="{$egyed.munkalapkovetkezoszervizkm}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MunkalapHibaleirasEdit">{at('Hiba leírása')}:</label></td>
+                            <td colspan="7"><textarea id="MunkalapHibaleirasEdit" name="munkalaphibaleiras" rows="3" cols="100">{$egyed.munkalaphibaleiras|escape}</textarea></td>
+                        </tr>
+                    {/if}
                     <tr>
                         <td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
                         <td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes|escape}</textarea></td>

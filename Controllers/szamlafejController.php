@@ -55,6 +55,8 @@ class szamlafejController extends bizonylatfejController
                     }
                 } elseif ($source === 'szallito') {
                     $egyed['megjegyzes'] = \mkw\store::translate('Szállítólevél', $record->getBizonylatnyelv()) . ': ' . $id;
+                } elseif ($source === 'munkalap') {
+                    $egyed['megjegyzes'] = \mkw\store::translate('Munkalap', $record->getBizonylatnyelv()) . ': ' . $id;
                 }
                 $ttk = [];
                 $cikl = 1;

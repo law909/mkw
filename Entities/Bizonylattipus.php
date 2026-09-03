@@ -121,6 +121,15 @@ class Bizonylattipus
     private $showeddigimegrendeleseiurl = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showgarancialisadatok = false;
+    /** A munkalap saját fejadatai: gépjármű, km óra, hiba, következő szerviz, munkalap státusz. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showmunkalapadatok = false;
+
+    /**
+     * A számla jellegű bizonylattípusok id-i. A típuson nincs „ez számla" jelző, a
+     * `navbekuldendo` pedig más kérdésre válaszol, ezért azonosítólista.
+     */
+    public const SZAMLATIPUSOK = ['szamla', 'esetiszamla', 'keziszamla'];
 
     /** @var string[]|null a getFoglalIdList() kérésen belüli cache-e */
     private static $foglalIdList;
@@ -176,6 +185,7 @@ class Bizonylattipus
             'showemailbutton' => $this->getShowemailbutton(),
             'showeddigimegrendeleseiurl' => $this->getShoweddigimegrendeleseiurl(),
             'showgarancialisadatok' => $this->getShowgarancialisadatok(),
+            'showmunkalapadatok' => $this->getShowmunkalapadatok(),
             // a pénztár csak az automatikus pénztárbizonylatot képző típusokon szerkeszthető
             'showpenztar' => $this->getAutopenztarbizonylat(),
         ];
@@ -568,6 +578,22 @@ class Bizonylattipus
             self::$foglalIdList = array_column($rows, 'id');
         }
         return self::$foglalIdList;
+    }
+
+    public function getShowmunkalapadatok()
+    {
+        return $this->showmunkalapadatok;
+    }
+
+    public function setShowmunkalapadatok($showmunkalapadatok): void
+    {
+        $this->showmunkalapadatok = $showmunkalapadatok;
+    }
+
+    /** Számla jellegű-e a típus (a belőle képzett bizonylat lezárja az elődjét). */
+    public function isSzamlajellegu(): bool
+    {
+        return in_array($this->id, self::SZAMLATIPUSOK, true);
     }
 
     public static function isRonthato($biztipusid)

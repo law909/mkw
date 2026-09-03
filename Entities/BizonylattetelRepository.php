@@ -76,4 +76,57 @@ class BizonylattetelRepository extends \mkwhelpers\Repository
         return $ret;
     }
 
+    /**
+     * Bizonylattételeken szereplő egyedi azonosítók termékkel együtt, a teljes törzsből – a
+     * munkalap fejében ebből választható ki a gép/gépjármű. Ugyanaz az azonosító több tételen is
+     * szerepel (bevét, majd eladás), de ugyanarra a termékre, ezért a legkisebb tételazonosítójú
+     * sor termékét adjuk vissza.
+     *
+     * @return array<int,array{azonosito:string,termekid:int,termeknev:string,cikkszam:string}>
+     */
+    public function searchEgyediazonosito($term, $limit = 20)
+    {
+        $dql = 'SELECT bt.termekegyediazonosito AS azonosito, MIN(bt.id) AS elsotetel'
+            . ' FROM Entities\Bizonylattetel bt'
+            . ' WHERE bt.termekegyediazonosito IS NOT NULL'
+            . " AND bt.termekegyediazonosito <> ''"
+            . ' AND bt.termekegyediazonosito LIKE :term'
+            . ' GROUP BY bt.termekegyediazonosito'
+            . ' ORDER BY bt.termekegyediazonosito ASC';
+        $q = $this->_em->createQuery($dql);
+        $q->setParameter('term', '%' . $term . '%');
+        if ($limit > 0) {
+            $q->setMaxResults($limit);
+        }
+        $ret = [];
+        foreach ($q->getScalarResult() as $r) {
+            /** @var \Entities\Bizonylattetel|null $tetel */
+            $tetel = $this->find($r['elsotetel']);
+            $termek = $tetel?->getTermek();
+            if (!$termek) {
+                continue;
+            }
+            $ret[] = [
+                'azonosito' => $r['azonosito'],
+                'termekid' => $termek->getId(),
+                'termeknev' => $termek->getNev(),
+                'cikkszam' => $termek->getCikkszam(),
+            ];
+        }
+        return $ret;
+    }
+
+    /**
+     * Egy egyedi azonosítóhoz tartozó termék. Az azonosító több tételen is szerepelhet, de
+     * ugyanarra a termékre – az elsőt vesszük.
+     *
+     * @return \Entities\Termek|null
+     */
+    public function findTermekByEgyediazonosito($azonosito)
+    {
+        /** @var \Entities\Bizonylattetel|null $tetel */
+        $tetel = $this->findOneBy(['termekegyediazonosito' => $azonosito]);
+        return $tetel?->getTermek();
+    }
+
 }

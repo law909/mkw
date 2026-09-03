@@ -1047,6 +1047,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             case $this->inheritOperation:
                 $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
                 if ($parentbiz) {
+                    if ($parentbiz->getRontott() || $parentbiz->getStorno() || $parentbiz->getStornozott()) {
+                        throw new \mkwhelpers\Exceptions\UserMessageException(
+                            t('Rontott vagy stornózott bizonylatból nem képezhető újabb bizonylat.')
+                        );
+                    }
                     $obj->setParbizonylatfej($parentbiz);
                     // Ha az előd bizonylatok bármelyike már mozgatott pénzt, akkor a belőle
                     // képzett bizonylat minden esetben nem mozgat: a pénzmozgás egyszer, a
@@ -1722,6 +1727,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $mehet = false;
                 $view->setVar('nostorno', true);
             }
+        }
+        // rontott vagy stornózott előd nem élhet tovább egy belőle képzett bizonylatban
+        if (($oper === $this->inheritOperation) && $record
+            && ($record->getRontott() || $record->getStorno() || $record->getStornozott())) {
+            $mehet = false;
+            $view->setVar('noinherit', true);
         }
 
         if ($mehet) {

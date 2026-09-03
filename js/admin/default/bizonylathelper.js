@@ -536,6 +536,39 @@ let bizonylathelper = function ($) {
         });
     }
 
+    // A munkalap fejében a gépet az egyedi azonosítójával választjuk ki: a lista a bizonylattételeken
+    // szereplő azonosítókból jön, a választás a gép nevét is kiírja. A mentés szerveroldalon
+    // ugyanígy, az azonosítóból oldja fel a terméket, ezért a kézzel beírt azonosító is jó.
+    function initMunkalapAzonositoAutocomplete() {
+        const input = $('.js-munkalapazonosito');
+        if (!input.length || input.data('uiAutocomplete')) {
+            return;
+        }
+        input.autocomplete({
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/admin/munkalapfej/egyediazonositolista',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {term: request.term},
+                    success: function (data) {
+                        response($.map(data, function (sor) {
+                            return {
+                                label: sor.azonosito + ' - ' + sor.termeknev,
+                                value: sor.azonosito,
+                                termeknev: sor.termeknev
+                            };
+                        }));
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('.js-munkalaptermeknev').val(ui.item.termeknev);
+            }
+        });
+    }
+
     // A gyűjtő/sor-doboz kiszerelés mezői: a beírt darabszámokból számolt mennyiség kerül a
     // mennyiség mezőbe. Nem bontható kiszerelésnél a mennyiség csak innen jöhet, ezért olvasható
     // csak (a mentés a szerveren is újraszámolja).
@@ -1882,6 +1915,12 @@ let bizonylathelper = function ($) {
                             kellEmailErtesitestKerdezni($(this), $('input[name="partneremail"]').val())
                         );
                     })
+                    .on('change', '.js-munkalapstatuszedit', function (e) {
+                        $('input[name="munkalapstatuszertesito"]').prop(
+                            'checked',
+                            kellEmailErtesitestKerdezni($(this), $('input[name="partneremail"]').val())
+                        );
+                    })
                     .on('change', '.js-quickmennyiseginput', function (e) {
                         calcOsszesen();
                     })
@@ -1964,6 +2003,8 @@ let bizonylathelper = function ($) {
                 mkwcomp.datumEdit.init('#ShipDateEdit');
                 mkwcomp.datumEdit.init('#FakeKifizetesdatumEdit');
                 mkwcomp.datumEdit.init('#SZEPKartyaErvenyessegEdit');
+                mkwcomp.datumEdit.init('#MunkalapKovetkezoSzervizEdit');
+                initMunkalapAzonositoAutocomplete();
 
                 //valutanemChange(true);
 
@@ -2176,6 +2217,8 @@ let bizonylathelper = function ($) {
                         '#datumigfilter',
                         '#bizonylatstatuszfilter',
                         '#bizonylatstatuszcsoportfilter',
+                        '#munkalapstatuszfilter',
+                        '#munkalapegyediazonositofilter',
                         '#bizonylatrontottfilter',
                         '#egyenlegfilter',
                         '#lejartfilter',
@@ -2565,6 +2608,47 @@ let bizonylathelper = function ($) {
                         statusz = $this.val();
                     // csak akkor van értelme rákérdezni, ha a választott státuszhoz tartozik
                     // email sablon és a bizonylaton van partner email — egyébként nincs mit kiküldeni
+                    if (!kellEmailErtesitestKerdezni($this)) {
+                        sendQ(id, statusz, false);
+                        return;
+                    }
+                    dialogcenter.html('Küld email értesítést a változásról?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                sendQ(id, statusz, true);
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                sendQ(id, statusz, false);
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+                .on('change', '.js-munkalapstatuszedit', function (e) {
+                    e.preventDefault();
+
+                    function sendQ(id, s, ertesit) {
+                        $.ajax({
+                            url: '/admin/' + entityName + '/setmunkalapstatusz',
+                            type: 'POST',
+                            data: {
+                                id: id,
+                                statusz: s,
+                                munkalapstatuszertesito: ertesit
+                            },
+                            success: function () {
+                                $('.mattable-tablerefresh').click();
+                            }
+                        });
+                    }
+
+                    let $this = $(this),
+                        id = $this.parents('tr').data('egyedid'),
+                        statusz = $this.val();
                     if (!kellEmailErtesitestKerdezni($this)) {
                         sendQ(id, statusz, false);
                         return;

@@ -2234,6 +2234,52 @@ if ($DBVersion < '0159') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0159');
 }
 
+if ($DBVersion < '0160') {
+    // Munkalap: saját fejadatokkal bővített bizonylattípus. Készletet és pénzt nem mozgat,
+    // a "Számla" gombbal képződik belőle a számla. Nyomtatási formája csak lapozott (mPDF) van,
+    // ezért a tplname közvetlenül a biz_paged_ sablon.
+    $em = \mkw\store::getEm();
+    $biztipusrepo = $em->getRepository(\Entities\Bizonylattipus::class);
+    if (!$biztipusrepo->find('munkalap')) {
+        $munkalap = new \Entities\Bizonylattipus();
+        $munkalap->setId('munkalap');
+        $munkalap->setNev('Munkalap');
+        $munkalap->setAzonosito('ML');
+        $munkalap->setIrany(-1);
+        $munkalap->setKezdosorszam(1);
+        $munkalap->setPeldanyszam(1);
+        $munkalap->setMozgat(false);
+        $munkalap->setFoglal(false);
+        $munkalap->setPenztmozgat(false);
+        // a nyomtatás nem zárja le a munkalapot, azt a kiszámlázás teszi
+        $munkalap->setEditprinted(true);
+        $munkalap->setNyomtatni(true);
+        $munkalap->setCheckkelt(false);
+        $munkalap->setShowteljesites(true);
+        $munkalap->setShowesedekesseg(false);
+        $munkalap->setShowhatarido(true);
+        $munkalap->setShowszallitasicim(true);
+        $munkalap->setShowszamlabutton(true);
+        $munkalap->setShowpdf(true);
+        $munkalap->setShowmunkalapadatok(true);
+        $munkalap->setTplname('biz_paged_munkalap.tpl');
+        $em->persist($munkalap);
+        $em->flush();
+    }
+    $conn = $em->getConnection();
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 1, "Munkalapok", "/admin/munkalapfej/viewlist", "/admin/munkalapfej", 40, 1, 280, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/munkalapfej/viewlist") m)'
+    );
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 7, "Munkalap státusz", "/admin/munkalapstatusz/viewlist", "/admin/munkalapstatusz", 40, 1, 2950, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/munkalapstatusz/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0160');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

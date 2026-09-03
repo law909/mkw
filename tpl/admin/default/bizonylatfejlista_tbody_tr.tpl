@@ -15,11 +15,49 @@
             </select>
         </td>
     {/if}
+    {if ($showmunkalapadatok)}
+        <td class="cell">
+            <select name="munkalapstatusz" class="js-munkalapstatuszedit"
+                    data-vanpartneremail="{if ($_egyed.partneremail)}1{else}0{/if}"{if ($_egyed.munkalapkiszamlazva)} disabled="disabled"{/if}>
+                <option value="">{at('válasszon')}</option>
+                {foreach $_egyed.munkalapstatuszlist as $_ms}
+                    <option value="{$_ms.id}"
+                            data-vanemailtemplate="{if ($_ms.vanemailtemplate)}1{else}0{/if}"{if ($_ms.selected)} selected="selected"{/if}>{$_ms.caption|escape}</option>
+                {/foreach}
+            </select>
+            <table>
+                <tbody>
+                <tr>
+                    <td class="mattable-important">{$_egyed.munkalapegyediazonosito|escape}</td>
+                    <td>{$_egyed.munkalaptermeknev|escape}</td>
+                </tr>
+                <tr>
+                    <td>{at('Km óra')}:</td>
+                    <td>{$_egyed.munkalapkmoraallas}</td>
+                </tr>
+                <tr>
+                    <td>{at('Köv. szerviz')}:</td>
+                    <td>{$_egyed.munkalapkovetkezoszervizstr} {if ($_egyed.munkalapkovetkezoszervizkm)}/ {$_egyed.munkalapkovetkezoszervizkm} km{/if}</td>
+                </tr>
+                {if ($_egyed.munkalaphibaleiras)}
+                    <tr>
+                        <td colspan="2">{$_egyed.munkalaphibaleiras|escape|nl2br}</td>
+                    </tr>
+                {/if}
+                {if ($_egyed.munkalapkiszamlazva)}
+                    <tr>
+                        <td colspan="2" class="mattable-important">{at('Kiszámlázva')}</td>
+                    </tr>
+                {/if}
+                </tbody>
+            </table>
+        </td>
+    {/if}
     <td class="cell{if ($_egyed.hibas)} tetelszamhiba{/if}">
         {if ($showrendszeres && $_egyed.rendszeres)}
             <div class="mattable-important">{at('Rendszeres')}</div>
         {/if}
-        {if ($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva))}
+        {if (($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva)) && !($showmunkalapadatok && $_egyed.munkalapkiszamlazva))}
             <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.id}</a>
         {else}
             {$_egyed.id}
@@ -110,7 +148,7 @@
                         <a class="js-stornobizonylat2" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
                            title="{at('Érvénytelenítő számla')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                     {/if}
-                {else}
+                {elseif (!($showmunkalapadatok && $_egyed.munkalapkiszamlazva))}
                     <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                 {/if}
             {/if}

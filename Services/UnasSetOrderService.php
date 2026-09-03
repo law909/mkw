@@ -3,6 +3,7 @@
 namespace Services;
 
 use Entities\Bizonylatfej;
+use Entities\Bizonylattipus;
 use Entities\Unasoutbox;
 
 /**
@@ -20,11 +21,8 @@ class UnasSetOrderService
     /** ennyi próbálkozás után a sor véglegesen hibás */
     public const MAXPROBALKOZAS = 5;
 
-    /**
-     * Amit az UNAS-ba számlaként jelentünk. A `Bizonylattipus`-on nincs „ez számla" jelző, a
-     * `navbekuldendo` pedig más kérdésre válaszol, ezért azonosítólista.
-     */
-    public const SZAMLATIPUSOK = ['szamla', 'esetiszamla', 'keziszamla'];
+    /** Amit az UNAS-ba számlaként jelentünk. */
+    public const SZAMLATIPUSOK = Bizonylattipus::SZAMLATIPUSOK;
 
     /** @var UnasService */
     private $unas;

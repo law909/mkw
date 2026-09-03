@@ -130,6 +130,10 @@
                         <td><label for="ShoweddigimegrendeleseiurlEdit">Eddigi megrendelései link:</label></td>
                         <td><input id="ShoweddigimegrendeleseiurlEdit" name="showeddigimegrendeleseiurl" type="checkbox"{if ($egyed.showeddigimegrendeleseiurl)} checked="checked"{/if}></td>
                     </tr>
+                    <tr>
+                        <td><label for="ShowmunkalapadatokEdit">Munkalap adatok:</label></td>
+                        <td><input id="ShowmunkalapadatokEdit" name="showmunkalapadatok" type="checkbox"{if ($egyed.showmunkalapadatok)} checked="checked"{/if}></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
