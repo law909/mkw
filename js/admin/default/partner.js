@@ -19,7 +19,7 @@ function irszamAutocomplete(irszam, varos) {
             });
         },
         select: function (event, ui) {
-            $(varos).val(ui.item.nev);
+            $(varos).val(ui.item.nev).trigger('change');
         }
     });
 }
@@ -45,7 +45,7 @@ function varosAutocomplete(irszam, varos) {
             });
         },
         select: function (event, ui) {
-            $(irszam).val(ui.item.szam);
+            $(irszam).val(ui.item.szam).trigger('change');
         }
     });
 }
@@ -458,8 +458,27 @@ $(document).ready(function () {
                 })
             $('.js-eloirasbutton,.js-befizetesbutton').button();
 
+            // Az MPT fül cím mezői ugyanazt a partner adatot szerkesztik, mint az Általános
+            // adatok fülé, és a nevük is ugyanaz – mentéskor a DOM-ban hátrébb álló MPT érték
+            // nyerne. Ezért a két mező együtt mozog, bármelyikbe írnak.
+            [
+                ['#IrszamEdit', '#mpt_IrszamEdit'],
+                ['#VarosEdit', '#mpt_VarosEdit'],
+                ['#UtcaEdit', '#mpt_UtcaEdit'],
+                ['#HazszamEdit', '#mpt_HazszamEdit']
+            ].forEach(([altalanos, mpt]) => {
+                const $altalanos = $(altalanos), $mpt = $(mpt);
+                if (!$altalanos.length || !$mpt.length) {
+                    return;
+                }
+                $altalanos.on('input change', () => $mpt.val($altalanos.val()));
+                $mpt.on('input change', () => $altalanos.val($mpt.val()));
+            });
+
             irszamAutocomplete('#IrszamEdit', '#VarosEdit');
             varosAutocomplete('#IrszamEdit', '#VarosEdit');
+            irszamAutocomplete('#mpt_IrszamEdit', '#mpt_VarosEdit');
+            varosAutocomplete('#mpt_IrszamEdit', '#mpt_VarosEdit');
             irszamAutocomplete('#SzamlaIrszamEdit', '#SzamlaVarosEdit');
             varosAutocomplete('#SzamlaIrszamEdit', '#SzamlaVarosEdit');
             irszamAutocomplete('#SzallIrszamEdit', '#SzallVarosEdit');
