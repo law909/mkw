@@ -2200,6 +2200,20 @@ if ($DBVersion < '0156') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0156');
 }
 
+if ($DBVersion < '0157') {
+    // A régi időpontok lezárása: ami 2026.09.01 előtt kezdődött, az "Vége" állapotba kerül.
+    // Ha a deployment nem használja az időpontfoglalót, nincs ilyen állapotsor, és nincs mit tenni.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vegeallapotid = $conn->fetchOne('SELECT id FROM idopontallapot WHERE nev = ?', ['Vége']);
+    if ($vegeallapotid) {
+        $conn->executeStatement(
+            'UPDATE idopont SET idopontallapot_id = ? WHERE kezdet IS NOT NULL AND kezdet < ?',
+            [$vegeallapotid, '2026-09-01']
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0157');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
