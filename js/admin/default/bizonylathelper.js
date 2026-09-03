@@ -536,9 +536,60 @@ let bizonylathelper = function ($) {
         });
     }
 
-    // A munkalap fejében a gépet az egyedi azonosítójával választjuk ki: a lista a bizonylattételeken
-    // szereplő azonosítókból jön, a választás a gép nevét is kiírja. A mentés szerveroldalon
-    // ugyanígy, az azonosítóból oldja fel a terméket, ezért a kézzel beírt azonosító is jó.
+    // A munkalap fejében a gép kétféleképpen választható: a tételekével azonos termékválasztóval,
+    // vagy egy bizonylattételen szereplő egyedi azonosítóval. A kettő követi egymást: termékre
+    // szűkül az azonosítólista, azonosítóra beáll a termék és a változata. A mentés szerveroldalon
+    // ugyanezt teszi, ezért a kézzel beírt azonosító is jó.
+    function munkalapTermekId() {
+        return $('.js-munkalaptermekid').val();
+    }
+
+    // A gép változatlistája a kiválasztott termékhez; $sel a megtartandó (vagy beállítandó) változat.
+    function loadMunkalapValtozatList(termekid, sel) {
+        const $valtozat = $('.js-munkalapvaltozat');
+        if (!$valtozat.length) {
+            return;
+        }
+        $valtozat.empty().append($('<option></option>').attr('value', '').text('válasszon'));
+        if (!termekid) {
+            return;
+        }
+        $.ajax({
+            url: '/admin/munkalapfej/valtozatlista',
+            type: 'GET',
+            dataType: 'json',
+            data: {termekid: termekid, valtozatid: sel || ''},
+            success: function (valtozatok) {
+                $.each(valtozatok || [], function (i, v) {
+                    $valtozat.append($('<option></option>').attr('value', v.id).text(v.caption));
+                });
+                $valtozat.val(sel || '');
+            }
+        });
+    }
+
+    function initMunkalapTermekAutocomplete() {
+        const input = $('.js-munkalaptermekselect');
+        if (!input.length || input.data('uiAutocomplete')) {
+            return;
+        }
+        input.autocomplete({
+            minLength: 4,
+            autoFocus: true,
+            source: '/admin/bizonylattetel/gettermeklist',
+            select: function (event, ui) {
+                const termek = ui.item;
+                if (!termek) {
+                    return;
+                }
+                $('.js-munkalaptermekid').val(termek.id);
+                // a korábbi gép azonosítója nem tartozik az újhoz
+                $('.js-munkalapazonosito').val('');
+                loadMunkalapValtozatList(termek.id, termek.valtozat);
+            }
+        }).autocompleteRenderer(termekAutocompleteRenderer);
+    }
+
     function initMunkalapAzonositoAutocomplete() {
         const input = $('.js-munkalapazonosito');
         if (!input.length || input.data('uiAutocomplete')) {
@@ -551,20 +602,26 @@ let bizonylathelper = function ($) {
                     url: '/admin/munkalapfej/egyediazonositolista',
                     type: 'GET',
                     dataType: 'json',
-                    data: {term: request.term},
+                    data: {term: request.term, termekid: munkalapTermekId()},
                     success: function (data) {
                         response($.map(data, function (sor) {
                             return {
-                                label: sor.azonosito + ' - ' + sor.termeknev,
+                                label: sor.azonosito + ' - ' + sor.termeknev
+                                    + (sor.valtozatnev ? ' (' + sor.valtozatnev + ')' : ''),
                                 value: sor.azonosito,
-                                termeknev: sor.termeknev
+                                termekid: sor.termekid,
+                                termeknev: sor.termeknev,
+                                valtozatid: sor.valtozatid
                             };
                         }));
                     }
                 });
             },
             select: function (event, ui) {
-                $('.js-munkalaptermeknev').val(ui.item.termeknev);
+                $('.js-munkalaptermekid').val(ui.item.termekid);
+                $('.js-munkalaptermekselect').val(ui.item.termeknev);
+                $('.js-munkalaptermekselectreal').val(ui.item.termekid);
+                loadMunkalapValtozatList(ui.item.termekid, ui.item.valtozatid);
             }
         });
     }
@@ -1921,6 +1978,10 @@ let bizonylathelper = function ($) {
                             kellEmailErtesitestKerdezni($(this), $('input[name="partneremail"]').val())
                         );
                     })
+                    .on('change', '.js-munkalaptermekselectreal', function (e) {
+                        $('.js-munkalapazonosito').val('');
+                        loadMunkalapValtozatList($(this).val(), '');
+                    })
                     .on('change', '.js-quickmennyiseginput', function (e) {
                         calcOsszesen();
                     })
@@ -2004,6 +2065,7 @@ let bizonylathelper = function ($) {
                 mkwcomp.datumEdit.init('#FakeKifizetesdatumEdit');
                 mkwcomp.datumEdit.init('#SZEPKartyaErvenyessegEdit');
                 mkwcomp.datumEdit.init('#MunkalapKovetkezoSzervizEdit');
+                initMunkalapTermekAutocomplete();
                 initMunkalapAzonositoAutocomplete();
 
                 //valutanemChange(true);

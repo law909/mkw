@@ -433,14 +433,39 @@
                         <td><input id="SzallitasiktgkellEdit" name="szallitasiktgkell" type="checkbox"></td>
                     </tr>
                     {if ($showmunkalapadatok)}
+                        {* A gép a tételekével azonos termékválasztóval, VAGY az egyedi azonosítójával
+                           választható ki. Az azonosító az erősebb: kitöltve a mentés abból oldja fel a
+                           gépet, mert az konkrét példányt jelöl. *}
                         <tr>
-                            <td class="mattable-important"><label for="MunkalapEgyediazonositoEdit">{at('Egyedi azonosító')}:</label></td>
-                            <td><input id="MunkalapEgyediazonositoEdit" name="munkalapegyediazonosito" type="text" size="30" maxlength="255"
-                                       value="{$egyed.munkalapegyediazonosito|escape}" class="js-munkalapazonosito mattable-important"
-                                       required="required" autocomplete="off"></td>
-                            <td><label for="MunkalapTermeknevEdit">{at('Gép')}:</label></td>
-                            <td colspan="5"><input id="MunkalapTermeknevEdit" class="js-munkalaptermeknev" type="text" size="60"
-                                                   value="{$egyed.munkalaptermeknev|escape}" readonly="readonly"></td>
+                            <td class="mattable-important"><label for="MunkalapTermekEdit">{at('Gép')}:</label></td>
+                            {if ($setup.termekautocomplete)}
+                                <td colspan="3">
+                                    <input id="MunkalapTermekEdit" type="text" name="munkalaptermeknev" size="60" autocomplete="off"
+                                           class="js-munkalaptermekselect termekselect mattable-important" value="{$egyed.munkalaptermeknev|escape}">
+                                    <input class="js-munkalaptermekid" name="munkalaptermek" type="hidden" value="{$egyed.munkalaptermek}">
+                                </td>
+                            {else}
+                                <td colspan="3">
+                                    <select id="MunkalapTermekEdit" name="munkalaptermek" class="js-munkalaptermekid js-munkalaptermekselectreal mattable-important">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $egyed.munkalaptermeklist as $_mt}
+                                            <option value="{$_mt.id}"{if ($_mt.selected)} selected="selected"{/if}>{$_mt.caption|escape}</option>
+                                        {/foreach}
+                                    </select>
+                                </td>
+                            {/if}
+                            <td><label for="MunkalapValtozatEdit">{at('Változat')}:</label></td>
+                            <td colspan="3"><select id="MunkalapValtozatEdit" name="munkalaptermekvaltozat" class="js-munkalapvaltozat">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $egyed.munkalapvaltozatlist as $_mv}
+                                        <option value="{$_mv.id}"{if ($_mv.selected)} selected="selected"{/if}>{$_mv.caption|escape}</option>
+                                    {/foreach}
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="MunkalapEgyediazonositoEdit">{at('Egyedi azonosító')}:</label></td>
+                            <td colspan="7"><input id="MunkalapEgyediazonositoEdit" name="munkalapegyediazonosito" type="text" size="30" maxlength="255"
+                                                   value="{$egyed.munkalapegyediazonosito|escape}" class="js-munkalapazonosito" autocomplete="off"></td>
                         </tr>
                         <tr>
                             <td><label for="MunkalapKmoraallasEdit">{at('Km óra állás')}:</label></td>

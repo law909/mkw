@@ -29,7 +29,7 @@
                 <tbody>
                 <tr>
                     <td class="mattable-important">{$_egyed.munkalapegyediazonosito|escape}</td>
-                    <td>{$_egyed.munkalaptermeknev|escape}</td>
+                    <td>{$_egyed.munkalaptermeknev|escape}{if ($_egyed.munkalaptermekvaltozatnev)} ({$_egyed.munkalaptermekvaltozatnev|escape}){/if}</td>
                 </tr>
                 <tr>
                     <td>{at('Km óra')}:</td>

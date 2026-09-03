@@ -604,6 +604,16 @@ class Bizonylatfej
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $munkalaptermeknev;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="TermekValtozat")
+     * @ORM\JoinColumn(name="munkalaptermekvaltozat_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\TermekValtozat
+     */
+    private $munkalaptermekvaltozat;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $munkalaptermekvaltozatnev;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $munkalapegyediazonosito;
 
@@ -1894,6 +1904,7 @@ class Bizonylatfej
         $ret['allapotnev'] = $this->getBizonylatstatusznev();
         $ret['munkalapstatusznev'] = $this->getMunkalapstatusznev();
         $ret['munkalaptermeknev'] = $this->getMunkalaptermeknev();
+        $ret['munkalaptermekvaltozatnev'] = $this->getMunkalaptermekvaltozatnev();
         $ret['munkalapegyediazonosito'] = $this->getMunkalapegyediazonosito();
         $ret['munkalapkmoraallas'] = $this->getMunkalapkmoraallas();
         $ret['munkalaphibaleiras'] = $this->getMunkalaphibaleiras();
@@ -4543,6 +4554,66 @@ class Bizonylatfej
             $this->munkalaptermek = null;
             if (!$this->duplication) {
                 $this->munkalaptermeknev = '';
+            }
+        }
+    }
+
+    /** @return \Entities\TermekValtozat|null */
+    public function getMunkalaptermekvaltozat()
+    {
+        return $this->munkalaptermekvaltozat;
+    }
+
+    public function getMunkalaptermekvaltozatId()
+    {
+        $v = $this->getMunkalaptermekvaltozat();
+        if ($v) {
+            return $v->getId();
+        }
+        return '';
+    }
+
+    public function getMunkalaptermekvaltozatnev()
+    {
+        if (!$this->munkalaptermekvaltozatnev) {
+            $v = $this->getMunkalaptermekvaltozat();
+            if ($v) {
+                return $v->getNev();
+            }
+            return '';
+        }
+        return $this->munkalaptermekvaltozatnev;
+    }
+
+    public function setMunkalaptermekvaltozatnev($val)
+    {
+        $this->munkalaptermekvaltozatnev = $val;
+    }
+
+    /** @param \Entities\TermekValtozat|int|null $val */
+    public function setMunkalaptermekvaltozat($val)
+    {
+        if (!($val instanceof \Entities\TermekValtozat)) {
+            $val = $val ? \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($val) : null;
+        }
+        if ($this->munkalaptermekvaltozat !== $val) {
+            if (!$val) {
+                $this->removeMunkalaptermekvaltozat();
+            } else {
+                $this->munkalaptermekvaltozat = $val;
+                if (!$this->duplication) {
+                    $this->munkalaptermekvaltozatnev = $val->getNev();
+                }
+            }
+        }
+    }
+
+    public function removeMunkalaptermekvaltozat()
+    {
+        if ($this->munkalaptermekvaltozat !== null) {
+            $this->munkalaptermekvaltozat = null;
+            if (!$this->duplication) {
+                $this->munkalaptermekvaltozatnev = '';
             }
         }
     }

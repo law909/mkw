@@ -5,10 +5,16 @@ namespace Controllers;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Munkalapstatusz;
+use Entities\Termek;
+use Entities\TermekValtozat;
 
 /**
  * Munkalap: a bizonylat gépezetét használó, saját fejadatokkal bővített bizonylattípus.
  * A tételei bizonylattételek, ezért a "Számla" gombbal a szokásos módon képezhető belőlük számla.
+ *
+ * A gép kétféleképpen választható: a tételekével azonos termékválasztóval (+ változat), vagy egy
+ * bizonylattételen szereplő egyedi azonosítóval. Az azonosító az erősebb: ha ki van töltve, a
+ * terméket és a változatot mentéskor abból oldjuk fel, mert az konkrét példányt jelöl.
  *
  * Zárási szabályok:
  *  - felvett munkalap nem törölhető, csak rontható (a bizonylatlistán nincs törlés gomb),
@@ -57,6 +63,16 @@ class munkalapfejController extends bizonylatfejController
         $x['munkalapstatuszlist'] = $msc->getSelectList($x['munkalapstatusz']);
         $x['munkalaptermek'] = $t ? $t->getMunkalaptermekId() : '';
         $x['munkalaptermeknev'] = $t ? $t->getMunkalaptermeknev() : '';
+        $x['munkalaptermekvaltozat'] = $t ? $t->getMunkalaptermekvaltozatId() : '';
+        $x['munkalaptermekvaltozatnev'] = $t ? $t->getMunkalaptermekvaltozatnev() : '';
+        if ($forKarb) {
+            $termekCtrl = new termekController();
+            $x['munkalapvaltozatlist'] = $termekCtrl->getValtozatList($x['munkalaptermek'], $x['munkalaptermekvaltozat']);
+            // autocomplete nélkül a tételekhez hasonlóan a teljes terméklista kerül a legördülőbe
+            if (!\mkw\store::isTermekAutocomplete()) {
+                $x['munkalaptermeklist'] = $termekCtrl->getSelectList($x['munkalaptermek']);
+            }
+        }
         $x['munkalapegyediazonosito'] = $t ? $t->getMunkalapegyediazonosito() : '';
         $x['munkalapkmoraallas'] = $t ? $t->getMunkalapkmoraallas() : '';
         $x['munkalaphibaleiras'] = $t ? $t->getMunkalaphibaleiras() : '';
@@ -76,11 +92,21 @@ class munkalapfejController extends bizonylatfejController
         $obj->setMunkalapstatusz($this->params->getIntRequestParam('munkalapstatusz'));
         $azonosito = trim($this->params->getStringRequestParam('munkalapegyediazonosito'));
         $obj->setMunkalapegyediazonosito($azonosito);
-        // a terméket mindig az azonosítóból oldjuk fel: a formról jövő termékazonosító csak
-        // a képernyőn látszó név forrása volt
-        $obj->setMunkalaptermek(
-            $azonosito ? $this->getRepo(Bizonylattetel::class)->findTermekByEgyediazonosito($azonosito) : null
-        );
+        if ($azonosito) {
+            // az azonosító konkrét példányt jelöl, ezért a gépet mindig abból oldjuk fel –
+            // a formról jövő termék csak a képernyőn látszó név forrása volt
+            $tetel = $this->getRepo(Bizonylattetel::class)->findByEgyediazonosito($azonosito);
+            $obj->setMunkalaptermek($tetel?->getTermek());
+            $obj->setMunkalaptermekvaltozat($tetel?->getTermekvaltozat());
+        } else {
+            $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('munkalaptermek'));
+            $obj->setMunkalaptermek($termek);
+            $valtozat = $termek
+                ? $this->getRepo(TermekValtozat::class)->find($this->params->getIntRequestParam('munkalaptermekvaltozat'))
+                : null;
+            // változat nélküli termékre váltva a régi termék változata nem maradhat itt
+            $obj->setMunkalaptermekvaltozat($valtozat && $valtozat->getTermek()?->getId() == $termek->getId() ? $valtozat : null);
+        }
         $obj->setMunkalapkmoraallas($this->params->getIntRequestParam('munkalapkmoraallas'));
         $obj->setMunkalaphibaleiras($this->params->getStringRequestParam('munkalaphibaleiras'));
         $obj->setMunkalapkovetkezoszerviz($this->params->getStringRequestParam('munkalapkovetkezoszerviz'));
@@ -93,13 +119,16 @@ class munkalapfejController extends bizonylatfejController
     {
         $hibak = [];
         $azonosito = trim((string)$obj->getMunkalapegyediazonosito());
-        if (!$azonosito) {
-            $hibak['munkalapegyediazonosito'] = t('Adja meg a gép egyedi azonosítóját.');
+        if ($azonosito) {
+            if (!$obj->getMunkalaptermek()) {
+                $hibak['munkalapegyediazonosito'] = sprintf(
+                    t('Nincs "%s" egyedi azonosítójú bizonylattétel.'),
+                    $azonosito
+                );
+            }
         } elseif (!$obj->getMunkalaptermek()) {
-            $hibak['munkalapegyediazonosito'] = sprintf(
-                t('Nincs "%s" egyedi azonosítójú bizonylattétel.'),
-                $azonosito
-            );
+            $mezo = \mkw\store::isTermekAutocomplete() ? 'munkalaptermeknev' : 'munkalaptermek';
+            $hibak[$mezo] = t('Válassza ki a gépet, vagy adja meg az egyedi azonosítóját.');
         }
         return $hibak;
     }
@@ -151,14 +180,30 @@ class munkalapfejController extends bizonylatfejController
         }
     }
 
-    /** A munkalap egyedi azonosító autocomplete-je: a bizonylattételeken szereplő azonosítók. */
+    /**
+     * A munkalap egyedi azonosító autocomplete-je: a bizonylattételeken szereplő azonosítók.
+     * Kiválasztott géppel csak az adott termék azonosítóit kínálja.
+     */
     public function egyediAzonositoLista()
     {
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(
-            $this->getRepo(Bizonylattetel::class)
-                ->searchEgyediazonosito(trim($this->params->getStringRequestParam('term')))
+            $this->getRepo(Bizonylattetel::class)->searchEgyediazonosito(
+                trim($this->params->getStringRequestParam('term')),
+                $this->params->getIntRequestParam('termekid')
+            )
         );
+    }
+
+    /** A választott gép változatai a fej termékválasztója után. */
+    public function valtozatLista()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $termekCtrl = new termekController();
+        echo json_encode($termekCtrl->getValtozatList(
+            $this->params->getIntRequestParam('termekid'),
+            $this->params->getIntRequestParam('valtozatid')
+        ));
     }
 
     private function sendStatuszEmail(Bizonylatfej $bf)

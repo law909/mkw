@@ -84,36 +84,57 @@ class BizonylattetelRepository extends \mkwhelpers\Repository
      *
      * @return array<int,array{azonosito:string,termekid:int,termeknev:string,cikkszam:string}>
      */
-    public function searchEgyediazonosito($term, $limit = 20)
+    public function searchEgyediazonosito($term, $termekid = null, $limit = 20)
     {
         $dql = 'SELECT bt.termekegyediazonosito AS azonosito, MIN(bt.id) AS elsotetel'
             . ' FROM Entities\Bizonylattetel bt'
             . ' WHERE bt.termekegyediazonosito IS NOT NULL'
             . " AND bt.termekegyediazonosito <> ''"
-            . ' AND bt.termekegyediazonosito LIKE :term'
-            . ' GROUP BY bt.termekegyediazonosito'
+            . ' AND bt.termekegyediazonosito LIKE :term';
+        $params = ['term' => '%' . $term . '%'];
+        if ($termekid) {
+            $dql .= ' AND bt.termek = :termekid';
+            $params['termekid'] = $termekid;
+        }
+        $dql .= ' GROUP BY bt.termekegyediazonosito'
             . ' ORDER BY bt.termekegyediazonosito ASC';
         $q = $this->_em->createQuery($dql);
-        $q->setParameter('term', '%' . $term . '%');
+        $q->setParameters($params);
         if ($limit > 0) {
             $q->setMaxResults($limit);
         }
         $ret = [];
         foreach ($q->getScalarResult() as $r) {
-            /** @var \Entities\Bizonylattetel|null $tetel */
-            $tetel = $this->find($r['elsotetel']);
-            $termek = $tetel?->getTermek();
-            if (!$termek) {
-                continue;
+            $sor = $this->egyediazonositoAdat($this->find($r['elsotetel']));
+            if ($sor) {
+                $ret[] = $sor;
             }
-            $ret[] = [
-                'azonosito' => $r['azonosito'],
-                'termekid' => $termek->getId(),
-                'termeknev' => $termek->getNev(),
-                'cikkszam' => $termek->getCikkszam(),
-            ];
         }
         return $ret;
+    }
+
+    /**
+     * Egy egyedi azonosító gépadatai a bizonylattételéből: termék, változat, cikkszám.
+     *
+     * @param \Entities\Bizonylattetel|null $tetel
+     *
+     * @return array{azonosito:string,termekid:int,termeknev:string,cikkszam:string,valtozatid:int|string,valtozatnev:string}|null
+     */
+    public function egyediazonositoAdat($tetel)
+    {
+        $termek = $tetel?->getTermek();
+        if (!$termek) {
+            return null;
+        }
+        $valtozat = $tetel->getTermekvaltozat();
+        return [
+            'azonosito' => $tetel->getTermekegyediazonosito(),
+            'termekid' => $termek->getId(),
+            'termeknev' => $termek->getNev(),
+            'cikkszam' => $termek->getCikkszam(),
+            'valtozatid' => $valtozat ? $valtozat->getId() : '',
+            'valtozatnev' => $valtozat ? $valtozat->getNev() : '',
+        ];
     }
 
     /**
@@ -124,9 +145,17 @@ class BizonylattetelRepository extends \mkwhelpers\Repository
      */
     public function findTermekByEgyediazonosito($azonosito)
     {
-        /** @var \Entities\Bizonylattetel|null $tetel */
-        $tetel = $this->findOneBy(['termekegyediazonosito' => $azonosito]);
-        return $tetel?->getTermek();
+        return $this->findByEgyediazonosito($azonosito)?->getTermek();
+    }
+
+    /**
+     * Az egyedi azonosítót viselő (első) bizonylattétel.
+     *
+     * @return \Entities\Bizonylattetel|null
+     */
+    public function findByEgyediazonosito($azonosito)
+    {
+        return $this->findOneBy(['termekegyediazonosito' => $azonosito]);
     }
 
 }
