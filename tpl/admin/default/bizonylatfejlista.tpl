@@ -281,6 +281,10 @@
                 <input id="SzamlazasMennyisegEdit" name="mennyiseg" type="text" size="8">
             </div>
             <div>
+                <label for="SzamlazasTeljesitesEdit">{at('Teljesítés legyen az esedékesség')}:</label>
+                <input id="SzamlazasTeljesitesEdit" name="teljesitesazesedekesseg" type="checkbox" checked="checked">
+            </div>
+            <div>
                 <label for="SzamlazasSendemailEdit">{at('Küldés emailben')}:</label>
                 <input id="SzamlazasSendemailEdit" name="sendemail" type="checkbox">
             </div>

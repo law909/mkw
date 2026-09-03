@@ -2285,6 +2285,7 @@ let bizonylathelper = function ($) {
                                     ids: tomb,
                                     tetelnevtoldat: $('#SzamlazasTetelnevtoldatEdit').val(),
                                     mennyiseg: $('#SzamlazasMennyisegEdit').val(),
+                                    teljesitesazesedekesseg: $('#SzamlazasTeljesitesEdit').prop('checked') ? 1 : 0,
                                     sendemail: $('#SzamlazasSendemailEdit').prop('checked') ? 1 : 0,
                                     sendnav: $('#SzamlazasSendnavEdit').prop('checked') ? 1 : 0
                                 },

@@ -38,7 +38,8 @@ class bizsablonfejController extends bizonylatfejController
         $res = $svc->createSzamlak(
             $this->params->getArrayRequestParam('ids'),
             $this->params->getStringRequestParam('tetelnevtoldat'),
-            is_null($mennyiseg) ? null : (float)str_replace(',', '.', $mennyiseg)
+            is_null($mennyiseg) ? null : (float)str_replace(',', '.', $mennyiseg),
+            $this->params->getBoolRequestParam('teljesitesazesedekesseg')
         );
 
         if ($this->params->getBoolRequestParam('sendemail')) {

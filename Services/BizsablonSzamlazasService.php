@@ -26,10 +26,11 @@ class BizsablonSzamlazasService
      * @param string[] $sablonidk üres tömb esetén a rendszeres sablonok
      * @param string $tetelnevtoldat minden tétel nevéhez hozzáfűzött szöveg
      * @param float|null $mennyiseg a számlatételek mennyisége; null esetén a sablon mennyisége marad
+     * @param bool $teljesitesazesedekesseg a teljesítés az esedékesség napja legyen-e
      *
      * @return array{szamlaszamok: string[], hibak: string[], uzenet: string}
      */
-    public function createSzamlak(array $sablonidk, $tetelnevtoldat = '', $mennyiseg = null)
+    public function createSzamlak(array $sablonidk, $tetelnevtoldat = '', $mennyiseg = null, $teljesitesazesedekesseg = true)
     {
         $szamlatipus = $this->getRepo(Bizonylattipus::class)->find('szamla');
         if (!$szamlatipus) {
@@ -43,7 +44,7 @@ class BizsablonSzamlazasService
 
         $szamlaszamok = [];
         foreach ($sablonok as $sablon) {
-            $szamla = $this->createSzamla($sablon, $szamlatipus, $tetelnevtoldat, $mennyiseg);
+            $szamla = $this->createSzamla($sablon, $szamlatipus, $tetelnevtoldat, $mennyiseg, $teljesitesazesedekesseg);
             if ($szamla) {
                 $szamlaszamok[] = $szamla->getId();
             }
@@ -74,8 +75,13 @@ class BizsablonSzamlazasService
      * Egy sablon számlája. A bizonylatszámot a prePersist a tábla eddigi legnagyobb számából
      * képzi, ezért számlánként külön flush kell.
      */
-    private function createSzamla(Bizonylatfej $sablon, Bizonylattipus $szamlatipus, $tetelnevtoldat, $mennyiseg)
-    {
+    private function createSzamla(
+        Bizonylatfej $sablon,
+        Bizonylattipus $szamlatipus,
+        $tetelnevtoldat,
+        $mennyiseg,
+        $teljesitesazesedekesseg
+    ) {
         $em = \mkw\store::getEm();
         $szamla = new Bizonylatfej();
         $szamla->duplicateFrom($sablon);
@@ -90,6 +96,10 @@ class BizsablonSzamlazasService
         $szamla->setKelt();
         $szamla->setTeljesites();
         $szamla->calcEsedekesseg();
+        if ($teljesitesazesedekesseg) {
+            // külön példány: egy közös DateTime-ot a két mező egyszerre módosítana
+            $szamla->setTeljesites(clone $szamla->getEsedekesseg());
+        }
         $szamla->setPersistentData();
 
         foreach ($sablon->getBizonylattetelek() as $sablontetel) {
