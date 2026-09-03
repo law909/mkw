@@ -2287,6 +2287,17 @@ if ($DBVersion < '0161') {
     $conn = \mkw\store::getEm()->getConnection();
     $conn->executeStatement('UPDATE bizonylattipus SET showbizonylatstatuszeditor=1 WHERE id="munkalap"');
     $conn->executeStatement('DELETE FROM menu WHERE url="/admin/munkalapstatusz/viewlist"');
+    // Néhány telepítésen (lb, ujdivat) a bizonylatstatusz az egyetlen latin1 tábla, a
+    // bizonylattipus viszont utf8. Az új bizonylatstatusz.bizonylattipus_id a tábla
+    // alapértelmezését örökölné, és latin1 oszlopról nem mutathat idegen kulcs utf8-ra
+    // (MySQL 3780), ezért a táblát még a séma frissítése előtt átállítjuk.
+    $tablacollation = $conn->fetchOne(
+        'SELECT TABLE_COLLATION FROM information_schema.TABLES'
+        . ' WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME="bizonylatstatusz"'
+    );
+    if ($tablacollation && strpos($tablacollation, 'utf8') !== 0) {
+        $conn->executeStatement('ALTER TABLE bizonylatstatusz CONVERT TO CHARACTER SET utf8 COLLATE utf8_hungarian_ci');
+    }
     $fk = $conn->fetchOne(
         'SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE'
         . ' WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME="bizonylatfej" AND COLUMN_NAME="munkalapstatusz_id"'
