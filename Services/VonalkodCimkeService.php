@@ -17,9 +17,9 @@ use Mpdf\Output\Destination;
  * (141 x 70 pont fekvő = 49,75 x 24,69 mm), hogy a meglévő címkenyomtatóba változtatás
  * nélkül menjen.
  *
- * A vonalkód rajza SVG, nem az mPDF <barcode> tagje: az EAN-13-at az mPDF a szabvány szerinti
- * őrjegy-elrendezésben, saját számsorral rajzolja, a mintacímkén viszont egyenletes magasságú
- * vonalak vannak, a számsor pedig külön sorban alattuk.
+ * A 13 jegyű vonalkódot az mPDF <barcode> tagje rajzolja, szabványos EAN-13-ként: őrjegyek,
+ * a bal szélen a nyitó számjegy, a számsor a vonalak alján. Minden más kódot Code 128-cal,
+ * egyenletes magasságú SVG vonalakkal rajzolunk, a számsorral külön sorban alattuk.
  *
  * Több helyről hívjuk: egy termék(változat) címkéje a termék felől, és egy bizonylat összes
  * tételéé egyetlen PDF-ben a bizonylatlistáról.
@@ -33,6 +33,9 @@ class VonalkodCimkeService
     // a vonalkód helye a címkén, a mintacímke arányai szerint
     private const VONALKOD_SZELESSEG = 22;
     private const VONALKOD_MAGASSAG = 7.4;
+    // az EAN-13 a névleges 0,33 mm-es modulszélességgel (37,3 mm széles), a magasság a címkéhez szabva
+    private const EAN13_SIZE = 1;
+    private const EAN13_HEIGHT = 0.45;
 
     /**
      * Egy termék(változat) címkeadata. A vonalkód és a cikkszám a változaté, ha van neki,
@@ -133,7 +136,9 @@ class VonalkodCimkeService
             $elso = false;
             $html .= '<div class="cimke">'
                 . $this->getVonalkodKep($cimke['vonalkod'])
-                . '<div class="cimkeszam">' . htmlspecialchars($cimke['vonalkod']) . '</div>'
+                . ($this->isEan13($cimke['vonalkod'])
+                    ? ''
+                    : '<div class="cimkeszam">' . htmlspecialchars($cimke['vonalkod']) . '</div>')
                 . '<div class="cimkecikkszam">' . htmlspecialchars($cimke['cikkszam']) . '</div>'
                 . '<div class="cimkear">' . htmlspecialchars($cimke['ar']) . '</div>'
                 . '</div>';
@@ -142,16 +147,47 @@ class VonalkodCimkeService
     }
 
     /**
-     * A vonalkód SVG képe. A 13 jegyű kódot EAN-13-ként, a többit Code 128-cal kódoljuk;
-     * vonalkód nélküli terméknél csak üres hely marad a címke tetején.
+     * A vonalkód képe: szabványos EAN-13, ha a kód az, különben Code 128.
+     * Vonalkód nélküli terméknél csak üres hely marad a címke tetején.
      */
     private function getVonalkodKep($vonalkod)
     {
         if (!$vonalkod) {
             return '';
         }
-        $tipus = preg_match('/^\d{13}$/', $vonalkod) ? 'EAN13' : 'C128A';
-        $adat = (new Barcode())->getBarcodeArray($vonalkod, $tipus);
+        if ($this->isEan13($vonalkod)) {
+            return '<barcode code="' . htmlspecialchars($vonalkod) . '" type="EAN13"'
+                . ' size="' . self::EAN13_SIZE . '" height="' . self::EAN13_HEIGHT . '">';
+        }
+        return $this->getCode128Kep($vonalkod);
+    }
+
+    /**
+     * Az mPDF EAN-13 rajzolója hibás ellenőrző jegyre kivételt dob, ezért itt előre eldöntjük,
+     * hogy a kód szabványos EAN-13-e. Ha nem, Code 128 lesz belőle.
+     */
+    private function isEan13($vonalkod)
+    {
+        if (!preg_match('/^\d{13}$/', (string)$vonalkod)) {
+            return false;
+        }
+        try {
+            return (bool)(new Barcode())->getBarcodeArray($vonalkod, 'EAN13');
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Code 128 SVG-ként, egyenletes magasságú vonalakkal, a mintacímke arányaira nyújtva.
+     */
+    private function getCode128Kep($vonalkod)
+    {
+        try {
+            $adat = (new Barcode())->getBarcodeArray($vonalkod, 'C128A');
+        } catch (\Exception $e) {
+            return '';
+        }
         if (!$adat) {
             return '';
         }
