@@ -16,6 +16,13 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class keszletlistaController extends \mkwhelpers\MattableController
 {
 
+    /**
+     * A készletsor és a bizonylattétel kapcsolata: változatos terméknél a változat, változat
+     * nélkülinél maga a termék. A lista a termékből indul (LEFT JOIN a változatokra), különben
+     * a változat nélküli termékek – a törzs nagyobbik fele – ki sem kerülnének rá.
+     */
+    private const TETELKAPCSOLAT = '(CASE WHEN _xx.id IS NULL THEN bt.termek_id=t.id ELSE bt.termekvaltozat_id=_xx.id END)';
+
     private $datumstr;
     private $raktar;
     private $raktarnev;
@@ -166,7 +173,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
             $keszletsql = ' ((SELECT SUM(bt.mennyiseg * bt.irany)'
                 . ' FROM bizonylattetel bt'
                 . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-                . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) )'
+                . $filter->getFilterString('_xx', 'p') . ' AND ' . self::TETELKAPCSOLAT . ' )'
                 . ' - ' . $minexpr . ') '
                 . 'AS keszlet';
         } else {
@@ -174,15 +181,15 @@ class keszletlistaController extends \mkwhelpers\MattableController
             $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany)'
                 . ' FROM bizonylattetel bt'
                 . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-                . $filter->getFilterString('_xx', 'p') . ' AND (_xx.id=bt.termekvaltozat_id) ) '
+                . $filter->getFilterString('_xx', 'p') . ' AND ' . self::TETELKAPCSOLAT . ' ) '
                 . 'AS keszlet';
         }
 
         $q = $this->getEm()->createNativeQuery(
-            'SELECT _xx.termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+            'SELECT t.id AS termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . $keszletsql
-            . ' FROM termekvaltozat _xx'
-            . ' LEFT JOIN termek t ON (_xx.termek_id=t.id)'
+            . ' FROM termek t'
+            . ' LEFT JOIN termekvaltozat _xx ON (_xx.termek_id=t.id)'
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
             . ' ORDER BY t.cikkszam, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ', _xx.ertek1, _xx.ertek2',
@@ -210,10 +217,11 @@ class keszletlistaController extends \mkwhelpers\MattableController
                 break;
         }
 
+        // "mindegy" ársávnál a mező üres, ilyenkor valutanem sincs mögötte
         $as = explode('_', $this->params->getStringRequestParam('arsav'));
         $arsav = $as[0];
         $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);
-        $valutanem = $as[1];
+        $valutanem = $as[1] ?? null;
         $valutaobj = $this->getRepo(Valutanem::class)->find($valutanem);
         $this->arsavstr = $arsav;
         if ($valutaobj) {
