@@ -2599,7 +2599,8 @@ class Bizonylatfej
 
     public function calcEsedekesseg()
     {
-        $this->esedekesseg = \mkw\store::calcEsedekesseg($this->getKelt(), $this->getFizmod(), $this->getPartner());
+        // a store::calcEsedekesseg() stringet ad, a mezőnek DateTime kell: a setter konvertál
+        $this->setEsedekesseg(\mkw\store::calcEsedekesseg($this->getKelt(), $this->getFizmod(), $this->getPartner()));
     }
 
     public function getId()
