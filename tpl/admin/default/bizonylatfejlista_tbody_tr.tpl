@@ -120,6 +120,11 @@
                     <td>{$_egyed.felhasznalonev}</td>
                 </tr>
             {/if}
+            {if ($showrendszeres && $_egyed.rendszeres)}
+                <tr>
+                    <td colspan="2" class="mattable-important">{at('Rendszeres')}</td>
+                </tr>
+            {/if}
             <tr>
                 <td colspan="2" class="mattable-important">
                     {$_egyed.partnernev}
