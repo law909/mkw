@@ -617,6 +617,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['shipdatestr'] = $t->getShipdateStr();
         $x['isfedexbekuldve'] = (bool)$t->getFedextrackingnumber();
         $x['isfedexszallitas'] = \mkw\store::isFedexSzallitasimod($t->getSzallitasimodId());
+        $x['fedexservicetype'] = $t->getFedexservicetype();
         $x['forditottadozas'] = $t->isForditottadozas();
         $x['rendszeres'] = $t->isRendszeres();
         $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();

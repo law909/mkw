@@ -228,6 +228,12 @@
                 <td></td>
                 <td>{$_egyed.szallitasimodnev}</td>
             </tr>
+            {if ($_egyed.fedexservicetype)}
+                <tr>
+                    <td></td>
+                    <td>{$_egyed.fedexservicetype}</td>
+                </tr>
+            {/if}
             {if (haveJog(90) && $_egyed.uzletkotonev)}
                 <tr>
                     <td></td>
