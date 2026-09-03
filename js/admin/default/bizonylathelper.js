@@ -1,6 +1,9 @@
 let bizonylathelper = function ($) {
 
     let nocalcarak = false;
+    // Termékcsere közben igaz, ha a felhasználó a régi árak megtartását kérte – a setTermekAr
+    // ilyenkor nem tölti újra a sor árait az új termékéből.
+    let armegtartas = false;
     let afaEllenorzesAtlepes = false;
     // A pénzmozgás-kérdésre adott válasz megvan-e már ebben a mentési kísérletben.
     let penzmozgasKerdesMegvolt = false;
@@ -196,6 +199,9 @@ let bizonylathelper = function ($) {
 
     function setTermekAr(sorId) {
         let partner, termekedit;
+        if (armegtartas) {
+            return;
+        }
         // a költségszámla gyűjtőtermékével felvitt tétel ára a bejövő számláról jön, nem a
         // termékárból: termékcsere után is az marad
         if ($('#teteltable_' + sorId).data('koltsegtermek')) {
@@ -917,9 +923,40 @@ let bizonylathelper = function ($) {
         };
     }
 
+    /**
+     * Termékcsere egy már beárazott tételsoron: rákérdez, felülírjuk-e az árakat az új termékéből.
+     * Üres (még be nem árazott) soron nem kérdez, ott az árak úgyis az új termékből jönnek.
+     * A "Nem" a sor árait hagyja, csak a termékadatok cserélődnek.
+     *
+     * @param fn a válasz megvan; paramétere igaz, ha az árakat át kell írni
+     */
+    function kerdezTermekcsereArrol(sorid, fn) {
+        if (!($('input[name="tetelnettoegysar_' + sorid + '"]').val() * 1)) {
+            fn(true);
+            return;
+        }
+        // az "Igen" az első gomb: a párbeszédablak azt fókuszálja, így az entertől is az fut le
+        $('#dialogcenter').html('Átírjuk a tétel árait az új termék árára?').dialog({
+            title: 'Termékcsere',
+            resizable: false,
+            height: 160,
+            modal: true,
+            buttons: {
+                'Igen': function () {
+                    $(this).dialog('close');
+                    fn(true);
+                },
+                'Nem': function () {
+                    $(this).dialog('close');
+                    fn(false);
+                }
+            }
+        });
+    }
+
     // Egy termék adatainak beírása egy tételsorba. A listás választás és a fájlból való
     // tételimport is ezen az egy úton megy, hogy a két módon azonos sor keletkezzen.
-    function fillTetelTermek(sorid, termek, selvaltozat) {
+    function fillTetelTermek(sorid, termek, selvaltozat, arakatmegtart) {
         let vtsz = $('select[name="tetelvtsz_' + sorid + '"]'),
             afa = $('select[name="tetelafa_' + sorid + '"]'),
             valtozatplace = $('#ValtozatPlaceholder' + sorid),
@@ -929,6 +966,7 @@ let bizonylathelper = function ($) {
             termek.afa = partneredit.data('afa');
             termek.afakulcs = partneredit.data('afakulcs');
         }
+        armegtartas = !!arakatmegtart;
         setNoCalcArak(true);
         valtozatplace.empty();
         $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
@@ -955,6 +993,8 @@ let bizonylathelper = function ($) {
         if (termek.valtozat) {  // valtozat select kitoltese + valtozat ar betoltese
             $('select[name="tetelvaltozat_' + sorid + '"]').val(termek.valtozat).change();
         }
+        // a kézi változatváltás utána már megint árat tölt
+        armegtartas = false;
         jelolDefaultTetelek();
     }
 
@@ -1110,8 +1150,10 @@ let bizonylathelper = function ($) {
                 if (termek) {
                     let $this = $(this),
                         sorid = $this.attr('name').split('_')[1];
-                    $this.siblings().val(termek.id);
-                    fillTetelTermek(sorid, termek, $('select[name="tetelvaltozat_' + sorid + '"]').val());
+                    kerdezTermekcsereArrol(sorid, function (atir) {
+                        $this.siblings().val(termek.id);
+                        fillTetelTermek(sorid, termek, $('select[name="tetelvaltozat_' + sorid + '"]').val(), !atir);
+                    });
                 }
             }
         };
@@ -2100,18 +2142,20 @@ let bizonylathelper = function ($) {
                         let $this = $(this),
                             sorid = $this.attr('name').split('_')[1],
                             selvaltozat = $('select[name="tetelvaltozat_' + sorid + '"]').val();
-                        $.ajax({
-                            method: 'GET',
-                            url: '/admin/bizonylattetel/gettermeklist',
-                            data: {
-                                id: $('option:selected', $this).val()
-                            },
-                            success: function (data) {
-                                let termek = JSON.parse(data);
-                                if (termek) {
-                                    fillTetelTermek(sorid, termek, selvaltozat);
+                        kerdezTermekcsereArrol(sorid, function (atir) {
+                            $.ajax({
+                                method: 'GET',
+                                url: '/admin/bizonylattetel/gettermeklist',
+                                data: {
+                                    id: $('option:selected', $this).val()
+                                },
+                                success: function (data) {
+                                    let termek = JSON.parse(data);
+                                    if (termek) {
+                                        fillTetelTermek(sorid, termek, selvaltozat, !atir);
+                                    }
                                 }
-                            }
+                            });
                         });
                     })
                     .on('click', '.js-tetelimportbutton', function (e) {
