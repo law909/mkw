@@ -631,6 +631,7 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/bizonylatfej/getpartnerlist', 'partnerController#getBizonylatfejSelectList', 'adminbizonylatfejgetpartnerlist');
 $router->map('GET', '/admin/bizonylatfej/pdf', 'bizonylatfejController#doPDF', 'adminbizonylatfejpdf');
+$router->map('GET', '/admin/bizonylatfej/cimke', 'bizonylatfejController#doCimke', 'adminbizonylatfejcimke');
 $router->map('GET', '/admin/bizonylatfej/print2', 'bizonylatfejController#doPrint2', 'adminbizonylatfejprint2');
 $router->map('GET', '/admin/bizonylatfej/getfolyoszamla', 'bizonylatfejController#getFolyoszamla', 'admingetfolyoszamla');
 $router->map('GET', '/admin/bizonylatfej/getstatusznaplo', 'bizonylatfejController#getStatuszNaplo', 'admingetstatusznaplo');

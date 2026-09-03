@@ -1570,6 +1570,27 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $this->getPrintService()->output2($this->params->getStringRequestParam('id'));
     }
 
+    /**
+     * A bizonylat tételeinek vonalkódos címkéi egyetlen PDF-ben: tételenként annyi címke,
+     * amennyi a tétel mennyisége (lásd \Services\VonalkodCimkeService).
+     */
+    public function doCimke()
+    {
+        $id = $this->params->getStringRequestParam('id');
+        /** @var \Entities\Bizonylatfej|null $o */
+        $o = $this->getRepo()->find($id);
+        if (!$o) {
+            return;
+        }
+        $svc = new \Services\VonalkodCimkeService();
+        $cimkek = $svc->getBizonylatCimkek($o);
+        if (!$cimkek) {
+            echo t('A bizonylatnak nincs olyan tétele, amihez címke nyomtatható.');
+            return;
+        }
+        $svc->output($cimkek, \mkw\store::urlize($id) . '-cimke.pdf');
+    }
+
     public function doPDF()
     {
         $id = $this->params->getStringRequestParam('id');

@@ -141,6 +141,8 @@
                     ><span
                             class="ui-icon ui-icon-alert"></span></a>
                 {/if}
+                <a class="js-cimkenyomtatas" href="/admin/bizonylatfej/cimke?id={$_egyed.id|escape:'url'}" target="_blank"
+                   title="{at('Címke nyomtatás')}"><span class="ui-icon ui-icon-tag"></span></a>
                 {if ($showstorno)}
                     {if ($_egyed.naveredmeny=='DONE' || $_egyed.naveredmeny=='TESZT')}
                         <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
