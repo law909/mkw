@@ -23,17 +23,11 @@
                         {* a saját webcím erősebb a témáénál: az az alkalom kiírása a wordpress oldalon *}
                         {* a törzsekben relatív útvonalak állnak, ezért megy mindegyik prefixUrl-lel *}
                         <div class="margin-bottom-5">
-                            {if ($idopont['url'])}
-                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent">{$idopont['nev']}</a>
-                            {elseif ($idopont['temaurl'])}
-                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['temaurl'])}" target="_parent">{$idopont['nev']}</a>
-                            {else}
-                                {$idopont['nev']}
-                            {/if}
+                            {$idopont['nev']}
                         </div>
                         <div class="margin-bottom-5">
                             {if ($idopont['tanarurl'])}
-                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['tanarurl'])}" target="_parent">{$idopont['tanar']}</a>
+                                <a href="{prefixUrl('https://jogadarshan.hu/', $idopont['tanarurl'])}" target="_parent">{$idopont['tanar']}</a>
                             {else}
                                 {$idopont['tanar']}
                             {/if}
@@ -50,13 +44,8 @@
                     </div>
                     <div class="dttgombok">
                         {if ($idopont['megvanhely'])}
-                            {if ($idopont['url'])}
-                                <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent"
-                                   class="dttorarendbutton margin-bottom-5">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
-                            {else}
-                                <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                                   class="dttorarendbutton margin-bottom-5">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
-                            {/if}
+                            <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
+                               class="dttorarendbutton margin-bottom-5">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
                         {else}
                             <div class="pirosszoveg margin-bottom-5">BETELT</div>
                         {/if}
@@ -66,7 +55,7 @@
                 </div>
             {/foreach}
         </div>
-    {foreachelse}
+        {foreachelse}
         <div class="dttures">Ezen a héten nincs meghirdetett időpont.</div>
     {/foreach}
 </div>
