@@ -43,11 +43,17 @@
         width: 100%;
     }
 
+    .dttadatok {
+        display: flex;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
     .dttidopont {
         text-align: center;
         margin: 0 1%;
         padding: 0 2px;
-        flex-basis: 16%;
+        flex: 0 0 20%;
         border-radius: 3px;
         color: white;
         font-weight: bold;
@@ -67,14 +73,14 @@
     .dttoranev {
         padding: 10px 0;
         margin-right: 1%;
-        flex-basis: 60%;
-        text-align: center;
+        flex: 1 1 auto;
+        text-align: left;
     }
 
-    .dtttanar {
+    .dttgombok {
         padding: 10px 0;
         margin-right: 1%;
-        flex-basis: 26%;
+        flex: 0 0 26%;
         text-align: center;
     }
 
@@ -195,8 +201,12 @@
             flex-direction: column;
         }
 
-        .dttora {
+        .dttora, .dttadatok {
             flex-direction: column;
+        }
+
+        .dttidopont {
+            flex: 0 0 auto;
         }
     }
 </style>
