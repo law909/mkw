@@ -392,9 +392,9 @@
                     </tr>
                     <tr>
                         <td><label for="MPTSzuleteseveEdit">{at('Születés éve')}:</label></td>
-                        <td><input id="MPTSzuleteseveEdit" name="szuletesiido" type="text" value="{$partner.szuletesiido}"></td>
+                        <td><input id="MPTSzuleteseveEdit" name="mpt_szuleteseve" type="number" step="1" value="{$partner.mpt_szuleteseve}"></td>
                         <td><label for="MPTSzuletesiidoEdit">{at('Születési dátum')}:</label></td>
-                        <td><input id="MPTSzuletesiidoEdit" name="szuletesiido" type="text" value="{$partner.szuletesiido}"></td>
+                        <td><input id="MPTSzuletesiidoEdit" name="szuletesiido" type="text" size="12" data-datum="{$partner.szuletesiidostr}"></td>
                     </tr>
                     <tr>
                         <td><label for="MPTTagsagformaEdit">{at('Tagság forma')}</label></td>
@@ -522,8 +522,8 @@
                         <td><input id="mptngyknEdit" type="text" name="mptngykapcsolatnev" value="{$partner.mptngykapcsolatnev}"></td>
                     </tr>
                     <tr>
-                        <td><label for="MPTMunkahelynevEdit">{at('Munkahely neve')}:</label></td>
-                        <td><input id="MPTMunkahelynevEdit" name="mpt_munkahelynev" type="text" value="{$partner.mpt_munkahelynev}"></td>
+                        <td><label for="MPTNGYMunkahelynevEdit">{at('Munkahely neve')}:</label></td>
+                        <td><input id="MPTNGYMunkahelynevEdit" name="mpt_munkahelynev" type="text" value="{$partner.mpt_munkahelynev}"></td>
                     </tr>
                     <tr>
                         <td>Egyetem:</td>

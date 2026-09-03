@@ -50,6 +50,37 @@ function varosAutocomplete(irszam, varos) {
     });
 }
 
+/**
+ * A karb űrlapon több fülön szerepel ugyanaz a partner mező, azonos name-mel (pl. a cím az
+ * Általános adatok és az MPT fülön, az email az MPT és az Elérhetőség fülön). Mentéskor a PHP
+ * a DOM-ban HÁTRÉBB állót veszi, ezért a másik fülön beírt érték elveszne — az azonos nevű
+ * mezők ezért együtt mozognak, bármelyikbe írnak.
+ *
+ * A .val() nem vált ki change eseményt, így a körbeírás nem fut végtelen ciklusba.
+ */
+function azonosNevuMezokSzinkron(form) {
+    const csoportok = new Map();
+    $('input[name], select[name], textarea[name]', form).each(function () {
+        const nev = this.name;
+        // a jelölők, a rejtett és az ismétlődő sorok mezői kimaradnak: ott a duplikáció ártalmatlan
+        if (!nev || nev.endsWith('[]') || ['checkbox', 'radio', 'hidden'].includes(this.type)) {
+            return;
+        }
+        if (!csoportok.has(nev)) {
+            csoportok.set(nev, []);
+        }
+        csoportok.get(nev).push(this);
+    });
+    csoportok.forEach((mezok) => {
+        if (mezok.length < 2) {
+            return;
+        }
+        $(mezok).on('input change', function () {
+            $(mezok).not(this).val($(this).val());
+        });
+    });
+}
+
 function termekAutocompleteConfig() {
     return {
         minLength: 4,
@@ -85,9 +116,12 @@ $(document).ready(function () {
 
             mkwcomp.datumEdit.init(mpt_tagsagdateedit);
             mkwcomp.datumEdit.init(szuletesiidoedit);
+            mkwcomp.datumEdit.init('#MPTSzuletesiidoEdit');
             mkwcomp.datumEdit.init(mptngybefdatumedit);
 
-            $('#EmailEdit').on('change', function (e) {
+            // az email két fülön is szerkeszthető (lásd azonosNevuMezokSzinkron), a Belépés
+            // fülön mutatott cím mindkettőt kövesse
+            $('input[name="email"]').on('input change', function () {
                 $('.js-email').text($(this).val());
             });
             $('#cimkekarbcontainer').mattaccord({
@@ -458,22 +492,7 @@ $(document).ready(function () {
                 })
             $('.js-eloirasbutton,.js-befizetesbutton').button();
 
-            // Az MPT fül cím mezői ugyanazt a partner adatot szerkesztik, mint az Általános
-            // adatok fülé, és a nevük is ugyanaz – mentéskor a DOM-ban hátrébb álló MPT érték
-            // nyerne. Ezért a két mező együtt mozog, bármelyikbe írnak.
-            [
-                ['#IrszamEdit', '#mpt_IrszamEdit'],
-                ['#VarosEdit', '#mpt_VarosEdit'],
-                ['#UtcaEdit', '#mpt_UtcaEdit'],
-                ['#HazszamEdit', '#mpt_HazszamEdit']
-            ].forEach(([altalanos, mpt]) => {
-                const $altalanos = $(altalanos), $mpt = $(mpt);
-                if (!$altalanos.length || !$mpt.length) {
-                    return;
-                }
-                $altalanos.on('input change', () => $mpt.val($altalanos.val()));
-                $mpt.on('input change', () => $altalanos.val($mpt.val()));
-            });
+            azonosNevuMezokSzinkron('#mattkarb-form');
 
             irszamAutocomplete('#IrszamEdit', '#VarosEdit');
             varosAutocomplete('#IrszamEdit', '#VarosEdit');
