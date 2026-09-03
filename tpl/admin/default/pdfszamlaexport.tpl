@@ -17,6 +17,8 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="pdfszamlaexport" action="" target="_blank">
+                    {include "comp_idoszak.tpl" comptype="datum"}
+                    <div class="matt-hseparator"></div>
                     <div>
                         <label>{at('Utolsó feladott számla')}:</label>
                         <input id="utolsoszamlainput" name="utolsoszamla" value="{$utolsoszamla}">

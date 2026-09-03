@@ -35,6 +35,9 @@ $(document).ready(function () {
                 }, 5000);
             }
 
+            mkwcomp.datumEdit.init('#TolEdit');
+            mkwcomp.datumEdit.init('#IgEdit');
+
             $('.js-emailbutton, .js-downloadbutton').button();
 
             $('.js-downloadbutton').on('click', function (e) {
@@ -52,7 +55,9 @@ $(document).ready(function () {
                     url: $(this).attr('href'),
                     data: {
                         utolsoszamla: $utolso.val(),
-                        utolsoesetiszamla: $utolsoeseti.val()
+                        utolsoesetiszamla: $utolsoeseti.val(),
+                        tol: $('#TolEdit').val(),
+                        ig: $('#IgEdit').val()
                     },
                     success: function (d) {
                         if (!d) {

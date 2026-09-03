@@ -18,6 +18,8 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
         $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoSzamlaszam));
         $view->setVar('utolsoesetiszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam));
+        $view->setVar('toldatum', date(\mkw\store::$DateFormat, strtotime('first day of previous month')));
+        $view->setVar('igdatum', date(\mkw\store::$DateFormat, strtotime('last day of previous month')));
 
         $view->printTemplateResult();
     }
@@ -30,6 +32,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', $bt);
+        $this->addKeltFilter($filter);
         $mar = $utolsoszamla;
         if ($mar) {
             $filter->addFilter('id', '>', $mar);
@@ -49,6 +52,19 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
             unset($pdf);
         }
         return $mar;
+    }
+
+    /** Kelt szerinti időszak szűrő; üresen hagyott dátumnál az a határ nyitva marad. */
+    private function addKeltFilter(\mkwhelpers\FilterDescriptor $filter)
+    {
+        $tol = $this->params->getStringRequestParam('tol');
+        if ($tol) {
+            $filter->addFilter('kelt', '>=', \mkw\store::toDate($tol));
+        }
+        $ig = $this->params->getStringRequestParam('ig');
+        if ($ig) {
+            $filter->addFilter('kelt', '<=', \mkw\store::toDate($ig));
+        }
     }
 
     protected function createZip()
