@@ -32,9 +32,10 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', $bt);
-        $this->addKeltFilter($filter);
         $mar = $utolsoszamla;
-        if ($mar) {
+        if ($this->isKeltSzures()) {
+            $this->addKeltFilter($filter);
+        } elseif ($mar) {
             $filter->addFilter('id', '>', $mar);
         }
         $r = $bizrepo->getAll($filter, ['id' => 'ASC']);
@@ -52,6 +53,16 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
             unset($pdf);
         }
         return $mar;
+    }
+
+    /**
+     * A képernyő két doboza külön szűr: az időszakos gombjai kelt szerint, a bizonylatszámosé
+     * a legutóbb feladott sorszám fölött. A kelt szerinti feladás ezért nem is lépteti a
+     * sorszámokat — azok a sorszám szerinti feladás könyvelése.
+     */
+    private function isKeltSzures()
+    {
+        return $this->params->getStringRequestParam('szures') === 'kelt';
     }
 
     /** Kelt szerinti időszak szűrő; üresen hagyott dátumnál az a határ nyitva marad. */
@@ -130,6 +141,9 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
     private function storeUtolso()
     {
+        if ($this->isKeltSzures()) {
+            return;
+        }
         \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);
         \mkw\store::setParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam, $this->esetimar);
     }

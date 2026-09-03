@@ -42,18 +42,25 @@ $(document).ready(function () {
 
             $('.js-downloadbutton').on('click', function (e) {
                 e.preventDefault();
-                const $ff = $('#pdfszamlaexport');
-                $ff.attr('action', $(this).attr('href'));
+                const $this = $(this),
+                    $ff = $('#pdfszamlaexport');
+                $('input[name="szures"]', $ff).val($this.data('szures'));
+                $ff.attr('action', $this.attr('href'));
                 $ff.submit();
-                figyelUtolso();
+                // a sorszámokat csak a bizonylatszám szerinti feladás lépteti
+                if ($this.data('szures') === 'szam') {
+                    figyelUtolso();
+                }
             });
 
             $('.js-emailbutton').on('click', function (e) {
                 e.preventDefault();
+                const $this = $(this);
                 $.ajax({
                     type: 'POST',
-                    url: $(this).attr('href'),
+                    url: $this.attr('href'),
                     data: {
+                        szures: $this.data('szures'),
                         utolsoszamla: $utolso.val(),
                         utolsoesetiszamla: $utolsoeseti.val(),
                         tol: $('#TolEdit').val(),
