@@ -598,6 +598,16 @@ let bizonylathelper = function ($) {
         $pid.val(partnerid).change();
     }
 
+    // A "Munkalap adatok" doboz belépési pontja az egyedi azonosító, nem a partner. A fókuszt csak
+    // azután lehet ráadni, hogy a mattkarb megjelenítette a formot és lefuttatta a csak olvasható
+    // mód letiltásait – ezek a beforeShow UTÁN jönnek, ezért csúszik a hívás a következő
+    // eseményciklusba.
+    function focusMunkalapAzonosito() {
+        setTimeout(function () {
+            $('.js-munkalapazonosito').not(':disabled').not('[readonly]').first().trigger('focus');
+        }, 0);
+    }
+
     // Az egyedi azonosítóhoz tartozó jármű (termék, változat) és a gazdája betöltése.
     function loadMunkalapJarmuAdat(azonosito) {
         const uzenet = $('.js-munkalapazonositouzenet');
@@ -2131,6 +2141,7 @@ let bizonylathelper = function ($) {
                 mkwcomp.datumEdit.init('#MunkalapKovetkezoSzervizEdit');
                 initMunkalapTermekAutocomplete();
                 initMunkalapAzonositoAutocomplete();
+                focusMunkalapAzonosito();
 
                 //valutanemChange(true);
 
