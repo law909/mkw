@@ -11,7 +11,8 @@
             <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
             <td class="keszletoszlop">{$vk.foglaltmennyiseg}</td>
             <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}&valtozat={$vk.id|escape:'url'}" target="_blank"
-                   class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                   class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                   data-keszlet="{$vk.keszlet}"
                    title="{at('Címke nyomtatás')}"><span class="ui-button-text"><span
                             class="ui-icon ui-icon-tag"></span></span></a></td>
         </tr>
@@ -25,7 +26,8 @@
         <td class="keszletoszlop"><a href="#" data-id="{$termek.id}" class="js-keszletreszletezobutton">{$termek.keszlet}</a></td>
         <td class="keszletoszlop">{$termek.foglaltmennyiseg}</td>
         <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}" target="_blank"
-               class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+               class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+               data-keszlet="{$termek.keszlet}"
                title="{at('Címke nyomtatás')}"><span class="ui-button-text"><span
                         class="ui-icon ui-icon-tag"></span></span></a></td>
     </tr>

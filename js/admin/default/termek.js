@@ -200,10 +200,11 @@ $(document).ready(function () {
     }
 
     /**
-     * A készlet linkek raktárankénti bontást nyitnak – ugyanaz a terméklista készlet oszlopában
-     * és a termék karbantartó Készlet fülén (mindkettő a termekkeszletsorok.tpl-t rendereli).
+     * A készletsorok gombjai: a készlet linkek raktárankénti bontást nyitnak, a címke gomb a
+     * darabszámot kérdezi meg – ugyanaz a terméklista készlet oszlopában és a termék
+     * karbantartó Készlet fülén (mindkettő a termekkeszletsorok.tpl-t rendereli).
      */
-    function bindKeszletReszletezo($root) {
+    function bindKeszletRows($root) {
         $root
             .on('click', '.js-keszletreszletezobutton', function (e) {
                 e.preventDefault();
@@ -244,6 +245,39 @@ $(document).ready(function () {
                         });
                     }
                 });
+            })
+            .on('click', '.js-termekcimke', function (e) {
+                e.preventDefault();
+                const url = $(this).attr('href'),
+                    keszlet = Math.max(1, Math.floor(parseFloat($(this).data('keszlet')) || 0));
+                dialogcenter
+                    .html('<label>Hány címke készüljön? <input type="number" min="1" step="1" class="js-cimkedb" value="' + keszlet + '"></label>')
+                    .dialog({
+                        resizable: false,
+                        height: 160,
+                        modal: true,
+                        title: 'Címke nyomtatás',
+                        open: function () {
+                            const $db = $('.js-cimkedb', this);
+                            $db.trigger('focus').trigger('select');
+                            $db.on('keydown', function (ev) {
+                                if (ev.key === 'Enter') {
+                                    ev.preventDefault();
+                                    $('.ui-dialog-buttonpane button:first').trigger('click');
+                                }
+                            });
+                        },
+                        buttons: {
+                            'Nyomtat': function () {
+                                const db = Math.max(1, parseInt($('.js-cimkedb', this).val(), 10) || 1);
+                                window.open(url + '&db=' + db, '_blank');
+                                $(this).dialog('close');
+                            },
+                            'Mégsem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
             });
     }
 
@@ -256,7 +290,7 @@ $(document).ready(function () {
             var valtozattab = $('#ValtozatTab');
             var doktab = $('#DokTab');
             initDokumentumUpload(doktab);
-            bindKeszletReszletezo($('#KeszletTab'));
+            bindKeszletRows($('#KeszletTab'));
             $('.js-saveas').on('click', function (e) {
                 e.preventDefault();
                 $('input[name="oper"]').val('add');
@@ -1264,7 +1298,7 @@ $(document).ready(function () {
                 doit();
             }
         });
-        bindKeszletReszletezo($('#mattable-body'));
+        bindKeszletRows($('#mattable-body'));
 
         $('#cimkefiltercontainer').mattaccord({
             header: '#cimkefiltercontainerhead',
