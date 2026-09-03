@@ -468,6 +468,19 @@ class mainController extends \mkwhelpers\Controller
                 'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma)) ? true : false
             ];
         }
+        if (!$vtt && !$szinid) {
+            // Változat nélküli termék: egyetlen sor, változat azonosító nélkül. Így a sablonnak
+            // és a kosárba tevésnek nem kell külön ág, a szerver a üres azonosítóból tudja, hogy
+            // magát a terméket kell a kosárba tenni.
+            $keszlet = $termek->getAvailableStock(null, null, null, false);
+            $vtt[] = [
+                'id' => '',
+                'caption' => $termek->getLocalizedFieldValue('nev'),
+                'keszlet' => $keszlet,
+                'beerkezesdatumstr' => '',
+                'bejon' => false
+            ];
+        }
         $t['valtozatok'] = $vtt;
         $this->view->setVar('termek', $t);
         $this->view->printTemplateResult(true);

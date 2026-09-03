@@ -340,13 +340,19 @@ class kosarController extends \mkwhelpers\MattableController
                 $values = $this->params->getArrayRequestParam('values');
                 $kedvezmenyek = $this->params->getArrayRequestParam('kedv');
 
+                $valtozatok = $termek->getValtozatok();
+                $vanvaltozat = $valtozatok && count($valtozatok);
                 for ($cikl = 0; $cikl < count($vids); $cikl++) {
                     $vid = $vids[$cikl];
                     $value = $values[$cikl];
                     $kedv = $kedvezmenyek[$cikl];
-                    $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
-                    if ($termekvaltozat) {
-                        $this->getRepo()->addTo($termekid, $vid, null, $value, $kedv);
+                    if ($vid) {
+                        if ($this->getRepo(TermekValtozat::class)->find($vid)) {
+                            $this->getRepo()->addTo($termekid, $vid, null, $value, $kedv);
+                        }
+                    } elseif (!$vanvaltozat) {
+                        // változat nélküli termék: maga a termék kerül a kosárba
+                        $this->getRepo()->addTo($termekid, null, null, $value, $kedv);
                     }
                 }
             }

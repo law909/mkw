@@ -330,12 +330,11 @@ class KosarRepository extends \mkwhelpers\Repository
             /** @var \Entities\Termek $termek */
             $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
-                if ($vid) {
-                    $termekvaltozat = $this->getRepo(TermekValtozat::class)->find($vid);
-                }
+                // változat nélkül is hívható: olyankor a termék adja az árat
+                $termekvaltozat = $vid ? $this->getRepo(TermekValtozat::class)->find($vid) : null;
                 $k = new \Entities\Kosar();
                 $k->setTermek($termek);
-                if ($vid) {
+                if ($termekvaltozat) {
                     $k->setTermekvaltozat($termekvaltozat);
                 }
                 $k->setSessionid($sessionid);
