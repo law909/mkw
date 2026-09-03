@@ -41,6 +41,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     use \Traits\Kiegyenlites;
 
+    /** ennyi keletkezett bizonylat látszik a listán, a többit a "..." gomb nyitja ki */
+    private const SZARMAZOBIZONYLATLIMIT = 10;
+
     private $biztipusid;
     private \Entities\Bizonylattipus|null $biztipus;
 
@@ -119,6 +122,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     public function setVars($view)
     {
         $this->biztipus?->setTemplateVars($view);
+
+        $view->setVar('szarmazobizonylatlimit', self::SZARMAZOBIZONYLATLIMIT);
 
         $fmc = new fizmodController();
         // a szűrő az inaktív fizetési módokat is kínálja: a régi bizonylatokat is meg kell találni

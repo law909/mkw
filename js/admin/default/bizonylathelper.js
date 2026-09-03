@@ -2897,6 +2897,10 @@ let bizonylathelper = function ($) {
                         }
                     });
                 })
+                .on('click', '.js-szarmazotobbigomb', function (e) {
+                    e.preventDefault();
+                    $(this).hide().closest('.kapcsbiz-szarmazo').find('.js-szarmazotobbi').show();
+                })
                 .on('click', '.js-printbizonylat, .js-pdf', function (e) {
                     let $this = $(this);
                     e.preventDefault();

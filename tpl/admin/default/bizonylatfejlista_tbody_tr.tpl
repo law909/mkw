@@ -384,10 +384,14 @@
             <span>{at('Keletkezett bizonylatok')}:</span>
             {if (!$_egyed.szarmazobizonylatcount)}<strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}
             {if ($_egyed.szarmazobizonylatcount > 0)}
+                {assign var="_rejtettdb" value=$_egyed.szarmazobizonylatcount-$szarmazobizonylatlimit}
+                {if ($_rejtettdb > 0)}
+                    <a class="js-szarmazotobbigomb" href="#" title="{at('További')} {$_rejtettdb} {at('bizonylat')}">...</a>
+                {/if}
                 <table>
                     <tbody>
                     {foreach $_egyed.szarmazobizonylatok as $_sb}
-                        <tr>
+                        <tr{if ($_sb@index < $_rejtettdb)} class="js-szarmazotobbi" style="display:none"{/if}>
                             <td>
                                 {if ($_sb.listaurl)}
                                     <a href="{$_sb.listaurl}" target="_blank"
