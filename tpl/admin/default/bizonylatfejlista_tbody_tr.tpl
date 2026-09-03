@@ -16,6 +16,9 @@
         </td>
     {/if}
     <td class="cell{if ($_egyed.hibas)} tetelszamhiba{/if}">
+        {if ($showrendszeres && $_egyed.rendszeres)}
+            <div class="mattable-important">{at('Rendszeres')}</div>
+        {/if}
         {if ($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva))}
             <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.id}</a>
         {else}
@@ -118,11 +121,6 @@
             {if ($showfelhasznalo)}
                 <tr>
                     <td>{$_egyed.felhasznalonev}</td>
-                </tr>
-            {/if}
-            {if ($showrendszeres && $_egyed.rendszeres)}
-                <tr>
-                    <td colspan="2" class="mattable-important">{at('Rendszeres')}</td>
                 </tr>
             {/if}
             <tr>
