@@ -199,6 +199,54 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * A készlet linkek raktárankénti bontást nyitnak – ugyanaz a terméklista készlet oszlopában
+     * és a termék karbantartó Készlet fülén (mindkettő a termekkeszletsorok.tpl-t rendereli).
+     */
+    function bindKeszletReszletezo($root) {
+        $root
+            .on('click', '.js-keszletreszletezobutton', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termek/getkeszletbyraktar',
+                    data: {
+                        termekid: $(this).data('id')
+                    },
+                    success: function (data) {
+                        dialogcenter.html(data).dialog({
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    dialogcenter.dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            })
+            .on('click', '.js-valtozatkeszletreszletezobutton', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/termekvaltozat/getkeszletbyraktar',
+                    data: {
+                        valtozatid: $(this).data('id')
+                    },
+                    success: function (data) {
+                        const d = JSON.parse(data);
+                        dialogcenter.html(d.html).dialog({
+                            modal: true,
+                            title: d.title,
+                            buttons: {
+                                'OK': function () {
+                                    dialogcenter.dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+    }
+
     const termek = new MattkarbConfig({
         entityName: 'termek',
         beforeShow: function () {
@@ -208,6 +256,7 @@ $(document).ready(function () {
             var valtozattab = $('#ValtozatTab');
             var doktab = $('#DokTab');
             initDokumentumUpload(doktab);
+            bindKeszletReszletezo($('#KeszletTab'));
             $('.js-saveas').on('click', function (e) {
                 e.preventDefault();
                 $('input[name="oper"]').val('add');
@@ -1214,49 +1263,8 @@ $(document).ready(function () {
             } else {
                 doit();
             }
-        })
-            .on('click', '.js-keszletreszletezobutton', function (e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/termek/getkeszletbyraktar',
-                    data: {
-                        termekid: $this.data('id')
-                    },
-                    success: function (data) {
-                        dialogcenter.html(data).dialog({
-                            modal: true,
-                            buttons: {
-                                'OK': function () {
-                                    dialogcenter.dialog('close');
-                                }
-                            }
-                        });
-                    }
-                });
-            })
-            .on('click', '.js-valtozatkeszletreszletezobutton', function (e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/admin/termekvaltozat/getkeszletbyraktar',
-                    data: {
-                        valtozatid: $this.data('id')
-                    },
-                    success: function (data) {
-                        d = JSON.parse(data);
-                        dialogcenter.html(d.html).dialog({
-                            modal: true,
-                            title: d.title,
-                            buttons: {
-                                'OK': function () {
-                                    dialogcenter.dialog('close');
-                                }
-                            }
-                        });
-                    }
-                });
-            });
+        });
+        bindKeszletReszletezo($('#mattable-body'));
 
         $('#cimkefiltercontainer').mattaccord({
             header: '#cimkefiltercontainerhead',

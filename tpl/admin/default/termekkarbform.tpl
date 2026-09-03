@@ -22,6 +22,7 @@
                 <li><a href="#ValtozatTab">{at('Változatok')}</a></li>
                 <li><a href="#SzinKepTab">{at('Szín képek')}</a></li>
             {/if}
+            <li><a href="#KeszletTab">{at('Készlet')}</a></li>
             <li><a href="#MinKeszletTab">{at('Min. készlet')}</a></li>
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
@@ -512,6 +513,23 @@
                         class="ui-icon ui-icon-circle-plus"></span></a>
             </div>
         {/if}
+        <div id="KeszletTab" class="mattkarb-page" data-visible="visible">
+            <table>
+                <thead>
+                <tr>
+                    {if ($maintheme == 'galad')}
+                        <th>{at('Cikkszám')}</th>
+                    {/if}
+                    <th colspan="2">{at('Változat')}</th>
+                    <th class="keszletoszlop">{at('Készlet')}</th>
+                    <th class="keszletoszlop">{at('Foglalt')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {include 'termekkeszletsorok.tpl' termek=$egyed}
+                </tbody>
+            </table>
+        </div>
         <div id="MinKeszletTab" class="mattkarb-page" data-visible="visible">
             <table id="MinKeszletMatrix" class="mattkarb-matrix">
                 <thead>
