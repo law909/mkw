@@ -1648,8 +1648,7 @@ class store
     {
         $x = $bekuldetlencnt;
         if ($bekuldetlencnt === null) {
-            $bizc = new bizonylatfejController();
-            $bizcnt = $bizc->calcNavEredmenyRiasztas();
+            $bizcnt = (new \Services\BizonylatNAVService())->countAlerts();
             $x = $bizcnt['null'];
         }
         return !self::isSzigoru() || (self::isSzigoru() && !$x);

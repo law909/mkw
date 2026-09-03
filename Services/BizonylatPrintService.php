@@ -187,6 +187,36 @@ class BizonylatPrintService
     }
 
     /**
+     * A bizonylat nyomtatott jelölője. NAV-beküldendő bizonylatnál a jelölés előtt a NAV-val
+     * ellenőriztetjük a számlát, és nyomtatottra állítva be is küldjük — a nyomtatott bizonylat
+     * az, ami a vevőhöz kimegy, ezért innentől a NAV-nak is tudnia kell róla.
+     *
+     * @return string|false hibaszöveg (HTML), ha a NAV nem fogadta el; egyébként false
+     */
+    public function setNyomtatva($id, $printed)
+    {
+        /** @var Bizonylatfej $bf */
+        $bf = $this->getRepo()->find($id);
+        if (!$bf) {
+            return false;
+        }
+        $navsvc = new BizonylatNAVService();
+        $nores = $navsvc->validate($id);
+        if ($nores !== true) {
+            return $nores;
+        }
+        $bf->setKellszallitasikoltsegetszamolni(false);
+        $bf->setSimpleedit(true);
+        $bf->setNyomtatva($printed);
+        \mkw\store::getEm()->persist($bf);
+        \mkw\store::getEm()->flush();
+        if ($printed && !$bf->isNavbekuldve()) {
+            return $navsvc->send($id);
+        }
+        return false;
+    }
+
+    /**
      * @param array{html: string, paged: bool} $r
      */
     public function outputResult(array $r, $id)

@@ -54,8 +54,7 @@ class generalDataLoader
         $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
         $btc = new BizonylattipusController();
         $view->setVar('bizonylattipuslist', array_column($btc->getSelectList(), null, 'id'));
-        $bizc = new bizonylatfejController();
-        $bizcnt = $bizc->calcNavEredmenyRiasztas();
+        $bizcnt = (new \Services\BizonylatNAVService())->countAlerts();
         $view->setVar('abortedszamlacnt', $bizcnt['aborted']);
         $view->setVar('bekuldetlenszamlacnt', $bizcnt['null']);
         $view->setVar('csinalhatujszamlat', \mkw\store::csinalhatUjSzamlat($bizcnt['null']));

@@ -28,7 +28,6 @@ use Entities\Termek;
 use Entities\TermekValtozat;
 use Entities\Uzletkoto;
 use Entities\Valutanem;
-use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Services\BizonylatCalculatorService;
@@ -106,7 +105,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     public function viewlist()
     {
         if ($this->biztipus?->getNavbekuldendo()) {
-            $this->NAVEredmenyFeldolgoz();
+            $this->getNAVService()->processResults();
         }
 
         $view = $this->createView('bizonylatfejlista.tpl');
@@ -1578,7 +1577,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $pdf->send(\mkw\store::urlize($id) . '.pdf');
             }
             if ($printed !== false) {
-                $this->setNyomtatva($id, true);
+                $this->getPrintService()->setNyomtatva($id, true);
             }
         }
     }
@@ -1901,45 +1900,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
     }
 
-    public function setNyomtatva($id = null, $printed = null)
+    public function setNyomtatva()
     {
-        $httpcall = $id === null && $printed === null;
-        if ($id === null) {
-            $id = $this->params->getStringRequestParam('id');
-        }
-        if ($printed === null) {
-            $printed = $this->params->getBoolRequestParam('printed');
-        }
-        /** @var \Entities\Bizonylatfej $bf */
-        $bf = $this->getRepo()->find($id);
-        if ($bf) {
-            $nores = $this->validateWithNAV($id);
-            if ($nores !== true) {
-                if (!$httpcall) {
-                    return $nores;
-                } else {
-                    echo $nores;
-                }
-            } else {
-                $bf->setKellszallitasikoltsegetszamolni(false);
-                $bf->setSimpleedit(true);
-                $bf->setNyomtatva($printed);
-                $this->getEm()->persist($bf);
-                $this->getEm()->flush();
-                if ($printed && !$bf->isNavbekuldve()) {
-                    $nores = $this->sendToNAV($id);
-                    if ($nores) {
-                        if (!$httpcall) {
-                            return $nores;
-                        } else {
-                            echo $nores;
-                        }
-                    }
-                }
-            }
-        }
-        if (!$httpcall) {
-            return false;
+        $nores = $this->getPrintService()->setNyomtatva(
+            $this->params->getStringRequestParam('id'),
+            $this->params->getBoolRequestParam('printed')
+        );
+        if ($nores) {
+            echo $nores;
         }
     }
 
@@ -2420,7 +2388,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     public function setNyomtatvaVissza()
     {
-        $this->setNyomtatva($this->params->getStringRequestParam('b'), false);
+        $this->getPrintService()->setNyomtatva($this->params->getStringRequestParam('b'), false);
     }
 
     public function repairPartnerAdat()
@@ -2521,116 +2489,41 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
-    public function sendToNAV($bizszam)
+    public function getNAVService()
     {
-        /** @var \Entities\Bizonylatfej $biz */
-        $biz = $this->getRepo()->find($bizszam);
-        if ($biz && $biz->getBizonylattipusNavbekuldendo() && $biz->isNavbekuldendo()) {
-            $xml = $biz->toNAVOnlineXML();
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
-            if ($no->sendSzamla($bizszam, $xml)) {
-                $biz->setSimpleedit(true);
-                $biz->setNaveredmeny($no->getResult());
-                $this->getEm()->persist($biz);
-                $this->getEm()->flush();
-            } else {
-                $noerrors = $no->getErrors();
-                \mkw\store::writelog($bizszam . ' sendToNAV', 'navonline.log');
-                \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
-                return $no->getErrorsAsHtml();
-            }
-        }
-        return false;
-    }
-
-    public function validateWithNAV($bizszam)
-    {
-        /** @var \Entities\Bizonylatfej $biz */
-        $biz = $this->getRepo()->find($bizszam);
-        if ($biz && $biz->getBizonylattipusNavbekuldendo() && $biz->isNavbekuldendo()) {
-            $xml = $biz->toNAVOnlineXML();
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
-            if ($no->validate($xml)) {
-                if ($no->getResult() !== 'OK') {
-                    $noerrors = $no->getErrors();
-                    \mkw\store::writelog($bizszam . ' validateWithNAV result', 'navonline.log');
-                    \mkw\store::writelog(print_r($no->getResult(), true), 'navonline.log');
-                    return $no->getErrorsAsHtml();
-                }
-                return true;
-            } else {
-                $noerrors = $no->getErrors();
-                \mkw\store::writelog($bizszam . ' validateWithNAV kapcsolat hiba', 'navonline.log');
-                \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
-                return $no->getErrorsAsHtml();
-            }
-        }
-        return true;
-    }
-
-    public function NAVEredmenyFeldolgoz()
-    {
-        $bizszamok = $this->getRepo()->getNAVEredmenyFeldolgozando();
-        if ($bizszamok) {
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
-            if ($no->getSomeSzamlaInfo($bizszamok)) {
-                $noresult = json_decode($no->getResult());
-                foreach ($noresult as $res) {
-                    /** @var \Entities\Bizonylatfej $biz */
-                    $biz = $this->getRepo()->find($res->bizszam);
-                    if ($biz) {
-                        $biz->setSimpleedit(true);
-                        $biz->setNaveredmeny($res->navstate);
-                        $this->getEm()->persist($biz);
-                        $this->getEm()->flush();
-                    }
-                }
-            } else {
-                $noerrors = $no->getErrors();
-                \mkw\store::writelog(print_r($bizszamok, true), 'navonline.log');
-                \mkw\store::writelog(print_r($noerrors, true), 'navonline.log');
-            }
-        }
+        return new \Services\BizonylatNAVService();
     }
 
     public function navonline()
     {
         $id = $this->params->getStringRequestParam('id', '');
         if (\mkw\store::getParameter(\mkw\consts::NAVOnlineVersion, '2_0') === '1_1') {
-            /** @var \Entities\Bizonylatfej $biz */
-            $biz = $this->getRepo()->find($id);
-            if ($biz && $biz->isNavbekuldendo()) {
-                $xml = $biz->toNAVOnlineXML();
+            $xml = $this->getNAVService()->getXML($id);
+            if ($xml) {
                 header("Content-type: application/xml");
                 header("Pragma: no-cache");
                 header("Expires: 0");
                 echo $xml;
             }
-        } else {
-            /** @var \Entities\Bizonylatfej $biz */
-            $biz = $this->getRepo()->find($id);
-            if ($biz && $biz->isNavbekuldendo()) {
-                if ($biz->getNyomtatva()) {
-                    $nores = $this->sendToNAV($id);
-                    if ($nores) {
-                        echo $nores;
-                    }
-                } else {
-                    echo 'A bizonylat nincs kinyomtatva';
-                }
+            return;
+        }
+        /** @var \Entities\Bizonylatfej $biz */
+        $biz = $this->getRepo()->find($id);
+        if ($biz && $biz->isNavbekuldendo()) {
+            if (!$biz->getNyomtatva()) {
+                echo 'A bizonylat nincs kinyomtatva';
+                return;
+            }
+            $nores = $this->getNAVService()->send($id);
+            if ($nores) {
+                echo $nores;
             }
         }
     }
 
     public function requeryNavEredmeny()
     {
-        $id = $this->params->getStringRequestParam('id', '');
-        /** @var \Entities\Bizonylatfej $biz */
-        $biz = $this->getRepo()->find($id);
-        if ($biz) {
-            $no = new \mkwhelpers\NAVOnline(\mkw\store::getTulajAdoszam());
-            $no->requeryFromNAV($id);
-        }
+        $this->getNAVService()->requery($this->params->getStringRequestParam('id', ''));
     }
 
     public function sendEmailSablon()
@@ -2681,23 +2574,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         }
     }
 
-    public function calcNavEredmenyRiasztas()
-    {
-        $filter = new FilterDescriptor();
-        $filter->addFilter('kelt', '>=', '2021-04-01');
-        $filter->addFilter('bizonylattipus', 'IN', ['szamla', 'esetiszamla']);
-        $filter->addFilter('_xx.naveredmeny', '=', 'ABORTED');
-        $abortedcnt = (int)$this->getRepo()->getCount($filter);
-        $filter->clear();
-        $filter->addFilter('kelt', '>=', '2021-04-01');
-        $filter->addFilter('bizonylattipus', 'IN', ['szamla', 'esetiszamla']);
-        $filter->addSql('(_xx.naveredmeny IS NULL)');
-        $nullcnt = (int)$this->getRepo()->getCount($filter);
-        return [
-            'aborted' => $abortedcnt,
-            'null' => $nullcnt
-        ];
-    }
 
     protected function buildTarsbizonylatList($partnerid, $biztipus, $selectedId = '')
     {
