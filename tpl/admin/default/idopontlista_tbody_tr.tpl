@@ -3,75 +3,56 @@
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit"
            title="{at('Szerkeszt')}">{if ($_egyed.ismetlodo)}{at('minden')} {$_egyed.napnev}{else}{$_egyed.kezdet}{/if}</a>
+        <a class="js-emailkezdes" href="#" data-egyedid="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a>
         <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a>
+                class="ui-icon ui-icon-circle-minus"></span></a>
+        <div>{if ($_egyed.tipus == 'rendezveny')}{at('Rendezvény')}{else}{at('Időpont (foglalható)')}{/if}
+            - {if ($_egyed.ismetlodo)}{at('Ismétlődő (heti)')}{else}{at('Egyszeri')}{/if}</div>
         {if ($_egyed.ismetlodo)}
             <div>{$_egyed.idotartam}</div>
         {else}
             <div>{$_egyed.napnev}</div>
-            {if ($_egyed.veg)}<div>{at('Vége')}: {$_egyed.veg}</div>{/if}
+            {if ($_egyed.veg)}
+                <div>{at('Vége')}: {$_egyed.veg}</div>{/if}
         {/if}
-        <div><a class="js-emailkezdes" href="#" data-egyedid="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a></div>
+        <div class="matt-hseparator"></div>
+        <div>{at('Regisztrációs form')}:
+            <a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">{at('Másolás vágólapra')}</a></div>
     </td>
     <td class="cell">
-        <table>
-            <tbody>
-            {if ($_egyed.nev)}
-                <tr>
-                    <td>{at('Név')}: {$_egyed.nev}</td>
-                </tr>
+        {if ($_egyed.nev)}
+            <div>{at('Név')}: <b>{$_egyed.nev}</b></div>
+        {/if}
+        {if ($_egyed.idoponttemanev)}
+            <div>{at('Téma')}: {$_egyed.idoponttemanev}</div>
+        {/if}
+        <div>{at('Tanár')}: {$_egyed.dolgozonev}</div>
+        <div>{at('Helyszín')}: {$_egyed.jogahelyszinnev}</div>
+        <div>
+            {if (!$_egyed.maxresztvevo)}
+                {at('Nincs létszámkorlát')}
+            {elseif ($_egyed.ismetlodo)}
+                {at('Max. résztvevő')}: {$_egyed.maxresztvevo} {at('alkalmanként')}
+            {else}
+                {at('Jelentkezés')}:
+                <b>{$_egyed.foglalasdb} / {$_egyed.maxresztvevo}</b>
+                ({at('szabad')}: {$_egyed.szabadhely})
             {/if}
-            {if ($_egyed.idoponttemanev)}
-                <tr>
-                    <td>{at('Téma')}: {$_egyed.idoponttemanev}</td>
-                </tr>
-            {/if}
-            <tr>
-                <td>{at('Tanár')}: {$_egyed.dolgozonev}</td>
-            </tr>
-            <tr>
-                <td>{at('Helyszín')}: {$_egyed.jogahelyszinnev}</td>
-            </tr>
-            <tr>
-                <td>{at('Ár')}: <span class="pricenowrap">{number_format($_egyed.ar|default:0, 2, '.', ' ')}</span></td>
-            </tr>
-            {if ($_egyed.earlybirdar)}
-                <tr>
-                    <td>{at('Early bird')}: <span class="pricenowrap">{number_format($_egyed.earlybirdar, 2, '.', ' ')}</span>
-                        {if ($_egyed.earlybirdvege)}({$_egyed.earlybirdvege}){/if}</td>
-                </tr>
-            {/if}
-            <tr>
-                <td>
-                    {if (!$_egyed.maxresztvevo)}
-                        {at('Nincs létszámkorlát')}
-                    {elseif ($_egyed.ismetlodo)}
-                        {at('Max. résztvevő')}: {$_egyed.maxresztvevo} {at('alkalmanként')}
-                    {else}
-                        {at('Jelentkezés')}: {$_egyed.foglalasdb} / {$_egyed.maxresztvevo} ({at('szabad')}: {$_egyed.szabadhely})
-                    {/if}
-                    {if ($_egyed.varolistavan)} – {at('van várólista')}{/if}
-                </td>
-            </tr>
-            {if ($_egyed.url)}
-                <tr>
-                    <td>{at('Webcím')}: <a href="{$_egyed.url}" target="_blank">{$_egyed.url}</a></td>
-                </tr>
-            {/if}
-            {if ($_egyed.termeknev)}
-                <tr>
-                    <td>{at('Termék a számlán')}: {$_egyed.termeknev}</td>
-                </tr>
-            {/if}
-            <tr>
-                <td>{at('Számlázási adat bekérés')}: {if ($_egyed.kellszamlazasiadat)}{at('van')}{else}{at('nincs')}{/if}</td>
-            </tr>
-            <tr>
-                <td>{at('Regisztrációs form')}:
-                    <a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">{at('Másolás vágólapra')}</a></td>
-            </tr>
-            </tbody>
-        </table>
+            {if ($_egyed.varolistavan)} – {at('van várólista')}{/if}
+        </div>
+        <div class="matt-hseparator"></div>
+        <div>{at('Ár')}: <span class="pricenowrap">{number_format($_egyed.ar|default:0, 2, '.', ' ')}</span></div>
+        {if ($_egyed.earlybirdar)}
+            <div>{at('Early bird')}: <span class="pricenowrap">{number_format($_egyed.earlybirdar, 2, '.', ' ')}</span>
+                {if ($_egyed.earlybirdvege)}({$_egyed.earlybirdvege}){/if}</div>
+        {/if}
+        {if ($_egyed.termeknev)}
+            <div>{at('Termék a számlán')}: {$_egyed.termeknev}</div>
+        {/if}
+        <div>{at('Számlázási adat bekérés')}: {if ($_egyed.kellszamlazasiadat)}{at('van')}{else}{at('nincs')}{/if}</div>
+        {if ($_egyed.url)}
+            <div>{at('Webcím')}: <a href="{$_egyed.url}" target="_blank">{$_egyed.url}</a></div>
+        {/if}
     </td>
     <td class="cell">
         {$_egyed.idopontallapotnev}
@@ -86,12 +67,6 @@
             <tr>
                 <td><a href="#" data-id="{$_egyed.id}" data-flag="onlinevalaszthato"
                        class="js-flagcheckbox{if ($_egyed.onlinevalaszthato)} ui-state-hover{/if}">{at('Online választható')}</a></td>
-            </tr>
-            <tr>
-                <td>{if ($_egyed.tipus == 'rendezveny')}{at('Rendezvény')}{else}{at('Időpont (foglalható)')}{/if}</td>
-            </tr>
-            <tr>
-                <td>{if ($_egyed.ismetlodo)}{at('Ismétlődő (heti)')}{else}{at('Egyszeri')}{/if}</td>
             </tr>
             </tbody>
         </table>
