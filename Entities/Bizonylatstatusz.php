@@ -40,6 +40,17 @@ class Bizonylatstatusz
     private $mozgat;
 
     /**
+     * A státuszt használó bizonylattípus. Üresen hagyva minden bizonylattípuson választható –
+     * a bizonylat státuszválasztójába a saját típusához tartozó és a típus nélküli státuszok
+     * kerülnek (lásd bizonylatstatuszController::getSelectList()).
+     *
+     * @ORM\ManyToOne(targetEntity="Bizonylattipus")
+     * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     * @var \Entities\Bizonylattipus
+     */
+    private $bizonylattipus;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Emailtemplate",inversedBy="bizonylatstatuszok")
      * @ORM\JoinColumn(name="emailtemplate_id", referencedColumnName="id",nullable=true,onDelete="restrict")
      */
@@ -81,6 +92,40 @@ class Bizonylatstatusz
     public function setNev($nev)
     {
         $this->nev = $nev;
+    }
+
+    /** @return \Entities\Bizonylattipus|null */
+    public function getBizonylattipus()
+    {
+        return $this->bizonylattipus;
+    }
+
+    public function getBizonylattipusId()
+    {
+        return $this->bizonylattipus ? $this->bizonylattipus->getId() : '';
+    }
+
+    public function getBizonylattipusnev()
+    {
+        return $this->bizonylattipus ? $this->bizonylattipus->getNev() : '';
+    }
+
+    /** @param \Entities\Bizonylattipus|string|null $val */
+    public function setBizonylattipus($val)
+    {
+        if (!($val instanceof \Entities\Bizonylattipus)) {
+            $val = $val ? \mkw\store::getEm()->getRepository(Bizonylattipus::class)->find($val) : null;
+        }
+        if ($this->bizonylattipus !== $val) {
+            $this->bizonylattipus = $val;
+        }
+    }
+
+    public function removeBizonylattipus()
+    {
+        if ($this->bizonylattipus !== null) {
+            $this->bizonylattipus = null;
+        }
     }
 
     public function getEmailtemplate()

@@ -152,9 +152,14 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
                 if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
-                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)));
+                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(
+                        \mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben),
+                        null,
+                        null,
+                        $this->getBiztipusId()
+                    ));
                 } else {
-                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(null, null, null, $this->getBiztipusId()));
                 }
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 break;
@@ -164,7 +169,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 } else {
                     $a = false;
                 }
-                $view->setVar('bizonylatstatuszlist', $bsc->getSelectList());
+                $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(null, null, null, $this->getBiztipusId()));
                 $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 if (!$this->biztipus->getShowstorno()) {
                     $view->setVar('bizonylatrontottfilter', 1);
@@ -645,7 +650,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['fakekifizetesdatumstr'] = $t->getFakekifizetesdatumStr();
         }
         $bsc = new bizonylatstatuszController();
-        $x['bizonylatstatuszlist'] = $bsc->getSelectList($t->getBizonylatstatuszId(), $t->getFizmodId(), $t->getSzallitasimodId());
+        $x['bizonylatstatuszlist'] = $bsc->getSelectList(
+            $t->getBizonylatstatuszId(),
+            $t->getFizmodId(),
+            $t->getSzallitasimodId(),
+            $t->getBizonylattipusId()
+        );
         if ($forKarb) {
             foreach ($t->getBizonylatDokok() as $kepje) {
                 $dok[] = $dokCtrl->loadVars($kepje);

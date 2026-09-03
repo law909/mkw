@@ -8,6 +8,9 @@
                     class="ui-icon ui-icon-circle-minus"></span></a>
     </td>
     <td class="cell">
+        {$_egyed.bizonylattipusnev}
+    </td>
+    <td class="cell">
         {$_egyed.fizmodnev} {$_egyed.szallitasimodnev}
     </td>
     {if ($setup.foglalas)}

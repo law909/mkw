@@ -35,6 +35,8 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $x['fizmodnev'] = $t->getFizmodnev();
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
+        $x['bizonylattipus'] = $t->getBizonylattipusId();
+        $x['bizonylattipusnev'] = $t->getBizonylattipusnev();
         return $x;
     }
 
@@ -58,6 +60,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         } else {
             $obj->removeSzallitasimod();
         }
+        $obj->setBizonylattipus($this->params->getStringRequestParam('bizonylattipus'));
         return $obj;
     }
 
@@ -124,11 +127,18 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $view->setVar('fizmodlist', $fmc->getSelectList($record ? $record->getFizmodId() : 0));
         $fmc = new szallitasimodController();
         $view->setVar('szallitasimodlist', $fmc->getSelectList($record ? $record->getSzallitasimodId() : 0, true));
+        $btc = new bizonylattipusController();
+        $view->setVar('bizonylattipuslist', $btc->getSelectList($record ? $record->getBizonylattipusId() : ''));
         $view->setVar('egyed', $this->loadVars($record));
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null)
+    /**
+     * @param string|null $biztipusid a bizonylat típusa – ilyenkor csak az ehhez a típushoz
+     *                                kötött és a típus nélküli (bármelyiken használható)
+     *                                státuszok kerülnek a listába
+     */
+    public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null, $biztipusid = null)
     {
         $filter = new FilterDescriptor();
         if ($szallmodid && $fizmodid) {
@@ -147,6 +157,11 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
+            // a bizonylattípus szűrése itt, nem a lekérdezésben: az addSql nyersen interpolál,
+            // a típusazonosító pedig szöveg – a törzs pár tucat soros, nincs mit spórolni rajta
+            if ($biztipusid && $sor->getBizonylattipusId() && $sor->getBizonylattipusId() != $biztipusid) {
+                continue;
+            }
             $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),

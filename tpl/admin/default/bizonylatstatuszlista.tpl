@@ -35,6 +35,7 @@
             <tr>
                 <th><input id="maincheckbox" type="checkbox"></th>
                 <th>{at('Név')}</th>
+                <th>{at('Bizonylattípus')}</th>
                 <th>{at('Fiz.mód, száll.mód')}</th>
                 {if ($setup.foglalas)}
                     <th>{at('Foglal')}</th>

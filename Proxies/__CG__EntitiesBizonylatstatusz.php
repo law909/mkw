@@ -67,10 +67,10 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto'];
     }
 
     /**
@@ -212,6 +212,61 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
 
         return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBizonylattipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipus', []);
+
+        return parent::getBizonylattipus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBizonylattipusId()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipusId', []);
+
+        return parent::getBizonylattipusId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBizonylattipusnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBizonylattipusnev', []);
+
+        return parent::getBizonylattipusnev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBizonylattipus($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylattipus', [$val]);
+
+        return parent::setBizonylattipus($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeBizonylattipus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeBizonylattipus', []);
+
+        return parent::removeBizonylattipus();
     }
 
     /**

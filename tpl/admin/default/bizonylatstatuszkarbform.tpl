@@ -14,6 +14,16 @@
                     <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
                 </tr>
                 <tr>
+                    <td><label for="BizonylattipusEdit">{at('Bizonylattípus')}:</label></td>
+                    <td><select id="BizonylattipusEdit" name="bizonylattipus">
+                            <option value="">{at('mindegyik')}</option>
+                            {foreach $bizonylattipuslist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="CsoportEdit">{at('Csoport')}:</label></td>
                     <td><input id="CsoportEdit" name="csoport" type="text" size="80" maxlength="255" value="{$egyed.csoport}"></td>
                 </tr>
