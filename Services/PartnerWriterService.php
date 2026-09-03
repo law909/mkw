@@ -287,16 +287,8 @@ class PartnerWriterService
         $this->partner->setMptDiplomaeve($this->params->getIntRequestParam('mpt_diplomaeve'));
         $this->partner->setMptDiplomahely($this->params->getStringRequestParam('mpt_diplomahely'));
         $this->partner->setMptEgyebdiploma($this->params->getStringRequestParam('mpt_egyebdiploma'));
-        $this->partner->setMptTagsagforma(
-            $this->em->getRepository(MPTTagsagforma::class)->find($this->params->getIntRequestParam('mpt_tagsagforma', 0))
-        );
-        $this->partner->setMptTagozat(
-            $this->em->getRepository(MPTTagozat::class)->find($this->params->getIntRequestParam('mpt_tagozat', 0))
-        );
-        $szekciorepo = $this->em->getRepository(MPTSzekcio::class);
-        $this->partner->setMptSzekcio1($szekciorepo->find($this->params->getIntRequestParam('mpt_szekcio1', 0)));
-        $this->partner->setMptSzekcio2($szekciorepo->find($this->params->getIntRequestParam('mpt_szekcio2', 0)));
-        $this->partner->setMptSzekcio3($szekciorepo->find($this->params->getIntRequestParam('mpt_szekcio3', 0)));
+        // a tagságforma, a tagozat és a szekciók az iroda hatáskörében maradnak: a tagi
+        // felület csak mutatja őket, ezért innen szándékosan hiányoznak
 
         return $this;
     }

@@ -189,49 +189,24 @@
                     <h2>{t('Tagság részletei')}</h2>
                     <div class="mpt-grid">
                         <div class="mpt-field">
-                            <label class="mpt-label" for="TagsagformaEdit">{t('Tagság forma')}</label>
-                            <select id="TagsagformaEdit" class="mpt-input" x-model="partner.mpt_tagsagforma">
-                                <option value="">{t('válasszon')}</option>
-                                <template x-for="item in tagsagformalist" :key="item.id">
-                                    <option :value="item.id" x-text="item.caption"></option>
-                                </template>
-                            </select>
+                            <span class="mpt-label">{t('Tagság forma')}</span>
+                            <div class="mpt-readonly" x-text="partner.mpt_tagsagformanev || '—'"></div>
                         </div>
                         <div class="mpt-field">
-                            <label class="mpt-label" for="TagozatEdit">{t('Tagozat')}</label>
-                            <select id="TagozatEdit" class="mpt-input" x-model="partner.mpt_tagozat">
-                                <option value="">{t('válasszon')}</option>
-                                <template x-for="item in tagozatlist" :key="item.id">
-                                    <option :value="item.id" x-text="item.caption"></option>
-                                </template>
-                            </select>
+                            <span class="mpt-label">{t('Tagozat')}</span>
+                            <div class="mpt-readonly" x-text="partner.mpt_tagozatnev || '—'"></div>
                         </div>
                         <div class="mpt-field">
-                            <label class="mpt-label" for="Szekcio1Edit">{t('Szekció 1')}</label>
-                            <select id="Szekcio1Edit" class="mpt-input" x-model="partner.mpt_szekcio1">
-                                <option value="">{t('válasszon')}</option>
-                                <template x-for="item in szekciolist" :key="item.id">
-                                    <option :value="item.id" x-text="item.caption"></option>
-                                </template>
-                            </select>
+                            <span class="mpt-label">{t('Szekció 1')}</span>
+                            <div class="mpt-readonly" x-text="partner.mpt_szekcio1nev || '—'"></div>
                         </div>
                         <div class="mpt-field">
-                            <label class="mpt-label" for="Szekcio2Edit">{t('Szekció 2')}</label>
-                            <select id="Szekcio2Edit" class="mpt-input" x-model="partner.mpt_szekcio2">
-                                <option value="">{t('válasszon')}</option>
-                                <template x-for="item in szekciolist" :key="item.id">
-                                    <option :value="item.id" x-text="item.caption"></option>
-                                </template>
-                            </select>
+                            <span class="mpt-label">{t('Szekció 2')}</span>
+                            <div class="mpt-readonly" x-text="partner.mpt_szekcio2nev || '—'"></div>
                         </div>
                         <div class="mpt-field">
-                            <label class="mpt-label" for="Szekcio3Edit">{t('Szekció 3')}</label>
-                            <select id="Szekcio3Edit" class="mpt-input" x-model="partner.mpt_szekcio3">
-                                <option value="">{t('válasszon')}</option>
-                                <template x-for="item in szekciolist" :key="item.id">
-                                    <option :value="item.id" x-text="item.caption"></option>
-                                </template>
-                            </select>
+                            <span class="mpt-label">{t('Szekció 3')}</span>
+                            <div class="mpt-readonly" x-text="partner.mpt_szekcio3nev || '—'"></div>
                         </div>
                     </div>
                 </div>

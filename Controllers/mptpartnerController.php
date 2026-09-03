@@ -64,9 +64,6 @@ class mptpartnerController extends partnerController
         }
         echo json_encode([
             'partner' => $this->getMPTPartnerData($p),
-            'tagsagformalist' => (new mpttagsagformaController())->getSelectList(),
-            'tagozatlist' => (new mpttagozatController())->getSelectList(),
-            'szekciolist' => (new mptszekcioController())->getSelectList(),
             'folyoszamla' => $this->getFolyoszamlaData($p)
         ]);
     }
@@ -181,11 +178,13 @@ class mptpartnerController extends partnerController
             'mpt_diplomaeve' => $p->getMptDiplomaeve(),
             'mpt_diplomahely' => $p->getMptDiplomahely(),
             'mpt_egyebdiploma' => $p->getMptEgyebdiploma(),
-            'mpt_tagsagforma' => $p->getMptTagsagformaId(),
-            'mpt_tagozat' => $p->getMptTagozatId(),
-            'mpt_szekcio1' => $p->getMptSzekcio1Id(),
-            'mpt_szekcio2' => $p->getMptSzekcio2Id(),
-            'mpt_szekcio3' => $p->getMptSzekcio3Id(),
+            // a tagságforma, a tagozat és a szekciók az iroda hatáskörében vannak, ezért csak
+            // a nevük megy ki: a tagi felületen nem szerkeszthetők
+            'mpt_tagsagformanev' => $p->getMptTagsagformaNev(),
+            'mpt_tagozatnev' => $p->getMptTagozatNev(),
+            'mpt_szekcio1nev' => $p->getMptSzekcio1Nev(),
+            'mpt_szekcio2nev' => $p->getMptSzekcio2Nev(),
+            'mpt_szekcio3nev' => $p->getMptSzekcio3Nev(),
             // a tagságot az iroda tartja karban, a tag csak látja
             'mpt_tagkartya' => $p->getMptTagkartya(),
             'mpt_tagsagdate' => $p->getMptTagsagdateStr()

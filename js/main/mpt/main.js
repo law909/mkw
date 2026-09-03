@@ -10,9 +10,6 @@ document.addEventListener('alpine:init', () => {
         uzenet: '',
         hibak: {},
         partner: {},
-        tagsagformalist: [],
-        tagozatlist: [],
-        szekciolist: [],
         folyoszamla: {egyenleg: 0, tetelek: []},
         jelszo: {jelszoregi: '', jelszo1: '', jelszo2: ''},
         jelszohiba: '',
@@ -26,12 +23,6 @@ document.addEventListener('alpine:init', () => {
         lapValt(lap) {
             this.lap = lap;
             this.menuOpen = false;
-        },
-
-        // a szerver a select értékeit számként adja vissza, az x-model az option
-        // value-jával (string) hasonlít össze
-        azonosito(ertek) {
-            return ertek ? String(ertek) : '';
         },
 
         uzenetKiir(szoveg) {
@@ -54,9 +45,6 @@ document.addEventListener('alpine:init', () => {
                         this.hiba = data.hiba;
                         return;
                     }
-                    this.tagsagformalist = data.tagsagformalist;
-                    this.tagozatlist = data.tagozatlist;
-                    this.szekciolist = data.szekciolist;
                     this.folyoszamla = data.folyoszamla;
                     this.partnerBeallit(data.partner);
                 })
@@ -66,9 +54,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         partnerBeallit(partner) {
-            ['mpt_tagsagforma', 'mpt_tagozat', 'mpt_szekcio1', 'mpt_szekcio2', 'mpt_szekcio3'].forEach((mezo) => {
-                partner[mezo] = this.azonosito(partner[mezo]);
-            });
             // a mentés a mezőket stringként küldi vissza, a null a szerveren figyelmeztetést adna
             Object.keys(partner).forEach((mezo) => {
                 if (partner[mezo] === null || partner[mezo] === false) {
