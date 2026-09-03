@@ -2225,6 +2225,15 @@ if ($DBVersion < '0158') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0158');
 }
 
+if ($DBVersion < '0159') {
+    if (\mkw\store::isGalad()) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE bizonylattipus SET tplname = "biz_garancia.tpl", tplname2="biz_boltieladas.tpl", tplcaption2="Garancialevél", nyomtatni=1 WHERE id="boltieladas"'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0159');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
