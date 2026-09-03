@@ -974,6 +974,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizsablonfej/fejexport', 'bizsablonfejController#fejexport', 'adminbizsablonfejfejexport');
     $router->map('POST', '/admin/bizsablonfej/tetelexport', 'bizsablonfejController#tetelexport', 'adminbizsablonfejtetelexport');
     $router->map('GET', '/admin/bizsablonfej/navonline', 'bizsablonfejController#navonline', 'adminbizsablonfejnavonline');
+    $router->map('POST', '/admin/bizsablonfej/szamlazas', 'bizsablonfejController#szamlazas', 'adminbizsablonfejszamlazas');
 }
 $router->map('GET', '/admin/bizsablonfej/print', 'bizsablonfejController#doPrint', 'adminbizsablonfejprint');
 

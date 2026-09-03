@@ -2262,16 +2262,69 @@ let bizonylathelper = function ($) {
                 },
                 karb: getMattKarbConfig(bizonylattipus),
             });
+            // A számlázás kijelölés nélkül is fut (olyankor a rendszeres sablonokból dolgozik),
+            // ezért a "válasszon ki legalább egyet" ág elé kerül.
+            function szamlazasDialog(tomb) {
+                $('#szamlazasdialog').dialog({
+                    title: 'Számlázás',
+                    resizable: true,
+                    width: 420,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            let dial = $(this);
+                            $.ajax({
+                                url: '/admin/' + entityName + '/szamlazas',
+                                type: 'POST',
+                                data: {
+                                    ids: tomb,
+                                    tetelnevtoldat: $('#SzamlazasTetelnevtoldatEdit').val(),
+                                    mennyiseg: $('#SzamlazasMennyisegEdit').val(),
+                                    sendemail: $('#SzamlazasSendemailEdit').prop('checked') ? 1 : 0,
+                                    sendnav: $('#SzamlazasSendnavEdit').prop('checked') ? 1 : 0
+                                },
+                                success: function (d) {
+                                    dial.dialog('close');
+                                    $('.mattable-tablerefresh').click();
+                                    let adat = d;
+                                    if (typeof adat === 'string') {
+                                        adat = JSON.parse(adat);
+                                    }
+                                    if (adat && adat.uzenet) {
+                                        dialogcenter.html(adat.uzenet).dialog({
+                                            title: 'Számlázás',
+                                            resizable: false,
+                                            modal: true,
+                                            buttons: {
+                                                'OK': function () {
+                                                    $(this).dialog('close');
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        },
+                        'Mégsem': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
+
             $('.mattable-batchbtn').on('click', function (e) {
                 let cbs,
                     tomb = [];
                 e.preventDefault();
                 cbs = $('.maincheckbox:checked');
+                cbs.closest('tr').each(function (index, elem) {
+                    tomb.push($(elem).data('egyedid'));
+                });
+                if ($('.mattable-batchselect').val() === 'szamlazas') {
+                    szamlazasDialog(tomb);
+                    return;
+                }
                 if (cbs.length) {
-                    cbs.closest('tr').each(function (index, elem) {
-                        tomb.push($(elem).data('egyedid'));
-                    });
-
                     switch ($('.mattable-batchselect').val()) {
                         case 'foxpostlabel':
                             dialogcenter.html('Biztos, hogy lekéri a megrendelés címkéket?').dialog({

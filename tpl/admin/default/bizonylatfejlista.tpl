@@ -269,6 +269,27 @@
             {/foreach}
         </select>
     </div>
+    {if ($showrendszeres)}
+        <div id="szamlazasdialog" class="hidden">
+            <div>{at('Kijelölés nélkül a rendszeres sablonokból készül számla.')}</div>
+            <div>
+                <label for="SzamlazasTetelnevtoldatEdit">{at('Tételnév kiegészítés')}:</label>
+                <input id="SzamlazasTetelnevtoldatEdit" name="tetelnevtoldat" type="text">
+            </div>
+            <div>
+                <label for="SzamlazasMennyisegEdit">{at('Mennyiség')}:</label>
+                <input id="SzamlazasMennyisegEdit" name="mennyiseg" type="text" size="8">
+            </div>
+            <div>
+                <label for="SzamlazasSendemailEdit">{at('Küldés emailben')}:</label>
+                <input id="SzamlazasSendemailEdit" name="sendemail" type="checkbox">
+            </div>
+            <div>
+                <label for="SzamlazasSendnavEdit">{at('Beküldés a NAV-hoz')}:</label>
+                <input id="SzamlazasSendnavEdit" name="sendnav" type="checkbox">
+            </div>
+        </div>
+    {/if}
     <div id="mattkarb">
     </div>
 {/block}

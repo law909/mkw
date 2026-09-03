@@ -1577,7 +1577,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     public function sendPDF()
     {
-        $id = $this->params->getStringRequestParam('id');
+        $this->sendPDFTo($this->params->getStringRequestParam('id'));
+    }
+
+    /** A bizonylat PDF-je a partner email címére, a számlalevél sablonnal. */
+    public function sendPDFTo($id)
+    {
         /** @var \Entities\Bizonylatfej $o */
         $o = $this->getRepo()->find($id);
         if ($o) {
