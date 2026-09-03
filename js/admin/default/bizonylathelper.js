@@ -1690,7 +1690,7 @@ let bizonylathelper = function ($) {
             };
         }
         if (nyomtatni && sendemail) {
-            gombok['Küldés emailben és nyomtatás'] = function () {
+            gombok['Nyomtat és email'] = function () {
                 $(this).dialog('close');
                 // a nyomtatás ablaka még a kattintás alatt nyílik: az ajax válaszából indítva
                 // a böngésző popup blokkolója megfogná
