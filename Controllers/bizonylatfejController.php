@@ -1559,6 +1559,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $this->getPrintService()->output($this->params->getStringRequestParam('id'));
     }
 
+    /** A bizonylattípus második nyomtatási formája (tplname2). */
+    public function doPrint2()
+    {
+        $this->getPrintService()->output2($this->params->getStringRequestParam('id'));
+    }
+
     public function doPDF()
     {
         $id = $this->params->getStringRequestParam('id');

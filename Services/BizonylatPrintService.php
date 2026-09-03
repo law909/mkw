@@ -31,12 +31,26 @@ class BizonylatPrintService
         if ($o->getReportfile()) {
             return $o->getReportfile();
         }
+        return $this->tipusTemplate($o, 'tplname');
+    }
+
+    /**
+     * A bizonylattípus második nyomtatási sablonja. A bizonylat egyedi reportfile-ja ide
+     * szándékosan nem szól bele: az az elsődleges formát váltja ki, nem ezt.
+     */
+    public function resolveTemplate2(Bizonylatfej $o)
+    {
+        return $this->tipusTemplate($o, 'tplname2');
+    }
+
+    private function tipusTemplate(Bizonylatfej $o, $mezo)
+    {
         $biztipus = $o->getBizonylattipus();
         if (!$biztipus) {
             return '';
         }
-        return $biztipus->getLocalizedFieldValue('tplname', $o->getBizonylatnyelv())
-            ?: $biztipus->getTplname();
+        return $biztipus->getLocalizedFieldValue($mezo, $o->getBizonylatnyelv())
+            ?: $biztipus->getFieldValue($mezo);
     }
 
     /**
@@ -156,6 +170,20 @@ class BizonylatPrintService
             return;
         }
         $this->outputResult($r, $id);
+    }
+
+    /** A második nyomtatási forma kimenete; ha a típusnak nincs ilyen sablonja, nem ír semmit. */
+    public function output2($id)
+    {
+        $o = $this->getRepo()->findForPrint($id);
+        if (!$o) {
+            return;
+        }
+        $tplname = $this->resolveTemplate2($o);
+        if (!$tplname) {
+            return;
+        }
+        $this->outputResult($this->renderBizonylat($o, $tplname), $id);
     }
 
     /**

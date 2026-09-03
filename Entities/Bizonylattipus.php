@@ -86,6 +86,14 @@ class Bizonylattipus
     private $tplname;
     /** @ORM\Column(type="string",length=200,nullable=true) */
     private $tplname_l1;
+    /** Második nyomtatási forma; ha ki van töltve, a listán külön nyomtatás gomb tartozik hozzá. */
+    /** @ORM\Column(type="string",length=200,nullable=true) */
+    private $tplname2;
+    /** @ORM\Column(type="string",length=200,nullable=true) */
+    private $tplname2_l1;
+    /** A második nyomtatás gomb felirata (title). */
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $tplcaption2;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showfoxpostterminaleditor = false;
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -163,6 +171,8 @@ class Bizonylattipus
             'shownavallapot' => $this->getNavbekuldendo(),
             'showforditottadozas' => $this->getId() === 'szamla' || $this->getId() === 'esetiszamla',
             'showrendszeres' => $this->getId() === 'bizsablon',
+            'showprint2' => (bool)$this->getTplname2(),
+            'tplcaption2' => $this->getTplcaption2(),
             'showemailbutton' => $this->getShowemailbutton(),
             'showeddigimegrendeleseiurl' => $this->getShoweddigimegrendeleseiurl(),
             'showgarancialisadatok' => $this->getShowgarancialisadatok(),
@@ -340,6 +350,36 @@ class Bizonylattipus
     public function setTplnameL1($d)
     {
         $this->tplname_l1 = $d;
+    }
+
+    public function getTplname2()
+    {
+        return $this->tplname2;
+    }
+
+    public function setTplname2($d)
+    {
+        $this->tplname2 = $d;
+    }
+
+    public function getTplname2L1()
+    {
+        return $this->tplname2_l1;
+    }
+
+    public function setTplname2L1($d)
+    {
+        $this->tplname2_l1 = $d;
+    }
+
+    public function getTplcaption2()
+    {
+        return $this->tplcaption2;
+    }
+
+    public function setTplcaption2($d)
+    {
+        $this->tplcaption2 = $d;
     }
 
     public function getShowbizonylatstatuszeditor()

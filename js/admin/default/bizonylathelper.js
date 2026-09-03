@@ -2217,7 +2217,7 @@ let bizonylathelper = function ($) {
                 tablebody: {
                     url: '/admin/' + entityName + '/getlistbody',
                     onStyle: function () {
-                        $('.js-printbizonylat, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, ' +
+                        $('.js-printbizonylat, .js-printbizonylat2, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
                             '.js-kiegyenlit, .js-mirexport').button();
@@ -2230,6 +2230,11 @@ let bizonylathelper = function ($) {
                         $('.js-printbizonylat').each(function () {
                             let $this = $(this);
                             $this.attr('href', '/admin/' + entityName + '/print?id=' + $this.data('egyedid'));
+                        });
+                        // a második nyomtatási forma minden bizonylattípusra a közös útvonalon megy
+                        $('.js-printbizonylat2').each(function () {
+                            let $this = $(this);
+                            $this.attr('href', '/admin/bizonylatfej/print2?id=' + $this.data('egyedid'));
                         });
                         $('.js-pdf').each(function () {
                             let $this = $(this);
@@ -2954,7 +2959,7 @@ let bizonylathelper = function ($) {
                     e.preventDefault();
                     $(this).hide().closest('.kapcsbiz-szarmazo').find('.js-szarmazotobbi').show();
                 })
-                .on('click', '.js-printbizonylat, .js-pdf', function (e) {
+                .on('click', '.js-printbizonylat, .js-printbizonylat2, .js-pdf', function (e) {
                     let $this = $(this);
                     e.preventDefault();
                     nyomtatBizonylat($this.attr('href'), $this.data('egyedid'), $this.data('kellkerdezni') == 1);
