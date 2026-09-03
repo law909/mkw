@@ -699,6 +699,9 @@ class Bizonylatfej
     /** @ORM\Column(type="boolean",nullable=false) */
     private $forditottadozas = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $rendszeres = false;
+
     /** @ORM\OneToMany(targetEntity="BizonylatDok", mappedBy="bizonylat", cascade={"persist", "remove"}) */
     private $bizonylatdokok;
 
@@ -6183,6 +6186,22 @@ class Bizonylatfej
     public function setForditottadozas($forditottadozas)
     {
         $this->forditottadozas = $forditottadozas;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRendszeres()
+    {
+        return $this->rendszeres;
+    }
+
+    /**
+     * @param bool $rendszeres
+     */
+    public function setRendszeres($rendszeres)
+    {
+        $this->rendszeres = $rendszeres;
     }
 
     /**

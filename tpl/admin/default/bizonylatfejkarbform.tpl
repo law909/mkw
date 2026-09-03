@@ -32,6 +32,12 @@
                             <td><input id="ForditottadozasEdit" type="checkbox" name="forditottadozas"{if ($egyed.forditottadozas)} checked{/if}></td>
                         </tr>
                     {/if}
+                    {if ($showrendszeres)}
+                        <tr>
+                            <td><label for="RendszeresEdit">{at('Rendszeres')}:</label></td>
+                            <td><input id="RendszeresEdit" type="checkbox" name="rendszeres"{if ($egyed.rendszeres)} checked{/if}></td>
+                        </tr>
+                    {/if}
                     {if ($showbizonylatstatuszeditor)}
                         <tr>
                             <td class="mattable-important"><label for="BizonylatStatuszEdit">Státusz:</label></td>

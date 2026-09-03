@@ -162,6 +162,7 @@ class Bizonylattipus
             'showpdf' => $this->getShowpdf(),
             'shownavallapot' => $this->getNavbekuldendo(),
             'showforditottadozas' => $this->getId() === 'szamla' || $this->getId() === 'esetiszamla',
+            'showrendszeres' => $this->getId() === 'bizsablon',
             'showemailbutton' => $this->getShowemailbutton(),
             'showeddigimegrendeleseiurl' => $this->getShoweddigimegrendeleseiurl(),
             'showgarancialisadatok' => $this->getShowgarancialisadatok(),

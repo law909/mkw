@@ -618,6 +618,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['isfedexbekuldve'] = (bool)$t->getFedextrackingnumber();
         $x['isfedexszallitas'] = \mkw\store::isFedexSzallitasimod($t->getSzallitasimodId());
         $x['forditottadozas'] = $t->isForditottadozas();
+        $x['rendszeres'] = $t->isRendszeres();
         $x['termekertekeleskikuldve'] = $t->isTermekertekeleskikuldve();
         $x['navbekuldendo'] = $t->isNavbekuldendo() &&
             (
@@ -858,6 +859,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
         $obj->setForditottadozas($this->params->getBoolRequestParam('forditottadozas'));
+
+        $obj->setRendszeres($this->params->getBoolRequestParam('rendszeres'));
 
         $obj->setPenztmozgat($this->params->getBoolRequestParam('penztmozgat'));
 
