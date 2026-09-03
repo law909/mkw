@@ -13,7 +13,12 @@
                 <input id="VLathatoEdit{$valtozat.id}" name="valtozatlathato_{$valtozat.id}" type="checkbox"{if ($valtozat.lathato)} checked="checked"{/if}>
             </label>
         </td>
-        <td colspan="3" class="mattable-cell">
+        <td class="mattable-cell">
+            <label for="VInaktivEdit{$valtozat.id}">{at('Inaktív')}:
+                <input id="VInaktivEdit{$valtozat.id}" name="valtozatinaktiv_{$valtozat.id}" type="checkbox"{if ($valtozat.inaktiv)} checked="checked"{/if}>
+            </label>
+        </td>
+        <td colspan="2" class="mattable-cell">
             <a class="js-valtozatdelbutton" href="#" data-id="{$valtozat.id}"{if ($valtozat.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a>
         </td>

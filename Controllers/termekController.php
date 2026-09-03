@@ -787,6 +787,7 @@ class termekController extends \mkwhelpers\MattableController
                     $valtozat->setElerheto15($this->params->getBoolRequestParam('valtozatelerheto15_' . $valtozatid));
 //						$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
                     $valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
+                    $valtozat->setInaktiv($this->params->getBoolRequestParam('valtozatinaktiv_' . $valtozatid));
                     $valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
                     $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                     $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
@@ -896,6 +897,7 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setElerheto15($this->params->getBoolRequestParam('valtozatelerheto15_' . $valtozatid));
 //							$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
                         $valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
+                        $valtozat->setInaktiv($this->params->getBoolRequestParam('valtozatinaktiv_' . $valtozatid));
                         $valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
                         $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                         $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
@@ -1340,6 +1342,11 @@ class termekController extends \mkwhelpers\MattableController
                 $valtozatok = $termek->getValtozatok();
                 if ($valtozatok) {
                     foreach ($valtozatok as $valt) {
+                        // az inaktív változat már nem választható, de a rá hivatkozó
+                        // bizonylat tételén ott kell maradnia
+                        if ($valt->getInaktiv() && $sel != $valt->getId()) {
+                            continue;
+                        }
                         $ret[] = [
                             'id' => $valt->getId(),
                             'caption' => $valt->getNev(),
@@ -1369,6 +1376,9 @@ class termekController extends \mkwhelpers\MattableController
             );
             /** @var \Entities\TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
+                if ($valt->getInaktiv()) {
+                    continue;
+                }
                 $caption = '';
                 if ($valt->getAdatTipus1Id() == $merettip) {
                     $caption = $valt->getErtek1();
@@ -1424,6 +1434,9 @@ class termekController extends \mkwhelpers\MattableController
             $valtozatok = $this->getRepo(TermekValtozat::class)->getSizesByColor($termekid, $szinid);
             /** @var \Entities\TermekValtozat $valt */
             foreach ($valtozatok as $valt) {
+                if ($valt->getInaktiv()) {
+                    continue;
+                }
                 $ret[] = [
                     'id' => $valt->getId(),
                     'caption' => $valt->getMeretNev(),

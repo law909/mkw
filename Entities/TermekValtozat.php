@@ -117,6 +117,9 @@ class TermekValtozat
     /** @ORM\Column(type="boolean") */
     private $termekfokep = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $inaktiv = false;
+
     /**
      * @ORM\ManyToOne(targetEntity="TermekValtozatAdatTipus",inversedBy="valtozatok1")
      * @ORM\JoinColumn(name="adattipus1_id",referencedColumnName="id",onDelete="restrict")
@@ -314,6 +317,16 @@ class TermekValtozat
     public function setTermekfokep($adat)
     {
         $this->termekfokep = $adat;
+    }
+
+    public function getInaktiv()
+    {
+        return $this->inaktiv;
+    }
+
+    public function setInaktiv($adat)
+    {
+        $this->inaktiv = $adat;
     }
 
     public function getAdatTipus1()
@@ -769,8 +782,13 @@ class TermekValtozat
         $this->lathato4 = $lathato4;
     }
 
+    // Az inaktív változat sehol nem elérhető és nem látható: az egyes webshopok pipái
+    // helyett ez a kapcsoló dönt, hogy egy helyen lehessen kivonni a forgalomból.
     public function getXElerheto()
     {
+        if ($this->inaktiv) {
+            return false;
+        }
         switch (\mkw\store::getSetupValue('webshopnum', 1)) {
             case 1:
                 return $this->getElerheto();
@@ -847,6 +865,9 @@ class TermekValtozat
 
     public function getXLathato()
     {
+        if ($this->inaktiv) {
+            return false;
+        }
         return $this->getNLathato(\mkw\store::getSetupValue('webshopnum', 1));
     }
 
