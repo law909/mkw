@@ -52,14 +52,16 @@
                         {if ($idopont['megvanhely'])}
                             {if ($idopont['url'])}
                                 <a href="{prefixUrl('http://jogadarshan.hu/', $idopont['url'])}" target="_parent"
-                                   class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                                   class="dttorarendbutton margin-bottom-5">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
                             {else}
                                 <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                                   class="dttorarendbutton">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                                   class="dttorarendbutton margin-bottom-5">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
                             {/if}
                         {else}
-                            <div class="pirosszoveg">BETELT</div>
+                            <div class="pirosszoveg margin-bottom-5">BETELT</div>
                         {/if}
+                        <a href="/idopont/lemond?rid={$idopont['uid']|escape:'url'}&d={$idopont['datum']}{$szuroparam}"
+                           class="dttorarendbutton">Lemondom</a>
                     </div>
                 </div>
             {/foreach}

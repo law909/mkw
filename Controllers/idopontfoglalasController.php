@@ -948,6 +948,15 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $datum = $this->getOccurrenceDatum($idopont);
         $email = trim($this->params->getStringRequestParam('email'));
 
+        // a heti nézet Lemondom gombja emailcím nélkül jön ide: előbb azt kérjük be
+        if ($email === '') {
+            $view = $this->createView('idopontlemondasform.tpl');
+            $this->setBookingFormVars($view, $idopont, $datum);
+            $view->setVar('hiba', $idopont ? '' : t('Ezt az alkalmat nem találjuk.'));
+            $view->printTemplateResult();
+            return;
+        }
+
         $foglalas = null;
         if ($idopont && $email) {
             $keres = ['idopont' => $idopont, 'partneremail' => $email];

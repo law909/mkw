@@ -354,6 +354,7 @@ class idopontController extends \mkwhelpers\MattableController
             }
             $idopontok[$nap]['idopontok'][] = [
                 'id' => $item->getId(),
+                'uid' => $item->getUid(),
                 'datum' => $datumstr,
                 'kezdet' => $item->getStartTimeStr(),
                 'veg' => $item->getEndTimeStr(),

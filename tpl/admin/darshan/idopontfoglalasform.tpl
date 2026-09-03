@@ -70,19 +70,6 @@
                 <button class="foglalasbtn" type="submit">Foglalok</button>
             </div>
         </form>
-        <form class="lemondasblokk" method="get" action="/idopont/lemond">
-            <div class="form-group">
-                <label class="form-label" for="lemondemailedit">Meglévő foglalásod lemondásához add meg az emailcímed</label>
-                <input class="form-control" id="lemondemailedit" type="email" name="email" maxlength="255" value="{$egyed.email}" required>
-            </div>
-            <input type="hidden" name="rid" value="{$idopontuid}">
-            <input type="hidden" name="d" value="{$datumparam}">
-            <input type="hidden" name="t" value="{$tanarkod}">
-            <input type="hidden" name="tema" value="{$temakod}">
-            <div class="form-group">
-                <button class="lemondasbtn" type="submit">Lemondom</button>
-            </div>
-        </form>
     {/if}
     <div><a href="{$visszaurl}">Vissza az időpontokhoz</a></div>
 </div>
