@@ -2,6 +2,9 @@
 
 {block "stonebody"}
     <div class="container-full whitebg js-checkout">
+        <div class="chk-betoltes js-chkbetoltes">
+            <span class="chk-betoltes__doboz">{t('Adatok betöltése, kérjük várjon...')}</span>
+        </div>
         <div class="row">
             <div class="col flex-cc">
 

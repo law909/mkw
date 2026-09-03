@@ -209,10 +209,29 @@ var checkout = (function ($, guid) {
         loginblock.find('input[name="email"]').val('');
     }
 
+    // A szállítási mód, a fizetési módok, a Foxpost automaták és a Fedex díjak mind
+    // AJAX-szal töltődnek, és a Fedex hívás másodpercekig is eltarthat. A jQuery globális
+    // ajaxStart/ajaxStop maga számolja a párhuzamos kéréseket, ezért elég ide bekötni.
+    function initBetoltesjelzo() {
+        const $jelzo = $('.js-chkbetoltes');
+        if (!$jelzo.length) {
+            return;
+        }
+        $(document)
+            .on('ajaxStart.chkbetoltes', function () {
+                $jelzo.addClass('chk-betoltes--latszik');
+            })
+            .on('ajaxStop.chkbetoltes', function () {
+                $jelzo.removeClass('chk-betoltes--latszik');
+            });
+    }
+
     function initUI() {
         let $checkout = $('.js-checkout');
 
         if ($checkout.length) {
+
+            initBetoltesjelzo();
 
             $('.js-chktooltipbtn').tooltip({
                 html: false,

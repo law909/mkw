@@ -3157,6 +3157,29 @@ input.bordered[type=submit].inverse,
   margin-bottom: var(--spacing-md);
 }
 
+/* A checkout AJAX betöltései alatt látszó jelzés (checkout.js: initBetoltesjelzo) */
+.chk-betoltes {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.15);
+  cursor: progress;
+}
+.chk-betoltes--latszik {
+  display: flex;
+}
+.chk-betoltes__doboz {
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 8px;
+  background-color: var(--color-background-inverse);
+  color: var(--color-text-inverse);
+  font-weight: 700;
+}
+
 .account-page {
   padding-top: var(--spacing-lg);
 }
