@@ -202,11 +202,26 @@ class FedexService
         $tarolt = [];
         foreach ($rates as $i => $rate) {
             $rates[$i]['szallitasidij'] = $this->convertToWebshopValuta($rate['brutto'], $rate['valutanem']);
+            $rates[$i]['kiszallitasdatum'] = $this->kiszallitasDatum($rate['szallitasiido'] ?? null);
             $tarolt[$rate['servicetype']] = $rates[$i];
         }
         \mkw\store::getMainSession()->fedexrates = $tarolt;
 
         return ['rates' => array_values($rates)];
+    }
+
+    /**
+     * A Fedex a vállalt kiszállítást ISO időbélyeggel adja (commit.dateDetail.dayFormat),
+     * a vevőnek dátum kell. Ha nem értelmezhető, üresen marad – a szolgáltatás díja
+     * enélkül is választható.
+     */
+    private function kiszallitasDatum($szallitasiido)
+    {
+        if (!$szallitasiido) {
+            return '';
+        }
+        $datum = date_create($szallitasiido);
+        return $datum ? $datum->format(\mkw\store::$DateFormat) : '';
     }
 
     /**

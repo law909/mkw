@@ -3180,6 +3180,13 @@ input.bordered[type=submit].inverse,
   font-weight: 700;
 }
 
+/* Fedex szolgáltatás vállalt kiszállítási dátuma a díj mellett */
+.chk-fedexdatum {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text-disabled);
+}
+
 .account-page {
   padding-top: var(--spacing-lg);
 }

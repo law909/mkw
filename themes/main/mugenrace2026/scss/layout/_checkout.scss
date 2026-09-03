@@ -301,3 +301,10 @@
     font-weight: 700;
   }
 }
+
+/* Fedex szolgáltatás vállalt kiszállítási dátuma a díj mellett */
+.chk-fedexdatum {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text-disabled);
+}
