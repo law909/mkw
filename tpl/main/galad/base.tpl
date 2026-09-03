@@ -79,6 +79,7 @@
         </div>
     {/if}
     <div class="container content-back">
+        {include "morzsa.tpl"}
         {block "body"}{/block}
     </div>
 {/block}

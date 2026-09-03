@@ -135,6 +135,7 @@ class mainController extends \mkwhelpers\Controller
             }
             \mkw\store::fillTemplate($this->view);
             $this->view->setVar('kategorianev', $ag->getLocalizedFieldValue('nev'));
+            $this->view->setVar('morzsa', $tf->getMorzsa($ag));
             $this->view->setVar('sketchfabmodelid', $ag->getSketchfabmodelid());
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
@@ -330,6 +331,11 @@ class mainController extends \mkwhelpers\Controller
                 $termek = $tc->getRepo()->findOneBySlug($com);
                 if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
                     $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
+                    $tf = new termekfaController();
+                    $morzsa = $tf->getMorzsa($termek->getTermekfa1());
+                    // a lánc végén maga a termék, link nélkül: ott vagyunk
+                    $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev'), 'link' => ''];
+                    $this->view->setVar('morzsa', $morzsa);
                     $this->showB2BTermeklap($termek);
                 } else {
                     \mkw\store::redirectTo404($com);
