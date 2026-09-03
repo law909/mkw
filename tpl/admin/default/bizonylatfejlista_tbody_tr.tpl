@@ -33,7 +33,6 @@
             <a class="js-printbizonylat" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="{!$_egyed.editprinted && !$_egyed.nyomtatva}"
                title="{at('Nyomtat')}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
             {if ($showprint2)}
-                {* a második forma nem jelöli nyomtatottnak a bizonylatot: az a fenti Nyomtat gomb dolga *}
                 <a class="js-printbizonylat2" href="#" data-egyedid="{$_egyed.id}" data-oper="print" data-kellkerdezni="0"
                    title="{if ($tplcaption2)}{$tplcaption2}{else}{at('Nyomtat')}{/if}" target="_blank"><span class="ui-icon ui-icon-print"></span></a>
             {/if}
