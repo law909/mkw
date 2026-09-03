@@ -594,6 +594,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/bizonylattetel/gettermeklist', 'termekController#getBizonylattetelSelectList', 'adminbizonylattetelgettermeklist');
 $router->map('GET', '/admin/bizonylattetel/valtozatlist', 'bizonylattetelController#valtozathtmllist', 'adminvaltozatlist');
 $router->map('GET', '/admin/bizonylattetel/quickvaltozatlist', 'bizonylattetelController#quickvaltozathtmllist', 'adminquickvaltozatlist');
+$router->map('GET', '/admin/bizonylattetel/getraktarkeszlet', 'bizonylattetelController#getRaktarKeszlet', 'adminbizonylattetelgetraktarkeszlet');
 
 // a bizonylat karb vonalkódos tételfelvitele – csak ott, ahol a vonalkód egyáltalán használatban van
 if (\mkw\store::getSetupValue('vonalkod')) {

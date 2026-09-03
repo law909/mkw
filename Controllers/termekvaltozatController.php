@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Entities\Meretsor;
-use Entities\Raktar;
 use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekKep;
@@ -415,17 +414,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $valtozatid = $this->params->getIntRequestParam('valtozatid');
         /** @var TermekValtozat $valtozat */
         $valtozat = $this->getRepo()->find($valtozatid);
-        $raktarak = $this->getRepo(Raktar::class)->getAllActive();
         if ($valtozat) {
-            $klist = [];
-            foreach ($raktarak as $raktar) {
-                $klist[] = [
-                    'raktarnev' => $raktar->getNev(),
-                    'keszlet' => $valtozat->getKeszlet(null, $raktar->getId())
-                ];
-            }
             $view = $this->createView('termekkeszletreszletezo.tpl');
-            $view->setVar('lista', $klist);
+            $view->setVar('lista', \Services\KeszletService::getKeszletByRaktar($valtozat));
             $tpl = $view->getTemplateResult();
         }
         echo json_encode([

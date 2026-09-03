@@ -5,6 +5,7 @@ namespace Services;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattipus;
+use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekMinkeszlet;
 use Entities\TermekValtozat;
@@ -75,6 +76,26 @@ class KeszletService
     {
         $keszlet = self::calcKeszletInfo($entity, $datum, $raktarid)['keszlet'];
         return ($nonegativ && $keszlet < 0) ? 0 : $keszlet;
+    }
+
+    /**
+     * A termék vagy változat készlete raktáranként, az aktív raktárakra – a készlet
+     * részletezők (terméklista, termék karbantartó, bizonylattétel) közös adatforrása.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     *
+     * @return array<int, array{raktarnev: string, keszlet: mixed}>
+     */
+    public static function getKeszletByRaktar($entity)
+    {
+        $res = [];
+        foreach (\mkw\store::getEm()->getRepository(Raktar::class)->getAllActive() as $raktar) {
+            $res[] = [
+                'raktarnev' => $raktar->getNev(),
+                'keszlet' => self::getKeszlet($entity, null, $raktar->getId()),
+            ];
+        }
+        return $res;
     }
 
     /**

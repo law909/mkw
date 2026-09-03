@@ -309,6 +309,16 @@ img {
     text-align: right;
 }
 
+.tetelkeszletdoboz {
+    display: inline-block;
+    padding: 2px 4px;
+}
+
+.tetelkeszlettabla td {
+    padding: 0 6px;
+    white-space: nowrap;
+}
+
 .emailtemplateleiras {
     width: 480px;
     height: 400px;

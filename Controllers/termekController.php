@@ -2019,17 +2019,9 @@ class termekController extends \mkwhelpers\MattableController
         $termekid = $this->params->getIntRequestParam('termekid');
         $termek = $this->getRepo()->find($termekid);
 
-        $raktarak = $this->getRepo(Raktar::class)->getAllActive();
         if ($termek) {
-            $klist = [];
-            foreach ($raktarak as $raktar) {
-                $klist[] = [
-                    'raktarnev' => $raktar->getNev(),
-                    'keszlet' => $termek->getKeszlet(null, $raktar->getId())
-                ];
-            }
             $view = $this->createView('termekkeszletreszletezo.tpl');
-            $view->setVar('lista', $klist);
+            $view->setVar('lista', \Services\KeszletService::getKeszletByRaktar($termek));
             $view->printTemplateResult();
         }
     }

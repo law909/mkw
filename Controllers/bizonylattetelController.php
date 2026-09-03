@@ -86,6 +86,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         }
 
         if ($forKarb) {
+            $x['raktarkeszlet'] = $this->getRaktarKeszletLista($term, $t->getTermekvaltozat());
             $x['valtozatlist'] = $termekCtrl->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
             $x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
             $x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
@@ -100,6 +101,32 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     protected function setFields($obj)
     {
         return $obj;
+    }
+
+    /**
+     * A tétel raktárankénti készletdobozának adata: a változaté, ha van, különben a terméké.
+     * Termék nélküli (üres) tételsorra üres lista.
+     *
+     * @return array<int, array{raktarnev: string, keszlet: mixed}>
+     */
+    private function getRaktarKeszletLista(?Termek $termek, ?TermekValtozat $valtozat)
+    {
+        $entity = $valtozat ?: $termek;
+        return $entity ? \Services\KeszletService::getKeszletByRaktar($entity) : [];
+    }
+
+    /** A tétel készletdobozának frissítése termék- vagy változatváltás után. */
+    public function getRaktarKeszlet()
+    {
+        $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termek'));
+        $valtozat = $this->getRepo(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozat'));
+        // a változat csak akkor a mérvadó, ha tényleg a kiválasztott termékhez tartozik
+        if ($valtozat && $termek && $valtozat->getTermek()?->getId() != $termek->getId()) {
+            $valtozat = null;
+        }
+        $view = $this->createView('bizonylattetelraktarkeszlet.tpl');
+        $view->setVar('lista', $this->getRaktarKeszletLista($termek, $valtozat));
+        $view->printTemplateResult();
     }
 
     public function getemptyrow()

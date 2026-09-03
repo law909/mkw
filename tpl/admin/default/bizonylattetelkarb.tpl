@@ -80,6 +80,14 @@
             <td id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</td>
         </tr>
         <tr>
+            <td><label>{at('Raktárkészlet')}:</label></td>
+            <td colspan="5">
+                <div class="ui-widget ui-widget-content ui-corner-all tetelkeszletdoboz" id="RaktarKeszlet{$tetel.id}">
+                    {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet}
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td><label for="CikkszamEdit{$tetel.id}">{at('Cikkszám')}:</label></td>
             <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}"></td>
             <td><label for="VtszSelect{$tetel.id}">{at('VTSZ')}:</label></td>

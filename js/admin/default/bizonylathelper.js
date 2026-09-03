@@ -923,6 +923,29 @@ let bizonylathelper = function ($) {
         };
     }
 
+    // A tétel raktárankénti készletdoboza: a választott változat (változat nélkül a termék)
+    // készlete raktáranként. Termék- és változatváltás után újratöltjük.
+    function frissitRaktarKeszlet(sorid) {
+        let doboz = $('#RaktarKeszlet' + sorid);
+        if (!doboz.length) {
+            return;
+        }
+        let termekedit = $('input[name="teteltermek_' + sorid + '"]');
+        if (!termekedit.length) {
+            termekedit = $('select[name="teteltermek_' + sorid + '"]');
+        }
+        $.ajax({
+            url: '/admin/bizonylattetel/getraktarkeszlet',
+            data: {
+                termek: termekedit.val(),
+                valtozat: $('select[name="tetelvaltozat_' + sorid + '"]').val()
+            },
+            success: function (data) {
+                doboz.html(data);
+            }
+        });
+    }
+
     /**
      * Termékcsere egy már beárazott tételsoron: rákérdez, felülírjuk-e az árakat az új termékéből.
      * Üres (még be nem árazott) soron nem kérdez, ott az árak úgyis az új termékből jönnek.
@@ -995,6 +1018,7 @@ let bizonylathelper = function ($) {
         }
         // a kézi változatváltás utána már megint árat tölt
         armegtartas = false;
+        frissitRaktarKeszlet(sorid);
         jelolDefaultTetelek();
     }
 
@@ -2093,6 +2117,7 @@ let bizonylathelper = function ($) {
                             $('input[name="tetelcikkszam_' + sorid + '"]').val(valtozatcikkszam);
                         }
                         setTermekAr(sorid);
+                        frissitRaktarKeszlet(sorid);
                     })
                     .on('change', '.js-bizonylatstatuszedit', function (e) {
                         // az "Értesítés kell" pipa csak akkor jöjjön magától, ha a választott
