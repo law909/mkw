@@ -20,6 +20,12 @@ use mkw\store;
 class superzoneb2bCheckoutController extends checkoutController
 {
 
+    /** A megrendelésből képződő bizonylat típusa. */
+    protected function getBizonylattipusId()
+    {
+        return 'megrendeles';
+    }
+
     public function save()
     {
         $errorlogtext = [];
@@ -71,7 +77,7 @@ class superzoneb2bCheckoutController extends checkoutController
             $biztetelcontroller = new bizonylattetelController();
             $valutanem = $partner->getValutanem();
 
-            $biztipus = $this->getRepo(Bizonylattipus::class)->find('megrendeles');
+            $biztipus = $this->getRepo(Bizonylattipus::class)->find($this->getBizonylattipusId());
             $megrendfej = new \Entities\Bizonylatfej();
             $megrendfej->setPersistentData();
             $megrendfej->setIp($_SERVER['REMOTE_ADDR']);

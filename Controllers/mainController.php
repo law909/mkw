@@ -116,17 +116,25 @@ class mainController extends \mkwhelpers\Controller
         /** @var TermekFa $ag */
         $ag = $tf->getRepo()->findOneBySlug($com);
         if ($ag && !$ag->getInaktiv()) {
+            $termeklista = false;
             if (count($ag->getChildren()) > 0) {
                 $this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');
                 $t = $tf->getkatlista($ag);
             } else {
                 $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
                 $t = $tf->gettermeklistaforparent($ag, 'termekfa');
+                // a b2b ág lapos terméklistát ad vissza, nem sablonváltozók tömbjét
+                $termeklista = \mkw\store::isGalad();
             }
-            foreach ($t as $k => $v) {
-                $this->view->setVar($k, $v);
+            if ($termeklista) {
+                $this->view->setVar('termeklista', $t);
+            } else {
+                foreach ($t as $k => $v) {
+                    $this->view->setVar($k, $v);
+                }
             }
             \mkw\store::fillTemplate($this->view);
+            $this->view->setVar('kategorianev', $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('sketchfabmodelid', $ag->getSketchfabmodelid());
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
@@ -239,10 +247,16 @@ class mainController extends \mkwhelpers\Controller
                 }
 
                 $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
-                foreach ($t as $k => $v) {
-                    $this->view->setVar($k, $v);
+                if (\mkw\store::isGalad()) {
+                    // a b2b ág lapos terméklistát ad vissza, nem sablonváltozók tömbjét
+                    $this->view->setVar('termeklista', $t);
+                } else {
+                    foreach ($t as $k => $v) {
+                        $this->view->setVar($k, $v);
+                    }
                 }
                 \mkw\store::fillTemplate($this->view);
+                $this->view->setVar('keresett', $keresoszo);
                 $this->view->setVar('seodescription', t('A keresett kifejezés: ') . $keresoszo);
                 $this->view->setVar('pagetitle', t('A keresett kifejezés: ') . $keresoszo);
                 $this->view->printTemplateResult(true);
@@ -308,6 +322,7 @@ class mainController extends \mkwhelpers\Controller
                 break;
 
             case \mkw\store::isSuperzoneB2B():
+            case \mkw\store::isGalad():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController();
                 /** @var Termek $termek */

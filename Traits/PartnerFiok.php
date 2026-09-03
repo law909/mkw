@@ -3,6 +3,7 @@
 namespace Traits;
 
 use Controllers\termekertesitoController;
+use Controllers\b2brendelesfejController;
 use Controllers\megrendelesfejController;
 use Controllers\szamlafejController;
 use Controllers\garanciaugyfejController;
@@ -27,7 +28,8 @@ trait PartnerFiok
             $tec = new termekertesitoController();
             $view->setVar('ertesitok', $tec->getAllByPartner($user));
 
-            $megrc = new megrendelesfejController();
+            // a galad b2b webshopban b2brendeles típusú bizonylat keletkezik, nem megrendelés
+            $megrc = \mkw\store::isGalad() ? new b2brendelesfejController() : new megrendelesfejController();
             $megrlist = $megrc->getFiokList();
             $view->setVar('megrendeleslist', $megrlist);
 

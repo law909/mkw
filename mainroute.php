@@ -16,14 +16,17 @@ if (\mkw\store::isMindentkapni()) {
     $router->map('POST', '/elallas/ment', 'elallasController#elallasment', 'saveelallas');
 }
 
-if (\mkw\store::isSuperzoneB2B()) {
+if (\mkw\store::isSuperzoneB2B() || \mkw\store::isGalad()) {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
 }
 
 if (\mkw\store::isB2B()) {
     $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'partnerController#saveAccount', 'saveaccount');
-    $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
-    $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
+    // a galad b2b webshopba csak meglévő partner léphet be, önregisztráció nincs
+    if (!\mkw\store::isGalad()) {
+        $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
+        $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
+    }
     $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
 } else {
     $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
@@ -165,6 +168,9 @@ switch (true) {
         break;
     case \mkw\store::isSuperzoneB2B():
         $router->map('POST', '/checkout/ment', 'superzoneb2bCheckoutController#save', 'checkoutment');
+        break;
+    case \mkw\store::isGalad():
+        $router->map('POST', '/checkout/ment', 'galadCheckoutController#save', 'checkoutment');
         break;
     case \mkw\store::isMugenrace2026():
     case \mkw\store::isSuperzoneHu():

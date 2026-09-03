@@ -748,7 +748,8 @@ class store
         }
         $rut = self::getRouter();
         $v->setVar('showloginlink', $rut->generate('showlogin'));
-        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
+        // a galadnál nincs önregisztráció, tehát az útvonal sincs regisztrálva
+        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu() && !\mkw\store::isGalad()) {
             $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
         }
         $v->setVar('showaccountlink', $rut->generate('showaccount'));

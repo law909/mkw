@@ -1,0 +1,501 @@
+
+table {
+    margin-bottom: 0;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.textalignright {
+    text-align: right;
+}
+
+.textaligncenter {
+    text-align: center;
+}
+
+.textalignjustify {
+    text-align: justify;
+}
+
+.textalignnone {
+    text-align: initial;
+}
+
+.body {
+    background: url("background.jpg") no-repeat scroll center top rgba(0, 0, 0, 1) !important;
+}
+
+.content-back {
+    background: #fff;
+    border-radius: 2px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.content-back-uk {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.content-back label {
+    font-weight: normal;
+}
+
+.checkout-content {
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.checkout-header {
+    font-size: 32px;
+    line-height: 44px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 20px;
+}
+
+.checkout-sendorder {
+    float: right;
+}
+
+.signin {
+    background: url("background.jpg") no-repeat scroll center top rgba(0, 0, 0, 1) !important;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.form-signin-heading {
+    color: #ffffff;
+}
+
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+    font-weight: normal;
+}
+
+.form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.headerbtnbefoglalo {
+    padding-top: 10px;
+}
+
+.btn-red {
+    color: #eee;
+    background-color: #fe0000;
+    border-color: #d30000;
+}
+
+.btn-red:focus,
+.btn-red.focus {
+    color: #eee;
+    background-color: #d30000;
+    border-color: #a80000;
+}
+
+.btn-red:hover {
+    color: #eee;
+    background-color: #d30000;
+    border-color: #a80000;
+}
+
+.btn-red:active,
+.btn-red.active,
+.open > .dropdown-toggle.btn-red {
+    color: #eee;
+    background-color: #d30000;
+    border-color: #a80000;
+}
+
+.btn-red:active:hover,
+.btn-red.active:hover,
+.open > .dropdown-toggle.btn-red:hover,
+.btn-red:active:focus,
+.btn-red.active:focus,
+.open > .dropdown-toggle.btn-red:focus,
+.btn-red:active.focus,
+.btn-red.active.focus,
+.open > .dropdown-toggle.btn-red.focus {
+    color: #eee;
+    background-color: #d4d4d4;
+    border-color: #8c8c8c;
+}
+
+.btn-red:active,
+.btn-red.active,
+.open > .dropdown-toggle.btn-red {
+    background-image: none;
+}
+
+.btn-red.disabled,
+.btn-red[disabled],
+fieldset[disabled] .btn-red,
+.btn-red.disabled:hover,
+.btn-red[disabled]:hover,
+fieldset[disabled] .btn-red:hover,
+.btn-red.disabled:focus,
+.btn-red[disabled]:focus,
+fieldset[disabled] .btn-red:focus,
+.btn-red.disabled.focus,
+.btn-red[disabled].focus,
+fieldset[disabled] .btn-red.focus,
+.btn-red.disabled:active,
+.btn-red[disabled]:active,
+fieldset[disabled] .btn-red:active,
+.btn-red.disabled.active,
+.btn-red[disabled].active,
+fieldset[disabled] .btn-red.active {
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.btn-red .badge {
+    color: #fff;
+    background-color: #333;
+}
+
+.form-control:focus {
+    border-color: #666;
+}
+
+.navbar-brand {
+    padding-top: 3px;
+}
+
+.top-navbar {
+    margin-bottom: 0px;
+    border: none;
+}
+
+.top-navbar-nav {
+    float: right;
+}
+
+.top-navbar-nav > li {
+    display: inline-block;
+    margin-left: 4px;
+}
+
+.top-navbar .navbar-header {
+    width: 100%;
+}
+
+.navbar-default {
+    background-color: #080808;
+    border-color: #171717;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .active > a:hover {
+    color: #555;
+    background-color: #e7e7e7;
+}
+
+.nav > li > a {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li.activenav > a {
+    color: #e7e7e7;
+    background-color: #a2a2a2;
+}
+
+.navul {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.submenu {
+    position: absolute;
+    left: 0;
+    background: #a2a2a2;
+    padding: 10px;
+    float: left;
+    display: none;
+    opacity: 0.95;
+    z-index: 100;
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+}
+
+.submenu > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    float: left;
+    min-width: max-content;
+}
+
+.submenu > ul > li {
+    text-align: left;
+    min-height: 1.9em;
+}
+
+.submenu > ul > li > a {
+    color: #e7e7e7;
+}
+
+.submenu > ul > li > a:hover {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.szindoboz {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.szinkep {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.szinszoveg {
+    text-align: center;
+}
+
+.szindoboz > a {
+    color: #777;
+}
+
+.szindoboz > a:hover {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.valtozatnagykep {
+    text-align: center;
+}
+
+.valtozatform {
+    margin-bottom: 10px;
+}
+
+.valtozatform input[type="number"] {
+    width: 47px;
+}
+
+.valtozattable {
+    width: 100%;
+}
+
+.valtozatkozep {
+    height: 38px;
+}
+
+.valtozatmenny {
+    width: 126px;
+}
+
+.valtozatkeszlet {
+    width: 75px;
+}
+
+.valtozatkozep > span, .valtozatkozep > img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.valtozatcontainer {
+    font-size: 12px;
+}
+
+.desktopright {
+    float: right;
+}
+
+.megrendelemcontainer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.kosar-qtytd {
+    width: 100px;
+}
+
+.kosar-discounttd {
+    width: 100px;
+}
+
+#messagecenter {
+    border: none;
+    padding: 15px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    opacity: .5;
+    color: #fff;
+    font-size: 16px;
+    max-width: 300px;
+    width: auto;
+    background-color: #000;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.notvisible {
+    display: none;
+}
+
+.form-checkbox {
+    display: block;
+    width: 20px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.fioknav {
+    padding: 10px;
+}
+
+.fioknav .okbtn, #RegisztracioForm .okbtn {
+    margin-top: 15px;
+}
+
+.acc-megrendeles {
+    width: 100%;
+}
+
+.acc-copyszamlaadat a {
+    cursor: pointer;
+}
+
+thead.acc-megrendeles {
+    background-color: #6e6e6e;
+    color: #f7f7f7;
+    font-weight: bold;
+}
+
+thead.acc-megrendeles td {
+    padding: 5px 10px;
+}
+
+tbody.acc-megrendeles td {
+    padding: 5px 10px;
+}
+
+.acc-megrendelestablerow {
+    background: #e8e8e8;
+    cursor: pointer;
+}
+
+.acc-megrendelesbordertop {
+    border-top: solid;
+}
+
+.acc-megrendelesborderbottom {
+    border-bottom: solid;
+}
+
+.acc-megrendelescaption {
+    font-weight: bold;
+}
+
+.acc-megrendelestetellist {
+    border: solid 1px;
+    border-color: #ddd;
+    width: 100%;
+    margin-top: 5px;
+}
+
+thead.acc-megrendelestetellist {
+    font-weight: bold;
+}
+
+thead.acc-megrendelestetellist td {
+    padding: 5px 10px;
+}
+
+.arrival {
+    color: #3a8104;
+}
+
+.acc-price {
+    min-width: 120px;
+}
+
+.onroad {
+    color: #a45b13;
+}
+
+@media (min-width: 480px) {
+}
+
+@media (min-width: 767px) {
+}
+
+@media (min-width: 979px) {
+}
+
+@media (max-width: 991px) {
+    .desktopright {
+        float: none;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1470px;
+    }
+}

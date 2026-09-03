@@ -146,6 +146,7 @@ class kosarController extends \mkwhelpers\MattableController
                     'valutanem' => $valutanem
                 ];
             case \mkw\store::isSuperzoneB2B():
+            case \mkw\store::isGalad():
                 $m = $this->getRepo()->getMiniDataBySessionId(\mkw\session::getId());
                 $valutanem = \mkw\store::getWebshopValutanem();
                 return [

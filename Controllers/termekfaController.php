@@ -254,6 +254,8 @@ class termekfaController extends \mkwhelpers\MattableController
                     $t[] = $o;
                 }
                 return $t;
+            case \mkw\store::isGalad():
+                return $this->getFaMenu();
             case \mkw\store::isSuperzoneB2B():
                 // Az aktuális webshophoz beállított "Kezdő termék kategória" karkódja (ha van).
                 $kezdokarkod = '';
@@ -280,6 +282,61 @@ class termekfaController extends \mkwhelpers\MattableController
         return false;
     }
 
+    /**
+     * A menü maga a termékfa: a gyökér alatti ágak, alattuk egy szint. A galad fájában minden
+     * csomóponton be van kapcsolva a menu1lathato, a menu2..4 pedig sehol, ezért a menüszintek
+     * a fa szerkezetéből képződnek, nem a menüjelölőkből.
+     */
+    private function getFaMenu()
+    {
+        $menu = [];
+        /** @var TermekFa $gyoker */
+        foreach ($this->getRepo()->findBy(['parent' => null], ['sorrend' => 'ASC', 'nev' => 'ASC']) as $gyoker) {
+            foreach ($this->faChildren($gyoker) as $ag) {
+                $ag['children'] = $this->faChildren($ag['egyed']);
+                unset($ag['egyed']);
+                foreach ($ag['children'] as $i => $gyerek) {
+                    unset($ag['children'][$i]['egyed']);
+                }
+                $menu[] = $ag;
+            }
+        }
+        return $menu;
+    }
+
+    /**
+     * A látható gyerekágak a getForParent() alakjában, plusz maga az entitás `egyed` néven
+     * (a hívó továbbmehet rajta a következő szintre).
+     *
+     * @param TermekFa $parent
+     */
+    private function faChildren($parent)
+    {
+        $ret = [];
+        /** @var TermekFa $child */
+        foreach ($parent->getChildren() as $child) {
+            if ($child->getInaktiv() || !$child->getLathato()) {
+                continue;
+            }
+            $ret[] = [
+                'egyed' => $child,
+                'id' => $child->getId(),
+                'caption' => $child->getLocalizedFieldValue('nev'),
+                'slug' => $child->getSlug(),
+                'karkod' => $child->getKarkod(),
+                'leiras' => $child->getLocalizedFieldValue('leiras'),
+                'kepurl' => \mkw\store::createBigImageUrl($child->getKepurl()),
+                'kiskepurl' => \mkw\store::createSmallImageUrl($child->getKepurl()),
+                'kozepeskepurl' => \mkw\store::createMediumImageUrl($child->getKepurl()),
+                'kepleiras' => $child->getKepleiras(),
+                'sorrend' => $child->getSorrend(),
+                'childcount' => count($child->getChildren()),
+                'link' => \mkw\store::getRouter()->generate('showtermekfa', false, ['slug' => $child->getSlug()])
+            ];
+        }
+        return $ret;
+    }
+
     public function getNavigator($parent, $elsourlkell = true)
     {
         $navi = [];
@@ -298,6 +355,17 @@ class termekfaController extends \mkwhelpers\MattableController
 
     public function getkatlista($parent)
     {
+        if (\mkw\store::isGalad()) {
+            // a galad fájában nincsenek beállítva a menü jelölők, a szintek a fa szerkezetéből jönnek
+            $t = $this->faChildren($parent);
+            foreach ($t as $i => $child) {
+                unset($t[$i]['egyed']);
+            }
+            return [
+                'children' => $t,
+                'navigator' => $this->getNavigator($parent)
+            ];
+        }
         $repo = $this->getRepo();
         $children = $repo->getForParent($parent->getId(), 4);
         $t = [];
@@ -776,13 +844,16 @@ class termekfaController extends \mkwhelpers\MattableController
                 return $ret;
 
             case \mkw\store::isSuperzoneB2B():
+            case \mkw\store::isGalad():
                 $termekrepo = $this->getEm()->getRepository(Termek::class);
                 $order = [];
                 $kategoriafilter = new FilterDescriptor();
                 $nativkategoriafilter = new FilterDescriptor();
                 if ($parent) {
-                    $kategoriafilter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $parent['id']);
-                    $nativkategoriafilter->addFilter(['_xx.termekfa1_id', '_xx.termekfa2_id', '_xx.termekfa3_id'], '=', $parent['id']);
+                    // a menü tömbként, a kategórialap entitásként adja a szülőt
+                    $parentid = is_array($parent) ? $parent['id'] : $parent->getId();
+                    $kategoriafilter->addFilter(['_xx.termekfa1', '_xx.termekfa2', '_xx.termekfa3'], '=', $parentid);
+                    $nativkategoriafilter->addFilter(['_xx.termekfa1_id', '_xx.termekfa2_id', '_xx.termekfa3_id'], '=', $parentid);
                 }
                 $keresofilter = new FilterDescriptor();
                 if ($this->params) {

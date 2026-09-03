@@ -1,0 +1,84 @@
+{extends "basestone.tpl"}
+
+{block "bodyclass"}class="body"{/block}
+
+{block "stonebody"}
+    <nav class="navbar navbar-default top-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">
+                    <img src="{$imagepath}{$logo}">
+                </a>
+                <form class="navbar-form navbar-left kereso-form" method="get" action="/kereses">
+                    <div class="form-group">
+                        <input type="text" name="keresett" class="form-control" placeholder="{t('Termék keresése')}"
+                               value="{$keresett|default:''|escape}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">{t('Keresés')}</button>
+                </form>
+                <ul class="nav navbar-nav top-navbar-nav">
+                    <li{if ($uzletkoto.loggedin)} title="{t('Üzletkötőként lépett be')}: {$uzletkoto.nev}"{/if}>
+                        <div class="headerbtnbefoglalo">
+                            <a href="{$showaccountlink}" class="js-menupont js-headerbtn btn btn-primary">{t('Fiókom')}</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="headerbtnbefoglalo">
+                            <a id="minikosar" href="{$kosargetlink}" class="js-menupont js-headerbtn btn btn-success">{include "minikosar.tpl"}</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false">
+                    <span class="sr-only">{t('Menü')}</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    {foreach $menu1 as $_menupont}
+                        <li data-termekfa="1">
+                            <a href="#" class="js-menupont">{$_menupont.caption}</a>
+                            <div class="submenu">
+                                <ul>
+                                    {foreach $_menupont.children as $_mpelem}
+                                        <li><a href="{$_mpelem.link}">{$_mpelem.caption}</a></li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {if ($uzletkoto.loggedin)}
+        <div class="container content-back content-back-uk">
+            <div>
+                <span>{t('Most ennek a partnernek rendel')}: <span class="bold">{$user.nev}</span></span>
+                <label>{t('Másik partner választása')}:</label>
+                <select name="partner" class="js-uzletkotopartnerselect">
+                    {foreach $ukpartnerlist as $ukp}
+                        <option value="{$ukp.id}">{$ukp.nev}</option>
+                    {/foreach}
+                </select>
+                <button type="button" class="js-changepartner btn btn-primary">{t('Kiválaszt')}</button>
+                <a class="pull-right" href="{$dologoutlink}">{t('Kilépés')}</a>
+            </div>
+            {if ($uzletkoto.fo)}
+                <div>{t('Fő üzletkötőként a saját üzletkötői partnereinek rendeléseit is látja a Minden rendelés menüpontban.')}</div>
+            {/if}
+        </div>
+    {/if}
+    <div class="container content-back">
+        {block "body"}{/block}
+    </div>
+{/block}
