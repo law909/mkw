@@ -248,10 +248,11 @@ window.szuletesnap = (() => {
                     return null;
                 }
                 const t = ac.currentTime;
-                // a csúszás valamivel tovább tart a repülésnél: a robbanás úgyis elvágja
-                const hossz = Math.max(1.5, (varhatoHossz || 2.5)) * 1.3;
-                const kezdo = 620 + Math.random() * 160;
-                const veg = kezdo * (2.0 + Math.random() * 0.5);
+                // a csúszás jóval tovább tart a repülésnél: így lassú marad, a robbanás úgyis elvágja
+                const hossz = Math.max(2.2, (varhatoHossz || 2.5)) * 1.7;
+                // lefelé csúszik: a magasból ereszkedik, nem emelkedik
+                const kezdo = 600 + Math.random() * 120;
+                const veg = kezdo * (0.42 + Math.random() * 0.12);
 
                 const sav = ac.createBiquadFilter();
                 sav.type = 'bandpass';
@@ -277,7 +278,8 @@ window.szuletesnap = (() => {
                 rezgo.type = 'sine';
                 rezgo.frequency.value = 5 + Math.random() * 3;
                 const rezgoMelyseg = ac.createGain();
-                rezgoMelyseg.gain.value = 14 + Math.random() * 16;
+                // a vibrato mélysége a hangmagassághoz mérten, hogy mélyebben se legyen túl széles
+                rezgoMelyseg.gain.value = kezdo * (0.02 + Math.random() * 0.02);
                 rezgo.connect(rezgoMelyseg);
                 rezgoMelyseg.connect(o.frequency);
                 rezgoMelyseg.connect(sav.frequency);
