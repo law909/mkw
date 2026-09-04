@@ -57,6 +57,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $x['kepid'] = $t->getKepId();
         $x['keszlet'] = $t->getKeszlet();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
+        $x['szabadkeszlet'] = $t->getAvailableStock(null, null, null, false);
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
         if (\mkw\store::isFixSzinMode()) {
             $x['szinid'] = $t->getSzinId();

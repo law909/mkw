@@ -123,6 +123,8 @@ class termekController extends \mkwhelpers\MattableController
         $x['keszlet'] = $t->getKeszlet();
         $x['termekcsoportnev'] = $t->getTermekcsoportNev();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
+        // clamp nélkül: a listán a tényleges hiány is látszik, nem nulla
+        $x['szabadkeszlet'] = $t->getAvailableStock(null, null, null, false);
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
                 $mozgasdb = $tvaltozat->getMozgasDb();

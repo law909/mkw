@@ -1,4 +1,5 @@
-{* A termék készletsorai: változatonként (változat nélkül a termék maga) készlet és foglalás.
+{* A termék készletsorai: változatonként (változat nélkül a termék maga) készlet, foglalás és
+   szabad készlet (készlet − min. készlet − foglalás).
    A terméklista készlet oszlopa és a termék karbantartó Készlet füle ugyanezt mutatja. *}
 {if ($termek.valtozatkeszlet)}
     {foreach $termek.valtozatkeszlet as $vk}
@@ -10,6 +11,7 @@
             <td><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.ertek2}</a></td>
             <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
             <td class="keszletoszlop">{$vk.foglaltmennyiseg}</td>
+            <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$vk.szabadkeszlet}</td>
             <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}&valtozat={$vk.id|escape:'url'}" target="_blank"
                    class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                    data-keszlet="{$vk.keszlet}"
@@ -25,6 +27,7 @@
         <td colspan="2"></td>
         <td class="keszletoszlop"><a href="#" data-id="{$termek.id}" class="js-keszletreszletezobutton">{$termek.keszlet}</a></td>
         <td class="keszletoszlop">{$termek.foglaltmennyiseg}</td>
+        <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$termek.szabadkeszlet}</td>
         <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}" target="_blank"
                class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                data-keszlet="{$termek.keszlet}"
