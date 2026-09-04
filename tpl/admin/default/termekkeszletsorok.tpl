@@ -1,5 +1,5 @@
-{* A termék készletsorai: változatonként (változat nélkül a termék maga) készlet, foglalás és
-   szabad készlet (készlet − min. készlet − foglalás).
+{* A termék készletsorai: változatonként (változat nélkül a termék maga) készlet, foglalás,
+   szabad készlet (készlet − min. készlet − foglalás) és a még beérkezésre váró mennyiség.
    A terméklista készlet oszlopa és a termék karbantartó Készlet füle ugyanezt mutatja. *}
 <table>
     <thead>
@@ -11,6 +11,7 @@
         <th class="keszletoszlop">{at('Készlet')}</th>
         <th class="keszletoszlop">{at('Foglalt')}</th>
         <th class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{at('Szabad')}</th>
+        <th class="keszletoszlop">{at('Érkezik')}</th>
         <th></th>
     </tr>
     </thead>
@@ -26,6 +27,7 @@
                 <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
                 <td class="keszletoszlop">{$vk.foglaltmennyiseg}</td>
                 <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$vk.szabadkeszlet}</td>
+                <td class="keszletoszlop">{$vk.erkezik}</td>
                 <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}&valtozat={$vk.id|escape:'url'}" target="_blank"
                        class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                        data-keszlet="{$vk.keszlet}"
@@ -42,6 +44,7 @@
             <td class="keszletoszlop"><a href="#" data-id="{$termek.id}" class="js-keszletreszletezobutton">{$termek.keszlet}</a></td>
             <td class="keszletoszlop">{$termek.foglaltmennyiseg}</td>
             <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$termek.szabadkeszlet}</td>
+            <td class="keszletoszlop">{$termek.erkezik}</td>
             <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}" target="_blank"
                    class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                    data-keszlet="{$termek.keszlet}"

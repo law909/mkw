@@ -397,12 +397,8 @@ class KeszletService
             $rendelt->addFilter('bt.erkezik', '=', 1);
             self::addErkezikCommonFilter($rendelt, $datum, $raktarid);
 
-            // csak azok a társbizonylatok, amelyek éppen ennek a terméknek az érkezését zárják le
             $megjott = self::entityFilter($entity);
-            $megjott->addSql(
-                'bf.tarsbizonylat_id IN (SELECT ebt.bizonylatfej_id FROM bizonylattetel ebt'
-                . ' WHERE (ebt.erkezik = 1) AND (ebt.' . self::idOszlop($entity) . ' = ' . (int)$entity->getId() . '))'
-            );
+            self::addMegjottFilter($megjott, self::idOszlop($entity));
             self::addErkezikCommonFilter($megjott, $datum, $raktarid);
 
             self::$erkezikCache[$kulcs] = self::sumMozgas($rendelt)['mennyiseg']
@@ -421,7 +417,20 @@ class KeszletService
     }
 
     /**
-     * Egy listaoldal készlete és foglalása négy lekérdezéssel. Enélkül a soronkénti
+     * A már megjött mennyiség sorai: csak azok a társbizonylatok, amelyek éppen ennek a
+     * terméknek/változatnak az érkezését zárják le. A sor saját azonosítójára korrelál, ezért
+     * az egy entitásos és a kötegelt (preloadStock) ág ugyanezt használja.
+     */
+    private static function addMegjottFilter(FilterDescriptor $filter, string $oszlop): void
+    {
+        $filter->addSql(
+            'bf.tarsbizonylat_id IN (SELECT ebt.bizonylatfej_id FROM bizonylattetel ebt'
+            . ' WHERE (ebt.erkezik = 1) AND (ebt.' . $oszlop . ' = bt.' . $oszlop . '))'
+        );
+    }
+
+    /**
+     * Egy listaoldal készlete, foglalása és érkező mennyisége hat lekérdezéssel. Enélkül a soronkénti
      * getKeszlet()/getFoglaltMennyiseg() termékenként és változatonként külön SUM-ot indít:
      * a terméklistán ez 30 termékre több száz kérdés volt.
      *
@@ -435,6 +444,8 @@ class KeszletService
         self::preloadKeszlet('bt.termekvaltozat_id', $valtozatids, $datum, $raktarid);
         self::preloadFoglalas('bt.termek_id', $termekids, $datum, $raktarid);
         self::preloadFoglalas('bt.termekvaltozat_id', $valtozatids, $datum, $raktarid);
+        self::preloadErkezik('bt.termek_id', $termekids, $datum, $raktarid);
+        self::preloadErkezik('bt.termekvaltozat_id', $valtozatids, $datum, $raktarid);
     }
 
     private static function preloadKeszlet(string $mezo, array $ids, $datum, $raktarid): void
@@ -472,6 +483,29 @@ class KeszletService
         foreach ($keresendo as $id) {
             $kulcs = self::cacheKeyFor($mezo, $id, null, $datum, $raktarid);
             self::$foglalasCache[$kulcs] = ($sorok[$id]['mennyiseg'] ?? 0) * -1;
+        }
+    }
+
+    private static function preloadErkezik(string $mezo, array $ids, $datum, $raktarid): void
+    {
+        $keresendo = self::getUncached($mezo, $ids, self::$erkezikCache, [$datum, $raktarid]);
+        if (!$keresendo) {
+            return;
+        }
+        $rendelt = new FilterDescriptor();
+        $rendelt->addFilter('bt.erkezik', '=', 1);
+        self::addErkezikCommonFilter($rendelt, $datum, $raktarid);
+        $rendeltsorok = self::sumMozgasByEntity($mezo, $keresendo, $rendelt);
+
+        $megjott = new FilterDescriptor();
+        self::addMegjottFilter($megjott, substr($mezo, 3));
+        self::addErkezikCommonFilter($megjott, $datum, $raktarid);
+        $megjottsorok = self::sumMozgasByEntity($mezo, $keresendo, $megjott);
+
+        foreach ($keresendo as $id) {
+            $kulcs = self::cacheKeyFor($mezo, $id, $datum, $raktarid);
+            self::$erkezikCache[$kulcs] = ($rendeltsorok[$id]['mennyiseg'] ?? 0)
+                - ($megjottsorok[$id]['mennyiseg'] ?? 0);
         }
     }
 
