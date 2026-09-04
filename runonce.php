@@ -2320,6 +2320,17 @@ if ($DBVersion < '0161') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0161');
 }
 
+if ($DBVersion < '0162') {
+    // A médiatár menüpontja. A sor minden telepítésre bekerül, de a menü csak ott mutatja,
+    // ahol a mediatar kapcsoló be van kapcsolva (lásd menuController::getMenu()).
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "Médiatár", "/admin/mediatar/browse?manage=1", "/admin/mediatar", 40, 1, 950, "js-mediatar"'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE class = "js-mediatar") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0162');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

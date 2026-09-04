@@ -188,6 +188,14 @@ $(document).ready(
                 url: '/admin/regeneratemenu2karkod'
             });
         });
+        // a menüpont a választót nyitja, de fájlkezelőként: nincs hívó, akinek választani kellene
+        $('.js-mediatar').on('click', function (e) {
+            e.preventDefault();
+            const finder = new CKFinder();
+            finder.resourceType = 'Images';
+            finder.params = {manage: 1};
+            finder.popup();
+        });
         $('.js-orarendprint').each(function () {
             $(this).attr('target', '_blank');
         });

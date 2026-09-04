@@ -22,6 +22,9 @@ class mediatarController extends \mkwhelpers\Controller
      *  - a CKFinder-shim iframe-jében (?cb=N)
      *  - a CKEditor 3.6.1 valódi popup ablakában (?CKEditorFuncNum=N)
      * Ezért önálló HTML oldal, nem a base.tpl leszármazottja.
+     *
+     * A ?manage=1 a menüből nyitott, önálló fájlkezelő üzemmód: nincs hívó, akinek a
+     * kiválasztott fájlt vissza kellene adni, ezért a „Kiválaszt" gomb sem kell.
      */
     public function browse()
     {
@@ -54,6 +57,7 @@ class mediatarController extends \mkwhelpers\Controller
         $view->setVar('msel', $sel);
         $view->setVar('mcb', (int)$this->params->getRequestParam('cb', 0));
         $view->setVar('mfuncnum', (int)$this->params->getRequestParam('CKEditorFuncNum', 0));
+        $view->setVar('mmanage', $this->params->getRequestParam('manage', 0) ? 1 : 0);
         // a termék karbantartóból nyitva: a kijelölt képek felvehetők a termék képei közé
         $view->setVar('mtermekid', (int)$this->params->getRequestParam('termekid', 0));
         $view->setVar('mmaxsize', $mediatar->getEffectiveMaxSize());

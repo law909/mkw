@@ -18,6 +18,7 @@
      data-sel="{$msel|escape}"
      data-cb="{$mcb|default:0}"
      data-funcnum="{$mfuncnum|default:0}"
+     data-manage="{$mmanage|default:0}"
      data-maxsize="{$mmaxsize|default:0}"
      data-termekid="{$mtermekid|default:0}"
      data-writable="{if $mwritable}1{else}0{/if}">
@@ -64,8 +65,10 @@
             {if ($mtermekid|default) && $mwritable}
                 <button type="button" id="mtToTermek" disabled="disabled">{at('Termékképek közé')}</button>
             {/if}
-            <button type="button" id="mtSelect" class="mt-primary" disabled="disabled">{at('Kiválaszt')}</button>
-            <button type="button" id="mtCancel">{at('Mégse')}</button>
+            {if !($mmanage|default:0)}
+                <button type="button" id="mtSelect" class="mt-primary" disabled="disabled">{at('Kiválaszt')}</button>
+            {/if}
+            <button type="button" id="mtCancel">{if ($mmanage|default:0)}{at('Bezár')}{else}{at('Mégse')}{/if}</button>
         </div>
     </div>
 

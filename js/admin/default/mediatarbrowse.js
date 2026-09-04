@@ -13,6 +13,7 @@
             path: $root.data('path') || '/',
             cb: parseInt($root.data('cb'), 10) || 0,
             funcnum: parseInt($root.data('funcnum'), 10) || 0,
+            manage: parseInt($root.data('manage'), 10) || 0,
             maxsize: parseInt($root.data('maxsize'), 10) || 0,
             writable: String($root.data('writable')) === '1',
             termekid: parseInt($root.data('termekid'), 10) || 0,
@@ -165,6 +166,10 @@
      * éri el, a shim iframe-je a parentjén – lásd a fájl fejlécét.
      */
     function finish(url, name) {
+        // menüből nyitva nincs hívó, akinek a fájlt vissza kellene adni
+        if (state.manage) {
+            return;
+        }
         if (state.funcnum) {
             try {
                 window.opener.CKEDITOR.tools.callFunction(state.funcnum, url);

@@ -115,6 +115,10 @@ class menuController extends \mkwhelpers\MattableController
         $adat = $this->getRepo()->getAll($filter, ['m.sorrend' => 'ASC', 'sorrend' => 'ASC']);
         /** @var \Entities\Menu $rek */
         foreach ($adat as $rek) {
+            // a médiatár menüpontja mögött mediatar = 0 mellett route sincs
+            if ($rek->getClass() === 'js-mediatar' && !\mkw\store::isMediatar()) {
+                continue;
+            }
             if ($rek->isLathato(\mkw\store::getJog())) {
                 $mcsid = $rek->getMenucsoportId();
                 $menu[] = [
