@@ -211,6 +211,9 @@ class dolgozoController extends \mkwhelpers\MattableController
                     'uitheme' => ($sysadmin ? 'sunny' : $d->getUitheme()),
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
                 ];
+                if (!$sysadmin && $d->getAgeInYears() > 20 && $d->isBirthdayCelebrationToday()) {
+                    \mkw\store::getAdminSession()->szuletesnap = true;
+                }
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminview'));
             } else {
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));

@@ -39,6 +39,51 @@
 {/if}
 <div id="messagecenter"></div>
 <div id="dialogcenter"></div>
+{if ($szuletesnap|default:false)}
+    {* 30 másodperces ASCII tűzijáték a bejelentkezés utáni első főoldalon – lásd szuletesnap.js *}
+    <style>
+        #szuletesnap {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #06060c;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .szuletesnap-kep {
+            margin: 0;
+            height: 100%;
+            font-family: monospace;
+            font-size: 16px;
+            line-height: 1;
+            white-space: pre;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .szuletesnap-felirat {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            text-align: center;
+            font-family: monospace;
+            font-size: 4vw;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            color: #fff;
+            text-shadow: 0 0 10px #ffd166, 0 0 26px #ef476f, 0 0 60px #ef476f;
+            pointer-events: none;
+        }
+    </style>
+    <div id="szuletesnap">
+        <pre class="szuletesnap-kep"></pre>
+        <div class="szuletesnap-felirat">BOLDOG SZÜLETÉSNAPOT!!</div>
+    </div>
+    <script type="text/javascript" src="/js/admin/default/szuletesnap.js"></script>
+{/if}
 <div class="screen">
     {if ($userloggedin)}
         <div class="menu-container ui-widget ui-widget-content ui-corner-all">

@@ -382,6 +382,28 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getAgeInYears($nap = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAgeInYears', [$nap]);
+
+        return parent::getAgeInYears($nap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isBirthdayCelebrationToday($nap = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isBirthdayCelebrationToday', [$nap]);
+
+        return parent::isBirthdayCelebrationToday($nap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getSzulhely()
     {
 

@@ -28,6 +28,8 @@ class adminController extends mkwhelpers\Controller
     {
         $view = $this->createView('main.tpl'); // createView() maga hivja a loadData()-t
         $view->setVar('pagetitle', t('Főoldal'));
+        // a születésnapi köszöntő a bejelentkezés utáni első főoldalon fut le, utána elfogy
+        \mkw\store::getAdminSession()->szuletesnap = false;
 
         // a NAV allapotdoboz tartalmat a bongeszo tolti be (adminnoallapot utvonal)
         $raktar = new raktarController();

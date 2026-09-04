@@ -233,6 +233,51 @@ class Dolgozo
         $this->szulido = new \DateTime(\mkw\store::convDate($adat));
     }
 
+    /** Betöltött életév a megadott napon; születési idő nélkül null. */
+    public function getAgeInYears($nap = null)
+    {
+        if (!$this->szulido) {
+            return null;
+        }
+        return (int)$this->szulido->diff($nap ?: new \DateTime('today'))->y;
+    }
+
+    /**
+     * A születésnap ünneplésének napja-e ma: magán a születésnapon, ha az hétköznap, hétvégi
+     * születésnapnál a rá következő hétfőn. A szilveszteri születésnap átcsúszhat a következő
+     * évre, ezért az idei és a tavalyi születésnapot is nézzük.
+     */
+    public function isBirthdayCelebrationToday($nap = null)
+    {
+        if (!$this->szulido) {
+            return false;
+        }
+        $ma = ($nap ?: new \DateTime('today'))->format('Y-m-d');
+        $ev = (int)substr($ma, 0, 4);
+        foreach ([$ev, $ev - 1] as $_ev) {
+            if ($this->getBirthdayCelebrationDay($_ev) === $ma) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** @return string a megadott évi születésnap ünneplésének napja Y-m-d alakban */
+    private function getBirthdayCelebrationDay($ev)
+    {
+        $ho = (int)$this->szulido->format('n');
+        $nap = (int)$this->szulido->format('j');
+        // a február 29-i születésnapot nem szökőévben 28-án ünnepeljük
+        if ($ho === 2 && $nap === 29 && !checkdate(2, 29, $ev)) {
+            $nap = 28;
+        }
+        $datum = new \DateTime(sprintf('%04d-%02d-%02d', $ev, $ho, $nap));
+        if ((int)$datum->format('N') > 5) {
+            $datum->modify('next monday');
+        }
+        return $datum->format('Y-m-d');
+    }
+
     public function getSzulhely()
     {
         return $this->szulhely;

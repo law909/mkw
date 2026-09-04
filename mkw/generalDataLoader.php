@@ -36,6 +36,8 @@ class generalDataLoader
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
         $view->setVar('loggedinuser', \mkw\store::getAdminSession()->loggedinuser);
+        // a bejelentkezés után egyszer, a főoldalon jelenik meg; az adminController::view() törli
+        $view->setVar('szuletesnap', (bool)\mkw\store::getAdminSession()->szuletesnap);
         $view->setVar('tulajnev', \mkw\store::getParameter(\mkw\consts::Tulajnev));
         $view->setVar('teszt', \mkw\store::isTeszt());
         $view->setVar('dev', \mkw\store::getConfigValue('developer', false));
