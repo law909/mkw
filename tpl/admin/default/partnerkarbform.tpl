@@ -675,9 +675,9 @@
                 </tr>
                 <tr>
                     <td><label for="Jelszo1Edit">{at('Jelszó 1')}:</label></td>
-                    <td><input id="Jelszo1Edit" name="jelszo1" type="password" size="20" maxlength="255" value="" autocomplete="off">
+                    <td><input id="Jelszo1Edit" name="jelszo1" type="password" size="20" maxlength="255" value="" autocomplete="new-password">
                     <td><label for="Jelszo2Edit">{at('Jelszó 2')}:</label></td>
-                    <td><input id="Jelszo2Edit" name="jelszo2" type="password" size="20" maxlength="255" value="">
+                    <td><input id="Jelszo2Edit" name="jelszo2" type="password" size="20" maxlength="255" value="" autocomplete="new-password">
                 </tr>
                 </tbody>
             </table>

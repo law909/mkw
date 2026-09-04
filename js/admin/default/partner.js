@@ -124,6 +124,14 @@ $(document).ready(function () {
             $('input[name="email"]').on('input change', function () {
                 $('.js-email').text($(this).val());
             });
+            // a böngésző a jelszó mezőket az autocomplete="new-password" ellenére is kitöltheti
+            // a mentett jelszavával; a readonly mezőt viszont békén hagyja
+            $('#Jelszo1Edit, #Jelszo2Edit')
+                .val('')
+                .prop('readonly', true)
+                .on('focus', function () {
+                    $(this).prop('readonly', false);
+                });
             $('#cimkekarbcontainer').mattaccord({
                 header: '',
                 page: '.js-cimkekarbpage',
