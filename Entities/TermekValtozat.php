@@ -246,6 +246,11 @@ class TermekValtozat
         return KeszletService::getFoglaltMennyiseg($this, $kivevebiz, $datum, $raktarid);
     }
 
+    public function getIncomingStock($datum = null, $raktarid = null)
+    {
+        return KeszletService::getIncomingStock($this, $datum, $raktarid);
+    }
+
     /**
      * Szabad készlet: készlet − foglalt − min. bolti készlet.
      * A számítás egyetlen helyen él, lásd \Services\KeszletService::calcAvailableStock().

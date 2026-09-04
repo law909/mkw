@@ -551,6 +551,11 @@ class Termek
         return KeszletService::getFoglaltMennyiseg($this, $kivevebiz, $datum, $raktarid);
     }
 
+    public function getIncomingStock($datum = null, $raktarid = null)
+    {
+        return KeszletService::getIncomingStock($this, $datum, $raktarid);
+    }
+
     public function toA2a($partner = null)
     {
         $x = [];

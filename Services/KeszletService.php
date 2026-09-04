@@ -47,6 +47,9 @@ class KeszletService
     /** kulcs => foglalt mennyiség */
     private static $foglalasCache = [];
 
+    /** kulcs => még beérkezésre váró mennyiség */
+    private static $erkezikCache = [];
+
     /**
      * @param \Entities\Termek|null $termek
      * @param \Entities\TermekValtozat|null $valtozat
@@ -159,16 +162,21 @@ class KeszletService
         return $filter;
     }
 
+    private static function idMezo($entity): string
+    {
+        return 'bt.' . self::idOszlop($entity);
+    }
+
     /**
      * Ismeretlen típusra inkább elhasalunk: szűrő nélkül az egész bizonylattetel tábla összegződne.
      */
-    private static function idMezo($entity): string
+    private static function idOszlop($entity): string
     {
         if ($entity instanceof Termek) {
-            return 'bt.termek_id';
+            return 'termek_id';
         }
         if ($entity instanceof TermekValtozat) {
-            return 'bt.termekvaltozat_id';
+            return 'termekvaltozat_id';
         }
         throw new \InvalidArgumentException(
             'Termek vagy TermekValtozat kell, kapott: ' . get_debug_type($entity)
@@ -309,6 +317,47 @@ class KeszletService
     }
 
     /**
+     * A még beérkezésre váró mennyiség: az „érkezik" státuszú bizonylatokon szereplő mennyiség
+     * mínusz az, ami ezekre a bizonylatokra társbizonylatként hivatkozó bizonylatokon (tipikusan
+     * a bevéteken) már megjött. A tétel `erkezik` mezője származtatott, lásd
+     * \Entities\Bizonylattetel::setErkezik().
+     *
+     * Nincs nullára vágva: a túlszállítás negatív számként látszik, ahogy a szabad készletnél is.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     */
+    public static function getIncomingStock($entity, $datum = null, $raktarid = null)
+    {
+        $kulcs = self::cacheKey($entity, $datum, $raktarid);
+        if (!array_key_exists($kulcs, self::$erkezikCache)) {
+            $rendelt = self::entityFilter($entity);
+            $rendelt->addFilter('bt.erkezik', '=', 1);
+            self::addErkezikCommonFilter($rendelt, $datum, $raktarid);
+
+            // csak azok a társbizonylatok, amelyek éppen ennek a terméknek az érkezését zárják le
+            $megjott = self::entityFilter($entity);
+            $megjott->addSql(
+                'bf.tarsbizonylat_id IN (SELECT ebt.bizonylatfej_id FROM bizonylattetel ebt'
+                . ' WHERE (ebt.erkezik = 1) AND (ebt.' . self::idOszlop($entity) . ' = ' . (int)$entity->getId() . '))'
+            );
+            self::addErkezikCommonFilter($megjott, $datum, $raktarid);
+
+            self::$erkezikCache[$kulcs] = self::sumMozgas($rendelt)['mennyiseg']
+                - self::sumMozgas($megjott)['mennyiseg'];
+        }
+        return self::$erkezikCache[$kulcs];
+    }
+
+    private static function addErkezikCommonFilter(FilterDescriptor $filter, $datum, $raktarid): void
+    {
+        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+        $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
+        if ($raktarid) {
+            $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
+    }
+
+    /**
      * Sok termék/változat raktáras sorának betöltése két lekérdezéssel, hogy a soronkénti
      * getMinKeszlet() ne fusson N+1-be.
      */
@@ -339,6 +388,7 @@ class KeszletService
     {
         self::$keszletCache = [];
         self::$foglalasCache = [];
+        self::$erkezikCache = [];
     }
 
     /**
