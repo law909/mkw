@@ -33,8 +33,8 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('bizonylattipus', '=', $bt);
         $mar = $utolsoszamla;
-        if ($this->isKeltSzures()) {
-            $this->addKeltFilter($filter);
+        if ($this->isTeljesitesSzures()) {
+            $this->addTeljesitesFilter($filter);
         } elseif ($mar) {
             $filter->addFilter('id', '>', $mar);
         }
@@ -56,25 +56,25 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A képernyő két doboza külön szűr: az időszakos gombjai kelt szerint, a bizonylatszámosé
-     * a legutóbb feladott sorszám fölött. A kelt szerinti feladás ezért nem is lépteti a
+     * A képernyő két doboza külön szűr: az időszakos gombjai teljesítés szerint, a bizonylatszámosé
+     * a legutóbb feladott sorszám fölött. A teljesítés szerinti feladás ezért nem is lépteti a
      * sorszámokat — azok a sorszám szerinti feladás könyvelése.
      */
-    private function isKeltSzures()
+    private function isTeljesitesSzures()
     {
-        return $this->params->getStringRequestParam('szures') === 'kelt';
+        return $this->params->getStringRequestParam('szures') === 'teljesites';
     }
 
-    /** Kelt szerinti időszak szűrő; üresen hagyott dátumnál az a határ nyitva marad. */
-    private function addKeltFilter(\mkwhelpers\FilterDescriptor $filter)
+    /** Teljesítés szerinti időszak szűrő; üresen hagyott dátumnál az a határ nyitva marad. */
+    private function addTeljesitesFilter(\mkwhelpers\FilterDescriptor $filter)
     {
         $tol = $this->params->getStringRequestParam('tol');
         if ($tol) {
-            $filter->addFilter('kelt', '>=', \mkw\store::toDate($tol));
+            $filter->addFilter('teljesites', '>=', \mkw\store::toDate($tol));
         }
         $ig = $this->params->getStringRequestParam('ig');
         if ($ig) {
-            $filter->addFilter('kelt', '<=', \mkw\store::toDate($ig));
+            $filter->addFilter('teljesites', '<=', \mkw\store::toDate($ig));
         }
     }
 
@@ -141,7 +141,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
     private function storeUtolso()
     {
-        if ($this->isKeltSzures()) {
+        if ($this->isTeljesitesSzures()) {
             return;
         }
         \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);

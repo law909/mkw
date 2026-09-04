@@ -20,11 +20,11 @@
                     {* a két doboz külön szűr: melyiknek a gombját nyomták, azt a szerver ebből tudja meg *}
                     <input name="szures" type="hidden" value="">
                     <fieldset class="mattkarb-doboz">
-                        <legend>{at('Kelt szerinti időszak')}</legend>
+                        <legend>{at('Teljesítés szerinti időszak')}</legend>
                         {include "comp_idoszak.tpl" comptype="datum"}
                         <div>
-                            <a href="/admin/xmlszamlaexport/download" class="js-downloadbutton" data-szures="kelt">{at('Letölt')}</a>
-                            <a href="/admin/xmlszamlaexport/sendemail" class="js-emailbutton" data-szures="kelt">{at('Küld')}</a>
+                            <a href="/admin/xmlszamlaexport/download" class="js-downloadbutton" data-szures="teljesites">{at('Letölt')}</a>
+                            <a href="/admin/xmlszamlaexport/sendemail" class="js-emailbutton" data-szures="teljesites">{at('Küld')}</a>
                         </div>
                     </fieldset>
                     <div class="matt-hseparator"></div>
