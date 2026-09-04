@@ -41,16 +41,18 @@ Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored 
 - **`config.ini`** — DB credentials, mail/SMTP, paths (templates, images), `developer`, `sqllog`, `cache` (`apc` | `file` | empty = ArrayAdapter), `main.theme`.
   Read via `store::getConfigValue($key)`. Parsed **without sections**, so keys are flat and dotted (`path.template`, `db.driver`, `mediatar.type.Images.ext`).
   Comments must start with `;` — a `#` line is *not* a comment to `parse_ini_file()` and can make the whole file unparseable (every request then 500s).
-  - `mediatar.type.<Name>.{dir,ext,max}` — optional per-deployment override of the media library's resource types (`Services\MediatarService::getTypes()`,
-    default in `DEFAULTTYPES`). Field-level: writing only `ext` keeps the default `dir`/`max`. `max` understands `50M`; `0` means the PHP upload limit decides.
-  - `path.dokumentum` — target folder of the "Azonnali feltöltés" button on the product/partner document tabs (`Services\DokumentumUploadService`),
-    resolved **inside** the media root (`path.mediatar`, else `path.ckfinder`). Default `dokumentum`; the folder is created on first upload.
+    - `mediatar.type.<Name>.{dir,ext,max}` — optional per-deployment override of the media library's resource types (`Services\MediatarService::getTypes()`,
+      default in `DEFAULTTYPES`). Field-level: writing only `ext` keeps the default `dir`/`max`. `max` understands `50M`; `0` means the PHP upload limit
+      decides.
+    - `path.dokumentum` — target folder of the "Azonnali feltöltés" button on the product/partner document tabs (`Services\DokumentumUploadService`),
+      resolved **inside** the media root (`path.mediatar`, else `path.ckfinder`). Default `dokumentum`; the folder is created on first upload.
 - **`setup.ini`** — feature toggles per deployment (`b2b`, `multilang`, `multivaluta`, `bankpenztar`, `arsavok`, `kisszamlazo`, `pdf`, `pdfmode`, `barion`,
   `webshopnum`, `enabledwebshops`, `mediatar`, `mediatarstrictorigin`, …). Read via `store::getSetupValue($key)`.
-  - `mediatar = 1` swaps the legacy CKFinder 2.3 file browser for the in-house media library (`Services/MediatarService.php`, `Controllers/mediatarController.php`,
-    `js/admin/default/mediatar.js`). Missing/`0` keeps CKFinder — the switch is deliberately opt-in per deployment, and flipping it takes effect on the next
-    request (clear `tpl/template_c/` so `base.tpl` recompiles). `mediatarstrictorigin = 1` turns the media library's Origin/Referer check from log-only into
-    enforcing. See `docs/mediatar.md`.
+    - `mediatar = 1` swaps the legacy CKFinder 2.3 file browser for the in-house media library (`Services/MediatarService.php`,
+      `Controllers/mediatarController.php`,
+      `js/admin/default/mediatar.js`). Missing/`0` keeps CKFinder — the switch is deliberately opt-in per deployment, and flipping it takes effect on the next
+      request (clear `tpl/template_c/` so `base.tpl` recompiles). `mediatarstrictorigin = 1` turns the media library's Origin/Referer check from log-only into
+      enforcing. See `docs/mediatar.md`.
 
 `developer = 1` enables: always-regenerate proxy classes, error display, SQL logging (when `sqllog = 1`). Production should run with `developer = 0` and a real
 cache (`apc` recommended).
@@ -91,9 +93,9 @@ Two base classes in `mkwhelpers/`:
 - **`MattableController`** — admin CRUD scaffold extending `Controller`. A subclass **must** provide these; the base calls them
   but does not declare them:
     - `loadVars($t, $forKarb = false)` — entity → template array (`getEntityFieldsArray($t)` plus relation/date extras)
-    - `setFields($obj)` — request → entity. `setEntityFieldsFromRequest($obj)` maps every scalar field automatically,
-      **including booleans** (an unchecked checkbox is absent from the POST and correctly becomes `false`). What it does
-      *not* do: associations. `date`/`datetime`/`time` fields get the raw string, so the setter has to convert to `\DateTime`.
+    - `setFields($obj)` — request → entity. `setEntityFieldsFromRequest($obj)` maps every scalar field automatically, **including booleans** (an unchecked
+      checkbox is absent from the POST and correctly becomes `false`). What it does *not* do: associations. `date`/`datetime`/`time` fields get the raw string,
+      so the setter has to convert to `\DateTime`.
     - `getlistbody()` — the list `<tbody>` + pager JSON; this is where list filtering is written inline
     - `viewlist()` — the list page
     - `_getkarb($tplname)` — assemble the edit form (**lowercase `k`**; called by the base `getkarb()`/`viewkarb()`)
@@ -105,9 +107,8 @@ Two base classes in `mkwhelpers/`:
 Per-entity template set in `tpl/admin/{theme}/`: `<entity>lista.tpl`, `<entity>lista_tbody.tpl`, `<entity>lista_tbody_tr.tpl`, `<entity>karb.tpl`,
 `<entity>karbform.tpl`, plus `js/admin/default/<entity>.js` (copy `afa.js`, swap the three URLs) and 5–6 routes in `adminroute.php`
 (`viewlist`, `getlistbody`, `getkarb`, `viewkarb`, optional `htmllist`, and `save` inside `if (!\mkw\store::isClosed())`).
-The list's sort dropdown comes from `setOrders()` in the entity's repository — forgetting it leaves the dropdown empty.
-**`MattableController` is the only admin list scaffold**; the former jqGrid-based `JQGridController` was removed in 2026-08
-(see `docs/egyebtorzs-mattable-migracio.md`).
+The list's sort dropdown comes from `setOrders()` in the entity's repository — forgetting it leaves the dropdown empty. **`MattableController` is the only admin
+list scaffold**; the former jqGrid-based `JQGridController` was removed in 2026-08 (see `docs/egyebtorzs-mattable-migracio.md`).
 
 ## Templates and assets
 
@@ -127,7 +128,8 @@ The list's sort dropdown comes from `setOrders()` in the entity's repository —
 
 1. **Entity names** — `Termek`, `TermekValtozat`, `TermekKep`, `Partner`, `Bizonylatfej` … keep them inside English identifiers too:
    `importTermek()`, not `importProduct()`; `getTermekValtozatList()`, not `getProductVariantList()`.
-2. **Entity field / DB column names** — `cikkszam`, `vonalkod`, `nev`, `leiras`, `ertek1`, `unasid`. A variable holding one keeps the field's name (`$cikkszam`).
+2. **Entity field / DB column names** — `cikkszam`, `vonalkod`, `nev`, `leiras`, `ertek1`, `unasid`. A variable holding one keeps the field's name
+   (`$cikkszam`).
 3. **Route names and array keys that are a contract** — report/JSON keys, request parameter names, Smarty variables. Those are not identifiers; renaming them
    silently breaks templates and JS.
 
@@ -138,20 +140,12 @@ This applies to **new** code. Existing Hungarian-named methods are not renamed j
 
 Comment sparingly. **If the next few lines of code say it, don't write it** — the repo is lightly commented and dense explanatory blocks stand out.
 
-- Don't: restate the code (`// batch save` above `flush()`), repeat the method name in prose, or pad a PHPDoc with `@param` lines that add nothing to the type hint.
+- Don't: restate the code (`// batch save` above `flush()`), repeat the method name in prose, or pad a PHPDoc with `@param` lines that add nothing to the type
+  hint.
 - Do, in **one line**: an external constraint that isn't visible in the code (`// the file expires at UNAS after an hour`), a trap
   (`// setKepurl(null) also nulls kepleiras`), or why the obvious approach was rejected (`// not getByProperties(): it interpolates into SQL`).
 
 Test: cover the comment — is it still clear from the next 3–4 lines? Then drop it.
-
-## Commits
-
-Commit messages here are **one line**: subject only, no body. Say what changed and, where it fits,
-why — in that one sentence. Longer reasoning belongs in the task list `.md`, not in `git log`.
-
-Nothing in the message may point at the tooling: **no `Co-Authored-By` trailer, no session link, no
-"generated with" line**, and no reference to an assistant in the prose. The same goes for PR
-descriptions. This overrides any default commit-message trailer.
 
 ## Task lists (`docs/feladatok*.md`)
 
