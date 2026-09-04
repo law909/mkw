@@ -8,6 +8,7 @@ use Entities\Arsav;
 use Entities\ME;
 use Entities\Meret;
 use Entities\Partner;
+use Entities\Bizonylatfej;
 use Entities\Raktar;
 use Entities\Szin;
 use Entities\Termek;
@@ -2012,6 +2013,50 @@ class termekController extends \mkwhelpers\MattableController
             $view->setVar('lista', \Services\KeszletService::getKeszletByRaktar($termek));
             $view->printTemplateResult();
         }
+    }
+
+    /**
+     * A készletsorok Foglalt/Érkezik linkjének modalja: a foglaló, illetve érkeztető bizonylatok
+     * (terméklista, termék karbantartó, bizonylattétel raktárkészlet-doboza). JSON: title + html.
+     */
+    public function getKeszletBizonylatok()
+    {
+        /** @var TermekValtozat|null $valtozat */
+        $valtozat = $this->getRepo(TermekValtozat::class)->find($this->params->getIntRequestParam('valtozatid'));
+        $termek = $valtozat ? $valtozat->getTermek() : $this->getRepo()->find($this->params->getIntRequestParam('termekid'));
+        $entity = $valtozat ?: $termek;
+        if (!$entity) {
+            echo json_encode(['title' => '', 'html' => '']);
+            return;
+        }
+        $raktarid = $this->params->getIntRequestParam('raktarid');
+        $erkezik = $this->params->getStringRequestParam('tipus') === 'erkezik';
+
+        $lista = $erkezik
+            ? \Services\KeszletService::getErkeztetoBizonylatok($entity, $raktarid)
+            : \Services\KeszletService::getFoglaloBizonylatok($entity, $raktarid);
+        foreach ($lista as &$sor) {
+            $sor['url'] = Bizonylatfej::getListaUrlFor($sor['tipusid'], $sor['id']);
+            $sor['kelt'] = $sor['kelt'] ? (new \DateTime($sor['kelt']))->format(\mkw\store::$DateFormat) : '';
+        }
+        unset($sor);
+
+        $cim = ($erkezik ? t('Érkeztető bizonylatok') : t('Foglaló bizonylatok')) . ': ' . $termek->getNev();
+        if ($valtozat) {
+            $cim .= ' ' . $valtozat->getNev();
+        }
+        $raktar = $raktarid ? $this->getRepo(Raktar::class)->find($raktarid) : null;
+        if ($raktar) {
+            $cim .= ' (' . $raktar->getNev() . ')';
+        }
+
+        $view = $this->createView('keszletbizonylatlista.tpl');
+        $view->setVar('lista', $lista);
+        $view->setVar('erkezik', $erkezik);
+        echo json_encode([
+            'title' => $cim,
+            'html' => $view->getTemplateResult(),
+        ]);
     }
 
     public function arexport()

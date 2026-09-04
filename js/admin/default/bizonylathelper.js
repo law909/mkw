@@ -1935,6 +1935,7 @@ let bizonylathelper = function ($) {
                 });
                 syncPenztmozgat(true);   // a betöltéskor már kiválasztott fizetési módra is
                 syncPenztar();
+                mkwcomp.keszletBizonylatok.bind(alttab);
                 alttab
                     .on('click', '.js-quicktetelnewbutton', function (e) {
                         let $this = $(this);

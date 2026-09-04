@@ -419,6 +419,120 @@ class KeszletService
         return self::$erkezikCache[$kulcs];
     }
 
+    /**
+     * A foglalást adó bizonylatok, bizonylatonként a foglalt mennyiséggel. A szűrés a
+     * getFoglaltMennyiseg()-é, így a sorok összege a foglalt mennyiség.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     *
+     * @return array<int, array{id: string, tipusid: string, kelt: string|null, partnernev: string|null, mennyiseg: float}>
+     */
+    public static function getFoglaloBizonylatok($entity, $raktarid = null): array
+    {
+        $foglalotipusok = Bizonylattipus::getFoglalIdList();
+        if (!$foglalotipusok) {
+            return [];
+        }
+        $filter = self::entityFilter($entity);
+        self::addFoglalasFilter($filter, $foglalotipusok, null, null, $raktarid);
+        return self::listBizonylatok($filter, -1);
+    }
+
+    /**
+     * Az érkezést nyilvántartó bizonylatok a még várt mennyiséggel (rendelt − a társbizonylatokon
+     * már megjött). A szűrés a getIncomingStock()-é, a teljesen megjött bizonylat kimarad.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     *
+     * @return array<int, array{id: string, tipusid: string, kelt: string|null, partnernev: string|null, mennyiseg: float}>
+     */
+    public static function getErkeztetoBizonylatok($entity, $raktarid = null): array
+    {
+        $rendelt = self::entityFilter($entity);
+        $rendelt->addFilter('bt.erkezik', '=', 1);
+        self::addErkezikCommonFilter($rendelt, null, $raktarid);
+        $sorok = self::listBizonylatok($rendelt, 1);
+        if (!$sorok) {
+            return [];
+        }
+
+        $megjott = self::entityFilter($entity);
+        self::addMegjottFilter($megjott, self::idOszlop($entity));
+        self::addErkezikCommonFilter($megjott, null, $raktarid);
+        $megjottsorok = self::sumMozgasByTarsbizonylat($megjott);
+
+        $ret = [];
+        foreach ($sorok as $sor) {
+            $sor['mennyiseg'] -= $megjottsorok[$sor['id']] ?? 0;
+            if ($sor['mennyiseg'] != 0) {
+                $ret[] = $sor;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Bizonylatonként összegzett mozgás: a sumMozgas() bizonylatfejre csoportosított párja.
+     *
+     * @param int $elojel −1 a foglalásnál, hogy a kimenő mennyiség pozitívként jelenjen meg
+     */
+    private static function listBizonylatok(FilterDescriptor $filter, int $elojel): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('tipusid', 'tipusid');
+        $rsm->addScalarResult('kelt', 'kelt');
+        $rsm->addScalarResult('partnernev', 'partnernev');
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT bf.id AS id, bf.bizonylattipus_id AS tipusid, bf.kelt AS kelt, bf.partnernev AS partnernev,'
+            . ' SUM(bt.mennyiseg * bt.irany) * ' . $elojel . ' AS mennyiseg'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            . ' GROUP BY bf.id, bf.bizonylattipus_id, bf.kelt, bf.partnernev'
+            . ' ORDER BY bf.kelt ASC, bf.id ASC'
+            ,
+            $rsm
+        );
+        $q->setParameters($filter->getQueryParameters());
+
+        $ret = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $sor['mennyiseg'] = (float)$sor['mennyiseg'];
+            $ret[] = $sor;
+        }
+        return $ret;
+    }
+
+    /**
+     * @return array<string, float> rendelő bizonylatszám => a rá hivatkozó társbizonylatokon megjött mennyiség
+     */
+    private static function sumMozgasByTarsbizonylat(FilterDescriptor $filter): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('tars', 'tars');
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT bf.tarsbizonylat_id AS tars, SUM(bt.mennyiseg * bt.irany) AS mennyiseg'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            . ' GROUP BY bf.tarsbizonylat_id'
+            ,
+            $rsm
+        );
+        $q->setParameters($filter->getQueryParameters());
+
+        $ret = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $ret[$sor['tars']] = (float)$sor['mennyiseg'];
+        }
+        return $ret;
+    }
+
     private static function addErkezikCommonFilter(FilterDescriptor $filter, $datum, $raktarid): void
     {
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');

@@ -301,12 +301,55 @@ var mkwcomp = (function ($) {
         }
     }
 
+    /**
+     * A készletsorok Foglalt/Érkezik linkje: modalban a foglaló, illetve érkeztető bizonylatok.
+     * A link data-termekid, data-valtozatid, data-raktarid és data-tipus (foglal|erkezik)
+     * attribútumot hord; a bizonylatszám a szűrt listanézetre visz.
+     */
+    function keszletBizonylatok() {
+
+        function bind($root) {
+            $root.on('click', '.js-keszletbizonylatok', function (e) {
+                e.preventDefault();
+                const $link = $(this);
+                $.ajax({
+                    url: '/admin/termek/keszletbizonylatok',
+                    type: 'GET',
+                    data: {
+                        termekid: $link.data('termekid'),
+                        valtozatid: $link.data('valtozatid'),
+                        raktarid: $link.data('raktarid'),
+                        tipus: $link.data('tipus')
+                    },
+                    success: function (data) {
+                        const d = JSON.parse(data);
+                        $('#dialogcenter').html(d.html).dialog({
+                            modal: true,
+                            title: d.title,
+                            width: 'auto',
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        return {
+            bind: bind
+        }
+    }
+
     return {
         termekfaFilter: jstreeFilter('/admin/termekfa/jsonlist'),
         termekmenuFilter: jstreeFilter('/admin/termekmenu/jsonlist'),
         datumEdit: datumEdit(),
         bizonylattipusFilter: bizonylattipusFilter(),
-        partnercimkeFilter: partnercimkeFilter()
+        partnercimkeFilter: partnercimkeFilter(),
+        keszletBizonylatok: keszletBizonylatok()
     }
 
 })(jQuery);

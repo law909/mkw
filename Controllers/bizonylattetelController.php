@@ -126,6 +126,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         }
         $view = $this->createView('bizonylattetelraktarkeszlet.tpl');
         $view->setVar('lista', $this->getRaktarKeszletLista($termek, $valtozat));
+        $view->setVar('termekid', $termek?->getId());
+        $view->setVar('valtozatid', $valtozat?->getId());
         $view->printTemplateResult();
     }
 

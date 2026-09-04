@@ -1,5 +1,7 @@
 {* A termék készletsorai: változatonként (változat nélkül a termék maga) készlet, foglalás,
    szabad készlet (készlet − min. készlet − foglalás) és a még beérkezésre váró mennyiség.
+   A foglalt és az érkező mennyiség linkje a foglaló / érkeztető bizonylatok modalját nyitja
+   (mkwcomp.keszletBizonylatok).
    A terméklista készlet oszlopa és a termék karbantartó Készlet füle ugyanezt mutatja. *}
 <table>
     <thead>
@@ -25,9 +27,11 @@
                 <td><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.ertek1}</a></td>
                 <td><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.ertek2}</a></td>
                 <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
-                <td class="keszletoszlop">{$vk.foglaltmennyiseg}</td>
+                <td class="keszletoszlop">{if ($vk.foglaltmennyiseg != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
+                                              data-valtozatid="{$vk.id}" data-tipus="foglal">{$vk.foglaltmennyiseg}</a>{else}{$vk.foglaltmennyiseg}{/if}</td>
                 <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$vk.szabadkeszlet}</td>
-                <td class="keszletoszlop">{$vk.erkezik}</td>
+                <td class="keszletoszlop">{if ($vk.erkezik != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
+                                              data-valtozatid="{$vk.id}" data-tipus="erkezik">{$vk.erkezik}</a>{else}{$vk.erkezik}{/if}</td>
                 <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}&valtozat={$vk.id|escape:'url'}" target="_blank"
                        class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                        data-keszlet="{$vk.keszlet}"
@@ -42,9 +46,11 @@
             {/if}
             <td colspan="2"></td>
             <td class="keszletoszlop"><a href="#" data-id="{$termek.id}" class="js-keszletreszletezobutton">{$termek.keszlet}</a></td>
-            <td class="keszletoszlop">{$termek.foglaltmennyiseg}</td>
+            <td class="keszletoszlop">{if ($termek.foglaltmennyiseg != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
+                                          data-tipus="foglal">{$termek.foglaltmennyiseg}</a>{else}{$termek.foglaltmennyiseg}{/if}</td>
             <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$termek.szabadkeszlet}</td>
-            <td class="keszletoszlop">{$termek.erkezik}</td>
+            <td class="keszletoszlop">{if ($termek.erkezik != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
+                                          data-tipus="erkezik">{$termek.erkezik}</a>{else}{$termek.erkezik}{/if}</td>
             <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}" target="_blank"
                    class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                    data-keszlet="{$termek.keszlet}"

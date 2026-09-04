@@ -200,11 +200,13 @@ $(document).ready(function () {
     }
 
     /**
-     * A készletsorok gombjai: a készlet linkek raktárankénti bontást nyitnak, a címke gomb a
-     * darabszámot kérdezi meg – ugyanaz a terméklista készlet oszlopában és a termék
-     * karbantartó Készlet fülén (mindkettő a termekkeszletsorok.tpl-t rendereli).
+     * A készletsorok gombjai: a készlet linkek raktárankénti bontást nyitnak, a foglalt és az
+     * érkező mennyiség a foglaló / érkeztető bizonylatokat, a címke gomb a darabszámot kérdezi
+     * meg – ugyanaz a terméklista készlet oszlopában és a termék karbantartó Készlet fülén
+     * (mindkettő a termekkeszletsorok.tpl-t rendereli).
      */
     function bindKeszletRows($root) {
+        mkwcomp.keszletBizonylatok.bind($root);
         $root
             .on('click', '.js-keszletreszletezobutton', function (e) {
                 e.preventDefault();

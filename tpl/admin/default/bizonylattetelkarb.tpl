@@ -83,7 +83,7 @@
             <td><label>{at('Raktárkészlet')}:</label></td>
             <td colspan="5">
                 <div class="ui-widget ui-widget-content ui-corner-all tetelkeszletdoboz" id="RaktarKeszlet{$tetel.id}">
-                    {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet}
+                    {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet termekid=$tetel.termek valtozatid=$tetel.termekvaltozat}
                 </div>
             </td>
         </tr>

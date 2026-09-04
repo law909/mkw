@@ -2870,6 +2870,30 @@ class Bizonylatfej
     }
 
     /**
+     * Ugyanaz entitás betöltése nélkül: a készletmodalok nyers SQL-ből ismerik a bizonylatszámot
+     * és a típust. A null-szabály a getListaUrl()-lel azonos.
+     *
+     * @return string|null
+     */
+    public static function getListaUrlFor($tipusid, $bizonylatszam)
+    {
+        if (!$tipusid || !$bizonylatszam) {
+            return null;
+        }
+        $prefix = self::ROUTEPREFIX[$tipusid] ?? $tipusid;
+        try {
+            return \mkw\store::getRouter()->generate(
+                'admin' . $prefix . 'fejviewlist',
+                false,
+                [],
+                ['idfilter' => urlencode($bizonylatszam)]
+            );
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
      * A bizonylat karbantartójának URL-je – teljes oldal, ugyanaz, ahová a lista
      * szerkesztő linkje visz. A null-szabály a getListaUrl()-lel azonos.
      *
