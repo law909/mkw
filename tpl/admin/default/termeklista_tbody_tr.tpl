@@ -100,11 +100,7 @@
         {$_termek.cimkenevek}
     </td>
     <td class="cell">
-        <table>
-            <tbody>
-            {include 'termekkeszletsorok.tpl' termek=$_termek}
-            </tbody>
-        </table>
+        {include 'termekkeszletsorok.tpl' termek=$_termek}
     </td>
     <td class="cell">
         {include 'dokumentumlinkek.tpl' doklinkek=$_termek.doklinkek}

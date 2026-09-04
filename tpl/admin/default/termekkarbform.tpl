@@ -514,23 +514,7 @@
             </div>
         {/if}
         <div id="KeszletTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <thead>
-                <tr>
-                    {if ($maintheme == 'galad')}
-                        <th>{at('Cikkszám')}</th>
-                    {/if}
-                    <th colspan="2">{at('Változat')}</th>
-                    <th class="keszletoszlop">{at('Készlet')}</th>
-                    <th class="keszletoszlop">{at('Foglalt')}</th>
-                    <th class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{at('Szabad')}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {include 'termekkeszletsorok.tpl' termek=$egyed}
-                </tbody>
-            </table>
+            {include 'termekkeszletsorok.tpl' termek=$egyed}
         </div>
         <div id="MinKeszletTab" class="mattkarb-page" data-visible="visible">
             <table id="MinKeszletMatrix" class="mattkarb-matrix">
@@ -776,7 +760,7 @@
                         <td>{$_kk.szamitasalapnev}</td>
                         <td class="mattable-rightaligned">{number_format($_kk.ar|default:0, 4, '.', ' ')}</td>
                     </tr>
-                {foreachelse}
+                    {foreachelse}
                     <tr>
                         <td>{at('Nincs kapcsolódó költség rögzítve.')}</td>
                     </tr>
