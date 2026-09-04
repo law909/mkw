@@ -485,6 +485,17 @@ class idopontController extends \mkwhelpers\MattableController
         if (!$idopont) {
             return;
         }
+        $this->showRegForm($idopont);
+    }
+
+    /**
+     * A jelentkezési űrlap; hibás beküldés után a beírt adatokkal és a hibaüzenettel jön vissza.
+     *
+     * @param \Entities\Idopont $idopont
+     */
+    private function showRegForm($idopont, ?string $hiba = null)
+    {
+        $kerdoiv = $idopont->getKerdoivArray();
         $v = $this->getTemplateFactory()->createMainView('rendezvenyreg.tpl');
         $v->setVar('uid', $idopont->getUid());
         $v->setVar('kellszamlazasiadat', $idopont->getKellszamlazasiadat());
@@ -492,7 +503,23 @@ class idopontController extends \mkwhelpers\MattableController
         $v->setVar('szabadhelykovetes', $idopont->hasLetszamkorlat());
         $v->setVar('varolistavan', $idopont->isVarolistavan());
         $v->setVar('szabadhelyszam', $idopont->getFreePlaces() ?? 0);
+        $v->setVar('hiba', $hiba);
+        $v->setVar('egyed', $this->getRegFormFields());
+        $v->setVar(
+            'kerdoiv',
+            IdopontKerdoivService::forTemplate($kerdoiv, IdopontKerdoivService::readAnswers($kerdoiv, $this->params)['ertekek'])
+        );
         echo $v->getTemplateResult();
+    }
+
+    private function getRegFormFields(): array
+    {
+        $ret = [];
+        foreach (['vezeteknev', 'keresztnev', 'email', 'telefon', 'nev', 'adoszam', 'irszam', 'varos', 'utca', 'hazszam'] as $mezo) {
+            $ret[$mezo] = $this->params->getStringRequestParam($mezo);
+        }
+        $ret['ujdonsaghirlevelkell'] = $this->params->getBoolRequestParam('ujdonsaghirlevelkell');
+        return $ret;
     }
 
     public function regSave()
@@ -504,6 +531,12 @@ class idopontController extends \mkwhelpers\MattableController
         }
         $sendemails = false;
         $email = $this->params->getStringRequestParam('email');
+
+        $kerdoivvalasz = IdopontKerdoivService::readAnswers($idopont->getKerdoivArray(), $this->params);
+        if ($kerdoivvalasz['hiba']) {
+            $this->showRegForm($idopont, $kerdoivvalasz['hiba']);
+            return;
+        }
 
         /** @var Idopontfoglalas $jel */
         $jel = $this->getRepo(Idopontfoglalas::class)->findOneBy([
@@ -532,6 +565,7 @@ class idopontController extends \mkwhelpers\MattableController
             $jel->setDatum($idopont->getKezdet() ?: '');
             $jel->setEmailkoszono(true);
             $jel->setVarolistas($idopont->isVarolistavan() && $szabadhely !== null && $szabadhely < 1);
+            $jel->setKerdoivvalasz(IdopontKerdoivService::encodeAnswers($kerdoivvalasz['sorok']));
             $this->getEm()->persist($jel);
 
             $this->getEm()->flush();
