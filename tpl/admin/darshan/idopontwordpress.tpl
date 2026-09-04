@@ -44,8 +44,14 @@
                     </div>
                     <div class="dttgombok">
                         {if ($idopont['megvanhely'])}
-                            <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                               class="dttorarendbutton margin-bottom-5">{if ($idopont['rendezveny'])}Jelentkezek{else}Foglalok{/if}</a>
+                            {if ($idopont['rendezveny'])}
+                                {* a rendezvény a saját jelentkezési űrlapját kapja, ugyanazt, amit a wordpress iframe tölt be *}
+                                <a href="/rendezveny/reg?r={$idopont['uid']|escape:'url'}"
+                                   class="dttorarendbutton margin-bottom-5">Jelentkezek</a>
+                            {else}
+                                <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
+                                   class="dttorarendbutton margin-bottom-5">Foglalok</a>
+                            {/if}
                         {else}
                             <div class="pirosszoveg margin-bottom-5">BETELT</div>
                         {/if}
