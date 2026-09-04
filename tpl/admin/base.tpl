@@ -40,7 +40,7 @@
 <div id="messagecenter"></div>
 <div id="dialogcenter"></div>
 {if ($szuletesnap|default:false)}
-    {* 30 másodperces ASCII tűzijáték a bejelentkezés utáni első főoldalon – lásd szuletesnap.js *}
+    {* 30 másodperces tűzijáték a bejelentkezés utáni első főoldalon – lásd szuletesnap.js *}
     <style>
         #szuletesnap {
             position: fixed;
@@ -52,14 +52,9 @@
         }
 
         .szuletesnap-kep {
-            margin: 0;
+            display: block;
+            width: 100%;
             height: 100%;
-            font-family: monospace;
-            font-size: 16px;
-            line-height: 1;
-            white-space: pre;
-            overflow: hidden;
-            color: #fff;
         }
 
         .szuletesnap-felirat {
@@ -76,22 +71,22 @@
             color: #fff;
             text-shadow: 0 0 10px #ffd166, 0 0 26px #ef476f, 0 0 60px #ef476f;
             pointer-events: none;
-            animation: szuletesnapVillog 0.8s steps(1, end) infinite;
+            animation: szuletesnapVillog 1.8s ease-in-out infinite;
         }
 
         @keyframes szuletesnapVillog {
-            0%, 49% {
+            0%, 100% {
                 opacity: 1;
                 color: #fff;
             }
-            50%, 100% {
-                opacity: 0.25;
+            50% {
+                opacity: 0.3;
                 color: #ffd166;
             }
         }
     </style>
     <div id="szuletesnap">
-        <pre class="szuletesnap-kep"></pre>
+        <canvas class="szuletesnap-kep"></canvas>
         <div class="szuletesnap-felirat">BOLDOG SZÜLETÉSNAPOT!!</div>
     </div>
     <script type="text/javascript" src="/js/admin/default/szuletesnap.js"></script>
