@@ -117,12 +117,7 @@ class KeszletService
         $kulcs = self::cacheKey($entity, $datum, $raktarid);
         if (!array_key_exists($kulcs, self::$keszletCache)) {
             $filter = self::entityFilter($entity);
-            $filter->addFilter('bt.mozgat', '=', 1);
-            $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-            $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
-            if ($raktarid) {
-                $filter->addFilter('bf.raktar_id', '=', $raktarid);
-            }
+            self::addKeszletFilter($filter, $datum, $raktarid);
             $sor = self::sumMozgas($filter);
             self::$keszletCache[$kulcs] = [
                 'keszlet' => $sor['mennyiseg'],
@@ -130,6 +125,20 @@ class KeszletService
             ];
         }
         return self::$keszletCache[$kulcs];
+    }
+
+    /**
+     * A készletlekérdezés feltételei az entitás azonosítóján kívül – a soronkénti és a
+     * kötegelt (preloadStock) ág ugyanezt használja, hogy a kettő ne csússzon szét.
+     */
+    private static function addKeszletFilter(FilterDescriptor $filter, $datum, $raktarid): void
+    {
+        $filter->addFilter('bt.mozgat', '=', 1);
+        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+        $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
+        if ($raktarid) {
+            $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
     }
 
     /**
@@ -165,6 +174,42 @@ class KeszletService
         return $filter;
     }
 
+    /**
+     * A sumMozgas() kötegelt párja: ugyanaz az összeg és mozgásszám, de egyszerre sok
+     * termékre/változatra, azonosítónként csoportosítva.
+     *
+     * @return array<int, array{mennyiseg: mixed, mozgasdb: mixed}>
+     */
+    private static function sumMozgasByEntity(string $mezo, array $ids, FilterDescriptor $filter): array
+    {
+        $filter->addFilter($mezo, 'IN', $ids);
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('entityid', 'entityid');
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $rsm->addScalarResult('mozgasdb', 'mozgasdb');
+
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT ' . $mezo . ' AS entityid, SUM(bt.mennyiseg * bt.irany) AS mennyiseg, COUNT(*) AS mozgasdb'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            . ' GROUP BY ' . $mezo
+            ,
+            $rsm
+        );
+        $q->setParameters($filter->getQueryParameters());
+
+        $ret = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $ret[(int)$sor['entityid']] = [
+                'mennyiseg' => $sor['mennyiseg'] ?? 0,
+                'mozgasdb' => $sor['mozgasdb'] ?? 0,
+            ];
+        }
+        return $ret;
+    }
+
     private static function idMezo($entity): string
     {
         return 'bt.' . self::idOszlop($entity);
@@ -193,7 +238,12 @@ class KeszletService
      */
     private static function cacheKey($entity, ...$extra): string
     {
-        $parts = [self::idMezo($entity), $entity->getId()];
+        return self::cacheKeyFor(self::idMezo($entity), $entity->getId(), ...$extra);
+    }
+
+    private static function cacheKeyFor(string $mezo, $id, ...$extra): string
+    {
+        $parts = [$mezo, $id];
         foreach ($extra as $e) {
             $parts[] = $e instanceof \DateTimeInterface ? $e->format('Y-m-d H:i:s') : (string)$e;
         }
@@ -304,19 +354,29 @@ class KeszletService
         $kulcs = self::cacheKey($entity, $kivevebiz, $datum, $raktarid);
         if (!array_key_exists($kulcs, self::$foglalasCache)) {
             $filter = self::entityFilter($entity);
-            $filter->addFilter('bt.foglal', '=', 1);
-            $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
-            $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
-            $filter->addFilter('bf.bizonylattipus_id', 'IN', $foglalotipusok);
-            if ($kivevebiz) {
-                $filter->addFilter('bf.id', '<>', $kivevebiz);
-            }
-            if ($raktarid) {
-                $filter->addFilter('bf.raktar_id', '=', $raktarid);
-            }
+            self::addFoglalasFilter($filter, $foglalotipusok, $kivevebiz, $datum, $raktarid);
             self::$foglalasCache[$kulcs] = self::sumMozgas($filter)['mennyiseg'] * -1;
         }
         return self::$foglalasCache[$kulcs];
+    }
+
+    private static function addFoglalasFilter(
+        FilterDescriptor $filter,
+        array $foglalotipusok,
+        $kivevebiz,
+        $datum,
+        $raktarid
+    ): void {
+        $filter->addFilter('bt.foglal', '=', 1);
+        $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
+        $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
+        $filter->addFilter('bf.bizonylattipus_id', 'IN', $foglalotipusok);
+        if ($kivevebiz) {
+            $filter->addFilter('bf.id', '<>', $kivevebiz);
+        }
+        if ($raktarid) {
+            $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
     }
 
     /**
@@ -357,6 +417,61 @@ class KeszletService
         $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
+        }
+    }
+
+    /**
+     * Egy listaoldal készlete és foglalása négy lekérdezéssel. Enélkül a soronkénti
+     * getKeszlet()/getFoglaltMennyiseg() termékenként és változatonként külön SUM-ot indít:
+     * a terméklistán ez 30 termékre több száz kérdés volt.
+     *
+     * A cache kulcsa ugyanaz, amit a soronkénti hívás képez, ezért a $datum/$raktarid/$kivevebiz
+     * hármasnak egyeznie kell azzal, ahogy utána kérdezik – a listák raktár és dátum nélkül
+     * kérdezik, ezért annak az alapesetnek szól.
+     */
+    public static function preloadStock(array $termekids, array $valtozatids, $datum = null, $raktarid = null): void
+    {
+        self::preloadKeszlet('bt.termek_id', $termekids, $datum, $raktarid);
+        self::preloadKeszlet('bt.termekvaltozat_id', $valtozatids, $datum, $raktarid);
+        self::preloadFoglalas('bt.termek_id', $termekids, $datum, $raktarid);
+        self::preloadFoglalas('bt.termekvaltozat_id', $valtozatids, $datum, $raktarid);
+    }
+
+    private static function preloadKeszlet(string $mezo, array $ids, $datum, $raktarid): void
+    {
+        $keresendo = self::getUncached($mezo, $ids, self::$keszletCache, [$datum, $raktarid]);
+        if (!$keresendo) {
+            return;
+        }
+        $filter = new FilterDescriptor();
+        self::addKeszletFilter($filter, $datum, $raktarid);
+        $sorok = self::sumMozgasByEntity($mezo, $keresendo, $filter);
+        foreach ($keresendo as $id) {
+            // a mozgás nélküli termékre is írunk, különben soronként újra megkérdeznénk
+            $kulcs = self::cacheKeyFor($mezo, $id, $datum, $raktarid);
+            self::$keszletCache[$kulcs] = [
+                'keszlet' => $sorok[$id]['mennyiseg'] ?? 0,
+                'mozgasdb' => $sorok[$id]['mozgasdb'] ?? 0,
+            ];
+        }
+    }
+
+    private static function preloadFoglalas(string $mezo, array $ids, $datum, $raktarid): void
+    {
+        $foglalotipusok = Bizonylattipus::getFoglalIdList();
+        if (!$foglalotipusok) {
+            return;
+        }
+        $keresendo = self::getUncached($mezo, $ids, self::$foglalasCache, [null, $datum, $raktarid]);
+        if (!$keresendo) {
+            return;
+        }
+        $filter = new FilterDescriptor();
+        self::addFoglalasFilter($filter, $foglalotipusok, null, $datum, $raktarid);
+        $sorok = self::sumMozgasByEntity($mezo, $keresendo, $filter);
+        foreach ($keresendo as $id) {
+            $kulcs = self::cacheKeyFor($mezo, $id, null, $datum, $raktarid);
+            self::$foglalasCache[$kulcs] = ($sorok[$id]['mennyiseg'] ?? 0) * -1;
         }
     }
 
@@ -483,6 +598,22 @@ class KeszletService
         foreach ($keresendo as $id) {
             self::$valtozatCache[$raktarid][$id] = $sorok[$id][$raktarid] ?? null;
         }
+    }
+
+    /**
+     * A még be nem töltött azonosítók, az adott cache kulcsképzése szerint.
+     *
+     * @param array $kulcsextra a cacheKeyFor() további kulcsrészei, a hívó sorrendjében
+     */
+    private static function getUncached(string $mezo, array $ids, array $cache, array $kulcsextra): array
+    {
+        $ret = [];
+        foreach (self::getMissing($ids, []) as $id) {
+            if (!array_key_exists(self::cacheKeyFor($mezo, $id, ...$kulcsextra), $cache)) {
+                $ret[$id] = $id;
+            }
+        }
+        return $ret;
     }
 
     private static function getMissing(array $ids, array $cache): array

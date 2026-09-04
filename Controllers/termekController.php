@@ -1289,7 +1289,30 @@ class termekController extends \mkwhelpers\MattableController
             }
         }
 
+        $this->preloadKeszlet($egyedek);
+
         echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
+    }
+
+    /**
+     * Az oldal termékeinek (és változataiknak) a készlete és foglalása négy lekérdezéssel,
+     * hogy a loadVars() soronkénti készletkérdései ne fussanak N+1-be.
+     *
+     * @param \Entities\Termek[] $egyedek
+     */
+    private function preloadKeszlet($egyedek)
+    {
+        $termekids = [];
+        foreach ($egyedek as $t) {
+            $termekids[] = $t->getId();
+        }
+        if (!$termekids) {
+            return;
+        }
+        $valtozatids = \mkw\store::getSetupValue('termekvaltozat')
+            ? $this->getRepo(TermekValtozat::class)->getIdsByTermekIds($termekids)
+            : [];
+        \Services\KeszletService::preloadStock($termekids, $valtozatids);
     }
 
     public function getSelectList($selid = null)
@@ -1664,6 +1687,9 @@ class termekController extends \mkwhelpers\MattableController
         $kkc = new kapcsolodokoltsegController();
         $view->setVar('kapcsolodokoltseglist', $kkc->getSelectList($termek ? $termek->getAllKapcsolodokoltsegId() : []));
 
+        if ($termek) {
+            $this->preloadKeszlet([$termek]);
+        }
         $view->setVar('egyed', $this->loadVars($termek, true));
 
         $vtsz = new vtszController();

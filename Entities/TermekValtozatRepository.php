@@ -49,6 +49,28 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
      *
      * @return array  termekid => valtozatid
      */
+    /**
+     * A megadott termékek változatainak azonosítói – a készlet kötegelt betöltéséhez
+     * (\Services\KeszletService::preloadStock()) kell, még a változatok hidratálása előtt.
+     *
+     * @return int[]
+     */
+    public function getIdsByTermekIds($termekids)
+    {
+        if (!$termekids) {
+            return [];
+        }
+        $q = $this->_em->createQuery(
+            'SELECT v.id AS id FROM Entities\TermekValtozat v WHERE IDENTITY(v.termek) IN (:ids)'
+        );
+        $q->setParameter('ids', $termekids);
+        $ret = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $ret[] = (int)$sor['id'];
+        }
+        return $ret;
+    }
+
     public function getCikkszamMatchMap($termekids, $keresett)
     {
         $ret = [];
