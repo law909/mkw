@@ -253,6 +253,7 @@ $router->map('GET', '/admin/idoponttema/getlistbody', 'idoponttemaController#get
 $router->map('GET', '/admin/idoponttema/getkarb', 'idoponttemaController#getkarb', 'adminidoponttemagetkarb');
 $router->map('GET', '/admin/idoponttema/viewkarb', 'idoponttemaController#viewkarb', 'adminidoponttemaviewkarb');
 $router->map('GET', '/admin/idoponttema/htmllist', 'idoponttemaController#htmllist', 'adminidoponttemahtmllist');
+$router->map('GET', '/admin/idoponttema/getkerdoiv', 'idoponttemaController#getKerdoiv', 'adminidoponttemagetkerdoiv');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idoponttema/save', 'idoponttemaController#save', 'adminidoponttemasave');
 }

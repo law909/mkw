@@ -6,6 +6,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#KerdoivTab">{at('Kérdőív')}{if ($egyed.kerdoivkerdesdb)} ({$egyed.kerdoivkerdesdb}){/if}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -28,6 +29,10 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+        <div id="KerdoivTab" class="mattkarb-page" data-visible="visible">
+            {include 'idopontkerdoivszerkeszto.tpl' kerdoivjson=$egyed.kerdoivjson
+                kerdoivhint={at('A téma kérdőíve az új időpontba másolódik, amikor a témát kiválasztod; a már létrehozott időpontok kérdőívét nem változtatja meg.')}}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

@@ -1,6 +1,9 @@
 $(document).ready(function () {
     const mattkarbconfig = new MattkarbConfig({
-        entityName: 'idoponttema'
+        entityName: 'idoponttema',
+        beforeShow: function () {
+            mkwcomp.kerdoivSzerkeszto.init($('#KerdoivTab'));
+        }
     });
 
     if ($.fn.mattable) {

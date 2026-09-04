@@ -29,6 +29,10 @@ class Idoponttema
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
+    /** Az új időpontba másolódó kérdőív JSON-ban, lásd \Services\IdopontKerdoivService. */
+    /** @ORM\Column(type="text",nullable=true) */
+    private $kerdoiv;
+
     public function getId()
     {
         return $this->id;
@@ -72,6 +76,21 @@ class Idoponttema
     public function setInaktiv($inaktiv)
     {
         $this->inaktiv = $inaktiv;
+    }
+
+    public function getKerdoiv()
+    {
+        return $this->kerdoiv;
+    }
+
+    public function setKerdoiv($kerdoiv)
+    {
+        $this->kerdoiv = $kerdoiv;
+    }
+
+    public function getKerdoivArray(): array
+    {
+        return \Services\IdopontKerdoivService::parse($this->kerdoiv);
     }
 
 }

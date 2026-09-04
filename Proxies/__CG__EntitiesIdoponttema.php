@@ -67,10 +67,10 @@ class Idoponttema extends \Entities\Idoponttema implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'id', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'nev', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'leiras', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'url', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'inaktiv'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'id', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'nev', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'leiras', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'url', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'kerdoiv'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'id', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'nev', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'leiras', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'url', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'inaktiv'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'id', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'nev', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'leiras', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'url', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Idoponttema' . "\0" . 'kerdoiv'];
     }
 
     /**
@@ -278,6 +278,39 @@ class Idoponttema extends \Entities\Idoponttema implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInaktiv', [$inaktiv]);
 
         return parent::setInaktiv($inaktiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKerdoiv()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKerdoiv', []);
+
+        return parent::getKerdoiv();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKerdoiv($kerdoiv)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKerdoiv', [$kerdoiv]);
+
+        return parent::setKerdoiv($kerdoiv);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getKerdoivArray(): array
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKerdoivArray', []);
+
+        return parent::getKerdoivArray();
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Idoponttema;
+use Services\IdopontKerdoivService;
 
 class idoponttemaController extends \mkwhelpers\MattableController
 {
@@ -23,7 +24,10 @@ class idoponttemaController extends \mkwhelpers\MattableController
             $t = new Idoponttema();
             $this->getEm()->detach($t);
         }
-        return $this->getEntityFieldsArray($t);
+        $x = $this->getEntityFieldsArray($t);
+        $x['kerdoivjson'] = json_encode($t->getKerdoivArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $x['kerdoivkerdesdb'] = count($t->getKerdoivArray()['kerdesek']);
+        return $x;
     }
 
     /**
@@ -33,7 +37,23 @@ class idoponttemaController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        return $this->setEntityFieldsFromRequest($obj);
+        // a kérdőív JSON nyersen jön, a normalizálás (strip_tags) a szolgáltatásban van
+        $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => ['kerdoiv']]);
+        $obj->setKerdoiv(IdopontKerdoivService::encode(
+            IdopontKerdoivService::parse($this->params->getOriginalStringRequestParam('kerdoiv'))
+        ));
+        return $obj;
+    }
+
+    /** A téma kérdőíve JSON-ban: az időpont karbantartó tölti be a téma kiválasztásakor. */
+    public function getKerdoiv()
+    {
+        /** @var \Entities\Idoponttema $tema */
+        $tema = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        echo json_encode(
+            $tema ? $tema->getKerdoivArray() : IdopontKerdoivService::parse(null),
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
     }
 
     public function getlistbody()

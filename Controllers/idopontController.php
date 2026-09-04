@@ -285,26 +285,38 @@ class idopontController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A kérdőívvel rendelkező többi időpont a „Kérdőív átvétele" legördülőhöz.
+     * A kérdőívvel rendelkező témák és a többi időpont a „Kérdőív átvétele" legördülőhöz.
+     * Az id előtagja (tema-, idopont-) mondja meg a szerkesztőnek, honnan kérje a JSON-t.
      *
-     * @return array<int, array{id: int, caption: string}>
+     * @return array<int, array{id: string, caption: string}>
      */
     private function getKerdoivForrasList($idopont): array
     {
-        $qb = $this->getEm()->createQueryBuilder()
+        $ret = [];
+        $temak = $this->getEm()->createQueryBuilder()
+            ->select('t')->from(Idoponttema::class, 't')
+            ->where('t.kerdoiv IS NOT NULL')
+            ->orderBy('t.nev', 'ASC')
+            ->getQuery()->getResult();
+        /** @var \Entities\Idoponttema $tema */
+        foreach ($temak as $tema) {
+            if ($tema->getKerdoivArray()['kerdesek']) {
+                $ret[] = ['id' => 'tema-' . $tema->getId(), 'caption' => t('Téma') . ': ' . $tema->getNev()];
+            }
+        }
+        $idopontok = $this->getEm()->createQueryBuilder()
             ->select('i')->from(Idopont::class, 'i')
             ->where('i.kerdoiv IS NOT NULL')
-            ->orderBy('i.nev', 'ASC')->addOrderBy('i.id', 'DESC');
-        $ret = [];
+            ->orderBy('i.nev', 'ASC')->addOrderBy('i.id', 'DESC')
+            ->getQuery()->getResult();
         /** @var \Entities\Idopont $forras */
-        foreach ($qb->getQuery()->getResult() as $forras) {
+        foreach ($idopontok as $forras) {
             if ($idopont && $forras->getId() == $idopont->getId()) {
                 continue;
             }
-            if (!$forras->getKerdoivArray()['kerdesek']) {
-                continue;
+            if ($forras->getKerdoivArray()['kerdesek']) {
+                $ret[] = ['id' => 'idopont-' . $forras->getId(), 'caption' => t('Időpont') . ': ' . $forras->getTeljesNev()];
             }
-            $ret[] = ['id' => $forras->getId(), 'caption' => $forras->getTeljesNev()];
         }
         return $ret;
     }
