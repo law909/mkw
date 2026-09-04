@@ -831,6 +831,18 @@ class Idopont
     }
 
     /**
+     * Betelt alkalomra várólistára akkor lehet feliratkozni, ha az időpont enged várólistát.
+     * A korlát nélküli sosem telik be, az inaktívra pedig egyáltalán nem lehet jelentkezni.
+     */
+    public function isWaitlistable($datum = null)
+    {
+        if ($this->inaktiv || !$this->varolistavan || !$this->hasLetszamkorlat()) {
+            return false;
+        }
+        return $this->getFreePlaces($datum) < 1;
+    }
+
+    /**
      * Elfogadja a datetime-local (2026-08-20T10:00) és a magyar (2026.08.20 10:00) alakot is.
      */
     private static function toDateTime($value)

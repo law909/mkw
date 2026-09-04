@@ -451,14 +451,14 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         if ($this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonLemondas, 'idopontfoglalaslemondasemail.html')) {
             $msg .= ' ' . at('A lemondásról levél ment ki.');
         }
-        $this->ertesitVarolistasokat($foglalas->getIdopont());
+        $this->ertesitVarolistasokat($foglalas->getIdopont(), $foglalas->getDatum());
         echo json_encode(['msg' => $msg]);
     }
 
     /**
      * A felszabadult helyre a várólistások értesítést kapnak – a rendezvény oldalról átvéve.
      */
-    private function ertesitVarolistasokat($idopont)
+    private function ertesitVarolistasokat($idopont, $datum = null)
     {
         if (!$idopont || !$idopont->isVarolistavan()) {
             return;
@@ -467,6 +467,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $filter->addFilter('idopont', '=', $idopont);
         $filter->addFilter('lemondva', '=', false);
         $filter->addFilter('varolistas', '=', true);
+        if ($datum) {
+            // ismétlődő időpontnál a hely csak arra a napra szabadult fel
+            $filter->addFilter('datum', '=', $datum);
+        }
         foreach ($this->getRepo()->getAll($filter) as $varolistas) {
             $this->sendFelszabadultHelyEmail($varolistas->getId());
         }
@@ -910,6 +914,9 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         }
         $this->getEm()->persist($partner);
 
+        // betelt alkalomra a foglalás várólistás lesz – a helyszámba a várólistás nem számít bele
+        $varolista = !$idopont->isBookable($datum);
+
         // a korábban lemondott foglalás éled újra: az (időpont, partner, nap) hármason egyedi index van
         $foglalas = $meglevo ?: new Idopontfoglalas();
         $foglalas->setIdopont($idopont);
@@ -917,6 +924,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $foglalas->setDatum($datum);
         $foglalas->setOnline($online);
         $foglalas->setFoglalasido(new \DateTime());
+        $foglalas->setVarolistas($varolista);
         $foglalas->setLemondva(false);
         $foglalas->setLemondasdatum(null);
         $foglalas->setLemondasoka('');
@@ -932,6 +940,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $this->setBookingFormVars($view, $idopont, $datum);
         $view->setVar('partnernev', $partner->getNev());
         $view->setVar('online', $online);
+        $view->setVar('varolista', $varolista);
         $view->printTemplateResult();
     }
 
@@ -990,7 +999,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $this->getEm()->flush();
 
         $this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonLemondas, 'idopontfoglalaslemondasemail.html');
-        $this->ertesitVarolistasokat($idopont);
+        $this->ertesitVarolistasokat($idopont, $datum);
 
         $view->printTemplateResult();
     }
@@ -1053,7 +1062,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         if (!$datum) {
             return t('A választott alkalom napja hiányzik vagy nem érvényes.');
         }
-        if (!$idopont->isBookable($datum)) {
+        if (!$idopont->isBookable($datum) && !$idopont->isWaitlistable($datum)) {
             return t('Erre az alkalomra sajnos már nincs szabad hely.');
         }
         return '';
@@ -1136,6 +1145,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('ar', $idopont ? $idopont->getAr() : 0);
         $view->setVar('onlinevalaszthato', $idopont && $idopont->isOnlinevalaszthato());
         $view->setVar('szabadhely', ($idopont && $datum) ? max(0, $idopont->getFreePlaces($datum)) : 0);
+        $view->setVar('varolista', $idopont && $idopont->isWaitlistable($datum));
     }
 
 }

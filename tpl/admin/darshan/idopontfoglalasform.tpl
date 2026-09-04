@@ -22,7 +22,11 @@
             {if ($ar > 0)}
                 <div>{$ar|number_format:0:",":" "} Ft</div>
             {/if}
-            <div>{$szabadhely} szabad hely</div>
+            {if ($varolista)}
+                <div>Az alkalom betelt, várólistára tudunk felvenni.</div>
+            {else}
+                <div>{$szabadhely} szabad hely</div>
+            {/if}
         </div>
         <form id="idopontfoglalasform" method="post" action="/idopont/foglalas/ment">
             <div class="form-group">
@@ -67,7 +71,7 @@
             <input type="hidden" name="t" value="{$tanarkod}">
             <input type="hidden" name="tema" value="{$temakod}">
             <div class="form-group">
-                <button class="foglalasbtn" type="submit">Foglalok</button>
+                <button class="foglalasbtn" type="submit">{if ($varolista)}Várólistára iratkozom{else}Foglalok{/if}</button>
             </div>
         </form>
     {/if}

@@ -1259,4 +1259,15 @@ class Idopont extends \Entities\Idopont implements \Doctrine\ORM\Proxy\Proxy
         return parent::isBookable($datum);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function isWaitlistable($datum = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isWaitlistable', [$datum]);
+
+        return parent::isWaitlistable($datum);
+    }
+
 }
