@@ -2198,8 +2198,8 @@ class termekController extends \mkwhelpers\MattableController
                             ->setCellValue('Q' . $sor, $termek->getHosszusag());
                         $excel->setActiveSheetIndex(0)
                             ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
+                        $sor++;
                     }
-                    $sor++;
                 }
             } else {
                 $excel->setActiveSheetIndex(0)
