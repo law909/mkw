@@ -32,6 +32,7 @@ class CronService
         'cleanup' => Cron\CleanupTask::class,
         'joga' => Cron\JogaBejelentkezesTask::class,
         'arfolyam' => Cron\ArfolyamTask::class,
+        'navkoltsegszamla' => Cron\NavKoltsegszamlaTask::class,
         'test' => Cron\TestTask::class,
     ];
 
