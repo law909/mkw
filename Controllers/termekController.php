@@ -2177,26 +2177,28 @@ class termekController extends \mkwhelpers\MattableController
             if ($termek->getValtozatok()) {
                 /** @var TermekValtozat $valtozat */
                 foreach ($termek->getValtozatok() as $valtozat) {
-                    $excel->setActiveSheetIndex(0)
-                        ->setCellValue('A' . $sor, $termek->getId())
-                        ->setCellValue('B' . $sor, $valtozat->getId())
-                        ->setCellValue('C' . $sor, strtoupper($termek->getCikkszam()))
-                        ->setCellValue('D' . $sor, $nev)
-                        ->setCellValue('E' . $sor, $leiras)
-                        ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
-                        ->setCellValue('G' . $sor, implode(';', $kepurlarr))
-                        ->setCellValue('H' . $sor, $valtozat->getMeret())
-                        ->setCellValue('I' . $sor, $valtozat->getSzin())
-                        ->setCellValue('J' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $partner))
-                        ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
-                        ->setCellValue('M' . $sor, 'Pakistan')
-                        ->setCellValue('N' . $sor, $termek->getSuly())
-                        ->setCellValue('O' . $sor, $termek->getSzelesseg())
-                        ->setCellValue('P' . $sor, $termek->getMagassag())
-                        ->setCellValue('Q' . $sor, $termek->getHosszusag());
-                    $excel->setActiveSheetIndex(0)
-                        ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
+                    if ($valtozat->getLathato()) {
+                        $excel->setActiveSheetIndex(0)
+                            ->setCellValue('A' . $sor, $termek->getId())
+                            ->setCellValue('B' . $sor, $valtozat->getId())
+                            ->setCellValue('C' . $sor, strtoupper($termek->getCikkszam()))
+                            ->setCellValue('D' . $sor, $nev)
+                            ->setCellValue('E' . $sor, $leiras)
+                            ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
+                            ->setCellValue('G' . $sor, implode(';', $kepurlarr))
+                            ->setCellValue('H' . $sor, $valtozat->getMeret())
+                            ->setCellValue('I' . $sor, $valtozat->getSzin())
+                            ->setCellValue('J' . $sor, $valtozat->getVonalkod())
+                            ->setCellValue('K' . $sor, $termek->getNettoAr($valtozat, $partner))
+                            ->setCellValue('L' . $sor, $termek->getVtsz()?->getSzam())
+                            ->setCellValue('M' . $sor, 'Pakistan')
+                            ->setCellValue('N' . $sor, $termek->getSuly())
+                            ->setCellValue('O' . $sor, $termek->getSzelesseg())
+                            ->setCellValue('P' . $sor, $termek->getMagassag())
+                            ->setCellValue('Q' . $sor, $termek->getHosszusag());
+                        $excel->setActiveSheetIndex(0)
+                            ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
+                    }
                     $sor++;
                 }
             } else {
