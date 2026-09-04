@@ -43,17 +43,19 @@
                         {/if}
                     </div>
                     <div class="dttgombok">
-                        {if ($idopont['megvanhely'])}
-                            {if ($idopont['rendezveny'])}
-                                {* a rendezvény a saját jelentkezési űrlapját kapja, ugyanazt, amit a wordpress iframe tölt be *}
+                        {if (!$idopont['megvanhely'])}
+                            <div class="pirosszoveg margin-bottom-5">BETELT</div>
+                        {/if}
+                        {if ($idopont['rendezveny'])}
+                            {* a rendezvény a saját jelentkezési űrlapját kapja, ugyanazt, amit a wordpress iframe
+                               tölt be; betelt rendezvényen az várólistára vesz fel *}
+                            {if ($idopont['megvanhely'] || $idopont['varolistavan'])}
                                 <a href="/rendezveny/reg?r={$idopont['uid']|escape:'url'}"
                                    class="dttorarendbutton margin-bottom-5">Jelentkezek</a>
-                            {else}
-                                <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                                   class="dttorarendbutton margin-bottom-5">Foglalok</a>
                             {/if}
-                        {else}
-                            <div class="pirosszoveg margin-bottom-5">BETELT</div>
+                        {elseif ($idopont['megvanhely'])}
+                            <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
+                               class="dttorarendbutton margin-bottom-5">Foglalok</a>
                         {/if}
                         <a href="/idopont/lemond?rid={$idopont['uid']|escape:'url'}&d={$idopont['datum']}{$szuroparam}"
                            class="dttorarendbutton">Lemondom</a>

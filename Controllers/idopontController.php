@@ -374,7 +374,9 @@ class idopontController extends \mkwhelpers\MattableController
                 'maxresztvevo' => $item->getMaxresztvevo(),
                 'foglalasdb' => $foglalasdb,
                 'szabadhely' => $szabadhely,
-                'megvanhely' => $korlatlan || $szabadhely > 0
+                'megvanhely' => $korlatlan || $szabadhely > 0,
+                // betelt rendezvényre a jelentkező űrlapja még felvesz várólistára
+                'varolistavan' => $item->isVarolistavan()
             ];
         }
         ksort($idopontok);
