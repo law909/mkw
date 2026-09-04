@@ -116,10 +116,20 @@ class termekmenuController extends \mkwhelpers\MattableController
             'SELECT id,parent_id,nev,sorrend FROM ' . $this->tablaNev . ' tf ORDER BY parent_id,sorrend,nev',
             $rsm
         );
-        $this->fatomb = $q->getScalarResult();
+        $sorok = $q->getScalarResult();
+        if (!$sorok) {
+            echo json_encode([]);
+            return;
+        }
+        // szülő szerinti index: enélkül a rekurzió minden szinten végigmegy az egész fán
+        $this->fatomb = [];
+        foreach ($sorok as $sor) {
+            $this->fatomb[(int)$sor['parent_id']][] = $sor;
+        }
+        $gyoker = $sorok[0];
         $retomb = [
-            'data' => ['title' => $this->fatomb[0]['nev'], 'attr' => ['id' => $elotag . $this->fatomb[0]['id']]],
-            'children' => $this->bejar($this->fatomb[0]['id'], $elotag)
+            'data' => ['title' => $gyoker['nev'], 'attr' => ['id' => $elotag . $gyoker['id']]],
+            'children' => $this->bejar($gyoker['id'], $elotag)
         ];
         echo json_encode($retomb);
     }
@@ -127,10 +137,8 @@ class termekmenuController extends \mkwhelpers\MattableController
     private function bejar($szuloid, $elotag)
     {
         $ret = [];
-        foreach ($this->fatomb as $key => $val) {
-            if ($val['parent_id'] == $szuloid) {
-                $ret[] = ['data' => ['title' => $val['nev'], 'attr' => ['id' => $elotag . $val['id']]], 'children' => $this->bejar($val['id'], $elotag)];
-            }
+        foreach ($this->fatomb[(int)$szuloid] ?? [] as $val) {
+            $ret[] = ['data' => ['title' => $val['nev'], 'attr' => ['id' => $elotag . $val['id']]], 'children' => $this->bejar($val['id'], $elotag)];
         }
         return $ret;
     }

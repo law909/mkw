@@ -341,18 +341,39 @@ class TermekRepository extends \mkwhelpers\Repository
 
     public function getCount($filter)
     {
+        $filterstring = $this->getFilterString($filter);
         $q = $this->_em->createQuery(
             'SELECT COUNT(_xx)'
             . ' FROM Entities\Termek _xx'
-            . ' LEFT JOIN _xx.vtsz vtsz'
-            . ' LEFT JOIN _xx.afa afa'
-            . ' LEFT JOIN _xx.termekfa1 fa1'
-            . ' LEFT JOIN _xx.termekfa2 fa2'
-            . ' LEFT JOIN _xx.termekfa3 fa3'
-            . $this->getFilterString($filter)
+            . $this->countJoins($filterstring)
+            . $filterstring
         );
         $q->setParameters($this->getQueryParameters($filter));
         return $q->getSingleScalarResult();
+    }
+
+    /**
+     * A darabszámhoz csak azok a joinok kellenek, amelyekre a szűrő tényleg hivatkozik.
+     * A MySQL nem hagyja el a fölösleges LEFT JOIN-t, és mind az öt a teljes terméklistára
+     * végigfut – a terméklista lapozója pedig minden szűrésnél ezt hívja.
+     */
+    private function countJoins($filterstring)
+    {
+        $joins = [
+            'vtsz' => ' LEFT JOIN _xx.vtsz vtsz',
+            'afa' => ' LEFT JOIN _xx.afa afa',
+            'fa1' => ' LEFT JOIN _xx.termekfa1 fa1',
+            'fa2' => ' LEFT JOIN _xx.termekfa2 fa2',
+            'fa3' => ' LEFT JOIN _xx.termekfa3 fa3',
+        ];
+        $ret = '';
+        foreach ($joins as $alias => $join) {
+            // az alias önállóan álljon: a _xx.termekfa1karkod nem hivatkozás a fa1 joinra
+            if (preg_match('/(?<![\w.])' . $alias . '\./', $filterstring)) {
+                $ret .= $join;
+            }
+        }
+        return $ret;
     }
 
     public function getTermekLista($filter, $order, $offset = null, $elemcount = null, $listVariations = false)

@@ -127,14 +127,19 @@ var mkwcomp = (function ($) {
         }
 
         function applyChecks(sel, ids) {
-            var $tree = $(sel);
+            const $tree = $(sel);
             $tree.jstree('uncheck_all');
+            if (!ids || !ids.length) {
+                return;
+            }
+            // egyetlen bejárás az egész listára, nem azonosítónként egy
+            const keresett = {};
             $.each(ids, function (i, id) {
-                var $node = $('a', $tree).filter(function () {
-                    return this.id && this.id.split('_')[1] === '' + id;
-                });
-                if ($node.length) {
-                    $tree.jstree('check_node', $node);
+                keresett['' + id] = true;
+            });
+            $('a[id]', $tree).each(function () {
+                if (keresett[this.id.split('_')[1]]) {
+                    $tree.jstree('check_node', $(this));
                 }
             });
         }
@@ -193,18 +198,13 @@ var mkwcomp = (function ($) {
                 .on('loaded.jstree', function () {
                     applyPending(sel);
                 })
-                .on('change_state.jstree', function (e, data) {
-                    $termekfa = $(this);
-                    $('li', $termekfa).each(function (i) {
-                        $this = $(this);
-                        if ($this.hasClass('jstree-unchecked')) {
-                            $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check');
-                        } else if ($this.hasClass('jstree-checked')) {
-                            $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check').addClass('ui-icon ui-icon-circle-check');
-                        } else if ($this.hasClass('jstree-undetermined')) {
-                            $('ins.jstree-checkbox', $this).removeClass('ui-icon ui-icon-circle-check ui-icon-check').addClass('ui-icon ui-icon-check');
-                        }
-                    });
+                // három szelektor az egész fára, nem csomópontonkénti bejárás: a nagy
+                // termékfákon minden pipálás a teljes fát végigjárta
+                .on('change_state.jstree', function () {
+                    const $tree = $(this);
+                    $('ins.jstree-checkbox', $tree).removeClass('ui-icon ui-icon-circle-check ui-icon-check');
+                    $('li.jstree-checked > a > ins.jstree-checkbox', $tree).addClass('ui-icon ui-icon-circle-check');
+                    $('li.jstree-undetermined > a > ins.jstree-checkbox', $tree).addClass('ui-icon ui-icon-check');
                 });
         }
 

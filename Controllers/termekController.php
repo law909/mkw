@@ -1121,86 +1121,19 @@ class termekController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('kepurlfilter', null))) {
             $filter->addFilter(['kepurl'], 'LIKE', '%' . $this->params->getStringRequestParam('kepurlfilter') . '%');
         }
-        $f = $this->params->getNumRequestParam('lathatofilter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato', '=', $f);
+        // a lathato2..15 a többi webshopé (setup: enabledwebshops); a nem használtakra
+        // egyszerűen nem érkezik paraméter
+        $logikaimezok = ['lathato'];
+        for ($cikl = 2; $cikl <= 15; $cikl++) {
+            $logikaimezok[] = 'lathato' . $cikl;
         }
-        $f = $this->params->getNumRequestParam('lathato2filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato2', '=', $f);
+        foreach (array_merge($logikaimezok, ['nemkaphato', 'fuggoben', 'inaktiv', 'ajanlott', 'kiemelt']) as $mezo) {
+            $f = $this->params->getNumRequestParam($mezo . 'filter', 9);
+            if ($f != 9) {
+                $filter->addFilter($mezo, '=', $f);
+            }
         }
-        $f = $this->params->getNumRequestParam('lathato3filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato3', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato4filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato4', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato5filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato5', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato6filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato6', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato7filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato7', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato8filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato8', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato9filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato9', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato10filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato10', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato11filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato11', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato12filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato12', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato13filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato13', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato14filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato14', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('lathato15filter', 9);
-        if ($f != 9) {
-            $filter->addFilter('lathato15', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('nemkaphatofilter', 9);
-        if ($f != 9) {
-            $filter->addFilter('nemkaphato', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('fuggobenfilter', 9);
-        if ($f != 9) {
-            $filter->addFilter('fuggoben', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('inaktivfilter', 9);
-        if ($f != 9) {
-            $filter->addFilter('inaktiv', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('ajanlottfilter', 9);
-        if ($f != 9) {
-            $filter->addFilter('ajanlott', '=', $f);
-        }
-        $f = $this->params->getNumRequestParam('kiemeltfilter', 9);
-        if ($f != 9) {
-            $filter->addFilter('kiemelt', '=', $f);
-        }
+
         switch ($this->params->getNumRequestParam('akciosfilter', 9)) {
             case 1:
                 $filter->addSql(
