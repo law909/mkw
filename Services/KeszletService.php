@@ -82,12 +82,13 @@ class KeszletService
     }
 
     /**
-     * A termék vagy változat készlete raktáranként, az aktív raktárakra – a készlet
-     * részletezők (terméklista, termék karbantartó, bizonylattétel) közös adatforrása.
+     * A termék vagy változat készlete, foglalása és érkező mennyisége raktáranként, az aktív
+     * raktárakra – a készlet részletezők (terméklista, termék karbantartó, bizonylattétel)
+     * közös adatforrása.
      *
      * @param \Entities\Termek|\Entities\TermekValtozat $entity
      *
-     * @return array<int, array{raktarnev: string, keszlet: mixed}>
+     * @return array<int, array{raktarnev: string, keszlet: mixed, foglalt: mixed, erkezik: mixed}>
      */
     public static function getKeszletByRaktar($entity)
     {
@@ -96,6 +97,8 @@ class KeszletService
             $res[] = [
                 'raktarnev' => $raktar->getNev(),
                 'keszlet' => self::getKeszlet($entity, null, $raktar->getId()),
+                'foglalt' => self::getFoglaltMennyiseg($entity, null, null, $raktar->getId()),
+                'erkezik' => self::getIncomingStock($entity, null, $raktar->getId()),
             ];
         }
         return $res;
