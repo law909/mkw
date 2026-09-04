@@ -672,6 +672,33 @@ $(document).ready(function () {
                     e.preventDefault();
                     getSorNetto($(this), 'valtozatnettogen');
                 })
+                // inaktiváláskor rákérdez, hogy a változat elérhető/látható pipáit is kikapcsolja-e (minden webshopét)
+                .on('change', 'input[name^="valtozatinaktiv_"]', function () {
+                    const $inaktiv = $(this);
+                    if (!$inaktiv.is(':checked')) {
+                        return;
+                    }
+                    const $pipak = $inaktiv.closest('.valtozattable')
+                        .find('input[name^="valtozatelerheto"], input[name^="valtozatlathato"]')
+                        .filter(':checked');
+                    if (!$pipak.length) {
+                        return;
+                    }
+                    dialogcenter.html('Az inaktív változat Elérhető és Látható pipáit is kikapcsoljuk?').dialog({
+                        resizable: false,
+                        height: 160,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $pipak.prop('checked', false);
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                });
             $('#valtozatgeneratorform').ajaxForm({
                 type: 'POST',
                 beforeSubmit: function (arr, form, opt) {
