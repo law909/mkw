@@ -65,11 +65,10 @@ window.szuletesnap = (() => {
                 vx: (Math.random() - 0.5) * 1.2,
                 vy: -(magassag * 0.011 + Math.random() * magassag * 0.006),
                 szin: SZINEK[Math.floor(Math.random() * SZINEK.length)],
-                celY: magassag * (0.08 + Math.random() * 0.45)
+                celY: magassag * (0.08 + Math.random() * 0.45),
+                // a fütty a rakétához tartozik: a robbanás elvágja, mint az igazi tűzijátéknál
+                futty: (!indulo && Math.random() < 0.6) ? hang.futyul() : null
             });
-            if (!indulo && Math.random() < 0.5) {
-                hang.sziszeg();
-            }
         }
 
         /**
@@ -99,6 +98,9 @@ window.szuletesnap = (() => {
                     fogyas: 0.0022 + Math.random() * 0.0035,
                     meret: 1 + Math.random() * 1.6
                 });
+            }
+            if (r.futty) {
+                r.futty.vege();
             }
             // a képernyő alján robbanó közelebbinek hat, az szól hangosabban
             if (Math.random() < 0.6) {
@@ -198,7 +200,7 @@ window.szuletesnap = (() => {
     function hangSzintetizator() {
         const Ac = window.AudioContext || window.webkitAudioContext;
         if (!Ac) {
-            return {sziszeg: () => {}, durran: () => {}, leallit: () => {}};
+            return {futyul: () => null, durran: () => {}, leallit: () => {}};
         }
         const ac = new Ac();
         const fo = ac.createGain();
@@ -223,22 +225,51 @@ window.szuletesnap = (() => {
         document.addEventListener('keydown', ebreszt);
 
         return {
-            sziszeg() {
+            /**
+             * A felszálló rakéta fütyülése: felfelé csúszó szinusz, könnyű vibratóval – ettől
+             * lesz "fütyülős", nem pedig egyenletes szirénahang. A hívó a robbanáskor
+             * vege()-vel vágja el, addig szól.
+             */
+            futyul() {
                 if (ac.state !== 'running') {
-                    return;
+                    return null;
                 }
                 const t = ac.currentTime;
                 const o = ac.createOscillator();
                 o.type = 'sine';
-                o.frequency.setValueAtTime(280 + Math.random() * 120, t);
-                o.frequency.exponentialRampToValueAtTime(1100 + Math.random() * 500, t + 0.7);
+                o.frequency.setValueAtTime(420 + Math.random() * 160, t);
+                // hosszabb csúszás, mint egy rakéta repülési ideje: a robbanás úgyis elvágja
+                o.frequency.exponentialRampToValueAtTime(1900 + Math.random() * 900, t + 2.6);
+
+                // vibrato: a fütty kicsit "remeg", ahogy az igazi
+                const rezgo = ac.createOscillator();
+                rezgo.type = 'sine';
+                rezgo.frequency.value = 6 + Math.random() * 4;
+                const rezgoMelyseg = ac.createGain();
+                rezgoMelyseg.gain.value = 25 + Math.random() * 35;
+                rezgo.connect(rezgoMelyseg).connect(o.frequency);
+
                 const g = ac.createGain();
                 g.gain.setValueAtTime(0.0001, t);
-                g.gain.exponentialRampToValueAtTime(0.05, t + 0.06);
-                g.gain.exponentialRampToValueAtTime(0.0001, t + 0.72);
+                g.gain.exponentialRampToValueAtTime(0.18, t + 0.08);
+                const vegleges = t + 2.8;
+                g.gain.exponentialRampToValueAtTime(0.0001, vegleges);
                 o.connect(g).connect(fo);
                 o.start(t);
-                o.stop(t + 0.75);
+                rezgo.start(t);
+                o.stop(vegleges + 0.05);
+                rezgo.stop(vegleges + 0.05);
+
+                return {
+                    vege() {
+                        const most = ac.currentTime;
+                        g.gain.cancelScheduledValues(most);
+                        g.gain.setValueAtTime(Math.max(g.gain.value, 0.0001), most);
+                        g.gain.exponentialRampToValueAtTime(0.0001, most + 0.05);
+                        o.stop(most + 0.07);
+                        rezgo.stop(most + 0.07);
+                    }
+                };
             },
             durran(hangero) {
                 if (ac.state !== 'running') {
