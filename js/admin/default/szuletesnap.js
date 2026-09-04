@@ -7,6 +7,8 @@
  */
 window.szuletesnap = (() => {
     const HOSSZ = 30000;
+    // a 30. másodperc után nem indul új rakéta; ha az utolsó is elrobbant, ennyi idő alatt halványodik el
+    const FAKULAS = 3000;
     // a robbanások alapszínei fokban: minden robbanás egyet kap, a szikrák körülötte szórnak
     const SZINEK = [0, 20, 40, 55, 100, 140, 170, 195, 220, 260, 285, 320, 340];
     const GRAVITACIO = 0.055;
@@ -41,6 +43,9 @@ window.szuletesnap = (() => {
         const szikrak = [];
         const veg = Date.now() + HOSSZ;
         let fut = true;
+        // zaras: már nem indítunk rakétát, csak kivárjuk a levegőben lévőket
+        let zaras = false;
+        let fakul = false;
         // háttérfülön a requestAnimationFrame nem fut, tehát a cikluson belüli óra sem jár:
         // ez az időzítő gondoskodik róla, hogy az overlay akkor is eltűnjön
         let vegIdozito = null;
@@ -116,9 +121,8 @@ window.szuletesnap = (() => {
             if (!fut) {
                 return;
             }
-            if (Date.now() >= veg) {
-                bezar();
-                return;
+            if (!zaras && Date.now() >= veg) {
+                zaras = true;
             }
 
             // a rajz nem törlődik, csak halványul: ettől húznak csóvát a szikrák
@@ -128,7 +132,7 @@ window.szuletesnap = (() => {
 
             // a lassabb felszállás miatt többnek kell egyszerre a levegőben lennie,
             // különben megritkulnak a robbanások
-            if (raketak.length < 20 && Math.random() < 0.35) {
+            if (!zaras && raketak.length < 20 && Math.random() < 0.35) {
                 ujRaketa(false);
             }
 
@@ -168,6 +172,16 @@ window.szuletesnap = (() => {
             }
 
             ctx.globalCompositeOperation = 'source-over';
+
+            // az utolsó rakéta is elrobbant: a hulló szikrákkal együtt halványodik el a kép
+            if (zaras && !fakul && !raketak.length) {
+                fakul = true;
+                overlay.style.transition = 'opacity ' + (FAKULAS / 1000) + 's ease-in';
+                overlay.style.opacity = '0';
+                hang.elhalkul(FAKULAS / 1000);
+                setTimeout(bezar, FAKULAS + 100);
+            }
+
             requestAnimationFrame(lep);
         }
 
@@ -195,7 +209,9 @@ window.szuletesnap = (() => {
         overlay.addEventListener('click', bezar);
         document.addEventListener('keydown', escFigyelo);
         window.addEventListener('resize', meretez);
-        vegIdozito = setTimeout(bezar, HOSSZ);
+        vegIdozito = setTimeout(() => { zaras = true; }, HOSSZ);
+        // ha a fül háttérben van és az animáció áll, a lezárás magától is megtörténik
+        setTimeout(bezar, HOSSZ + 15000);
         requestAnimationFrame(lep);
     }
 
@@ -207,7 +223,7 @@ window.szuletesnap = (() => {
     function hangSzintetizator() {
         const Ac = window.AudioContext || window.webkitAudioContext;
         if (!Ac) {
-            return {futyul: () => null, durran: () => {}, leallit: () => {}};
+            return {futyul: () => null, durran: () => {}, elhalkul: () => {}, leallit: () => {}};
         }
         const ac = new Ac();
         const fo = ac.createGain();
@@ -251,8 +267,8 @@ window.szuletesnap = (() => {
                 // a csúszás jóval tovább tart a repülésnél: így lassú marad, a robbanás úgyis elvágja
                 const hossz = Math.max(2.2, (varhatoHossz || 2.5)) * 1.7;
                 // lefelé csúszik: a magasból ereszkedik, nem emelkedik
-                const kezdo = 600 + Math.random() * 120;
-                const veg = kezdo * (0.42 + Math.random() * 0.12);
+                const kezdo = 900 + Math.random() * 250;
+                const veg = kezdo * (0.45 + Math.random() * 0.12);
 
                 const sav = ac.createBiquadFilter();
                 sav.type = 'bandpass';
@@ -345,6 +361,15 @@ window.szuletesnap = (() => {
                 src.connect(szuro).connect(g).connect(fo);
                 src.start(t);
                 src.stop(t + 1);
+            },
+            elhalkul(masodperc) {
+                if (ac.state === 'closed') {
+                    return;
+                }
+                const t = ac.currentTime;
+                fo.gain.cancelScheduledValues(t);
+                fo.gain.setValueAtTime(Math.max(fo.gain.value, 0.0001), t);
+                fo.gain.exponentialRampToValueAtTime(0.0001, t + masodperc);
             },
             leallit() {
                 document.removeEventListener('click', ebreszt);
