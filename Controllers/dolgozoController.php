@@ -212,7 +212,7 @@ class dolgozoController extends \mkwhelpers\MattableController
                     'admin' => ($sysadmin ? true : $d->getMunkakorId() == \mkw\store::getParameter(\mkw\consts::AdminRole, 1))
                 ];
                 if (!$sysadmin && $d->getAgeInYears() > 20 && $d->isBirthdayCelebrationToday()) {
-                    \mkw\store::getAdminSession()->szuletesnap = true;
+                    \mkw\store::getAdminSession()->szuletesnap = date('Y-m-d');
                 }
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminview'));
             } else {

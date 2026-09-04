@@ -28,8 +28,8 @@
 
     const oszlop = Math.max(40, Math.floor(kepernyo.clientWidth / (meret.width || 8)));
     const sor = Math.max(20, Math.floor(kepernyo.clientHeight / (meret.height || 16)));
-    // annyi rakéta legyen egyszerre, hogy a képernyő szélességéhez mérten ne tűnjön üresnek
-    const MAX_RAKETA = Math.max(6, Math.round(oszlop / 16));
+    // annyi rakéta legyen egyszerre, hogy a képernyő szélességéhez mérten sűrű legyen a kép
+    const MAX_RAKETA = Math.max(12, Math.round(oszlop / 7));
 
     const raketak = [];
     const veg = Date.now() + HOSSZ;
@@ -105,8 +105,11 @@
             bezar();
             return;
         }
-        if (raketak.length < MAX_RAKETA && Math.random() < 0.5) {
-            raketak.push(ujRaketa());
+        // képkockánként több rakéta is indulhat, hogy a robbanások ne fogyjanak el
+        for (let u = 0; u < 3 && raketak.length < MAX_RAKETA; u++) {
+            if (Math.random() < 0.6) {
+                raketak.push(ujRaketa());
+            }
         }
         for (let i = raketak.length - 1; i >= 0; i--) {
             const r = raketak[i];

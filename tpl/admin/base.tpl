@@ -76,6 +76,18 @@
             color: #fff;
             text-shadow: 0 0 10px #ffd166, 0 0 26px #ef476f, 0 0 60px #ef476f;
             pointer-events: none;
+            animation: szuletesnapVillog 0.8s steps(1, end) infinite;
+        }
+
+        @keyframes szuletesnapVillog {
+            0%, 49% {
+                opacity: 1;
+                color: #fff;
+            }
+            50%, 100% {
+                opacity: 0.25;
+                color: #ffd166;
+            }
         }
     </style>
     <div id="szuletesnap">
