@@ -132,6 +132,10 @@ class termekController extends \mkwhelpers\MattableController
         $x['erkezik'] = $t->getIncomingStock();
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {
+                // a listán az inaktív változat sora nem kell, a karbantartó Készlet fülén igen
+                if (!$forKarb && $tvaltozat->getInaktiv()) {
+                    continue;
+                }
                 $mozgasdb = $tvaltozat->getMozgasDb();
                 if ($mozgasdb) {
                     $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
