@@ -1,4 +1,4 @@
-{* A tétel termékének/változatának raktárankénti készlete, foglalása és érkező mennyisége.
+{* A tétel termékének/változatának raktárankénti készlete, foglalása, szabad készlete és érkező mennyisége.
    A tartalmat termék- és változatváltáskor a /admin/bizonylattetel/getraktarkeszlet cseréli le. *}
 {if ($lista)}
     <table class="tetelkeszlettabla">
@@ -19,6 +19,12 @@
             <td>{at('Foglalt')}</td>
             {foreach $lista as $elem}
                 <td class="keszletoszlop">{$elem.foglalt}</td>
+            {/foreach}
+        </tr>
+        <tr>
+            <td title="{at('Készlet − min. készlet − foglalás')}">{at('Szabad')}</td>
+            {foreach $lista as $elem}
+                <td class="keszletoszlop">{$elem.szabad}</td>
             {/foreach}
         </tr>
         <tr>

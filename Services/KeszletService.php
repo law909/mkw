@@ -90,14 +90,26 @@ class KeszletService
      *
      * @return array<int, array{raktarnev: string, keszlet: mixed, foglalt: mixed, erkezik: mixed}>
      */
+    /**
+     * Raktáranként készlet, foglalás, szabad készlet és érkező mennyiség. A szabad készlet
+     * nincs nullára vágva, hogy a hiány is látsszon.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     *
+     * @return array<int, array{raktarid: int, raktarnev: string, keszlet: mixed, foglalt: mixed, szabad: mixed, erkezik: mixed}>
+     */
     public static function getKeszletByRaktar($entity)
     {
+        $valtozat = $entity instanceof TermekValtozat ? $entity : null;
+        $termek = $valtozat ? $valtozat->getTermek() : $entity;
         $res = [];
         foreach (\mkw\store::getEm()->getRepository(Raktar::class)->getAllActive() as $raktar) {
             $res[] = [
+                'raktarid' => $raktar->getId(),
                 'raktarnev' => $raktar->getNev(),
                 'keszlet' => self::getKeszlet($entity, null, $raktar->getId()),
                 'foglalt' => self::getFoglaltMennyiseg($entity, null, null, $raktar->getId()),
+                'szabad' => self::calcAvailableStock($termek, $valtozat, null, $raktar->getId(), null, false),
                 'erkezik' => self::getIncomingStock($entity, null, $raktar->getId()),
             ];
         }

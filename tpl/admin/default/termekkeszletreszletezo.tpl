@@ -4,6 +4,7 @@
             <th>{at('Raktár')}</th>
             <th>{at('Készlet')}</th>
             <th>{at('Foglalt')}</th>
+            <th title="{at('Készlet − min. készlet − foglalás')}">{at('Szabad')}</th>
             <th>{at('Érkezik')}</th>
         </tr>
     </thead>
@@ -13,6 +14,7 @@
             <td>{$elem.raktarnev}</td>
             <td class="textalignright">{$elem.keszlet}</td>
             <td class="textalignright">{$elem.foglalt}</td>
+            <td class="textalignright">{$elem.szabad}</td>
             <td class="textalignright">{$elem.erkezik}</td>
         </tr>
     {/foreach}
