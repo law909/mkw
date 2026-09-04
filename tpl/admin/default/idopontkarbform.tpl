@@ -180,7 +180,7 @@
         </div>
         <div id="KerdoivTab" class="mattkarb-page" data-visible="visible">
             {include 'idopontkerdoivszerkeszto.tpl' kerdoivjson=$egyed.kerdoivjson
-                kerdoivhint={at('A kérdőív a foglalási űrlapon jelenik meg a név, email és telefonszám után, a válaszok a jelentkezésen olvashatók. Kérdés nélkül az űrlapon semmi nem látszik. Új időpontnál a téma kiválasztásakor a téma kérdőíve töltődik be.')}}
+                kerdoivhint={at('A kérdőív a foglalási űrlapon jelenik meg a név, email és telefonszám után, a válaszok a jelentkezésen olvashatók. Kérdés nélkül az űrlapon semmi nem látszik. A téma kiválasztásakor a téma kérdőíve töltődik be; ha már vannak kérdések, előbb rákérdez.')}}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

@@ -32,7 +32,7 @@
         </div>
         <div id="KerdoivTab" class="mattkarb-page" data-visible="visible">
             {include 'idopontkerdoivszerkeszto.tpl' kerdoivjson=$egyed.kerdoivjson
-                kerdoivhint={at('A téma kérdőíve az új időpontba másolódik, amikor a témát kiválasztod; a már létrehozott időpontok kérdőívét nem változtatja meg.')}}
+                kerdoivhint={at('A téma kérdőíve az időpontba másolódik, amikor ott a témát kiválasztod (meglévő kérdések esetén rákérdez); a már létrehozott időpontok kérdőívét magától nem változtatja meg.')}}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

@@ -29,10 +29,11 @@ $(document).ready(function () {
             new ClipboardJS('.js-uidcopy');
 
             const szerkeszto = mkwcomp.kerdoivSzerkeszto.init($('#KerdoivTab'));
-            // új időpontnál a választott téma kérdőíve az időpont kérdőíve lesz; ha már van kérdés, rákérdez
+            // témaváltáskor a téma kérdőíve az időpont kérdőíve lesz; ha már van kérdés, rákérdez –
+            // meglévő időponton is, de ott csak a mentéssel véglegesül
             $('#IdoponttemaEdit').on('change', function () {
                 const temaid = $(this).val();
-                if ($('input[name="oper"]').val() !== 'add' || !temaid) {
+                if (!temaid) {
                     return;
                 }
                 $.ajax({
@@ -48,7 +49,7 @@ $(document).ready(function () {
                             szerkeszto.betolt(adat);
                             return;
                         }
-                        dialogcenter.html('Betöltsem a téma kérdőívét? A mostani kérdéseket lecseréli.').dialog({
+                        dialogcenter.html('Betöltsem a téma kérdőívét? A mostani kérdéseket lecseréli (csak a mentéssel véglegesül).').dialog({
                             resizable: false,
                             height: 160,
                             modal: true,
