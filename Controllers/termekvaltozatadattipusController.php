@@ -7,6 +7,9 @@ use Entities\TermekValtozatAdatTipus;
 class termekvaltozatadattipusController extends \mkwhelpers\MattableController
 {
 
+    /** a getSelectList() sorai, kérésen belül egyszer olvasva */
+    private $lista;
+
     public function __construct()
     {
         $this->setEntityName(TermekValtozatAdatTipus::class);
@@ -88,7 +91,8 @@ class termekvaltozatadattipusController extends \mkwhelpers\MattableController
 
     public function getSelectList($selid = null)
     {
-        $rec = $this->getRepo()->getAll([], ['nev' => 'ASC']);
+        // a termék karbantartón változatonként hívódik, mindig ugyanazzal a tartalommal
+        $rec = $this->lista ??= $this->getRepo()->getAll([], ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
             $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];

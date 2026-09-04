@@ -14,6 +14,15 @@ use mkw\store;
 class termekvaltozatController extends \mkwhelpers\MattableController
 {
 
+    /**
+     * A legördülőket építő kontrollerek. Azért példánymezők, mert a loadVars() változatonként
+     * fut: friss példánnyal a bennük lévő gyorsítótár soronként újraindulna.
+     */
+    private $tvatc;
+    private $tkepc;
+    private $szinc;
+    private $meretc;
+
     public function __construct()
     {
         $this->setEntityName(TermekValtozat::class);
@@ -26,10 +35,10 @@ class termekvaltozatController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $termek, $forKarb = false)
     {
-        $tvatc = new termekvaltozatadattipusController();
-        $tkepc = new termekkepController();
-        $szinc = new szinController();
-        $meretc = new meretController();
+        $tvatc = $this->tvatc ??= new termekvaltozatadattipusController();
+        $tkepc = $this->tkepc ??= new termekkepController();
+        $szinc = $this->szinc ??= new szinController();
+        $meretc = $this->meretc ??= new meretController();
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekValtozat();

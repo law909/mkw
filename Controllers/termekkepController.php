@@ -13,6 +13,9 @@ class termekkepController extends \mkwhelpers\MattableController
      */
     public const FOKEP_ID = -1;
 
+    /** termékazonosítónként a képsorok, kérésen belül egyszer olvasva */
+    private $kepek = [];
+
     public function __construct()
     {
         $this->setEntityName(TermekKep::class);
@@ -154,7 +157,9 @@ class termekkepController extends \mkwhelpers\MattableController
      */
     public function getSelectList($termek, $selid, $fokeppel = false)
     {
-        $kepek = $this->getRepo()->getByTermek($termek);
+        // a termék karbantartón változatonként hívódik, ugyanarra a termékre
+        $kulcs = $termek ? $termek->getId() : 0;
+        $kepek = $this->kepek[$kulcs] ??= $this->getRepo()->getByTermek($termek);
         $keplista = [];
         $selids = is_array($selid) ? $selid : [$selid];
         if ($fokeppel && $termek && trim((string)$termek->getKepurl()) !== '') {

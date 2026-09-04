@@ -46,6 +46,9 @@ class termekController extends \mkwhelpers\MattableController
     private $kaphatolett = false;
     private $vanshowarsav = false;
 
+    /** a listán termékenként fut a loadVars(), a benne lévő legördülő-gyorsítótár viszont közös */
+    private $valtozatCtrl;
+
     public function __construct()
     {
         $this->setEntityName(Termek::class);
@@ -60,7 +63,7 @@ class termekController extends \mkwhelpers\MattableController
     {
         $termekarCtrl = new termekarController();
         $kepCtrl = new termekkepController();
-        $valtozatCtrl = new termekvaltozatController();
+        $valtozatCtrl = $this->valtozatCtrl ??= new termekvaltozatController();
         $kapcsolodoCtrl = new termekkapcsolodoController();
         $dokCtrl = new termekdokController();
         $ar = [];

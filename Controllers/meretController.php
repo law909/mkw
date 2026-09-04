@@ -14,6 +14,9 @@ class meretController extends MattableController
 {
     use ValtozatTermekLista;
 
+    /** a getSelectList() sorai, kérésen belül egyszer olvasva */
+    private $lista;
+
     protected function getValtozatFieldName(): string
     {
         return 'meret';
@@ -100,7 +103,8 @@ class meretController extends MattableController
 
     public function getSelectList($selid = null)
     {
-        $rec = $this->getRepo()->getAll();
+        // a termék karbantartón változatonként hívódik, mindig ugyanazzal a tartalommal
+        $rec = $this->lista ??= $this->getRepo()->getAll();
         $res = [];
         foreach ($rec as $sor) {
             $res[] = [
