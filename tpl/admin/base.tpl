@@ -39,8 +39,8 @@
 {/if}
 <div id="messagecenter"></div>
 <div id="dialogcenter"></div>
-{if ($szuletesnap|default:false)}
-    {* 30 másodperces tűzijáték a bejelentkezés utáni első főoldalon – lásd szuletesnap.js *}
+{if ($szuletesnap|default:false) || ($sysadmin|default:false)}
+    {* 30 másodperces tűzijáték: bejelentkezés után magától, sysadminként a menü gombjáról – lásd szuletesnap.js *}
     <style>
         #szuletesnap {
             position: fixed;
@@ -85,11 +85,10 @@
             }
         }
     </style>
-    <div id="szuletesnap">
-        <canvas class="szuletesnap-kep"></canvas>
-        <div class="szuletesnap-felirat">BOLDOG SZÜLETÉSNAPOT!!</div>
-    </div>
     <script type="text/javascript" src="/js/admin/default/szuletesnap.js"></script>
+    {if ($szuletesnap|default:false)}
+        <script type="text/javascript">szuletesnap.indit();</script>
+    {/if}
 {/if}
 <div class="screen">
     {if ($userloggedin)}
@@ -133,6 +132,10 @@
                         <option value="{$_uitheme}"{if ($uitheme==$_uitheme)} selected="selected"{/if}>{$_uitheme}</option>
                     {/foreach}
                 </select>
+                {if ($sysadmin|default:false)}
+                    <a class="js-szuletesnapteszt ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                       href="#" title="{at('Születésnapi tűzijáték')}"><span class="ui-button-text">🎆</span></a>
+                {/if}
             </div>
         </div>
     {/if}

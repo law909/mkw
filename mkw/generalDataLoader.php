@@ -35,6 +35,7 @@ class generalDataLoader
         $view->setVar('uitheme', $uitheme);
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
+        $view->setVar('sysadmin', \mkw\store::getAdminSession()->pk == -1);
         $view->setVar('loggedinuser', \mkw\store::getAdminSession()->loggedinuser);
         // a bejelentkezés után egyszer, a főoldalon jelenik meg; az adminController::view() törli
         $view->setVar('szuletesnap', \mkw\store::getAdminSession()->szuletesnap === date('Y-m-d'));
