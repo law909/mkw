@@ -268,6 +268,7 @@ $router->map('GET', '/admin/idopont/viewlist', 'idopontController#viewlist', 'ad
 $router->map('GET', '/admin/idopont/getlistbody', 'idopontController#getlistbody', 'adminidopontgetlistbody');
 $router->map('GET', '/admin/idopont/getkarb', 'idopontController#getkarb', 'adminidopontgetkarb');
 $router->map('GET', '/admin/idopont/viewkarb', 'idopontController#viewkarb', 'adminidopontviewkarb');
+$router->map('GET', '/admin/idopont/getkerdoiv', 'idopontController#getKerdoiv', 'adminidopontgetkerdoiv');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idopont/save', 'idopontController#save', 'adminidopontsave');
     $router->map('POST', '/admin/idopont/setflag', 'idopontController#setflag', 'adminidopontsetflag');

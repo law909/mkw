@@ -186,6 +186,10 @@ class Idopontfoglalas
     /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes;
 
+    /** A foglaláskor kitöltött kérdőív válaszai JSON-ban, lásd \Services\IdopontKerdoivService. */
+    /** @ORM\Column(type="text",nullable=true) */
+    private $kerdoivvalasz;
+
     /** Várólistás jelentkezés nem foglal helyet – lásd IdopontfoglalasRepository::getCountForIdopont(). */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $varolistas = false;
@@ -850,6 +854,27 @@ class Idopontfoglalas
         $this->megjegyzes = $megjegyzes;
     }
 
+    public function getKerdoivvalasz()
+    {
+        return $this->kerdoivvalasz;
+    }
+
+    public function setKerdoivvalasz($kerdoivvalasz)
+    {
+        $this->kerdoivvalasz = $kerdoivvalasz;
+    }
+
+    /** @return array<int, array{kerdes: string, valasz: string}> */
+    public function getKerdoivvalaszSorok(): array
+    {
+        return \Services\IdopontKerdoivService::answersToRows($this->kerdoivvalasz);
+    }
+
+    public function getKerdoivvalaszSzoveg(): string
+    {
+        return \Services\IdopontKerdoivService::answersToText($this->kerdoivvalasz);
+    }
+
     public function isVarolistas()
     {
         return $this->varolistas;
@@ -1090,6 +1115,8 @@ class Idopontfoglalas
             'napnev' => $this->getNapNev(),
             'foglalasido' => $this->getFoglalasidoStr(),
             'megjegyzes' => $this->getMegjegyzes(),
+            'kerdoivvalaszok' => $this->getKerdoivvalaszSorok(),
+            'kerdoivszoveg' => $this->getKerdoivvalaszSzoveg(),
             'online' => $this->isOnline(),
             'varolistas' => $this->isVarolistas(),
 

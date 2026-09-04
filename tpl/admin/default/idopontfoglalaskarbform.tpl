@@ -158,6 +158,21 @@
                 </tr>
                 </tbody>
             </table>
+            {if ($egyed.kerdoivvalaszok)}
+                <fieldset class="mattkarb-doboz">
+                    <legend>{at('Kérdőív válaszai')}</legend>
+                    <table>
+                        <tbody>
+                        {foreach $egyed.kerdoivvalaszok as $_v}
+                            <tr>
+                                <td>{$_v.kerdes|escape}</td>
+                                <td><b>{$_v.valasz|escape}</b></td>
+                            </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </fieldset>
+            {/if}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

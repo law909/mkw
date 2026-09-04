@@ -16,6 +16,12 @@
         <div>{$_egyed.partneremail}</div>
         <div>{$_egyed.partnertelefon}</div>
         {if ($_egyed.megjegyzes)}<div class="mattable-note">{$_egyed.megjegyzes}</div>{/if}
+        {if ($_egyed.kerdoivvalaszok)}
+            <div class="matt-hseparator"></div>
+            {foreach $_egyed.kerdoivvalaszok as $_v}
+                <div class="mattable-note">{$_v.kerdes|escape}: <b>{$_v.valasz|escape}</b></div>
+            {/foreach}
+        {/if}
     </td>
     <td class="cell">{$_egyed.foglalasido}</td>
     <td class="cell">

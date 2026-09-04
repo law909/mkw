@@ -15,6 +15,9 @@
             {if ($_egyed.veg)}
                 <div>{at('Vége')}: {$_egyed.veg}</div>{/if}
         {/if}
+        {if ($_egyed.kerdoivkerdesdb)}
+            <div>{at('Kérdőív')}: {$_egyed.kerdoivkerdesdb} {at('kérdés')}</div>
+        {/if}
         <div class="matt-hseparator"></div>
         <div>{at('Regisztrációs form')}:
             <a href="#" class="js-uidcopy" data-clipboard-text="{$_egyed.reglink}">{at('Másolás vágólapra')}</a></div>

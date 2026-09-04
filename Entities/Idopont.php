@@ -147,6 +147,10 @@ class Idopont
     /** @ORM\Column(type="boolean", nullable=false) */
     private $inaktiv = false;
 
+    /** A foglalási űrlap kérdőíve JSON-ban, lásd \Services\IdopontKerdoivService. */
+    /** @ORM\Column(type="text",nullable=true) */
+    private $kerdoiv;
+
     /** @ORM\OneToMany(targetEntity="Idopontfoglalas", mappedBy="idopont",cascade={"persist"}) */
     private $foglalasok;
 
@@ -669,6 +673,22 @@ class Idopont
     public function setKellszamlazasiadat($kellszamlazasiadat)
     {
         $this->kellszamlazasiadat = $kellszamlazasiadat;
+    }
+
+    public function getKerdoiv()
+    {
+        return $this->kerdoiv;
+    }
+
+    public function setKerdoiv($kerdoiv)
+    {
+        $this->kerdoiv = $kerdoiv;
+    }
+
+    /** A kérdőív normalizált tömbje (kérdés nélkül üres `kerdesek`). */
+    public function getKerdoivArray(): array
+    {
+        return \Services\IdopontKerdoivService::parse($this->kerdoiv);
     }
 
     public function getUrl()

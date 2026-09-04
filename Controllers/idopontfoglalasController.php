@@ -18,6 +18,7 @@ use Entities\Penztarbizonylatfej;
 use Entities\Penztarbizonylattetel;
 use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
+use Services\IdopontKerdoivService;
 
 class idopontfoglalasController extends \mkwhelpers\MattableController
 {
@@ -92,6 +93,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $x['szamlazvakelt'] = $t->getSzamlazvakeltStr();
         $x['szamlazvateljesites'] = $t->getSzamlazvateljesitesStr();
         $x['szamlaszamlink'] = $this->getBizonylatUrl($t->getSzamlaszam(), Bizonylatfej::class);
+        $x['kerdoivvalaszok'] = $t->getKerdoivvalaszSorok();
         return $x;
     }
 
@@ -871,6 +873,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
                 $hiba = t('Az emailcím formátuma hibás.');
             }
         }
+        $kerdoivvalasz = IdopontKerdoivService::readAnswers($idopont ? $idopont->getKerdoivArray() : IdopontKerdoivService::parse(null), $this->params);
+        if (!$hiba && $kerdoivvalasz['hiba']) {
+            $hiba = $kerdoivvalasz['hiba'];
+        }
 
         /** @var \Entities\Partner $partner */
         $partner = $hiba ? null : $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
@@ -928,6 +934,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $foglalas->setLemondva(false);
         $foglalas->setLemondasdatum(null);
         $foglalas->setLemondasoka('');
+        $foglalas->setKerdoivvalasz(IdopontKerdoivService::encodeAnswers($kerdoivvalasz['sorok']));
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
 
@@ -1146,6 +1153,12 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('onlinevalaszthato', $idopont && $idopont->isOnlinevalaszthato());
         $view->setVar('szabadhely', ($idopont && $datum) ? max(0, $idopont->getFreePlaces($datum)) : 0);
         $view->setVar('varolista', $idopont && $idopont->isWaitlistable($datum));
+        // hibás beküldés után a már megjelölt válaszok maradjanak
+        $kerdoiv = $idopont ? $idopont->getKerdoivArray() : IdopontKerdoivService::parse(null);
+        $view->setVar(
+            'kerdoiv',
+            IdopontKerdoivService::forTemplate($kerdoiv, IdopontKerdoivService::readAnswers($kerdoiv, $this->params)['ertekek'])
+        );
     }
 
 }

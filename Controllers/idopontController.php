@@ -13,6 +13,7 @@ use Entities\Partner;
 use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
 use Services\PartnerWriterService;
+use Services\IdopontKerdoivService;
 
 class idopontController extends \mkwhelpers\MattableController
 {
@@ -57,6 +58,8 @@ class idopontController extends \mkwhelpers\MattableController
         $x['idotartam'] = $t->getIdotartamStr();
         $x['earlybirdvege'] = $t->getEarlybirdvegeStr();
         // az ügyfél weboldalaiba beágyazott snippet – a fájlnév és a paraméterek nem változhatnak
+        $x['kerdoivjson'] = json_encode($t->getKerdoivArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $x['kerdoivkerdesdb'] = count($t->getKerdoivArray()['kerdesek']);
         $x['reglink'] = '<script src=\'' . \mkw\store::getConfigValue('mainurl') . '/js/main/' . \mkw\store::getConfigValue(
                 'main.theme'
             ) . '/rendezvenyregloader.js?r=' . $t->getUid() . '&i=' . $t->getId() . '\'></script>';
@@ -78,7 +81,11 @@ class idopontController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj, $oper = null)
     {
-        $obj = $this->setEntityFieldsFromRequest($obj);
+        // a kérdőív JSON nyersen jön, a normalizálás (strip_tags) a szolgáltatásban van
+        $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => ['kerdoiv']]);
+        $obj->setKerdoiv(IdopontKerdoivService::encode(
+            IdopontKerdoivService::parse($this->params->getOriginalStringRequestParam('kerdoiv'))
+        ));
         // a két ág kizárja egymást: a nem használt oldal mezőit ürítjük
         if ($this->params->getBoolRequestParam('ismetlodo')) {
             $obj->setKezdet(null);
@@ -188,6 +195,7 @@ class idopontController extends \mkwhelpers\MattableController
         /** @var \Entities\Idopont $idopont */
         $idopont = $this->getRepo()->findWithJoins($this->params->getRequestParam('id', 0));
         $view->setVar('egyed', $this->loadVars($idopont, true));
+        $view->setVar('kerdoivforraslist', $this->getKerdoivForrasList($idopont));
         $view->setVar(
             'dolgozolist',
             $this->keepSelected(
@@ -274,6 +282,42 @@ class idopontController extends \mkwhelpers\MattableController
             ];
         }
         return $res;
+    }
+
+    /**
+     * A kérdőívvel rendelkező többi időpont a „Kérdőív átvétele" legördülőhöz.
+     *
+     * @return array<int, array{id: int, caption: string}>
+     */
+    private function getKerdoivForrasList($idopont): array
+    {
+        $qb = $this->getEm()->createQueryBuilder()
+            ->select('i')->from(Idopont::class, 'i')
+            ->where('i.kerdoiv IS NOT NULL')
+            ->orderBy('i.nev', 'ASC')->addOrderBy('i.id', 'DESC');
+        $ret = [];
+        /** @var \Entities\Idopont $forras */
+        foreach ($qb->getQuery()->getResult() as $forras) {
+            if ($idopont && $forras->getId() == $idopont->getId()) {
+                continue;
+            }
+            if (!$forras->getKerdoivArray()['kerdesek']) {
+                continue;
+            }
+            $ret[] = ['id' => $forras->getId(), 'caption' => $forras->getTeljesNev()];
+        }
+        return $ret;
+    }
+
+    /** Egy időpont kérdőíve JSON-ban a szerkesztő „átvétel másik időpontról" funkciójához. */
+    public function getKerdoiv()
+    {
+        /** @var \Entities\Idopont $idopont */
+        $idopont = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        echo json_encode(
+            $idopont ? $idopont->getKerdoivArray() : IdopontKerdoivService::parse(null),
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
     }
 
     public function setflag()

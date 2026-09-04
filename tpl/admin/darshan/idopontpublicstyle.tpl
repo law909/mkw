@@ -138,6 +138,38 @@
         border-radius: .25rem;
     }
 
+    .kerdoiv {
+        margin: 1.5rem 0 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #ced4da;
+    }
+
+    .kerdoivcim {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: .5rem;
+    }
+
+    .kerdoivleiras {
+        margin-bottom: 1rem;
+    }
+
+    .kerdoivhint {
+        font-size: .9rem;
+        color: #6c757d;
+        margin-bottom: .25rem;
+    }
+
+    .kerdoivvalasz {
+        display: block;
+        margin: .25rem 0;
+        cursor: pointer;
+    }
+
+    textarea.kerdoivszoveg {
+        height: auto;
+    }
+
     .foglalasbtn {
         color: #fff;
         background-color: #80008C;

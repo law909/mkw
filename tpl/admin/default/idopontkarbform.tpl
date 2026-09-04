@@ -6,6 +6,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#KerdoivTab">{at('Kérdőív')}{if ($egyed.kerdoivkerdesdb)} ({$egyed.kerdoivkerdesdb}){/if}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -176,6 +177,40 @@
                 {/if}
                 </tbody>
             </table>
+        </div>
+        {* A kérdőív szerkesztője: a blokkokat az idopont.js építi a rejtett kerdoiv mező JSON-jából,
+           és minden módosításkor vissza is írja oda – a form a JSON-t küldi el. *}
+        <div id="KerdoivTab" class="mattkarb-page" data-visible="visible">
+            <input id="KerdoivEdit" name="kerdoiv" type="hidden" value="{$egyed.kerdoivjson|escape}">
+            <p class="mattkarb-hint">
+                {at('A kérdőív a foglalási űrlapon jelenik meg a név, email és telefonszám után, a válaszok a jelentkezésen olvashatók. Kérdés nélkül az űrlapon semmi nem látszik.')}
+            </p>
+            <table>
+                <tbody>
+                <tr>
+                    <td><label for="KerdoivCimEdit">{at('Kérdőív címe')}:</label></td>
+                    <td><input id="KerdoivCimEdit" class="js-kerdoivcim" type="text" size="83" maxlength="255"></td>
+                </tr>
+                <tr>
+                    <td><label for="KerdoivLeirasEdit">{at('Bevezető szöveg')}:</label></td>
+                    <td><textarea id="KerdoivLeirasEdit" class="js-kerdoivleiras" rows="3" cols="80"></textarea></td>
+                </tr>
+                {if ($kerdoivforraslist)}
+                    <tr>
+                        <td><label for="KerdoivForrasSelect">{at('Kérdőív átvétele másik időpontról')}:</label></td>
+                        <td><select id="KerdoivForrasSelect" class="js-kerdoivforras">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $kerdoivforraslist as $_f}
+                                    <option value="{$_f.id}">{$_f.caption|escape}</option>
+                                {/foreach}
+                            </select>
+                            <span class="mattkarb-hint">{at('A mostani kérdéseket lecseréli, csak a mentéssel véglegesül.')}</span></td>
+                    </tr>
+                {/if}
+                </tbody>
+            </table>
+            <div class="js-kerdoivkerdesek"></div>
+            <a class="js-kerdoivujkerdes" href="#" title="{at('Új kérdés')}"><span class="ui-icon ui-icon-circle-plus"></span>{at('Új kérdés')}</a>
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

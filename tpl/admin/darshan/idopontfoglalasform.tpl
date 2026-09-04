@@ -53,6 +53,32 @@
                 <label class="form-label" for="utcaedit">Utca, házszám</label>
                 <input class="form-control" id="utcaedit" type="text" name="utca" maxlength="255" value="{$egyed.utca}">
             </div>
+            {if ($kerdoiv.kerdesek)}
+                <div class="kerdoiv">
+                    {if ($kerdoiv.cim)}<div class="kerdoivcim">{$kerdoiv.cim|escape}</div>{/if}
+                    {if ($kerdoiv.leiras)}<div class="kerdoivleiras">{$kerdoiv.leiras|escape|nl2br}</div>{/if}
+                    {foreach $kerdoiv.kerdesek as $_i => $_k}
+                        <div class="form-group kerdoivkerdes">
+                            <span class="form-label">{$_i + 1}. {$_k.szoveg|escape}{if ($_k.kotelezo)} *{/if}</span>
+                            {if ($_k.tipus == 'tobb')}
+                                <div class="kerdoivhint">Több válasz is megjelölhető.</div>
+                            {/if}
+                            {if ($_k.tipus == 'szoveg')}
+                                <textarea class="form-control kerdoivszoveg" name="kerdes_{$_i}" rows="3" maxlength="2000"{if ($_k.kotelezo)} required{/if}>{$_k.ertek|escape}</textarea>
+                            {else}
+                                {foreach $_k.opciok as $_o}
+                                    <label class="kerdoivvalasz">
+                                        <input type="{if ($_k.tipus == 'tobb')}checkbox{else}radio{/if}"
+                                               name="kerdes_{$_i}{if ($_k.tipus == 'tobb')}[]{/if}" value="{$_o.szoveg|escape}"
+                                               {if ($_o.checked)} checked{/if}{if ($_k.kotelezo && $_k.tipus == 'egy')} required{/if}>
+                                        {$_o.szoveg|escape}
+                                    </label>
+                                {/foreach}
+                            {/if}
+                        </div>
+                    {/foreach}
+                </div>
+            {/if}
             {if ($onlinevalaszthato)}
                 <div class="form-group">
                     <span class="form-label">Hogyan veszel részt?</span>
