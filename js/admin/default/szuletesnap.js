@@ -59,15 +59,19 @@ window.szuletesnap = (() => {
         }
 
         function ujRaketa(indulo) {
+            const celY = magassag * (0.08 + Math.random() * 0.45);
+            const indulasY = magassag + 10;
+            // a felszállás ideje adja a sebességet, hogy a fütty végig kísérhesse: kb. 2–3 mp
+            const kepkockak = 130 + Math.random() * 60;
             raketak.push({
                 x: szelesseg * (0.08 + Math.random() * 0.84),
-                y: magassag + 10,
-                vx: (Math.random() - 0.5) * 1.2,
-                vy: -(magassag * 0.011 + Math.random() * magassag * 0.006),
+                y: indulasY,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (celY - indulasY) / kepkockak,
                 szin: SZINEK[Math.floor(Math.random() * SZINEK.length)],
-                celY: magassag * (0.08 + Math.random() * 0.45),
+                celY: celY,
                 // a fütty a rakétához tartozik: a robbanás elvágja, mint az igazi tűzijátéknál
-                futty: (!indulo && Math.random() < 0.6) ? hang.futyul() : null
+                futty: indulo ? null : hang.futyul(kepkockak / 60)
             });
         }
 
@@ -122,7 +126,9 @@ window.szuletesnap = (() => {
             ctx.fillStyle = 'rgba(6, 6, 12, 0.13)';
             ctx.fillRect(0, 0, szelesseg, magassag);
 
-            if (raketak.length < 14 && Math.random() < 0.22) {
+            // a lassabb felszállás miatt többnek kell egyszerre a levegőben lennie,
+            // különben megritkulnak a robbanások
+            if (raketak.length < 20 && Math.random() < 0.35) {
                 ujRaketa(false);
             }
 
@@ -132,12 +138,13 @@ window.szuletesnap = (() => {
                 const r = raketak[i];
                 r.x += r.vx;
                 r.y += r.vy;
-                r.vy += GRAVITACIO * 1.6;
+                // emelkedés közben lassul, mint az igazi rakéta
+                r.vy *= 0.9975;
                 ctx.fillStyle = 'hsl(' + r.szin + ', 100%, 72%)';
                 ctx.beginPath();
                 ctx.arc(r.x, r.y, 2.2, 0, Math.PI * 2);
                 ctx.fill();
-                if (r.vy >= 0 || r.y <= r.celY) {
+                if (r.y <= r.celY) {
                     robban(r);
                     raketak.splice(i, 1);
                 }
@@ -208,6 +215,9 @@ window.szuletesnap = (() => {
         fo.gain.value = 0.15;
         fo.connect(ac.destination);
 
+        // egyszerre legfeljebb ennyi fütty szóljon, különben egybefolyik
+        let futtyekSzama = 0;
+
         const zaj = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
         const adat = zaj.getChannelData(0);
         for (let i = 0; i < adat.length; i++) {
@@ -226,48 +236,91 @@ window.szuletesnap = (() => {
 
         return {
             /**
-             * A felszálló rakéta fütyülése: felfelé csúszó szinusz, könnyű vibratóval – ettől
-             * lesz "fütyülős", nem pedig egyenletes szirénahang. A hívó a robbanáskor
-             * vege()-vel vágja el, addig szól.
+             * A felszálló rakéta fütyülése. Nem tiszta szinusz: a fütty jellegét egy nagy
+             * jósági tényezőjű sávszűrőn átengedett fehérzaj (a levegős, süvítő rész) adja,
+             * alatta egy háromszögjel a tonális maggal. Mindkettő ugyanazon a lassú, felfelé
+             * csúszó frekvencián, könnyű vibratóval. A hívó a robbanáskor vege()-vel vágja el.
+             *
+             * @param {number} varhatoHossz a felszállás becsült ideje másodpercben
              */
-            futyul() {
-                if (ac.state !== 'running') {
+            futyul(varhatoHossz) {
+                if (ac.state !== 'running' || futtyekSzama >= 4) {
                     return null;
                 }
                 const t = ac.currentTime;
-                const o = ac.createOscillator();
-                o.type = 'sine';
-                o.frequency.setValueAtTime(420 + Math.random() * 160, t);
-                // hosszabb csúszás, mint egy rakéta repülési ideje: a robbanás úgyis elvágja
-                o.frequency.exponentialRampToValueAtTime(1900 + Math.random() * 900, t + 2.6);
+                // a csúszás valamivel tovább tart a repülésnél: a robbanás úgyis elvágja
+                const hossz = Math.max(1.5, (varhatoHossz || 2.5)) * 1.3;
+                const kezdo = 620 + Math.random() * 160;
+                const veg = kezdo * (2.0 + Math.random() * 0.5);
 
-                // vibrato: a fütty kicsit "remeg", ahogy az igazi
+                const sav = ac.createBiquadFilter();
+                sav.type = 'bandpass';
+                sav.Q.value = 24;
+                sav.frequency.setValueAtTime(kezdo, t);
+                sav.frequency.exponentialRampToValueAtTime(veg, t + hossz);
+
+                const zajForras = ac.createBufferSource();
+                zajForras.buffer = zaj;
+                zajForras.loop = true;
+                const zajSzint = ac.createGain();
+                zajSzint.gain.value = 6;
+
+                const o = ac.createOscillator();
+                o.type = 'triangle';
+                o.frequency.setValueAtTime(kezdo, t);
+                o.frequency.exponentialRampToValueAtTime(veg, t + hossz);
+                const oSzint = ac.createGain();
+                oSzint.gain.value = 0.35;
+
+                // vibrato: a fütty kicsit remeg, ettől lesz élő
                 const rezgo = ac.createOscillator();
                 rezgo.type = 'sine';
-                rezgo.frequency.value = 6 + Math.random() * 4;
+                rezgo.frequency.value = 5 + Math.random() * 3;
                 const rezgoMelyseg = ac.createGain();
-                rezgoMelyseg.gain.value = 25 + Math.random() * 35;
-                rezgo.connect(rezgoMelyseg).connect(o.frequency);
+                rezgoMelyseg.gain.value = 14 + Math.random() * 16;
+                rezgo.connect(rezgoMelyseg);
+                rezgoMelyseg.connect(o.frequency);
+                rezgoMelyseg.connect(sav.frequency);
 
                 const g = ac.createGain();
                 g.gain.setValueAtTime(0.0001, t);
-                g.gain.exponentialRampToValueAtTime(0.18, t + 0.08);
-                const vegleges = t + 2.8;
+                g.gain.exponentialRampToValueAtTime(0.32, t + 0.3);
+                const vegleges = t + hossz + 0.2;
                 g.gain.exponentialRampToValueAtTime(0.0001, vegleges);
-                o.connect(g).connect(fo);
+
+                zajForras.connect(sav).connect(zajSzint).connect(g);
+                o.connect(oSzint).connect(g);
+                g.connect(fo);
+
+                zajForras.start(t);
                 o.start(t);
                 rezgo.start(t);
+                zajForras.stop(vegleges + 0.05);
                 o.stop(vegleges + 0.05);
                 rezgo.stop(vegleges + 0.05);
+                futtyekSzama++;
+
+                let vegetErt = false;
+                function elhal(mikor) {
+                    if (vegetErt) {
+                        return;
+                    }
+                    vegetErt = true;
+                    futtyekSzama--;
+                    g.gain.cancelScheduledValues(mikor);
+                    g.gain.setValueAtTime(Math.max(g.gain.value, 0.0001), mikor);
+                    g.gain.exponentialRampToValueAtTime(0.0001, mikor + 0.08);
+                    zajForras.stop(mikor + 0.1);
+                    o.stop(mikor + 0.1);
+                    rezgo.stop(mikor + 0.1);
+                }
+
+                // ha a rakéta valamiért nem robban el, a fütty magától is elfogy
+                setTimeout(() => elhal(ac.currentTime), (hossz + 0.2) * 1000);
 
                 return {
                     vege() {
-                        const most = ac.currentTime;
-                        g.gain.cancelScheduledValues(most);
-                        g.gain.setValueAtTime(Math.max(g.gain.value, 0.0001), most);
-                        g.gain.exponentialRampToValueAtTime(0.0001, most + 0.05);
-                        o.stop(most + 0.07);
-                        rezgo.stop(most + 0.07);
+                        elhal(ac.currentTime);
                     }
                 };
             },
