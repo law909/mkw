@@ -19,6 +19,7 @@ use Traits\GetsFieldValue;
  * 		@ORM\index(name="termekmenukarkod_idx",columns={"termekmenu1karkod"}),
  * 		@ORM\index(name="termekmenu2karkod_idx",columns={"termekmenu2karkod"}),
  * 		@ORM\index(name="termekfacounter_idx",columns={"inaktiv","lathato"}),
+ * 		@ORM\index(name="termeknev_idx",columns={"nev"}),
  * 		@ORM\index(name="termekslug_idx",columns={"slug"}),
  *      @ORM\index(name="termekvonalkod_idx",columns={"vonalkod"}),
  * 		@ORM\index(name="termekcikkszamgyarto_idx",columns={"cikkszam","gyarto_id"}),

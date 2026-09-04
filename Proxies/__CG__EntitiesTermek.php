@@ -257,6 +257,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getIncomingStock($datum = NULL, $raktarid = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIncomingStock', [$datum, $raktarid]);
+
+        return parent::getIncomingStock($datum, $raktarid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toA2a($partner = NULL)
     {
 
