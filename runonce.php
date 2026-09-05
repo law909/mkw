@@ -2339,8 +2339,7 @@ if ($DBVersion < '0163') {
     $conn = \mkw\store::getEm()->getConnection();
     $lathato = \mkw\store::isFifo() ? 1 : 0;
     $conn->executeStatement(
-        'UPDATE menu SET url = "/admin/keszletertek/view", routename = "/admin/keszletertek",'
-        . ' lathato = ' . $lathato . ' WHERE url = "/admin/fifo/view"'
+        'DELETE FROM menu WHERE url = "/admin/fifo/view"'
     );
     $conn->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend)'
