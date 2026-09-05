@@ -125,6 +125,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['beszallitonev'] = $t->getBeszallitoNev();
         $x['doklinkek'] = $this->getDokLinkek($t->getTermekDokok());
         $x['keszlet'] = $t->getKeszlet();
+        $x['fifo'] = \mkw\store::isFifo() ? \Services\FifoService::getErtek($t) : null;
         $x['termekcsoportnev'] = $t->getTermekcsoportNev();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
         // clamp nélkül: a listán a tényleges hiány is látszik, nem nulla
@@ -144,6 +145,9 @@ class termekController extends \mkwhelpers\MattableController
         }
         $x['valtozatkeszlet'] = $lvaltozat;
         if ($forKarb) {
+            $x['fiforaktarak'] = \mkw\store::isFifo()
+                ? $this->getRepo(\Entities\Fifoertek::class)->getTermekRaktarak($t->getId())
+                : [];
             $matrix = $this->getMinKeszletMatrix($t);
             $x['minkeszletraktarak'] = $matrix['raktarak'];
             $x['minkeszletsorok'] = $matrix['sorok'];
@@ -1255,6 +1259,9 @@ class termekController extends \mkwhelpers\MattableController
             ? $this->getRepo(TermekValtozat::class)->getIdsByTermekIds($termekids)
             : [];
         \Services\KeszletService::preloadStock($termekids, $valtozatids);
+        if (\mkw\store::isFifo()) {
+            \Services\FifoService::preloadErtek($termekids, $valtozatids);
+        }
     }
 
     public function getSelectList($selid = null)

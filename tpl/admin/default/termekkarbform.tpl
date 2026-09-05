@@ -274,6 +274,9 @@
                 <a class="js-arnewbutton" href="#" title="{at('Új')}">
                     <span class="ui-icon ui-icon-circle-plus"></span>
                 </a>
+                {if ($setup.fifo)}
+                    {include 'termekfifoertek.tpl'}
+                {/if}
             </div>
         {/if}
         <div id="TranslationTab" class="mattkarb-page" data-visible="visible">

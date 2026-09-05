@@ -553,8 +553,26 @@ $(document).ready(function () {
                             $('.js-arrecalchibak').html(d.hibak.join('<br>'));
                         }
                     });
+                })
+                .on('click', '.js-fiforecalcbutton', function (e) {
+                    e.preventDefault();
+                    // csak ennek a terméknek a készletcsoportjait számolja újra; a táblát a
+                    // karbantartó újranyitása frissíti
+                    const gomb = $(this);
+                    const uzenet = $('.js-fifouzenet');
+                    uzenet.text('Számolás…');
+                    $.ajax({
+                        url: gomb.attr('href'),
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {termekid: gomb.attr('data-termekid')},
+                        success: (d) => uzenet.text(d && d.ok
+                            ? `Kész (${d.csoport} készletcsoport, ${d.szamitva}). A tábla a karbantartó újranyitásakor frissül.`
+                            : ((d && d.error) || 'A számítás nem futott le.')),
+                        error: () => uzenet.text('A számítás nem futott le.')
+                    });
                 });
-            $('.js-arnewbutton,.js-ardelbutton,.js-arrecalcbutton').button();
+            $('.js-arnewbutton,.js-ardelbutton,.js-arrecalcbutton,.js-fiforecalcbutton').button();
             kapcsolodotab.on('click', '.js-kapcsolodonewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();

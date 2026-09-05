@@ -14,6 +14,9 @@
         <th class="keszletoszlop">{at('Foglalt')}</th>
         <th class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{at('Szabad')}</th>
         <th class="keszletoszlop">{at('Érkezik')}</th>
+        {if ($setup.fifo)}
+            <th class="keszletoszlop" title="{at('FIFO készletérték, minden raktár együtt')}">{at('FIFO érték')}</th>
+        {/if}
         <th></th>
     </tr>
     </thead>
@@ -32,6 +35,10 @@
                 <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$vk.szabadkeszlet}</td>
                 <td class="keszletoszlop">{if ($vk.erkezik != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
                                               data-valtozatid="{$vk.id}" data-tipus="erkezik">{$vk.erkezik}</a>{else}{$vk.erkezik}{/if}</td>
+                {if ($setup.fifo)}
+                    <td class="keszletoszlop{if ($vk.fifo && $vk.fifo.becsult)} redtext{/if}"
+                        title="{if $vk.fifo}{at('Számítva')}: {$vk.fifo.szamitva}{else}{at('Még nem számolt')}{/if}">{if $vk.fifo}{$vk.fifo.ertek}{/if}</td>
+                {/if}
                 <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}&valtozat={$vk.id|escape:'url'}" target="_blank"
                        class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                        data-keszlet="{$vk.keszlet}"
@@ -51,6 +58,10 @@
             <td class="keszletoszlop" title="{at('Készlet − min. készlet − foglalás')}">{$termek.szabadkeszlet}</td>
             <td class="keszletoszlop">{if ($termek.erkezik != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
                                           data-tipus="erkezik">{$termek.erkezik}</a>{else}{$termek.erkezik}{/if}</td>
+            {if ($setup.fifo)}
+                <td class="keszletoszlop{if ($termek.fifo && $termek.fifo.becsult)} redtext{/if}"
+                    title="{if $termek.fifo}{at('Számítva')}: {$termek.fifo.szamitva}{else}{at('Még nem számolt')}{/if}">{if $termek.fifo}{$termek.fifo.ertek}{/if}</td>
+            {/if}
             <td><a href="/admin/termek/cimke?termek={$termek.id|escape:'url'}" target="_blank"
                    class="js-termekcimke ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                    data-keszlet="{$termek.keszlet}"

@@ -1407,6 +1407,15 @@ class store
         return self::getSetupValue('multivaluta');
     }
 
+    /**
+     * FIFO készletértékelés. Kapcsoló nélkül nem fut a számítás, nem íródik a
+     * változásnapló, és a kimutatás sem jelenik meg – lásd docs/FIFO.md.
+     */
+    public static function isFifo()
+    {
+        return self::getSetupValue('fifo');
+    }
+
     public static function isFakeKintlevoseg()
     {
         return self::getSetupValue('fakekintlevoseg');

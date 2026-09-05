@@ -33,6 +33,7 @@ class CronService
         'joga' => Cron\JogaBejelentkezesTask::class,
         'arfolyam' => Cron\ArfolyamTask::class,
         'navkoltsegszamla' => Cron\NavKoltsegszamlaTask::class,
+        'fifo' => Cron\FifoTask::class,
         'test' => Cron\TestTask::class,
     ];
 

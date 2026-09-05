@@ -1613,13 +1613,13 @@ $router->map('POST', '/admin/xmlszamlaexport/sendemail', 'xmlszamlaexportControl
 $router->map('GET', '/admin/xmlszamlaexport/download', 'xmlszamlaexportController#download', 'adminxmlszamladownload');
 $router->map('GET', '/admin/xmlszamlaexport/getutolso', 'xmlszamlaexportController#getUtolso', 'adminxmlszamlagetutolso');
 
-$router->map('GET', '/admin/fifoteszt', 'fifoController#teszt', 'adminfifoteszt');
-$router->map('GET', '/admin/fifo/view', 'fifoController#view', 'adminfifoview');
+$router->map('GET', '/admin/keszletertek/view', 'keszletertekController#view', 'adminkeszletertekview');
+$router->map('GET', '/admin/keszletertek/get', 'keszletertekController#createLista', 'adminkeszletertekget');
+$router->map('GET', '/admin/keszletertek/export', 'keszletertekController#exportLista', 'adminkeszletertekexport');
 if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/fifo/calc', 'fifoController#calculate', 'adminfifocalc');
+    $router->map('POST', '/admin/keszletertek/recalc', 'keszletertekController#recalculate', 'adminkeszletertekrecalc');
+    $router->map('POST', '/admin/keszletertek/recalctermek', 'keszletertekController#recalculateTermek', 'adminkeszletertekrecalctermek');
 }
-$router->map('GET', '/admin/fifo/alapadat', 'fifoController#getAlapadat', 'adminfifoalapadat');
-$router->map('GET', '/admin/fifo/keszletertek', 'fifoController#getKeszletertek', 'adminkeszletertek');
 
 $router->map('GET', '/admin/lista/boltbannincsmasholvan', 'listaController#boltbannincsmasholvan', 'adminlistaboltbannincsmasholvan');
 $router->map('GET', '/admin/lista/nemkaphatoertesito', 'listaController#nemkaphatoertesito', 'adminlistanemkaphatoertesito');

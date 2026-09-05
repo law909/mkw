@@ -590,26 +590,32 @@ class TermekRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * Kötegelt "utolsó beszár" számítás sok termékváltozatra egyetlen lekérdezéssel.
+     * Kötegelt "utolsó beszár" számítás sok termékre egyetlen lekérdezéssel.
      * A Termek::getNettoUtolsoBeszar() / getBruttoUtolsoBeszar() metódusok soronkénti (N+1)
-     * hívása helyett — a keszletlista számára. Változatonként a legfrissebb beszerzés árát adja.
+     * hívása helyett — a keszletlista számára.
      *
-     * @param int[] $valtozatids termékváltozat id-k
+     * A kulcs a (termék, változat) pár, nem csak a változat: a változat nélküli terméknek is
+     * van beszerzési ára, a rá könyvelt, változat nélküli bevétsorokból. (A korábbi, csak
+     * változatra kulcsoló ág ezeknek mindig nullát adott.)
+     *
+     * @param int[] $termekids termék id-k
      * @param string|null $datum csak eddig a teljesítési dátumig
      * @param bool $csakszallito csak szállító partnerek bizonylatai
      * @param bool $brutto false = nettó (getNettoUtolsoBeszar), true = bruttó (getBruttoUtolsoBeszar) logika
      *
-     * @return array [ valtozatid => ['id' => bizonylatfej_id, 'ertek' => ar] ]
+     * @return array [ "termekid|valtozatid" => ['id' => bizonylatfej_id, 'ertek' => ar] ]
+     *               a változat nélküli sor kulcsában a valtozatid 0
      */
-    public function getUtolsoBeszarByValtozat(array $valtozatids, $datum = null, $csakszallito = false, $brutto = false)
+    public function getUtolsoBeszarByTermek(array $termekids, $datum = null, $csakszallito = false, $brutto = false)
     {
         $result = [];
-        $ids = array_values(array_unique(array_map('intval', array_filter($valtozatids))));
+        $ids = array_values(array_unique(array_map('intval', array_filter($termekids))));
         if (empty($ids)) {
             return $result;
         }
 
         $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('termekvaltozat_id', 'termekvaltozat_id');
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('ertek', 'ertek');
@@ -635,12 +641,16 @@ class TermekRepository extends \mkwhelpers\Repository
             $where[] = 'bf.teljesites <= :datum';
             $params['datum'] = $datum;
         }
-        $where[] = 'bt.termekvaltozat_id IN (' . implode(',', $ids) . ')';
+        $where[] = 'bt.termek_id IN (' . implode(',', $ids) . ')';
 
         $q = $this->_em->createNativeQuery(
-            'SELECT x.termekvaltozat_id, x.id, x.ertek FROM ('
-            . 'SELECT bt.termekvaltozat_id AS termekvaltozat_id, bf.id AS id, ' . $ertek . ' AS ertek, '
-            . 'ROW_NUMBER() OVER (PARTITION BY bt.termekvaltozat_id ORDER BY bf.teljesites DESC, bf.id DESC) AS rn '
+            'SELECT x.termek_id, x.termekvaltozat_id, x.id, x.ertek FROM ('
+            . 'SELECT bt.termek_id AS termek_id, COALESCE(bt.termekvaltozat_id, 0) AS termekvaltozat_id,'
+            . ' bf.id AS id, ' . $ertek . ' AS ertek, '
+            // a bt.id a döntetlené: ugyanaz a változat ugyanazon a bizonylaton több tételen is
+            // szerepelhet, más-más áron – enélkül a ROW_NUMBER tetszőlegesen választana
+            . 'ROW_NUMBER() OVER (PARTITION BY bt.termek_id, COALESCE(bt.termekvaltozat_id, 0)'
+            . ' ORDER BY bf.teljesites DESC, bf.id DESC, bt.id DESC) AS rn '
             . 'FROM bizonylattetel bt '
             . 'LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id) '
             . 'WHERE ' . implode(' AND ', $where)
@@ -651,7 +661,10 @@ class TermekRepository extends \mkwhelpers\Repository
             $q->setParameters($params);
         }
         foreach ($q->getScalarResult() as $row) {
-            $result[$row['termekvaltozat_id']] = ['id' => $row['id'], 'ertek' => $row['ertek']];
+            $result[$row['termek_id'] . '|' . (int)$row['termekvaltozat_id']] = [
+                'id' => $row['id'],
+                'ertek' => $row['ertek'],
+            ];
         }
 
         return $result;

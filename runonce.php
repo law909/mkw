@@ -2332,6 +2332,37 @@ if ($DBVersion < '0162') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0162');
 }
 
+if ($DBVersion < '0163') {
+    // A FIFO készletértékelés menüpontja. A régi, rejtett "Készletérték" sor (/admin/fifo/view)
+    // átirányítása – így megmarad a sorrendje és a jogosultsága. Láthatóvá csak ott válik,
+    // ahol a fifo kapcsoló be van kapcsolva; lásd docs/FIFO.md.
+    $conn = \mkw\store::getEm()->getConnection();
+    $lathato = \mkw\store::isFifo() ? 1 : 0;
+    $conn->executeStatement(
+        'UPDATE menu SET url = "/admin/keszletertek/view", routename = "/admin/keszletertek",'
+        . ' lathato = ' . $lathato . ' WHERE url = "/admin/fifo/view"'
+    );
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend)'
+        . ' SELECT 4, "Készletérték", "/admin/keszletertek/view", "/admin/keszletertek", 40, ' . $lathato . ', 800'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/keszletertek/view") m)'
+    );
+
+    // A 2015-ös FIFO ág táblái: a kód már nem hivatkozik rájuk. Csak akkor ejtjük őket, ha
+    // üresek – bármelyikben lévő sor arra utalna, hogy valaki mégis használta.
+    foreach (['fifo', 'keszlet'] as $regi) {
+        $van = $conn->fetchOne(
+            'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ?',
+            [$regi]
+        );
+        if ($van && !$conn->fetchOne('SELECT COUNT(*) FROM `' . $regi . '`')) {
+            $conn->executeStatement('DROP TABLE `' . $regi . '`');
+        }
+    }
+
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0163');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

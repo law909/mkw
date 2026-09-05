@@ -17,11 +17,11 @@ class keszletlistaController extends \mkwhelpers\MattableController
 {
 
     /**
-     * A készletsor és a bizonylattétel kapcsolata: változatos terméknél a változat, változat
-     * nélkülinél maga a termék. A lista a termékből indul (LEFT JOIN a változatokra), különben
-     * a változat nélküli termékek – a törzs nagyobbik fele – ki sem kerülnének rá.
+     * A sor készlete a két előre aggregált halmazból: változatos terméknél a változat összege,
+     * változat nélkülinél a termék teljes összege. A lista a termékből indul (LEFT JOIN a
+     * változatokra), különben a változat nélküli termékek ki sem kerülnének rá.
      */
-    private const TETELKAPCSOLAT = '(CASE WHEN _xx.id IS NULL THEN bt.termek_id=t.id ELSE bt.termekvaltozat_id=_xx.id END)';
+    private const KESZLETKIFEJEZES = '(CASE WHEN _xx.id IS NULL THEN kt.keszlet ELSE kv.keszlet END)';
 
     private $datumstr;
     private $raktar;
@@ -52,6 +52,15 @@ class keszletlistaController extends \mkwhelpers\MattableController
             'valutanemid' => 1,
             'valutanem' => 'HUF'
         ];
+        if (\mkw\store::isFifo()) {
+            $tacok[] = [
+                'id' => '---fifo',
+                'caption' => 'FIFO érték',
+                'selected' => false,
+                'valutanemid' => 1,
+                'valutanem' => 'HUF'
+            ];
+        }
         $view->setVar('arsavlist', $tacok);
 
         $view->printTemplateResult();
@@ -118,6 +127,29 @@ class keszletlistaController extends \mkwhelpers\MattableController
         return $filter;
     }
 
+    /**
+     * A készletösszegek CTE-je. Korábban a lista minden sora (termék × változat, mugenrace-en
+     * 25 ezer sor) külön korrelált alkérdést futtatott a bizonylattétel táblán, és a CASE-es
+     * kapcsolat miatt indexet sem tudott használni – szűrő nélkül percekig futott. Most egy
+     * menetben, csoportosítva áll elő minden összeg, és a lista már csak joinol.
+     *
+     * A `keszletvaltozat` a változatonkénti, a `keszlettermek` a termékenkénti összeg. A
+     * szűrőparaméterek egyszer szerepelnek az SQL-ben, ezért CTE és nem kétszer beszúrt
+     * származtatott tábla.
+     */
+    private function getKeszletCte(FilterDescriptor $filter)
+    {
+        return 'WITH keszletvaltozat AS ('
+            . ' SELECT bt.termek_id AS tid, bt.termekvaltozat_id AS vid,'
+            . ' SUM(bt.mennyiseg * bt.irany) AS keszlet'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString('_xx', 'p')
+            . ' GROUP BY bt.termek_id, bt.termekvaltozat_id),'
+            . ' keszlettermek AS ('
+            . ' SELECT tid, SUM(keszlet) AS keszlet FROM keszletvaltozat GROUP BY tid)';
+    }
+
     protected function getData()
     {
         $rsm = new ResultSetMapping();
@@ -170,26 +202,20 @@ class keszletlistaController extends \mkwhelpers\MattableController
             }
             // a minimum a külső SELECT-ben korrelál a külső _xx / t aliasra, ezért tűnt el
             // az aggregáló alkérdésből az azt árnyékoló `LEFT JOIN termek t`
-            $keszletsql = ' ((SELECT SUM(bt.mennyiseg * bt.irany)'
-                . ' FROM bizonylattetel bt'
-                . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-                . $filter->getFilterString('_xx', 'p') . ' AND ' . self::TETELKAPCSOLAT . ' )'
-                . ' - ' . $minexpr . ') '
-                . 'AS keszlet';
+            $keszletsql = ' (' . self::KESZLETKIFEJEZES . ' - ' . $minexpr . ') AS keszlet';
         } else {
             $this->minkeszletstr = '';
-            $keszletsql = ' (SELECT SUM(bt.mennyiseg * bt.irany)'
-                . ' FROM bizonylattetel bt'
-                . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-                . $filter->getFilterString('_xx', 'p') . ' AND ' . self::TETELKAPCSOLAT . ' ) '
-                . 'AS keszlet';
+            $keszletsql = ' ' . self::KESZLETKIFEJEZES . ' AS keszlet';
         }
 
         $q = $this->getEm()->createNativeQuery(
-            'SELECT t.id AS termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+            $this->getKeszletCte($filter)
+            . ' SELECT t.id AS termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
             . $keszletsql
             . ' FROM termek t'
             . ' LEFT JOIN termekvaltozat _xx ON (_xx.termek_id=t.id)'
+            . ' LEFT JOIN keszletvaltozat kv ON (kv.vid=_xx.id)'
+            . ' LEFT JOIN keszlettermek kt ON (kt.tid=t.id)'
             . $termekfilter->getFilterString('_xx', 'r')
             . $keszlettipus
             . ' ORDER BY t.cikkszam, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ', _xx.ertek1, _xx.ertek2',
@@ -223,8 +249,8 @@ class keszletlistaController extends \mkwhelpers\MattableController
         $arsavobj = $this->getRepo(Arsav::class)->findOneBy(['nev' => $arsav]);
         $valutanem = $as[1] ?? null;
         $valutaobj = $this->getRepo(Valutanem::class)->find($valutanem);
-        $this->arsavstr = $arsav;
-        if ($valutaobj) {
+        $this->arsavstr = ($arsav === '---fifo') ? t('FIFO érték') : $arsav;
+        if ($valutaobj && ($arsav !== '---fifo')) {
             $this->arsavstr .= ' ' . $valutaobj->getNev();
         }
         // Utolsó beszár esetén egyetlen kötegelt lekérdezéssel számoljuk ki az összes
@@ -232,8 +258,8 @@ class keszletlistaController extends \mkwhelpers\MattableController
         // hívások N+1 problémáját elkerülve).
         $beszarmap = [];
         if ($arsav === '---utolsobeszar' && ($nettobrutto === 'netto' || $nettobrutto === 'brutto')) {
-            $beszarmap = $this->getRepo(Termek::class)->getUtolsoBeszarByValtozat(
-                array_column($d, 'id'),
+            $beszarmap = $this->getRepo(Termek::class)->getUtolsoBeszarByTermek(
+                array_column($d, 'termek_id'),
                 $this->datumstr,
                 true,
                 $nettobrutto === 'brutto'
@@ -243,8 +269,13 @@ class keszletlistaController extends \mkwhelpers\MattableController
         // Ársávos ár esetén (ársávos deployment) szintén egyetlen kötegelt lekérdezéssel
         // töltjük be az összes érintett termék árát (a getNettoAr/getBruttoAr -> getArsavAr
         // soronkénti N+1 hívása helyett). Ársávnál az ár termékenként (nem változatonként) jön.
+        $fifomap = [];
+        if ($arsav === '---fifo') {
+            $fifomap = $this->getFifoMap($d);
+        }
+
         $arsavarmap = [];
-        if ($arsav !== '---utolsobeszar' && \mkw\store::isArsavok()
+        if ($arsav !== '---utolsobeszar' && $arsav !== '---fifo' && \mkw\store::isArsavok()
             && ($nettobrutto === 'netto' || $nettobrutto === 'brutto')) {
             $arsavarmap = $this->getRepo(TermekAr::class)->getArsavArByTermek(
                 array_column($d, 'termek_id'),
@@ -255,14 +286,17 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $ret = [];
         foreach ($d as $sor) {
-            if ($arsav === '---utolsobeszar') {
-                if (isset($beszarmap[$sor['id']])) {
-                    $sor['ar'] = $beszarmap[$sor['id']]['ertek'];
-                    $sor['bizid'] = $beszarmap[$sor['id']]['id'];
-                } else {
-                    $sor['ar'] = 0;
-                    $sor['bizid'] = null;
-                }
+            if ($arsav === '---fifo') {
+                $fifo = $fifomap[$this->rowKey($sor)] ?? null;
+                $sor['ar'] = $fifo ? $fifo['egysegertek'] : 0;
+                // az összeg a tárolt értékből képződik, nem ár * készlet szorzatból
+                $sor['ertek'] = $fifo ? $fifo['ertek'] : 0;
+                $sor['becsult'] = $fifo ? $fifo['becsult'] : false;
+                $sor['bizid'] = '';
+            } elseif ($arsav === '---utolsobeszar') {
+                $beszar = $beszarmap[$this->rowKey($sor)] ?? null;
+                $sor['ar'] = $beszar ? $beszar['ertek'] : 0;
+                $sor['bizid'] = $beszar ? $beszar['id'] : null;
             } else {
                 $sor['bizid'] = '';
                 if (\mkw\store::isArsavok()) {
@@ -301,6 +335,83 @@ class keszletlistaController extends \mkwhelpers\MattableController
         return $ret;
     }
 
+    /** A riport sorának kulcsa az árakat adó térképekhez: termék + változat (változat nélkül 0). */
+    private function rowKey(array $sor)
+    {
+        return (int)$sor['termek_id'] . '|' . (int)$sor['id'];
+    }
+
+    /**
+     * A riport sorainak FIFO értéke. A mai napra a tárolt `fifoertek`-ből, múltbeli dátumra
+     * menet közben számolva – utóbbi csak a riporton szereplő termékekre fut.
+     *
+     * A raktárak összevonása (céges készlet) itt is helyes: az érték additív, az egységérték
+     * a súlyozott átlag.
+     */
+    private function getFifoMap(array $d)
+    {
+        $termekids = array_values(array_unique(array_filter(array_column($d, 'termek_id'))));
+        if (!$termekids) {
+            return [];
+        }
+
+        $mai = strtotime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
+        $kert = strtotime(\mkw\store::convDate($this->datumstr));
+        $osszeg = [];
+
+        if ($kert < $mai) {
+            $this->arsavstr .= ' (' . t('menet közben számolva') . ')';
+            $eredmeny = (new \Services\FifoService())->calculateAsOf(
+                date('Y-m-d', $kert),
+                $this->raktar ?: null,
+                $termekids
+            );
+            foreach ($eredmeny as $sor) {
+                if ($sor['mennyiseg'] <= 0) {
+                    continue;
+                }
+                $this->addFifoOsszeg($osszeg, $sor['termekid'], $sor['valtozatid'], $sor['mennyiseg'], $sor['ertek'], $sor['becsult']);
+            }
+        } else {
+            $params = [];
+            $where = ['termek_id IN (' . implode(',', array_map('intval', $termekids)) . ')', 'mennyiseg > 0'];
+            if ($this->raktar) {
+                $where[] = 'raktar_id = :raktar';
+                $params['raktar'] = $this->raktar;
+            }
+            $sorok = $this->getEm()->getConnection()->fetchAllAssociative(
+                'SELECT termek_id, termekvaltozat_id, SUM(mennyiseg) AS mennyiseg, SUM(ertek) AS ertek,'
+                . ' MAX(becsult) AS becsult FROM fifoertek WHERE ' . implode(' AND ', $where)
+                . ' GROUP BY termek_id, termekvaltozat_id',
+                $params
+            );
+            foreach ($sorok as $sor) {
+                $this->addFifoOsszeg($osszeg, $sor['termek_id'], $sor['termekvaltozat_id'], $sor['mennyiseg'], $sor['ertek'], $sor['becsult']);
+            }
+        }
+
+        $map = [];
+        foreach ($osszeg as $kulcs => $sor) {
+            $map[$kulcs] = [
+                'ertek' => round($sor['ertek'], 2),
+                'egysegertek' => $sor['mennyiseg'] > 0 ? round($sor['ertek'] / $sor['mennyiseg'], 4) : 0,
+                'becsult' => (bool)$sor['becsult'],
+            ];
+        }
+        return $map;
+    }
+
+    private function addFifoOsszeg(array &$osszeg, $termekid, $valtozatid, $mennyiseg, $ertek, $becsult)
+    {
+        $kulcs = (int)$termekid . '|' . (int)$valtozatid;
+        if (!isset($osszeg[$kulcs])) {
+            $osszeg[$kulcs] = ['mennyiseg' => 0, 'ertek' => 0, 'becsult' => false];
+        }
+        $osszeg[$kulcs]['mennyiseg'] += (float)$mennyiseg;
+        $osszeg[$kulcs]['ertek'] += (float)$ertek;
+        $osszeg[$kulcs]['becsult'] = $osszeg[$kulcs]['becsult'] || (bool)$becsult;
+    }
+
     public function createLista()
     {
         $report = $this->createView('rep_keszlet.tpl');
@@ -332,7 +443,8 @@ class keszletlistaController extends \mkwhelpers\MattableController
             ->setCellValue('D1', t('Változat 2'))
             ->setCellValue('E1', t('Készlet'))
             ->setCellValue('F1', t('Ár'))
-            ->setCellValue('G1', t('Bizonylat'));
+            ->setCellValue('G1', t('Érték'))
+            ->setCellValue('H1', t('Bizonylat'));
 
         $mind = $this->getData();
 
@@ -345,7 +457,8 @@ class keszletlistaController extends \mkwhelpers\MattableController
                 ->setCellValue('D' . $sor, $item['ertek2'])
                 ->setCellValue('E' . $sor, $item['keszlet'])
                 ->setCellValue('F' . $sor, $item['ar'])
-                ->setCellValue('G' . $sor, $item['bizid']);
+                ->setCellValue('G' . $sor, $item['ertek'] ?? ($item['ar'] * $item['keszlet']))
+                ->setCellValue('H' . $sor, $item['bizid']);
             $sor++;
         }
 

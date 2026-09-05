@@ -154,6 +154,27 @@ class KeszletService
     }
 
     /**
+     * Ugyanaz a feltételhalmaz nyers SQL-fragmentumként, a bizonylattétel `bt` és a
+     * bizonylatfej `bf` aliasra. A FIFO számítás (`Services\FifoService`) ezt használja,
+     * hogy a két készletmodell mennyisége soha ne csússzon szét: amit itt átírunk, az
+     * automatikusan átüt a FIFO-ra is.
+     *
+     * A stornó bizonylatokra szándékosan NEM szűrünk: a stornó egy normál, ellentétes
+     * előjelű mozgás a folyamban, a kihagyása elrontaná az összeget.
+     */
+    public static function getKeszletWhereSql(bool $datum = false, bool $raktar = false): string
+    {
+        $felt = ['bt.mozgat = 1', '((bt.rontott = 0) OR (bt.rontott IS NULL))'];
+        if ($datum) {
+            $felt[] = 'bf.teljesites <= :fifodatum';
+        }
+        if ($raktar) {
+            $felt[] = 'bf.raktar_id = :fiforaktar';
+        }
+        return implode(' AND ', $felt);
+    }
+
+    /**
      * A készlet- és a foglaláslekérdezés közös törzse: előjeles összeg és mozgásszám.
      */
     private static function sumMozgas(FilterDescriptor $filter): array
