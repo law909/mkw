@@ -52,6 +52,11 @@
                     <div>
                         <a href="/admin/import/galadpartner" class="js-galadpartnerimport">Partnerek (Galád XLSX)</a>
                     </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/galadkeszlet" class="js-galadkeszletimport">Előző program készlete</a>
+                    </div>
+                    <div id="galadkeszlet-eredmeny"></div>
                     <p>Az excel táblában használható fejlécek:</p>
                     <ul>
                         <li>kod - termék kódja</li>
@@ -63,6 +68,10 @@
                         <li>netto_huf_vonalkodos - nettó HUF ár "vonalkodos" ársávba</li>
                         <li>brutto_huf_vonalkodos - bruttó HUF ár "vonalkodos" ársávba</li>
                     </ul>
+                    <p>Az "Előző program készlete" a stock_detailed XLSX-et várja (Cikkszám, Termék, Vonalkód,
+                        Raktár, Teljes mennyiség oszlopok). Raktáranként egy-egy "Induló készlet" megjegyzésű bevét
+                        készül a tulaj partnerre; a raktárt a neve azonosítja, ha nincs ilyen, felveszi. A termék
+                        keresése előbb vonalkód, aztán cikkszám alapján megy. A kimaradó sorok XLSX naplóba kerülnek.</p>
                     <p>A termék azonosítás "kod", "vonalkod" vagy "cikkszam" oszlop alapján történik.<br>
                         Ha egy oszlopnak nincs fejléce, a program nem foglalkozik a tartalmával.<br>
                         Ha ugyanolyan valutanemben és ársávban nettó és bruttó ár is szerepel, a program a bruttót fogja betölteni.</p>

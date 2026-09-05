@@ -1529,6 +1529,7 @@ $router->map('GET', '/admin/sitemap/view', 'sitemapController#view', 'adminsitem
 $router->map('GET', '/admin/sitemap/create', 'sitemapController#create', 'adminsitemapcreate');
 
 $router->map('POST', '/admin/import/stop/[:impname]', 'importController#stop', 'adminimportstop');
+$router->map('GET', '/admin/import/galadkeszletnaplo', 'galadKeszletImportController#naplo', 'admingaladkeszletimportnaplo');
 $router->map('POST', '/admin/import/repair/[:impname]', 'importController#repair', 'adminimportrepair');
 if (!\mkw\store::isClosed()) {
     $router->map('GET', '/admin/export/view', 'exportController#view', 'adminexportview');
@@ -1561,6 +1562,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/galadcgmimport', 'galadCGMImportController#import', 'admingaladcgmimport');
     $router->map('POST', '/admin/import/galadproductimport', 'galadProductImportController#import', 'admingaladproductimport');
     $router->map('POST', '/admin/import/galadsuomyimport', 'galadSuomyImportController#import', 'admingaladsuomyimport');
+    $router->map('POST', '/admin/import/galadkeszlet', 'galadKeszletImportController#import', 'admingaladkeszletimport');
     $router->map('POST', '/admin/import/fcmotoorderimport', 'importController#fcmotoorderimport', 'adminfcmotoorderimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');

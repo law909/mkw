@@ -21,6 +21,22 @@ $(document).ready(function () {
                 });
             }).button();
 
+            $('.js-galadkeszletimport').on('click', function (e) {
+                e.preventDefault();
+                const eredmeny = $('#galadkeszlet-eredmeny');
+                eredmeny.text('Feldolgozás folyamatban…');
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('href'),
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    data: new FormData($('#mattkarb-form')[0]),
+                    success: (msg) => eredmeny.empty().append(galadKeszletRiport(msg)),
+                    error: () => eredmeny.text('Az import nem futott le.')
+                });
+            }).button();
+
             $('.js-termekfabutton').on('click', function (e) {
                 var edit = $(this);
                 e.preventDefault();
@@ -63,3 +79,49 @@ $(document).ready(function () {
         },
     }));
 });
+
+/**
+ * Az "Előző program készlete" import válaszának megjelenítése: raktáranként a bevét
+ * bizonylatszáma, alatta az új raktárak és a kimaradt sorok naplója.
+ */
+function galadKeszletRiport(msg) {
+    if (!msg || !msg.ok) {
+        return $('<div>').text((msg && msg.error) || 'Az import nem futott le.');
+    }
+
+    const doboz = $('<div>');
+    doboz.append($('<p>').text(msg.uzenet));
+
+    if (msg.bizonylatok && msg.bizonylatok.length) {
+        const tabla = $('<table>');
+        tabla.append($('<tr>').append(
+            $('<th>').text('Raktár'),
+            $('<th>').text('Bizonylat'),
+            $('<th>').text('Tétel'),
+            $('<th>').text('Mennyiség')
+        ));
+        msg.bizonylatok.forEach((b) => tabla.append($('<tr>').append(
+            $('<td>').text(b.raktar),
+            $('<td>').text(b.bizonylatszam),
+            $('<td>').text(b.tetel),
+            $('<td>').text(b.mennyiseg)
+        )));
+        doboz.append(tabla);
+    }
+
+    if (msg.ujraktarak && msg.ujraktarak.length) {
+        doboz.append($('<p>').text(`Új raktár: ${msg.ujraktarak.join(', ')}`));
+    }
+
+    if (msg.kimaradt) {
+        const sor = $('<p>').text(`${msg.kimaradt} sor kimaradt. `);
+        if (msg.naplo) {
+            sor.append($('<a>').attr('href', msg.naplo).text('Napló letöltése'));
+        }
+        doboz.append(sor);
+    } else {
+        doboz.append($('<p>').text('Minden sor betöltődött.'));
+    }
+
+    return doboz;
+}
