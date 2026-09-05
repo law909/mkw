@@ -2532,7 +2532,6 @@ class Termek
 
         $filter = new FilterDescriptor();
         $filter->addFilter('bf.bizonylattipus_id', '=', 'bevet');
-        $filter->addSql('bf.partner_id NOT IN (8390,12291)');
         if ($csakszallito) {
             $filter->addSql('bf.partner_id IN (SELECT ptr.id FROM partner ptr WHERE ptr.szallito=1)');
         }
