@@ -152,18 +152,22 @@ Test: cover the comment — is it still clear from the next 3–4 lines? Then dr
 Work handed over as a task list lives in `docs/feladatok-<YYYYMMDD>.md` — a numbered/bulleted list of
 independent jobs. Three rules when working from one:
 
-- **One task, one commit** (one line each, see "Commits" above). Not a single commit at the end. If
+- **One task, one commit**. Not a single commit at the end. If
   two tasks genuinely can't be separated (they edit the same lines), commit them together and say so
   in the reply.
 - **Mark progress in the file**: prefix each item with `**[kész]**` / `**[folyamatban]**` /
   `**[nyitott]**` as you go.
 - **Write your notes into the file too**, indented under the item: the real cause of a bug, decisions
   you made instead, what you left open, what still has to be filled in by hand, and any question that
-  is the user's to answer. The reply scrolls away, the file stays.
+  is the user's to answer. The reply scrolls away, the file stays. Write these in hungarian.
 
 A task is done when the code is written, checked, committed, *and* the `.md` is updated — only then
 start the next one. `docs/` is gitignored, so the `.md` never goes into the commit (and must not be
 added with `git add -f`); update it on disk and send it with `SendUserFile`.
+
+## Plans
+
+Write plan files in hungarian, put them into docs folder.
 
 ## Things to know that bite
 
