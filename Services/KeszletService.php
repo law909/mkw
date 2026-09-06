@@ -50,6 +50,9 @@ class KeszletService
     /** kulcs => még beérkezésre váró mennyiség */
     private static $erkezikCache = [];
 
+    /** webshopnum => visible warehouse ids|null - per-request cache */
+    private static $webshopRaktarCache = [];
+
     /**
      * @param \Entities\Termek|null $termek
      * @param \Entities\TermekValtozat|null $valtozat
@@ -148,9 +151,59 @@ class KeszletService
         $filter->addFilter('bt.mozgat', '=', 1);
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
         $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
-        if ($raktarid) {
+        self::addRaktarFilter($filter, $raktarid);
+    }
+
+    /**
+     * The one place warehouse filtering happens. $raktarid may be a single id, an array of ids,
+     * or null; on null the storefront narrows to the warehouses visible in the webshop, admin
+     * does not.
+     */
+    private static function addRaktarFilter(FilterDescriptor $filter, $raktarid): void
+    {
+        $raktarid = self::resolveRaktar($raktarid);
+        if (is_array($raktarid)) {
+            $filter->addFilter('bf.raktar_id', 'IN', $raktarid);
+        } elseif ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
+    }
+
+    /**
+     * An explicitly requested warehouse always wins. Without one we only narrow on the
+     * storefront, because admin wants to see every warehouse's stock. getWebshopRaktarIds()
+     * returns null when every warehouse is visible, and then nothing is filtered at all.
+     *
+     * The cache keys are built from the raw $raktarid, not from this resolved value - within a
+     * request the mode and the webshop are constant, so null always resolves the same way, and
+     * the preload keys stay aligned with the per-row ones.
+     *
+     * @return int|int[]|null
+     */
+    private static function resolveRaktar($raktarid)
+    {
+        if ($raktarid || !\mkw\store::isMainMode()) {
+            return $raktarid;
+        }
+        return self::getWebshopRaktarIds();
+    }
+
+    /**
+     * Ids of the warehouses that contribute stock in the webshop, null if all of them do. Any
+     * caller can pass the result as the service's warehouse parameter, which is how an
+     * admin-side feed or export can be narrowed to one webshop.
+     *
+     * @return int[]|null
+     */
+    public static function getWebshopRaktarIds($webshopnum = null): ?array
+    {
+        $kulcs = (string)($webshopnum ?: \mkw\store::getWebshopNum());
+        if (!array_key_exists($kulcs, self::$webshopRaktarCache)) {
+            self::$webshopRaktarCache[$kulcs] = \mkw\store::getEm()
+                ->getRepository(Raktar::class)
+                ->getWebshopRaktarIds($webshopnum);
+        }
+        return self::$webshopRaktarCache[$kulcs];
     }
 
     /**
@@ -278,6 +331,10 @@ class KeszletService
     {
         $parts = [$mezo, $id];
         foreach ($extra as $e) {
+            if (is_array($e)) {
+                $parts[] = implode(',', $e);
+                continue;
+            }
             $parts[] = $e instanceof \DateTimeInterface ? $e->format('Y-m-d H:i:s') : (string)$e;
         }
         return implode('|', $parts);
@@ -407,9 +464,7 @@ class KeszletService
         if ($kivevebiz) {
             $filter->addFilter('bf.id', '<>', $kivevebiz);
         }
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
+        self::addRaktarFilter($filter, $raktarid);
     }
 
     /**
@@ -558,9 +613,7 @@ class KeszletService
     {
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
         $filter->addFilter('bf.teljesites', '<=', $datum ?: new \DateTime());
-        if ($raktarid) {
-            $filter->addFilter('bf.raktar_id', '=', $raktarid);
-        }
+        self::addRaktarFilter($filter, $raktarid);
     }
 
     /**
@@ -677,6 +730,7 @@ class KeszletService
     {
         self::$termekCache = [];
         self::$valtozatCache = [];
+        self::$webshopRaktarCache = [];
         self::clearKeszletCache();
     }
 

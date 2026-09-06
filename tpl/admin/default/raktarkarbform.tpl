@@ -25,6 +25,17 @@
                     <td><label for="IdegenkodEdit">{at('Idegen kód')}:</label></td>
                     <td><input id="IdegenkodEdit" name="idegenkod" type="text" size="80" maxlength="255" value="{$egyed.idegenkod}"></td>
                 </tr>
+                <tr>
+                    <td><label>{at('Készlete látszik')}:</label></td>
+                    <td>
+                        <input id="LathatoCheck" name="lathato" type="checkbox"{if ($egyed.lathato)} checked="checked"{/if}>{$webshop1name}
+                        {if ($setup.multishop)}
+                            {for $cikl = 2 to $enabledwebshops}
+                                <input id="Lathato{$cikl}Check" name="lathato{$cikl}" type="checkbox"{if ($egyed["lathato$cikl"])} checked="checked"{/if}>{$webshop{$cikl}name}
+                            {/for}
+                        {/if}
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

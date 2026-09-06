@@ -18,4 +18,30 @@ class RaktarRepository extends \mkwhelpers\Repository {
 	    $filter->addSql('((_xx.archiv IS NULL) OR (_xx.archiv <> 1))');
 	    return $this->getAll($filter, ['nev' => 'ASC']);
     }
+
+    /**
+     * Ids of the warehouses whose stock counts in the given webshop (default: this deployment's).
+     * Returns null when every warehouse is visible there - the callers then run unfiltered, which
+     * keeps the common single-webshop case free of an extra IN () on every stock query.
+     *
+     * @return int[]|null
+     */
+    public function getWebshopRaktarIds($webshopnum = null)
+    {
+        $num = (int)($webshopnum ?: \mkw\store::getWebshopNum());
+        $mezo = 'lathato' . ($num > 1 && $num <= 15 ? $num : '');
+        $rows = $this->_em->getConnection()->fetchAllAssociative(
+            'SELECT id, ' . $mezo . ' AS lathato FROM raktar'
+        );
+        $lathatok = [];
+        $vanrejtett = false;
+        foreach ($rows as $row) {
+            if ($row['lathato']) {
+                $lathatok[] = (int)$row['id'];
+            } else {
+                $vanrejtett = true;
+            }
+        }
+        return $vanrejtett ? $lathatok : null;
+    }
 }

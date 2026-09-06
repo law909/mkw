@@ -34,7 +34,14 @@ class raktarController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj = $this->setEntityFieldsFromRequest($obj);
+        // the form only renders a lathato checkbox per enabled webshop, and an unchecked box is
+        // simply missing from the POST - without skipping the rest they would all be cleared
+        $skip = [];
+        $utolso = \mkw\store::isMultiShop() ? \mkw\store::getEnabledWebshops() : 1;
+        for ($cikl = max($utolso, 1) + 1; $cikl <= 15; $cikl++) {
+            $skip[] = 'lathato' . $cikl;
+        }
+        $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => $skip]);
 
         return $obj;
     }

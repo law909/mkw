@@ -67,10 +67,10 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato15', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Raktar' . "\0" . 'id', '' . "\0" . 'Entities\\Raktar' . "\0" . 'nev', '' . "\0" . 'Entities\\Raktar' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Raktar' . "\0" . 'archiv', '' . "\0" . 'Entities\\Raktar' . "\0" . 'idegenkod', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato2', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato3', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato4', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato5', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato6', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato7', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato8', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato9', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato10', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato11', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato12', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato13', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato14', '' . "\0" . 'Entities\\Raktar' . "\0" . 'lathato15', '' . "\0" . 'Entities\\Raktar' . "\0" . 'bizonylatfejek'];
     }
 
     /**
@@ -278,6 +278,336 @@ class Raktar extends \Entities\Raktar implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdegenkod', [$idegenkod]);
 
         parent::setIdegenkod($idegenkod);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato', []);
+
+        return parent::getLathato();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato', [$val]);
+
+        return parent::setLathato($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato2()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato2', []);
+
+        return parent::getLathato2();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato2($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato2', [$val]);
+
+        return parent::setLathato2($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato3()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato3', []);
+
+        return parent::getLathato3();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato3($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato3', [$val]);
+
+        return parent::setLathato3($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato4()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato4', []);
+
+        return parent::getLathato4();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato4($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato4', [$val]);
+
+        return parent::setLathato4($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato5()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato5', []);
+
+        return parent::getLathato5();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato5($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato5', [$val]);
+
+        return parent::setLathato5($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato6()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato6', []);
+
+        return parent::getLathato6();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato6($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato6', [$val]);
+
+        return parent::setLathato6($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato7()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato7', []);
+
+        return parent::getLathato7();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato7($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato7', [$val]);
+
+        return parent::setLathato7($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato8()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato8', []);
+
+        return parent::getLathato8();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato8($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato8', [$val]);
+
+        return parent::setLathato8($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato9()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato9', []);
+
+        return parent::getLathato9();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato9($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato9', [$val]);
+
+        return parent::setLathato9($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato10()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato10', []);
+
+        return parent::getLathato10();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato10($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato10', [$val]);
+
+        return parent::setLathato10($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato11()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato11', []);
+
+        return parent::getLathato11();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato11($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato11', [$val]);
+
+        return parent::setLathato11($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato12()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato12', []);
+
+        return parent::getLathato12();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato12($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato12', [$val]);
+
+        return parent::setLathato12($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato13()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato13', []);
+
+        return parent::getLathato13();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato13($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato13', [$val]);
+
+        return parent::setLathato13($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato14()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato14', []);
+
+        return parent::getLathato14();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato14($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato14', [$val]);
+
+        return parent::setLathato14($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLathato15()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLathato15', []);
+
+        return parent::getLathato15();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setLathato15($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLathato15', [$val]);
+
+        return parent::setLathato15($val);
     }
 
 }
