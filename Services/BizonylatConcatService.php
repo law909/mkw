@@ -10,7 +10,7 @@ use Entities\TermekValtozat;
 class BizonylatConcatService
 {
 
-    public function concat($ids)
+    public function concat($ids, $rontEredetiek = false)
     {
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($ids) {
@@ -84,6 +84,13 @@ class BizonylatConcatService
                 if ($vantetel) {
                     $ujfej->calcOsszesen();
                     \mkw\store::getEm()->persist($ujfej);
+                    if ($rontEredetiek) {
+                        foreach ($fejek as $eredeti) {
+                            $eredeti->setKellszallitasikoltsegetszamolni(false);
+                            $eredeti->setRontott(true);
+                            \mkw\store::getEm()->persist($eredeti);
+                        }
+                    }
                     \mkw\store::getEm()->flush();
                 }
                 \mkw\store::getEm()->commit();

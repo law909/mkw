@@ -2773,18 +2773,25 @@ let bizonylathelper = function ($) {
                             });
                             break;
                         case 'rendelesconcat':
-                            dialogcenter.html('Biztos, hogy összevonja a megrendeléseket?').dialog({
+                            dialogcenter.html(
+                                '<p>Biztos, hogy összevonja a megrendeléseket?</p>' +
+                                '<p>Mi legyen az eredeti megrendelésekkel?</p>' +
+                                '<label><input type="radio" name="concatront" value="0" checked> Maradjanak</label><br>' +
+                                '<label><input type="radio" name="concatront" value="1"> Rontsuk le</label>'
+                            ).dialog({
                                 resizable: false,
-                                height: 140,
+                                height: 220,
                                 modal: true,
                                 buttons: {
                                     'Igen': function () {
-                                        let dia = $(this);
+                                        let dia = $(this),
+                                            ront = $('input[name="concatront"]:checked', dia).val();
                                         $.ajax({
                                             url: '/admin/' + entityName + '/concat',
                                             type: 'POST',
                                             data: {
-                                                ids: tomb
+                                                ids: tomb,
+                                                ront: ront
                                             },
                                             success: function () {
                                                 dia.dialog('close');

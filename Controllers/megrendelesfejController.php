@@ -115,6 +115,9 @@ class megrendelesfejController extends bizonylatfejController
     public function concat()
     {
         $concatSvc = new BizonylatConcatService();
-        $concatSvc->concat($this->params->getArrayRequestParam('ids'));
+        $concatSvc->concat(
+            $this->params->getArrayRequestParam('ids'),
+            $this->params->getBoolRequestParam('ront')
+        );
     }
 }
