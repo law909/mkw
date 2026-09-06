@@ -52,7 +52,7 @@ class BizonylatstatuszRepository extends \mkwhelpers\Repository
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('csoport', 'csoport');
-        $q = $this->_em->createNativeQuery('SELECT DISTINCT csoport FROM bizonylatstatusz ORDER BY csoport', $rsm);
+        $q = $this->_em->createNativeQuery("SELECT DISTINCT csoport FROM bizonylatstatusz WHERE csoport IS NOT NULL AND csoport <> '' ORDER BY csoport", $rsm);
         return $q->getScalarResult();
     }
 

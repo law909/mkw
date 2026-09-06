@@ -148,6 +148,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('emailsablonlist', $emailtpl->getSelectList());
 
         $bsc = new bizonylatstatuszController();
+        $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(null, null, null, $this->getBiztipusId()));
+        $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
@@ -158,10 +160,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                         null,
                         $this->getBiztipusId()
                     ));
-                } else {
-                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(null, null, null, $this->getBiztipusId()));
                 }
-                $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 break;
             case \mkw\store::isSuperzoneB2B():
                 if (!\mkw\store::haveJog(20)) {
@@ -169,8 +168,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 } else {
                     $a = false;
                 }
-                $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(null, null, null, $this->getBiztipusId()));
-                $view->setVar('bizonylatstatuszcsoportlist', $bsc->getCsoportSelectList());
                 if (!$this->biztipus->getShowstorno()) {
                     $view->setVar('bizonylatrontottfilter', 1);
                 }
