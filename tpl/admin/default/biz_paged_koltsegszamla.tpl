@@ -1,13 +1,15 @@
 {*
-    A default téma "teto" családjának lapozott alapja. Ezek a sablonok másképp épülnek fel, mint a
-    számla-család: egy tétel EGY sor, az összesítő alatt pedig "Átvevő:" aláírásvonal áll.
+    A default téma "teto" családjának lapozott alapja. A tételsor felépítése a számla-családé
+    (felül a terméknév, alul a mennyiség és a többi adat); ami eltér, az az összesítő alatti
+    "Átvevő:" aláírásvonal.
 *}
 {extends "biz_paged_base.tpl"}
 
-{* a leltárbizonylatokon százmilliós összegek is előfordulnak, ezért a pénzoszlopok bővek:
+{* A leltárbizonylatokon százmilliós összegek is előfordulnak, ezért a pénzoszlopok bővek:
    ha a tartalom nem fér a megadott szélességbe, az mPDF tételenként másképp osztja újra,
-   és elcsúsznak az oszlopok *}
-{$w = ['cikkszam'=>'24mm','termek'=>'50mm','mennyiseg'=>'17mm','egysar'=>'21mm','netto'=>'22mm','afanev'=>'8mm','afa'=>'22mm','brutto'=>'26mm']}
+   és elcsúsznak az oszlopok. A cikkszám és a terméknév a tétel felső sorába került, az így
+   felszabadult hely a pénzoszlopoké. Összegük 190 mm, a nevsor a sorszám nélküli maradék. *}
+{$w = ['sorszam'=>'6mm','termek'=>'27mm','mennyiseg'=>'25mm','egysar'=>'28mm','netto'=>'30mm','afanev'=>'9mm','afa'=>'30mm','brutto'=>'35mm','nevsor'=>'184mm']}
 
 {block "title"}{$egyed.bizonylatnev}{/block}
 
@@ -43,7 +45,7 @@
 
 {block "columnheaders"}
     <tr class="bold">
-        <td width="{$w.cikkszam}">Cikkszám</td>
+        <td width="{$w.sorszam}">#</td>
         <td width="{$w.termek}">Termék neve</td>
         <td width="{$w.mennyiseg}" class="textalignright">Mennyiség</td>
         <td width="{$w.egysar}" class="textalignright">Nettó e.ár</td>
@@ -54,17 +56,23 @@
     </tr>
 {/block}
 
-{* ebben a családban egy tétel egyetlen sor, nem kettő *}
+{* Kétsoros tétel, mint a számla-családban: felül a terméknév, alul a mennyiség és a többi adat.
+   A mértékegység a mennyiség mellett marad, ezért itt – a számlával ellentétben – nincs külön me
+   oszlop. Az adatok maguk változatlanok. *}
 {block "itemrows"}
     <tr class="tetelsor">
-        <td width="{$w.cikkszam}">{$tetel.cikkszam}</td>
-        <td width="{$w.termek}">{$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek} {/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}</td>
-        <td width="{$w.mennyiseg}" class="textalignright">{number_format($tetel.mennyiseg,2,',',' ')} {$tetel.me}</td>
-        <td width="{$w.egysar}" class="textalignright">{number_format($tetel.nettoegysar,2,',',' ')}</td>
-        <td width="{$w.netto}" class="textalignright">{number_format($tetel.netto,2,',',' ')}</td>
-        <td width="{$w.afanev}" class="textalignright">{$tetel.afanev}</td>
-        <td width="{$w.afa}" class="textalignright">{number_format($tetel.afa,2,',',' ')}</td>
-        <td width="{$w.brutto}" class="textalignright">{number_format($tetel.brutto,2,',',' ')}</td>
+        <td>{$teteldb + 1}</td>
+        <td colspan="7" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.nev}: {$valtozat.ertek} {/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}</td>
+    </tr>
+    <tr class="tetelsor">
+        <td width="{$w.sorszam}" class="dashedline"></td>
+        <td width="{$w.termek}" class="dashedline"></td>
+        <td width="{$w.mennyiseg}" class="textalignright dashedline">{number_format($tetel.mennyiseg,2,',',' ')} {$tetel.me}</td>
+        <td width="{$w.egysar}" class="textalignright dashedline">{number_format($tetel.nettoegysar,2,',',' ')}</td>
+        <td width="{$w.netto}" class="textalignright dashedline">{number_format($tetel.netto,2,',',' ')}</td>
+        <td width="{$w.afanev}" class="textalignright dashedline">{$tetel.afanev}</td>
+        <td width="{$w.afa}" class="textalignright dashedline">{number_format($tetel.afa,2,',',' ')}</td>
+        <td width="{$w.brutto}" class="textalignright dashedline">{number_format($tetel.brutto,2,',',' ')}</td>
     </tr>
 {/block}
 
