@@ -17,6 +17,10 @@
                     <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
                     <td><input id="SorrendEdit" name="sorrend" type="number" step="1" value="{$egyed.sorrend}"></td>
                 </tr>
+                <tr>
+                    <td><label for="VegeEdit">{at('Lezárt állapot')}:</label></td>
+                    <td><input id="VegeEdit" name="vege" type="checkbox"{if ($egyed.vege)} checked="checked"{/if}></td>
+                </tr>
                 </tbody>
             </table>
         </div>

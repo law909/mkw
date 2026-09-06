@@ -65,6 +65,7 @@
                 <label for="idopontallapotfilter">{at('Állapot')}: </label>
                 <select id="idopontallapotfilter" name="idopontallapotfilter">
                     <option value="">{at('válasszon')}</option>
+                    <option value="nincsvege" selected="selected">{at('nincs vége')}</option>
                     {foreach $idopontallapotlist as $_d}
                         <option value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
                     {/foreach}

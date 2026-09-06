@@ -2362,6 +2362,16 @@ if ($DBVersion < '0163') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0163');
 }
 
+if ($DBVersion < '0164') {
+    // Seed the new idopontallapot.vege flag from the state the 0157 block already knew by name.
+    // Deployments without the appointment booking module have no such row and nothing happens.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE idopontallapot SET vege = 1 WHERE nev = ?',
+        ['Vége']
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0164');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -18,6 +18,9 @@ use Services\IdopontKerdoivService;
 class idopontController extends \mkwhelpers\MattableController
 {
 
+    /** Value of the list's state filter that means "every state that is not a closing one". */
+    private const ALLAPOTFILTERNINCSVEGE = 'nincsvege';
+
     public function __construct()
     {
         $this->setEntityName(Idopont::class);
@@ -148,8 +151,12 @@ class idopontController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('jogahelyszinfilter', null))) {
             $filter->addFilter('jogahelyszin', '=', $this->params->getIntRequestParam('jogahelyszinfilter'));
         }
-        if (!is_null($this->params->getRequestParam('idopontallapotfilter', null))) {
-            $filter->addFilter('idopontallapot', '=', $this->params->getIntRequestParam('idopontallapotfilter'));
+        $f = $this->params->getStringRequestParam('idopontallapotfilter');
+        if ($f === self::ALLAPOTFILTERNINCSVEGE) {
+            // the state master is joined as idopontallapot; a document with no state counts as open
+            $filter->addSql('(idopontallapot.id IS NULL OR idopontallapot.vege = 0)');
+        } elseif ($f !== '') {
+            $filter->addFilter('idopontallapot', '=', (int)$f);
         }
         $f = $this->params->getNumRequestParam('inaktivfilter', 9);
         if ($f != 9) {

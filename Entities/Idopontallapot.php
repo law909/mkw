@@ -24,6 +24,10 @@ class Idopontallapot {
     /** @ORM\Column(type="integer",nullable=true) */
     private $sorrend;
 
+    /** Closing state: the appointment list's "nincs vége" filter leaves these out. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $vege = false;
+
     /**
      * @return mixed
      */
@@ -57,6 +61,14 @@ class Idopontallapot {
      */
     public function setSorrend($sorrend) {
         $this->sorrend = $sorrend;
+    }
+
+    public function getVege() {
+        return $this->vege;
+    }
+
+    public function setVege($vege) {
+        $this->vege = $vege;
     }
 
 }

@@ -67,10 +67,10 @@ class Idopontallapot extends \Entities\Idopontallapot implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'sorrend'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'vege'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'sorrend'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'id', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'nev', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Idopontallapot' . "\0" . 'vege'];
     }
 
     /**
@@ -234,6 +234,28 @@ class Idopontallapot extends \Entities\Idopontallapot implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSorrend', [$sorrend]);
 
         return parent::setSorrend($sorrend);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVege()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVege', []);
+
+        return parent::getVege();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setVege($vege)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setVege', [$vege]);
+
+        return parent::setVege($vege);
     }
 
 }
