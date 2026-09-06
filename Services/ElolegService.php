@@ -326,6 +326,21 @@ class ElolegService
         return true;
     }
 
+    /** The VTSZ of the advance's first line, when the configured product carries none. */
+    private static function getElolegVtszId(?Bizonylatfej $eloleg)
+    {
+        if (!$eloleg) {
+            return null;
+        }
+        /** @var Bizonylattetel $bt */
+        foreach ($eloleg->getBizonylattetelek() as $bt) {
+            if ($bt->getVtszId()) {
+                return $bt->getVtszId();
+            }
+        }
+        return null;
+    }
+
     /**
      * One offset line. The two exchange rates differ on purpose: the line check requires the final
      * invoice's rate on the HUF fields, while advanceExchangeRate means the advance's - which is
@@ -348,7 +363,10 @@ class ElolegService
         $tetel->setBizonylatfej($szamla);
         $tetel->setTermek($termek);
         $tetel->setAfa($afaid);
-        $tetel->setVtsz($termek->getVtszId());
+        // the VTSZ is required on the form: prefer the product's own, fall back to the advance's,
+        // so a service product without a VTSZ does not leave an empty required field on every
+        // offset line
+        $tetel->setVtsz($termek->getVtszId() ?: self::getElolegVtszId($eloleg));
         $tetel->setMennyiseg(-1);
         $tetel->setNettoegysar($sor['netto']);
         $tetel->setBruttoegysar($sor['brutto']);
@@ -356,6 +374,20 @@ class ElolegService
         $tetel->setEbruttoegysar($sor['brutto']);
         $tetel->setKedvezmeny(0);
         $tetel->setArfolyam($szamla->getArfolyam());
+        // The HUF fields too, with the same helper setFields() uses - calc() only multiplies the
+        // HUF unit prices by the quantity, so without these the whole HUF side of the line stays
+        // zero and the document's HUF totals come out short on a multivaluta deployment.
+        $arak = $ctrl->calcAr(
+            $afaid,
+            $tetel->getArfolyam(),
+            $tetel->getNettoegysar(),
+            $tetel->getEnettoegysar(),
+            $tetel->getMennyiseg()
+        );
+        $tetel->setNettoegysarhuf($arak['nettoegysarhuf']);
+        $tetel->setBruttoegysarhuf($arak['bruttoegysarhuf']);
+        $tetel->setEnettoegysarhuf($arak['enettoegysarhuf']);
+        $tetel->setEbruttoegysarhuf($arak['ebruttoegysarhuf']);
         if ($eloleg) {
             $tetel->setElolegbizonylat($eloleg);
             $tetel->setElolegfizetesdatum($eloleg->getTeljesites());
