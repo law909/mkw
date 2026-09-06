@@ -57,6 +57,8 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showszallmegrbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $showboltieladasbutton = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $sendemail = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showuzenet = false;
@@ -160,6 +162,7 @@ class Bizonylattipus
             'showkivetbutton' => $this->getShowkivetbutton(),
             'showbevetbutton' => $this->getShowbevetbutton(),
             'showszallmegrbutton' => $this->getShowszallmegrbutton(),
+            'showboltieladasbutton' => $this->getShowboltieladasbutton(),
             'nyomtatni' => $this->getNyomtatni(),
             'tipuseditprinted' => $this->getEditprinted(),
             'sendemail' => $this->getSendemail(),
@@ -450,6 +453,16 @@ class Bizonylattipus
     public function setShowszallmegrbutton($val)
     {
         $this->showszallmegrbutton = $val;
+    }
+
+    public function getShowboltieladasbutton()
+    {
+        return $this->showboltieladasbutton;
+    }
+
+    public function setShowboltieladasbutton($val)
+    {
+        $this->showboltieladasbutton = $val;
     }
 
     public function getSendemail()

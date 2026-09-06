@@ -159,10 +159,15 @@
                         <td><input id="ShowszallmegrbuttonEdit" name="showszallmegrbutton" type="checkbox"{if ($egyed.showszallmegrbutton)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="ShowboltieladasbuttonEdit">Bolti eladás:</label></td>
+                        <td><input id="ShowboltieladasbuttonEdit" name="showboltieladasbutton" type="checkbox"{if ($egyed.showboltieladasbutton)} checked="checked"{/if}></td>
                         <td><label for="ShowcsomagbuttonEdit">Csomag:</label></td>
                         <td><input id="ShowcsomagbuttonEdit" name="showcsomagbutton" type="checkbox"{if ($egyed.showcsomagbutton)} checked="checked"{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="ShowstornoEdit">Stornó:</label></td>
                         <td><input id="ShowstornoEdit" name="showstorno" type="checkbox"{if ($egyed.showstorno)} checked="checked"{/if}></td>
+                        <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td><label for="ShowbackorderEdit">Backorder:</label></td>
