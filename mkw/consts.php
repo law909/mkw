@@ -212,6 +212,8 @@ class consts
     const SzallitasiKtgTermek = 'szallitasiktgtermek';
     const UtanvetKtgTermek = 'utanvetktgtermek';
     const KoltsegTermek = 'koltsegtermek';
+    /** the service product carried by the advance-offset line on the final invoice */
+    const ElolegTermek = 'elolegtermek';
     /** a NAV-ból utoljára importált bejövő számla időszak vége (innen indul a következő import) */
     const KoltsegszamlaImportDatum = 'koltsegszamlaimportdatum';
 

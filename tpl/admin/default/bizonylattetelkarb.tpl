@@ -6,18 +6,18 @@
     {if ($tetel.parentid|default)}
         <input name="tetelparentid_{$tetel.id}" type="hidden" value="{$tetel.parentid}">
     {/if}
+    {* The offset advance invoice. Hidden: the server re-derives it on save
+       (bizonylatfejController::setTetelEloleg()); the posted value is never trusted. *}
+    <input name="tetelelolegbizonylat_{$tetel.id}" type="hidden" value="{$tetel.elolegbizonylatszam|default}">
     <table>
         <tbody>
-        <tr>
-            <td><label for="ElolegtipusSelect{$tetel.id}">{at('Előleg típus')}:</label></td>
-            <td>
-                <select id="ElolegtipusSelect{$tetel.id}" name="tetelelolegtipus_{$tetel.id}">
-                    <option value="0"{if ($tetel.elolegtipus == '')} selected="selected"{/if}>{at('nincs')}</option>
-                    <option value="1"{if ($tetel.elolegtipus == 'eloleg')} selected="selected"{/if}>{at('előleg')}</option>
-                    <option value="2"{if ($tetel.elolegtipus == 'veg')} selected="selected"{/if}>{at('végszámla')}</option>
-                </select>
-            </td>
-        </tr>
+        {if ($tetel.elolegbizonylatszam|default)}
+            <tr>
+                <td>{at('Beszámított előleg')}:</td>
+                <td>{$tetel.elolegbizonylatszam}
+                    {if ($tetel.elolegfizetesdatumstr|default)}({$tetel.elolegfizetesdatumstr}){/if}</td>
+            </tr>
+        {/if}
         {if ($showgarancialisadatok)}
             <tr>
                 <td><label for="MegjegyzesEdit{$tetel.id}">{at('Termék leírás')}</label></td>

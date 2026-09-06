@@ -584,6 +584,8 @@ $router->map('GET', '/admin/navadatexport/check', 'navadatexportController#check
 $router->map('GET', '/admin/bizonylattetel/getar', 'bizonylattetelController#getar', 'adminbizonylattetelgetar');
 $router->map('GET', '/admin/bizonylattetel/calcar', 'bizonylattetelController#calcarforclient', 'adminbizonylattetelcalcar');
 $router->map('GET', '/admin/bizonylattetel/getemptyrow', 'bizonylattetelController#getemptyrow', 'adminbizonylattetelgetemptyrow');
+$router->map('POST', '/admin/bizonylattetel/getelolegselect', 'bizonylattetelController#getElolegSelect', 'adminbizonylattetelgetelolegselect');
+$router->map('POST', '/admin/bizonylattetel/getelolegrow', 'bizonylattetelController#getElolegRow', 'adminbizonylattetelgetelolegrow');
 $router->map('GET', '/admin/bizonylattetel/getquickemptyrow', 'bizonylattetelController#getquickemptyrow', 'adminbizonylattetelgetquickemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylattetel/save', 'bizonylattetelController#save', 'adminbizonylattetelsave');
@@ -848,6 +850,18 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/keziszamlafej/tetelexport', 'keziszamlafejController#tetelexport', 'adminkeziszamlafejtetelexport');
 }
 $router->map('GET', '/admin/keziszamlafej/print', 'keziszamlafejController#doPrint', 'adminkeziszamlafejprint');
+
+$router->map('GET', '/admin/elolegszamlafej/viewlist', 'elolegszamlafejController#viewlist', 'adminelolegszamlafejviewlist');
+$router->map('GET', '/admin/elolegszamlafej/getlistbody', 'elolegszamlafejController#getlistbody', 'adminelolegszamlafejgetlistbody');
+$router->map('GET', '/admin/elolegszamlafej/getkarb', 'elolegszamlafejController#getkarb', 'adminelolegszamlafejgetkarb');
+$router->map('GET', '/admin/elolegszamlafej/viewkarb', 'elolegszamlafejController#viewkarb', 'adminelolegszamlafejviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/elolegszamlafej/save', 'elolegszamlafejController#save', 'adminelolegszamlafejsave');
+    $router->map('POST', '/admin/elolegszamlafej/ront', 'elolegszamlafejController#ront', 'adminelolegszamlafejront');
+    $router->map('POST', '/admin/elolegszamlafej/fejexport', 'elolegszamlafejController#fejexport', 'adminelolegszamlafejfejexport');
+    $router->map('POST', '/admin/elolegszamlafej/tetelexport', 'elolegszamlafejController#tetelexport', 'adminelolegszamlafejtetelexport');
+}
+$router->map('GET', '/admin/elolegszamlafej/print', 'elolegszamlafejController#doPrint', 'adminelolegszamlafejprint');
 
 $router->map('GET', '/admin/garanciaugyfej/viewlist', 'garanciaugyfejController#viewlist', 'admingaranciaugyfejviewlist');
 $router->map('GET', '/admin/garanciaugyfej/getlistbody', 'garanciaugyfejController#getlistbody', 'admingaranciaugyfejgetlistbody');

@@ -19,6 +19,8 @@
                     {if ($egyed.megjegyzes|default)}
                         Közlemény: {$egyed.megjegyzes}
                     {/if}
+                    {* empty on every descendant, only the advance invoice fills it in *}
+                    {block "elolegmegjegyzes"}{/block}
                 </div>
             </div>
         </div>

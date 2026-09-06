@@ -306,6 +306,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::KoltsegTermek);
         $this->setTermekAutocompleteVars($view, 'koltsegtermek', ($p ? $p->getErtek() : ''));
 
+        $p = $repo->find(\mkw\consts::ElolegTermek);
+        $this->setTermekAutocompleteVars($view, 'elolegtermek', ($p ? $p->getErtek() : ''));
+
         $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController();
         $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
@@ -1562,6 +1565,13 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::KoltsegTermek, $szkt->getId());
         } else {
             $this->setObj(\mkw\consts::KoltsegTermek, '');
+        }
+
+        $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('elolegtermek', 0));
+        if ($szkt) {
+            $this->setObj(\mkw\consts::ElolegTermek, $szkt->getId());
+        } else {
+            $this->setObj(\mkw\consts::ElolegTermek, '');
         }
 
         $szkt = \mkw\store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('defaulttermek', 0));

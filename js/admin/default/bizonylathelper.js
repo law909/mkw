@@ -1212,6 +1212,86 @@ let bizonylathelper = function ($) {
         return sorid;
     }
 
+    // Context for the advance selector: the invoice under edit may not exist yet, so the partner,
+    // the currency and the exchange rate are taken from the form.
+    function elolegKontextus(bizonylattipus) {
+        let partner;
+        if (isPartnerAutocomplete()) {
+            partner = $('.js-partnerid').val();
+        } else {
+            partner = $('#PartnerEdit option:selected').val();
+        }
+        return {
+            type: bizonylattipus,
+            bizonylat: $('#mattkarb-form input[name="id"]').val(),
+            partner: partner,
+            valutanem: $('#ValutanemEdit').val(),
+            arfolyam: $('#ArfolyamEdit').val()
+        };
+    }
+
+    // Advance offset: for the advance picked in the selector the SERVER renders the negative lines
+    // (one per VAT rate); the client only inserts them and recalculates.
+    function elolegBeszamitas(bizonylattipus, dialogcenter) {
+        // bound once: the dialog's content is replaced, the delegated handler survives
+        if (!dialogcenter.data('elolegsorvalaszto')) {
+            dialogcenter.data('elolegsorvalaszto', true);
+            dialogcenter.on('click', 'table.kiegyenlitetlenselect tbody tr', function () {
+                $('tr', dialogcenter).removeClass('ui-state-highlight js-selected');
+                $(this).addClass('ui-state-highlight js-selected');
+            });
+        }
+        $.ajax({
+            url: '/admin/bizonylattetel/getelolegselect',
+            type: 'POST',
+            data: elolegKontextus(bizonylattipus),
+            success: function (d) {
+                const data = JSON.parse(d);
+                dialogcenter.html(data.html);
+                dialogcenter.dialog({
+                    title: 'Előleg beszámítása',
+                    resizable: true,
+                    height: 340,
+                    width: 700,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            const sor = $('tr.js-selected', dialogcenter),
+                                dia = $(this);
+                            if (!sor.length) {
+                                return;
+                            }
+                            const adat = elolegKontextus(bizonylattipus);
+                            adat.eloleg = sor.data('bizszam');
+                            $.ajax({
+                                url: '/admin/bizonylattetel/getelolegrow',
+                                type: 'POST',
+                                data: adat,
+                                success: function (d2) {
+                                    const r = JSON.parse(d2);
+                                    if (r.hiba) {
+                                        dialogcenter.html(r.hiba);
+                                        return;
+                                    }
+                                    const $sor = $(r.html);
+                                    $('.js-bizonylatosszesito').before($sor);
+                                    $('.js-tetelnewbutton,.js-teteldelbutton').button();
+                                    $('.js-termekselect').autocomplete(termekAutocompleteConfig())
+                                        .autocompleteRenderer(termekAutocompleteRenderer);
+                                    calcOsszesen();
+                                    dia.dialog('close');
+                                }
+                            });
+                        },
+                        'Bezár': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     // A fájlból beazonosított termékek felvitele – soronként egy tétel, ugyanazokkal a
     // lépésekkel, mint kézi rögzítéskor (üres sor, termék, mennyiség, árszámítás).
     function importTetelek(bizonylattipus, tetelek) {
@@ -2188,6 +2268,10 @@ let bizonylathelper = function ($) {
                                 }
                             });
                         });
+                    })
+                    .on('click', '.js-elolegbeszamitasbutton', function (e) {
+                        e.preventDefault();
+                        elolegBeszamitas(bizonylattipus, dialogcenter);
                     })
                     .on('click', '.js-tetelimportbutton', function (e) {
                         e.preventDefault();

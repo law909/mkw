@@ -132,6 +132,8 @@ class BizonylatPrintService
         $view->setVar('webroot', getcwd());
         $view->setVar('egyed', $o->toLista());
         $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
+        // empty on every document without an offset, so the template output is unchanged
+        $view->setVar('elolegosszesito', \Services\ElolegService::getPrintSummary($o));
         return ['html' => $view->getTemplateResult(), 'paged' => (bool)$paged];
     }
 

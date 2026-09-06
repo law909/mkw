@@ -124,6 +124,10 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="szallmegrfej" data-oper="inherit"
                        title="{at('Szállítói megrendelés')}"><span{if (!$bizonylattipuslist['szallmegr'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['szallmegr']['azonosito']}</span></a>
                 {/if}
+                {if ($showelolegbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="elolegszamlafej" data-oper="inherit"
+                       title="{at('Előlegszámla')}"><span{if (!$bizonylattipuslist['elolegszamla'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['elolegszamla']['azonosito']}</span></a>
+                {/if}
                 {if ($showboltieladasbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="boltieladasfej" data-oper="inherit"
                        title="{at('Bolti eladás')}"><span{if (!$bizonylattipuslist['boltieladas'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['boltieladas']['azonosito']}</span></a>

@@ -65,6 +65,20 @@
                         <td class="textalignright">{bizformat($egyed.bruttohuf)}</td>
                     </tr>
                 {/if}
+                {* empty on a document without an offset, so the output is unchanged *}
+                {foreach $elolegosszesito|default:[] as $e}
+                    {if ($e@first)}
+                        <tr class="bold">
+                            <td colspan="4" class="topline" style="padding-top: 2mm;">Beszámított előleg</td>
+                        </tr>
+                    {/if}
+                    <tr>
+                        <td>{$e.id}{if ($e.datumstr)} ({$e.datumstr}){/if}</td>
+                        <td class="textalignright">{bizformat($e.netto)}</td>
+                        <td class="textalignright">{bizformat($e.afa)}</td>
+                        <td class="textalignright">{bizformat($e.brutto)}</td>
+                    </tr>
+                {/foreach}
                 {if (!$nemkellfizetendo)}
                     <tr>
                         <td colspan="4" class="textalignright osszesen bold" style="padding-top: 3mm;">

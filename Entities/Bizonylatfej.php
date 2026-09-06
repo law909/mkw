@@ -845,8 +845,54 @@ class Bizonylatfej
         $hibak = [];
         $this->checkBizonylatFejHibak($hibak);
         $this->checkTetelOsszegHibak($hibak);
+        $this->checkElolegHibak($hibak);
         $this->hibauzenetek = $hibak ? implode("<br>", $hibak) : null;
         $this->hibas = count($hibak) > 0;
+    }
+
+    /**
+     * The advance-offset lines. Like every other arithmetic invariant in this file this only marks
+     * the document as faulty, it does not refuse the save - a hand-built POST stays as a red row.
+     * The practical safety net is the NAV validation in setNyomtatva() before submission.
+     */
+    private function checkElolegHibak(&$hibak)
+    {
+        $beszamitva = [];
+        /** @var Bizonylattetel $bt */
+        foreach ($this->bizonylattetelek as $bt) {
+            $eloleg = $bt->getElolegbizonylat();
+            if (!$eloleg) {
+                continue;
+            }
+            if ($eloleg->getValutanemId() != $this->getValutanemId()) {
+                $hibak[] = t('A beszámított előlegszámla valutaneme eltér a bizonylatétól') . ': ' . $eloleg->getId();
+            }
+            if (!$bt->getElolegfizetesdatum()) {
+                $hibak[] = t('A beszámított előlegnél hiányzik a fizetés dátuma') . ': ' . $eloleg->getId();
+            } elseif ($this->getTeljesites() && $bt->getElolegfizetesdatum() > $this->getTeljesites()) {
+                $hibak[] = t('Az előleg fizetési dátuma későbbi a teljesítésnél') . ': ' . $eloleg->getId();
+            }
+            if (\mkw\store::isMultiValuta() && $this->getValutanemId() != \mkw\store::getParameter(\mkw\consts::Valutanem)
+                && !($bt->getElolegarfolyam() > 0)) {
+                $hibak[] = t('A beszámított előleg árfolyama hiányzik') . ': ' . $eloleg->getId();
+            }
+            $kulcs = $eloleg->getId() . '|' . $bt->getAfaId();
+            $beszamitva[$kulcs] = ($beszamitva[$kulcs] ?? 0) + $bt->getNetto();
+        }
+        // the offset amount may not exceed the advance's, per VAT rate
+        foreach ($beszamitva as $kulcs => $osszeg) {
+            [$elolegid, $afaid] = explode('|', $kulcs);
+            $eloleg = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($elolegid);
+            if (!$eloleg) {
+                continue;
+            }
+            $maradek = \Services\ElolegService::getRemainingByAfa($eloleg, $this->getId());
+            $kerete = $maradek[$afaid]['netto'] ?? 0;
+            // the offset is negative, the remaining budget positive
+            if (-$osszeg - $kerete > 0.01) {
+                $hibak[] = t('A beszámított előleg összege nagyobb az előlegszámla összegénél') . ': ' . $elolegid;
+            }
+        }
     }
 
     /**
@@ -2225,6 +2271,10 @@ class Bizonylatfej
                 $result = $result . '<lineOperation>CREATE</lineOperation>';
                 $result = $result . '</lineModificationReference>';
             }
+            // The schema fixes this position: LineType sequence lineNumber -> lineModificationReference
+            // -> referencesToOtherLines -> advanceData -> productCodes -> ... In the wrong place the
+            // proxy rejects the submission with HTTP 461.
+            $result = $result . $this->toNAVAdvanceData($bt);
             if (str_replace(['.', ' ', '-', '_', ','], '', $bt->getVtszszam())) {
                 $result = $result . '<productCodes><productCode>';
                 $result = $result . '<productCodeCategory>VTSZ</productCodeCategory>';
@@ -2377,6 +2427,40 @@ class Bizonylatfej
             $result = 'CREATE' . $b64;
         }
         return $result;
+    }
+
+    /**
+     * The line's advanceData block (NAV 3.0). There is no advanceIndicator at invoiceDetail level
+     * in 3.0 - every advance datum is per line, inside this one container.
+     *
+     * On an advance invoice the bare indicator; on a final invoice's offset line the indicator plus
+     * advancePaymentData (number, date, rate); otherwise the empty string - advanceData is
+     * minOccurs=0 and a false indicator on every ordinary line is just noise.
+     *
+     * The two invoices are two independent CREATE submissions; the link is the
+     * advanceOriginalInvoice reference alone. No MODIFY operation word is involved - do not
+     * "fix" the operation-word logic for this.
+     *
+     * The 2.0 branch is deliberately left untouched: NAV retired 2.0 in 2021, its schema is not
+     * public (the element order cannot be verified), and it would need a different shape anyway.
+     */
+    private function toNAVAdvanceData(Bizonylattetel $bt): string
+    {
+        $eloleg = $bt->getElolegbizonylatszam();
+        if (!$eloleg && $this->getBizonylattipusId() !== \Services\ElolegService::BIZTIPUS) {
+            return '';
+        }
+        $result = '<advanceData><advanceIndicator>true</advanceIndicator>';
+        if ($eloleg) {
+            $result .= '<advancePaymentData>';
+            $result .= '<advanceOriginalInvoice>' . \mkw\store::CData($eloleg) . '</advanceOriginalInvoice>';
+            $datum = $bt->getElolegfizetesdatum() ?: $this->getTeljesites();
+            $result .= '<advancePaymentDate>' . $datum->format(\mkw\store::$SQLDateFormat) . '</advancePaymentDate>';
+            $arfolyam = $bt->getElolegarfolyam() ?: $bt->getArfolyam();
+            $result .= '<advanceExchangeRate>' . \mkw\store::NAVNum($arfolyam) . '</advanceExchangeRate>';
+            $result .= '</advancePaymentData>';
+        }
+        return $result . '</advanceData>';
     }
 
     private function toNAVOnlineXML2_0($rawreturn = false)

@@ -716,6 +716,33 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     }
 
     /**
+     * The line's advance-offset reference, re-derived server side - the POST is never trusted. The
+     * relation is only set when the referenced document really is an offsettable advance of the
+     * same partner and currency; otherwise it is cleared.
+     *
+     * The quick/POS row templates do not carry these fields, so on a quick save we leave whatever
+     * is on the line alone. Without that a quick save would silently wipe an existing offset.
+     */
+    private function setTetelEloleg($obj, Bizonylattetel $tetel, $tetelid, bool $quick): void
+    {
+        if ($quick) {
+            return;
+        }
+        $elolegid = $this->params->getStringRequestParam('tetelelolegbizonylat_' . $tetelid);
+        $eloleg = $elolegid ? $this->getRepo(Bizonylatfej::class)->find($elolegid) : null;
+        if (!$eloleg || !\Services\ElolegService::isOffsettable($obj, $eloleg)) {
+            $tetel->setElolegbizonylat(null);
+            $tetel->setElolegfizetesdatum(null);
+            $tetel->setElolegarfolyam(null);
+            return;
+        }
+        $tetel->setElolegbizonylat($eloleg);
+        // the payment date and the rate are the advance's own, not the form's
+        $tetel->setElolegfizetesdatum($eloleg->getTeljesites());
+        $tetel->setElolegarfolyam($eloleg->getArfolyam());
+    }
+
+    /**
      * A tétel mennyisége a formról. A gyűjtő/sor-doboz darabszám is innen kerül a tételre, és nem
      * bontható kiszerelésnél a mennyiséget a szerver számolja belőlük – a formról érkező érték
      * ott csak a képernyőn kiszámolt másolat.
@@ -1122,7 +1149,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                             if ($termekvaltozat) {
                                 $tetel->setTermekvaltozat($termekvaltozat);
                             }
-                            $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
+                            $this->setTetelEloleg($obj, $tetel, $tetelid, $quick);
 
                             if (!$quick) {
                                 $tetel->setTermeknev($this->params->getStringRequestParam('tetelnev_' . $tetelid));
@@ -1221,7 +1248,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                                     // jön a formról, a régi termék változata pedig nem maradhat itt
                                     $tetel->setTermekvaltozat(null);
                                 }
-                                $tetel->setElolegtipus($this->params->getIntRequestParam('tetelelolegtipus_' . $tetelid));
+                                $this->setTetelEloleg($obj, $tetel, $tetelid, $quick);
 
                                 if (!$quick) {
                                     $tetel->setKedvezmeny($this->params->getFloatRequestParam('tetelkedvezmeny_' . $tetelid));

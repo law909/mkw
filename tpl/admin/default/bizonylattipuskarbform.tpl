@@ -165,6 +165,12 @@
                         <td><input id="ShowcsomagbuttonEdit" name="showcsomagbutton" type="checkbox"{if ($egyed.showcsomagbutton)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="ShowelolegbuttonEdit">Előlegszámla:</label></td>
+                        <td><input id="ShowelolegbuttonEdit" name="showelolegbutton" type="checkbox"{if ($egyed.showelolegbutton)} checked="checked"{/if}></td>
+                        <td><label for="ShowelolegbeszamitasEdit">Előleg beszámítás:</label></td>
+                        <td><input id="ShowelolegbeszamitasEdit" name="showelolegbeszamitas" type="checkbox"{if ($egyed.showelolegbeszamitas)} checked="checked"{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="ShowstornoEdit">Stornó:</label></td>
                         <td><input id="ShowstornoEdit" name="showstorno" type="checkbox"{if ($egyed.showstorno)} checked="checked"{/if}></td>
                         <td colspan="2"></td>

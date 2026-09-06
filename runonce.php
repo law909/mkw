@@ -2391,6 +2391,50 @@ if ($DBVersion < '0165') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0165');
 }
 
+if ($DBVersion < '0166') {
+    // The advance invoice is its own document type with its own ELO number range. The row is COPIED
+    // from the szamla type rather than written out as a column list: bizonylattipus carries a dozen
+    // NOT NULL columns without defaults, and a hand-kept list would break on every new checkbox.
+    //
+    // Three differences from szamla: mozgat=0 and foglal=0 (an advance is money, not goods - foglal=0
+    // also keeps the type out of getFoglalIdList(), so isOrderSource() does not treat it as an order
+    // source), while penztmozgat stays 1: an advance is a real receivable, without it there would be
+    // no ledger row and the offset selector could not show its balance.
+    //
+    // The INSERT is guarded on the id AND the azonosito. Where ELO is already taken the type is not
+    // created - that is the right failure mode: checkKeltSorszamozas() looks up the neighbouring
+    // document number with a find() that does not filter by type, so a shared prefix would compare
+    // documents of different types.
+    $conn = \mkw\store::getEm()->getConnection();
+    if ($conn->fetchOne('SELECT COUNT(*) FROM bizonylattipus WHERE id = ?', ['szamla'])) {
+        $conn->executeStatement('DROP TEMPORARY TABLE IF EXISTS tmp_elolegszamla');
+        $conn->executeStatement(
+            'CREATE TEMPORARY TABLE tmp_elolegszamla AS SELECT * FROM bizonylattipus WHERE id = "szamla"'
+        );
+        $conn->executeStatement(
+            'UPDATE tmp_elolegszamla SET id = "elolegszamla", nev = "Előlegszámla", azonosito = "ELO",'
+            . ' kezdosorszam = 1, mozgat = 0, foglal = 0, penztmozgat = 1,'
+            . ' tplname = "biz_elolegszamla.tpl", tplname_l1 = NULL, tplname2 = NULL, tplname2_l1 = NULL,'
+            . ' tplcaption2 = NULL, showelolegbutton = 0, showelolegbeszamitas = 0'
+        );
+        $conn->executeStatement(
+            'INSERT INTO bizonylattipus SELECT * FROM tmp_elolegszamla WHERE NOT EXISTS'
+            . ' (SELECT 1 FROM (SELECT id FROM bizonylattipus WHERE id = "elolegszamla" OR azonosito = "ELO") t)'
+        );
+        $conn->executeStatement('DROP TEMPORARY TABLE IF EXISTS tmp_elolegszamla');
+        // the invoice gets the "Előleg beszámítása" selector, the order gets the advance-invoice button
+        $conn->executeStatement('UPDATE bizonylattipus SET showelolegbeszamitas = 1 WHERE id IN ("szamla", "keziszamla")');
+        $conn->executeStatement('UPDATE bizonylattipus SET showelolegbutton = 1 WHERE id IN ("megrendeles", "webshopbiz")');
+    }
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 1, "Előlegszámlák", "/admin/elolegszamlafej/viewlist", "/admin/elolegszamlafej", 15, 1, 940, ""'
+        . ' FROM DUAL WHERE NOT EXISTS'
+        . ' (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/elolegszamlafej/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0166');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

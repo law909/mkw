@@ -527,6 +527,9 @@
                 {else}
                     {if (!$quick)}
                         <div class="bizonylattetel-importsor">
+                            {if ($showelolegbeszamitas)}
+                                <a class="js-elolegbeszamitasbutton js-karbmodosito" href="#">{at('Előleg beszámítása')}</a>
+                            {/if}
                             <a class="js-tetelimportbutton js-karbmodosito" href="#">{at('Tételek betöltése xlsx-ből')}</a>
                             {if ($maintheme === 'superzoneb2b')}
                                 <a class="js-fcmotoimportbutton js-karbmodosito" href="#">{at('FC-Moto rendelés')}</a>
@@ -621,6 +624,10 @@
                 {if ($showboltieladasbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="boltieladasfej" data-oper="inherit"
                        title="{at('Bolti eladás')}">{at('Bolti eladás')}</a>
+                {/if}
+                {if ($showelolegbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="elolegszamlafej" data-oper="inherit"
+                       title="{at('Előlegszámla')}">{at('Előlegszámla')}</a>
                 {/if}
             {/if}
         </div>

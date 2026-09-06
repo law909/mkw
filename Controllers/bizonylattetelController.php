@@ -46,6 +46,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['termekvaltozat'] = $t->getTermekvaltozatId();
         $x['termeknev_locale'] = $t->getLocalizedFieldValue('termeknev');
         $x['vasarlasdatumstr'] = $t->getVasarlasdatumStr();
+        $x['elolegbizonylatszam'] = $t->getElolegbizonylatszam();
+        $x['elolegfizetesdatumstr'] = $t->getElolegfizetesdatumStr();
         if ($oper === 'storno') {
             $x['netto'] = $t->getNetto() * -1;
             $x['afa'] = $t->getAfaertek() * -1;
@@ -141,6 +143,68 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $bt = $this->getRepo(Bizonylattipus::class)->find($biztipus);
         $bt->setTemplateVars($view);
         echo $view->getTemplateResult();
+    }
+
+    /**
+     * The advance-offset selector's rows. The invoice being edited may not exist yet, so the
+     * context comes from the form (partner / currency / rate / id), not from the database.
+     */
+    public function getElolegSelect()
+    {
+        $szamla = $this->buildElolegContext();
+        $view = $this->createView('elolegselect.tpl');
+        $hiba = null;
+        \Services\ElolegService::getElolegTermek($hiba);
+        $view->setVar('hiba', $hiba);
+        $view->setVar('elolegek', $hiba ? [] : \Services\ElolegService::getOffsettableAdvances($szamla));
+        echo json_encode(['html' => $view->getTemplateResult()]);
+    }
+
+    /**
+     * The offset lines' HTML for one advance. The server renders them - the amounts, the VAT split
+     * and the remaining-amount check all come from the database, and duplicating that in JS would
+     * drift.
+     */
+    public function getElolegRow()
+    {
+        $szamla = $this->buildElolegContext();
+        $eloleg = $this->getRepo(\Entities\Bizonylatfej::class)->find($this->params->getStringRequestParam('eloleg'));
+        $hiba = null;
+        $tetelek = \Services\ElolegService::buildOffsetLines($szamla, $eloleg, $hiba);
+        if ($hiba) {
+            echo json_encode(['hiba' => $hiba, 'html' => '']);
+            return;
+        }
+        $html = '';
+        /** @var \Entities\Bizonylattipus $bt */
+        $bt = $this->getRepo(Bizonylattipus::class)->find($szamla->getBizonylattipusId());
+        foreach ($tetelek as $tetel) {
+            $view = $this->createView('bizonylattetelkarb.tpl');
+            $view->setVar('tetel', $tetel);
+            $bt?->setTemplateVars($view);
+            $html .= $view->getTemplateResult();
+        }
+        echo json_encode(['hiba' => '', 'html' => $html]);
+    }
+
+    /**
+     * The invoice under edit as an entity. Saved documents are loaded; a brand new one is a
+     * transient header carrying just what the advance logic needs.
+     */
+    private function buildElolegContext(): \Entities\Bizonylatfej
+    {
+        $id = $this->params->getStringRequestParam('bizonylat');
+        $szamla = $id ? $this->getRepo(\Entities\Bizonylatfej::class)->find($id) : null;
+        if ($szamla) {
+            return $szamla;
+        }
+        $szamla = new \Entities\Bizonylatfej();
+        $this->getEm()->detach($szamla);
+        $szamla->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find($this->params->getStringRequestParam('type')));
+        $szamla->setPartner($this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner')));
+        $szamla->setValutanem($this->getRepo(Valutanem::class)->find($this->params->getIntRequestParam('valutanem')));
+        $szamla->setArfolyam($this->params->getFloatRequestParam('arfolyam') ?: 1);
+        return $szamla;
     }
 
     public function getquickemptyrow()

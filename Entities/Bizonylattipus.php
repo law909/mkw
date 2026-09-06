@@ -58,6 +58,12 @@ class Bizonylattipus
     private $showszallmegrbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showboltieladasbutton = false;
+    /** Megrendelésen: előlegszámla képezhető belőle (fej-only inherit, egyetlen előlegsorral). */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showelolegbutton = false;
+    /** Számlán: az "Előleg beszámítása" választó a tételek fölött. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showelolegbeszamitas = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $sendemail = false;
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -163,6 +169,8 @@ class Bizonylattipus
             'showbevetbutton' => $this->getShowbevetbutton(),
             'showszallmegrbutton' => $this->getShowszallmegrbutton(),
             'showboltieladasbutton' => $this->getShowboltieladasbutton(),
+            'showelolegbutton' => $this->getShowelolegbutton(),
+            'showelolegbeszamitas' => $this->getShowelolegbeszamitas(),
             'nyomtatni' => $this->getNyomtatni(),
             'tipuseditprinted' => $this->getEditprinted(),
             'sendemail' => $this->getSendemail(),
@@ -463,6 +471,26 @@ class Bizonylattipus
     public function setShowboltieladasbutton($val)
     {
         $this->showboltieladasbutton = $val;
+    }
+
+    public function getShowelolegbutton()
+    {
+        return $this->showelolegbutton;
+    }
+
+    public function setShowelolegbutton($val)
+    {
+        $this->showelolegbutton = $val;
+    }
+
+    public function getShowelolegbeszamitas()
+    {
+        return $this->showelolegbeszamitas;
+    }
+
+    public function setShowelolegbeszamitas($val)
+    {
+        $this->showelolegbeszamitas = $val;
     }
 
     public function getSendemail()

@@ -302,9 +302,24 @@ class Bizonylattetel
     private $termekcsoportnev;
 
     /**
-     * @ORM\Column(type="string",length=6,nullable=true)
+     * The advance invoice this line offsets. Exactly one advance per line: the NAV advanceData
+     * element is maxOccurs=1 on the line, so a 1:N child table would model a cardinality that
+     * cannot occur. The offset amount is carried by the line's own netto/brutto.
+     * @ORM\ManyToOne(targetEntity="Bizonylatfej")
+     * @ORM\JoinColumn(name="elolegbizonylat_id",referencedColumnName="id",nullable=true,onDelete="restrict")
      */
-    protected $elolegtipus;
+    private $elolegbizonylat;
+
+    /** Denormalised, because this exact string is what NAV wants as advanceOriginalInvoice. */
+    /** @ORM\Column(type="string",length=30,nullable=true) */
+    private $elolegbizonylatszam;
+
+    /** @ORM\Column(type="date",nullable=true) */
+    private $elolegfizetesdatum;
+
+    /** The advance invoice's exchange rate, not this document's - NAV advanceExchangeRate. */
+    /** @ORM\Column(type="decimal",precision=14,scale=6,nullable=true) */
+    private $elolegarfolyam;
 
     /** @ORM\Column(type="text",nullable=true) */
     private $megjegyzes;
@@ -402,6 +417,10 @@ class Bizonylattetel
         $ret['brutto'] = $this->getBrutto();
         $ret['kedvezmeny'] = $this->getKedvezmeny();
         $ret['termekegyediazonosito'] = $this->getTermekegyediazonosito();
+        $ret['elolegtipus'] = $this->getElolegtipus();
+        $ret['elolegbizonylatszam'] = $this->getElolegbizonylatszam();
+        $ret['elolegfizetesdatumstr'] = $this->getElolegfizetesdatumStr();
+        $ret['elolegarfolyam'] = $this->getElolegarfolyam();
         $nyelv = $this->getBizonylatfej()?->getBizonylatnyelv();
         $ret['termeknev'] = $this->getLocalizedFieldValue('termeknev', $nyelv) ?: $this->getTermeknev();
         $ret['me'] = $this->getME();
@@ -1768,32 +1787,74 @@ class Bizonylattetel
     }
 
     /**
-     * @return mixed
+     * Derived, not stored: 'eloleg' on an advance invoice's line, 'veg' on a line that offsets one,
+     * empty otherwise. Its only reader is the 23/2014 NGM data export (navadatexportController),
+     * which writes it as <eloleg>1</eloleg> / <eloleg>2</eloleg>.
      */
     public function getElolegtipus()
     {
-        return $this->elolegtipus;
+        if ($this->getBizonylatfej()?->getBizonylattipusId() === \Services\ElolegService::BIZTIPUS) {
+            return 'eloleg';
+        }
+        return $this->getElolegbizonylatId() ? 'veg' : '';
+    }
+
+    public function getElolegbizonylat()
+    {
+        return $this->elolegbizonylat;
+    }
+
+    public function getElolegbizonylatId()
+    {
+        return $this->elolegbizonylat ? $this->elolegbizonylat->getId() : null;
     }
 
     /**
-     * @param mixed $elolegtipus
+     * The document number is stored next to the relation, so printing and the NAV XML never
+     * depend on resolving it.
      */
-    public function setElolegtipus($elolegtipus)
+    public function setElolegbizonylat($elolegbizonylat)
     {
-        switch ($elolegtipus) {
-            case '':
-            case 0:
-                $this->elolegtipus = '';
-                break;
-            case 'eloleg':
-            case 1:
-                $this->elolegtipus = 'eloleg';
-                break;
-            case 'veg':
-            case 2:
-                $this->elolegtipus = 'veg';
-                break;
+        $this->elolegbizonylat = $elolegbizonylat;
+        $this->elolegbizonylatszam = $elolegbizonylat ? $elolegbizonylat->getId() : null;
+    }
+
+    public function getElolegbizonylatszam()
+    {
+        return $this->elolegbizonylatszam;
+    }
+
+    public function setElolegbizonylatszam($val)
+    {
+        $this->elolegbizonylatszam = $val;
+    }
+
+    public function getElolegfizetesdatum()
+    {
+        return $this->elolegfizetesdatum;
+    }
+
+    public function getElolegfizetesdatumStr()
+    {
+        return $this->elolegfizetesdatum ? $this->elolegfizetesdatum->format(\mkw\store::$DateFormat) : '';
+    }
+
+    public function setElolegfizetesdatum($val)
+    {
+        if ($val && !($val instanceof \DateTime)) {
+            $val = new \DateTime(\mkw\store::convDate($val));
         }
+        $this->elolegfizetesdatum = $val ?: null;
+    }
+
+    public function getElolegarfolyam()
+    {
+        return $this->elolegarfolyam;
+    }
+
+    public function setElolegarfolyam($val)
+    {
+        $this->elolegarfolyam = $val ?: null;
     }
 
     public function isMarErtekelt()

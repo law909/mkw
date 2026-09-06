@@ -261,6 +261,12 @@
                             <input name="koltsegtermek" type="hidden" value="{$koltsegtermekid}">
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="ElolegTermekEdit">{at('Előleg beszámítás termék')}:</label></span>
+                            <input id="ElolegTermekEdit" type="text" class="js-setuptermekselect"
+                                   data-target="elolegtermek" value="{$elolegtermeknev}" size="60" autocomplete="off">
+                            <input name="elolegtermek" type="hidden" value="{$elolegtermekid}">
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultTermekEdit">{at('Termék')}:</label></span>
                             <input id="defaultTermekEdit" type="text" class="js-setuptermekselect" data-target="defaulttermek"
                                    value="{$defaulttermeknev}" size="60" autocomplete="off">
