@@ -122,7 +122,6 @@ class termekController extends \mkwhelpers\MattableController
         $x['createdstr'] = $t->getCreatedStr();
 
         $x['gyartonev'] = $t->getGyartoNev();
-        $x['beszallitonev'] = $t->getBeszallitoNev();
         $x['doklinkek'] = $this->getDokLinkek($t->getTermekDokok());
         $x['keszlet'] = $t->getKeszlet();
         $x['fifo'] = \mkw\store::isFifo() ? \Services\FifoService::getErtek($t) : null;
@@ -479,12 +478,6 @@ class termekController extends \mkwhelpers\MattableController
             $obj->setGyarto($ck);
         } else {
             $obj->setGyarto(null);
-        }
-        $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('beszallito'));
-        if ($ck) {
-            $obj->setBeszallito($ck);
-        } else {
-            $obj->setBeszallito(null);
         }
         $csoport = $this->getRepo(Termekcsoport::class)->find($this->params->getIntRequestParam('termekcsoport'));
         if ($csoport) {
@@ -1115,9 +1108,6 @@ class termekController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
             $filter->addFilter('gyarto', '=', $this->params->getIntRequestParam('gyartofilter'));
         }
-        if (!is_null($this->params->getRequestParam('beszallitofilter', null))) {
-            $filter->addFilter('beszallito', '=', $this->params->getIntRequestParam('beszallitofilter'));
-        }
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $nflike = '%' . str_replace("'", "''", $this->params->getStringRequestParam('nevfilter')) . '%';
             $lit = "'" . $nflike . "'";
@@ -1613,7 +1603,6 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('cimkekat', $tcc->getWithCimkek(null));
         $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getGyartoSelectList(0));
-        $view->setVar('beszallitolist', $gyarto->getSzallitoSelectList(0));
         $tcs = new termekcsoportController();
         $view->setVar('termekcsoportlist', $tcs->getSelectList());
         $view->printTemplateResult();
@@ -1658,7 +1647,6 @@ class termekController extends \mkwhelpers\MattableController
 
         $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getGyartoSelectList(($termek ? $termek->getGyartoId() : 0)));
-        $view->setVar('beszallitolist', $gyarto->getSzallitoSelectList(($termek ? $termek->getBeszallitoId() : 0)));
 
         $csoport = new termekcsoportController();
         $view->setVar('termekcsoportlist', $csoport->getSelectList(($termek ? $termek->getTermekcsoportId() : 0)));

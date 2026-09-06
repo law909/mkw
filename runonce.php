@@ -2372,6 +2372,25 @@ if ($DBVersion < '0164') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0164');
 }
 
+if ($DBVersion < '0165') {
+    // The termek.beszallito field is gone; whatever was set there and nowhere else moves back into
+    // gyarto_id, which is what every reader (import, export, min. készlet, szétbontás) now uses.
+    // Guarded on the column, because ./updateschema.sh may already have dropped it - see
+    // docs/feladatok-20260905.md: in production this UPDATE has to run BEFORE the schema update.
+    $conn = \mkw\store::getEm()->getConnection();
+    $vanoszlop = $conn->fetchOne(
+        'SELECT COUNT(*) FROM information_schema.columns'
+        . ' WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?',
+        ['termek', 'beszallito_id']
+    );
+    if ($vanoszlop) {
+        $conn->executeStatement(
+            'UPDATE termek SET gyarto_id = beszallito_id WHERE gyarto_id IS NULL AND beszallito_id IS NOT NULL'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0165');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -264,7 +264,7 @@ class galadSuomyImportController extends \mkwhelpers\Controller
                 $termek->setMekod($me);
             }
             if ($gyarto) {
-                $termek->setBeszallito($gyarto);
+                $termek->setGyarto($gyarto);
             }
             if (!$termek->getVtsz() && $vtsz) {
                 $termek->setVtsz($vtsz);

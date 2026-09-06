@@ -99,7 +99,7 @@ class BizonylatSliceService extends AbstractBizonylatSzetbontasService
             if ($this->koltsegTetel($tetel)) {
                 continue;
             }
-            $gyarto = $tetel->getTermek()?->getBeszallito();
+            $gyarto = $tetel->getTermek()?->getGyarto();
             $kulcs = $gyarto ? $gyarto->getId() : self::NINCS_GYARTO;
             $csoportok[$kulcs][] = $tetel;
             $gyartonevek[$kulcs] = $gyarto ? $gyarto->getNev() : '';

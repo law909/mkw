@@ -572,7 +572,7 @@ class mkwimportController extends \mkwhelpers\Controller {
 
                 $gyarto = $this->createMindentkapniGyarto($gyartotomb[$data[9]]);
                 if ($gyarto) {
-                    $termek->setBeszallito($gyarto);
+                    $termek->setGyarto($gyarto);
                 }
 
                 $termek->setBrutto($data[28]);

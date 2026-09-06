@@ -526,7 +526,7 @@ class importController extends \mkwhelpers\Controller
                                     $termek->setHparany(3);
                                     $termek->setVonalkod($data[$this->n('o')]);
                                     if ($gyarto) {
-                                        $termek->setBeszallito($gyarto);
+                                        $termek->setGyarto($gyarto);
                                     }
                                     // kepek
                                     if (array_key_exists($data[$this->n('a')], $imagelist)) {
@@ -836,7 +836,7 @@ class importController extends \mkwhelpers\Controller
                                     $termek->setVtsz($vtsz[0]);
                                     $termek->setHparany(1);
                                     if ($gyarto) {
-                                        $termek->setBeszallito($gyarto);
+                                        $termek->setGyarto($gyarto);
                                     }
                                     // kepek
 
@@ -1145,7 +1145,7 @@ class importController extends \mkwhelpers\Controller
                                     $termek->setCikkszam($data['catalog_second']);
                                 }
                                 if ($gyarto) {
-                                    $termek->setBeszallito($gyarto);
+                                    $termek->setGyarto($gyarto);
                                 }
                                 $puri = new \mkwhelpers\HtmlPurifierSanitizer([
                                     'HTML.Allowed' => 'p,ul,li,b,strong,br'
@@ -1285,7 +1285,7 @@ class importController extends \mkwhelpers\Controller
                                     $termek->setCikkszam($data['catalog_second']);
                                 }
                                 if ($gyarto) {
-                                    $termek->setBeszallito($gyarto);
+                                    $termek->setGyarto($gyarto);
                                 }
                                 $puri = new \mkwhelpers\HtmlPurifierSanitizer([
                                     'HTML.Allowed' => 'p,ul,li,b,strong,br'
@@ -1453,7 +1453,7 @@ class importController extends \mkwhelpers\Controller
                         if ($valtozatok) {
                             foreach ($valtozatok as $v) {
                                 $termek = $v->getTermek();
-                                if ($termek && $termek->getBeszallitoId() == $gyartoid) {
+                                if ($termek && $termek->getGyartoId() == $gyartoid) {
                                     $valtozat = $v;
                                     break;
                                 }
@@ -1886,7 +1886,7 @@ class importController extends \mkwhelpers\Controller
                             $termek->setCikkszam($data['manufacturerNumber']);
                             $termek->setVonalkod($data['ean']);
                             if ($gyarto) {
-                                $termek->setBeszallito($gyarto);
+                                $termek->setGyarto($gyarto);
                             }
                             $puri = new \mkwhelpers\HtmlPurifierSanitizer([
                                 'HTML.Allowed' => 'p,ul,li,b,strong,br'
@@ -2261,7 +2261,7 @@ class importController extends \mkwhelpers\Controller
                             $termek->setIdegencikkszam($data['sku']);
                             $termek->setCikkszam($data['sku']);
                             if ($gyarto) {
-                                $termek->setBeszallito($gyarto);
+                                $termek->setGyarto($gyarto);
                             }
                             $puri = new \mkwhelpers\HtmlPurifierSanitizer([
                                 'HTML.Allowed' => 'p,ul,li,b,strong,br'
@@ -2927,7 +2927,7 @@ class importController extends \mkwhelpers\Controller
                                     if ($valtozatok) {
                                         foreach ($valtozatok as $v) {
                                             $termek = $v->getTermek();
-                                            if ($termek && $termek->getBeszallitoId() == $gyartoid) {
+                                            if ($termek && $termek->getGyartoId() == $gyartoid) {
                                                 $valtozat = $v;
                                                 break;
                                             }
@@ -2957,7 +2957,7 @@ class importController extends \mkwhelpers\Controller
                                         $termek->setVtsz($vtsz[0]);
                                         $termek->setHparany(3);
                                         if ($gyarto) {
-                                            $termek->setBeszallito($gyarto);
+                                            $termek->setGyarto($gyarto);
                                         }
                                         $this->getEm()->persist($termek);
                                     }
@@ -3055,7 +3055,7 @@ class importController extends \mkwhelpers\Controller
                                     $termek->setVtsz($vtsz[0]);
                                     $termek->setHparany(3);
                                     if ($gyarto) {
-                                        $termek->setBeszallito($gyarto);
+                                        $termek->setGyarto($gyarto);
                                     }
                                 }
                             } else {
@@ -3211,7 +3211,7 @@ class importController extends \mkwhelpers\Controller
                         if ($valtozatok) {
                             foreach ($valtozatok as $v) {
                                 $termek = $v->getTermek();
-                                if ($termek && $termek->getBeszallitoId() == $gyartoid) {
+                                if ($termek && $termek->getGyartoId() == $gyartoid) {
                                     $valtozat = $v;
                                     break;
                                 }
@@ -3263,7 +3263,7 @@ class importController extends \mkwhelpers\Controller
                                 $termek->setVtsz($vtsz[0]);
                                 $termek->setHparany(3);
                                 if ($gyarto) {
-                                    $termek->setBeszallito($gyarto);
+                                    $termek->setGyarto($gyarto);
                                 }
                                 $termek->setNemkaphato(false);
 
@@ -4173,7 +4173,7 @@ class importController extends \mkwhelpers\Controller
                             if ($valtozatok) {
                                 foreach ($valtozatok as $v) {
                                     $termek = $v->getTermek();
-                                    if ($termek && $termek->getBeszallitoId() == $gyartoid) {
+                                    if ($termek && $termek->getGyartoId() == $gyartoid) {
                                         $valtozat = $v;
                                         break;
                                     }
@@ -4269,7 +4269,7 @@ class importController extends \mkwhelpers\Controller
                                         $termek->setVtsz($vtsz[0]);
                                         $termek->setHparany(3);
                                         if ($gyarto) {
-                                            $termek->setBeszallito($gyarto);
+                                            $termek->setGyarto($gyarto);
                                         }
 
                                         $termek->setBrutto($ar);
@@ -4708,7 +4708,7 @@ class importController extends \mkwhelpers\Controller
                             }
                         }
                         if ($gyarto) {
-                            $termek->setBeszallito($gyarto);
+                            $termek->setGyarto($gyarto);
                         }
 
                         $termek->setNetto($ar);
@@ -4863,7 +4863,7 @@ class importController extends \mkwhelpers\Controller
                             }
                         }
                         if ($gyarto) {
-                            $termek->setBeszallito($gyarto);
+                            $termek->setGyarto($gyarto);
                         }
 
                         $termek->setNetto($ar);
@@ -5150,7 +5150,7 @@ class importController extends \mkwhelpers\Controller
                     if ($valtozatok) {
                         foreach ($valtozatok as $v) {
                             $termek = $v->getTermek();
-                            if ($termek && $termek->getBeszallitoId() == $gyartoid) {
+                            if ($termek && $termek->getGyartoId() == $gyartoid) {
                                 /** @var TermekValtozat $valtozat */
                                 $valtozat = $v;
                                 break;
@@ -5165,7 +5165,7 @@ class importController extends \mkwhelpers\Controller
                     if (is_array($termek)) {
                         $termek = $termek[0];
                     }
-                    if ($termek && $termek->getBeszallitoId() != $gyartoid) {
+                    if ($termek && $termek->getGyartoId() != $gyartoid) {
                         $termek = null;
                     }
 
@@ -5538,7 +5538,7 @@ class importController extends \mkwhelpers\Controller
                     if ($valtozatok) {
                         foreach ($valtozatok as $v) {
                             $termek = $v->getTermek();
-                            if ($termek && $termek->getBeszallitoId() == $gyartoid) {
+                            if ($termek && $termek->getGyartoId() == $gyartoid) {
                                 $valtozat = $v;
                                 break;
                             }
@@ -5694,7 +5694,7 @@ class importController extends \mkwhelpers\Controller
                                 $termek->setHparany(3);
                                 $termek->setVonalkod($data['ean']);
                                 if ($gyarto) {
-                                    $termek->setBeszallito($gyarto);
+                                    $termek->setGyarto($gyarto);
                                 }
                                 if (trim($data['parameters']['Gyártó'])) {
                                     $cimke = $this->createTermekCimke($markacs, trim($data['parameters']['Gyártó']));
@@ -6431,7 +6431,7 @@ class importController extends \mkwhelpers\Controller
                                 $termek->setHparany(3);
                                 $termek->setVonalkod($data['ean']);
                                 if ($gyarto) {
-                                    $termek->setBeszallito($gyarto);
+                                    $termek->setGyarto($gyarto);
                                 }
                                 if (trim($data['csop1'])) {
                                     $cimke = $this->createTermekCimke($markacs, trim($data['csop1']));
