@@ -41,14 +41,14 @@
 
 {block "itemrows"}
     <tr class="tetelsor">
-        <td width="{$w.sorszam}">{$teteldb + 1}</td>
-        <td width="{$w.termek}"></td>
-        <td width="{$w.mennyiseg}" class="textalignright">{bizformat($tetel.mennyiseg)}</td>
-        <td width="{$w.me}">{$tetel.me}</td>
+        <td>{$teteldb + 1}</td>
+        <td colspan="3" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}({$tetel.vtszszam})</td>
     </tr>
     <tr class="tetelsor">
-        <td class="dashedline"></td>
-        <td colspan="3" width="{$w.nevsor}" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}({$tetel.vtszszam})</td>
+        <td width="{$w.sorszam}" class="dashedline"></td>
+        <td width="{$w.termek}" class="dashedline"></td>
+        <td width="{$w.mennyiseg}" class="textalignright dashedline">{bizformat($tetel.mennyiseg)}</td>
+        <td width="{$w.me}" class="dashedline">{$tetel.me}</td>
     </tr>
 {/block}
 

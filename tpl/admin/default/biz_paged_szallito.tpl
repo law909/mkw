@@ -50,18 +50,18 @@
 {* a szállítólevélen a számsor van elöl, alatta a megnevezés – a számlához képest fordítva *}
 {block "itemrows"}
     <tr class="tetelsor">
-        <td width="{$w.sorszam}">{$teteldb + 1}</td>
-        <td width="{$w.termek}"></td>
-        <td width="{$w.mennyiseg}" class="textalignright">{bizformat($tetel.mennyiseg)}</td>
-        <td width="{$w.me}">{$tetel.me}</td>
-        <td width="{$w.egysar}" class="textalignright">{bizformat($tetel.nettoegysar)}</td>
-        <td width="{$w.netto}" class="textalignright">{bizformat($tetel.netto)}</td>
-        <td width="{$w.afanev}" class="textalignright">{$tetel.afanev}</td>
-        <td width="{$w.afa}" class="textalignright">{bizformat($tetel.afa)}</td>
-        <td width="{$w.brutto}" class="textalignright">{bizformat($tetel.brutto)}</td>
+        <td>{$teteldb + 1}</td>
+        <td colspan="8" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}({$tetel.vtszszam})</td>
     </tr>
     <tr class="tetelsor">
-        <td class="dashedline"></td>
-        <td colspan="8" width="{$w.nevsor}" class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}({$tetel.vtszszam})</td>
+        <td width="{$w.sorszam}" class="dashedline"></td>
+        <td width="{$w.termek}" class="dashedline"></td>
+        <td width="{$w.mennyiseg}" class="textalignright dashedline">{bizformat($tetel.mennyiseg)}</td>
+        <td width="{$w.me}" class="dashedline">{$tetel.me}</td>
+        <td width="{$w.egysar}" class="textalignright dashedline">{bizformat($tetel.nettoegysar)}</td>
+        <td width="{$w.netto}" class="textalignright dashedline">{bizformat($tetel.netto)}</td>
+        <td width="{$w.afanev}" class="textalignright dashedline">{$tetel.afanev}</td>
+        <td width="{$w.afa}" class="textalignright dashedline">{bizformat($tetel.afa)}</td>
+        <td width="{$w.brutto}" class="textalignright dashedline">{bizformat($tetel.brutto)}</td>
     </tr>
 {/block}
