@@ -2435,6 +2435,44 @@ if ($DBVersion < '0166') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0166');
 }
 
+if ($DBVersion < '0167') {
+    // Az időpont foglalás köszönő levele azért nem ment ki, mert nem volt hozzá sablon: a
+    // `idopontfoglalaskoszonoemailsablon` paraméter üresen állt, sablon híján pedig a küldés
+    // csendben kimarad. A sablon szövege a köszönő oldal tükre, a lemondás linkkel kiegészítve –
+    // utána az admin a levélsablonok között szabadon átírhatja.
+    if (\mkw\store::isDarshan()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $sablonid = \mkw\store::getParameter(\mkw\consts::IdopontfoglalasSablonKoszono);
+        $letezik = $sablonid && $conn->fetchOne('SELECT COUNT(*) FROM emailtemplate WHERE id = ?', [$sablonid]);
+        if (!$letezik) {
+            $szoveg = 'Kedves {$foglalas.partnerkeresztnev}!<br><br>'
+                . '{if ($foglalas.varolistas)}Felvettünk a várólistára az alábbi alkalomra.'
+                . ' Ha felszabadul hely, emailben értesítünk.'
+                . '{else}Köszönjük a foglalást, az alábbi alkalomra szeretettel várunk.{/if}<br><br>'
+                . '<strong>{$foglalas.temanev}</strong><br>'
+                . '{$foglalas.napnev} - {$foglalas.datum} {$foglalas.idopontido}<br>'
+                . '{$foglalas.tanarnev}<br>'
+                . '{if ($foglalas.helyszinnev)}{$foglalas.helyszinnev}'
+                . '{if ($foglalas.helyszincim)} ({$foglalas.helyszincim}){/if}<br>{/if}'
+                . 'Részvétel: {if ($foglalas.online)}online{else}élőben{/if}<br><br>'
+                . '{if ($foglalas.lemondasurl)}Ha mégsem tudsz jönni, itt tudod lemondani:'
+                . ' <a href="{$foglalas.lemondasurl}">{$foglalas.lemondasurl}</a><br><br>{/if}'
+                . 'Üdvözlettel:<br>' . \mkw\store::getParameter(\mkw\consts::Tulajnev);
+            $conn->executeStatement(
+                'INSERT INTO emailtemplate (nev, targy, szoveg, aszfcsatolaskell) VALUES (?, ?, ?, 0)',
+                [
+                    'IDOPONT foglalás köszönő',
+                    '{if ($foglalas.varolistas)}Felkerültél a várólistára{else}Foglalás visszaigazolás{/if}'
+                    . ' - {$foglalas.temanev}',
+                    $szoveg,
+                ]
+            );
+            \mkw\store::setParameter(\mkw\consts::IdopontfoglalasSablonKoszono, $conn->lastInsertId());
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0167');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

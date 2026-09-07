@@ -1207,6 +1207,12 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::JogaBerlet4Termek,
             \mkw\consts::JogaBerlet10Termek,
             \mkw\consts::JogaAllapotfelmeresTipus,
+            // ugyanabban a darshan blokkban vannak: enélkül egy másik theme setup mentése
+            // kinullázná az itt beállított sablonokat
+            \mkw\consts::IdopontfoglalasSablonKoszono,
+            \mkw\consts::IdopontfoglalasSablonEmlekezteto,
+            \mkw\consts::IdopontfoglalasSablonLemondas,
+            \mkw\consts::IdopontfoglalasTermek,
         ],
         'teljesitmenyvan' => [
             \mkw\consts::TeljesitmenyKezdoEv,
