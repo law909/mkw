@@ -301,9 +301,23 @@ class JogaBejelentkezes
     }
 
     /** Az első szó a vezetéknév, minden más a keresztnév; egyszavas névnél a keresztnév üres. */
+    public static function splitNev($nev)
+    {
+        return preg_split('/\s+/', trim((string)$nev), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    }
+
+    /**
+     * Teljes név-e: az egyszavas névre nem lehet számlát kiállítani, és a partnertörzsben sem
+     * azonosítható, ezért egyik bejelentkezési úton sem fogadjuk el.
+     */
+    public static function isTeljesNev($nev)
+    {
+        return count(self::splitNev($nev)) >= 2;
+    }
+
     private function nevReszek()
     {
-        return preg_split('/\s+/', trim((string)$this->getPartnernev()), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        return self::splitNev($this->getPartnernev());
     }
 
     public function getPartnerKeresztnev()

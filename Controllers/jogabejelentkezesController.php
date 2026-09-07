@@ -134,11 +134,16 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
 
     public function bejelentkezes()
     {
-        $partnernev = $this->params->getStringRequestParam('partnernev');
+        $partnernev = trim($this->params->getStringRequestParam('partnernev'));
         $email = $this->params->getStringRequestParam('email');
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = new \DateTime($datumstr);
         $orarendid = $this->params->getIntRequestParam('id');
+        header('Content-Type: application/json; charset=utf-8');
+        if (!JogaBejelentkezes::isTeljesNev($partnernev)) {
+            echo json_encode(['msg' => t('Kérjük, add meg a teljes neved (vezeték- és keresztnév).')]);
+            return;
+        }
         if ($partnernev && $email && $orarendid && $datumstr) {
             $bej = $this->getRepo()->findOneBy(['partneremail' => $email, 'orarend' => $orarendid, 'datum' => $datum]);
             if (!$bej) {
@@ -229,6 +234,7 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                 }
             }
         }
+        echo json_encode([]);
     }
 
     public function lemondas()

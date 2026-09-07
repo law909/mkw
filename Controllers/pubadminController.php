@@ -290,6 +290,10 @@ class pubadminController extends mkwhelpers\Controller
             echo json_encode(['msg' => t('A név és az emailcím megadása kötelező.')]);
             return;
         }
+        if (!JogaBejelentkezes::isTeljesNev($nev)) {
+            echo json_encode(['msg' => t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).')]);
+            return;
+        }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             echo json_encode(['msg' => t('Az emailcím formátuma hibás.')]);
             return;
@@ -853,6 +857,11 @@ class pubadminController extends mkwhelpers\Controller
         $ora = $this->getSajatOra($oraid, $datum);
         $nev = trim($this->params->getStringRequestParam('nev'));
         $email = trim($this->params->getStringRequestParam('email'));
+        header('Content-Type: application/json; charset=utf-8');
+        if (!JogaBejelentkezes::isTeljesNev($nev)) {
+            echo json_encode(['msg' => t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).')]);
+            return;
+        }
         if ($ora && $nev && $email) {
             $obj = new JogaBejelentkezes();
             $obj->setDatum($datum);
@@ -866,6 +875,7 @@ class pubadminController extends mkwhelpers\Controller
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
         }
+        echo json_encode([]);
     }
 
     public function getMegjegyzes()

@@ -81,27 +81,34 @@
                 //      es ismeretlen input legyen true
                 //      egyebkent ismeretlen input legyen false es menteni
                 // egyebkent menteni
+                const nev = ($('input[name="partnernev"]').val() || '').trim();
                 if (!$('input[name="email"]').val()) {
                     alert('Add meg az email címed!');
+                } else if (!nev) {
+                    alert('Add meg a neved!');
+                } else if (nev.split(/\s+/).length < 2) {
+                    // a számlához vezeték- és keresztnév is kell, a szerver is ezt kéri
+                    alert('Kérjük, add meg a teljes neved (vezeték- és keresztnév).');
                 } else {
-                    if (!$('input[name="partnernev"]').val()) {
-                        alert('Add meg a neved!');
-                    } else {
-                        $.ajax({
-                            url: '/orarend/bejelentkezes',
-                            type: 'POST',
-                            data: {
-                                id: $('input[name="id"]').val(),
-                                datum: $('input[name="datum"]').val(),
-                                partnernev: $('input[name="partnernev"]').val(),
-                                email: $('input[name="email"]').val()
-                            },
-                            success: function () {
-                                toggleModal(0);
-                                location.reload();
+                    $.ajax({
+                        url: '/orarend/bejelentkezes',
+                        type: 'POST',
+                        data: {
+                            id: $('input[name="id"]').val(),
+                            datum: $('input[name="datum"]').val(),
+                            partnernev: nev,
+                            email: $('input[name="email"]').val()
+                        },
+                        success: function (res) {
+                            const adat = (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
+                            if (adat && adat.msg) {
+                                alert(adat.msg);
+                                return;
                             }
-                        });
-                    }
+                            toggleModal(0);
+                            location.reload();
+                        }
+                    });
                 }
             });
             $('.js-lemondok').click(function (e) {
