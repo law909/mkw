@@ -47,7 +47,6 @@
     </tr>
 {/block}
 
-{* a szállítólevélen a számsor van elöl, alatta a megnevezés – a számlához képest fordítva *}
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>

@@ -49,7 +49,6 @@
     </tr>
 {/block}
 
-{* a kézi számlán a számsor van elöl, alatta a megnevezés *}
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>

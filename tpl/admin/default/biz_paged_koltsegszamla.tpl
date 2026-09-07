@@ -1,7 +1,6 @@
 {*
-    A default téma "teto" családjának lapozott alapja. A tételsor felépítése a számla-családé
-    (felül a terméknév, alul a mennyiség és a többi adat); ami eltér, az az összesítő alatti
-    "Átvevő:" aláírásvonal.
+    A default téma "teto" családjának lapozott alapja. A számla-családtól az összesítő alatti
+    "Átvevő:" aláírásvonal és a hiányzó ME oszlop különbözteti meg.
 *}
 {extends "biz_paged_base.tpl"}
 
@@ -56,9 +55,7 @@
     </tr>
 {/block}
 
-{* Kétsoros tétel, mint a számla-családban: felül a terméknév, alul a mennyiség és a többi adat.
-   A mértékegység a mennyiség mellett marad, ezért itt – a számlával ellentétben – nincs külön me
-   oszlop. Az adatok maguk változatlanok. *}
+{* a mértékegység a mennyiség mellett áll, ezért itt nincs külön ME oszlop *}
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>
