@@ -767,19 +767,40 @@ class KeszletService
         $valtozatmin = '',
         $raktarparam = ''
     ) {
+        return self::getKeszletSzintSql('min', $termekid, $termekmin, $valtozatid, $valtozatmin, $raktarparam);
+    }
+
+    /** A raktáras készletszintek táblái – a létra a kettőnél ugyanaz, csak más tábla és oszlop. */
+    private const SZINTEK = [
+        'min' => ['termektabla' => 'termekminkeszlet', 'valtozattabla' => 'termekvaltozatminkeszlet', 'mezo' => 'minkeszlet'],
+        'opt' => ['termektabla' => 'termekoptkeszlet', 'valtozattabla' => 'termekvaltozatoptkeszlet', 'mezo' => 'optkeszlet'],
+    ];
+
+    /**
+     * @param string $tipus a SZINTEK kulcsa: `min` (minimum) vagy `opt` (optimális) készlet
+     */
+    public static function getKeszletSzintSql(
+        $tipus,
+        $termekid,
+        $termekertek,
+        $valtozatid = '',
+        $valtozatertek = '',
+        $raktarparam = ''
+    ) {
+        $szint = self::SZINTEK[$tipus];
         $agak = [];
         if ($raktarparam) {
             if ($valtozatid) {
-                $agak[] = 'NULLIF((SELECT vmk.minkeszlet FROM termekvaltozatminkeszlet vmk'
+                $agak[] = 'NULLIF((SELECT vmk.' . $szint['mezo'] . ' FROM ' . $szint['valtozattabla'] . ' vmk'
                     . ' WHERE vmk.termekvaltozat_id = ' . $valtozatid . ' AND vmk.raktar_id = :' . $raktarparam . '), 0)';
             }
-            $agak[] = 'NULLIF((SELECT tmk.minkeszlet FROM termekminkeszlet tmk'
+            $agak[] = 'NULLIF((SELECT tmk.' . $szint['mezo'] . ' FROM ' . $szint['termektabla'] . ' tmk'
                 . ' WHERE tmk.termek_id = ' . $termekid . ' AND tmk.raktar_id = :' . $raktarparam . '), 0)';
         }
-        if ($valtozatmin) {
-            $agak[] = 'NULLIF(' . $valtozatmin . ', 0)';
+        if ($valtozatertek) {
+            $agak[] = 'NULLIF(' . $valtozatertek . ', 0)';
         }
-        $agak[] = $termekmin;
+        $agak[] = $termekertek;
         $agak[] = '0';
         return 'COALESCE(' . implode(',', $agak) . ')';
     }

@@ -42,6 +42,7 @@
     {if ($uselimit)}
         <h5>A minimum készlet helyett figyelt készlet: {$limit|string_format:"%g"}</h5>
     {/if}
+    <h5>Feltöltés {if ($optcel)}az optimális{else}a minimum{/if} készletre</h5>
     <table>
         <thead>
         <tr>
@@ -51,6 +52,9 @@
             <th>Változat</th>
             <th class="textalignright">Készlet</th>
             <th class="textalignright">Min. készlet</th>
+            {if ($optcel)}
+                <th class="textalignright">Opt. készlet</th>
+            {/if}
             <th class="textalignright">Hiány</th>
             {if ($masikraktar)}
                 <th class="textalignright">{$masikraktar}</th>
@@ -67,6 +71,9 @@
                 <td class="cell">{$elem.ertek1} {$elem.ertek2}</td>
                 <td class="cell textalignright nowrap">{$elem.keszlet|string_format:"%g"}</td>
                 <td class="cell textalignright nowrap">{$elem.minkeszlet|string_format:"%g"}</td>
+                {if ($optcel)}
+                    <td class="cell textalignright nowrap">{$elem.celkeszlet|string_format:"%g"}</td>
+                {/if}
                 <td class="cell textalignright nowrap redtext">{$elem.hiany|string_format:"%g"}</td>
                 {if ($masikraktar)}
                     <td class="cell textalignright nowrap">{$elem.masikkeszlet|string_format:"%g"}</td>
@@ -84,6 +91,9 @@
             <td></td>
             <td></td>
             <td></td>
+            {if ($optcel)}
+                <td></td>
+            {/if}
             {if ($masikraktar)}
                 <td></td>
             {/if}
@@ -97,6 +107,9 @@
             <td>Összesen:</td>
             <td></td>
             <td></td>
+            {if ($optcel)}
+                <td></td>
+            {/if}
             <td class="textalignright">{$hianysum|string_format:"%g"}</td>
             {if ($masikraktar)}
                 <td></td>

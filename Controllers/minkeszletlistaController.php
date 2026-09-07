@@ -39,6 +39,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     /** a minimum készlet helyett figyelt, kézzel megadott küszöb */
     private $limit;
     private $uselimit = false;
+    /** meddig töltsük fel a készletet: `min` (minimum) vagy `opt` (optimális) */
+    private $celszint = 'min';
 
     /** a „készlet számít" pipa mentett állása – dolgozónként, a lista-paraméterek kulcsával */
     private const KESZLETSZAMIT = 'minkeszletalattkeszletszamit';
@@ -91,6 +93,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
 
         $this->uselimit = $this->params->getBoolRequestParam('keszletszamit');
         $this->limit = $this->params->getFloatRequestParam('keszlet');
+
+        $this->celszint = $this->params->getStringRequestParam('celszint') === 'opt' ? 'opt' : 'min';
 
         $this->readFaFilter();
     }
@@ -162,6 +166,18 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' AND ' . $tetelfeltetel . '), 0)';
     }
 
+    /**
+     * A feltöltés célszintje. Kézzel megadott küszöbnél és a minimumra állított listán maga a
+     * minimum; optimálisra állítva az optimális, ha van beállítva, egyébként a minimum.
+     */
+    private function getCelSql($minsql, $optsql)
+    {
+        if ($this->uselimit || $this->celszint !== 'opt') {
+            return $minsql;
+        }
+        return 'COALESCE(NULLIF(' . $optsql . ', 0), ' . $minsql . ')';
+    }
+
     protected function getData()
     {
         $this->readParams();
@@ -179,6 +195,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             'keszlet',
             'masikkeszlet',
             'minkeszlet',
+            'celkeszlet',
         ];
         $rsm = new ResultSetMapping();
         foreach ($oszlopok as $oszlop) {
@@ -203,6 +220,24 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             ? ':limit'
             : \Services\KeszletService::getMinKeszletSql('t.id', 't.minkeszlet', '', '', $raktarparam);
 
+        // a feltöltés célszintje: az optimálisra állított listán is a minimum a küszöb, csak a
+        // hiányt számoljuk feljebb – beállítatlan optimálisnál marad a minimum
+        $valtozatcel = $this->getCelSql(
+            $valtozatmin,
+            \Services\KeszletService::getKeszletSzintSql(
+                'opt',
+                '_xx.termek_id',
+                't.optkeszlet',
+                '_xx.id',
+                '_xx.optkeszlet',
+                $raktarparam
+            )
+        );
+        $termekcel = $this->getCelSql(
+            $termekmin,
+            \Services\KeszletService::getKeszletSzintSql('opt', 't.id', 't.optkeszlet', '', '', $raktarparam)
+        );
+
         // változatos ág: a tétel a változatra hivatkozik
         $valtozatag = 'SELECT _xx.termek_id AS termek_id, _xx.id AS termekvaltozat_id,'
             . " COALESCE(NULLIF(_xx.cikkszam, ''), t.cikkszam) AS cikkszam,"
@@ -210,7 +245,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . ' t.nev AS termeknev, _xx.ertek1 AS ertek1, _xx.ertek2 AS ertek2,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termekvaltozat_id = _xx.id', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . $valtozatmin . ' AS minkeszlet'
+            . ' ' . $valtozatmin . ' AS minkeszlet,'
+            . ' ' . $valtozatcel . ' AS celkeszlet'
             . ' FROM termekvaltozat _xx'
             . ' LEFT JOIN termek t ON (t.id = _xx.termek_id)'
             . ($termekszuro ? ' WHERE ' . $termekszuro : '');
@@ -221,7 +257,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             . " t.nev AS termeknev, '' AS ertek1, '' AS ertek2,"
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', $raktarparam) . ' AS keszlet,'
             . ' ' . $this->getKeszletSql('bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL', 'masikraktar') . ' AS masikkeszlet,'
-            . ' ' . $termekmin . ' AS minkeszlet'
+            . ' ' . $termekmin . ' AS minkeszlet,'
+            . ' ' . $termekcel . ' AS celkeszlet'
             . ' FROM termek t'
             . ' WHERE NOT EXISTS (SELECT 1 FROM termekvaltozat v WHERE v.termek_id = t.id)'
             . ($termekszuro ? ' AND ' . $termekszuro : '');
@@ -254,7 +291,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
 
         $ret = [];
         foreach ($q->getScalarResult() as $sor) {
-            $sor['hiany'] = $sor['minkeszlet'] - $sor['keszlet'];
+            $sor['hiany'] = max(0, $sor['celkeszlet'] - $sor['keszlet']);
             $ret[] = $sor;
         }
         return $ret;
@@ -272,6 +309,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $report->setVar('termekfa', $this->fanevek);
         $report->setVar('uselimit', $this->uselimit);
         $report->setVar('limit', $this->limit);
+        $report->setVar('optcel', $this->celszint === 'opt' && !$this->uselimit);
         $report->setVar('printdatum', date(\mkw\store::$DateTimeFormat));
         $report->printTemplateResult();
     }
@@ -289,8 +327,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
             ->setCellValue('D1', t('Változat'))
             ->setCellValue('E1', t('Készlet'))
             ->setCellValue('F1', t('Min. készlet'))
-            ->setCellValue('G1', t('Hiány'))
-            ->setCellValue('H1', $this->masikraktarnev ?: t('Ebből a raktárból kiszolgálható'));
+            ->setCellValue('G1', t('Feltöltés eddig'))
+            ->setCellValue('H1', t('Hiány'))
+            ->setCellValue('I1', $this->masikraktarnev ?: t('Ebből a raktárból kiszolgálható'));
 
         $sor = 2;
         foreach ($this->getData() as $item) {
@@ -301,8 +340,9 @@ class minkeszletlistaController extends \mkwhelpers\Controller
                 ->setCellValue('D' . $sor, trim($item['ertek1'] . ' ' . $item['ertek2']))
                 ->setCellValue('E' . $sor, (float)$item['keszlet'])
                 ->setCellValue('F' . $sor, (float)$item['minkeszlet'])
-                ->setCellValue('G' . $sor, (float)$item['hiany'])
-                ->setCellValue('H' . $sor, (float)$item['masikkeszlet']);
+                ->setCellValue('G' . $sor, (float)$item['celkeszlet'])
+                ->setCellValue('H' . $sor, (float)$item['hiany'])
+                ->setCellValue('I' . $sor, (float)$item['masikkeszlet']);
             $sor++;
         }
 

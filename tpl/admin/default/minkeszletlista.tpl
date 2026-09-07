@@ -51,6 +51,14 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <label>{at('A készletet eddig töltsük fel')}:</label>
+                        <input id="CelszintMinEdit" name="celszint" type="radio" value="min" checked="checked">
+                        <label for="CelszintMinEdit">{at('minimum készlet')}</label>
+                        <input id="CelszintOptEdit" name="celszint" type="radio" value="opt">
+                        <label for="CelszintOptEdit">{at('optimális készlet')}</label>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <label for="GyartoEdit">{at('Gyártó')}:</label>
                         <select id="GyartoEdit" name="gyarto">
                             <option value="">{at('mindegy')}</option>
