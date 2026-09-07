@@ -706,6 +706,23 @@ class Partner
         return $x;
     }
 
+    /**
+     * A hiányzó címrészek pótlása. A meglévő értéket nem írjuk felül: a partnertörzsben lévő cím
+     * mindig többet ér annál, amit egy foglalásnál gyorsan begépelnek.
+     */
+    public function fillMissingCim($irszam, $varos, $utca)
+    {
+        if (!trim((string)$this->irszam) && trim((string)$irszam)) {
+            $this->setIrszam($irszam);
+        }
+        if (!trim((string)$this->varos) && trim((string)$varos)) {
+            $this->setVaros($varos);
+        }
+        if (!trim((string)$this->utca) && trim((string)$utca)) {
+            $this->setUtca($utca);
+        }
+    }
+
     public function getCim()
     {
         $cim = $this->irszam;

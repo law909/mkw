@@ -246,6 +246,17 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function fillMissingCim($irszam, $varos, $utca)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'fillMissingCim', [$irszam, $varos, $utca]);
+
+        return parent::fillMissingCim($irszam, $varos, $utca);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCim()
     {
 

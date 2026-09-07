@@ -58,6 +58,15 @@ class JogaBejelentkezes
     /** @ORM\Column(type="string",length=100,nullable=true) */
     private $partneremail = '';
 
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $partnerirszam;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $partnervaros;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $partnerutca;
+
     /** @ORM\Column(type="date",nullable=true) */
     private $datum;
 
@@ -85,20 +94,39 @@ class JogaBejelentkezes
     /** @ORM\Column(type="boolean") */
     private $lemondva = false;
 
-    public function createJogaReszvetel()
+    /**
+     * A bejelentkezéshez tartozó partner: email alapján keressük, és ha nincs, most vesszük fel a
+     * bejelentkezésen megadott adatokkal. A címet a meglévő partnerre is ráírjuk, ha ott még nincs –
+     * enélkül a pubadminban bekért cím sosem jutna el a számláig.
+     *
+     * Üres emailre nem keresünk: az üres emailű partnerek bármelyikét eltalálná.
+     *
+     * @return \Entities\Partner
+     */
+    public function resolvePartner()
     {
-        $rvpartner = \mkw\store::getEm()->getRepository(Partner::class)->findOneBy(['email' => $this->getPartneremail()]);
+        $email = trim((string)$this->getPartneremail());
+        $rvpartner = $email
+            ? \mkw\store::getEm()->getRepository(Partner::class)->findOneBy(['email' => $email])
+            : null;
         if (!$rvpartner) {
             $rvpartner = new Partner();
-            $rvpartner->setEmail($this->getPartneremail());
+            $rvpartner->setEmail($email);
             $rvpartner->setNev($this->getPartnernev());
             $rvpartner->setVezeteknev($this->getPartnerVezeteknev());
             $rvpartner->setKeresztnev($this->getPartnerKeresztnev());
             $rvpartner->setSzamlatipus(0);
             $rvpartner->setVatstatus(2);
-            \mkw\store::getEm()->persist($rvpartner);
-            \mkw\store::getEm()->flush();
         }
+        $rvpartner->fillMissingCim($this->getPartnerirszam(), $this->getPartnervaros(), $this->getPartnerutca());
+        \mkw\store::getEm()->persist($rvpartner);
+        \mkw\store::getEm()->flush();
+        return $rvpartner;
+    }
+
+    public function createJogaReszvetel()
+    {
+        $rvpartner = $this->resolvePartner();
         $jr = new JogaReszvetel();
         $jr->setPartner($rvpartner);
         $jr->setOnline($this->getOnline());
@@ -272,16 +300,20 @@ class JogaBejelentkezes
         }
     }
 
+    /** Az első szó a vezetéknév, minden más a keresztnév; egyszavas névnél a keresztnév üres. */
+    private function nevReszek()
+    {
+        return preg_split('/\s+/', trim((string)$this->getPartnernev()), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    }
+
     public function getPartnerKeresztnev()
     {
-        $x = explode(' ', $this->getPartnernev());
-        return $x[1];
+        return implode(' ', array_slice($this->nevReszek(), 1));
     }
 
     public function getPartnerVezeteknev()
     {
-        $x = explode(' ', $this->getPartnernev());
-        return $x[0];
+        return $this->nevReszek()[0] ?? '';
     }
 
     public function getPartnernev()
@@ -308,6 +340,36 @@ class JogaBejelentkezes
     public function setPartneremail($partneremail)
     {
         $this->partneremail = $partneremail;
+    }
+
+    public function getPartnerirszam()
+    {
+        return $this->partnerirszam;
+    }
+
+    public function setPartnerirszam($val)
+    {
+        $this->partnerirszam = $val;
+    }
+
+    public function getPartnervaros()
+    {
+        return $this->partnervaros;
+    }
+
+    public function setPartnervaros($val)
+    {
+        $this->partnervaros = $val;
+    }
+
+    public function getPartnerutca()
+    {
+        return $this->partnerutca;
+    }
+
+    public function setPartnerutca($val)
+    {
+        $this->partnerutca = $val;
     }
 
     public function getDatum()

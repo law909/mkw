@@ -67,10 +67,10 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'online', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lemondva'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'online', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lemondva'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'online', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lemondva'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'id', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'created', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lastmod', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'updatedby', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'orarend', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnerirszam', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnervaros', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'partnerutca', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'datum', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjelent', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'tipus', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'ar', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'jogareszvetelid', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'kesobbfizet', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'online', '' . "\0" . 'Entities\\JogaBejelentkezes' . "\0" . 'lemondva'];
     }
 
     /**
@@ -177,6 +177,17 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function resolvePartner()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'resolvePartner', []);
+
+        return parent::resolvePartner();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -443,6 +454,72 @@ class JogaBejelentkezes extends \Entities\JogaBejelentkezes implements \Doctrine
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartneremail', [$partneremail]);
 
         return parent::setPartneremail($partneremail);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerirszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerirszam', []);
+
+        return parent::getPartnerirszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartnerirszam($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerirszam', [$val]);
+
+        return parent::setPartnerirszam($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnervaros()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnervaros', []);
+
+        return parent::getPartnervaros();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartnervaros($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnervaros', [$val]);
+
+        return parent::setPartnervaros($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartnerutca()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartnerutca', []);
+
+        return parent::getPartnerutca();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartnerutca($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartnerutca', [$val]);
+
+        return parent::setPartnerutca($val);
     }
 
     /**

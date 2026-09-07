@@ -302,9 +302,14 @@ class pubadminController extends mkwhelpers\Controller
             $partner->setNev($nev);
             $partner->setSzamlatipus(0);
             $partner->setVatstatus(2);
-            $this->getEm()->persist($partner);
-            $this->getEm()->flush();
         }
+        $partner->fillMissingCim(
+            $this->params->getStringRequestParam('irszam'),
+            $this->params->getStringRequestParam('varos'),
+            $this->params->getStringRequestParam('utca')
+        );
+        $this->getEm()->persist($partner);
+        $this->getEm()->flush();
         echo json_encode(['msg' => $this->createIdopontfoglalas($partner)]);
     }
 
@@ -575,20 +580,7 @@ class pubadminController extends mkwhelpers\Controller
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
 
-            // üres emailre nem keresünk: az üres emailű partnerek bármelyikét eltalálná
-            $rvemail = trim((string)$rv->getPartneremail());
-            $rvpartner = $rvemail ? $this->getRepo(Partner::class)->findOneBy(['email' => $rvemail]) : null;
-            if (!$rvpartner) {
-                $rvpartner = new Partner();
-                $rvpartner->setEmail($rv->getPartneremail());
-                $rvpartner->setNev($rv->getPartnernev());
-                $rvpartner->setVezeteknev($rv->getPartnerVezeteknev());
-                $rvpartner->setKeresztnev($rv->getPartnerKeresztnev());
-                $rvpartner->setSzamlatipus(0);
-                $rvpartner->setVatstatus(2);
-                \mkw\store::getEm()->persist($rvpartner);
-                \mkw\store::getEm()->flush();
-            }
+            $rvpartner = $rv->resolvePartner();
 
             $tipusnev = 'órajegy';
             $berlet = null;
@@ -859,13 +851,17 @@ class pubadminController extends mkwhelpers\Controller
         $oraid = $this->params->getIntRequestParam('oraid');
         $datum = $this->params->getStringRequestParam('datum');
         $ora = $this->getSajatOra($oraid, $datum);
-        $nev = $this->params->getStringRequestParam('nev');
-        $email = $this->params->getStringRequestParam('email');
+        $nev = trim($this->params->getStringRequestParam('nev'));
+        $email = trim($this->params->getStringRequestParam('email'));
         if ($ora && $nev && $email) {
             $obj = new JogaBejelentkezes();
             $obj->setDatum($datum);
             $obj->setPartnernev($nev);
             $obj->setPartneremail($email);
+            // a cím a számlához kell: a partnerre a resolvePartner() vezeti át
+            $obj->setPartnerirszam(trim($this->params->getStringRequestParam('irszam')));
+            $obj->setPartnervaros(trim($this->params->getStringRequestParam('varos')));
+            $obj->setPartnerutca(trim($this->params->getStringRequestParam('utca')));
             $obj->setOrarend($ora);
             $this->getEm()->persist($obj);
             $this->getEm()->flush();

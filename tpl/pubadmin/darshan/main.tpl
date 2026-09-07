@@ -154,6 +154,35 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row js-cimblokk">
+                        <div class="col">
+                            <p class="top-margin-10">Ha először jön hozzánk, kérjük adja meg a címét hogy ki tudjuk
+                                állítani önnek a számlát az óráról.</p>
+                        </div>
+                    </div>
+                    <div class="row js-cimblokk">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="irszamedit">Irányítószám</label>
+                                <input id="irszamedit" name="irszam" type="text" class="form-control" maxlength="10"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="varosedit">Város</label>
+                                <input id="varosedit" name="varos" type="text" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row js-cimblokk">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="utcaedit">Utca, házszám</label>
+                                <input id="utcaedit" name="utca" type="text" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary js-partnerok">OK</button>

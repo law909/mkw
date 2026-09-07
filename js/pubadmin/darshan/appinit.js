@@ -22,6 +22,9 @@ $(document).ready(
         function resetPartnerModal() {
             $('#nevedit').val('');
             $('#emailedit').val('');
+            $('#irszamedit').val('');
+            $('#varosedit').val('');
+            $('#utcaedit').val('');
             $('#keresoedit').val(null).trigger('change');
         }
 
@@ -303,7 +306,10 @@ $(document).ready(
                     data = {
                         datum: $('#datumselect').val(),
                         nev: $('#nevedit').val(),
-                        email: $('#emailedit').val()
+                        email: $('#emailedit').val(),
+                        irszam: $('#irszamedit').val(),
+                        varos: $('#varosedit').val(),
+                        utca: $('#utcaedit').val()
                     };
                 }
                 if (idopontra) {
