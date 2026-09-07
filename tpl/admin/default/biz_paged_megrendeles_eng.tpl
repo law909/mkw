@@ -12,7 +12,7 @@
             <td width="16%">Fiz.határidő</td>
             <td width="18%">Fizetési mód</td>
             <td width="12%">Pénznem</td>
-            <td width="22%">Számla száma</td>
+            <td width="22%">Biz. száma</td>
         </tr>
         <tr class="bold textaligncenter">
             <td>Issue</td>
@@ -20,7 +20,7 @@
             <td>Payment due</td>
             <td>Payment method</td>
             <td>Currency</td>
-            <td>Invoice number</td>
+            <td>Document number</td>
         </tr>
         <tr class="textaligncenter">
             <td>{$egyed.keltstr|default:"&nbsp;"}</td>
