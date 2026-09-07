@@ -104,6 +104,42 @@ $(document).ready(
             });
         });
 
+        // Számlázatlan eladások doboza: a megoldott sort helyben tüntetjük el, a doboz az
+        // utolsó sorral együtt megy.
+        $(document).on('click', '.js-szamlazatlanmegoldva', function (e) {
+            e.preventDefault();
+            const $sor = $(this).closest('tr');
+            const $doboz = $(this).closest('.js-szamlazatlaneladas');
+            $.ajax({
+                url: '/admin/jogaszamlazatlaneladas/megoldva',
+                type: 'POST',
+                data: {
+                    id: $(this).data('id')
+                },
+                success: function () {
+                    $sor.remove();
+                    const db = $doboz.find('tbody tr').length;
+                    if (db) {
+                        $doboz.find('.js-szamlazatlancount').text(db);
+                    } else {
+                        $doboz.remove();
+                    }
+                },
+                error: function () {
+                    dialogcenter.html('A sor megoldása nem sikerült.').dialog({
+                        width: 400,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'OK': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
         $('#BLKButton').button();
         mkwcomp.datumEdit.init('#BLKVasarlasDatumEdit');
         $('#BLKButton').on('click', function(e) {

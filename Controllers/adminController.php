@@ -91,6 +91,9 @@ class adminController extends mkwhelpers\Controller
                 $view->setVar('toldatum', $ma->format(\mkw\store::$DateFormat));
                 $view->setVar('igdatum', date(\mkw\store::$DateFormat));
 
+                $szamlazatlan = new jogaszamlazatlaneladasController();
+                $view->setVar('szamlazatlaneladas', $szamlazatlan->getList());
+
                 break;
             default:
                 break;

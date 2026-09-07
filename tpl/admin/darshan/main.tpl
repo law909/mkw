@@ -732,6 +732,9 @@
         </div>
     </div>
     <div class="component-container">
+        {include "../default/comp_jogaszamlazatlaneladas.tpl"}
+    </div>
+    <div class="component-container">
         {include "../default/comp_apierrorlog.tpl"}
     </div>
 {/block}

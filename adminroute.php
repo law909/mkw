@@ -1794,6 +1794,12 @@ if (\mkw\store::isDarshan()) {
     $router->map('POST', '/admin/jelenki', 'jelenletiivController#createKilepes', 'adminjelenki');
     $router->map('POST', '/admin/berletervenyessegkalkulator', 'adminController#calcBerletervenyesseg', 'adminberletervenyessegkalkulator');
     $router->map('POST', '/admin/darshanstat', 'adminController#darshanStatisztika', 'admindarshanstat');
+    $router->map(
+        'POST',
+        '/admin/jogaszamlazatlaneladas/megoldva',
+        'jogaszamlazatlaneladasController#solve',
+        'adminjogaszamlazatlaneladasmegoldva'
+    );
 }
 
 $router->map('POST', '/admin/apierrorlog/close', 'apierrorlogController#close', 'adminapierrorlogclose');

@@ -575,7 +575,9 @@ class pubadminController extends mkwhelpers\Controller
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
 
-            $rvpartner = $this->getRepo(Partner::class)->findOneBy(['email' => $rv->getPartneremail()]);
+            // üres emailre nem keresünk: az üres emailű partnerek bármelyikét eltalálná
+            $rvemail = trim((string)$rv->getPartneremail());
+            $rvpartner = $rvemail ? $this->getRepo(Partner::class)->findOneBy(['email' => $rvemail]) : null;
             if (!$rvpartner) {
                 $rvpartner = new Partner();
                 $rvpartner->setEmail($rv->getPartneremail());
@@ -589,6 +591,7 @@ class pubadminController extends mkwhelpers\Controller
             }
 
             $tipusnev = 'órajegy';
+            $berlet = null;
             if ($type === 2 || $type === 3) {
                 $berlet = new JogaBerlet();
                 $berlet->setPartner($rvpartner);
@@ -612,18 +615,11 @@ class pubadminController extends mkwhelpers\Controller
                 $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             }
             if ($rv->getOrarend()->getDolgozo()->isAutoszamla()) {
-                $tulajkontaktemail = \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail);
-                if (!\mkw\store::csinalhatUjSzamlat() && $tulajkontaktemail) {
-                    $subject = 'Beküldetlen számla miatt nem készül új számla a pubadminból';
-                    $body = 'A pubadminban valaki épp órajegyet vagy bérletet vett, de nem készül automatikusan számla, mert van beküldetlen számla. Küldd be minél előbb, utána számlázd ki ami elmaradt!';
-
-                    $mailer = \mkw\store::getMailer();
-
-                    $mailer->addTo($tulajkontaktemail);
-                    $mailer->setSubject($subject);
-                    $mailer->setMessage($body);
-                    $mailer->send();
-
+                $akadaly = \mkw\store::csinalhatUjSzamlat()
+                    ? $this->getSzamlazasiAkadaly($rvpartner)
+                    : t('Van beküldetlen számla, ezért nem készülhet új.');
+                if ($akadaly) {
+                    $this->logSzamlazatlanEladas($rvpartner, $rv, $tipusnev, $price, $akadaly);
                     return;
                 }
                 /** @var Bizonylattipus $biztipus */
@@ -746,6 +742,69 @@ class pubadminController extends mkwhelpers\Controller
                 }
             }
         }
+    }
+
+    /**
+     * Mi zárja ki, hogy az eladásról automatikus számla készüljön. Üres string = számlázható.
+     *
+     * A számlához teljes név és teljes cím kell: az egyszavas név (csak keresztnév) és a hiányos
+     * cím onnan jön, hogy a bejelentkezésnél csak nevet és emailt kérünk, a partnert pedig ebből
+     * hozzuk létre, ha email alapján nincs meg.
+     *
+     * @param \Entities\Partner|null $partner
+     */
+    private function getSzamlazasiAkadaly($partner)
+    {
+        if (!$partner) {
+            return t('Nincs partner az eladáshoz.');
+        }
+        $nev = trim((string)$partner->getNev());
+        if (count(preg_split('/\s+/', $nev, -1, PREG_SPLIT_NO_EMPTY)) < 2) {
+            return t('A partner neve csak egy szó') . ': ' . $nev;
+        }
+        if (!trim((string)$partner->getIrszam()) || !trim((string)$partner->getVaros()) || !trim((string)$partner->getUtca())) {
+            return t('A partnernek nincs teljes számlázási címe.');
+        }
+        return '';
+    }
+
+    /**
+     * A ki nem számlázott eladás naplózása és a tulajdonos értesítése. A naplósor a főoldalon
+     * jelenik meg, amíg valaki meg nem oldja.
+     *
+     * @param \Entities\Partner|null $partner
+     * @param \Entities\JogaBejelentkezes $rv
+     */
+    private function logSzamlazatlanEladas($partner, $rv, $megnevezes, $osszeg, $oka)
+    {
+        (new jogaszamlazatlaneladasController())->log(
+            $partner,
+            $partner ? $partner->getNev() : $rv->getPartnernev(),
+            $partner ? $partner->getEmail() : $rv->getPartneremail(),
+            $megnevezes,
+            $osszeg,
+            $oka
+        );
+
+        $tulajkontaktemail = \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail);
+        if (!$tulajkontaktemail) {
+            return;
+        }
+        $mailer = \mkw\store::getMailer();
+        $mailer->addTo($tulajkontaktemail);
+        $mailer->setSubject('Nem készült számla a pubadminos eladásról');
+        $mailer->setMessage(
+            'A pubadminban ' . ($this->getBejelentkezettTanar()?->getNev() ?: 'egy tanár')
+            . ' eladott egy tételt, de nem készült róla számla.' . "\n\n"
+            . 'Vevő: ' . ($partner ? $partner->getNev() : $rv->getPartnernev())
+            . ' (' . ($partner ? $partner->getEmail() : $rv->getPartneremail()) . ')' . "\n"
+            . 'Tétel: ' . $megnevezes . "\n"
+            . 'Összeg: ' . \bizformat($osszeg) . "\n"
+            . 'Oka: ' . $oka . "\n\n"
+            . 'A számlát kézzel kell elkészíteni. Az eladás az admin főoldalon a „Számla nélküli eladások”'
+            . ' dobozban is látszik, ott lehet megoldottra állítani.'
+        );
+        $mailer->send();
     }
 
     /**
