@@ -302,6 +302,9 @@ $(document).ready(function () {
                 $('input[name^="valtozatoper_"]').val('add');
                 $('input[name^="kapcsolodooper_"]').val('add');
                 $('input[name^="aroper_"]').val('add');
+                // enélkül a dokumentum sorok edit operrel mennek, vagyis a RÉGI termék sorait írnák
+                $('input[name^="dokoper_"]').val('add');
+                $('table[id^="doktable_"]').attr('data-oper', 'add');
                 $('#mattkarb-okbutton').click();
             });
             // Új Scorpion mentés: mint a "mentés új termékként", csak a képek, a változatok és az
@@ -315,6 +318,8 @@ $(document).ready(function () {
                 $('input[name^="valtozatoper_"]').val('');
                 $('input[name^="aroper_"]').val('');
                 $('input[name^="kapcsolodooper_"]').val('add');
+                $('input[name^="dokoper_"]').val('add');
+                $('table[id^="doktable_"]').attr('data-oper', 'add');
                 $('#mattkarb-okbutton').click();
             });
             $('.js-saveandreopen').on('click', function (e) {
