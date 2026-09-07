@@ -323,7 +323,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/idopontfoglalas/getlistbody',
                 onStyle: function () {
-                    $('.js-emailemlekezteto, .js-emaildijbekero, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz').button();
+                    $('.js-emailemlekezteto, .js-emaildijbekero, .js-emailkezdes, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz').button();
                 }
             },
             karb: mattkarbconfig
@@ -336,6 +336,10 @@ $(document).ready(function () {
             .on('click', '.js-emaildijbekero', function (e) {
                 e.preventDefault();
                 sorMuvelet('/admin/idopontfoglalas/email/dijbekero', $(this).data('id'), true);
+            })
+            .on('click', '.js-emailkezdes', function (e) {
+                e.preventDefault();
+                sorMuvelet('/admin/idopontfoglalas/email/kezdes', $(this).data('id'), true);
             })
             .on('click', '.js-lemond', function (e) {
                 e.preventDefault();

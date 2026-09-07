@@ -100,6 +100,9 @@
             {/if}
             <div><a class="js-emailemlekezteto" href="#" data-id="{$_egyed.id}">{at('Emlékeztető email')}</a></div>
         {/if}
+        {if ($kezdessablonvan && !$_egyed.lemondva)}
+            <div><a class="js-emailkezdes" href="#" data-id="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a></div>
+        {/if}
         {if ($_egyed.lemondva)}
             <div><a class="js-visszaallit" href="#" data-id="{$_egyed.id}">{at('Visszaállít')}</a></div>
         {else}
