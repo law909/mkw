@@ -24,6 +24,7 @@
             {/if}
             <li><a href="#KeszletTab">{at('Készlet')}</a></li>
             <li><a href="#MinKeszletTab">{at('Min. készlet')}</a></li>
+            <li><a href="#OptKeszletTab">{at('Opt. készlet')}</a></li>
             {if ($setup.kapcsolodotermekek)}
                 <li><a href="#KapcsolodoTab">{at('Kapcsolódó termékek')}</a></li>
             {/if}
@@ -583,6 +584,83 @@
             <p class="mattkarb-hint">
                 {at('Üres cella: nincs beállítva, az öröklött érték él.')}
                 {at('Változatos terméknél a minimumot csak a változatokhoz lehet megadni, a termék sora nulla.')}
+                {at('A „Kitöltés" oszlop gombja az egész sort, a felső sor gombja az egész oszlopot tölti ki – a bal felső az egész rácsot.')}
+            </p>
+        </div>
+        <div id="OptKeszletTab" class="mattkarb-page" data-visible="visible">
+            <table id="OptKeszletMatrix" class="mattkarb-matrix">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{at('Kitöltés')}</th>
+                    <th>{at('Minden raktár')}</th>
+                    {foreach $egyed.optkeszletraktarak as $raktar}
+                        <th>{$raktar.nev}</th>
+                    {/foreach}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{at('Minden sor')}</td>
+                    <td>
+                        <input class="js-optkeszletfillvalue" type="number" step="any">
+                        <input class="js-optkeszletfill" type="button" data-scope="all" value="{at('Kitölt')}">
+                    </td>
+                    <td>
+                        <input class="js-optkeszletfillvalue" type="number" step="any">
+                        <input class="js-optkeszletfill" type="button" data-scope="col" value="{at('Kitölt')}">
+                    </td>
+                    {foreach $egyed.optkeszletraktarak as $raktar}
+                        <td>
+                            <input class="js-optkeszletfillvalue" type="number" step="any">
+                            <input class="js-optkeszletfill" type="button" data-scope="col" value="{at('Kitölt')}">
+                        </td>
+                    {/foreach}
+                </tr>
+                {foreach $egyed.optkeszletsorok as $sor}
+                    <tr>
+                        <td>{$sor.nev}</td>
+                        <td>
+                            {if (!$sor.zarolt)}
+                                <input class="js-optkeszletfillvalue" type="number" step="any">
+                                <input class="js-optkeszletfill" type="button" data-scope="row" value="{at('Kitölt')}">
+                            {/if}
+                        </td>
+                        <td>
+                            {if ($sor.valtozatid)}
+                                <input name="valtozatoptkeszlet_{$sor.valtozatid}" type="number" step="any"
+                                       value="{$sor.globalis}">
+                                <input name="valtozatoptkeszletid[]" type="hidden" value="{$sor.valtozatid}">
+                            {elseif ($sor.zarolt)}
+                                <input type="number" value="0" disabled="disabled">
+                            {else}
+                                <input id="OptkeszletEdit" name="optkeszlet" type="number" step="any"
+                                       value="{$sor.globalis}">
+                            {/if}
+                        </td>
+                        {foreach $sor.cellak as $cella}
+                            <td>
+                                {if ($sor.valtozatid)}
+                                    <input name="valtozatraktarioptkeszlet_{$sor.valtozatid}_{$cella.raktarid}"
+                                           type="number" step="any" value="{$cella.ertek}">
+                                {elseif ($sor.zarolt)}
+                                    <input type="number" value="0" disabled="disabled">
+                                {else}
+                                    <input name="termekraktarioptkeszlet_{$cella.raktarid}"
+                                           type="number" step="any" value="{$cella.ertek}">
+                                {/if}
+                            </td>
+                        {/foreach}
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+            {foreach $egyed.optkeszletraktarak as $raktar}
+                <input name="optkeszletraktarid[]" type="hidden" value="{$raktar.id}">
+            {/foreach}
+            <p class="mattkarb-hint">
+                {at('Üres cella: nincs beállítva, az öröklött érték él.')}
+                {at('Változatos terméknél az optimális készletet csak a változatokhoz lehet megadni, a termék sora nulla.')}
                 {at('A „Kitöltés" oszlop gombja az egész sort, a felső sor gombja az egész oszlopot tölti ki – a bal felső az egész rácsot.')}
             </p>
         </div>

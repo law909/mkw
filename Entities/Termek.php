@@ -447,6 +447,9 @@ class Termek
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $minkeszlet;
 
+    /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
+    private $optkeszlet;
+
     /** @ORM\Column(type="integer",nullable=true) */
     private $garancia;
 
@@ -3447,6 +3450,16 @@ class Termek
     public function setMinkeszlet($minkeszlet)
     {
         $this->minkeszlet = $minkeszlet;
+    }
+
+    public function getOptkeszlet()
+    {
+        return $this->optkeszlet;
+    }
+
+    public function setOptkeszlet($optkeszlet)
+    {
+        $this->optkeszlet = $optkeszlet;
     }
 
     /**

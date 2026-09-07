@@ -22,9 +22,11 @@ use Entities\TermekKep;
 use Entities\TermekMenu;
 use Entities\TermekMenu2;
 use Entities\TermekMinkeszlet;
+use Entities\TermekOptkeszlet;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
 use Entities\TermekValtozatMinkeszlet;
+use Entities\TermekValtozatOptkeszlet;
 use Entities\TermekValtozatErtek;
 use Entities\Valutanem;
 use Entities\Vtsz;
@@ -147,9 +149,12 @@ class termekController extends \mkwhelpers\MattableController
             $x['fiforaktarak'] = \mkw\store::isFifo()
                 ? $this->getRepo(\Entities\Fifoertek::class)->getTermekRaktarak($t->getId())
                 : [];
-            $matrix = $this->getMinKeszletMatrix($t);
+            $matrix = $this->getKeszletMatrix($t, 'min');
             $x['minkeszletraktarak'] = $matrix['raktarak'];
             $x['minkeszletsorok'] = $matrix['sorok'];
+            $matrix = $this->getKeszletMatrix($t, 'opt');
+            $x['optkeszletraktarak'] = $matrix['raktarak'];
+            $x['optkeszletsorok'] = $matrix['sorok'];
 
             foreach ($t->getTermekKepek() as $kepje) {
                 $kep[] = $kepCtrl->loadVars($kepje);
@@ -225,18 +230,49 @@ class termekController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A „Min. bolti készlet" fül mátrixa: soronként a termék és a változatai, oszloponként a
-     * „Minden raktár" (globális) érték és a raktárak. Ami nincs beállítva, az üresen jelenik meg –
-     * a nulla a feloldási létrában is „nincs beállítva", ezért nem írjuk ki.
+     * A raktáras készletmátrix fülek leírója. A min. és az optimális készlet ugyanaz a rács,
+     * csak más entitáson és más űrlapmezőkön – a kettő között csak ez a tömb tesz különbséget.
+     */
+    private const KESZLETMATRIXOK = [
+        'min' => [
+            'termekentity' => TermekMinkeszlet::class,
+            'valtozatentity' => TermekValtozatMinkeszlet::class,
+            'getter' => 'getMinkeszlet',
+            'setter' => 'setMinkeszlet',
+            'raktarid' => 'minkeszletraktarid',
+            'termekcella' => 'termekraktariminkeszlet_',
+            'valtozatid' => 'valtozatminkeszletid',
+            'valtozatglobalis' => 'valtozatminkeszlet_',
+            'valtozatcella' => 'valtozatraktariminkeszlet_',
+        ],
+        'opt' => [
+            'termekentity' => TermekOptkeszlet::class,
+            'valtozatentity' => TermekValtozatOptkeszlet::class,
+            'getter' => 'getOptkeszlet',
+            'setter' => 'setOptkeszlet',
+            'raktarid' => 'optkeszletraktarid',
+            'termekcella' => 'termekraktarioptkeszlet_',
+            'valtozatid' => 'valtozatoptkeszletid',
+            'valtozatglobalis' => 'valtozatoptkeszlet_',
+            'valtozatcella' => 'valtozatraktarioptkeszlet_',
+        ],
+    ];
+
+    /**
+     * A „Min. készlet" / „Opt. készlet" fül mátrixa: soronként a termék és a változatai,
+     * oszloponként a „Minden raktár" (globális) érték és a raktárak. Ami nincs beállítva, az
+     * üresen jelenik meg – a nulla a feloldási létrában is „nincs beállítva", ezért nem írjuk ki.
      *
      * Változatszámtól függetlenül két lekérdezés: egy a termék, egy az összes változat soraira.
      *
      * @param \Entities\Termek $t
+     * @param string $tipus a KESZLETMATRIXOK kulcsa
      *
      * @return array ['raktarak' => [['id','nev'],…], 'sorok' => [['valtozatid','nev','globalis',…],…]]
      */
-    private function getMinKeszletMatrix($t)
+    private function getKeszletMatrix($t, $tipus)
     {
+        $leiro = self::KESZLETMATRIXOK[$tipus];
         $termekid = $t->getId();
         $valtozatok = [];
         if ($termekid && \mkw\store::getSetupValue('termekvaltozat')) {
@@ -247,10 +283,10 @@ class termekController extends \mkwhelpers\MattableController
         $valtozatids = array_map(static fn($valtozat) => $valtozat->getId(), $valtozatok);
 
         $termeksorok = $termekid
-            ? $this->getRepo(TermekMinkeszlet::class)->getRowsByTermek($termekid)
+            ? $this->getRepo($leiro['termekentity'])->getRowsByTermek($termekid)
             : [];
         $valtozatsorok = $valtozatids
-            ? $this->getRepo(TermekValtozatMinkeszlet::class)->getRowsByTermekValtozatIds($valtozatids)
+            ? $this->getRepo($leiro['valtozatentity'])->getRowsByTermekValtozatIds($valtozatids)
             : [];
 
         $raktarnevek = [];
@@ -279,13 +315,13 @@ class termekController extends \mkwhelpers\MattableController
         foreach ($raktarnevek as $rid => $nev) {
             $cellak[] = [
                 'raktarid' => $rid,
-                'ertek' => $this->beallitottErtek($termeksorok[$rid] ?? null),
+                'ertek' => $this->beallitottErtek($termeksorok[$rid] ?? null, $leiro['getter']),
             ];
         }
         $sorok[] = [
             'valtozatid' => null,
             'nev' => t('Termék'),
-            'globalis' => $this->beallitottErtek($t),
+            'globalis' => $this->beallitottErtek($t, $leiro['getter']),
             'cellak' => $cellak,
             // változatos terméken a termék sora csak mutat: a minimumot a változatokhoz kell megadni
             'zarolt' => (bool)$valtozatok,
@@ -298,13 +334,13 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($raktarnevek as $rid => $nev) {
                 $cellak[] = [
                     'raktarid' => $rid,
-                    'ertek' => $this->beallitottErtek($valtozatsorok[$vid][$rid] ?? null),
+                    'ertek' => $this->beallitottErtek($valtozatsorok[$vid][$rid] ?? null, $leiro['getter']),
                 ];
             }
             $sorok[] = [
                 'valtozatid' => $vid,
                 'nev' => $this->getValtozatNev($valtozat),
-                'globalis' => $this->beallitottErtek($valtozat),
+                'globalis' => $this->beallitottErtek($valtozat, $leiro['getter']),
                 'cellak' => $cellak,
                 'zarolt' => false,
             ];
@@ -314,30 +350,35 @@ class termekController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A „Min. bolti készlet" mátrix mentése. Csak a ténylegesen kirajzolt rácsot érintjük –
-     * ezt írja le a két rejtett tömb (minkeszletraktarid[], valtozatminkeszletid[]) –,
-     * a ki nem rajzolt sorok érintetlenek maradnak.
+     * A raktáras készletmátrix mentése. Csak a ténylegesen kirajzolt rácsot érintjük – ezt írja
+     * le a két rejtett tömb (…raktarid[], valtozat…id[]) –, a ki nem rajzolt sorok érintetlenek
+     * maradnak.
      *
      * Üres vagy nulla cella ⇒ a sor törlése: a létrában a tárolt 0 és a hiányzó sor azonos.
      *
-     * Változatos terméken a termékszint kötelezően nulla: a minimumot csak a változatokhoz
-     * lehet megadni, a termék globális értékét és raktáras sorait ilyenkor töröljük.
+     * Változatos terméken a termékszint kötelezően nulla: az értéket csak a változatokhoz lehet
+     * megadni, a termék globális értékét és raktáras sorait ilyenkor töröljük.
      *
      * @param \Entities\Termek $obj
      * @param \Entities\TermekValtozat[] $valtozatmap űrlapkulcs => változat, a fenti ciklusból –
      *        „mentés új termékként" esetén az űrlapon a RÉGI termék változatainak id-je jön vissza,
      *        adatbázisból feloldva a régi termékre írnánk
+     * @param string $tipus a KESZLETMATRIXOK kulcsa
      */
-    private function saveMinKeszletMatrix($obj, array $valtozatmap)
+    private function saveKeszletMatrix($obj, array $valtozatmap, $tipus)
     {
+        $leiro = self::KESZLETMATRIXOK[$tipus];
+        $setter = $leiro['setter'];
+        $termekentity = $leiro['termekentity'];
+        $valtozatentity = $leiro['valtozatentity'];
         $em = $this->getEm();
-        $raktaridk = $this->getIdList('minkeszletraktarid');
+        $raktaridk = $this->getIdList($leiro['raktarid']);
         // a getValtozatok() null a változatot nem ismerő témákon (darshan, kisszamlazo)
         $vanvaltozat = \mkw\store::getSetupValue('termekvaltozat') && count($obj->getValtozatok() ?? []) > 0;
 
         if ($vanvaltozat) {
-            $obj->setMinkeszlet(0);
-            foreach ($this->getRepo(TermekMinkeszlet::class)->getRowsByTermek($obj->getId()) as $sor) {
+            $obj->$setter(0);
+            foreach ($this->getRepo($termekentity)->getRowsByTermek($obj->getId()) as $sor) {
                 $em->remove($sor);
             }
         }
@@ -351,17 +392,17 @@ class termekController extends \mkwhelpers\MattableController
             }
 
             if (!$vanvaltozat) {
-                $termeksorok = $this->getRepo(TermekMinkeszlet::class)->getRowsByTermek($obj->getId());
+                $termeksorok = $this->getRepo($termekentity)->getRowsByTermek($obj->getId());
                 foreach ($raktarmap as $rid => $raktar) {
-                    $ertek = $this->params->getNumRequestParam('termekraktariminkeszlet_' . $rid);
+                    $ertek = $this->params->getNumRequestParam($leiro['termekcella'] . $rid);
                     $sor = $termeksorok[$rid] ?? null;
                     if ($ertek * 1) {
                         if (!$sor) {
-                            $sor = new TermekMinkeszlet();
+                            $sor = new $termekentity();
                             $sor->setTermek($obj);
                             $sor->setRaktar($raktar);
                         }
-                        $sor->setMinkeszlet($ertek);
+                        $sor->$setter($ertek);
                         $em->persist($sor);
                     } elseif ($sor) {
                         $em->remove($sor);
@@ -372,7 +413,7 @@ class termekController extends \mkwhelpers\MattableController
 
         // csak a kirajzolt rács változatai, és csak azok, amiket a fenti ciklus tényleg megtartott
         $erintett = [];
-        foreach ($this->params->getArrayRequestParam('valtozatminkeszletid') as $vid) {
+        foreach ($this->params->getArrayRequestParam($leiro['valtozatid']) as $vid) {
             $vid = (string)$vid;
             if (isset($valtozatmap[$vid])) {
                 $erintett[$vid] = $valtozatmap[$vid];
@@ -383,7 +424,7 @@ class termekController extends \mkwhelpers\MattableController
         }
 
         foreach ($erintett as $vid => $valtozat) {
-            $valtozat->setMinkeszlet($this->params->getNumRequestParam('valtozatminkeszlet_' . $vid));
+            $valtozat->$setter($this->params->getNumRequestParam($leiro['valtozatglobalis'] . $vid));
             $em->persist($valtozat);
         }
 
@@ -391,21 +432,21 @@ class termekController extends \mkwhelpers\MattableController
             return;
         }
         // az új változatnak még nincs id-je, arra nem is lehet meglévő sor
-        $valtozatsorok = $this->getRepo(TermekValtozatMinkeszlet::class)->getRowsByTermekValtozatIds(
+        $valtozatsorok = $this->getRepo($valtozatentity)->getRowsByTermekValtozatIds(
             array_filter(array_map(static fn($valtozat) => $valtozat->getId(), $erintett))
         );
         foreach ($erintett as $vid => $valtozat) {
             foreach ($raktarmap as $rid => $raktar) {
                 // a mezőnév az űrlapkulcsot viseli, a meglévő sorok viszont a valódi id-re állnak
-                $ertek = $this->params->getNumRequestParam('valtozatraktariminkeszlet_' . $vid . '_' . $rid);
+                $ertek = $this->params->getNumRequestParam($leiro['valtozatcella'] . $vid . '_' . $rid);
                 $sor = $valtozatsorok[$valtozat->getId()][$rid] ?? null;
                 if ($ertek * 1) {
                     if (!$sor) {
-                        $sor = new TermekValtozatMinkeszlet();
+                        $sor = new $valtozatentity();
                         $sor->setTermekvaltozat($valtozat);
                         $sor->setRaktar($raktar);
                     }
-                    $sor->setMinkeszlet($ertek);
+                    $sor->$setter($ertek);
                     $em->persist($sor);
                 } elseif ($sor) {
                     $em->remove($sor);
@@ -443,11 +484,12 @@ class termekController extends \mkwhelpers\MattableController
      * (a feloldási létra így kezeli), ezért nem íratjuk ki. A decimal stringként hidratál,
      * ezért a teszt numerikus.
      *
-     * @param \Entities\Termek|\Entities\TermekValtozat|\Entities\TermekMinkeszlet|\Entities\TermekValtozatMinkeszlet|null $hordozo
+     * @param object|null $hordozo a termék, a változat, vagy a raktáras sor
+     * @param string $getter a KESZLETMATRIXOK szerinti olvasó
      */
-    private function beallitottErtek($hordozo)
+    private function beallitottErtek($hordozo, $getter)
     {
-        $ertek = $hordozo?->getMinkeszlet();
+        $ertek = $hordozo?->$getter();
         return ($ertek * 1) ? $ertek : '';
     }
 
@@ -565,6 +607,9 @@ class termekController extends \mkwhelpers\MattableController
         // a mező nincs minden téma sablonjában (darshan) – enélkül minden mentés nullázná
         if ($this->params->existsRequestParam('minkeszlet')) {
             $obj->setMinkeszlet($this->params->getFloatRequestParam('minkeszlet'));
+        }
+        if ($this->params->existsRequestParam('optkeszlet')) {
+            $obj->setOptkeszlet($this->params->getFloatRequestParam('optkeszlet'));
         }
         $obj->setGarancia($this->params->getIntRequestParam('garancia'));
         $obj->setArukeresofanev($this->params->getStringRequestParam('arukeresofanev'));
@@ -1079,7 +1124,8 @@ class termekController extends \mkwhelpers\MattableController
             }
         }
 
-        $this->saveMinKeszletMatrix($obj, $valtozatmap);
+        $this->saveKeszletMatrix($obj, $valtozatmap, 'min');
+        $this->saveKeszletMatrix($obj, $valtozatmap, 'opt');
         $this->kaphatolett = $oldnemkaphato && !$obj->getNemkaphato();
         $obj->doStuffOnPrePersist();  // ha csak kapcsolódó adat változott, akkor prepresist/preupdate nem hívódik, de cimke gyorsítás miatt nekünk kell
         return $obj;

@@ -777,28 +777,32 @@ $(document).ready(function () {
             createMultiImageSelectable('.js-szinkepedit');
             $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton').button();
 
-            // Min. készlet mátrix tömeges kitöltése: a sor eleji gomb a sort, a felső sor gombja
-            // az oszlopot, a bal felső az egész rácsot tölti ki. A rejtett és a zárolt (változatos
-            // termék termék sora) mezőket nem bántjuk.
-            $('#MinKeszletTab').on('click', '.js-minkeszletfill', function () {
-                var $gomb = $(this),
-                    $cella = $gomb.closest('td'),
-                    ertek = $cella.find('.js-minkeszletfillvalue').val(),
-                    $tbody = $gomb.closest('table').children('tbody'),
-                    $mezok;
-                switch ($gomb.attr('data-scope')) {
-                    case 'row':
-                        $mezok = $gomb.closest('tr').find('input[name]');
-                        break;
-                    case 'col':
-                        $mezok = $tbody.children('tr').find('td:nth-child(' + ($cella.index() + 1) + ') input[name]');
-                        break;
-                    default:
-                        $mezok = $tbody.find('input[name]');
-                }
-                $mezok.not(':disabled').not('[type="hidden"]').val(ertek);
-            });
-            $('.js-minkeszletfill').button();
+            // Készletmátrix tömeges kitöltése: a sor eleji gomb a sort, a felső sor gombja az
+            // oszlopot, a bal felső az egész rácsot tölti ki. A rejtett és a zárolt (változatos
+            // termék termék sora) mezőket nem bántjuk. A min. és az opt. készlet fül ugyanez.
+            const keszletMatrixFill = (tabid, fillclass, valueclass) => {
+                $(tabid).on('click', fillclass, function () {
+                    const $gomb = $(this),
+                        $cella = $gomb.closest('td'),
+                        ertek = $cella.find(valueclass).val(),
+                        $tbody = $gomb.closest('table').children('tbody');
+                    let $mezok;
+                    switch ($gomb.attr('data-scope')) {
+                        case 'row':
+                            $mezok = $gomb.closest('tr').find('input[name]');
+                            break;
+                        case 'col':
+                            $mezok = $tbody.children('tr').find('td:nth-child(' + ($cella.index() + 1) + ') input[name]');
+                            break;
+                        default:
+                            $mezok = $tbody.find('input[name]');
+                    }
+                    $mezok.not(':disabled').not('[type="hidden"]').val(ertek);
+                });
+                $(fillclass).button();
+            };
+            keszletMatrixFill('#MinKeszletTab', '.js-minkeszletfill', '.js-minkeszletfillvalue');
+            keszletMatrixFill('#OptKeszletTab', '.js-optkeszletfill', '.js-optkeszletfillvalue');
 
             $('#NettoEdit').on('blur', function (e) {
                 e.preventDefault();
@@ -971,13 +975,13 @@ $(document).ready(function () {
             return true;
         },
         beforeSubmit: function (arr) {
-            // A min.bolti készlet mátrix önmagában több száz mező (változat × raktár), és a PHP
+            // A készletmátrixok önmagukban is több száz mező (változat × raktár), és a PHP
             // a max_input_vars fölött csendben csonkolja a POST-ot. Az üres cellákat kihagyni
             // biztonságos: a „hiányzik ⇒ törlés" és az „üres ⇒ törlés" ugyanaz a szabály.
             // A rácsot leíró rejtett tömböket soha nem szűrjük.
-            var minboltimezo = /^(termekraktariminkeszlet_|valtozatraktariminkeszlet_|valtozatminkeszlet_)/;
+            var matrixmezo = /^(termekraktari(min|opt)keszlet_|valtozatraktari(min|opt)keszlet_|valtozat(min|opt)keszlet_)/;
             for (var i = arr.length - 1; i >= 0; i--) {
-                if (arr[i].value === '' && minboltimezo.test(arr[i].name)) {
+                if (arr[i].value === '' && matrixmezo.test(arr[i].name)) {
                     arr.splice(i, 1);
                 }
             }
