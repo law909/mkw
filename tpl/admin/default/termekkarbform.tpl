@@ -778,6 +778,9 @@
         <input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
         <a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
         <a class="js-saveas" href="#">{at('Mentés új termékként')}</a>
+        {if ($maintheme === 'superzoneb2b')}
+            <a class="js-saveasscorpion" href="#">{at('Új Scorpion mentés')}</a>
+        {/if}
         {if ($oper=='add')}
             <a class="js-saveandreopen" href="#">{at('Mentés és szerkesztés')}</a>
         {/if}

@@ -304,6 +304,19 @@ $(document).ready(function () {
                 $('input[name^="aroper_"]').val('add');
                 $('#mattkarb-okbutton').click();
             });
+            // Új Scorpion mentés: mint a "mentés új termékként", csak a képek, a változatok és az
+            // árak nélkül – oper nélkül a mentés át is ugorja ezeket a sorokat
+            $('.js-saveasscorpion').on('click', function (e) {
+                e.preventDefault();
+                $('input[name="oper"]').val('add');
+                $('input[name="id"]').val(0);
+                $('input[name^="kepoper_"]').val('');
+                $('table[id^="keptable_"]').attr('data-oper', '');
+                $('input[name^="valtozatoper_"]').val('');
+                $('input[name^="aroper_"]').val('');
+                $('input[name^="kapcsolodooper_"]').val('add');
+                $('#mattkarb-okbutton').click();
+            });
             $('.js-saveandreopen').on('click', function (e) {
                 e.preventDefault();
                 $('input[name="oper"]').val('addreopen');
