@@ -144,18 +144,31 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
             echo json_encode(['msg' => t('Kérjük, add meg a teljes neved (vezeték- és keresztnév).')]);
             return;
         }
+        $irszam = trim($this->params->getStringRequestParam('irszam'));
+        $varos = trim($this->params->getStringRequestParam('varos'));
+        $utca = trim($this->params->getStringRequestParam('utca'));
         if ($partnernev && $email && $orarendid && $datumstr) {
             $bej = $this->getRepo()->findOneBy(['partneremail' => $email, 'orarend' => $orarendid, 'datum' => $datum]);
+            /** @var \Entities\Partner $partner */
+            $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
+            // a címet a meglévő partnerre akkor is ráírjuk, ha a bejelentkezés már megvolt
+            if ($partner) {
+                $partner->fillMissingCim($irszam, $varos, $utca);
+                $this->getEm()->persist($partner);
+                $this->getEm()->flush();
+            }
             if (!$bej) {
                 /** @var \Entities\Orarend $ora */
                 $ora = $this->getRepo(Orarend::class)->find($orarendid);
-                /** @var \Entities\Partner $partner */
-                $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
 
                 $obj = new JogaBejelentkezes();
                 $obj->setDatum($datumstr);
                 $obj->setPartneremail($email);
                 $obj->setPartnernev($partnernev);
+                // partner híján innen viszi tovább a címet a JogaBejelentkezes::resolvePartner()
+                $obj->setPartnerirszam($irszam);
+                $obj->setPartnervaros($varos);
+                $obj->setPartnerutca($utca);
                 $obj->setOrarend($ora);
                 $this->getEm()->persist($obj);
                 $this->getEm()->flush();

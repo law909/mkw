@@ -97,7 +97,10 @@
                             id: $('input[name="id"]').val(),
                             datum: $('input[name="datum"]').val(),
                             partnernev: nev,
-                            email: $('input[name="email"]').val()
+                            email: $('input[name="email"]').val(),
+                            irszam: $('input[name="irszam"]').val(),
+                            varos: $('input[name="varos"]').val(),
+                            utca: $('input[name="utca"]').val()
                         },
                         success: function (res) {
                             const adat = (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
@@ -328,6 +331,12 @@
             margin-left: -15px;
         }
 
+        .form-hint {
+            margin: 0 0 .5rem;
+            font-size: .9rem;
+            line-height: 1.4;
+        }
+
         .form-label {
             padding-top: calc(.375rem + 1px);
             padding-bottom: calc(.375rem + 1px);
@@ -448,6 +457,20 @@
             <div class="form-group">
                 <label class="form-label">Név</label>
                 <input class="form-control" type="text" name="partnernev" required>
+            </div>
+            <p class="form-hint">Ha először jön hozzánk, kérjük adja meg a címét hogy ki tudjuk állítani
+                önnek a számlát az óráról.</p>
+            <div class="form-group">
+                <label class="form-label">Irányítószám</label>
+                <input class="form-control" type="text" name="irszam" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Város</label>
+                <input class="form-control" type="text" name="varos">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Utca, házszám</label>
+                <input class="form-control" type="text" name="utca">
             </div>
             <input type="hidden" name="id">
             <input type="hidden" name="datum">
