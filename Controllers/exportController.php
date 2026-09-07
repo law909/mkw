@@ -1539,6 +1539,7 @@ class exportController extends \mkwhelpers\Controller
         $trsm = new ResultSetMapping();
         $trsm->addScalarResult('id', 'id');
         $trsm->addScalarResult('cikkszam', 'cikkszam');
+        $trsm->addScalarResult('kifuto', 'kifuto');
 
         /** @var TermekValtozatErtekRepository $tver */
         $tver = $this->getRepo(TermekValtozatErtek::class);
@@ -1551,12 +1552,13 @@ class exportController extends \mkwhelpers\Controller
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A' . $sor, 'EAN')
             ->setCellValue('B' . $sor, 'Article number')
-            ->setCellValue('C' . $sor, 'Quantity');
+            ->setCellValue('C' . $sor, 'Quantity')
+            ->setCellValue('D' . $sor, 'Discontinued');
         $sor++;
 
         foreach ($termekfak as $termekfa) {
             $termekek = $this->getEm()->createNativeQuery(
-                'SELECT t.id,t.cikkszam '
+                'SELECT t.id,t.cikkszam,t.kifuto '
                 . 'FROM termek t '
                 . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) AND (t.inaktiv=0) AND (t.fuggoben=0) ',
                 $trsm
@@ -1574,7 +1576,8 @@ class exportController extends \mkwhelpers\Controller
                             'B' . $sor,
                             strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret()
                         )
-                        ->setCellValue('C' . $sor, $valtozat->getAvailableStock());
+                        ->setCellValue('C' . $sor, $valtozat->getAvailableStock())
+                        ->setCellValue('D' . $sor, $termek['kifuto'] ? 1 : 0);
                     $sor++;
                 }
             }

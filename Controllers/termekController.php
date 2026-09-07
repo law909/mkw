@@ -552,6 +552,7 @@ class termekController extends \mkwhelpers\MattableController
         $obj->setTermekexportbanszerepel($this->params->getBoolRequestParam('termekexportbanszerepel'));
         $obj->setNemkaphato($this->params->getBoolRequestParam('nemkaphato'));
         $obj->setFuggoben($this->params->getBoolRequestParam('fuggoben'));
+        $obj->setKifuto($this->params->getBoolRequestParam('kifuto'));
         $obj->setSzallitasiido($this->params->getIntRequestParam('szallitasiido'));
         // a két mező csak `unas` kapcsolóval van a formon – hiányában ne írjuk felül az importált értéket
         if ($this->params->existsRequestParam('szallitasiidostr')) {
@@ -2158,7 +2159,8 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('N1', 'Weight')
             ->setCellValue('O1', 'Width')
             ->setCellValue('P1', 'Height')
-            ->setCellValue('Q1', 'Length');
+            ->setCellValue('Q1', 'Length')
+            ->setCellValue('R1', 'Discontinued');
 
         $partner = match ($p) {
             'fcmoto' => $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto)),
@@ -2202,7 +2204,8 @@ class termekController extends \mkwhelpers\MattableController
                             ->setCellValue('N' . $sor, $termek->getSuly())
                             ->setCellValue('O' . $sor, $termek->getSzelesseg())
                             ->setCellValue('P' . $sor, $termek->getMagassag())
-                            ->setCellValue('Q' . $sor, $termek->getHosszusag());
+                            ->setCellValue('Q' . $sor, $termek->getHosszusag())
+                            ->setCellValue('R' . $sor, $termek->getKifuto() ? 1 : 0);
                         $excel->setActiveSheetIndex(0)
                             ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                         $sor++;
@@ -2223,7 +2226,8 @@ class termekController extends \mkwhelpers\MattableController
                     ->setCellValue('N' . $sor, $termek->getSuly())
                     ->setCellValue('O' . $sor, $termek->getSzelesseg())
                     ->setCellValue('P' . $sor, $termek->getMagassag())
-                    ->setCellValue('Q' . $sor, $termek->getHosszusag());
+                    ->setCellValue('Q' . $sor, $termek->getHosszusag())
+                    ->setCellValue('R' . $sor, $termek->getKifuto() ? 1 : 0);
 
                 $excel->setActiveSheetIndex(0)
                     ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);

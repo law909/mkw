@@ -383,6 +383,9 @@ class Termek
     /** @ORM\Column(type="boolean",nullable=false) */
     private $nemkaphato = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $kifuto = false;
+
     /** @ORM\OneToMany(targetEntity="TermekErtesito", mappedBy="termek",cascade={"persist"}) */
     private $termekertesitok;
 
@@ -2751,6 +2754,16 @@ class Termek
     public function setNemkaphato($val)
     {
         $this->nemkaphato = $val;
+    }
+
+    public function getKifuto()
+    {
+        return $this->kifuto;
+    }
+
+    public function setKifuto($val)
+    {
+        $this->kifuto = $val;
     }
 
     public function getGyarto()
