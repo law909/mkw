@@ -7,7 +7,11 @@
  *   php siikermigrate.php                    minden lépés
  *   php siikermigrate.php --dry-run          próba menet: tranzakcióban fut, a végén visszagörget,
  *                                            képet nem ír
- *   php siikermigrate.php --step=torzs,ar    csak a felsorolt lépések (torzs, partner, termek, ar, kep)
+ *   php siikermigrate.php --purge            előbb kiüríti a célt: a migrált törzsek és minden rájuk
+ *                                            hivatkozó adat (bizonylat, mozgás, folyószámla, kosár…)
+ *                                            törlődik, a képmappával együtt; a képernyőn megerősítést kér
+ *   php siikermigrate.php --purge --yes      megerősítés nélkül (pl. scriptből)
+ *   php siikermigrate.php --step=torzs,ar    csak a felsorolt lépések (purge, torzs, partner, termek, ar, kep)
  *   php siikermigrate.php --limit=50         lépésenként legfeljebb ennyi partner/termék
  *   php siikermigrate.php --quiet            csak az összesítő
  *
@@ -46,7 +50,7 @@ ini_set('memory_limit', '1024M');
 
 $options = parseOptions($argv);
 if (isset($options['help'])) {
-    echo 'Használat: php ', basename(__FILE__), ' [--step=torzs,partner,termek,ar,kep] [--dry-run] [--limit=N] [--quiet]', PHP_EOL;
+    echo 'Használat: php ', basename(__FILE__), ' [--purge [--yes]] [--step=purge,torzs,partner,termek,ar,kep] [--dry-run] [--limit=N] [--quiet]', PHP_EOL;
     exit(0);
 }
 

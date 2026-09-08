@@ -5,6 +5,7 @@ namespace Services;
 use Services\Siiker\MigrationReport;
 use Services\Siiker\PartnerMigrator;
 use Services\Siiker\SiikerSource;
+use Services\Siiker\TargetPurger;
 use Services\Siiker\TermekKepMigrator;
 use Services\Siiker\TermekMigrator;
 use Services\Siiker\TorzsMigrator;
@@ -15,21 +16,23 @@ use mkw\store;
  *
  * A forrás séma a config.ini `siiker.dbname` kulcsa, ugyanazon a szerveren. A lépések
  * (torzs, partner, termek, ar, kep) egyenként újrafuttathatók: minden lépés a SIIKer kódot
- * (migrid / idegenkod) kulcsként használó upsert, semmit nem töröl. Bizonylat, mozgás, menü nem
- * kerül át. Belépés: `php siikermigrate.php`.
+ * (migrid / idegenkod) kulcsként használó upsert, semmit nem töröl. A `--purge` kapcsoló elé
+ * teszi a `purge` lépést, ami a cél migrált törzseit és a rájuk hivatkozó adatokat kiüríti
+ * ({@see TargetPurger}). Bizonylat, mozgás, menü nem kerül át. Belépés: `php siikermigrate.php`.
  */
 class SiikerMigrationService
 {
     const STEPS = ['torzs', 'partner', 'termek', 'ar', 'kep'];
+    const PURGESTEP = 'purge';
 
     /**
-     * @param array $options step (vesszővel), dry-run, limit, quiet
+     * @param array $options step (vesszővel), purge, yes, dry-run, limit, quiet
      */
     public function run(array $options = []): MigrationReport
     {
         $report = new MigrationReport(!empty($options['quiet']));
         $source = SiikerSource::fromConfig();
-        $steps = $this->parseSteps($options['step'] ?? null);
+        $steps = $this->parseSteps($options['step'] ?? null, !empty($options['purge']));
         $dryRun = !empty($options['dry-run']);
 
         $conn = store::getEm()->getConnection();
@@ -75,6 +78,9 @@ class SiikerMigrationService
     private function runStep(string $step, SiikerSource $source, MigrationReport $report, array $options): void
     {
         switch ($step) {
+            case self::PURGESTEP:
+                (new TargetPurger($source, $report, $options))->run();
+                break;
             case 'torzs':
                 (new TorzsMigrator($source, $report, $options))->run();
                 break;
@@ -93,20 +99,25 @@ class SiikerMigrationService
         }
     }
 
-    private function parseSteps($step): array
+    private function parseSteps($step, bool $purge): array
     {
+        $all = array_merge([self::PURGESTEP], self::STEPS);
         if ($step === null || $step === '' || $step === true) {
-            return self::STEPS;
-        }
-        $steps = [];
-        foreach (explode(',', (string)$step) as $s) {
-            $s = trim($s);
-            if (!in_array($s, self::STEPS, true)) {
-                throw new \RuntimeException('Ismeretlen lépés: ' . $s . ' (lehet: ' . implode(', ', self::STEPS) . ')');
+            $steps = array_fill_keys(self::STEPS, true);
+        } else {
+            $steps = [];
+            foreach (explode(',', (string)$step) as $s) {
+                $s = trim($s);
+                if (!in_array($s, $all, true)) {
+                    throw new \RuntimeException('Ismeretlen lépés: ' . $s . ' (lehet: ' . implode(', ', $all) . ')');
+                }
+                $steps[$s] = true;
             }
-            $steps[$s] = true;
+        }
+        if ($purge) {
+            $steps[self::PURGESTEP] = true;
         }
         // a lépések sorrendje kötött, a megadás sorrendje nem számít
-        return array_values(array_filter(self::STEPS, static fn($s) => isset($steps[$s])));
+        return array_values(array_filter($all, static fn($s) => isset($steps[$s])));
     }
 }

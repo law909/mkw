@@ -27,7 +27,7 @@ class TermekKepMigrator extends AbstractMigrator
     public function run(): void
     {
         $this->mediatar = new MediatarService('Images');
-        $this->basePath = $this->resolveBasePath();
+        $this->basePath = self::resolveBasePath();
         $this->report->note('Képmappa: ' . $this->mediatar->url($this->basePath, ''));
 
         $termekMap = $this->loadIdMap(Termek::class, 'migrid');
@@ -154,8 +154,14 @@ class TermekKepMigrator extends AbstractMigrator
         return trim((string)pathinfo($filenev, PATHINFO_FILENAME));
     }
 
+    /** A siiker képmappa abszolút útvonala a lemezen (a törléshez). */
+    public static function baseFolderAbs(): string
+    {
+        return rtrim(MediatarService::getDocRoot(), '/') . MediatarService::getBaseUrl() . ltrim(self::resolveBasePath(), '/');
+    }
+
     /** `path.termekkep` a médiatár gyökeréhez képest, alatta a siiker mappa. */
-    private function resolveBasePath(): string
+    private static function resolveBasePath(): string
     {
         $root = trim(MediatarService::getBaseUrl(), '/');
         $termekkep = trim((string)store::getConfigValue('path.termekkep', 'kepek/termek/'), '/');
