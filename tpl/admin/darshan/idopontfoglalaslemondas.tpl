@@ -7,12 +7,13 @@
 </head>
 
 <body>
-<div class="dtt">
+<div class="dtt foglalaseredmeny">
     {if ($hiba)}
         <div class="foglalashiba">{$hiba}</div>
     {else}
         <div class="foglalasfejlec">
             <div><strong>A foglalásodat lemondtuk{if ($partnernev)}, {$partnernev}{/if}.</strong></div>
+            <div>Foglalj másik időpontot!</div>
             <div>{$temanev}</div>
             <div>{$napnev} - {$datum} {$idotartam}</div>
             <div>{$tanar}</div>
