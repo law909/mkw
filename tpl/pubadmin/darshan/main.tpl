@@ -156,8 +156,8 @@
                     </div>
                     <div class="row js-cimblokk">
                         <div class="col">
-                            <p class="top-margin-10">Ha először jön hozzánk, kérjük adja meg a címét hogy ki tudjuk
-                                állítani önnek a számlát az óráról.</p>
+                            <p class="top-margin-10">Ha először jön hozzánk, add meg a címét hogy ki tudjuk
+                                állítani neki a számlát az óráról.</p>
                         </div>
                     </div>
                     <div class="row js-cimblokk">

@@ -458,8 +458,8 @@
                 <label class="form-label">Név</label>
                 <input class="form-control" type="text" name="partnernev" required>
             </div>
-            <p class="form-hint">Ha először jön hozzánk, kérjük adja meg a címét hogy ki tudjuk állítani
-                önnek a számlát az óráról.</p>
+            <p class="form-hint">Ha először jösz hozzánk, kérjük add meg a címedet, hogy ki tudjuk állítani
+                a számlát az óráról.</p>
             <div class="form-group">
                 <label class="form-label">Irányítószám</label>
                 <input class="form-control" type="text" name="irszam" maxlength="10">
