@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<div class="dtt">
+<div class="dtt foglalaseredmeny">
     <div class="foglalasfejlec">
         {if ($varolista)}
             <div><strong>Felvettünk a várólistára, {$partnernev}!</strong></div>

@@ -221,6 +221,11 @@
         margin-bottom: 15px;
     }
 
+    .foglalaseredmeny {
+        color: #000;
+        font-size: 18px;
+    }
+
     /* Responsive Styles Smartphone Landscape */
     @media all and (max-width: 980px) {
         .dttlapozo {
