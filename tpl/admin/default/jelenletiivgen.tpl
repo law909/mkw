@@ -1,6 +1,7 @@
 {extends "../base.tpl"}
 
 {block "inhead"}
+    {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jelenletiivgen.js"></script>
 {/block}
 
