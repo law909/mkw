@@ -208,7 +208,6 @@ img { max-width: 100%; height: auto; }
 }
 .termeklap > .leiras, .termeklap > .ajanlo { grid-column: 1 / -1; }
 
-.galeria { position: sticky; top: 20px; }
 .fokep {
     width: 100%; aspect-ratio: 1 / 1; object-fit: contain;
     background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok); padding: 20px;
@@ -278,7 +277,6 @@ img { max-width: 100%; height: auto; }
     .almenu { display: block; position: static; border: 0; box-shadow: none; padding: 0 0 8px 16px; }
     .almenu a { padding: 6px 0; }
     .termeklap { grid-template-columns: 1fr; gap: 28px; }
-    .galeria { position: static; }
     .lablecsor { grid-template-columns: 1fr; }
     .hero { padding: 40px 0 44px; }
     .hero h1 { font-size: 1.9rem; }
