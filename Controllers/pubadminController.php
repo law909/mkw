@@ -924,13 +924,27 @@ class pubadminController extends mkwhelpers\Controller
         $id = $this->params->getIntRequestParam('id');
         $r = [
             'nev' => '',
-            'email' => ''
+            'email' => '',
+            'irszam' => '',
+            'varos' => '',
+            'utca' => ''
         ];
         /** @var JogaBejelentkezes $rv */
         $rv = $this->getSajatBejelentkezes($id);
         if ($rv) {
             $r['nev'] = $rv->getPartnernev();
             $r['email'] = $rv->getPartneremail();
+            $r['irszam'] = (string)$rv->getPartnerirszam();
+            $r['varos'] = (string)$rv->getPartnervaros();
+            $r['utca'] = (string)$rv->getPartnerutca();
+            // a számla a partnertörzsből készül, tehát a partner címe az érvényes: azt mutatjuk,
+            // és csak ott esünk vissza a bejelentkezés mezőire, ahol a partneren nincs adat
+            $partner = $this->findPartnerByEmail($rv->getPartneremail());
+            if ($partner) {
+                $r['irszam'] = trim((string)$partner->getIrszam()) ?: $r['irszam'];
+                $r['varos'] = trim((string)$partner->getVaros()) ?: $r['varos'];
+                $r['utca'] = trim((string)$partner->getUtca()) ?: $r['utca'];
+            }
         }
         header('Content-Type: application/json');
         echo json_encode($r);
@@ -946,9 +960,39 @@ class pubadminController extends mkwhelpers\Controller
         if ($rv) {
             $rv->setPartnernev($nev);
             $rv->setPartneremail($email);
+            // a címmezőket csak az a képernyő küldi, amelyik ki is teszi őket (a kisszámlázóé nem):
+            // paraméter nélkül hozzá sem nyúlunk, különben az ő mentése kinullázná a címet
+            if ($this->params->existsRequestParam('irszam')) {
+                $irszam = trim($this->params->getStringRequestParam('irszam'));
+                $varos = trim($this->params->getStringRequestParam('varos'));
+                $utca = trim($this->params->getStringRequestParam('utca'));
+                $rv->setPartnerirszam($irszam);
+                $rv->setPartnervaros($varos);
+                $rv->setPartnerutca($utca);
+                // a tanár a partner címét látta és javította, ezért felül is írjuk vele – a
+                // resolvePartner() fillMissingCim()-je csak a hiányzó mezőket pótolná
+                $partner = $this->findPartnerByEmail($email);
+                if ($partner) {
+                    $partner->setIrszam($irszam);
+                    $partner->setVaros($varos);
+                    $partner->setUtca($utca);
+                    $this->getEm()->persist($partner);
+                }
+            }
             $this->getEm()->persist($rv);
             $this->getEm()->flush();
         }
+    }
+
+    /**
+     * Üres emailre nem keresünk: az üres emailű partnerek bármelyikét eltalálná.
+     *
+     * @return \Entities\Partner|null
+     */
+    private function findPartnerByEmail($email)
+    {
+        $email = trim((string)$email);
+        return $email ? $this->getRepo(Partner::class)->findOneBy(['email' => $email]) : null;
     }
 
     public function lemondOra()

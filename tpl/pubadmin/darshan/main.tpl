@@ -214,6 +214,35 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="top-margin-10">A cím a számlához kell. Ha van már partnere, az ő
+                                címét látod itt, és a mentés arra is rákerül.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="irszam2edit">Irányítószám</label>
+                                <input id="irszam2edit" name="irszam" type="text" class="form-control" maxlength="10"
+                                       autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label for="varos2edit">Város</label>
+                                <input id="varos2edit" name="varos" type="text" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="utca2edit">Utca, házszám</label>
+                                <input id="utca2edit" name="utca" type="text" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary js-partnereditok">OK</button>

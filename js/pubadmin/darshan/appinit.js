@@ -348,6 +348,9 @@ $(document).ready(
                     success: function(data) {
                         $('#nev2edit').val(data.nev);
                         $('#email2edit').val(data.email);
+                        $('#irszam2edit').val(data.irszam);
+                        $('#varos2edit').val(data.varos);
+                        $('#utca2edit').val(data.utca);
                         $('#partnerEditModal')
                             .modal({
                                 backdrop: 'static'
@@ -364,13 +367,15 @@ $(document).ready(
                     data: {
                         id: $this.data('id'),
                         nev: $('#nev2edit').val(),
-                        email: $('#email2edit').val()
+                        email: $('#email2edit').val(),
+                        irszam: $('#irszam2edit').val(),
+                        varos: $('#varos2edit').val(),
+                        utca: $('#utca2edit').val()
                     },
                     success: function() {
                         $('#partnerEditModal').modal('hide');
                         $this.data('id', '');
-                        $('#nev2edit').val('');
-                        $('#email2edit').val('');
+                        $('#nev2edit, #email2edit, #irszam2edit, #varos2edit, #utca2edit').val('');
                         refreshResztvevoList();
                     }
                 });
