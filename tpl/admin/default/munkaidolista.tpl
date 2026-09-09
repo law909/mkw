@@ -1,6 +1,7 @@
 {extends "../base.tpl"}
 
 {block "inhead"}
+    {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/munkaidolista.js"></script>
 {/block}
