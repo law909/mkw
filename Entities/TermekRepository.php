@@ -380,6 +380,7 @@ class TermekRepository extends \mkwhelpers\Repository
     {
         switch (true) {
             case \mkw\store::isMindentkapni():
+            case \mkw\store::isLampion():
                 $rsm = new ResultSetMapping();
                 $rsm->addScalarResult('id', 'id');
                 $rsm->addScalarResult('valtozatid', 'valtozatid');

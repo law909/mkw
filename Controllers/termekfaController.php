@@ -263,6 +263,7 @@ class termekfaController extends \mkwhelpers\MattableController
                 }
                 return $t;
             case \mkw\store::isGalad():
+            case \mkw\store::isLampion():
                 return $this->getFaMenu();
             case \mkw\store::isSuperzoneB2B():
                 // Az aktuális webshophoz beállított "Kezdő termék kategória" karkódja (ha van).
@@ -291,9 +292,9 @@ class termekfaController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A menü maga a termékfa: a gyökér alatti ágak, alattuk egy szint. A galad fájában minden
-     * csomóponton be van kapcsolva a menu1lathato, a menu2..4 pedig sehol, ezért a menüszintek
-     * a fa szerkezetéből képződnek, nem a menüjelölőkből.
+     * A menü maga a termékfa: a gyökér alatti ágak, alattuk egy szint. Ott használjuk, ahol a
+     * fában nincsenek beállítva a menüjelölők (galad: mindenütt csak menu1lathato; lampion: a
+     * SIIKer-migráció egyiket sem tölti), ezért a menüszintek a fa szerkezetéből képződnek.
      */
     private function getFaMenu()
     {
@@ -326,6 +327,8 @@ class termekfaController extends \mkwhelpers\MattableController
             if ($child->getInaktiv() || !$child->getLathato()) {
                 continue;
             }
+            // kép nélküli kategóriára a createXImageUrl() "_250."-féle csonkot adna, nem üres stringet
+            $kepurl = $child->getKepurl();
             $ret[] = [
                 'egyed' => $child,
                 'id' => $child->getId(),
@@ -333,9 +336,9 @@ class termekfaController extends \mkwhelpers\MattableController
                 'slug' => $child->getSlug(),
                 'karkod' => $child->getKarkod(),
                 'leiras' => $child->getLocalizedFieldValue('leiras'),
-                'kepurl' => \mkw\store::createBigImageUrl($child->getKepurl()),
-                'kiskepurl' => \mkw\store::createSmallImageUrl($child->getKepurl()),
-                'kozepeskepurl' => \mkw\store::createMediumImageUrl($child->getKepurl()),
+                'kepurl' => $kepurl ? \mkw\store::createBigImageUrl($kepurl) : '',
+                'kiskepurl' => $kepurl ? \mkw\store::createSmallImageUrl($kepurl) : '',
+                'kozepeskepurl' => $kepurl ? \mkw\store::createMediumImageUrl($kepurl) : '',
                 'kepleiras' => $child->getKepleiras(),
                 'sorrend' => $child->getSorrend(),
                 'childcount' => count($child->getChildren()),
@@ -343,6 +346,35 @@ class termekfaController extends \mkwhelpers\MattableController
             ];
         }
         return $ret;
+    }
+
+    /**
+     * Kép nélküli kategóriákra az ág első képes termékének képét teszi csempeképnek. A lampion
+     * fájában egyetlen kategóriának sincs saját képe, csupa üres csempe pedig semmit sem mutatna
+     * a katalógusból.
+     *
+     * @param array $agak faChildren()/getformenu() alakú sorok
+     */
+    public function fillKategoriaKep(array $agak): array
+    {
+        $sql = 'SELECT t.kepurl FROM termek t'
+            . ' JOIN termekfa f ON (f.id=t.termekfa1_id)'
+            . ' WHERE f.karkod LIKE :prefix AND t.kepurl<>\'\''
+            . ' AND t.inaktiv=0 AND t.fuggoben=0 AND ' . \mkw\store::getWebshopFieldName('t.lathato') . '=1'
+            . ' ORDER BY t.id LIMIT 1';
+        $conn = $this->getEm()->getConnection();
+        foreach ($agak as $i => $ag) {
+            if (!empty($ag['kepurl']) || empty($ag['karkod'])) {
+                continue;
+            }
+            $kepurl = $conn->fetchOne($sql, ['prefix' => $ag['karkod'] . '%']);
+            if ($kepurl) {
+                $agak[$i]['kepurl'] = \mkw\store::createBigImageUrl($kepurl);
+                $agak[$i]['kiskepurl'] = \mkw\store::createSmallImageUrl($kepurl);
+                $agak[$i]['kozepeskepurl'] = \mkw\store::createMediumImageUrl($kepurl);
+            }
+        }
+        return $agak;
     }
 
     /**
@@ -385,8 +417,8 @@ class termekfaController extends \mkwhelpers\MattableController
 
     public function getkatlista($parent)
     {
-        if (\mkw\store::isGalad()) {
-            // a galad fájában nincsenek beállítva a menü jelölők, a szintek a fa szerkezetéből jönnek
+        if (\mkw\store::isGalad() || \mkw\store::isLampion()) {
+            // ezekben a fákban nincsenek beállítva a menü jelölők, a szintek a fa szerkezetéből jönnek
             $t = $this->faChildren($parent);
             foreach ($t as $i => $child) {
                 unset($t[$i]['egyed']);
@@ -870,6 +902,38 @@ class termekfaController extends \mkwhelpers\MattableController
                     }
                 } else {
                     $ret['lapozo'] = 0;
+                }
+                return $ret;
+
+            case \mkw\store::isLampion():
+                // katalógus: lapozott terméklista, ár- és címkeszűrő nélkül – itt nem lehet vásárolni,
+                // a szűrősáv és a kiemelt blokk csak zaj lenne
+                $ret = [
+                    'termekek' => [],
+                    'lapozo' => 0,
+                    'order' => $pOrd,
+                    'keresett' => $pKeresoszo,
+                    'url' => $parent ? '/termekfa/' . $parent->getSlug() : '/kereses',
+                    'navigator' => $parent ? $this->getNavigator($parent) : [['caption' => t('A keresett kifejezés') . ': ' . $pKeresoszo]],
+                    'kategoria' => [
+                        'nev' => $parent ? $parent->getLocalizedFieldValue('nev') : '',
+                        'leiras2' => $parent ? $parent->getLeiras2() : '',
+                        'leiras3' => $parent ? $parent->getLeiras3() : ''
+                    ]
+                ];
+                $keresofilter = $this->buildKeresoszoFilter($pKeresoszo);
+                $termekdb = $termekrepo->getTermekListaCount($keresofilter->merge($this->buildTermekfaFilter($parent)));
+                if ($termekdb > 0) {
+                    $tc->initPager($termekdb, $pElemperpage, $pPageno);
+                    $pager = $tc->getPager();
+                    $termekek = $termekrepo->getTermekLista(
+                        $keresofilter->merge($this->buildNativTermekfaFilter($parent)),
+                        $this->orderMap($pOrd ?: 'nevasc'),
+                        $pager->getOffset(),
+                        $pager->getElemPerPage()
+                    );
+                    $ret['termekek'] = $this->buildTermekLista($termekek);
+                    $ret['lapozo'] = $pager->loadValues();
                 }
                 return $ret;
 

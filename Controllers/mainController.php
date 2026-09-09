@@ -99,6 +99,13 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar('blokklista', $blokkc->getListAsArray());
                 break;
 
+            case \mkw\store::isLampion():
+                $this->view->setVar('hirek', $hc->gethirlist());
+                $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
+                $this->view->setVar('legujabbtermekek', $tc->getLegujabbLista());
+                $this->view->setVar('kategoriak', $tfc->fillKategoriaKep($this->view->getVar('menu1')));
+                break;
+
             case \mkw\store::isMPTNGY():
                 $toPrint = false;
                 header('Location: ' . \mkw\store::getRouter()->generate('mptngyszakmaianyagok'));
@@ -120,6 +127,12 @@ class mainController extends \mkwhelpers\Controller
             if (count($ag->getChildren()) > 0) {
                 $this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');
                 $t = $tf->getkatlista($ag);
+                if (\mkw\store::isLampion()) {
+                    // a lampion fájában a köztes kategóriáknak saját termékeik is vannak; az
+                    // alkategória-csempék alatt ki kell listázni őket, különben elérhetetlenek
+                    $t['children'] = $tf->fillKategoriaKep($t['children']);
+                    $t = array_merge($t, $tf->gettermeklistaforparent($ag, 'termekfa'));
+                }
             } else {
                 $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
                 $t = $tf->gettermeklistaforparent($ag, 'termekfa');
@@ -279,6 +292,7 @@ class mainController extends \mkwhelpers\Controller
             case \mkw\store::isMindentkapni():
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isSuperzoneHu():
+            case \mkw\store::isLampion():
                 $com = $this->params->getStringParam('slug');
                 $szin_id = $this->params->getIntParam('szin_id');
                 $tc = new termekController();
@@ -310,6 +324,12 @@ class mainController extends \mkwhelpers\Controller
                     $t = $tc->getTermekLap($termek);
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);
+                    }
+                    if (\mkw\store::isLampion()) {
+                        // a katalógus a gyökér nélküli, linkelt morzsát használja, nem a navigatort
+                        $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());
+                        $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev'), 'link' => ''];
+                        $this->view->setVar('morzsa', $morzsa);
                     }
                     $this->view->setVar('szin_id', $szin_id);
                     $statlap = $this->getRepo(Statlap::class)->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));

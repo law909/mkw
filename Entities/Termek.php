@@ -2186,6 +2186,7 @@ class Termek
         switch (true) {
             case \mkw\store::isMindentkapni():
             case \mkw\store::isGalad():
+            case \mkw\store::isLampion():
                 return $this->valtozatok;
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isSuperzoneHu():
