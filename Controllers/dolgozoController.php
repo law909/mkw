@@ -36,6 +36,10 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['munkaviszonykezdetestr'] = $t->getMunkaviszonykezdeteStr();
         $x['munkakezdesstr'] = $t->getMunkakezdesStr();
         $x['munkavegestr'] = $t->getMunkavegeStr();
+        $x['munkanapok'] = [];
+        foreach (Dolgozo::getNapok() as $napszam => $napnev) {
+            $x['munkanapok'][] = ['id' => $napszam, 'nev' => t($napnev), 'checked' => $t->isMunkanap($napszam)];
+        }
         $x['munkakornev'] = $t->getMunkakorNev();
         $x['alapertelmezettraktarnev'] = $t->getAlapertelmezettRaktarNev();
         $x['fizmodnev'] = $t->getFizmodNev();
@@ -54,7 +58,8 @@ class dolgozoController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj, $oper)
     {
-        $obj = $this->setEntityFieldsFromRequest($obj);
+        // a munkarend csak az adminnak látszik a formon, a hiányzó checkboxok különben kinullaznák
+        $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => $this->isAdminUser() ? [] : $this->getMunkarendFields()]);
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {
@@ -81,6 +86,21 @@ class dolgozoController extends \mkwhelpers\MattableController
             $obj->removeAlapertelmezettRaktar();
         }
         return $obj;
+    }
+
+    private function isAdminUser()
+    {
+        $lu = \mkw\store::getAdminSession()->loggedinuser;
+        return is_array($lu) && !empty($lu['admin']);
+    }
+
+    private function getMunkarendFields()
+    {
+        $fields = ['munkakezdes', 'munkavege'];
+        foreach (array_keys(Dolgozo::getNapok()) as $napszam) {
+            $fields[] = 'munkanap' . $napszam;
+        }
+        return $fields;
     }
 
     public function getlistbody()

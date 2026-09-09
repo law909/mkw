@@ -65,6 +65,28 @@ class Dolgozo
     /** @ORM\Column(type="time",nullable=true) */
     private $munkavege;
 
+    /** A munkanapok az ISO napszámozás szerint: munkanap1 = hétfő … munkanap7 = vasárnap. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap1 = true;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap2 = true;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap3 = true;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap4 = true;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap5 = true;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap6 = false;
+
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $munkanap7 = false;
+
     /** @ORM\OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
     private $jelenletek;
 
@@ -322,6 +344,105 @@ class Dolgozo
     public function setMunkavege($munkavege)
     {
         $this->munkavege = self::toTime($munkavege);
+    }
+
+    public function isMunkanap1()
+    {
+        return $this->munkanap1;
+    }
+
+    public function setMunkanap1($munkanap1)
+    {
+        $this->munkanap1 = $munkanap1;
+    }
+
+    public function isMunkanap2()
+    {
+        return $this->munkanap2;
+    }
+
+    public function setMunkanap2($munkanap2)
+    {
+        $this->munkanap2 = $munkanap2;
+    }
+
+    public function isMunkanap3()
+    {
+        return $this->munkanap3;
+    }
+
+    public function setMunkanap3($munkanap3)
+    {
+        $this->munkanap3 = $munkanap3;
+    }
+
+    public function isMunkanap4()
+    {
+        return $this->munkanap4;
+    }
+
+    public function setMunkanap4($munkanap4)
+    {
+        $this->munkanap4 = $munkanap4;
+    }
+
+    public function isMunkanap5()
+    {
+        return $this->munkanap5;
+    }
+
+    public function setMunkanap5($munkanap5)
+    {
+        $this->munkanap5 = $munkanap5;
+    }
+
+    public function isMunkanap6()
+    {
+        return $this->munkanap6;
+    }
+
+    public function setMunkanap6($munkanap6)
+    {
+        $this->munkanap6 = $munkanap6;
+    }
+
+    public function isMunkanap7()
+    {
+        return $this->munkanap7;
+    }
+
+    public function setMunkanap7($munkanap7)
+    {
+        $this->munkanap7 = $munkanap7;
+    }
+
+    /**
+     * Munkanapja-e a dolgozónak az adott nap a rögzített munkarend szerint. Az ünnepnapokat nem
+     * nézi: azt a hívó dönti el.
+     *
+     * @param \DateTime|int $nap dátum vagy ISO napszám (1 = hétfő)
+     */
+    public function isMunkanap($nap)
+    {
+        $napszam = ($nap instanceof \DateTime) ? (int)$nap->format('N') : (int)$nap;
+        $getter = 'isMunkanap' . $napszam;
+        return method_exists($this, $getter) ? $this->$getter() : false;
+    }
+
+    /**
+     * A hét napjai a munkarend szerkesztéséhez és a jelenléti ívhez: ISO napszám => név.
+     */
+    public static function getNapok()
+    {
+        return [
+            1 => 'hétfő',
+            2 => 'kedd',
+            3 => 'szerda',
+            4 => 'csütörtök',
+            5 => 'péntek',
+            6 => 'szombat',
+            7 => 'vasárnap',
+        ];
     }
 
     private static function toTime($value)

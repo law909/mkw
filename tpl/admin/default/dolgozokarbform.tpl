@@ -80,6 +80,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><label>{at('Munkanapok')}:</label></td>
+                        <td colspan="3">
+                            {foreach $egyed.munkanapok as $_nap}
+                                <input id="Munkanap{$_nap.id}Edit" name="munkanap{$_nap.id}" type="checkbox"{if ($_nap.checked)} checked{/if}>
+                                <label for="Munkanap{$_nap.id}Edit">{$_nap.nev}</label>
+                            {/foreach}
+                        </td>
+                    </tr>
+                    <tr>
                         <td><label for="EvesmaxszabiEdit">{at('Éves max. szabadság')}:</label></td>
                         <td colspan="3"><input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5"
                                                value="{$egyed.evesmaxszabi}"> {at('nap')}</td>

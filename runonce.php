@@ -2484,6 +2484,18 @@ if ($DBVersion < '0168') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0168');
 }
 
+if ($DBVersion < '0169') {
+    // A munkanapok üresen kerülnek a meglévő dolgozókra (a TINYINT NOT NULL 0-val jön létre), így
+    // jelenléti ívük egy sort sem tartalmazna. Alapnak a hétfő–péntek megy, ezt lehet kézzel
+    // igazítani azoknál, akik máskor dolgoznak.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE dolgozo SET munkanap1 = 1, munkanap2 = 1, munkanap3 = 1, munkanap4 = 1, munkanap5 = 1'
+        . ' WHERE munkanap1 = 0 AND munkanap2 = 0 AND munkanap3 = 0 AND munkanap4 = 0'
+        . ' AND munkanap5 = 0 AND munkanap6 = 0 AND munkanap7 = 0'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0169');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
