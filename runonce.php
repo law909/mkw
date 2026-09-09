@@ -2473,6 +2473,17 @@ if ($DBVersion < '0167') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0167');
 }
 
+if ($DBVersion < '0168') {
+    // A szabadság nyilvántartás a HR menübe kerül, a Dolgozók és a Jelenléti ív mellé.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 5, "Szabadságok", "/admin/dolgozoszabadsag/viewlist", "/admin/dolgozoszabadsag", 20, 1, 400, ""'
+        . ' FROM DUAL WHERE NOT EXISTS'
+        . ' (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/dolgozoszabadsag/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0168');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

@@ -1302,6 +1302,14 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/hir/setlathato', 'hirController#setlathato', 'adminhirsetlathato');
 }
 
+$router->map('GET', '/admin/dolgozoszabadsag/viewlist', 'dolgozoszabadsagController#viewlist', 'admindolgozoszabadsagviewlist');
+$router->map('GET', '/admin/dolgozoszabadsag/getlistbody', 'dolgozoszabadsagController#getlistbody', 'admindolgozoszabadsaggetlistbody');
+$router->map('GET', '/admin/dolgozoszabadsag/getkarb', 'dolgozoszabadsagController#getkarb', 'admindolgozoszabadsaggetkarb');
+$router->map('GET', '/admin/dolgozoszabadsag/viewkarb', 'dolgozoszabadsagController#viewkarb', 'admindolgozoszabadsagviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/dolgozoszabadsag/save', 'dolgozoszabadsagController#save', 'admindolgozoszabadsagsave');
+}
+
 $router->map('GET', '/admin/jelenletiiv/viewlist', 'jelenletiivController#viewlist', 'adminjelenletiivviewlist');
 $router->map('GET', '/admin/jelenletiiv/getlistbody', 'jelenletiivController#getlistbody', 'adminjelenletiivgetlistbody');
 $router->map('GET', '/admin/jelenletiiv/getkarb', 'jelenletiivController#getkarb', 'adminjelenletiivgetkarb');
