@@ -1,0 +1,291 @@
+/* Lampion 2000 – katalógus téma */
+
+:root {
+    --bg: #fbf7f0;
+    --felulet: #ffffff;
+    --tinta: #2e241e;
+    --halvany: #7a6a5f;
+    --vonal: #e8ddcc;
+    --kiemeles: #b4541b;
+    --kiemeles-sotet: #8f4114;
+    --meleg: #f6ebda;
+    --arnyek: 0 1px 2px rgba(46, 36, 30, .06), 0 8px 24px rgba(46, 36, 30, .06);
+    --sarok: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--tinta);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-weight: 600;
+    line-height: 1.25;
+    margin: 0 0 .5em;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.0625rem; }
+
+a { color: var(--kiemeles); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; }
+
+.hasab { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+.skip {
+    position: absolute; left: -9999px;
+    background: var(--kiemeles); color: #fff; padding: 10px 16px; z-index: 100;
+}
+.skip:focus { left: 8px; top: 8px; }
+
+/* fejléc */
+.fejlec { background: var(--felulet); border-bottom: 1px solid var(--vonal); }
+.sav { border-bottom: 1px solid var(--vonal); }
+
+.fejlecsor {
+    display: flex; align-items: center; gap: 24px;
+    min-height: 84px;
+}
+
+.logo { display: flex; align-items: center; flex: 0 0 auto; }
+.logo img { max-height: 54px; }
+.logonev {
+    font-family: Georgia, serif; font-size: 1.5rem; font-weight: 700;
+    color: var(--tinta); letter-spacing: .01em;
+}
+.logo:hover { text-decoration: none; }
+
+.kereso { display: flex; flex: 1 1 auto; max-width: 460px; margin-left: auto; }
+.kereso input {
+    flex: 1 1 auto; min-width: 0;
+    padding: 10px 14px; font-size: .95rem;
+    border: 1px solid var(--vonal); border-right: 0;
+    border-radius: var(--sarok) 0 0 var(--sarok);
+    background: var(--bg); color: inherit;
+}
+.kereso input:focus { outline: 2px solid var(--kiemeles); outline-offset: -2px; }
+.kereso button {
+    padding: 10px 18px; font-size: .95rem; font-weight: 600; cursor: pointer;
+    border: 0; border-radius: 0 var(--sarok) var(--sarok) 0;
+    background: var(--kiemeles); color: #fff;
+}
+.kereso button:hover { background: var(--kiemeles-sotet); }
+
+.menugomb {
+    display: none; align-items: center; gap: 8px;
+    background: none; border: 1px solid var(--vonal); border-radius: var(--sarok);
+    padding: 8px 12px; cursor: pointer; color: inherit;
+}
+.menugomb span { display: block; width: 18px; height: 2px; background: var(--tinta); }
+.menugomb span + span { margin-top: 4px; }
+.menugomb em { font-style: normal; font-size: .9rem; }
+
+/* menü */
+.fomenu { background: var(--felulet); }
+.menusor { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.menusor > li { position: relative; }
+.menusor > li > a {
+    display: block; padding: 14px 14px; font-size: .95rem; font-weight: 600;
+    color: var(--tinta); border-bottom: 3px solid transparent;
+}
+.menusor > li > a:hover { color: var(--kiemeles); border-bottom-color: var(--kiemeles); text-decoration: none; }
+
+.almenu {
+    display: none; position: absolute; top: 100%; left: 0; z-index: 30; min-width: 230px;
+    background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok);
+    box-shadow: var(--arnyek); padding: 8px 0;
+}
+.menusor > li:hover .almenu, .menusor > li:focus-within .almenu { display: block; }
+.almenu ul { list-style: none; margin: 0; padding: 0; }
+.almenu a { display: block; padding: 8px 16px; font-size: .92rem; color: var(--tinta); }
+.almenu a:hover { background: var(--meleg); color: var(--kiemeles); text-decoration: none; }
+
+/* morzsa */
+.morzsa { padding: 14px 0 0; font-size: .85rem; color: var(--halvany); }
+.morzsa a { color: var(--halvany); }
+.morzsa .nyil { margin: 0 6px; }
+.morzsa .itt { color: var(--tinta); }
+
+/* főoldal */
+.hero {
+    background: linear-gradient(160deg, var(--meleg), var(--bg));
+    border-bottom: 1px solid var(--vonal);
+    padding: 56px 0 60px;
+    text-align: center;
+}
+.hero h1 { font-size: 2.5rem; margin-bottom: .3em; }
+.heroszoveg { max-width: 620px; margin: 0 auto 28px; font-size: 1.1rem; color: var(--halvany); }
+
+.blokk { padding: 40px 0 8px; }
+.blokk > h2 { margin-bottom: 20px; }
+
+.gomb {
+    display: inline-block; padding: 12px 24px; border: 0; border-radius: var(--sarok);
+    background: var(--kiemeles); color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+}
+.gomb:hover { background: var(--kiemeles-sotet); color: #fff; text-decoration: none; }
+
+/* lista */
+.listafej {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap; padding: 24px 0 4px;
+}
+.listafej h1 { margin: 0; }
+.talalatdb { color: var(--halvany); font-size: .9rem; }
+
+.katleiras { color: var(--halvany); margin: 0 0 20px; }
+
+.rendezes { display: flex; align-items: center; gap: 10px; margin: 16px 0 24px; font-size: .9rem; }
+.rendezes select {
+    padding: 8px 12px; border: 1px solid var(--vonal); border-radius: var(--sarok);
+    background: var(--felulet); color: inherit; font-size: .9rem;
+}
+
+.racs {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    margin-bottom: 32px;
+}
+
+.doboz {
+    display: flex; flex-direction: column;
+    background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok);
+    overflow: hidden; transition: box-shadow .15s ease, transform .15s ease;
+}
+.doboz:hover { box-shadow: var(--arnyek); transform: translateY(-2px); }
+
+.dobozkep {
+    position: relative; display: block;
+    aspect-ratio: 4 / 3; background: var(--meleg); overflow: hidden;
+}
+/* abszolút pozícióval a csempe magassága a képtől független marad, így a rács sorai egyformák */
+.dobozkep img { position: absolute; inset: 12px; width: calc(100% - 24px); height: calc(100% - 24px); object-fit: contain; }
+.nincskep {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; opacity: .3;
+}
+
+.jelzo {
+    position: absolute; top: 10px; left: 10px;
+    padding: 3px 9px; border-radius: 999px;
+    font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    background: var(--kiemeles); color: #fff;
+}
+
+.dobozszoveg { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; }
+.dobozszoveg h3 { margin: 0; }
+.dobozszoveg h3 a { color: var(--tinta); }
+.dobozszoveg h3 a:hover { color: var(--kiemeles); }
+.cikkszam { font-size: .78rem; color: var(--halvany); letter-spacing: .03em; }
+.rovid { margin: 0; font-size: .88rem; color: var(--halvany); }
+.ar { margin-top: auto; padding-top: 8px; font-weight: 700; font-size: 1.05rem; }
+
+.katdoboz .dobozkep { aspect-ratio: 3 / 2; }
+
+.ures { color: var(--halvany); padding: 32px 0; }
+
+/* lapozó */
+.lapozo { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 8px 0 48px; }
+.lapozo a {
+    padding: 10px 18px; border: 1px solid var(--vonal); border-radius: var(--sarok);
+    background: var(--felulet); font-weight: 600;
+}
+.lapozo a:hover { border-color: var(--kiemeles); text-decoration: none; }
+.lapszam { color: var(--halvany); font-size: .9rem; }
+
+/* terméklap */
+.termeklap {
+    display: grid; gap: 40px; padding: 28px 0 60px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: start;
+}
+.termeklap > .leiras, .termeklap > .ajanlo { grid-column: 1 / -1; }
+
+.galeria { position: sticky; top: 20px; }
+.fokep {
+    width: 100%; aspect-ratio: 1 / 1; object-fit: contain;
+    background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok); padding: 20px;
+}
+.miniatur { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.miniatur button {
+    width: 68px; height: 68px; padding: 4px; cursor: pointer;
+    background: var(--felulet); border: 1px solid var(--vonal); border-radius: 8px;
+}
+.miniatur button:hover, .miniatur button[aria-current="true"] { border-color: var(--kiemeles); }
+.miniatur img { width: 100%; height: 100%; object-fit: contain; }
+
+.adatok h1 { font-size: 1.9rem; }
+.jellemzok { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 0 0 20px; font-size: .92rem; }
+.jellemzok dt { color: var(--halvany); }
+.jellemzok dd { margin: 0; }
+.lapar { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
+.lead { color: var(--halvany); margin-bottom: 24px; }
+
+.erdeklodes {
+    background: var(--meleg); border-radius: var(--sarok); padding: 20px 24px;
+}
+.erdeklodes p { margin: 0 0 16px; }
+
+.leiras, .szoveglap article { background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok); padding: 28px 32px; }
+.leiras img, .szoveglap img { height: auto; }
+
+/* hírek, szöveges lapok, űrlap */
+.szoveglap { padding: 24px 0 60px; max-width: 860px; }
+.uzenetlap { padding: 56px 0 72px; }
+.uzenetlap p { color: var(--halvany); margin-bottom: 24px; }
+
+.hirracs { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-bottom: 40px; }
+.hirdoboz { background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok); padding: 20px 22px; }
+.hirdoboz h3 { margin: 6px 0 8px; }
+.hirdoboz p { margin: 0; color: var(--halvany); font-size: .9rem; }
+.hirdatum { font-size: .8rem; color: var(--halvany); letter-spacing: .03em; }
+
+.urlap { max-width: 640px; padding: 24px 0 64px; }
+.urlap .lead { margin-bottom: 28px; }
+.mezo { margin-bottom: 18px; }
+.mezo label { display: block; font-size: .88rem; font-weight: 600; margin-bottom: 6px; }
+.mezo input, .mezo select, .mezo textarea {
+    width: 100%; padding: 10px 14px; font: inherit; font-size: .95rem;
+    background: var(--felulet); color: inherit;
+    border: 1px solid var(--vonal); border-radius: var(--sarok);
+}
+.mezo.hibas input, .mezo.hibas select { border-color: #c0392b; }
+.hiba { display: block; margin-top: 4px; font-size: .82rem; color: #c0392b; }
+
+/* lábléc */
+.lablec { background: var(--felulet); border-top: 1px solid var(--vonal); margin-top: 40px; padding: 44px 0 24px; }
+.lablecsor { display: grid; gap: 32px; grid-template-columns: 2fr 1fr 1fr; }
+.lablecnev { font-family: Georgia, serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+.lablecsor p { margin: 0; color: var(--halvany); font-size: .9rem; max-width: 40ch; }
+.lableccim { font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.lablecsor ul { list-style: none; margin: 0; padding: 0; }
+.lablecsor li { margin-bottom: 6px; }
+.lablecsor a { font-size: .9rem; color: var(--tinta); }
+.lablecsor a:hover { color: var(--kiemeles); }
+.copyright { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--vonal); font-size: .82rem; color: var(--halvany); }
+
+@media (max-width: 860px) {
+    .fejlecsor { flex-wrap: wrap; gap: 12px; min-height: 0; padding-top: 14px; padding-bottom: 14px; }
+    .kereso { order: 3; max-width: none; flex-basis: 100%; }
+    .menugomb { display: flex; margin-left: auto; }
+    .fomenu { display: none; border-top: 1px solid var(--vonal); }
+    .fomenu.nyitva { display: block; }
+    .menusor { display: block; }
+    .menusor > li > a { padding: 12px 0; border-bottom: 1px solid var(--vonal); }
+    .almenu { display: block; position: static; border: 0; box-shadow: none; padding: 0 0 8px 16px; }
+    .almenu a { padding: 6px 0; }
+    .termeklap { grid-template-columns: 1fr; gap: 28px; }
+    .galeria { position: static; }
+    .lablecsor { grid-template-columns: 1fr; }
+    .hero { padding: 40px 0 44px; }
+    .hero h1 { font-size: 1.9rem; }
+}
+
+.alcim { margin-top: 12px; }
