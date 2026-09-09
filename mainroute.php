@@ -22,19 +22,21 @@ if (\mkw\store::isSuperzoneB2B()) {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
 }
 
-if (\mkw\store::isB2B()) {
-    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'partnerController#saveAccount', 'saveaccount');
-    // a galad b2b webshopba csak meglévő partner léphet be, önregisztráció nincs
-    if (!\mkw\store::isGalad()) {
-        $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
-        $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
-    }
-    $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
-} else {
-    $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
-    if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
-        $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
-        $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
+if (!\mkw\store::isKatalogus()) {
+    if (\mkw\store::isB2B()) {
+        $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo|discounts:subject]', 'partnerController#saveAccount', 'saveaccount');
+        // a galad b2b webshopba csak meglévő partner léphet be, önregisztráció nincs
+        if (!\mkw\store::isGalad()) {
+            $router->map('GET', '/regisztracio', 'b2bpartnerController#showRegistrationForm', 'showregistration');
+            $router->map('POST', '/regisztracio/ment', 'b2bpartnerController#saveRegistration', 'saveregistration');
+        }
+        $router->map('POST', '/changepartner', 'b2bpartnerController#changePartner', 'changepartner');
+    } else {
+        $router->map('POST', '/fiok/ment/[adataim|szamlaadatok|szallitasiadatok|jelszo:subject]', 'partnerController#saveAccount', 'saveaccount');
+        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
+            $router->map('GET', '/regisztracio', 'partnerController#showLoginForm', 'showregistration');
+            $router->map('POST', '/regisztracio/ms', 'partnerController#saveRegistration', 'saveregistration');
+        }
     }
 }
 
@@ -88,25 +90,27 @@ if (\mkw\store::isMPTNGY()) {
 
 $router->map('GET', '', 'mainController#view', 'home');
 $router->map('GET', '/404', 'mainController#show404', 'show404');
-switch (true) {
-    case \mkw\store::isMPTNGY():
-        $router->map('POST', '/login/ment', 'mptngypartnerController#doLogin', 'dologin');
-        break;
-    case \mkw\store::isMPT():
-        $router->map('POST', '/login/ment', 'mptpartnerController#doLogin', 'dologin');
-        break;
-    default:
-        $router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
-        break;
-}
-$router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');
-$router->map('GET', '/logout', 'partnerController#doLogout', 'dologout');
-$router->map('GET', '/fiok', 'partnerController#showAccount', 'showaccount');
+if (!\mkw\store::isKatalogus()) {
+    switch (true) {
+        case \mkw\store::isMPTNGY():
+            $router->map('POST', '/login/ment', 'mptngypartnerController#doLogin', 'dologin');
+            break;
+        case \mkw\store::isMPT():
+            $router->map('POST', '/login/ment', 'mptpartnerController#doLogin', 'dologin');
+            break;
+        default:
+            $router->map('POST', '/login/ment', 'partnerController#doLogin', 'dologin');
+            break;
+    }
+    $router->map('GET', '/login', 'partnerController#showLoginForm', 'showlogin');
+    $router->map('GET', '/logout', 'partnerController#doLogout', 'dologout');
+    $router->map('GET', '/fiok', 'partnerController#showAccount', 'showaccount');
 
-$router->map('POST', '/checkemail', 'partnerController#checkemail', 'partnercheckemail');
-$router->map('POST', '/getpassreminder', 'partnerController#createPassReminder', 'createpassreminder');
-$router->map('GET', '/passreminder/[:id]', 'partnerController#showPassReminder', 'showpassreminder');
-$router->map('POST', '/passreminder/ment', 'partnerController#savePassReminder', 'savepassreminder');
+    $router->map('POST', '/checkemail', 'partnerController#checkemail', 'partnercheckemail');
+    $router->map('POST', '/getpassreminder', 'partnerController#createPassReminder', 'createpassreminder');
+    $router->map('GET', '/passreminder/[:id]', 'partnerController#showPassReminder', 'showpassreminder');
+    $router->map('POST', '/passreminder/ment', 'partnerController#savePassReminder', 'savepassreminder');
+}
 
 $router->map('GET', '/statlap/[:lap]', 'statlapController#show', 'showstatlap');
 $router->map('GET', '/statlap/p/[:lap]', 'statlapController#showPopup', 'showstatlappopup');
@@ -147,47 +151,50 @@ $router->map('GET', '/rendezveny/reg', 'idopontController#regView', 'showrendezv
 $router->map('POST', '/rendezveny/reg/save', 'idopontController#regSave', 'saverendezvenyreg');
 $router->map('GET', '/rendezveny/lemond', 'idopontController#regLemond', 'lemondrendezvenyreg');
 
-$router->map('POST', '/kosar/add', 'kosarController#add', 'kosaradd');
-$router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultiadd');
-$router->map('POST|GET', '/kosar/edit', 'kosarController#edit', 'kosaredit');
-$router->map('POST|GET', '/kosar/del', 'kosarController#del', 'kosardel');
-$router->map('GET', '/kosar/get', 'kosarController#get', 'kosarget');
-$router->map('GET', '/kosar/getdata', 'kosarController#getData', 'kosargetdata');
-$router->map('GET', '/kosar/gethash', 'kosarController#getHash', 'kosargethash');
-$router->map('GET', '/checkout', 'checkoutController#getCheckout', 'showcheckout');
-$router->map('GET', '/checkout/pay', 'checkoutController#showCheckoutFizetes', 'showcheckoutfizetes');
-$router->map('POST', '/checkout/pay/ment', 'checkoutController#doCheckoutFizetes', 'docheckoutfizetes');
-$router->map('POST', '/checkout/newfizmod/ment', 'checkoutController#saveCheckoutFizmod', 'savecheckoutfizmod');
-$router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList', 'checkoutgetfizmod');
-$router->map('GET', '/checkout/getszallmodfizmodlist', 'checkoutController#getSzallmodFizmodList', 'checkoutgetszallmodfizmod');
-$router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
-$router->map('GET', '/checkout/gettetellistdata', 'checkoutController#getTetelListData', 'checkoutgettetellistdata');
-$router->map('GET', '/checkout/getfedexrates', 'checkoutController#getFedexRates', 'checkoutgetfedexrates');
+// katalógus üzemmódban nincs vásárlás: se kosár, se checkout
+if (!\mkw\store::isKatalogus()) {
+    $router->map('POST', '/kosar/add', 'kosarController#add', 'kosaradd');
+    $router->map('POST', '/kosar/multiadd', 'kosarController#multiAdd', 'kosarmultiadd');
+    $router->map('POST|GET', '/kosar/edit', 'kosarController#edit', 'kosaredit');
+    $router->map('POST|GET', '/kosar/del', 'kosarController#del', 'kosardel');
+    $router->map('GET', '/kosar/get', 'kosarController#get', 'kosarget');
+    $router->map('GET', '/kosar/getdata', 'kosarController#getData', 'kosargetdata');
+    $router->map('GET', '/kosar/gethash', 'kosarController#getHash', 'kosargethash');
+    $router->map('GET', '/checkout', 'checkoutController#getCheckout', 'showcheckout');
+    $router->map('GET', '/checkout/pay', 'checkoutController#showCheckoutFizetes', 'showcheckoutfizetes');
+    $router->map('POST', '/checkout/pay/ment', 'checkoutController#doCheckoutFizetes', 'docheckoutfizetes');
+    $router->map('POST', '/checkout/newfizmod/ment', 'checkoutController#saveCheckoutFizmod', 'savecheckoutfizmod');
+    $router->map('GET', '/checkout/getfizmodlist', 'checkoutController#getFizmodList', 'checkoutgetfizmod');
+    $router->map('GET', '/checkout/getszallmodfizmodlist', 'checkoutController#getSzallmodFizmodList', 'checkoutgetszallmodfizmod');
+    $router->map('GET', '/checkout/gettetellist', 'checkoutController#getTetelList', 'checkoutgettetellist');
+    $router->map('GET', '/checkout/gettetellistdata', 'checkoutController#getTetelListData', 'checkoutgettetellistdata');
+    $router->map('GET', '/checkout/getfedexrates', 'checkoutController#getFedexRates', 'checkoutgetfedexrates');
 
-switch (true) {
-    case \mkw\store::isMindentkapni():
-        $router->map('POST', '/checkout/ment', 'mindentkapniCheckoutController#save', 'checkoutment');
-        break;
-    case \mkw\store::isSuperzoneB2B():
-        $router->map('POST', '/checkout/ment', 'superzoneb2bCheckoutController#save', 'checkoutment');
-        break;
-    case \mkw\store::isGalad():
-        $router->map('POST', '/checkout/ment', 'galadCheckoutController#save', 'checkoutment');
-        break;
-    case \mkw\store::isMugenrace2026():
-    case \mkw\store::isSuperzoneHu():
-        $router->map('POST', '/checkout/ment', 'mugenraceCheckoutController#save', 'checkoutment');
-        break;
+    switch (true) {
+        case \mkw\store::isMindentkapni():
+            $router->map('POST', '/checkout/ment', 'mindentkapniCheckoutController#save', 'checkoutment');
+            break;
+        case \mkw\store::isSuperzoneB2B():
+            $router->map('POST', '/checkout/ment', 'superzoneb2bCheckoutController#save', 'checkoutment');
+            break;
+        case \mkw\store::isGalad():
+            $router->map('POST', '/checkout/ment', 'galadCheckoutController#save', 'checkoutment');
+            break;
+        case \mkw\store::isMugenrace2026():
+        case \mkw\store::isSuperzoneHu():
+            $router->map('POST', '/checkout/ment', 'mugenraceCheckoutController#save', 'checkoutment');
+            break;
+    }
+
+    $router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkoutkoszonjuk');
+    $router->map('GET', '/checkout/barionerror', 'checkoutController#barionError', 'checkoutbarionerror');
+    $router->map('GET', '/checkout/getfoxpostcsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetfoxpostcsoportlist');
+    $router->map('GET', '/checkout/getfoxpostterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetfoxpostterminallist');
+    $router->map('GET', '/checkout/getglscsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetglscsoportlist');
+    $router->map('GET', '/checkout/getglsterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetglsterminallist');
+    $router->map('GET', '/checkout/getcsomagterminalid', 'csomagterminalController#getTerminalId', 'checkoutgetcsomagterminalid');
+    $router->map('POST', '/checkout/saveterminalselection', 'checkoutController#saveTerminalSelection', 'checkoutsaveterminalselection');
 }
-
-$router->map('GET', '/checkout/koszonjuk', 'checkoutController#thanks', 'checkoutkoszonjuk');
-$router->map('GET', '/checkout/barionerror', 'checkoutController#barionError', 'checkoutbarionerror');
-$router->map('GET', '/checkout/getfoxpostcsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetfoxpostcsoportlist');
-$router->map('GET', '/checkout/getfoxpostterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetfoxpostterminallist');
-$router->map('GET', '/checkout/getglscsoportlist', 'csomagterminalController#getCsoportok', 'checkoutgetglscsoportlist');
-$router->map('GET', '/checkout/getglsterminallist', 'csomagterminalController#getTerminalok', 'checkoutgetglsterminallist');
-$router->map('GET', '/checkout/getcsomagterminalid', 'csomagterminalController#getTerminalId', 'checkoutgetcsomagterminalid');
-$router->map('POST', '/checkout/saveterminalselection', 'checkoutController#saveTerminalSelection', 'checkoutsaveterminalselection');
 
 $router->map('GET', '/irszam', 'irszamController#typeaheadList', 'irszamtypeahead');
 $router->map('GET', '/varos', 'irszamController#varosTypeaheadList', 'varostypeahead');

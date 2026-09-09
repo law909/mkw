@@ -679,7 +679,7 @@ class store
             $v->setVar('mugenracefejleckep', self::getParameter(\mkw\consts::MugenraceFejlecKep));
             $v->setVar('mugenracefooterlogo', self::getParameter(\mkw\consts::MugenraceFooterLogo));
         }
-        $v->setVar('hidecart', self::getSetupValue('hidecart'));
+        $v->setVar('hidecart', self::getSetupValue('hidecart') || self::isKatalogus());
         $v->setVar('fixszinmode', self::isFixSzinMode());
         $v->setVar('globaltitle', self::getParameter('oldalcim'));
         $v->setVar('valutanemnev', self::getWebshopValutanem()?->getNev());
@@ -747,15 +747,18 @@ class store
             $v->setVar('myownaccount', true);
         }
         $rut = self::getRouter();
-        $v->setVar('showloginlink', $rut->generate('showlogin'));
-        // a galadnál nincs önregisztráció, tehát az útvonal sincs regisztrálva
-        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu() && !\mkw\store::isGalad()) {
-            $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
+        // katalógus üzemmódban a belépés, a fiók és a kosár útvonalai nincsenek regisztrálva
+        if (!self::isKatalogus()) {
+            $v->setVar('showloginlink', $rut->generate('showlogin'));
+            // a galadnál nincs önregisztráció, tehát az útvonal sincs regisztrálva
+            if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu() && !\mkw\store::isGalad()) {
+                $v->setVar('showregisztraciolink', $rut->generate('showregistration'));
+            }
+            $v->setVar('showaccountlink', $rut->generate('showaccount'));
+            $v->setVar('dologoutlink', $rut->generate('dologout'));
+            $v->setVar('kosargetlink', $rut->generate('kosarget'));
+            $v->setVar('showcheckoutlink', $rut->generate('showcheckout'));
         }
-        $v->setVar('showaccountlink', $rut->generate('showaccount'));
-        $v->setVar('dologoutlink', $rut->generate('dologout'));
-        $v->setVar('kosargetlink', $rut->generate('kosarget'));
-        $v->setVar('showcheckoutlink', $rut->generate('showcheckout'));
         $v->setVar(
             'prevuri',
             \mkw\pagecache::isCapturing()
@@ -1646,6 +1649,21 @@ class store
     public static function isDarshan()
     {
         return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
+    }
+
+    public static function isLampion()
+    {
+        return self::getTheme() === 'lampion';
+    }
+
+    /**
+     * Katalógus üzemmód: a webshop böngésző fele (kategóriák, terméklap, keresés) megmarad,
+     * a vásárlás viszont nincs – se kosár, se checkout, se fiók. Ezek az útvonalak ilyenkor
+     * be sem kerülnek a routerbe, így a hozzájuk tartozó sablonokat sem kell megírni a témában.
+     */
+    public static function isKatalogus()
+    {
+        return self::getSetupValue('katalogus');
     }
 
     public static function isSzigoru()
