@@ -2496,6 +2496,18 @@ if ($DBVersion < '0169') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0169');
 }
 
+if ($DBVersion < '0170') {
+    // A generált (aláírásra kész) jelenléti ív a HR menübe kerül, a be-/kilépéseket vezető
+    // „Jelenléti ív" mögé.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 5, "Jelenléti ív generálás", "/admin/jelenletiivgen/view", "/admin/jelenletiivgen", 20, 1, 500, ""'
+        . ' FROM DUAL WHERE NOT EXISTS'
+        . ' (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/jelenletiivgen/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0170');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
