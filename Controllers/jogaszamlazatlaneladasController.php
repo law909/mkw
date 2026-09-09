@@ -44,11 +44,13 @@ class jogaszamlazatlaneladasController extends Controller
      * sort később is olvasni kell.
      *
      * @param \Entities\Partner|null $partner
+     * @param \Entities\Fizmod|null $fizmod
      */
-    public function log($partner, $partnernev, $partneremail, $megnevezes, $osszeg, $oka)
+    public function log($partner, $partnernev, $partneremail, $megnevezes, $osszeg, $oka, $fizmod = null)
     {
         $log = new JogaSzamlazatlanEladas();
         $log->setPartner($partner);
+        $log->setFizmod($fizmod);
         $log->setPartnernev($partnernev);
         $log->setPartneremail($partneremail);
         $log->setMegnevezes($megnevezes);

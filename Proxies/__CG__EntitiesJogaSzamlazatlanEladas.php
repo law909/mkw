@@ -67,10 +67,10 @@ class JogaSzamlazatlanEladas extends \Entities\JogaSzamlazatlanEladas implements
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'id', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'created', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megnevezes', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'osszeg', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'oka', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldva', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldasdatum', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldotta'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'id', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'created', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megnevezes', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'osszeg', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'oka', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'fizmodnev', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldva', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldasdatum', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldotta'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'id', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'created', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megnevezes', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'osszeg', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'oka', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldva', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldasdatum', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldotta'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'id', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'created', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'createdby', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partner', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partnernev', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'partneremail', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megnevezes', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'osszeg', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'oka', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'fizmod', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'fizmodnev', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldva', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldasdatum', '' . "\0" . 'Entities\\JogaSzamlazatlanEladas' . "\0" . 'megoldotta'];
     }
 
     /**
@@ -388,6 +388,39 @@ class JogaSzamlazatlanEladas extends \Entities\JogaSzamlazatlanEladas implements
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOka', [$oka]);
 
         return parent::setOka($oka);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmod()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmod', []);
+
+        return parent::getFizmod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setFizmod($fizmod)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setFizmod', [$fizmod]);
+
+        return parent::setFizmod($fizmod);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFizmodnev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFizmodnev', []);
+
+        return parent::getFizmodnev();
     }
 
     /**

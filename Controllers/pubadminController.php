@@ -645,11 +645,7 @@ class pubadminController extends mkwhelpers\Controller
                 $szamlafej->setValutanem($valutanem);
                 $szamlafej->setBankszamla($valutanem->getBankszamla());
                 $szamlafej->setArfolyam(1);
-                if ($later) {
-                    $szamlafej->setFizmod($this->getRepo(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::Fizmod)));
-                } else {
-                    $szamlafej->setFizmod($this->getRepo(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::KeszpenzFizmod)));
-                }
+                $szamlafej->setFizmod($this->getEladasFizmod($later));
                 $szamlafej->setKelt();
                 $szamlafej->setTeljesites();
                 $szamlafej->setEsedekesseg(\mkw\store::calcEsedekesseg($szamlafej->getKelt(), $szamlafej->getFizmod(), $szamlafej->getPartner()));
@@ -741,6 +737,19 @@ class pubadminController extends mkwhelpers\Controller
     }
 
     /**
+     * A pubadminos eladás fizetési módja: aki később fizet, annak átutalás, aki a helyszínen, annak
+     * készpénz. A számla és a számlázatlan eladás naplója ugyanezt kapja.
+     *
+     * @return \Entities\Fizmod|null
+     */
+    private function getEladasFizmod($kesobbfizet)
+    {
+        return $this->getRepo(Fizmod::class)->find(
+            \mkw\store::getParameter($kesobbfizet ? \mkw\consts::Fizmod : \mkw\consts::KeszpenzFizmod)
+        );
+    }
+
+    /**
      * Mi zárja ki, hogy az eladásról automatikus számla készüljön. Üres string = számlázható.
      *
      * A számlához teljes név és teljes cím kell: az egyszavas név (csak keresztnév) és a hiányos
@@ -773,13 +782,15 @@ class pubadminController extends mkwhelpers\Controller
      */
     private function logSzamlazatlanEladas($partner, $rv, $megnevezes, $osszeg, $oka)
     {
+        $fizmod = $this->getEladasFizmod($rv->isKesobbfizet());
         (new jogaszamlazatlaneladasController())->log(
             $partner,
             $partner ? $partner->getNev() : $rv->getPartnernev(),
             $partner ? $partner->getEmail() : $rv->getPartneremail(),
             $megnevezes,
             $osszeg,
-            $oka
+            $oka,
+            $fizmod
         );
 
         $tulajkontaktemail = \mkw\store::getParameter(\mkw\consts::TulajKontaktEmail);
@@ -796,6 +807,7 @@ class pubadminController extends mkwhelpers\Controller
             . ' (' . ($partner ? $partner->getEmail() : $rv->getPartneremail()) . ')' . "\n"
             . 'Tétel: ' . $megnevezes . "\n"
             . 'Összeg: ' . \bizformat($osszeg) . "\n"
+            . 'Fizetési mód: ' . ($fizmod ? $fizmod->getNev() : '-') . "\n"
             . 'Oka: ' . $oka . "\n\n"
             . 'A számlát kézzel kell elkészíteni. Az eladás az admin főoldalon a „Számla nélküli eladások”'
             . ' dobozban is látszik, ott lehet megoldottra állítani.'

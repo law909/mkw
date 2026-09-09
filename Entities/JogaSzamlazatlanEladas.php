@@ -58,6 +58,15 @@ class JogaSzamlazatlanEladas
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $oka;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Fizmod")
+     * @ORM\JoinColumn(name="fizmod_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $fizmod;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $fizmodnev;
+
     /** @ORM\Column(type="boolean",nullable=false) */
     private $megoldva = false;
 
@@ -81,6 +90,7 @@ class JogaSzamlazatlanEladas
             'megnevezes' => $this->getMegnevezes(),
             'osszeg' => $this->getOsszeg(),
             'oka' => $this->getOka(),
+            'fizmodnev' => $this->getFizmodnev(),
             'megoldva' => $this->isMegoldva(),
             'megoldasdatum' => $this->getMegoldasdatumStr(),
             'megoldottanev' => $this->getMegoldottaNev(),
@@ -181,6 +191,25 @@ class JogaSzamlazatlanEladas
     public function setOka($oka)
     {
         $this->oka = $oka;
+    }
+
+    /**
+     * @return \Entities\Fizmod
+     */
+    public function getFizmod()
+    {
+        return $this->fizmod;
+    }
+
+    public function setFizmod($fizmod)
+    {
+        $this->fizmod = $fizmod;
+        $this->fizmodnev = $fizmod ? $fizmod->getNev() : null;
+    }
+
+    public function getFizmodnev()
+    {
+        return $this->fizmodnev;
     }
 
     public function isMegoldva()

@@ -25,6 +25,7 @@
                         </td>
                         <td style="padding:2px 5px;">{$_sor.megnevezes}</td>
                         <td style="padding:2px 5px;white-space:nowrap;text-align:right;">{bizformat($_sor.osszeg)}</td>
+                        <td style="padding:2px 5px;white-space:nowrap;">{$_sor.fizmodnev}</td>
                         <td class="redtext" style="padding:2px 5px;">{$_sor.oka}</td>
                         <td style="padding:2px 5px;white-space:nowrap;">
                             <a href="#" class="js-szamlazatlanmegoldva" data-id="{$_sor.id}">{at('Megoldva')}</a>
