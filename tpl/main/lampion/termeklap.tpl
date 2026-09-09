@@ -38,11 +38,6 @@
             {/if}
 
             {if ($termek.rovidleiras)}<div class="lead">{$termek.rovidleiras}</div>{/if}
-
-            <div class="erdeklodes">
-                <p>{t('A katalógusból közvetlenül nem lehet rendelni. Ha érdekli a termék, keressen minket.')}</p>
-                <a class="gomb" href="/kapcsolat">{t('Érdeklődöm')}</a>
-            </div>
         </div>
 
         {if ($termek.leiras)}

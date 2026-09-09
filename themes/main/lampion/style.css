@@ -228,10 +228,6 @@ img { max-width: 100%; height: auto; }
 .lapar { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
 .lead { color: var(--halvany); margin-bottom: 24px; }
 
-.erdeklodes {
-    background: var(--meleg); border-radius: var(--sarok); padding: 20px 24px;
-}
-.erdeklodes p { margin: 0 0 16px; }
 
 .leiras, .szoveglap article { background: var(--felulet); border: 1px solid var(--vonal); border-radius: var(--sarok); padding: 28px 32px; }
 .leiras img, .szoveglap img { height: auto; }
