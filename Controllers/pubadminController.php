@@ -105,6 +105,7 @@ class pubadminController extends mkwhelpers\Controller
             foreach ($resztvevok as $resztvevo) {
                 $rvtomb = [];
                 $rvtomb['tipus'] = false;
+                $rvtomb['berletnincsfizetve'] = false;
                 $rvpartner = $this->getRepo(Partner::class)->findOneBy(['email' => $resztvevo->getPartneremail()]);
                 if ($rvpartner) {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();
@@ -122,6 +123,7 @@ class pubadminController extends mkwhelpers\Controller
                         $rvtomb['alkalom'] = $berlet->getAlkalom();
                         $rvtomb['elfogyottalkalom'] = $berlet->getElfogyottalkalom() + $berlet->getOfflineelfogyottalkalom();
                         $rvtomb['lejaratdatum'] = $berlet->getLejaratdatumStr();
+                        $rvtomb['berletnincsfizetve'] = $berlet->isNincsfizetve();
                     }
                 } else {
                     $rvtomb['nev'] = $resztvevo->getPartnernev();
