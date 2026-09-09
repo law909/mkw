@@ -10,7 +10,9 @@
     <div class="row js-resztvevo top-margin-10 color-bkg-darshan">
         {if ($future)}
             <div class="col-1">&nbsp;</div>
-            <div class="col">{$sorszam}. {$resztvevo.nev} ({$resztvevo.email})</div>
+            <div class="col">{$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
+                {include "comp_szamlazasiakadaly.tpl"}
+            </div>
             <div class="col">
                 <div class="row">
                     <div class="col">
@@ -35,6 +37,7 @@
             {/if}
             <button class="col-md-4{if ($resztvevo.new)} text-danger{/if} btn js-partneredit" data-id="{$resztvevo.id}">
                 {$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
+                {include "comp_szamlazasiakadaly.tpl"}
             </button>
             <div class="col-md-4">
                 <div class="row">

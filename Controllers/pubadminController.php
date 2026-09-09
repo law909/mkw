@@ -133,6 +133,10 @@ class pubadminController extends mkwhelpers\Controller
                         $rvtomb['tipus'] = 'orajegy';
                         break;
                 }
+                // a tanár a nevére kattintva tudja pótolni a hiányzó számlázási adatokat
+                $rvtomb['szamlazasiakadaly'] = $rvpartner
+                    ? $this->getSzamlazasiAkadaly($rvpartner)
+                    : t('Még nincs partnere, a számlázási adatai hiányoznak.');
                 $rvtomb['id'] = $resztvevo->getId();
                 $rvtomb['megjegyzes'] = $resztvevo->getMegjegyzes();
                 $rvtomb['megjelent'] = $resztvevo->isMegjelent();
