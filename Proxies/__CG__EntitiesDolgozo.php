@@ -67,10 +67,10 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'alapertelmezettRaktar', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngytemakorok', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngymaxdb', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszotext', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok1', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok2', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok3', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'autoszamla'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakezdes', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkavege', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'alapertelmezettRaktar', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngytemakorok', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngymaxdb', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszotext', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok1', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok2', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok3', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'autoszamla'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'alapertelmezettRaktar', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngytemakorok', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngymaxdb', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszotext', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok1', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok2', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok3', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'autoszamla'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'id', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'nev', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszo', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'irszam', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'varos', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'utca', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'telefon', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'email', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'url', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakor', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulido', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szulhely', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'evesmaxszabi', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkaviszonykezdete', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkakezdes', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'munkavege', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelenletek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'uitheme', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'havilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'napilevonas', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'szamlatad', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'inaktiv', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'oraelmaradaskonyvelonek', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'alapertelmezettRaktar', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngytemakorok', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngymaxdb', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'jelszotext', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok1', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok2', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'mptngyszakmaianyagok3', '' . "\0" . 'Entities\\Dolgozo' . "\0" . 'autoszamla'];
     }
 
     /**
@@ -421,6 +421,72 @@ class Dolgozo extends \Entities\Dolgozo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setSzulhely', [$adat]);
 
         return parent::setSzulhely($adat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunkakezdes()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakezdes', []);
+
+        return parent::getMunkakezdes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunkakezdesStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakezdesStr', []);
+
+        return parent::getMunkakezdesStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMunkakezdes($munkakezdes)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkakezdes', [$munkakezdes]);
+
+        return parent::setMunkakezdes($munkakezdes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunkavege()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkavege', []);
+
+        return parent::getMunkavege();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunkavegeStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkavegeStr', []);
+
+        return parent::getMunkavegeStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMunkavege($munkavege)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMunkavege', [$munkavege]);
+
+        return parent::setMunkavege($munkavege);
     }
 
     /**

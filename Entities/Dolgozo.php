@@ -59,6 +59,12 @@ class Dolgozo
     /** @ORM\Column(type="date") */
     private $munkaviszonykezdete;
 
+    /** @ORM\Column(type="time",nullable=true) */
+    private $munkakezdes;
+
+    /** @ORM\Column(type="time",nullable=true) */
+    private $munkavege;
+
     /** @ORM\OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
     private $jelenletek;
 
@@ -286,6 +292,48 @@ class Dolgozo
     public function setSzulhely($adat)
     {
         $this->szulhely = $adat;
+    }
+
+    public function getMunkakezdes()
+    {
+        return $this->munkakezdes;
+    }
+
+    public function getMunkakezdesStr()
+    {
+        return $this->munkakezdes ? $this->munkakezdes->format(\mkw\store::$TimeFormat) : '';
+    }
+
+    public function setMunkakezdes($munkakezdes)
+    {
+        $this->munkakezdes = self::toTime($munkakezdes);
+    }
+
+    public function getMunkavege()
+    {
+        return $this->munkavege;
+    }
+
+    public function getMunkavegeStr()
+    {
+        return $this->munkavege ? $this->munkavege->format(\mkw\store::$TimeFormat) : '';
+    }
+
+    public function setMunkavege($munkavege)
+    {
+        $this->munkavege = self::toTime($munkavege);
+    }
+
+    private static function toTime($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value;
+        }
+        $value = trim((string)$value);
+        if ($value === '') {
+            return null;
+        }
+        return new \DateTime(\mkw\store::convTime($value));
     }
 
     public function getEvesmaxszabi()

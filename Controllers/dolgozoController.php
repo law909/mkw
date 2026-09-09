@@ -34,6 +34,8 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x = $this->getEntityFieldsArray($t);
         $x['szulidostr'] = $t->getSzulidoStr();
         $x['munkaviszonykezdetestr'] = $t->getMunkaviszonykezdeteStr();
+        $x['munkakezdesstr'] = $t->getMunkakezdesStr();
+        $x['munkavegestr'] = $t->getMunkavegeStr();
         $x['munkakornev'] = $t->getMunkakorNev();
         $x['alapertelmezettraktarnev'] = $t->getAlapertelmezettRaktarNev();
         $x['fizmodnev'] = $t->getFizmodNev();

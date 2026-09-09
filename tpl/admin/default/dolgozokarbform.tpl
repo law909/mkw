@@ -73,6 +73,13 @@
                                    required></td>
                     </tr>
                     <tr>
+                        <td><label for="MunkakezdesEdit">{at('Munkaidő')}:</label></td>
+                        <td colspan="3"><input id="MunkakezdesEdit" name="munkakezdes" type="time" value="{$egyed.munkakezdesstr}">
+                            -
+                            <input id="MunkavegeEdit" name="munkavege" type="time" value="{$egyed.munkavegestr}">
+                        </td>
+                    </tr>
+                    <tr>
                         <td><label for="EvesmaxszabiEdit">{at('Éves max. szabadság')}:</label></td>
                         <td colspan="3"><input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5"
                                                value="{$egyed.evesmaxszabi}"> {at('nap')}</td>
