@@ -22,6 +22,7 @@
                     <div class="matt-hseparator"></div>
                     <div>
                         <a href="/admin/jelenletiivgen/get" class="js-okbutton">{at('OK')}</a>
+                        <a href="/admin/jelenletiivgen/export" class="js-exportbutton">{at('Export')}</a>
                     </div>
                 </form>
             </div>

@@ -6,6 +6,8 @@ use Entities\Dolgozo;
 use Entities\Dolgozoszabadsag;
 use Entities\Unnepnap;
 use mkwhelpers\FilterDescriptor;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
  * Aláírásra kész jelenléti ív a dolgozó rögzített munkarendjéből: azok a napok kerülnek rá,
@@ -38,6 +40,93 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $report->setVar('tolstr', $adat['tolstr']);
         $report->setVar('igstr', $adat['igstr']);
         $report->printTemplateResult();
+    }
+
+    /**
+     * Ugyanaz a tartalom xlsx-ben: dolgozónként egy munkalap, hogy nyomtatás nélkül is
+     * továbbadható legyen.
+     */
+    public function export()
+    {
+        $adat = $this->getData();
+
+        $excel = new Spreadsheet();
+        $excel->removeSheetByIndex(0);
+        $lapnevek = [];
+        foreach ($adat['ivek'] as $_iv) {
+            $lap = $excel->createSheet();
+            $lap->setTitle($this->getLapnev($_iv['dolgozonev'], $lapnevek));
+
+            $lap->setCellValue('A1', t('Jelenléti ív'));
+            $lap->setCellValue('A2', $_iv['dolgozonev'] . ($_iv['munkakornev'] ? ' (' . $_iv['munkakornev'] . ')' : ''));
+            $lap->setCellValue('A3', $adat['tolstr'] . ' - ' . $adat['igstr']);
+            $lap->setCellValue('C3', $_iv['munkaido']);
+
+            $lap->setCellValue('A5', t('Dátum'))
+                ->setCellValue('B5', t('Nap'))
+                ->setCellValue('C5', t('Munkakezdés'))
+                ->setCellValue('D5', t('Munka vége'))
+                ->setCellValue('E5', t('Távollét'))
+                ->setCellValue('F5', t('Aláírás'));
+
+            $sor = 6;
+            foreach ($_iv['napok'] as $_nap) {
+                $lap->setCellValue('A' . $sor, $_nap['datum'])
+                    ->setCellValue('B' . $sor, $_nap['napnev'])
+                    ->setCellValue('C' . $sor, $_nap['kezdes'])
+                    ->setCellValue('D' . $sor, $_nap['vege'])
+                    ->setCellValue('E' . $sor, $_nap['tavollet']);
+                $sor++;
+            }
+            $sor++;
+            $lap->setCellValue('A' . $sor, t('Munkanap'))->setCellValue('B' . $sor, count($_iv['napok']));
+            $sor++;
+            $lap->setCellValue('A' . $sor, t('Ledolgozott'))->setCellValue('B' . $sor, $_iv['ledolgozott']);
+            $sor++;
+            $lap->setCellValue('A' . $sor, t('Távollét'))->setCellValue('B' . $sor, $_iv['tavollet']);
+            $sor += 3;
+            $lap->setCellValue('A' . $sor, t('dolgozó aláírása'));
+            $lap->setCellValue('D' . $sor, t('munkáltató aláírása'));
+
+            foreach (['A', 'B', 'C', 'D', 'E', 'F'] as $oszlop) {
+                $lap->getColumnDimension($oszlop)->setAutoSize(true);
+            }
+        }
+        if (!$excel->getSheetCount()) {
+            $excel->createSheet()->setTitle(t('Jelenléti ív'));
+        }
+        $excel->setActiveSheetIndex(0);
+
+        $filename = uniqid('jelenletiiv-') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        IOFactory::createWriter($excel, 'Xlsx')->save($filepath);
+
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . filesize($filepath));
+        header('Content-Disposition: attachment; filename="jelenletiiv.xlsx"');
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    /**
+     * Munkalap név a dolgozó nevéből: az Excel 31 karakternél levágja, a []:*?/\\ jeleket nem
+     * tűri, és két azonos nevű lap sem lehet.
+     */
+    private function getLapnev($dolgozonev, array &$lapnevek)
+    {
+        $nev = trim(str_replace(['\\', '/', '?', '*', '[', ']', ':'], ' ', $dolgozonev));
+        $nev = mb_substr($nev, 0, 28) ?: t('dolgozó');
+        $jelolt = $nev;
+        $sorszam = 1;
+        while (in_array($jelolt, $lapnevek, true)) {
+            $sorszam++;
+            $jelolt = $nev . ' ' . $sorszam;
+        }
+        $lapnevek[] = $jelolt;
+        return $jelolt;
     }
 
     /**

@@ -536,6 +536,7 @@ if (\mkw\store::isBankpenztar()) {
 
     $router->map('GET', '/admin/jelenletiivgen/view', 'jelenletiivgenController#view', 'adminjelenletiivgenview');
     $router->map('GET', '/admin/jelenletiivgen/get', 'jelenletiivgenController#createLista', 'adminjelenletiivgenget');
+    $router->map('GET', '/admin/jelenletiivgen/export', 'jelenletiivgenController#export', 'adminjelenletiivgenexport');
 
     $router->map('GET', '/admin/jutaleklista/view', 'jutaleklistaController#view', 'adminjutaleklistaview');
     $router->map('GET', '/admin/jutaleklista/get', 'jutaleklistaController#createLista', 'adminjutaleklistaget');
