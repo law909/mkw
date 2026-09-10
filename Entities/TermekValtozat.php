@@ -204,13 +204,13 @@ class TermekValtozat
 
     /**
      * @ORM\ManyToOne(targetEntity="Szin")
-     * @ORM\JoinColumn(name="szin_id",referencedColumnName="id",onDelete="set null",nullable=true)
+     * @ORM\JoinColumn(name="szin_id",referencedColumnName="id",onDelete="restrict",nullable=true)
      */
     private $szin;
 
     /**
      * @ORM\ManyToOne(targetEntity="Meret")
-     * @ORM\JoinColumn(name="meret_id",referencedColumnName="id",onDelete="set null", nullable=true)
+     * @ORM\JoinColumn(name="meret_id",referencedColumnName="id",onDelete="restrict", nullable=true)
      */
     private $meret;
 

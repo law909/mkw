@@ -256,13 +256,20 @@ class meretController extends MattableController
 
                         $updateSql = 'UPDATE termekvaltozat 
                                     SET ertek2 = :ujMeretNev, meret_id = :csereMeretId 
-                                    WHERE ertek2 = :regiNev AND adattipus2_id = 2';
+                                    WHERE adattipus2_id = 2 AND ((meret_id = :regiMeretId) OR (ertek2 = :regiNev))';
                         $stmt = $this->getEm()->getConnection()->prepare($updateSql);
                         $stmt->executeQuery([
                             'ujMeretNev' => $ujMeretNev,
                             'csereMeretId' => $csereMeretId,
+                            'regiMeretId' => $id,
                             'regiNev' => $regiNev
                         ]);
+
+                        // a maradék hivatkozás is átkerül, különben a törlést a RESTRICT megfogja
+                        $stmt = $this->getEm()->getConnection()->prepare(
+                            'UPDATE termekvaltozat SET meret_id = :csereMeretId WHERE meret_id = :regiMeretId'
+                        );
+                        $stmt->executeQuery(['csereMeretId' => $csereMeretId, 'regiMeretId' => $id]);
 
                         $this->getEm()->remove($meret);
                     }
