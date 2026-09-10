@@ -2519,6 +2519,27 @@ if ($DBVersion < '0171') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0171');
 }
 
+if ($DBVersion < '0172') {
+    // A régi változatokon a szín csak szövegként (ertek1) van meg, a szin_id üresen maradt. Ahol a
+    // szöveg pontosan egy színtörzs-sor neve, ott a hivatkozás pótolható. A szin.nev azóta egyedi,
+    // tehát a join nem tud egy változathoz két színt találni; a nev összehasonlítása az
+    // utf8_hungarian_ci miatt kis-nagybetűre érzéketlen.
+    $szintipus = \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin);
+    $sql = 'UPDATE termekvaltozat tv'
+        . ' INNER JOIN szin s ON s.nev = tv.ertek1'
+        . ' SET tv.szin_id = s.id'
+        . ' WHERE tv.szin_id IS NULL AND tv.ertek1 IS NOT NULL AND tv.ertek1 <> ""';
+    $params = [];
+    if ($szintipus) {
+        // csak ott, ahol az első változatmező tényleg a szín – különben egy azonos nevű
+        // más jellegű érték (íz, kivitel) is színre hivatkozna
+        $sql .= ' AND tv.adattipus1_id = ?';
+        $params[] = $szintipus;
+    }
+    \mkw\store::getEm()->getConnection()->executeStatement($sql, $params);
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0172');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
