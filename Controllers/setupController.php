@@ -692,6 +692,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::ShowTermekArsav);
         $view->setVar('showtermekarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::FCMotoRetailArsav);
+        $view->setVar('fcmotoretailarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
 
         $p = $repo->find(\mkw\consts::Webshop1Name);
         $view->setVar(\mkw\consts::Webshop1Name, ($p ? $p->getErtek() : ''));
@@ -1172,6 +1174,7 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::Arsav,
             \mkw\consts::ShowTermekArsav,
             \mkw\consts::ShowTermekArsavValutanem,
+            \mkw\consts::FCMotoRetailArsav,
         ],
         'autopenztarvan' => [
             \mkw\consts::AutoPenztarbizonylatPenztar,
@@ -2278,6 +2281,12 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::ShowTermekArsav, $this->params->getIntRequestParam('showtermekarsav'));
         } else {
             $this->setObj(\mkw\consts::ShowTermekArsav, null);
+        }
+        $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('fcmotoretailarsav'));
+        if ($arsav) {
+            $this->setObj(\mkw\consts::FCMotoRetailArsav, $this->params->getIntRequestParam('fcmotoretailarsav'));
+        } else {
+            $this->setObj(\mkw\consts::FCMotoRetailArsav, null);
         }
 
         $this->setObj(\mkw\consts::Webshop1Name, $this->params->getStringRequestParam('webshop1name'));

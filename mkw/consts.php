@@ -547,6 +547,7 @@ class consts
 
     const FCMoto = 'fcmoto';
     const MaximoMoto = 'maximomoto';
+    const FCMotoRetailArsav = 'fcmotoretailarsav';
 
     public static function getWebshopPriceConst($_webshopNum = null)
     {

@@ -2229,13 +2229,17 @@ class termekController extends \mkwhelpers\MattableController
             ->setCellValue('O1', 'Width')
             ->setCellValue('P1', 'Height')
             ->setCellValue('Q1', 'Length')
-            ->setCellValue('R1', 'Discontinued');
+            ->setCellValue('R1', 'Discontinued')
+            ->setCellValue('S1', 'Retail price');
 
         $partner = match ($p) {
             'fcmoto' => $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::FCMoto)),
             'maximomoto' => $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::MaximoMoto)),
             default => null,
         };
+        // a retail ár a beállításokban megadott ársávból jön, partner nélkül: nem kap kedvezményt
+        $retailarsav = $this->getRepo(Arsav::class)->find(\mkw\store::getParameter(\mkw\consts::FCMotoRetailArsav));
+        $retailvalutanem = $partner?->getValutanem();
 
         $filter = new \mkwhelpers\FilterDescriptor();
         $filter->addFilter('id', 'IN', $ids);
@@ -2274,7 +2278,10 @@ class termekController extends \mkwhelpers\MattableController
                             ->setCellValue('O' . $sor, $termek->getSzelesseg())
                             ->setCellValue('P' . $sor, $termek->getMagassag())
                             ->setCellValue('Q' . $sor, $termek->getHosszusag())
-                            ->setCellValue('R' . $sor, $termek->getKifuto() ? 1 : 0);
+                            ->setCellValue('R' . $sor, $termek->getKifuto() ? 1 : 0)
+                            ->setCellValue('S' . $sor, $retailarsav
+                                ? $termek->getKedvezmenynelkuliNettoAr($valtozat, null, $retailvalutanem, $retailarsav)
+                                : '');
                         $excel->setActiveSheetIndex(0)
                             ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);
                         $sor++;
@@ -2296,7 +2303,10 @@ class termekController extends \mkwhelpers\MattableController
                     ->setCellValue('O' . $sor, $termek->getSzelesseg())
                     ->setCellValue('P' . $sor, $termek->getMagassag())
                     ->setCellValue('Q' . $sor, $termek->getHosszusag())
-                    ->setCellValue('R' . $sor, $termek->getKifuto() ? 1 : 0);
+                    ->setCellValue('R' . $sor, $termek->getKifuto() ? 1 : 0)
+                    ->setCellValue('S' . $sor, $retailarsav
+                        ? $termek->getKedvezmenynelkuliNettoAr(null, null, $retailvalutanem, $retailarsav)
+                        : '');
 
                 $excel->setActiveSheetIndex(0)
                     ->getCell('J' . $sor)->setDataType(DataType::TYPE_STRING);

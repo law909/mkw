@@ -329,6 +329,15 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="FCMotoRetailArsavEdit">{at('FC-MOTO export retail ársáv')}:</label></span>
+                                <select id="FCMotoRetailArsavEdit" name="fcmotoretailarsav">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $fcmotoretailarsavlist as $_arsav}
+                                        <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="SzamlaOrzesAlapEdit">{at('Számlák megőrzése')}:</label></span>
