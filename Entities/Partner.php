@@ -335,6 +335,9 @@ class Partner
     /** @ORM\OneToMany(targetEntity="Kontakt", mappedBy="partner",cascade={"persist"}) */
     private $kontaktok;
 
+    /** @ORM\OneToMany(targetEntity="Partnertelephely", mappedBy="partner",cascade={"persist"}) */
+    private $telephelyek;
+
     /**
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Dolgozo")
@@ -605,6 +608,7 @@ class Partner
         $this->penztarbizonylatfejek = new ArrayCollection();
         $this->kosarak = new ArrayCollection();
         $this->termekertesitok = new ArrayCollection();
+        $this->telephelyek = new ArrayCollection();
         $this->termekcsoportkedvezmenyek = new ArrayCollection();
         $this->termekkedvezmenyek = new ArrayCollection();
         $this->gyartokedvezmenyek = new ArrayCollection();
@@ -1814,6 +1818,14 @@ class Partner
     public function getKontaktok()
     {
         return $this->kontaktok;
+    }
+
+    /**
+     * @return \Entities\Partnertelephely[]|\Doctrine\Common\Collections\Collection
+     */
+    public function getTelephelyek()
+    {
+        return $this->telephelyek;
     }
 
     /**

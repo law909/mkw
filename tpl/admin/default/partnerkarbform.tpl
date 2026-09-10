@@ -18,6 +18,9 @@
             {/if}
             <li><a href="#MegjegyzesTab">{at('Megjegyzés')}</a></li>
             {if (!$setup.mptngy && !$setup.mpt)}
+                <li><a href="#TelephelyTab">{at('Telephelyek')}</a></li>
+            {/if}
+            {if (!$setup.mptngy && !$setup.mpt)}
                 <li><a href="#KedvezmenyTab">{at('Termékkategória kedvezmények')}</a></li>
                 <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
                 <li><a href="#GyartoKedvezmenyTab">{at('Kedvezmények gyártónként')}</a></li>
@@ -641,6 +644,14 @@
             <textarea id="MegjegyzesEdit" name="megjegyzes" cols=120 rows="10">{$partner.megjegyzes}</textarea>
         </div>
         {if (!$setup.mptngy && !$setup.mpt)}
+            <div id="TelephelyTab" class="mattkarb-page" data-visible="visible">
+                {foreach $partner.telephelyek as $tp}
+                    {include 'partnertelephelykarb.tpl'}
+                {/foreach}
+                <a class="js-telephelynewbutton" href="#" title="{at('Új')}">
+                    <span class="ui-icon ui-icon-circle-plus"></span>
+                </a>
+            </div>
             <div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
                 {foreach $partner.termekcsoportkedvezmenyek as $kd}
                     {include 'partnertermekcsoportkedvezmenykarb.tpl'}

@@ -109,6 +109,7 @@ $(document).ready(function () {
                 termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
                 gyartokedvezmenytab = $('#GyartoKedvezmenyTab'),
                 termekkedvezmenytab = $('#TermekKedvezmenyTab'),
+                telephelytab = $('#TelephelyTab'),
                 doktab = $('#DokTab'),
                 mptfolyoszamlatab = $('#MPTFolyoszamlaTab');
 
@@ -349,6 +350,53 @@ $(document).ready(function () {
                     }
                 });
             $('.js-gyartokedvezmenynewbutton, .js-gyartokedvezmenydelbutton').button();
+            telephelytab.on('click', '.js-telephelynewbutton', function (e) {
+                const $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: '/admin/partnertelephely/getemptyrow',
+                    type: 'GET',
+                    success: function (data) {
+                        telephelytab.append(data);
+                        $('.js-telephelynewbutton,.js-telephelydelbutton').button();
+                        $this.remove();
+                    }
+                });
+            })
+                .on('click', '.js-telephelydelbutton', function (e) {
+                    e.preventDefault();
+                    const gomb = $(this),
+                        tpid = gomb.attr('data-id');
+                    if (gomb.attr('data-source') === 'client') {
+                        $('#telephelytable_' + tpid).remove();
+                    } else {
+                        dialogcenter.html('Biztos, hogy törli a telephelyet?').dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            buttons: {
+                                'Igen': function () {
+                                    $.ajax({
+                                        url: '/admin/partnertelephely/save',
+                                        type: 'POST',
+                                        data: {
+                                            id: tpid,
+                                            oper: 'del'
+                                        },
+                                        success: function (data) {
+                                            $('#telephelytable_' + data).remove();
+                                        }
+                                    });
+                                    $(this).dialog('close');
+                                },
+                                'Nem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                    }
+                });
+            $('.js-telephelynewbutton, .js-telephelydelbutton').button();
             termekkedvezmenytab.on('click', '.js-termekkedvezmenynewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();

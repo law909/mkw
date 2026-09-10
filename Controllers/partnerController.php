@@ -16,6 +16,7 @@ use Entities\Partnercimketorzs;
 use Entities\PartnerDok;
 use Entities\PartnerTermekcsoportKedvezmeny;
 use Entities\PartnerGyartoKedvezmeny;
+use Entities\Partnertelephely;
 use Entities\PartnerTermekKedvezmeny;
 use Entities\Partnertipus;
 use Entities\Szallitasimod;
@@ -68,6 +69,7 @@ class partnerController extends \mkwhelpers\MattableController
         $kedvCtrl = new partnertermekcsoportkedvezmenyController();
         $termekkedvCtrl = new partnertermekkedvezmenyController();
         $gyartokedvCtrl = new partnergyartokedvezmenyController();
+        $telephelyCtrl = new partnertelephelyController();
         $dokCtrl = new partnerdokController();
         $mptfolyoszamlaCtrl = new mptfolyoszamlaController();
         if (!$t) {
@@ -139,6 +141,12 @@ class partnerController extends \mkwhelpers\MattableController
                 $kedv[] = $gyartokedvCtrl->loadVars($tar, true);
             }
             $x['gyartokedvezmenyek'] = $kedv;
+
+            $telephelyek = [];
+            foreach ($t->getTelephelyek() as $tar) {
+                $telephelyek[] = $telephelyCtrl->loadVars($tar, true);
+            }
+            $x['telephelyek'] = $telephelyek;
 
             $dok = [];
             foreach ($t->getPartnerDokok() as $kepje) {
@@ -382,6 +390,33 @@ class partnerController extends \mkwhelpers\MattableController
                     $this->getEm()->persist($kedv);
                 }
             }
+        }
+
+        $tpids = $this->params->getArrayRequestParam('telephelyid');
+        foreach ($tpids as $tpid) {
+            $oper = $this->params->getStringRequestParam('telephelyoper_' . $tpid);
+            if ($oper === 'add') {
+                $telephely = new Partnertelephely();
+            } elseif ($oper === 'edit') {
+                $telephely = $this->getEm()->getRepository(Partnertelephely::class)->find($tpid);
+            } else {
+                continue;
+            }
+            if (!$telephely) {
+                continue;
+            }
+            $telephely->setPartner($obj);
+            $telephely->setNev($this->params->getStringRequestParam('telephelynev_' . $tpid));
+            $telephely->setIrszam($this->params->getStringRequestParam('telephelyirszam_' . $tpid));
+            $telephely->setVaros($this->params->getStringRequestParam('telephelyvaros_' . $tpid));
+            $telephely->setUtca($this->params->getStringRequestParam('telephelyutca_' . $tpid));
+            $telephely->setOrszag(
+                $this->getEm()->getRepository(Orszag::class)->find($this->params->getIntRequestParam('telephelyorszag_' . $tpid))
+            );
+            // a migrid a SIIKer kódot őrzi, a form csak visszaküldi
+            $migrid = $this->params->getIntRequestParam('telephelymigrid_' . $tpid);
+            $telephely->setMigrid($migrid ?: null);
+            $this->getEm()->persist($telephely);
         }
 
         if (!$obj->getVatstatus()) {

@@ -1147,6 +1147,16 @@ if (!\mkw\store::isClosed()) {
     );
 }
 
+$router->map(
+    'GET',
+    '/admin/partnertelephely/getemptyrow',
+    'partnertelephelyController#getemptyrow',
+    'adminpartnertelephelygetemptyrow'
+);
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/partnertelephely/save', 'partnertelephelyController#save', 'adminpartnertelephelysave');
+}
+
 $router->map('GET', '/admin/partnertermekkedvezmeny/getemptyrow', 'partnertermekkedvezmenyController#getemptyrow', 'adminpartnertermekkedvezmenygetemptyrow');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partnertermekkedvezmeny/save', 'partnertermekkedvezmenyController#save', 'adminpartnertermekkedvezmenysave');
