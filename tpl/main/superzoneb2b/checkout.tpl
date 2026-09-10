@@ -43,12 +43,28 @@
                     </div>
 
                     <h3>Delivery address</h3>
-                    <div class="form-group col-md-12">
-                        <label for="SzalleqszamlaEdit" class="col-md-2 control-label">Same as the billing address</label>
-                        <div class="col-md-10">
-                            <input id="SzalleqszamlaEdit" type="checkbox" class="form-checkbox" name="szalleqszamla"{if ($szalleqszamla|default)} checked{/if}">
+                    {if ($telephelylist|default)}
+                        <div class="form-group col-md-12">
+                            <label for="TelephelyEdit" class="col-md-2 control-label">Site</label>
+                            <div class="col-md-10">
+                                <select id="TelephelyEdit" class="form-control" name="telephely">
+                                    <option value="">please select</option>
+                                    {foreach $telephelylist as $_tp}
+                                        <option value="{$_tp.id}"{if ($_tp.selected)} selected{/if}
+                                                data-nev="{$_tp.nev}" data-irszam="{$_tp.irszam}"
+                                                data-varos="{$_tp.varos}" data-utca="{$_tp.utca}">{$_tp.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    {else}
+                        <div class="form-group col-md-12">
+                            <label for="SzalleqszamlaEdit" class="col-md-2 control-label">Same as the billing address</label>
+                            <div class="col-md-10">
+                                <input id="SzalleqszamlaEdit" type="checkbox" class="form-checkbox" name="szalleqszamla"{if ($szalleqszamla|default)} checked{/if}">
+                            </div>
+                        </div>
+                    {/if}
                     <div class="form-group col-md-12">
                         <label for="SzallitasiNevEdit" class="col-md-2 control-label">Name</label>
                         <div class="col-md-10">

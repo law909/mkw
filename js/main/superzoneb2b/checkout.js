@@ -35,6 +35,24 @@ var checkout = (function($) {
             hataridoinput = $('input[name="hatarido"]'),
             hataridogr = hataridoinput.closest('.form-group');
 
+        const telephelyselect = $('#TelephelyEdit'),
+            telephelygr = telephelyselect.closest('.form-group');
+
+        // b2b: a szállítási cím a kiválasztott telephelyé, kézzel nem írható át
+        const telephelyCimet = function () {
+            const opt = telephelyselect.find('option:selected');
+            szallnevinput.val(opt.data('nev') || '');
+            szallirszaminput.val(opt.data('irszam') || '');
+            szallvarosinput.val(opt.data('varos') || '');
+            szallutcainput.val(opt.data('utca') || '');
+        };
+
+        if (telephelyselect.length) {
+            szallnevinput.add(szallirszaminput).add(szallvarosinput).add(szallutcainput).prop('readonly', true);
+            telephelyselect.on('change', telephelyCimet);
+            telephelyCimet();
+        }
+
         loadTetelList();
 
         $('.js-chkaszf, .js-chkhelp').magnificPopup({
@@ -54,6 +72,17 @@ var checkout = (function($) {
         checkoutform.on('submit', function(e) {
             var hibas = false, tofocus = false,
                 szalleqszamla = $('input[name="szalleqszamla"]').prop('checked');
+
+            if (telephelyselect.length && !telephelyselect.val()) {
+                telephelygr.addClass('has-error');
+                if (!hibas) {
+                    tofocus = telephelyselect;
+                }
+                hibas = true;
+            }
+            else {
+                telephelygr.removeClass('has-error');
+            }
 
             if (!szalleqszamla && !szallnevinput.val()) {
                 szallnevgr.addClass('has-error');

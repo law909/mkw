@@ -157,6 +157,13 @@ class checkoutController extends \mkwhelpers\MattableController
         $oc = new orszagController();
         $view->setVar('orszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('orszag'), $user['orszag'])));
         $view->setVar('szallorszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('szallorszag'), $user['szallorszag'])));
+        // b2b-n a szállítási cím a partner telephelyeiből választható; telephely híján marad a kézi cím
+        $view->setVar(
+            'telephelylist',
+            (\mkw\store::isB2B() && $u)
+                ? (new partnertelephelyController())->getSelectList($u, $p->getIntRequestParam('telephely'))
+                : []
+        );
         $telkorzetc = new korzetszamController();
         $view->setVar('telkorzetlist', $telkorzetc->getSelectList($this->vv($p->getStringRequestParam('telkorzet'), $user['telkorzet'])));
         \mkw\store::getMainSession()->loginerror = false;

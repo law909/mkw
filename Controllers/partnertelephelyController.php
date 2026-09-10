@@ -72,6 +72,11 @@ class partnertelephelyController extends \mkwhelpers\MattableController
                 'id' => $telephely->getId(),
                 'caption' => $telephely->getNevCim(),
                 'selected' => ($telephely->getId() == $selid),
+                // a szállítási cím mezőit a webshop ezekből tölti ki
+                'nev' => $telephely->getNev() ?: $telephely->getPartnerNev(),
+                'irszam' => $telephely->getIrszam(),
+                'varos' => $telephely->getVaros(),
+                'utca' => $telephely->getUtca(),
             ];
         }
         return $res;

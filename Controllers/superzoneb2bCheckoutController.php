@@ -8,6 +8,7 @@ use Entities\Bizonylatstatusz;
 use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Kosar;
+use Entities\Partnertelephely;
 use Entities\Raktar;
 use mkw\store;
 
@@ -56,6 +57,14 @@ class superzoneb2bCheckoutController extends checkoutController
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
             $errors[] = 'Nem adott meg egy kötelező adatot.';
+        }
+
+        // akinek van telephelye, annak választania kell közülük; telephely híján marad a kézi cím
+        $telephely = $this->getTelephely();
+        if ($telephely === false) {
+            $ok = false;
+            $errorlogtext[] = '6telephely';
+            $errors[] = 'Válasszon telephelyet.';
         }
 
         $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\mkw\session::getId());
@@ -162,6 +171,28 @@ class superzoneb2bCheckoutController extends checkoutController
             \mkw\store::getMainSession()->checkoutErrors = $errors;
             Header('Location: ' . \mkw\store::getRouter()->generate('showcheckout'));
         }
+    }
+
+    /**
+     * A megrendeléshez választott telephely.
+     *
+     * @return \Entities\Partnertelephely|null|false null = a partnernek nincs telephelye,
+     *                                               false = van, de nem választott érvényeset
+     */
+    protected function getTelephely()
+    {
+        $partner = \mkw\store::getLoggedInUser();
+        $telephelyek = $partner ? $this->getRepo(Partnertelephely::class)->getByPartner($partner) : [];
+        if (!$telephelyek) {
+            return null;
+        }
+        $valasztott = $this->params->getIntRequestParam('telephely');
+        foreach ($telephelyek as $telephely) {
+            if ($telephely->getId() === $valasztott) {
+                return $telephely;
+            }
+        }
+        return false;
     }
 
 }
