@@ -221,7 +221,7 @@ class termekController extends \mkwhelpers\MattableController
             }
             if (\mkw\store::isArsavok()) {
                 foreach ($t->getTermekArak() as $tar) {
-                    $ar[] = $termekarCtrl->loadVars($tar, true);
+                    $ar[] = $termekarCtrl->loadVars($tar, true, $t);
                 }
                 $x['arak'] = $ar;
             }

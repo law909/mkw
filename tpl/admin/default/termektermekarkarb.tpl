@@ -58,7 +58,7 @@
                        value="{$_kk.id}"{if ($_kk.selected)} checked="checked"{/if}>
                 <label for="KepletKoltseg{$ar.id}_{$_kk.id}">{$_kk.caption}</label>
             {foreachelse}
-                {at('Nincs kapcsolódó költség rögzítve.')}
+                {at('A termékhez nincs kapcsolódó költség rendelve.')}
             {/foreach}
         </td>
     </tr>

@@ -99,21 +99,29 @@ class kapcsolodokoltsegController extends \mkwhelpers\MattableController
      * @param int[] $selids a bejelölt sorok azonosítói
      */
     /**
-     * @param int[] $selids a termékhez rendelt költségek id-i
+     * @param int[] $selids a bejelölt költségek id-i
      * @param array $mennyisegek költség id => a terméken rögzített mennyiség
+     * @param int[]|null $szukitesIdk ha nem null, csak ezek a költségek szerepelnek a listában
+     *                                (a termékárak képlete a termékhez rendeltekre szűkít)
      */
-    public function getSelectList(array $selids = [], array $mennyisegek = []): array
+    public function getSelectList(array $selids = [], array $mennyisegek = [], ?array $szukitesIdk = null): array
     {
         $res = [];
         /** @var Kapcsolodokoltseg $sor */
         foreach ($this->getRepo()->getAll([], ['csoport' => 'ASC', 'nev' => 'ASC']) as $sor) {
+            $selected = in_array($sor->getId(), $selids);
+            // a szűkítésen kívül esőt csak akkor mutatjuk, ha már be van jelölve: enélkül a
+            // következő mentés némán kivenné a képletből, mert a mentés a formot olvassa
+            if ($szukitesIdk !== null && !$selected && !in_array($sor->getId(), $szukitesIdk)) {
+                continue;
+            }
             $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'csoportnev' => $sor->getCsoportNev(),
                 'szamitasalapnev' => $sor->getSzamitasalapNev(),
                 'ar' => $sor->getAr(),
-                'selected' => in_array($sor->getId(), $selids),
+                'selected' => $selected,
                 'mennyiseg' => $mennyisegek[$sor->getId()] ?? '',
             ];
         }

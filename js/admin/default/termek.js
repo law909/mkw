@@ -509,6 +509,8 @@ $(document).ready(function () {
                 $.ajax({
                     url: '/admin/termekar/getemptyrow',
                     type: 'GET',
+                    // a képlet költségválasztéka a termékhez rendeltekre szűkül
+                    data: {termekid: $('#mattkarb-form input[name="id"]').val()},
                     success: function (data) {
                         var tbody = $('#ArsavTab');
                         tbody.append(data);

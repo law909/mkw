@@ -84,7 +84,9 @@ class TermekAr
 
     /**
      * A képlethez hozzáadandó kapcsolódó költségek. A választék a termékhez rendelt költségekből
-     * jön, az érték a költség egy darab termékre eső része.
+     * jön (`termekarController::loadVars()` szűkíti), az érték a költség egy darab termékre eső
+     * része. A már bejelölt, de a termékről időközben levett költség a listában marad, hogy a
+     * mentés ne vegye ki némán a képletből.
      *
      * @ORM\ManyToMany(targetEntity="Kapcsolodokoltseg")
      * @ORM\JoinTable(name="termekar_kapcsolodokoltsegek",
