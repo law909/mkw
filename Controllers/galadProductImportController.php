@@ -108,6 +108,7 @@ class galadProductImportController extends \mkwhelpers\Controller
         $existingCount = 0;
 
         $groups = $this->readGroups($sheet, $dbtol, $utolsoSor);
+        $this->preloadSzinMeret($groups);
 
         // a soronkénti findOneBy-ok kiváltása: egyszerre betöltjük a fájlban előforduló,
         // már létező vonalkódokat és termék-cikkszámokat memóriába
@@ -219,6 +220,27 @@ class galadProductImportController extends \mkwhelpers\Controller
             ];
         }
         return $groups;
+    }
+
+    /**
+     * A változatok színeit és méreteit a termékek előtt hozza létre, hogy az azonnali flush ne
+     * félkész termékeket és változatokat írjon ki.
+     */
+    private function preloadSzinMeret(array $groups)
+    {
+        foreach ($groups as $group) {
+            foreach ($group as $sor) {
+                if (!$sor['valtozatos']) {
+                    continue;
+                }
+                if ($sor['szin'] !== '') {
+                    $this->galadGetOrCreateSzin($sor['szin']);
+                }
+                if ($sor['meret'] !== '') {
+                    $this->galadGetOrCreateMeret($sor['meret']);
+                }
+            }
+        }
     }
 
     /**
@@ -512,6 +534,8 @@ class galadProductImportController extends \mkwhelpers\Controller
             $szin = new \Entities\Szin();
             $szin->setNev($nev);
             \mkw\store::getEm()->persist($szin);
+            // a findOneBy csak a flush-olt, kolláció szerint azonos nevet látja ("Kék" = "kék"), a nev unique
+            \mkw\store::getEm()->flush();
         }
         $this->galadSzinCache[$nev] = $szin;
         return $szin;
@@ -527,6 +551,8 @@ class galadProductImportController extends \mkwhelpers\Controller
             $meret = new \Entities\Meret();
             $meret->setNev($nev);
             \mkw\store::getEm()->persist($meret);
+            // a findOneBy csak a flush-olt, kolláció szerint azonos nevet látja ("M" = "m"), a nev unique
+            \mkw\store::getEm()->flush();
         }
         $this->galadMeretCache[$nev] = $meret;
         return $meret;
