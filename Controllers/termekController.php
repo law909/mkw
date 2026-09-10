@@ -1832,6 +1832,9 @@ class termekController extends \mkwhelpers\MattableController
                 case 'fuggoben':
                     $obj->setFuggoben($kibe);
                     break;
+                case 'kifuto':
+                    $obj->setKifuto($kibe);
+                    break;
                 case 'termekexportbanszerepel':
                     $obj->setTermekexportbanszerepel($kibe);
                     break;

@@ -161,6 +161,10 @@
                        class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{at('Függőben')}</a></td>
             </tr>
             <tr>
+                <td><a href="#" data-id="{$_termek.id}" data-flag="kifuto"
+                       class="js-flagcheckbox{if ($_termek.kifuto)} ui-state-hover{/if}">{at('Kifutó')}</a></td>
+            </tr>
+            <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="termekexportbanszerepel"
                        class="js-flagcheckbox{if ($_termek.termekexportbanszerepel)} ui-state-hover{/if}">{at('Exportokban szerepel')}</a></td>
             </tr>
