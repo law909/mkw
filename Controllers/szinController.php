@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Szin;
+use Entities\TermekValtozat;
 use mkwhelpers\FilterDescriptor;
 use Traits\SorrendGenerator;
 use Traits\ValtozatTermekLista;
@@ -69,6 +70,25 @@ class szinController extends \mkwhelpers\MattableController
             }
         }
         return $errors;
+    }
+
+    /**
+     * Használatban lévő színt nem engedünk törölni. Az adatbázisban is RESTRICT áll a
+     * termekvaltozat.szin_id-n, ez a szűrő adja hozzá a beszédes üzenetet – és megvéd azon a
+     * telepítésen is, ahol a séma frissítése még nem futott le.
+     *
+     * @param \Entities\Szin $o
+     */
+    protected function beforeRemove($o)
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('szin', '=', $o);
+        $db = (int)$this->getRepo(TermekValtozat::class)->getCount($filter);
+        if ($db) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(
+                sprintf(t('Ez a szín %s termékváltozathoz van hozzárendelve, ezért nem törölhető.'), $db)
+            );
+        }
     }
 
     public function getlistbody()
