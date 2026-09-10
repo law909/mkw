@@ -100,6 +100,17 @@ class termekvaltozatController extends \mkwhelpers\MattableController
 
     /**
      * @param TermekValtozat $o
+     *
+     * @return void
+     */
+    protected function beforeRemove($o)
+    {
+        \Services\KeszletSzintService::removeByTermekValtozat($o);
+        parent::beforeRemove($o);
+    }
+
+    /**
+     * @param TermekValtozat $o
      * @param $parancs
      *
      * @return void
@@ -129,6 +140,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $ids = [];
         foreach ($valtozatok as $valt) {
             //$termek->removeValtozat($valt);
+            \Services\KeszletSzintService::removeByTermekValtozat($valt);
             $this->getEm()->remove($valt);
         }
         $this->getEm()->flush();

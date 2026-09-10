@@ -1137,6 +1137,17 @@ class termekController extends \mkwhelpers\MattableController
 
     /**
      * @param Termek $o
+     *
+     * @return void
+     */
+    protected function beforeRemove($o)
+    {
+        \Services\KeszletSzintService::removeByTermek($o);
+        parent::beforeRemove($o);
+    }
+
+    /**
+     * @param Termek $o
      * @param $parancs
      *
      * @return void
