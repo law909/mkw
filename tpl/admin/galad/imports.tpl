@@ -54,6 +54,12 @@
                         <a href="/admin/import/galadkeszlet" class="js-galadkeszletimport">Előző program készlete</a>
                     </div>
                     <div id="galadkeszlet-eredmeny"></div>
+                    <p>A "Termék lista (product export)" a product export XLSX-et várja. Az üres sorokat
+                        átlépi. Az A oszlop "X" jele a változatos termék vezérsora, a B oszlop (Variáns
+                        csoport) azonos száma köti össze egy termék változatait – a vezérsorból is változat
+                        lesz. Termék neve: G, cikkszám: C, szín: E, méret: F, vonalkód: J, nettó ár: AC.
+                        A termékfa az AD, ha az üres, akkor az AB oszlop szövege alapján, név szerint
+                        azonosítódik; ha nincs találat, a termék a főkategóriába kerül.</p>
                     <p>Az excel táblában használható fejlécek:</p>
                     <ul>
                         <li>kod - termék kódja</li>

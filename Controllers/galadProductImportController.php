@@ -17,19 +17,18 @@ use Entities\Vtsz;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
- * Galád termékimport a "product_export_variants" formájú XLSX-ből.
+ * Galád termékimport a "product export" formájú XLSX-ből.
  *
- * Oszlopok: A=Változat (0/1 – változatos-e a termék), B=Közös cikkszám (a változatos
- * termék cikkszáma ÉS a változatokat összekötő csoportkulcs), C=Méret, D=Szín,
- * E=Maradék név (a változatos termék neve), F=Cikkszám (a sima termék / a változat
- * cikkszáma), G=Név (a sima termék neve), H=Típus (nem használt), I=Mértékegység,
- * J=Vonalkód, K=ÁFA (nem használt), P=Sorozatszámot kezel (kellegyediazonosito),
- * W=Küldés UNAS webshop-ba (feltoltheto2), Z=TÍPUS (kategória / termékfa),
- * AA=Nettó eladási ár ("Kisker.ár" ársáv nettó ára).
+ * Oszlopok: A=Főtermék ("X" – a változatcsoport vezérsora), B=Variáns csoport (az azonos
+ * számú sorok egy termék változatai), C=Cikkszám, D=Név (a soré, nem használt),
+ * E=Szín, F=Méret, G=Termék név, I=Mértékegység, J=Vonalkód,
+ * P=Sorozatszámot kezel (kellegyediazonosito), Y=Küldés UNAS webshop-ba (feltoltheto2),
+ * AB=TÍPUS, AC=Nettó eladási ár ("Kisker.ár" ársáv nettó ára), AD=Import típus.
+ * A termékfa az AD, ha az üres, akkor az AB oszlop szövegével azonosítódik.
  *
- * - A=0: sima termék változatok nélkül (cikkszám F, név G, vonalkód J).
- * - A=1: változatos termék, a sorait a Közös cikkszám (B) köti össze; minden sor egy
- *   szín/méret változat (cikkszám F – önmagában egyedi, méret C, szín D, vonalkód J).
+ * - B üres: sima termék változatok nélkül (cikkszám C, név G, vonalkód J).
+ * - B kitöltött: változatos termék. A csoport minden sorából változat lesz – az "X"-szel
+ *   jelölt sorból is –, a termék adatai (cikkszám, név, kategória, ár) az "X" sorból jönnek.
  */
 class galadProductImportController extends \mkwhelpers\Controller
 {
@@ -52,11 +51,11 @@ class galadProductImportController extends \mkwhelpers\Controller
     /**
      * Termékimport futtatása a feltöltött XLSX alapján.
      *
-     * - Az ár nélküli (üres AA oszlop) sorokat is importálja, csak árat nem állít be hozzájuk.
-     * - A=1 esetén a Közös cikkszám (B) köti össze egy termék sorait/változatait.
-     * - A kategória (Z oszlop) szövegével hasonló nevű termékfa csomópontot keres, ahhoz
-     *   kapcsolja a terméket (termekfa1).
-     * - A nettó árat (AA) a "Kisker.ár" ársávba tölti (létrehozza, ha még nincs).
+     * - Az ár nélküli (üres AC oszlop) sorokat is importálja, csak árat nem állít be hozzájuk.
+     * - A Variáns csoport (B) köti össze egy termék sorait/változatait.
+     * - A kategória (AD, hiányában AB) szövegével hasonló nevű termékfa csomópontot keres,
+     *   ahhoz kapcsolja a terméket (termekfa1).
+     * - A nettó árat (AC) a "Kisker.ár" ársávba tölti (létrehozza, ha még nincs).
      */
     public function import()
     {
@@ -78,12 +77,9 @@ class galadProductImportController extends \mkwhelpers\Controller
         $excel = $reader->load($filenev);
         $sheet = $excel->getActiveSheet();
 
-        // A getHighestRow() gyakran a munkalap teljes kiterjedését adja vissza
-        // (akár 1 048 576 sort), ezért nem használjuk felső korlátként. Ha a
-        // felhasználó nem ad meg dbig-et, egy hosszabb üres sorozatra állunk meg.
-        $hardMax = $dbig ?: 1048576;
-        $emptyLimit = 100;
-        $emptyRun = 0;
+        // az üres sorok a fájl belsejében is előfordulnak, ezért nem szakítjuk meg rájuk a
+        // beolvasást – az utolsó adatot tartalmazó sorig megyünk
+        $utolsoSor = $dbig ?: $sheet->getHighestDataRow();
 
         // 27%-os ÁFA (a nettó árból ez alapján számolódik a bruttó)
         $afa = \mkw\store::getEm()->getRepository(Afa::class)->findByErtek(27);
@@ -111,75 +107,14 @@ class galadProductImportController extends \mkwhelpers\Controller
         $valtozatdb = 0;
         $existingCount = 0;
 
-        // A sorokat cikkszám szerint csoportosítjuk: változatos terméknél (A=1) a Közös
-        // cikkszám (B), sima terméknél (A=0) a Cikkszám (F) a kulcs. Ugyanaz a kulcs
-        // ugyanahhoz a termékhez tartozik akkor is, ha a sorok NEM összefüggőek. Ezért az
-        // egész fájlt beolvassuk egy kulcs szerinti tömbbe, és csak utána dolgozzuk fel.
-        $groups = [];
-
-        for ($row = $dbtol; $row <= $hardMax; ++$row) {
-            $valtozat = trim((string)$sheet->getCell('A' . $row)->getValue());
-            $kozoscikkszam = trim((string)$sheet->getCell('B' . $row)->getValue());
-            $meret = trim((string)$sheet->getCell('C' . $row)->getValue());
-            $szin = trim((string)$sheet->getCell('D' . $row)->getValue());
-            $maradeknev = trim((string)$sheet->getCell('E' . $row)->getValue());
-            $cikkszam = trim((string)$sheet->getCell('F' . $row)->getValue());
-            $nev = trim((string)$sheet->getCell('G' . $row)->getValue());
-            $vonalkod = trim((string)$sheet->getCell('J' . $row)->getValue());
-            $sorozatszam = trim((string)$sheet->getCell('P' . $row)->getValue());
-            $unas = trim((string)$sheet->getCell('W' . $row)->getValue());
-            $kategoria = trim((string)$sheet->getCell('Z' . $row)->getValue());
-            $nettoAr = $sheet->getCell('AA' . $row)->getValue();
-
-            $aaUres = ($nettoAr === null || trim((string)$nettoAr) === '');
-            $valtozatos = ($valtozat === '1');
-
-            // teljesen üres sor: az adatok végét egy hosszabb üres sorozat jelzi
-            if ($valtozat === '' && $kozoscikkszam === '' && $meret === '' && $szin === ''
-                && $maradeknev === '' && $cikkszam === '' && $nev === '' && $vonalkod === ''
-                && $kategoria === '' && $aaUres) {
-                if (!$dbig && ++$emptyRun >= $emptyLimit) {
-                    break;
-                }
-                continue;
-            }
-            $emptyRun = 0;
-
-            // a termék neve nélküli sorokat nem importáljuk
-            // (változatosnál a Maradék név / E, sima terméknél a Név / G)
-            if (($valtozatos ? $maradeknev : $nev) === '') {
-                continue;
-            }
-
-            // a termék cikkszáma: változatosnál a Közös cikkszám (B), sima terméknél a
-            // Cikkszám (F). Ez egyben a csoportosítási kulcs is.
-            $termekcikkszam = $valtozatos ? $kozoscikkszam : $cikkszam;
-            if ($termekcikkszam === '') {
-                continue;
-            }
-            $kulcs = ($valtozatos ? 'v:' : 's:') . $termekcikkszam;
-
-            $groups[$kulcs][] = [
-                'valtozatos' => $valtozatos,
-                'termekcikkszam' => $termekcikkszam,
-                'cikkszam' => $cikkszam,
-                'meret' => $meret,
-                'szin' => $szin,
-                'nev' => $valtozatos ? $maradeknev : $nev,
-                'vonalkod' => $vonalkod,
-                'sorozatszam' => $sorozatszam,
-                'unas' => $unas,
-                'kategoria' => $kategoria,
-                'netto' => $nettoAr,
-            ];
-        }
+        $groups = $this->readGroups($sheet, $dbtol, $utolsoSor);
 
         // a soronkénti findOneBy-ok kiváltása: egyszerre betöltjük a fájlban előforduló,
         // már létező vonalkódokat és termék-cikkszámokat memóriába
         $mindenVonalkod = [];
         $mindenTermekKulcs = [];
         foreach ($groups as $group) {
-            $mindenTermekKulcs[] = $group[0]['termekcikkszam'];
+            $mindenTermekKulcs[] = self::getFoSor($group)['cikkszam'];
             foreach ($group as $sor) {
                 if ($sor['vonalkod'] !== '') {
                     $mindenVonalkod[] = $sor['vonalkod'];
@@ -225,7 +160,78 @@ class galadProductImportController extends \mkwhelpers\Controller
 
         echo 'Kész. ' . $termekdb . ' új termék, ' . $valtozatdb . ' új változat létrehozva.'
             . ($existingCount ? ' ' . $existingCount . ' termék már létezett, változatlan maradt.' : '')
-            . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor azonosító (vonalkód/cikkszám) hiányában kimaradt.' : '');
+            . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor kimaradt (hiányzó cikkszám, név vagy vonalkód).' : '');
+    }
+
+    /**
+     * A munkalap sorainak beolvasása termékcsoportokba. A csoport kulcsa a Variáns csoport (B),
+     * csoport nélküli sornál a Cikkszám (C) – így az egy termékhez tartozó sorok akkor is
+     * összekerülnek, ha a fájlban nem egymás után állnak.
+     *
+     * @return array kulcs => sorok
+     */
+    private function readGroups($sheet, $dbtol, $utolsoSor): array
+    {
+        $groups = [];
+        for ($row = $dbtol; $row <= $utolsoSor; ++$row) {
+            $fotermek = trim((string)$sheet->getCell('A' . $row)->getValue());
+            $csoport = trim((string)$sheet->getCell('B' . $row)->getValue());
+            $cikkszam = trim((string)$sheet->getCell('C' . $row)->getValue());
+            $szin = trim((string)$sheet->getCell('E' . $row)->getValue());
+            $meret = trim((string)$sheet->getCell('F' . $row)->getValue());
+            $nev = trim((string)$sheet->getCell('G' . $row)->getValue());
+            $vonalkod = trim((string)$sheet->getCell('J' . $row)->getValue());
+            $sorozatszam = trim((string)$sheet->getCell('P' . $row)->getValue());
+            $unas = trim((string)$sheet->getCell('Y' . $row)->getValue());
+            $kategoria = trim((string)$sheet->getCell('AD' . $row)->getValue());
+            if ($kategoria === '') {
+                $kategoria = trim((string)$sheet->getCell('AB' . $row)->getValue());
+            }
+            $nettoAr = $sheet->getCell('AC' . $row)->getValue();
+
+            // üres sor: a fájl belsejében is van belőle, egyszerűen átlépjük
+            if ($fotermek === '' && $csoport === '' && $cikkszam === '' && $szin === ''
+                && $meret === '' && $nev === '' && $vonalkod === '' && $kategoria === ''
+                && ($nettoAr === null || trim((string)$nettoAr) === '')) {
+                continue;
+            }
+
+            // cikkszám vagy név nélkül a sor nem azonosítható
+            if ($cikkszam === '' || $nev === '') {
+                $this->skippedRows++;
+                continue;
+            }
+
+            $kulcs = $csoport !== '' ? 'v:' . $csoport : 's:' . $cikkszam;
+            $groups[$kulcs][] = [
+                // "X" az A oszlopban: ez a csoport vezérsora, a termék adatai innen jönnek
+                'fotermek' => (mb_strtoupper($fotermek, 'UTF-8') === 'X'),
+                'valtozatos' => ($csoport !== ''),
+                'cikkszam' => $cikkszam,
+                'meret' => $meret,
+                'szin' => $szin,
+                'nev' => $nev,
+                'vonalkod' => $vonalkod,
+                'sorozatszam' => $sorozatszam,
+                'unas' => $unas,
+                'kategoria' => $kategoria,
+                'netto' => $nettoAr,
+            ];
+        }
+        return $groups;
+    }
+
+    /**
+     * A csoport vezérsora: az "X"-szel jelölt (Főtermék) sor, ennek hiányában az első.
+     */
+    private static function getFoSor($group)
+    {
+        foreach ($group as $sor) {
+            if ($sor['fotermek']) {
+                return $sor;
+            }
+        }
+        return $group[0];
     }
 
     /**
@@ -236,13 +242,13 @@ class galadProductImportController extends \mkwhelpers\Controller
         if (!$group) {
             return ['termek' => 0, 'valtozat' => 0, 'existing' => 0];
         }
-        $first = $group[0];
-        $termekcikkszam = $first['termekcikkszam'];
+        $first = self::getFoSor($group);
+        $termekcikkszam = $first['cikkszam'];
         if ($termekcikkszam === '') {
             return ['termek' => 0, 'valtozat' => 0, 'existing' => 0];
         }
 
-        // változatos termék-e (A oszlop == 1); sima terméknél a vonalkód a termékre kerül
+        // változatos termék-e (van Variáns csoportja); sima terméknél a vonalkód a termékre kerül
         $valtozatos = (bool)$first['valtozatos'];
         $termekVonalkod = (!$valtozatos && $first['vonalkod'] !== '') ? $first['vonalkod'] : '';
 
@@ -295,7 +301,7 @@ class galadProductImportController extends \mkwhelpers\Controller
 
         $valtozatdb = 0;
         $this->handledValtozatCikkszam = [];
-        // változatos termék: A oszlop == 1
+        // a vezérsorból is változat lesz, ezért az egész csoporton végigmegyünk
         if ($valtozatos) {
             foreach ($group as $sor) {
                 if ($this->galadImportValtozat($termek, $sor, $szinAdatTipus, $meretAdatTipus)) {
@@ -354,8 +360,8 @@ class galadProductImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Egy változat (TermekValtozat) létrehozása/frissítése szín + méret alapján.
-     * A változat cikkszáma az F oszlop (önmagában egyedi). Az azonosítás elsődlegesen a
+     * Egy változat (TermekValtozat) létrehozása/frissítése szín (E) + méret (F) alapján.
+     * A változat cikkszáma a C oszlop (önmagában egyedi). Az azonosítás elsődlegesen a
      * cikkszám, hiányában a vonalkód alapján történik.
      */
     private function galadImportValtozat($termek, $sor, $szinAdatTipus, $meretAdatTipus)
@@ -527,8 +533,9 @@ class galadProductImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Termékfa csomópont keresése név (Z/kategória oszlop) alapján: pontos egyezés,
-     * majd tartalmazás (LIKE), végül leghasonlóbb név (fuzzy).
+     * Termékfa csomópont keresése név (AD, hiányában AB oszlop) alapján: pontos egyezés,
+     * majd kezdet, majd tartalmazás (LIKE), majd a szövegben előforduló leghosszabb
+     * csomópontnév, végül leghasonlóbb név (fuzzy).
      */
     private function galadFindTermekfaByNev($nev)
     {
@@ -544,12 +551,17 @@ class galadProductImportController extends \mkwhelpers\Controller
         // 1) pontos egyezés (a kolláció kis/nagybetűt nem különböztet meg)
         $found = $repo->findOneBy(['nev' => $nev]);
 
-        // 2) tartalmazás (LIKE)
-        if (!$found) {
+        // 2) kezdet, majd tartalmazás, a legrövidebb névvel kezdve: az "ALKATRÉSZ" így az
+        //    "ALKATRÉSZEK"-be kerül, nem a "BUKÓSISAK ALKATRÉSZ"-be
+        foreach ([$nev . '%', '%' . $nev . '%'] as $minta) {
+            if ($found) {
+                break;
+            }
             $res = \mkw\store::getEm()->createQueryBuilder()
                 ->select('tf')->from(TermekFa::class, 'tf')
                 ->where('tf.nev LIKE :p')
-                ->setParameter('p', '%' . $nev . '%')
+                ->orderBy('LENGTH(tf.nev)', 'ASC')
+                ->setParameter('p', $minta)
                 ->setMaxResults(1)
                 ->getQuery()->getResult();
             if ($res) {
@@ -557,21 +569,37 @@ class galadProductImportController extends \mkwhelpers\Controller
             }
         }
 
-        // 3) leghasonlóbb név (fuzzy)
         if (!$found) {
             $needle = $this->galadNormalizeNev($nev);
-            $best = null;
-            $bestScore = 0;
-            foreach ($repo->findAll() as $tf) {
-                $pct = 0;
-                similar_text($needle, $this->galadNormalizeNev($tf->getNev()), $pct);
-                if ($pct > $bestScore) {
-                    $bestScore = $pct;
-                    $best = $tf;
+            $mind = $repo->findAll();
+
+            // 3) a leghosszabb csomópontnév, ami benne van a keresett szövegben: a "FÉRFI CSIZMA"
+            //    így a "CSIZMA" alá kerül, nem a hozzá hasonló nevű "FÉRFI KESZTYŰ" alá
+            $bestLen = 0;
+            foreach ($mind as $tf) {
+                $tfnev = $this->galadNormalizeNev($tf->getNev());
+                $hossz = mb_strlen($tfnev, 'UTF-8');
+                if ($hossz > 2 && $hossz > $bestLen && mb_strpos($needle, $tfnev, 0, 'UTF-8') !== false) {
+                    $bestLen = $hossz;
+                    $found = $tf;
                 }
             }
-            if ($best && $bestScore >= 50) {
-                $found = $best;
+
+            // 4) leghasonlóbb név (fuzzy)
+            if (!$found) {
+                $best = null;
+                $bestScore = 0;
+                foreach ($mind as $tf) {
+                    $pct = 0;
+                    similar_text($needle, $this->galadNormalizeNev($tf->getNev()), $pct);
+                    if ($pct > $bestScore) {
+                        $bestScore = $pct;
+                        $best = $tf;
+                    }
+                }
+                if ($best && $bestScore >= 50) {
+                    $found = $best;
+                }
             }
         }
 
