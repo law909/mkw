@@ -2540,6 +2540,24 @@ if ($DBVersion < '0172') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0172');
 }
 
+if ($DBVersion < '0173') {
+    // Ugyanaz a pótlás a méretre: a régi változatokon a méret csak szövegként (ertek2) van meg.
+    // A meret.nev azóta egyedi, tehát a join itt sem tud két méretet találni.
+    $merettipus = \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret);
+    $sql = 'UPDATE termekvaltozat tv'
+        . ' INNER JOIN meret m ON m.nev = tv.ertek2'
+        . ' SET tv.meret_id = m.id'
+        . ' WHERE tv.meret_id IS NULL AND tv.ertek2 IS NOT NULL AND tv.ertek2 <> ""';
+    $params = [];
+    if ($merettipus) {
+        // csak ott, ahol a második változatmező tényleg a méret
+        $sql .= ' AND tv.adattipus2_id = ?';
+        $params[] = $merettipus;
+    }
+    \mkw\store::getEm()->getConnection()->executeStatement($sql, $params);
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0173');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
