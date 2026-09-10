@@ -13,6 +13,7 @@ class SzinRepository extends \mkwhelpers\Repository
             '1' => ['caption' => 'sorrend és név szerint', 'order' => ['sorrend' => 'ASC', 'nev' => 'ASC']],
             '2' => ['caption' => 'név szerint', 'order' => ['nev' => 'ASC']],
         ]);
+        $this->setBatches(['sorrendgen' => 'Sorrend újraképzése név szerint']);
     }
 
     public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed

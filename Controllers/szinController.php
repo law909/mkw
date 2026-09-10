@@ -4,11 +4,13 @@ namespace Controllers;
 
 use Entities\Szin;
 use mkwhelpers\FilterDescriptor;
+use Traits\SorrendGenerator;
 use Traits\ValtozatTermekLista;
 
 class szinController extends \mkwhelpers\MattableController
 {
     use ValtozatTermekLista;
+    use SorrendGenerator;
 
     /** a getSelectList() sorai, kérésen belül egyszer olvasva */
     private $lista;

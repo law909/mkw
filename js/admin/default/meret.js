@@ -65,27 +65,29 @@ $(document).ready(function () {
             karb: meret
         });
 
+        // a sorrend újraképzése az egész törzsre megy, kijelölés nélkül
         $('.mattable-batchbtn').on('click', function (e) {
-            var cbs,
-                tomb = [];
             e.preventDefault();
-            cbs = $('.js-egyedcheckbox:checked');
-            if (cbs.length) {
-                cbs.closest('tr').each(function (index, elem) {
-                    tomb.push($(elem).data('egyedid'));
-                });
-            } else {
-                dialogcenter.html('Válasszon ki legalább egy terméket!').dialog({
-                    resizable: false,
-                    height: 140,
-                    modal: true,
-                    buttons: {
-                        'OK': function () {
-                            $(this).dialog('close');
-                        }
-                    }
-                });
+            if ($('.mattable-batchselect').val() !== 'sorrendgen') {
+                return;
             }
+            dialogcenter.html('Újraképzi a sorrendet név szerint az egész mérettörzsre? A meglévő sorrend elvész.').dialog({
+                resizable: false,
+                height: 160,
+                modal: true,
+                buttons: {
+                    'Igen': function () {
+                        const dia = $(this);
+                        $.post('/admin/meret/sorrendgen', {}, function () {
+                            dia.dialog('close');
+                            $('.mattable-tablerefresh').click();
+                        });
+                    },
+                    'Nem': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
         });
 
         $('.js-maincheckbox').change(function () {

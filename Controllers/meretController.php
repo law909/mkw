@@ -8,11 +8,13 @@ use mkwhelpers\FilterDescriptor;
 use mkwhelpers\MattableController;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Traits\SorrendGenerator;
 use Traits\ValtozatTermekLista;
 
 class meretController extends MattableController
 {
     use ValtozatTermekLista;
+    use SorrendGenerator;
 
     /** a getSelectList() sorai, kérésen belül egyszer olvasva */
     private $lista;

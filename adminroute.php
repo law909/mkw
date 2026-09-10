@@ -1052,6 +1052,7 @@ $router->map('GET', '/admin/szin/viewkarb', 'szinController#viewkarb', 'adminszi
 $router->map('GET', '/admin/szin/gettermeklista', 'szinController#getTermekList', 'adminszingettermeklista');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szin/save', 'szinController#save', 'adminszinsave');
+    $router->map('POST', '/admin/szin/sorrendgen', 'szinController#regenerateSorrend', 'adminszinsorrendgen');
 }
 
 $router->map('GET', '/admin/meret/viewlist', 'meretController#viewlist', 'adminmeretviewlist');
@@ -1062,6 +1063,7 @@ $router->map('GET', '/admin/meret/viewkarb', 'meretController#viewkarb', 'adminm
 $router->map('GET', '/admin/meret/gettermeklista', 'meretController#getTermekList', 'adminmeretgettermeklista');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/meret/save', 'meretController#save', 'adminmeretsave');
+    $router->map('POST', '/admin/meret/sorrendgen', 'meretController#regenerateSorrend', 'adminmeretsorrendgen');
 }
 
 $router->map('GET', '/admin/meretsor/viewlist', 'meretsorController#viewlist', 'adminmeretsorviewlist');
