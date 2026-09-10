@@ -31,6 +31,7 @@
                     <th>Nap</th>
                     <th>Munkakezdés</th>
                     <th>Munka vége</th>
+                    <th class="textalignright">Óra</th>
                     <th>Távollét</th>
                     <th class="jelenletiiv-alairas">Aláírás</th>
                 </tr>
@@ -42,6 +43,7 @@
                         <td>{$_nap.napnev}</td>
                         <td>{$_nap.kezdes}</td>
                         <td>{$_nap.vege}</td>
+                        <td class="textalignright">{$_nap.orastr}</td>
                         <td class="redtext">{$_nap.tavollet}</td>
                         <td class="jelenletiiv-alairas">&nbsp;</td>
                     </tr>
@@ -49,8 +51,8 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th colspan="6">Munkanap: {$_iv.napok|@count} &nbsp;&nbsp; Ledolgozott: {$_iv.ledolgozott} &nbsp;&nbsp;
-                        Távollét: {$_iv.tavollet}
+                    <th colspan="7">Munkanap: {$_iv.napok|@count} &nbsp;&nbsp; Ledolgozott: {$_iv.ledolgozott} &nbsp;&nbsp;
+                        Távollét: {$_iv.tavollet} &nbsp;&nbsp; Ledolgozott óra: {$_iv.oraosszesenstr}
                     </th>
                 </tr>
                 </tfoot>

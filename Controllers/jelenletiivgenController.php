@@ -68,8 +68,9 @@ class jelenletiivgenController extends \mkwhelpers\Controller
                 ->setCellValue('B5', t('Nap'))
                 ->setCellValue('C5', t('Munkakezdés'))
                 ->setCellValue('D5', t('Munka vége'))
-                ->setCellValue('E5', t('Távollét'))
-                ->setCellValue('F5', t('Aláírás'));
+                ->setCellValue('E5', t('Óra'))
+                ->setCellValue('F5', t('Távollét'))
+                ->setCellValue('G5', t('Aláírás'));
 
             $sor = 6;
             foreach ($_iv['napok'] as $_nap) {
@@ -77,7 +78,8 @@ class jelenletiivgenController extends \mkwhelpers\Controller
                     ->setCellValue('B' . $sor, $_nap['napnev'])
                     ->setCellValue('C' . $sor, $_nap['kezdes'])
                     ->setCellValue('D' . $sor, $_nap['vege'])
-                    ->setCellValue('E' . $sor, $_nap['tavollet']);
+                    ->setCellValue('E' . $sor, $_nap['ora'] ?: '')
+                    ->setCellValue('F' . $sor, $_nap['tavollet']);
                 $sor++;
             }
             $sor++;
@@ -86,11 +88,13 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             $lap->setCellValue('A' . $sor, t('Ledolgozott'))->setCellValue('B' . $sor, $_iv['ledolgozott']);
             $sor++;
             $lap->setCellValue('A' . $sor, t('Távollét'))->setCellValue('B' . $sor, $_iv['tavollet']);
+            $sor++;
+            $lap->setCellValue('A' . $sor, t('Ledolgozott óra'))->setCellValue('B' . $sor, $_iv['oraosszesen']);
             $sor += 3;
             $lap->setCellValue('A' . $sor, t('dolgozó aláírása'));
             $lap->setCellValue('D' . $sor, t('munkáltató aláírása'));
 
-            foreach (['A', 'B', 'C', 'D', 'E', 'F'] as $oszlop) {
+            foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G'] as $oszlop) {
                 $lap->getColumnDimension($oszlop)->setAutoSize(true);
             }
         }
@@ -164,21 +168,27 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $napnevek = Dolgozo::getNapok();
         $kezdes = $dolgozo->getMunkakezdesStr();
         $vege = $dolgozo->getMunkavegeStr();
+        $napiora = $this->getNapiOra($dolgozo);
 
         $napok = [];
         $ledolgozott = 0;
         $tavollet = 0;
+        $oraosszesen = 0;
         $nap = clone $tol;
         while ($nap <= $ig) {
             if ($this->isMunkanap($dolgozo, $nap, $unnepnapok)) {
                 $tavolletnev = $this->getTavolletNev($szabadsagok, $nap);
+                $ora = $tavolletnev ? 0 : $napiora;
                 $napok[] = [
                     'datum' => $nap->format(\mkw\store::$DateFormat),
                     'napnev' => $napnevek[(int)$nap->format('N')],
                     'kezdes' => $tavolletnev ? '' : $kezdes,
                     'vege' => $tavolletnev ? '' : $vege,
                     'tavollet' => $tavolletnev,
+                    'ora' => $ora,
+                    'orastr' => $this->formatOra($ora),
                 ];
+                $oraosszesen += $ora;
                 if ($tavolletnev) {
                     $tavollet++;
                 } else {
@@ -195,7 +205,37 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             'napok' => $napok,
             'ledolgozott' => $ledolgozott,
             'tavollet' => $tavollet,
+            'oraosszesen' => $oraosszesen,
+            'oraosszesenstr' => $this->formatOra($oraosszesen),
         ];
+    }
+
+    /**
+     * A dolgozó rögzített munkaidejéből egy munkanap óraszáma. Munkaidő nélkül 0 – ilyenkor az
+     * óra oszlop üresen marad, hogy látszódjon: a munkarend nincs kitöltve.
+     */
+    private function getNapiOra(Dolgozo $dolgozo)
+    {
+        $kezdes = $dolgozo->getMunkakezdes();
+        $vege = $dolgozo->getMunkavege();
+        if (!$kezdes || !$vege) {
+            return 0;
+        }
+        $perc = ((int)$vege->format('H') * 60 + (int)$vege->format('i'))
+            - ((int)$kezdes->format('H') * 60 + (int)$kezdes->format('i'));
+        if ($perc < 0) {
+            // éjszakába nyúló műszak
+            $perc += 24 * 60;
+        }
+        return round($perc / 60, 2);
+    }
+
+    private function formatOra($ora)
+    {
+        if (!$ora) {
+            return '';
+        }
+        return rtrim(rtrim(number_format($ora, 2, ',', ''), '0'), ',');
     }
 
     /**
