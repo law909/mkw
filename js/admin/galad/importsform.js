@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
 
-            $('.js-galadoxfordimport, .js-galadcgmimport, .js-galadproductimport, .js-galadsuomyimport, .js-szinimport, .js-meretimport, .js-orszagimport, .js-galadpartnerimport').on('click', function (e) {
+            $('.js-galadproductimport, .js-szinimport, .js-meretimport, .js-orszagimport, .js-galadpartnerimport').on('click', function (e) {
                 e.preventDefault();
                 var data = new FormData($('#mattkarb-form')[0]);
                 $.ajax({
