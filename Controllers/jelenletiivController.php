@@ -128,7 +128,9 @@ class jelenletiivController extends \mkwhelpers\MattableController
     {
         $nap = $this->params->getStringRequestParam('datum', '');
         $jt = \mkw\store::getEm()->getRepository(Jelenlettipus::class)->find($this->params->getIntRequestParam('jt', 0));
-        $egyedek = \mkw\store::getEm()->getRepository(Dolgozo::class)->getWithJoins([], []);
+        $dolgozofilter = new \mkwhelpers\FilterDescriptor();
+        $dolgozofilter->addFilter('inaktiv', '=', false);
+        $egyedek = \mkw\store::getEm()->getRepository(Dolgozo::class)->getWithJoins($dolgozofilter, []);
         foreach ($egyedek as $egyed) {
             if ($this->getRepo()->getCount('(_xx.datum=\'' . $nap . '\') AND (d.id=' . $egyed->getId() . ') AND (j.id=' . $jt->getId() . ')') == 0) {
                 $jelen = new Jelenletiiv();

@@ -125,6 +125,10 @@ class dolgozoController extends \mkwhelpers\MattableController
     }
 
     /**
+     * A választék alapból csak az aktív dolgozókból áll. A már kiválasztott dolgozó akkor is
+     * benne marad, ha időközben inaktív lett – különben egy régi rekord szerkesztése némán
+     * másik dolgozóra írná át.
+     *
      * @param $selid
      * @param $csakaktiv
      * @param $pluszfilter FilterDescriptor
@@ -133,9 +137,14 @@ class dolgozoController extends \mkwhelpers\MattableController
      */
     public function getSelectList($selid = null, $csakaktiv = true, $pluszfilter = null)
     {
+        $filter = null;
         if ($csakaktiv) {
             $filter = new FilterDescriptor();
-            $filter->addFilter('inaktiv', '=', false);
+            if ($selid) {
+                $filter->addSql('((_xx.inaktiv = 0) OR (_xx.id = ' . (int)$selid . '))');
+            } else {
+                $filter->addFilter('inaktiv', '=', false);
+            }
         }
         if ($pluszfilter) {
             if (!$filter) {
