@@ -1376,6 +1376,26 @@ class Bizonylatfej
         }
     }
 
+    /**
+     * A fuvarozói API-k nyers szöveget várnak, a bizonylaton viszont HTML-escape-elt érték áll
+     * (pl. "FC-Moto GmbH &amp; Co. KG"), ami így kerülne a csomagcímkére.
+     */
+    private function decodeCourierPayload($payload)
+    {
+        if (is_string($payload)) {
+            return html_entity_decode($payload, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        }
+        if (is_array($payload)) {
+            return array_map([$this, 'decodeCourierPayload'], $payload);
+        }
+        if ($payload instanceof \stdClass) {
+            foreach (get_object_vars($payload) as $key => $value) {
+                $payload->$key = $this->decodeCourierPayload($value);
+            }
+        }
+        return $payload;
+    }
+
     public function toFoxpostv2API()
     {
         $fields = [
@@ -1398,7 +1418,7 @@ class Bizonylatfej
         if (\mkw\store::isUtanvetFizmod($this->getFizmodId())) {
             $fields['cod'] = (int)$this->getBrutto();
         }
-        return $fields;
+        return $this->decodeCourierPayload($fields);
     }
 
     public function toGLSAPI()
@@ -1479,7 +1499,7 @@ class Bizonylatfej
                 'FDSParameter' => $fdspar
             ];
         }
-        return $result;
+        return $this->decodeCourierPayload($result);
     }
 
     /**
@@ -1569,7 +1589,7 @@ class Bizonylatfej
             $result['requestedShipment']['shipmentSpecialServices'] = $specialservices;
         }
 
-        return $result;
+        return $this->decodeCourierPayload($result);
     }
 
     private function mergeFedexSpecialServices($eddigi, $uj)
@@ -1636,7 +1656,7 @@ class Bizonylatfej
             $result['requestedShipment']['shipmentSpecialServices'] = $this->toFedexUtanvet();
         }
 
-        return $result;
+        return $this->decodeCourierPayload($result);
     }
 
     private function toFedexFelado()
