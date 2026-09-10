@@ -73,7 +73,8 @@ class TermekMigrator extends AbstractMigrator
         $koltsegMap = $this->loadIdMap(Kapcsolodokoltseg::class, 'nev');
         $ktdNevek = TorzsMigrator::ktdKodNevek($this->src);
 
-        $plain = ['kod', 'afa', 'vtsz', 'csoportkod', 'lathato', 'ajanlott', 'hozzaszolas', 'nettosuly', 'gyujto', 'bonthato', 'tipus'];
+        $plain = ['kod', 'afa', 'vtsz', 'csoportkod', 'lathato', 'ajanlott', 'hozzaszolas', 'nettosuly', 'gyujto', 'bonthato', 'tipus',
+            'ktd', 'ktdszorzo'];
         for ($i = 1; $i <= self::CSKDB; $i++) {
             $plain[] = 'csk' . $i . 'kod';
             $plain[] = 'csk' . $i . 'menny';
@@ -158,10 +159,11 @@ class TermekMigrator extends AbstractMigrator
     }
 
     /**
-     * A termék `cskNkod` / `cskNmenny` mezőiből a kapcsolódó költség hozzárendelések. Egy ktd kód
-     * több költséget is jelenthet (fogyasztói + gyűjtő csomagolás), ilyenkor mindegyik ugyanazt a
-     * mennyiséget kapja. A 0 vagy hiányzó mennyiség üresen marad: úgy a törzs számítási alapja
-     * (a termék súlya) marad érvényben, nem nullázódik a költség.
+     * A termék kapcsolódó költség hozzárendelései a forrás két helyéről: a `cskNkod`/`cskNmenny`
+     * mezőpárokból és a termék saját `ktd`/`ktdszorzo` mezőjéből. Egy ktd kód több költséget is
+     * jelenthet (fogyasztói + gyűjtő csomagolás), ilyenkor mindegyik ugyanazt a mennyiséget kapja.
+     * A 0 vagy hiányzó mennyiség üresen marad: úgy a törzs számítási alapja (a termék súlya) marad
+     * érvényben, nem nullázódik a költség.
      *
      * @param array $r a forrás termék sora
      * @param array<int, string[]> $ktdNevek ktd kod => költségnevek
@@ -169,9 +171,16 @@ class TermekMigrator extends AbstractMigrator
      */
     private function setKapcsolodokoltsegek(Termek $t, array $r, string $cikkszam, array $ktdNevek, array $koltsegMap): void
     {
-        $idk = [];
+        $parok = [];
         for ($i = 1; $i <= self::CSKDB; $i++) {
-            $ktdkod = (int)($r['csk' . $i . 'kod'] ?? 0);
+            $parok[] = [(int)($r['csk' . $i . 'kod'] ?? 0), (float)($r['csk' . $i . 'menny'] ?? 0)];
+        }
+        // a termék saját ktd mezője is egy hozzárendelés, a szorzója a mennyiség. Szándékosan a
+        // csk slotok UTÁN: ha ugyanaz a költség onnan is jön, a ktd mező mennyisége marad érvényben
+        $parok[] = [(int)($r['ktd'] ?? 0), (float)($r['ktdszorzo'] ?? 0)];
+
+        $idk = [];
+        foreach ($parok as [$ktdkod, $menny]) {
             if (!$ktdkod) {
                 continue;
             }
@@ -179,7 +188,6 @@ class TermekMigrator extends AbstractMigrator
                 // a megfeleltetésben "nem kell"-ként szereplő vagy ismeretlen ktd sor
                 continue;
             }
-            $menny = (float)($r['csk' . $i . 'menny'] ?? 0);
             foreach ($ktdNevek[$ktdkod] as $nev) {
                 $koltsegId = $koltsegMap[$nev] ?? null;
                 if (!$koltsegId) {
