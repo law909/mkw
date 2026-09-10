@@ -66,11 +66,16 @@ class GLSService
         }
     }
 
+    /**
+     * @return array a GLS hibái olvasható formában – üres tömb, ha minden címke elkészült
+     */
     public function sendToGLS($ids)
     {
         $db = 0;
         $pdfname = false;
         $glsmegrend = [];
+        $errors = [];
+        $osszes = 0;
         foreach ($ids as $id) {
             /** @var Bizonylatfej $megrendfej */
             $megrendfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
@@ -83,9 +88,10 @@ class GLSService
                     $pdfname = $megrendfej->getSanitizedId() . '_parcel_label.pdf';
                 }
                 $db++;
+                $osszes++;
                 $glsmegrend[] = $megrendfej->toGLSAPI();
                 if ($db == 4) {
-                    $this->_sendToGLS($glsmegrend, $pdfname);
+                    $errors = array_merge($errors, $this->_sendToGLS($glsmegrend, $pdfname));
                     $db = 0;
                     $pdfname = false;
                     $glsmegrend = [];
@@ -93,8 +99,12 @@ class GLSService
             }
         }
         if ($glsmegrend) {
-            $this->_sendToGLS($glsmegrend, $pdfname);
+            $errors = array_merge($errors, $this->_sendToGLS($glsmegrend, $pdfname));
         }
+        if (!$osszes) {
+            $errors[] = t('A kijelöltek közt nincs olyan GLS-es megrendelés, amelynek még nincs csomagcímkéje.');
+        }
+        return $errors;
     }
 
     private function _sendToGLS($glsmegrend, $pdfname)
@@ -130,6 +140,24 @@ class GLSService
                 }
             }
         }
+        return $this->collectErrors($glserror, $glsres);
+    }
+
+    /**
+     * A GLS hibalistája bizonylatszámmal együtt, hogy a felhasználó lássa, melyik küldemény
+     * min bukott el (pl. "Invalid data in 'Delivery Zip Code'").
+     */
+    private function collectErrors($glserror, $glsres)
+    {
+        $result = [];
+        foreach ((array)$glserror as $error) {
+            $bizonylatok = implode(', ', (array)($error->ClientReferenceList ?? []));
+            $result[] = trim($bizonylatok . ': ' . ($error->ErrorDescription ?? ''), ': ');
+        }
+        if (!$result && !$glsres) {
+            $result[] = t('A GLS nem válaszolt.');
+        }
+        return $result;
     }
 
     public function delGLSParcel($id)

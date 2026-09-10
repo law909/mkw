@@ -55,7 +55,12 @@ class webshopbizfejController extends bizonylatfejController
     public function sendToGLS()
     {
         $glssvc = new GLSService();
-        $glssvc->sendToGLS($this->params->getArrayRequestParam('ids'));
+        $errors = $glssvc->sendToGLS($this->params->getArrayRequestParam('ids'));
+        if ($errors) {
+            $this->jsonFail(implode("\n", $errors));
+            return;
+        }
+        echo json_encode(['ok' => true]);
     }
 
     public function delGLSParcel()

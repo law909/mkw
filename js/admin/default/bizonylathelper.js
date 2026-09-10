@@ -2747,12 +2747,16 @@ let bizonylathelper = function ($) {
                                         $.ajax({
                                             url: '/admin/' + entityName + '/sendtogls',
                                             type: 'POST',
+                                            dataType: 'json',
                                             data: {
                                                 ids: tomb
                                             },
-                                            success: function () {
+                                            success: function (res) {
                                                 dia.dialog('close');
                                                 $('.mattable-tablerefresh').click();
+                                                if (res && res.error) {
+                                                    mkwHiba(res.error);
+                                                }
                                             }
                                         });
                                     },

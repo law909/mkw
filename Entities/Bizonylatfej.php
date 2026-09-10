@@ -1425,6 +1425,9 @@ class Bizonylatfej
         $fdspar->StringValue = $this->getPartneremail();
         $sm2par = new \stdClass();
         $sm2par->StringValue = $this->getPartnertelefon();
+        // a GLS az irányítószámot az országhoz validálja: fix HU-val a külföldi cím "Invalid data in 'Delivery Zip Code'"
+        $szallorszag = ($this->getSzallirszam() ? $this->getPartnerszallorszag() : $this->getPartnerorszag())
+            ?: $this->getPartnerSzallorszagOrOrszag();
 
         $result = [
             'ClientNumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
@@ -1438,7 +1441,7 @@ class Bizonylatfej
                 'Street' => ($this->getSzallirszam() ? $this->getSzallutca() : $this->getPartnerutca()),
                 'City' => ($this->getSzallirszam() ? $this->getSzallvaros() : $this->getPartnervaros()),
                 'ZipCode' => ($this->getSzallirszam() ? $this->getSzallirszam() : $this->getPartnerirszam()),
-                'CountryIsoCode' => 'HU',
+                'CountryIsoCode' => $szallorszag?->getIso3166() ?: 'HU',
                 'ContactName' => $this->getPartnernev(),
                 'ContactPhone' => $this->getPartnertelefon(),
                 'ContactEmail' => $this->getPartneremail()
