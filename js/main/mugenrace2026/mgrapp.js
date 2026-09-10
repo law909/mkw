@@ -11,6 +11,7 @@ var mkwmsg = {
 	ChkKosarUres: 'Your cart is empty.',
     ChkHiba: 'Please fill out missing data.',
     ChkSzallmodHiba: 'Please choose your preferred delivery method.',
+    ChkFizmodHiba: 'Please choose your preferred payment method.',
     ChkSave: 'Saving your order. Please wait.',
 	FiokAdataitModositjuk: 'Saving changes...',
 	DialogFejlec: 'Information',
@@ -32,6 +33,7 @@ var mkwmsghun = {
     ChkKosarUres: 'Az Ön kosara üres.',
     ChkHiba: 'Kérjük, adja meg a hiányzó adatokat. Ezeket pirossal megjelöltük.',
     ChkSzallmodHiba: 'Kérjük adja meg a kívánt szállítási módot.',
+    ChkFizmodHiba: 'Kérjük adja meg a kívánt fizetési módot.',
     ChkSave: 'Megrendelésének mentése folyamatban. Kérem várjon.',
     FiokAdataitModositjuk: 'Adatait módosítjuk...',
     DialogFejlec: 'Értesítés',
@@ -916,16 +918,27 @@ var checkout = (function ($, guid) {
 
             checkoutform.on('submit', function (e) {
                 var hibas = false, tofocus = false, hibauzenet;
+                const sendorderbtn = $('.chk-sendorderbtn'),
+                    sendorderlabel = sendorderbtn.val();
 
                 hibauzenet = mkwmsg.ChkHiba;
 
-                $('.chk-sendorderbtn').removeClass('cartbtn').addClass('okbtn').val('Feldolgozás alatt');
+                sendorderbtn.removeClass('cartbtn').addClass('okbtn').val(sendorderbtn.data('processinglabel') || sendorderlabel);
 
                 if (!$('input[name="szallitasimod"]:checked').val()) {
                     tofocus = $('input[name="szallitasimod"]');
                     hibas = true;
                     hibauzenet = mkwmsg.ChkSzallmodHiba;
                 }
+
+                if (!$('input[name="fizetesimod"]:checked').val()) {
+                    if (!hibas) {
+                        tofocus = $('input[name="fizetesimod"]');
+                        hibauzenet = mkwmsg.ChkFizmodHiba;
+                    }
+                    hibas = true;
+                }
+
                 if (!vezeteknevinput.val()) {
                     vezeteknevinput.addClass('hibas');
                     if (!hibas) {
@@ -1116,7 +1129,7 @@ var checkout = (function ($, guid) {
                 }
 
                 if (hibas) {
-                    $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
+                    sendorderbtn.removeClass('okbtn').addClass('cartbtn').val(sendorderlabel);
                     $('#dialogcenter').on('hidden', function () {
                         $('#dialogcenter').off('hidden');
                         if (tofocus) {
@@ -1128,7 +1141,7 @@ var checkout = (function ($, guid) {
                     return false;
                 } else {
                     if (!$('input[name="aszfready"]').prop('checked')) {
-                        $('.chk-sendorderbtn').removeClass('okbtn').addClass('cartbtn').val('Megrendelés elküldése');
+                        sendorderbtn.removeClass('okbtn').addClass('cartbtn').val(sendorderlabel);
                         e.preventDefault();
                         mkw.showDialog(mkwmsg.ChkASZF);
                         return false;

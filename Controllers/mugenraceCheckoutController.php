@@ -80,27 +80,37 @@ class mugenraceCheckoutController extends checkoutController
 
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
-            $errors[] = 'Nem adott meg egy kötelező adatot.';
+            $errors[] = t('Nem adott meg egy kötelező adatot.');
         }
 
-        if ($fizetesimod && !$fizmod) {
+        if (!$szallitasimod) {
+            $ok = false;
+            $errorlogtext[] = '7szallmod';
+            $errors[] = t('Nem adta meg a szállítási módot.');
+        }
+
+        if (!$fizetesimod) {
             $ok = false;
             $errorlogtext[] = '6fizmod';
-            $errors[] = 'A választott fizetési mód nem választható.';
+            $errors[] = t('Nem adta meg a fizetési módot.');
+        } elseif (!$fizmod) {
+            $ok = false;
+            $errorlogtext[] = '6fizmod';
+            $errors[] = t('A választott fizetési mód nem választható.');
         }
 
         $kosartetelek = $this->getRepo(Kosar::class)->getDataBySessionId(\mkw\session::getId());
         $ok = $ok && count($kosartetelek) > 0;
         if (!count($kosartetelek)) {
             $errorlogtext[] = '4ureskosar';
-            $errors[] = 'Üres a kosara.';
+            $errors[] = t('Üres a kosara.');
         }
 
         $res = \mkw\store::checkMinKosarErtek();
         if (!$res['success']) {
             $ok = false;
             $errorlogtext[] = '5minkosarertek';
-            $errors[] = 'A rendelés összege nem éri el a minimális vásárlási limitet (' . \mkw\store::bizformat($res['minvalue']) . ' Ft).';
+            $errors[] = sprintf(t('A rendelés összege nem éri el a minimális vásárlási limitet (%s Ft).'), \mkw\store::bizformat($res['minvalue']));
         }
 
         if ($ok) {

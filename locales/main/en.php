@@ -114,6 +114,7 @@ return [
     'Szállítási mód' => 'Delivery method',
     'Fizetési mód' => 'Payment method',
     'Megrendelés elküldése' => 'Place order',
+    'Feldolgozás alatt' => 'Processing',
     'Igen, értesítsenek az akciókról' => 'Yes, send me emails about your discounts',
     'Akciókról kérek hírlevelet' => 'Send me emails about your discounts',
     'Igen, értesítsenek az újdonságokról' => 'Yes, send me newsletters',
@@ -324,4 +325,10 @@ return [
     'Magánszemélyként vásárolok' => 'I am buying as an individual',
     'Adja meg fizetési adatait, és nyomja meg a Fizetés gombot.' => 'Enter your payment details and press the "Pay now" button.',
     'Fizetés' => 'Pay now',
+    'Nem adott meg egy kötelező adatot.' => 'A required field is missing.',
+    'Nem adta meg a szállítási módot.' => 'Please choose your preferred delivery method.',
+    'Nem adta meg a fizetési módot.' => 'Please choose your preferred payment method.',
+    'A választott fizetési mód nem választható.' => 'The chosen payment method is not available.',
+    'Üres a kosara.' => 'Your cart is empty.',
+    'A rendelés összege nem éri el a minimális vásárlási limitet (%s Ft).' => 'The order total is below the minimum order value (%s HUF).',
 ];

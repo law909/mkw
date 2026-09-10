@@ -336,6 +336,7 @@
                                                         </div>
                                                         <div><input type="submit"
                                                                     class="button primary large full-width cartbtn chk-sendorderbtn js-chksendorderbtn"
+                                                                    data-processinglabel="{t('Feldolgozás alatt')}"
                                                                     value="{t('Megrendelés elküldése')}"></div>
                                                     </div>
                                                 </div>
