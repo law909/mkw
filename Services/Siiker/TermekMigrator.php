@@ -3,6 +3,7 @@
 namespace Services\Siiker;
 
 use Entities\Afa;
+use Entities\Kapcsolodokoltseg;
 use Entities\Arsav;
 use Entities\ME;
 use Entities\Termek;
@@ -23,6 +24,8 @@ class TermekMigrator extends AbstractMigrator
 {
     const ALAPSAV = 2;
     const ARSZAB = '/^\[(\d+)\]\*(\d+(?:[.,]\d+)?)$/';
+    /** ennyi `cskNkod` / `cskNmenny` mezőpár van a forrás termék táblájában */
+    const CSKDB = 12;
 
     public function run(): void
     {
@@ -67,7 +70,14 @@ class TermekMigrator extends AbstractMigrator
             }
         }
 
+        $koltsegMap = $this->loadIdMap(Kapcsolodokoltseg::class, 'nev');
+        $ktdNevek = TorzsMigrator::ktdKodNevek($this->src);
+
         $plain = ['kod', 'afa', 'vtsz', 'csoportkod', 'lathato', 'ajanlott', 'hozzaszolas', 'nettosuly', 'gyujto', 'bonthato', 'tipus'];
+        for ($i = 1; $i <= self::CSKDB; $i++) {
+            $plain[] = 'csk' . $i . 'kod';
+            $plain[] = 'csk' . $i . 'menny';
+        }
         $text = ['cikkszam', 'nev', 'nev2', 'me', 'leiras', 'htmlleiras', 'rovidleiras', 'kulcsszavak', 'seodescription', 'weboldalcim'];
         $rows = $this->src->fetchAll('SELECT ' . $this->src->columns($plain, $text)
             . ' FROM ' . $this->src->table('termek') . ' WHERE inaktiv = 0 ORDER BY kod' . $this->limitSql());
@@ -141,9 +151,46 @@ class TermekMigrator extends AbstractMigrator
             } else {
                 $this->report->note('Termek ' . $cikkszam . ': nincs áfa, ár nélkül marad');
             }
+            $this->setKapcsolodokoltsegek($t, $r, $cikkszam, $ktdNevek, $koltsegMap);
             $this->save($t, $isNew, 'Termek');
         }
         $this->flushClear();
+    }
+
+    /**
+     * A termék `cskNkod` / `cskNmenny` mezőiből a kapcsolódó költség hozzárendelések. Egy ktd kód
+     * több költséget is jelenthet (fogyasztói + gyűjtő csomagolás), ilyenkor mindegyik ugyanazt a
+     * mennyiséget kapja. A 0 vagy hiányzó mennyiség üresen marad: úgy a törzs számítási alapja
+     * (a termék súlya) marad érvényben, nem nullázódik a költség.
+     *
+     * @param array $r a forrás termék sora
+     * @param array<int, string[]> $ktdNevek ktd kod => költségnevek
+     * @param array<string, int> $koltsegMap költségnév => id
+     */
+    private function setKapcsolodokoltsegek(Termek $t, array $r, string $cikkszam, array $ktdNevek, array $koltsegMap): void
+    {
+        $idk = [];
+        for ($i = 1; $i <= self::CSKDB; $i++) {
+            $ktdkod = (int)($r['csk' . $i . 'kod'] ?? 0);
+            if (!$ktdkod) {
+                continue;
+            }
+            if (!isset($ktdNevek[$ktdkod])) {
+                // a megfeleltetésben "nem kell"-ként szereplő vagy ismeretlen ktd sor
+                continue;
+            }
+            $menny = (float)($r['csk' . $i . 'menny'] ?? 0);
+            foreach ($ktdNevek[$ktdkod] as $nev) {
+                $koltsegId = $koltsegMap[$nev] ?? null;
+                if (!$koltsegId) {
+                    $this->report->note('Termek ' . $cikkszam . ': hiányzó kapcsolódó költség "' . $nev . '" (előbb a torzs lépés kell)');
+                    continue;
+                }
+                $t->addKapcsolodokoltseg($this->ref(Kapcsolodokoltseg::class, $koltsegId), $menny > 0 ? $menny : null);
+                $idk[] = $koltsegId;
+            }
+        }
+        $t->removeKapcsolodokoltsegExcept($idk);
     }
 
     private function migrateAr(): void

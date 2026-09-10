@@ -17,7 +17,7 @@ use mkw\consts;
 class TargetPurger extends AbstractMigrator
 {
     /** A migráció által írt táblák. */
-    const ROOTS = ['termek', 'partner', 'termekfa', 'arsav', 'afa', 'valutanem', 'arfolyam', 'bankszamla', 'me', 'vtsz', 'fizmod', 'raktar'];
+    const ROOTS = ['termek', 'partner', 'termekfa', 'arsav', 'afa', 'valutanem', 'arfolyam', 'bankszamla', 'me', 'vtsz', 'fizmod', 'raktar', 'kapcsolodokoltseg'];
 
     /** Forgalmi táblák: a RESTRICT hivatkozás ellenére törlendők, nem nullázandók. */
     const DATATABLES = [

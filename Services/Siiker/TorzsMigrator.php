@@ -7,6 +7,7 @@ use Entities\Arfolyam;
 use Entities\Arsav;
 use Entities\Bankszamla;
 use Entities\Fizmod;
+use Entities\Kapcsolodokoltseg;
 use Entities\ME;
 use Entities\Raktar;
 use Entities\TermekFa;
@@ -17,8 +18,8 @@ use mkw\store;
 
 /**
  * A kis törzsek: áfa, valutanem, bankszámla, árfolyam, me, vtsz, fizmod, raktár, ársáv,
- * termékcsoport-fa. A kulcs mindenütt a SIIKer `kod` (migrid / idegenkod), a névvel azonosított
- * törzsekben (me, ársáv) a név.
+ * termékcsoport-fa, kapcsolódó költség. A kulcs mindenütt a SIIKer `kod` (migrid / idegenkod),
+ * a névvel azonosított törzsekben (me, ársáv, kapcsolódó költség) a név.
  */
 class TorzsMigrator extends AbstractMigrator
 {
@@ -26,6 +27,38 @@ class TorzsMigrator extends AbstractMigrator
     const ARSAVPREFIX = 'Sáv ';
     const BESZARSAV = 'Beszerzési ár';
     const ROOTNEV = 'Termék csoportok';
+
+    /**
+     * A SIIKer `ktd` (környezetvédelmi termékdíj) törzs → kapcsolódó költségek, a megrendelő
+     * által megadott megfeleltetés szerint. A kulcs a forrás neve {@see ktdKulcs()} alakban, az
+     * érték `[név, csoport, ár]` hármasok listája:
+     *
+     *  - egy ktd sorból KETTŐ költség is lehet (a csomagolásnál a fogyasztói és a gyűjtő is jár),
+     *    ilyenkor a termék mindkettőt megkapja, ugyanazzal a mennyiséggel;
+     *  - üres lista = a sor nem kell (a termékei sem kapnak érte költséget);
+     *  - a fel nem sorolt ktd sor nem kerül át, de a riportban megjelenik.
+     *
+     * Az árak szándékosan itt vannak, nem a `ktd.brutto`-ból: a megfeleltetés a mérvadó.
+     */
+    const KTDMAP = [
+        'cukoradó ca' => [['Cukoradó CA', 'NETA', 210]],
+        'a19 műanyag' => [
+            ['Fogyasztói csomagolás műanyag', 'EPR', 219],
+            ['Gyűjtő csomagolás műanyag', 'EPR', 219],
+        ],
+        'a29 papír' => [
+            ['Fogyasztói csomagolás papír', 'EPR', 173],
+            ['Gyűjtő csomagolás papír', 'EPR', 173],
+        ],
+        'sós neta' => [],
+        'cukoradó cb' => [['Cukoradó CB', 'NETA', 65]],
+        'mü termék' => [['301 01 K1 Műanyag termék', 'termekdij', 1900]],
+        'cukoradó cc' => [['Cukoradó CC', 'NETA', 210]],
+        'elem c' => [],
+        'elem g' => [],
+        'elektronikus berendezés' => [['1330 LED lámpa', 'EPR', 419]],
+        'uveg fogyasztói' => [['1170 Fogyasztó csomagolás üveg színtelen', 'EPR', 107]],
+    ];
 
     private array $afaMap = [];
     private array $valutanemMap = [];
@@ -44,6 +77,7 @@ class TorzsMigrator extends AbstractMigrator
         $this->migrateRaktar();
         $this->migrateArsav();
         $this->migrateTermekFa();
+        $this->migrateKapcsolodokoltseg();
         $this->setDefaultParameters();
     }
 
@@ -55,6 +89,33 @@ class TorzsMigrator extends AbstractMigrator
     public static function arsavNev($sav): string
     {
         return self::ARSAVPREFIX . (int)$sav;
+    }
+
+    /** A ktd név keresőkulcsa: kisbetűs, egyszeres szóközös. */
+    public static function ktdKulcs($nev): string
+    {
+        return mb_strtolower(preg_replace('/\s+/u', ' ', trim((string)$nev)), 'UTF-8');
+    }
+
+    /**
+     * SIIKer ktd kod => a hozzá tartozó kapcsolódó költségek nevei. A `termek` lépés ebből tudja,
+     * melyik `cskNkod` melyik költségre (költségekre) fordul.
+     *
+     * @return array<int, string[]>
+     */
+    public static function ktdKodNevek(SiikerSource $src): array
+    {
+        $map = [];
+        foreach ($src->fetchAll('SELECT kod, ' . $src->text('nev') . ' FROM ' . $src->table('ktd')) as $r) {
+            $nevek = [];
+            foreach (self::KTDMAP[self::ktdKulcs($r['nev'])] ?? [] as [$nev]) {
+                $nevek[] = $nev;
+            }
+            if ($nevek) {
+                $map[(int)$r['kod']] = $nevek;
+            }
+        }
+        return $map;
     }
 
     private function migrateAfa(): void
@@ -262,6 +323,34 @@ class TorzsMigrator extends AbstractMigrator
             $a = new Arsav();
             $a->setNev($nev);
             $this->save($a, true, 'Arsav');
+        }
+        $this->flushClear();
+    }
+
+    private function migrateKapcsolodokoltseg(): void
+    {
+        $map = $this->loadIdMap(Kapcsolodokoltseg::class, 'nev');
+        $rows = $this->src->fetchAll('SELECT kod, ' . $this->src->text('nev') . ' FROM ' . $this->src->table('ktd') . ' ORDER BY kod');
+        foreach ($rows as $r) {
+            $forrasnev = $this->str($r['nev']);
+            $kulcs = self::ktdKulcs($forrasnev);
+            if (!array_key_exists($kulcs, self::KTDMAP)) {
+                $this->report->note('Kapcsolodokoltseg: a ktd "' . $forrasnev . '" (kod ' . $r['kod'] . ') nincs a megfeleltetésben, kimarad');
+                continue;
+            }
+            if (!self::KTDMAP[$kulcs]) {
+                $this->report->skipped('Kapcsolodokoltseg', $forrasnev . ': a megfeleltetés szerint nem kell');
+                continue;
+            }
+            foreach (self::KTDMAP[$kulcs] as [$nev, $csoport, $ar]) {
+                /** @var Kapcsolodokoltseg $k */
+                [$k, $isNew] = $this->findOrNew(Kapcsolodokoltseg::class, $map, $nev);
+                $k->setNev($nev);
+                $k->setCsoport($csoport);
+                $k->setSzamitasalap('suly');
+                $k->setAr($ar);
+                $this->save($k, $isNew, 'Kapcsolodokoltseg');
+            }
         }
         $this->flushClear();
     }
