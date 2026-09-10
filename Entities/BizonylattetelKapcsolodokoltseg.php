@@ -53,7 +53,16 @@ class BizonylattetelKapcsolodokoltseg
     /** @ORM\Column(type="boolean",nullable=false) */
     private $navfeladando = false;
 
-    /** a termék vonatkozó adata (ma a súlya), amivel az ár szorzódik @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    /**
+     * A terméken a költséghez rögzített mennyiség, ha volt. Kitöltve ez lett a számítás alapja
+     * a termék adata helyett – üresen hagyva látszik, hogy a `szamitasalapertek` a törzs
+     * `szamitasalap`-jából (ma a súlyból) jött.
+     *
+     * @ORM\Column(type="decimal",precision=12,scale=4,nullable=true)
+     */
+    private $mennyiseg;
+
+    /** a számítás alapja: a rögzített mennyiség, vagy ha nincs, a termék vonatkozó adata (ma a súlya) @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
     private $szamitasalapertek = 0;
 
     /** a tétel teljes mennyiségére eső költség: ar * szamitasalapertek * mennyiseg @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
@@ -142,6 +151,16 @@ class BizonylattetelKapcsolodokoltseg
     public function setNavfeladando($val)
     {
         $this->navfeladando = $val;
+    }
+
+    public function getMennyiseg()
+    {
+        return $this->mennyiseg;
+    }
+
+    public function setMennyiseg($val)
+    {
+        $this->mennyiseg = ($val === '' || $val === null) ? null : $val;
     }
 
     public function getSzamitasalapertek()

@@ -67,10 +67,10 @@ class BizonylattetelKapcsolodokoltseg extends \Entities\BizonylattetelKapcsolodo
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'id', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'bizonylattetel', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'kapcsolodokoltseg', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'nev', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'csoport', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalap', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ar', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'navfeladando', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalapertek', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ertek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'id', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'bizonylattetel', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'kapcsolodokoltseg', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'nev', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'csoport', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalap', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ar', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'navfeladando', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalapertek', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ertek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'id', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'bizonylattetel', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'kapcsolodokoltseg', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'nev', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'csoport', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalap', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ar', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'navfeladando', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalapertek', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ertek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'id', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'bizonylattetel', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'kapcsolodokoltseg', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'nev', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'csoport', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalap', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ar', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'navfeladando', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'mennyiseg', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'szamitasalapertek', '' . "\0" . 'Entities\\BizonylattetelKapcsolodokoltseg' . "\0" . 'ertek'];
     }
 
     /**
@@ -366,6 +366,28 @@ class BizonylattetelKapcsolodokoltseg extends \Entities\BizonylattetelKapcsolodo
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNavfeladando', [$val]);
 
         return parent::setNavfeladando($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMennyiseg()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMennyiseg', []);
+
+        return parent::getMennyiseg();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMennyiseg($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMennyiseg', [$val]);
+
+        return parent::setMennyiseg($val);
     }
 
     /**

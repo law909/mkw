@@ -70,6 +70,7 @@ class KapcsolodoKoltsegService
             $sor->setSzamitasalap($koltseg->getSzamitasalap());
             $sor->setAr($koltseg->getAr());
             $sor->setNavfeladando($koltseg->getNavfeladando());
+            $sor->setMennyiseg($termekmennyiseg);
             // a számítás alapja a terméken rögzített mennyiség, ha van; egyébként a törzs szerinti
             $sor->setSzamitasalapertek($koltseg->getSzamitasalapErtek($termek, $termekmennyiseg));
             $sor->setErtek($koltseg->calcErtek($termek, $termekmennyiseg) * $mennyiseg);
