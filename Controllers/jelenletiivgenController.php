@@ -45,6 +45,47 @@ class jelenletiivgenController extends \mkwhelpers\Controller
     }
 
     /**
+     * Ugyanaz az időszak mátrixban: soronként egy nap, oszloponként egy dolgozó, x ott, ahol
+     * aznap dolgozik. Az utolsó oszlop azt mondja meg, hányan dolgoznak aznap.
+     */
+    public function createMatrix()
+    {
+        $adat = $this->getData();
+        $report = $this->createView('rep_jelenletiivmatrix.tpl');
+        $report->setVar('dolgozok', array_column($adat['ivek'], 'dolgozonev'));
+        $report->setVar('napok', $this->buildMatrix($adat));
+        $report->setVar('tolstr', $adat['tolstr']);
+        $report->setVar('igstr', $adat['igstr']);
+        $report->printTemplateResult();
+    }
+
+    /** @return array soronként ['datum','napnev','jelek','db'] */
+    private function buildMatrix(array $adat)
+    {
+        $napnevek = Dolgozo::getNapok();
+        $sorok = [];
+        $nap = clone $adat['tol'];
+        while ($nap <= $adat['ig']) {
+            $kulcs = $nap->format(\mkw\store::$SQLDateFormat);
+            $jelek = [];
+            $db = 0;
+            foreach ($adat['ivek'] as $_iv) {
+                $dolgozik = isset($_iv['ledolgozottnapok'][$kulcs]);
+                $jelek[] = $dolgozik ? 'x' : '';
+                $db += $dolgozik ? 1 : 0;
+            }
+            $sorok[] = [
+                'datum' => $nap->format(\mkw\store::$DateFormat),
+                'napnev' => $napnevek[(int)$nap->format('N')],
+                'jelek' => $jelek,
+                'db' => $db,
+            ];
+            $nap->modify('+1 day');
+        }
+        return $sorok;
+    }
+
+    /**
      * Ugyanaz a tartalom xlsx-ben: dolgozónként egy munkalap, hogy nyomtatás nélkül is
      * továbbadható legyen.
      */
@@ -171,6 +212,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $napiora = $this->getNapiOra($dolgozo);
 
         $napok = [];
+        $ledolgozottnapok = [];
         $ledolgozott = 0;
         $tavollet = 0;
         $oraosszesen = 0;
@@ -193,6 +235,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
                     $tavollet++;
                 } else {
                     $ledolgozott++;
+                    $ledolgozottnapok[$nap->format(\mkw\store::$SQLDateFormat)] = true;
                 }
             }
             $nap->modify('+1 day');
@@ -203,6 +246,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             'munkakornev' => $dolgozo->getMunkakorNev(),
             'munkaido' => ($kezdes && $vege) ? $kezdes . ' - ' . $vege : '',
             'napok' => $napok,
+            'ledolgozottnapok' => $ledolgozottnapok,
             'ledolgozott' => $ledolgozott,
             'tavollet' => $tavollet,
             'oraosszesen' => $oraosszesen,
