@@ -7,15 +7,15 @@ use Entities\Fizmod;
 use Entities\Kontakt;
 use Entities\Orszag;
 use Entities\Partner;
+use Entities\Partnertelephely;
 use Entities\Valutanem;
 
 /**
- * Aktív partnerek + kontaktok. A webes fiók (webusername/jelszó) nem megy át: a
+ * Aktív partnerek + kontaktok + telephelyek. A webes fiók (webusername/jelszó) nem megy át: a
  * felhasználónév az oldloginname mezőbe kerül, jelszót a vevő újat kér.
  *
  * Aminek nincs helye az MKW-ban, a partner megjegyzésébe kerül szövegként: az alapkedvezmény
- * (az MKW-ban nincs partner-szintű globális kedvezmény), a második telephelytől kezdve a
- * telephelyek, és a partner bankszámlája.
+ * (az MKW-ban nincs partner-szintű globális kedvezmény) és a partner bankszámlája.
  */
 class PartnerMigrator extends AbstractMigrator
 {
@@ -31,6 +31,7 @@ class PartnerMigrator extends AbstractMigrator
     {
         $partnerMap = $this->loadIdMap(Partner::class, 'migrid');
         $kontaktMap = $this->loadIdMap(Kontakt::class, 'migrid');
+        $telephelyMap = $this->loadIdMap(Partnertelephely::class, 'migrid');
         $fizmodMap = $this->loadIdMap(Fizmod::class, 'migrid');
         $valutanemMap = $this->loadIdMap(Valutanem::class, 'migrid');
         $arsavMap = $this->loadIdMap(Arsav::class, 'nev');
@@ -107,10 +108,12 @@ class PartnerMigrator extends AbstractMigrator
             $p->setOldloginname($this->str($r['webusername'], 100));
             $p->setSzamlaegyeb($this->str($r['szlamegjegyzes']));
 
+            $orszag = null;
             $iso = $this->guessIso($adoszam, $euadoszam, (int)$r['kulfoldi']);
             if ($iso !== null) {
                 if (isset($orszagMap[$iso])) {
-                    $p->setOrszag($this->ref(Orszag::class, $orszagMap[$iso]));
+                    $orszag = $this->ref(Orszag::class, $orszagMap[$iso]);
+                    $p->setOrszag($orszag);
                 } else {
                     $this->missingOrszag[$iso] = ($this->missingOrszag[$iso] ?? 0) + 1;
                 }
@@ -121,6 +124,21 @@ class PartnerMigrator extends AbstractMigrator
 
             $this->em->persist($p);
             $isNew ? $this->report->created('Partner') : $this->report->updated('Partner');
+
+            foreach ($this->telephelyek[$kod] ?? [] as $t) {
+                /** @var Partnertelephely $telephely */
+                [$telephely, $tIsNew] = $this->findOrNew(Partnertelephely::class, $telephelyMap, $t['kod']);
+                $telephely->setMigrid((int)$t['kod']);
+                $telephely->setPartner($p);
+                $telephely->setNev($this->str($t['nev'], 255));
+                $telephely->setIrszam($this->str($t['irszam'], 10));
+                $telephely->setVaros($this->str($t['varos'], 40));
+                $telephely->setUtca($this->str($t['utca'], 60));
+                // a forrásban nincs ország a telephelyen, a partneré a legjobb tipp
+                $telephely->setOrszag($orszag);
+                $this->em->persist($telephely);
+                $tIsNew ? $this->report->created('Telephely') : $this->report->updated('Telephely');
+            }
 
             foreach ($this->kontaktok[$kod] ?? [] as $k) {
                 /** @var Kontakt $kontakt */
@@ -167,6 +185,7 @@ class PartnerMigrator extends AbstractMigrator
         }
     }
 
+    /** A partner alapértelmezett szállítási címe az első telephely marad. */
     private function applyTelephely(Partner $p, int $kod): void
     {
         $first = $this->telephelyek[$kod][0] ?? null;
@@ -190,9 +209,6 @@ class PartnerMigrator extends AbstractMigrator
         $alapkedv = (int)$r['alapkedv'];
         if ($alapkedv) {
             $lines[] = self::MEGJEGYZESPREFIX . 'alapkedvezmény: ' . $alapkedv . '%';
-        }
-        foreach (array_slice($this->telephelyek[$kod] ?? [], 1) as $t) {
-            $lines[] = self::MEGJEGYZESPREFIX . 'telephely: ' . trim($this->str($t['nev']) . ', ' . $this->str($t['irszam']) . ' ' . $this->str($t['varos']) . ' ' . $this->str($t['utca']), ', ');
         }
         foreach ($this->bankszamlak[$kod] ?? [] as $b) {
             $lines[] = self::MEGJEGYZESPREFIX . 'bankszámla: ' . trim($this->str($b['szlaszam']) . ' ' . $this->str($b['swift']) . ' ' . $this->str($b['iban']));
