@@ -658,13 +658,16 @@ class termekController extends \mkwhelpers\MattableController
                 $obj->addCimke($cimke);
             }
         }
-        $obj->removeAllKapcsolodokoltseg();
+        $koltsegmennyisegek = $this->getKapcsolodokoltsegMennyisegekFromRequest();
+        $kivalasztottkoltsegek = [];
         foreach ($this->params->getArrayRequestParam('kapcsolodokoltsegek') as $koltsegid) {
             $koltseg = $this->getEm()->getRepository(Kapcsolodokoltseg::class)->find($koltsegid);
             if ($koltseg) {
-                $obj->addKapcsolodokoltseg($koltseg);
+                $obj->addKapcsolodokoltseg($koltseg, $koltsegmennyisegek[$koltseg->getId()] ?? null);
+                $kivalasztottkoltsegek[] = $koltseg->getId();
             }
         }
+        $obj->removeKapcsolodokoltsegExcept($kivalasztottkoltsegek);
         $obj->setBrutto($this->params->getNumRequestParam('brutto'));
         $obj->setNetto($this->params->getNumRequestParam('netto'));
         $obj->setAkciosnetto($this->params->getNumRequestParam('akciosnetto'));
@@ -728,7 +731,8 @@ class termekController extends \mkwhelpers\MattableController
         if (\mkw\store::isArsavok()) {
             // a képletes sorok nettója nem a formról jön: a mentés is újraszámolja, hogy a tárolt
             // ár és a képlet ne csúszhasson szét
-            // a súlyt a setFields ekkorra már ráírta a termékre, külön átadni nem kell
+            // a súlyt és a kapcsolódó költségek mennyiségeit a setFields ekkorra már ráírta a
+            // termékre, külön átadni nem kell
             $kepletErtekek = \Services\TermekArKepletService::calc($this->getArsavSorokFromRequest(), $obj)['ertekek'];
             $arids = $this->params->getArrayRequestParam('arid');
             foreach ($arids as $arid) {
@@ -1520,6 +1524,20 @@ class termekController extends \mkwhelpers\MattableController
     /**
      * Az ársáv sorok a formról, a képletszámítás bemenetének alakjában.
      */
+    /**
+     * A kapcsolódó költségek formon álló mennyiségei: költség id => mennyiség. Az üresen hagyott
+     * mező null, nem 0 – a 0 valódi érték, a törzs szerinti számítási alapot is kiváltja.
+     */
+    private function getKapcsolodokoltsegMennyisegekFromRequest(): array
+    {
+        $res = [];
+        foreach ($this->params->getArrayRequestParam('kapcsolodokoltsegid') as $koltsegid) {
+            $ertek = trim($this->params->getStringRequestParam('kkmennyiseg_' . $koltsegid, ''));
+            $res[(int)$koltsegid] = ($ertek === '' ? null : \mkwhelpers\TypeConverter::toNum($ertek));
+        }
+        return $res;
+    }
+
     private function getArsavSorokFromRequest(): array
     {
         $sorok = [];
@@ -1557,7 +1575,9 @@ class termekController extends \mkwhelpers\MattableController
                 $termek,
                 // a formon átírt, még mentetlen súly is számítson
                 $this->params->existsRequestParam('suly') ? (float)$this->params->getNumRequestParam('suly') : null,
-                $afa
+                $afa,
+                // ahogy a hozzárendelt költségek mentetlen mennyiségei is
+                $this->getKapcsolodokoltsegMennyisegekFromRequest()
             );
         } catch (\Exception $e) {
             // a képernyőn álló árakhoz nem nyúlunk, csak megmondjuk, hogy nem sikerült
@@ -1670,7 +1690,10 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('cimkekat', $tcc->getWithCimkek($cimkek));
 
         $kkc = new kapcsolodokoltsegController();
-        $view->setVar('kapcsolodokoltseglist', $kkc->getSelectList($termek ? $termek->getAllKapcsolodokoltsegId() : []));
+        $view->setVar('kapcsolodokoltseglist', $kkc->getSelectList(
+            $termek ? $termek->getAllKapcsolodokoltsegId() : [],
+            $termek ? $termek->getKapcsolodokoltsegMennyisegek() : []
+        ));
 
         if ($termek) {
             $this->preloadKeszlet([$termek]);

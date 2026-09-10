@@ -29,13 +29,20 @@ class TermekArKepletService
      * @param Termek $termek a kapcsolódó költségek számítási alapjához
      * @param float|null $suly a termék súlya, ha a formról frissebb érték jött
      * @param Afa|null $afa a kerekítés bruttó-nettó váltásához, ha a formról frissebb érték jött
+     * @param array|null $koltsegMennyisegek költség id => a terméken rögzített mennyiség, ha a
+     *   formról frissebb érték jött; null esetén a terméken mentett hozzárendelésekből
      *
      * @return array ['ertekek' => [sorid => netto], 'hibak' => [sorid => üzenet]] – az `ertekek`
      *   CSAK a kiszámolt képletes sorokat tartalmazza: a fix sorhoz és a hibára futó képleteshez
      *   a hívónak nem szabad hozzányúlnia
      */
-    public static function calc(array $sorok, Termek $termek, ?float $suly = null, ?Afa $afa = null): array
-    {
+    public static function calc(
+        array $sorok,
+        Termek $termek,
+        ?float $suly = null,
+        ?Afa $afa = null,
+        ?array $koltsegMennyisegek = null
+    ): array {
         // a formon átírt súly is számítson; a terméken csak a számítás idejére állítjuk át, mert
         // a gomb nem ment (a mentés a maga útján úgyis beírja)
         $eredetiSuly = $termek->getSuly();
@@ -43,13 +50,18 @@ class TermekArKepletService
             $termek->setSuly($suly);
         }
         try {
-            return self::calcSorok($sorok, $termek, $afa ?: $termek->getAfa());
+            return self::calcSorok(
+                $sorok,
+                $termek,
+                $afa ?: $termek->getAfa(),
+                $koltsegMennyisegek ?? $termek->getKapcsolodokoltsegMennyisegek()
+            );
         } finally {
             $termek->setSuly($eredetiSuly);
         }
     }
 
-    private static function calcSorok(array $sorok, Termek $termek, ?Afa $afa): array
+    private static function calcSorok(array $sorok, Termek $termek, ?Afa $afa, array $koltsegMennyisegek): array
     {
         $ertekek = [];
         $hibak = [];
@@ -92,7 +104,7 @@ class TermekArKepletService
                 }
                 $ertek = $arsavErtek[$forras . '|' . $valutanem] * (float)($sor['szazalek'] ?? 100) / 100
                     + (float)($sor['hozzaad'] ?? 0)
-                    + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? []);
+                    + self::koltsegOsszeg($termek, $sor['koltsegek'] ?? [], $koltsegMennyisegek);
                 $ertek = self::roundBrutto($ertek, (int)($sor['arsav'] ?? 0), $afa);
                 $ertekek[$sor['id']] = $ertek;
                 $arsavErtek[(int)($sor['arsav'] ?? 0) . '|' . $valutanem] = $ertek;
@@ -128,15 +140,16 @@ class TermekArKepletService
      * a termékhez rendelt halmazból: a karbantartón a hozzárendelés is lehet még mentetlen.
      *
      * @param int[] $koltsegIdk
+     * @param array $koltsegMennyisegek költség id => a terméken rögzített mennyiség
      */
-    private static function koltsegOsszeg(Termek $termek, array $koltsegIdk): float
+    private static function koltsegOsszeg(Termek $termek, array $koltsegIdk, array $koltsegMennyisegek): float
     {
         $osszeg = 0;
         foreach ($koltsegIdk as $id) {
             /** @var Kapcsolodokoltseg|null $koltseg */
             $koltseg = \mkw\store::getEm()->getRepository(Kapcsolodokoltseg::class)->find($id);
             if ($koltseg) {
-                $osszeg += $koltseg->calcErtek($termek);
+                $osszeg += $koltseg->calcErtek($termek, $koltsegMennyisegek[$id] ?? null);
             }
         }
         return $osszeg;

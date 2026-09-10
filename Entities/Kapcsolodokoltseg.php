@@ -48,7 +48,7 @@ class Kapcsolodokoltseg
     /** @ORM\Column(type="boolean",nullable=false) */
     private $navfeladando = false;
 
-    /** @ORM\ManyToMany(targetEntity="Termek", mappedBy="kapcsolodokoltsegek") */
+    /** @ORM\OneToMany(targetEntity="TermekKapcsolodokoltseg",mappedBy="kapcsolodokoltseg") */
     private $termekek;
 
     public function __construct()
@@ -129,9 +129,15 @@ class Kapcsolodokoltseg
     /**
      * A számítás alapjául szolgáló termékadat értéke. Új számítási alapnál ez az egyetlen hely,
      * ahol bővíteni kell – a szorzás és a bizonylattételre másolás onnantól változatlan.
+     *
+     * @param string|float|null $mennyiseg a terméken rögzített mennyiség; kitöltve ez az alap
+     *                                     (a 0 is kitöltés), üresen a `szamitasalap` szerinti
      */
-    public function getSzamitasalapErtek(Termek $termek): float
+    public function getSzamitasalapErtek(Termek $termek, $mennyiseg = null): float
     {
+        if ($mennyiseg !== null && $mennyiseg !== '') {
+            return (float)$mennyiseg;
+        }
         return match ($this->szamitasalap) {
             'suly' => (float)$termek->getSuly(),
             default => 0,
@@ -139,9 +145,9 @@ class Kapcsolodokoltseg
     }
 
     /** a termékre eső költség: az egységár szorozva a számítás alapjával */
-    public function calcErtek(Termek $termek): float
+    public function calcErtek(Termek $termek, $mennyiseg = null): float
     {
-        return (float)$this->ar * $this->getSzamitasalapErtek($termek);
+        return (float)$this->ar * $this->getSzamitasalapErtek($termek, $mennyiseg);
     }
 
 }

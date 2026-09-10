@@ -98,7 +98,11 @@ class kapcsolodokoltsegController extends \mkwhelpers\MattableController
      *
      * @param int[] $selids a bejelölt sorok azonosítói
      */
-    public function getSelectList(array $selids = []): array
+    /**
+     * @param int[] $selids a termékhez rendelt költségek id-i
+     * @param array $mennyisegek költség id => a terméken rögzített mennyiség
+     */
+    public function getSelectList(array $selids = [], array $mennyisegek = []): array
     {
         $res = [];
         /** @var Kapcsolodokoltseg $sor */
@@ -110,6 +114,7 @@ class kapcsolodokoltsegController extends \mkwhelpers\MattableController
                 'szamitasalapnev' => $sor->getSzamitasalapNev(),
                 'ar' => $sor->getAr(),
                 'selected' => in_array($sor->getId(), $selids),
+                'mennyiseg' => $mennyisegek[$sor->getId()] ?? '',
             ];
         }
         return $res;

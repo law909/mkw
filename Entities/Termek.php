@@ -101,12 +101,10 @@ class Termek
     private $cimkek;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Kapcsolodokoltseg",inversedBy="termekek")
-     * @ORM\JoinTable(name="termek_kapcsolodokoltsegek",
-     *  options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
-     *  joinColumns={@ORM\JoinColumn(name="termek_id",referencedColumnName="id",onDelete="cascade")},
-     *  inverseJoinColumns={@ORM\JoinColumn(name="kapcsolodokoltseg_id",referencedColumnName="id",onDelete="cascade")}
-     *  )
+     * A hozzárendelt kapcsolódó költségek, kapcsolóentitáson keresztül: a hozzárendelésnek saját
+     * mennyisége van, ezért nem sima ManyToMany.
+     *
+     * @ORM\OneToMany(targetEntity="TermekKapcsolodokoltseg",mappedBy="termek",cascade={"persist","remove"},orphanRemoval=true)
      */
     private $kapcsolodokoltsegek;
 
@@ -1658,30 +1656,60 @@ class Termek
         return $this->cimkek;
     }
 
+    /** @return \Doctrine\Common\Collections\Collection|TermekKapcsolodokoltseg[] */
     public function getKapcsolodokoltsegek()
     {
         return $this->kapcsolodokoltsegek;
     }
 
-    public function getAllKapcsolodokoltsegId()
+    /** költség id => a terméken rögzített mennyiség (null, ha nincs kitöltve) */
+    public function getKapcsolodokoltsegMennyisegek(): array
     {
         $res = [];
-        foreach ($this->kapcsolodokoltsegek as $koltseg) {
-            $res[] = $koltseg->getId();
+        /** @var TermekKapcsolodokoltseg $sor */
+        foreach ($this->kapcsolodokoltsegek as $sor) {
+            $res[$sor->getKapcsolodokoltsegId()] = $sor->getMennyiseg();
         }
         return $res;
     }
 
-    public function addKapcsolodokoltseg(Kapcsolodokoltseg $koltseg)
+    public function getAllKapcsolodokoltsegId()
     {
-        if (!$this->kapcsolodokoltsegek->contains($koltseg)) {
-            $this->kapcsolodokoltsegek->add($koltseg);
+        $res = [];
+        /** @var TermekKapcsolodokoltseg $sor */
+        foreach ($this->kapcsolodokoltsegek as $sor) {
+            $res[] = $sor->getKapcsolodokoltsegId();
         }
+        return $res;
     }
 
-    public function removeAllKapcsolodokoltseg()
+    public function addKapcsolodokoltseg(Kapcsolodokoltseg $koltseg, $mennyiseg = null)
     {
-        $this->kapcsolodokoltsegek->clear();
+        /** @var TermekKapcsolodokoltseg $sor */
+        foreach ($this->kapcsolodokoltsegek as $sor) {
+            if ($sor->getKapcsolodokoltsegId() === $koltseg->getId()) {
+                $sor->setMennyiseg($mennyiseg);
+                return;
+            }
+        }
+        $this->kapcsolodokoltsegek->add(new TermekKapcsolodokoltseg($this, $koltseg, $mennyiseg));
+    }
+
+    /**
+     * A felsoroltakon kívüli hozzárendelések eldobása. Szándékosan ez van a "mindet törlöm, majd
+     * újra felveszem" helyett: a kulcs a termék és a költség párosa, a törlés viszont a beszúrás
+     * UTÁN fut a flushban, tehát a változatlanul maradt sorok kulcsütközést adnának.
+     *
+     * @param int[] $koltsegIdk
+     */
+    public function removeKapcsolodokoltsegExcept(array $koltsegIdk)
+    {
+        /** @var TermekKapcsolodokoltseg $sor */
+        foreach ($this->kapcsolodokoltsegek as $sor) {
+            if (!in_array($sor->getKapcsolodokoltsegId(), $koltsegIdk)) {
+                $this->kapcsolodokoltsegek->removeElement($sor);
+            }
+        }
     }
 
     public function getAllCimkeId()

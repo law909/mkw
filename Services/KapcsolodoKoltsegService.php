@@ -7,6 +7,7 @@ use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\BizonylattetelKapcsolodokoltseg;
 use Entities\Kapcsolodokoltseg;
+use Entities\TermekKapcsolodokoltseg;
 
 /**
  * A bizonylattételek kapcsolódó költségeinek újraképzése. A tétel sorai a termékhez rendelt
@@ -54,8 +55,14 @@ class KapcsolodoKoltsegService
         }
         $md = $em->getClassMetadata(BizonylattetelKapcsolodokoltseg::class);
         $mennyiseg = (float)$tetel->getMennyiseg();
-        /** @var Kapcsolodokoltseg $koltseg */
-        foreach ($termek->getKapcsolodokoltsegek() as $koltseg) {
+        /** @var TermekKapcsolodokoltseg $hozzarendeles */
+        foreach ($termek->getKapcsolodokoltsegek() as $hozzarendeles) {
+            /** @var Kapcsolodokoltseg|null $koltseg */
+            $koltseg = $hozzarendeles->getKapcsolodokoltseg();
+            if (!$koltseg) {
+                continue;
+            }
+            $termekmennyiseg = $hozzarendeles->getMennyiseg();
             $sor = new BizonylattetelKapcsolodokoltseg();
             $sor->setKapcsolodokoltseg($koltseg);
             $sor->setNev($koltseg->getNev());
@@ -63,8 +70,9 @@ class KapcsolodoKoltsegService
             $sor->setSzamitasalap($koltseg->getSzamitasalap());
             $sor->setAr($koltseg->getAr());
             $sor->setNavfeladando($koltseg->getNavfeladando());
-            $sor->setSzamitasalapertek($koltseg->getSzamitasalapErtek($termek));
-            $sor->setErtek($koltseg->calcErtek($termek) * $mennyiseg);
+            // a számítás alapja a terméken rögzített mennyiség, ha van; egyébként a törzs szerinti
+            $sor->setSzamitasalapertek($koltseg->getSzamitasalapErtek($termek, $termekmennyiseg));
+            $sor->setErtek($koltseg->calcErtek($termek, $termekmennyiseg) * $mennyiseg);
             $tetel->addKapcsolodokoltseg($sor);
             $em->persist($sor);
             if ($uow) {

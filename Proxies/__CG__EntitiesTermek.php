@@ -1306,6 +1306,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKapcsolodokoltsegMennyisegek(): array
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKapcsolodokoltsegMennyisegek', []);
+
+        return parent::getKapcsolodokoltsegMennyisegek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAllKapcsolodokoltsegId()
     {
 
@@ -1317,23 +1328,23 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function addKapcsolodokoltseg(\Entities\Kapcsolodokoltseg $koltseg)
+    public function addKapcsolodokoltseg(\Entities\Kapcsolodokoltseg $koltseg, $mennyiseg = NULL)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addKapcsolodokoltseg', [$koltseg]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addKapcsolodokoltseg', [$koltseg, $mennyiseg]);
 
-        return parent::addKapcsolodokoltseg($koltseg);
+        return parent::addKapcsolodokoltseg($koltseg, $mennyiseg);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeAllKapcsolodokoltseg()
+    public function removeKapcsolodokoltsegExcept(array $koltsegIdk)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllKapcsolodokoltseg', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeKapcsolodokoltsegExcept', [$koltsegIdk]);
 
-        return parent::removeAllKapcsolodokoltseg();
+        return parent::removeKapcsolodokoltsegExcept($koltsegIdk);
     }
 
     /**
