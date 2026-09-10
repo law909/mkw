@@ -51,14 +51,22 @@ class szinController extends \mkwhelpers\MattableController
      */
     protected function validate($obj, $parancs)
     {
+        $errors = [];
+        $nev = $obj->getNev();
+        if ($nev) {
+            $other = $this->getRepo()->findOneBy(['nev' => $nev]);
+            if ($other && $other->getId() !== $obj->getId()) {
+                $errors['nev'] = t('Ez a név már foglalt.');
+            }
+        }
         $charkod = $obj->getCharkod();
         if ($charkod) {
             $other = $this->getRepo()->findOneBy(['charkod' => $charkod]);
             if ($other && $other->getId() !== $obj->getId()) {
-                return ['charkod' => sprintf(t('Ez a charkód már foglalt: "%s".'), $other->getNev())];
+                $errors['charkod'] = sprintf(t('Ez a charkód már foglalt: "%s".'), $other->getNev());
             }
         }
-        return [];
+        return $errors;
     }
 
     public function getlistbody()

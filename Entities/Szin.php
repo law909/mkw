@@ -15,7 +15,7 @@ class Szin
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    /** @ORM\Column(type="string",length=255) */
+    /** @ORM\Column(type="string",length=255,unique=true) */
     private $nev;
     /** @ORM\Column(type="string",length=50,nullable=true,unique=true) */
     private $charkod;
