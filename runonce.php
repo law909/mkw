@@ -2508,6 +2508,17 @@ if ($DBVersion < '0170') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0170');
 }
 
+if ($DBVersion < '0171') {
+    // Szabadság kimutatás a HR menübe, a jelenléti ív generálás mögé.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 5, "Szabadság kimutatás", "/admin/szabadsagkimutatas/view", "/admin/szabadsagkimutatas", 20, 1, 600, ""'
+        . ' FROM DUAL WHERE NOT EXISTS'
+        . ' (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/szabadsagkimutatas/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0171');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

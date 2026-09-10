@@ -4,10 +4,10 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Dolgozoszabadsag;
-use Entities\Unnepnap;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Traits\Munkanap;
 
 /**
  * Aláírásra kész jelenléti ív a dolgozó rögzített munkarendjéből: azok a napok kerülnek rá,
@@ -18,6 +18,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  */
 class jelenletiivgenController extends \mkwhelpers\Controller
 {
+    use Munkanap;
+
 
     public function view()
     {
@@ -168,7 +170,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $tavollet = 0;
         $nap = clone $tol;
         while ($nap <= $ig) {
-            if ($dolgozo->isMunkanap($nap) && !isset($unnepnapok[$nap->format(\mkw\store::$SQLDateFormat)])) {
+            if ($this->isMunkanap($dolgozo, $nap, $unnepnapok)) {
                 $tavolletnev = $this->getTavolletNev($szabadsagok, $nap);
                 $napok[] = [
                     'datum' => $nap->format(\mkw\store::$DateFormat),
@@ -224,20 +226,6 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $filter = new FilterDescriptor();
         $filter->addFilter('inaktiv', '=', false);
         return $this->getRepo(Dolgozo::class)->getAll($filter, ['nev' => 'ASC']);
-    }
-
-    /** @return array kulcs = Y-m-d, hogy a napi ellenőrzés ne járjon lekérdezéssel */
-    private function getUnnepnapok(\DateTime $tol, \DateTime $ig)
-    {
-        $filter = new FilterDescriptor();
-        $filter->addFilter('datum', '>=', $tol->format(\mkw\store::$SQLDateFormat));
-        $filter->addFilter('datum', '<=', $ig->format(\mkw\store::$SQLDateFormat));
-        $result = [];
-        /** @var Unnepnap $unnepnap */
-        foreach ($this->getRepo(Unnepnap::class)->getAll($filter) as $unnepnap) {
-            $result[$unnepnap->getDatumString()] = true;
-        }
-        return $result;
     }
 
     private function datumParam($nev, $alapertelmezett)
