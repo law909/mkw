@@ -51,6 +51,16 @@ class superzoneb2bCheckoutController extends checkoutController
             $szallutca = $szamlautca;
         }
 
+        // akinek van telephelye, annak választania kell közülük; telephely híján marad a kézi cím
+        $telephely = $this->getTelephely();
+        if ($telephely) {
+            // a szállítási cím a telephelyé, akármit is küldött be az űrlap
+            $szallnev = $telephely->getNev() ?: $telephely->getPartnerNev();
+            $szallirszam = $telephely->getIrszam();
+            $szallvaros = $telephely->getVaros();
+            $szallutca = $telephely->getUtca();
+        }
+
         $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
             $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $hatarido);
 
@@ -59,8 +69,6 @@ class superzoneb2bCheckoutController extends checkoutController
             $errors[] = 'Nem adott meg egy kötelező adatot.';
         }
 
-        // akinek van telephelye, annak választania kell közülük; telephely híján marad a kézi cím
-        $telephely = $this->getTelephely();
         if ($telephely === false) {
             $ok = false;
             $errorlogtext[] = '6telephely';
