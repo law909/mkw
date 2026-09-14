@@ -138,6 +138,17 @@
         border-radius: .25rem;
     }
 
+    .form-hint {
+        margin: 0 0 .5rem;
+        font-size: .9rem;
+        color: #6c757d;
+    }
+
+    .foglalasmegjegyzes {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
     .kerdoiv {
         margin: 1.5rem 0 1rem;
         padding-top: 1rem;

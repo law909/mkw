@@ -30,28 +30,32 @@
         </div>
         <form id="idopontfoglalasform" method="post" action="/idopont/foglalas/ment">
             <div class="form-group">
-                <label class="form-label" for="nevedit">Név *</label>
-                <input class="form-control" id="nevedit" type="text" name="nev" maxlength="255" value="{$egyed.nev}" required>
+                <label class="form-label" for="nevedit">Teljes név *</label>
+                <input class="form-control" id="nevedit" type="text" name="nev" maxlength="255" value="{$egyed.nev|escape}" required>
+                <div class="form-hint">Vezeték- és keresztnév.</div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="emailedit">Email *</label>
-                <input class="form-control" id="emailedit" type="email" name="email" maxlength="255" value="{$egyed.email}" required>
+                <input class="form-control" id="emailedit" type="email" name="email" maxlength="255" value="{$egyed.email|escape}" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="telefonedit">Telefonszám *</label>
-                <input class="form-control" id="telefonedit" type="text" name="telefon" maxlength="50" value="{$egyed.telefon}" required>
+                <input class="form-control" id="telefonedit" type="text" name="telefon" maxlength="50" value="{$egyed.telefon|escape}" required>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="irszamedit">Irányítószám</label>
-                <input class="form-control" id="irszamedit" type="text" name="irszam" maxlength="10" value="{$egyed.irszam}">
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="varosedit">Város</label>
-                <input class="form-control" id="varosedit" type="text" name="varos" maxlength="255" value="{$egyed.varos}">
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="utcaedit">Utca, házszám</label>
-                <input class="form-control" id="utcaedit" type="text" name="utca" maxlength="255" value="{$egyed.utca}">
+            <p class="form-hint js-cimszoveg">Ha először jössz, add meg a címed a számlához. A már megadott adataidat nem írjuk felül.</p>
+            <div class="js-cimblokk">
+                <div class="form-group">
+                    <label class="form-label" for="irszamedit">Irányítószám</label>
+                    <input class="form-control" id="irszamedit" type="text" name="irszam" maxlength="10" value="{$egyed.irszam|escape}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="varosedit">Város</label>
+                    <input class="form-control" id="varosedit" type="text" name="varos" maxlength="255" value="{$egyed.varos|escape}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="utcaedit">Utca, házszám</label>
+                    <input class="form-control" id="utcaedit" type="text" name="utca" maxlength="255" value="{$egyed.utca|escape}">
+                </div>
             </div>
             {if ($kerdoiv.kerdesek)}
                 <div class="kerdoiv">
@@ -103,5 +107,53 @@
     {/if}
     <div><a href="{$visszaurl}">Vissza az időpontokhoz</a></div>
 </div>
+<script type="text/javascript">
+{literal}
+    (function () {
+        const form = document.getElementById('idopontfoglalasform');
+        if (!form) {
+            return;
+        }
+        const emailEdit = form.querySelector('input[name="email"]'),
+            cimblokk = form.querySelector('.js-cimblokk'),
+            cimszoveg = form.querySelector('.js-cimszoveg'),
+            EMAILMINTA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // csak azt tudjuk meg, kell-e címet kérni: nevet, címet a szerver nem ad ki
+        function checkEmail() {
+            const email = emailEdit.value.trim();
+            if (!EMAILMINTA.test(email)) {
+                return;
+            }
+            fetch('/jelentkezes/emailellenor', { method: 'POST', body: new URLSearchParams({ email: email }) })
+                .then((res) => res.json())
+                .then((adat) => {
+                    if (emailEdit.value.trim() !== email) {
+                        return;
+                    }
+                    const megvan = adat.ismert && !adat.cimhianyos;
+                    cimblokk.hidden = megvan;
+                    if (megvan) {
+                        cimblokk.querySelectorAll('input').forEach((input) => {
+                            input.value = '';
+                        });
+                        cimszoveg.textContent = 'Ezzel az emailcímmel már jártál nálunk, a számlázási adataid megvannak.';
+                    } else {
+                        cimszoveg.textContent = adat.ismert
+                            ? 'Ezzel az emailcímmel már jártál nálunk, de a számládhoz hiányzik a címed. Kérjük, add meg.'
+                            : 'Első alkalom? Add meg a címed, hogy ki tudjuk állítani a számlát a foglalásról.';
+                    }
+                })
+                .catch(() => {});
+        }
+
+        emailEdit.addEventListener('change', checkEmail);
+        // hibával visszatöltött űrlapon az email már ki van töltve
+        if (emailEdit.value.trim()) {
+            checkEmail();
+        }
+    })();
+{/literal}
+</script>
 </body>
 </html>

@@ -860,7 +860,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $idopont = $this->getRepo(Idopont::class)->findWithJoins($this->params->getIntRequestParam('id'));
         $datum = $this->getOccurrenceDatum($idopont);
 
-        $nev = trim($this->params->getStringRequestParam('nev'));
+        $darshan = \mkw\store::isDarshanTheme();
+        $nev = $darshan
+            ? implode(' ', \Entities\JogaBejelentkezes::splitNev($this->params->getStringRequestParam('nev')))
+            : trim($this->params->getStringRequestParam('nev'));
         $email = trim($this->params->getStringRequestParam('email'));
         $telefon = trim($this->params->getStringRequestParam('telefon'));
         $online = $idopont && $idopont->isOnlinevalaszthato() && $this->params->getStringRequestParam('reszvetel') === 'online';
@@ -871,6 +874,8 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
                 $hiba = t('A név, az emailcím és a telefonszám megadása kötelező.');
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $hiba = t('Az emailcím formátuma hibás.');
+            } elseif ($darshan && !\Entities\JogaBejelentkezes::isTeljesNev($nev)) {
+                $hiba = t('Kérjük, add meg a teljes neved (vezeték- és keresztnév).');
             }
         }
         $kerdoivvalasz = IdopontKerdoivService::readAnswers($idopont ? $idopont->getKerdoivArray() : IdopontKerdoivService::parse(null), $this->params);
@@ -898,27 +903,39 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             return;
         }
 
-        if (!$partner) {
-            $partner = new Partner();
-            $partner->setEmail($email);
-            $partner->setVatstatus(2);
+        if ($darshan) {
+            // a meglévő partner adatait nem írjuk át, csak az üres mezőit töltjük ki: az emailcímet bárki beírhatja
+            $partner = (new \Services\PartnerResolveService())->resolve(
+                $email,
+                $nev,
+                substr(trim($this->params->getStringRequestParam('irszam')), 0, 10),
+                trim($this->params->getStringRequestParam('varos')),
+                trim($this->params->getStringRequestParam('utca')),
+                $telefon
+            );
+        } else {
+            if (!$partner) {
+                $partner = new Partner();
+                $partner->setEmail($email);
+                $partner->setVatstatus(2);
+            }
+            $partner->setNev($nev);
+            $partner->setTelefon($telefon);
+            // a cím nem kötelező: üresen hagyva a meglévő partner címét nem írjuk felül
+            $irszam = substr($this->params->getStringRequestParam('irszam'), 0, 10);
+            if ($irszam !== '') {
+                $partner->setIrszam($irszam);
+            }
+            $varos = $this->params->getStringRequestParam('varos');
+            if ($varos !== '') {
+                $partner->setVaros($varos);
+            }
+            $utca = $this->params->getStringRequestParam('utca');
+            if ($utca !== '') {
+                $partner->setUtca($utca);
+            }
+            $this->getEm()->persist($partner);
         }
-        $partner->setNev($nev);
-        $partner->setTelefon($telefon);
-        // a cím nem kötelező: üresen hagyva a meglévő partner címét nem írjuk felül
-        $irszam = substr($this->params->getStringRequestParam('irszam'), 0, 10);
-        if ($irszam !== '') {
-            $partner->setIrszam($irszam);
-        }
-        $varos = $this->params->getStringRequestParam('varos');
-        if ($varos !== '') {
-            $partner->setVaros($varos);
-        }
-        $utca = $this->params->getStringRequestParam('utca');
-        if ($utca !== '') {
-            $partner->setUtca($utca);
-        }
-        $this->getEm()->persist($partner);
 
         // betelt alkalomra a foglalás várólistás lesz – a helyszámba a várólistás nem számít bele
         $varolista = !$idopont->isBookable($datum);
@@ -927,6 +944,9 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $foglalas = $meglevo ?: new Idopontfoglalas();
         $foglalas->setIdopont($idopont);
         $foglalas->setPartner($partner);
+        // a setPartner() a partnertörzs nevét és telefonját másolja: a foglaláson a beírt adatok szerepelnek
+        $foglalas->setPartnernev($nev);
+        $foglalas->setPartnertelefon($telefon);
         $foglalas->setDatum($datum);
         $foglalas->setOnline($online);
         $foglalas->setFoglalasido(new \DateTime());
@@ -945,7 +965,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
 
         $view = $this->createView('idopontfoglalaskoszono.tpl');
         $this->setBookingFormVars($view, $idopont, $datum);
-        $view->setVar('partnernev', $partner->getNev());
+        $view->setVar('partnernev', $nev);
         $view->setVar('online', $online);
         $view->setVar('varolista', $varolista);
         $view->printTemplateResult();
