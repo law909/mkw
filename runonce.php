@@ -2558,6 +2558,22 @@ if ($DBVersion < '0173') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0173');
 }
 
+if ($DBVersion < '0174') {
+    // A mugenrace angol rendelési leveleiben a szállítási és fizetési mód magyarul jelent meg: a sablon a
+    // törzsnevet (szallitasimodnev) írta ki, nem a rendelés nyelvén lévőt. A _locale magyar rendelésen
+    // ugyanazt adja, tehát a csere a magyar levelek szövegét nem változtatja.
+    if (\mkw\store::isMugenrace2026()) {
+        $csere = 'szoveg';
+        foreach (['szallitasimodnev', 'fizmodnev'] as $mezo) {
+            foreach ([']', '}'] as $zaro) {
+                $csere = 'REPLACE(' . $csere . ', "$rendeles.' . $mezo . $zaro . '", "$rendeles.' . $mezo . '_locale' . $zaro . '")';
+            }
+        }
+        \mkw\store::getEm()->getConnection()->executeStatement('UPDATE emailtemplate SET szoveg = ' . $csere);
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0174');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
