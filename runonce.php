@@ -2606,6 +2606,30 @@ if ($DBVersion < '0177') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0177');
 }
 
+if ($DBVersion < '0178') {
+    // Az adategyeztető ezentúl emailben küldött, aláírt linkkel mutatja a partner adatait. A link levélsablonja nélkül a
+    // levél nem menne ki, ezért egy alapsablon készül, amit az admin a levélsablonok között átírhat.
+    if (\mkw\store::isDarshanTheme()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $sablonid = \mkw\store::getParameter(\mkw\consts::AdategyeztetoSablon);
+        $letezik = $sablonid && $conn->fetchOne('SELECT COUNT(*) FROM emailtemplate WHERE id = ?', [$sablonid]);
+        if (!$letezik) {
+            $szoveg = 'Kedves Jógázó!<br><br>'
+                . 'Az alábbi linkre kattintva megnézheted és javíthatod az adataidat, amelyek alapján a számláidat'
+                . ' kiállítjuk:<br>'
+                . '<a href="{$url}">{$url}</a><br><br>'
+                . 'A link {$lejarat}-ig érvényes. Ha nem te kérted, nyugodtan hagyd figyelmen kívül ezt a levelet.<br><br>'
+                . 'Üdvözlettel:<br>' . \mkw\store::getParameter(\mkw\consts::Tulajnev);
+            $conn->executeStatement(
+                'INSERT INTO emailtemplate (nev, targy, szoveg, aszfcsatolaskell) VALUES (?, ?, ?, 0)',
+                ['Adategyeztető link', 'Adataid egyeztetése', $szoveg]
+            );
+            \mkw\store::setParameter(\mkw\consts::AdategyeztetoSablon, $conn->lastInsertId());
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0178');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut, és amíg a térkép üres, meg sem próbálja.

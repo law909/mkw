@@ -5,71 +5,108 @@
     <script type="text/javascript" src="/js/main/darshan/iframeResizer.contentWindow.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            var modal = document.querySelector(".modal");
+    {literal}
+        $(document).ready(function () {
+            const modal = document.querySelector('.modal'),
+                HIBA_ALAP = 'A kérés nem sikerült, kérjük, próbáld újra.';
 
+            function parseValasz(res) {
+                return (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
+            }
+
+            function showHiba(msg) {
+                $('.js-hiba').text(msg).toggle(!!msg);
+            }
+
+            // mentés után a bezárás újratölt, hogy a mentett adatok látsszanak
             function toggleModal() {
-                if (modal) {
-                    if (modal.classList.contains("show-modal")) {
-                        location.reload();
-                    }
-                    modal.classList.toggle("show-modal");
+                if (modal.classList.contains('show-modal')) {
+                    location.reload();
                 }
+                modal.classList.toggle('show-modal');
             }
 
-            function windowOnClick(event) {
-                if (event.target === modal) {
-                    toggleModal();
-                }
-            }
-
-            $('body').on('click', '.js-save', function(e) {
-                var $this = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: '/adategy/save',
-                    type: 'POST',
-                    data: {
-                        email: $('input[name="email"]').val(),
+            $('body').on('click', '.js-save', function (e) {
+                const $gomb = $(this),
+                    data = {
+                        e: $('input[name="e"]').val(),
+                        l: $('input[name="l"]').val(),
+                        h: $('input[name="h"]').val(),
                         vezeteknev: $('input[name="vezeteknev"]').val(),
                         keresztnev: $('input[name="keresztnev"]').val(),
                         irszam: $('input[name="irszam"]').val(),
                         varos: $('input[name="varos"]').val(),
                         utca: $('input[name="utca"]').val(),
-                        hazszam: $('input[name="hazszam"]').val(),
-                        hirlevelkell: $('input[name="hirlevelkell"]').val()
-                    },
-                    success: function () {
+                        hazszam: $('input[name="hazszam"]').val()
+                    };
+                e.preventDefault();
+                if ($('input[name="hirlevelkell"]').prop('checked')) {
+                    data.hirlevelkell = 1;
+                }
+                showHiba('');
+                $gomb.prop('disabled', true);
+                $.ajax({
+                    url: '/adategy/save',
+                    type: 'POST',
+                    data: data,
+                    success: function (res) {
+                        const adat = parseValasz(res);
+                        if (!adat || !adat.ok) {
+                            showHiba((adat && adat.msg) || HIBA_ALAP);
+                            return;
+                        }
                         toggleModal();
+                    },
+                    error: function () {
+                        showHiba(HIBA_ALAP);
+                    },
+                    complete: function () {
+                        $gomb.prop('disabled', false);
                     }
                 });
             });
-            $('.close-button').click(function(e) {
+            $('.close-button').click(function (e) {
                 e.preventDefault();
                 toggleModal();
             });
-            $('.js-ok').click(function(e) {
-                var email = $('input[name="email"]').val();
+            $('.js-ok').click(function (e) {
+                const $gomb = $(this),
+                    email = ($('input[name="email"]').val() || '').trim();
                 e.preventDefault();
                 if (!email) {
-                    alert('Kérjük adj meg egy emailcímet!');
+                    showHiba('Kérjük, adj meg egy emailcímet!');
+                    return;
                 }
-                else {
-                    $.ajax({
-                        url: '/adategy/check',
-                        type: 'POST',
-                        data: {
-                            email: email
-                        },
-                        success: function (adat) {
-                            $('.js-ok').remove();
-                            $('#adatlap').html(adat);
+                showHiba('');
+                $gomb.prop('disabled', true);
+                $.ajax({
+                    url: '/adategy/check',
+                    type: 'POST',
+                    data: {
+                        email: email
+                    },
+                    success: function (res) {
+                        const adat = parseValasz(res);
+                        if (!adat || !adat.ok) {
+                            showHiba((adat && adat.msg) || HIBA_ALAP);
+                            $gomb.prop('disabled', false);
+                            return;
                         }
-                    });
+                        $('.js-uzenet').text(adat.msg).show();
+                    },
+                    error: function () {
+                        showHiba(HIBA_ALAP);
+                        $gomb.prop('disabled', false);
+                    }
+                });
+            });
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    toggleModal();
                 }
             });
-            window.addEventListener("click", windowOnClick);
         });
+    {/literal}
     </script>
     <style>
         body {
@@ -141,6 +178,13 @@
             border-radius: .25rem;
             transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
         }
+        .hiba {
+            color: #B63535;
+            font-weight: bold;
+        }
+        .uzenet {
+            color: #000;
+        }
         .form-group {
             margin-bottom: 1rem;
             display: -ms-flexbox;
@@ -179,17 +223,26 @@
 <body>
     <div>
         <h1>Adategyeztető</h1>
-        <p>Írd be az email címed és nyomd meg az "Egyeztetés" gombot.</p>
-        <p>Ha felismerünk az email címed alapján, akkor látni fogod az adataidat amiket tudunk rólad. Kérjük egyeztesd ezeket a valósággal!</p>
-        <p>Ha nem ismerünk fel, kérjük add meg az adataidat!</p>
-        <form id="adategyezteto-form">
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input class="form-control" type="email" name="email">
-            </div>
-            <button class="js-ok adategyeztetobtn">Egyeztetés</button>
-            <div id="adatlap"></div>
-        </form>
+        {if ($link|default)}
+            <form id="adatlap-form">
+                {include 'adategyeztetoadatlap.tpl'}
+            </form>
+        {else}
+            {if ($hiba|default)}
+                <p class="hiba">{$hiba|escape}</p>
+            {/if}
+            <p>Írd be az emailcímed, és nyomd meg az „Egyeztetés” gombot. Küldünk egy levelet egy linkkel, amellyel
+                megnézheted és javíthatod az adataidat.</p>
+            <form id="adategyezteto-form">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" type="email" name="email">
+                </div>
+                <p class="hiba js-hiba" style="display: none"></p>
+                <p class="uzenet js-uzenet" style="display: none"></p>
+                <button class="js-ok adategyeztetobtn">Egyeztetés</button>
+            </form>
+        {/if}
     </div>
     <div class="modal">
         <div class="modal-content">

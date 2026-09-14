@@ -54,9 +54,11 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/idopont/foglalas', 'idopontfoglalasController#showBookingForm', 'idopontfoglalasform');
     $router->map('POST', '/idopont/foglalas/ment', 'idopontfoglalasController#saveBooking', 'idopontfoglalassave');
     $router->map('GET', '/idopont/lemond', 'idopontfoglalasController#cancelBooking', 'idopontfoglalaslemond');
-    $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
-    $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
-    $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');
+    if (\mkw\store::isDarshanTheme()) {
+        $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
+        $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
+        $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');
+    }
     // bármely emailhez kiadta a partner adatlapját; a kisszámlázó (lb) órarendje még ebből tölti elő a nevet
     if (!\mkw\store::isDarshanTheme()) {
         $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');

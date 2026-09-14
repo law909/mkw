@@ -506,6 +506,8 @@ class consts
     const IdopontfoglalasSablonLemondas = 'idopontfoglalaslemondasemailsablon';
     const IdopontfoglalasTermek = 'idopontfoglalastermek';
 
+    const AdategyeztetoSablon = 'adategyeztetosablon';
+
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';
     const NAVOnlineVersion = 'NAVOnlineVersion';
     const NAVOnlineEnv = 'NAVOnlineEnv';
