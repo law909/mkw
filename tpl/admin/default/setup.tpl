@@ -725,18 +725,6 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {foreach $ujpartnercimkek as $_ujpartnercimke}
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="UjPartnerCimke{$_ujpartnercimke.webshop}Edit">{at('Új partner címkéje')}{if (count($ujpartnercimkek) > 1)} ({$_ujpartnercimke.webshopnev}){/if}:</label></span>
-                                <select id="UjPartnerCimke{$_ujpartnercimke.webshop}Edit" name="ujpartnercimke{$_ujpartnercimke.webshop}">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $_ujpartnercimke.cimkelist as $_cimke}
-                                        <option
-                                            value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        {/foreach}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="NagykerCimkeEdit">{at('Nagyker címke')}:</label></span>
                             <select id="NagykerCimkeEdit" name="nagykercimke">
@@ -1057,6 +1045,17 @@
                                 {/foreach}
                             </select>
                         </div>
+                        {if (isset($ujpartnercimke1list))}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UjPartnerCimke1Edit">{at('Új partner címkéje')}:</label></span>
+                                <select id="UjPartnerCimke1Edit" name="ujpartnercimke1">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $ujpartnercimke1list as $_cimke}
+                                        <option value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
                             <span class="js-kezdokatbutton" data-target="kezdotermekkategoria">{$kezdotermekkategorianev|default:'nincs megadva'}</span>
@@ -1452,6 +1451,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($ujpartnercimke2list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UjPartnerCimke2Edit">{at('Új partner címkéje')}:</label></span>
+                                    <select id="UjPartnerCimke2Edit" name="ujpartnercimke2">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $ujpartnercimke2list as $_cimke}
+                                            <option value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             <div class="setuprow">
                                 <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
                                 <span class="js-kezdokatbutton" data-target="kezdotermekkategoria2">{$kezdotermekkategoria2nev|default:'nincs megadva'}</span>
@@ -1518,6 +1528,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($ujpartnercimke3list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UjPartnerCimke3Edit">{at('Új partner címkéje')}:</label></span>
+                                    <select id="UjPartnerCimke3Edit" name="ujpartnercimke3">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $ujpartnercimke3list as $_cimke}
+                                            <option value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             <div class="setuprow">
                                 <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
                                 <span class="js-kezdokatbutton" data-target="kezdotermekkategoria3">{$kezdotermekkategoria3nev|default:'nincs megadva'}</span>
@@ -1584,6 +1605,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($ujpartnercimke4list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UjPartnerCimke4Edit">{at('Új partner címkéje')}:</label></span>
+                                    <select id="UjPartnerCimke4Edit" name="ujpartnercimke4">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $ujpartnercimke4list as $_cimke}
+                                            <option value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             <div class="setuprow">
                                 <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
                                 <span class="js-kezdokatbutton" data-target="kezdotermekkategoria4">{$kezdotermekkategoria4nev|default:'nincs megadva'}</span>
@@ -1656,6 +1688,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($ujpartnercimke5list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UjPartnerCimke5Edit">{at('Új partner címkéje')}:</label></span>
+                                    <select id="UjPartnerCimke5Edit" name="ujpartnercimke5">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $ujpartnercimke5list as $_cimke}
+                                            <option value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             <div class="setuprow">
                                 <span class="setuplabel"><label>{at('Kezdő termék kategória')}:</label></span>
                                 <span class="js-kezdokatbutton" data-target="kezdotermekkategoria5">{$kezdotermekkategoria5nev|default:'nincs megadva'}</span>

@@ -765,16 +765,10 @@ class setupController extends \mkwhelpers\Controller
         $partnercimkec = new partnercimkeController();
         $p = $repo->find(\mkw\consts::KiskerCimke);
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
-        $newPartnerCimkek = [];
         for ($webshop = 1; $webshop <= \mkw\store::getEnabledWebshops(); $webshop++) {
             $p = $repo->find(\mkw\consts::NewPartnerCimke . $webshop);
-            $newPartnerCimkek[] = [
-                'webshop' => $webshop,
-                'webshopnev' => \mkw\store::getParameter('webshop' . $webshop . 'name') ?: $webshop,
-                'cimkelist' => $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)),
-            ];
+            $view->setVar('ujpartnercimke' . $webshop . 'list', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         }
-        $view->setVar('ujpartnercimkek', $newPartnerCimkek);
         $p = $repo->find(\mkw\consts::NagykerCimke);
         $view->setVar('nagykercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SpanyolCimke);
@@ -1272,6 +1266,10 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::Webshop5Price,
             \mkw\consts::Webshop5Discount,
             \mkw\consts::Web4DefaKatId,
+            \mkw\consts::NewPartnerCimke . '2',
+            \mkw\consts::NewPartnerCimke . '3',
+            \mkw\consts::NewPartnerCimke . '4',
+            \mkw\consts::NewPartnerCimke . '5',
         ],
         'mptngyfulvan' => [
             \mkw\consts::MPTNGYRegVisszaigSablon,
