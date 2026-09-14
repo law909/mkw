@@ -156,12 +156,16 @@ class mugenraceCheckoutController extends checkoutController
             if ($kiskercimke) {
                 $partner->addCimke($kiskercimke);
             }
+            // a szamlatipus a partner "Származás" mezője; alapértéke a magyar, ezt kapta eddig minden webshopos vevő
             if (\mkw\store::isMagyarorszag($orszag)) {
                 $partner->setAdoszam($adoszam);
+                $partner->setSzamlatipus(0);
             } elseif ($orszagobj->getEu()) {
                 $partner->setEuadoszam($adoszam);
+                $partner->setSzamlatipus(1);
             } else {
                 $partner->setThirdadoszam($adoszam);
+                $partner->setSzamlatipus(2);
             }
             $partner->setSzallnev($szallnev);
             $partner->setSzallirszam($szallirszam);
