@@ -257,6 +257,17 @@ class Partner extends \Entities\Partner implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function hasFullCim()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'hasFullCim', []);
+
+        return parent::hasFullCim();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCim()
     {
 

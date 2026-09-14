@@ -1651,6 +1651,12 @@ class store
         return self::getTheme() === 'darshan' || self::getSetupValue('darshan', false);
     }
 
+    /** Az isDarshan() a darshan = 1 setupú kisszámlázóra (lb) is igaz; ez csak a darshan témára. */
+    public static function isDarshanTheme()
+    {
+        return self::getTheme() === 'darshan';
+    }
+
     public static function isLampion()
     {
         return self::getTheme() === 'lampion';

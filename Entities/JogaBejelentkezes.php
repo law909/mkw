@@ -99,27 +99,17 @@ class JogaBejelentkezes
      * bejelentkezésen megadott adatokkal. A címet a meglévő partnerre is ráírjuk, ha ott még nincs –
      * enélkül a pubadminban bekért cím sosem jutna el a számláig.
      *
-     * Üres emailre nem keresünk: az üres emailű partnerek bármelyikét eltalálná.
-     *
      * @return \Entities\Partner
      */
     public function resolvePartner()
     {
-        $email = trim((string)$this->getPartneremail());
-        $rvpartner = $email
-            ? \mkw\store::getEm()->getRepository(Partner::class)->findOneBy(['email' => $email])
-            : null;
-        if (!$rvpartner) {
-            $rvpartner = new Partner();
-            $rvpartner->setEmail($email);
-            $rvpartner->setNev($this->getPartnernev());
-            $rvpartner->setVezeteknev($this->getPartnerVezeteknev());
-            $rvpartner->setKeresztnev($this->getPartnerKeresztnev());
-            $rvpartner->setSzamlatipus(0);
-            $rvpartner->setVatstatus(2);
-        }
-        $rvpartner->fillMissingCim($this->getPartnerirszam(), $this->getPartnervaros(), $this->getPartnerutca());
-        \mkw\store::getEm()->persist($rvpartner);
+        $rvpartner = (new \Services\PartnerResolveService())->resolve(
+            $this->getPartneremail(),
+            $this->getPartnernev(),
+            $this->getPartnerirszam(),
+            $this->getPartnervaros(),
+            $this->getPartnerutca()
+        );
         \mkw\store::getEm()->flush();
         return $rvpartner;
     }

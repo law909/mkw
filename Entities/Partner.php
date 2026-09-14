@@ -720,18 +720,30 @@ class Partner
     /**
      * A hiányzó címrészek pótlása. A meglévő értéket nem írjuk felül: a partnertörzsben lévő cím
      * mindig többet ér annál, amit egy foglalásnál gyorsan begépelnek.
+     *
+     * @return string[] a pótolt mezők neve
      */
     public function fillMissingCim($irszam, $varos, $utca)
     {
+        $filled = [];
         if (!trim((string)$this->irszam) && trim((string)$irszam)) {
             $this->setIrszam($irszam);
+            $filled[] = 'irszam';
         }
         if (!trim((string)$this->varos) && trim((string)$varos)) {
             $this->setVaros($varos);
+            $filled[] = 'varos';
         }
         if (!trim((string)$this->utca) && trim((string)$utca)) {
             $this->setUtca($utca);
+            $filled[] = 'utca';
         }
+        return $filled;
+    }
+
+    public function hasFullCim()
+    {
+        return trim((string)$this->irszam) !== '' && trim((string)$this->varos) !== '' && trim((string)$this->utca) !== '';
     }
 
     public function getCim()

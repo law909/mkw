@@ -773,7 +773,7 @@ class pubadminController extends mkwhelpers\Controller
         if (count(preg_split('/\s+/', $nev, -1, PREG_SPLIT_NO_EMPTY)) < 2) {
             return t('A partner neve csak egy szó') . ': ' . $nev;
         }
-        if (!trim((string)$partner->getIrszam()) || !trim((string)$partner->getVaros()) || !trim((string)$partner->getUtca())) {
+        if (!$partner->hasFullCim()) {
             return t('A partnernek nincs teljes számlázási címe.');
         }
         return '';
@@ -984,15 +984,10 @@ class pubadminController extends mkwhelpers\Controller
         }
     }
 
-    /**
-     * Üres emailre nem keresünk: az üres emailű partnerek bármelyikét eltalálná.
-     *
-     * @return \Entities\Partner|null
-     */
+    /** @return \Entities\Partner|null */
     private function findPartnerByEmail($email)
     {
-        $email = trim((string)$email);
-        return $email ? $this->getRepo(Partner::class)->findOneBy(['email' => $email]) : null;
+        return (new \Services\PartnerResolveService())->findByEmail($email);
     }
 
     public function lemondOra()
