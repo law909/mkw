@@ -12,6 +12,9 @@
 			</div>
 			<form id="Kapcsolatform" class="form-horizontal" action="/kapcsolat/ment" method="post">
 				<fieldset>
+					{if ($hibak.urlap|default)}
+					<div class="alert alert-error">{$hibak.urlap}</div>
+					{/if}
 					<div class="control-group{if ($hibak.nev|default)} error{/if}">
 						<label class="control-label" for="NevEdit">{t('Név')}:</label>
 						<div class="controls">
@@ -61,6 +64,12 @@
 							<textarea id="SzovegEdit" name="szoveg" class="input-large" required>{$szoveg|default}</textarea>
 						</div>
 					</div>
+					{* mézesbödön: embernek láthatatlan, a robot kitölti *}
+					<div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+						<label for="WeboldalEdit">{t('Weboldal')}</label>
+						<input id="WeboldalEdit" name="weboldal" type="text" tabindex="-1" autocomplete="off" value="">
+					</div>
+					<input name="formtoken" type="hidden" value="{$formtoken|default}">
 					<div class="form-actions">
 						<button type="submit" class="btn okbtn">{t('Üzenet küldése')}</button>
 					</div>

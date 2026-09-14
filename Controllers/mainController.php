@@ -16,6 +16,8 @@ use mkwhelpers\FilterDescriptor;
 
 class mainController extends \mkwhelpers\Controller
 {
+    private const CONTACT_FORM_MIN_SECONDS = 3;
+    private const CONTACT_FORM_MAX_AGE = 86400;
 
     private $view;
 
@@ -589,6 +591,15 @@ class mainController extends \mkwhelpers\Controller
             case 'ment':
                 $hibas = false;
                 $hibak = [];
+                $formToken = $this->params->getStringRequestParam('formtoken');
+                $isProtected = \mkw\store::isMugenrace2026();
+                if ($isProtected && $this->isContactFormSpam($formToken)) {
+                    // a robot is a köszönő oldalt kapja, hogy ne derüljön ki, mi szűrte ki
+                    $view = $this->getTemplateFactory()->createMainView('kapcsolatkosz.tpl');
+                    \mkw\store::fillTemplate($view);
+                    $view->printTemplateResult(false);
+                    break;
+                }
                 $nev = $this->params->getStringRequestParam('nev');
                 $email1 = $this->params->getStringRequestParam('email1');
                 $email2 = $this->params->getStringRequestParam('email2');
@@ -617,6 +628,11 @@ class mainController extends \mkwhelpers\Controller
                     $hibas = true;
                     $hibak['tema'] = t('Nincs megadva téma');
                 }
+                if ($isProtected && time() - $this->getContactFormTime($formToken) > self::CONTACT_FORM_MAX_AGE) {
+                    $hibas = true;
+                    $hibak['urlap'] = t('Az űrlap lejárt, kérjük, küldje el újra.');
+                    $formToken = $this->createContactFormToken();
+                }
                 if (!$hibas) {
                     $mailer = \mkw\store::getMailer();
                     $mailer->setTo(\mkw\store::getParameter(\mkw\consts::EmailReplyTo));
@@ -644,6 +660,7 @@ class mainController extends \mkwhelpers\Controller
                     $view->setVar('temalista', $kftc->getSelectList($tema));
                     $view->setVar('szoveg', $szoveg);
                     $view->setVar('hibak', $hibak);
+                    $view->setVar('formtoken', $formToken);
                 }
                 $view->printTemplateResult(false);
                 break;
@@ -653,9 +670,41 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::fillTemplate($this->view);
                 $this->view->setVar('pagetitle', 'Kapcsolatfelvétel a webáruház ügyfélszolgálatával - ' . \mkw\store::getParameter('oldalcim'));
                 $this->view->setVar('temalista', $kftc->getSelectList(0));
+                $this->view->setVar('formtoken', $this->createContactFormToken());
                 $this->view->printTemplateResult(true);
                 break;
         }
+    }
+
+    private function createContactFormToken(): string
+    {
+        $issuedAt = (string)time();
+        return $issuedAt . '.' . $this->signContactFormTime($issuedAt);
+    }
+
+    private function signContactFormTime(string $issuedAt): string
+    {
+        return hash_hmac('sha256', 'kapcsolat' . $issuedAt, (string)\mkw\store::getConfigValue('so'));
+    }
+
+    /** az űrlap kiadásának ideje; null, ha a token nem tőlünk származik */
+    private function getContactFormTime(string $token): ?int
+    {
+        [$issuedAt, $signature] = array_pad(explode('.', $token, 2), 2, '');
+        if (!ctype_digit($issuedAt) || !hash_equals($this->signContactFormTime($issuedAt), $signature)) {
+            return null;
+        }
+        return (int)$issuedAt;
+    }
+
+    /** kitöltött mézesbödön, hiányzó vagy hamis token, vagy embernek túl gyors beküldés */
+    private function isContactFormSpam(string $token): bool
+    {
+        if ($this->params->getStringRequestParam('weboldal') !== '') {
+            return true;
+        }
+        $issuedAt = $this->getContactFormTime($token);
+        return $issuedAt === null || time() - $issuedAt < self::CONTACT_FORM_MIN_SECONDS;
     }
 
     public function setOrszag()
