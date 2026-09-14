@@ -339,6 +339,12 @@ class Partner
     private $telephelyek;
 
     /**
+     * @ORM\OneToMany(targetEntity="PartnerArlistaSav", mappedBy="partner", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"sorrend" = "ASC"})
+     */
+    private $arlistasavok;
+
+    /**
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Dolgozo")
      * @ORM\JoinColumn(name="createdby", referencedColumnName="id")
@@ -609,6 +615,7 @@ class Partner
         $this->kosarak = new ArrayCollection();
         $this->termekertesitok = new ArrayCollection();
         $this->telephelyek = new ArrayCollection();
+        $this->arlistasavok = new ArrayCollection();
         $this->termekkategoriakedvezmenyek = new ArrayCollection();
         $this->termekkedvezmenyek = new ArrayCollection();
         $this->gyartokedvezmenyek = new ArrayCollection();
@@ -1826,6 +1833,24 @@ class Partner
     public function getTelephelyek()
     {
         return $this->telephelyek;
+    }
+
+    public function getArlistasavok()
+    {
+        return $this->arlistasavok;
+    }
+
+    public function addArlistasav(PartnerArlistaSav $sav)
+    {
+        if (!$this->arlistasavok->contains($sav)) {
+            $this->arlistasavok->add($sav);
+            $sav->setPartner($this);
+        }
+    }
+
+    public function removeArlistasav(PartnerArlistaSav $sav)
+    {
+        $this->arlistasavok->removeElement($sav);
     }
 
     /**

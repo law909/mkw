@@ -58,7 +58,7 @@ class PartnerTermekkategoriaKedvezmenyListener
             $naplo->setCreated($now);
             $naplo->setPartner($partner);
             $naplo->setTermekfa($termekfa);
-            $naplo->setTermekfanev($this->getTermekfaNev($termekfa));
+            $naplo->setTermekfanev($termekfa ? $termekfa->getNevWithParent() : '');
             $naplo->setRegikedvezmeny($regi);
             $naplo->setUjkedvezmeny($uj);
             $naplo->setDolgozo($dolgozo);
@@ -75,15 +75,6 @@ class PartnerTermekkategoriaKedvezmenyListener
             return $a === $b;
         }
         return abs((float)$a - (float)$b) < 0.00005;
-    }
-
-    private function getTermekfaNev($termekfa)
-    {
-        if (!$termekfa) {
-            return '';
-        }
-        $parent = $termekfa->getParent();
-        return ($parent && $parent->getParent() ? $parent->getNev() . ' / ' : '') . $termekfa->getNev();
     }
 
     private function getModositoNev()

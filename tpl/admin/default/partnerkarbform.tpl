@@ -25,6 +25,9 @@
                 <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
                 <li><a href="#GyartoKedvezmenyTab">{at('Kedvezmények gyártónként')}</a></li>
             {/if}
+            {if ($maintheme === 'mugenrace2026')}
+                <li><a href="#ArlistaTab">{at('Árlista')}</a></li>
+            {/if}
             <li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
             {if (!$setup.mptngy && !$setup.mpt)}
                 <li><a href="#BankTab">{at('Banki adatok')}</a></li>
@@ -676,6 +679,9 @@
                     <span class="ui-icon ui-icon-circle-plus"></span>
                 </a>
             </div>
+        {/if}
+        {if ($maintheme === 'mugenrace2026')}
+            {include 'partnerarlistakarb.tpl'}
         {/if}
         <div id="LoginTab" class="mattkarb-page" data-visible="visible">
             <table>

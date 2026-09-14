@@ -305,6 +305,17 @@ class TermekFa extends \Entities\TermekFa implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getNevWithParent()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevWithParent', []);
+
+        return parent::getNevWithParent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setParent(\Entities\TermekFa $parent)
     {
 

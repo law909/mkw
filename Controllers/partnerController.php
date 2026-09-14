@@ -24,6 +24,7 @@ use Entities\Termek;
 use Entities\TermekFa;
 use Entities\Uzletkoto;
 use Entities\Valutanem;
+use Services\PartnerArlistaService;
 use Traits\PartnerAuth;
 use Traits\PartnerRegistration;
 use Traits\PartnerPassReminder;
@@ -131,6 +132,9 @@ class partnerController extends \mkwhelpers\MattableController
                 $kedv[] = $kedvCtrl->loadVars($tar, true);
             }
             $x['termekkategoriakedvezmenyek'] = $kedv;
+            if (\mkw\store::isMugenrace2026()) {
+                $x['arlista'] = (new PartnerArlistaService())->getArlista($t);
+            }
             $kedv = [];
             foreach ($t->getTermekkedvezmenyek() as $tar) {
                 $kedv[] = $termekkedvCtrl->loadVars($tar, true);
@@ -421,6 +425,8 @@ class partnerController extends \mkwhelpers\MattableController
             $telephely->setMigrid($migrid ?: null);
             $this->getEm()->persist($telephely);
         }
+
+        (new PartnerArlistaService())->saveFromRequest($obj, $this->params);
 
         if (!$obj->getVatstatus()) {
             $obj->calcVatstatus();

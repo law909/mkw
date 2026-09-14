@@ -344,6 +344,12 @@ class TermekFa
         return '';
     }
 
+    /** a szülő ág nevével, ha az nem a gyökér; ugyanaz a név több márka alatt is előfordul */
+    public function getNevWithParent()
+    {
+        return ($this->parent && $this->parent->getParent() ? $this->parent->getNev() . ' / ' : '') . $this->getNev();
+    }
+
     public function setParent(TermekFa $parent)
     {
         if ($this->parent !== $parent) {

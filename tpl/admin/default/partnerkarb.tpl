@@ -6,6 +6,7 @@
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/dokumentumtar.js"></script>
     <script type="text/javascript" src="/js/admin/default/partner.js"></script>
+    <script type="text/javascript" src="/js/admin/default/partnerarlista.js"></script>
 {/block}
 
 {block "kozep"}

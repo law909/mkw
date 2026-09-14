@@ -98,14 +98,9 @@ class PartnerTermekkategoriaKedvezmeny
         return $this->termekfa ? $this->termekfa->getId() : 0;
     }
 
-    /** a szülő ág nevével együtt, mert ugyanaz a név több márka alatt is előfordul */
     public function getTermekfaNev()
     {
-        if (!$this->termekfa) {
-            return '';
-        }
-        $parent = $this->termekfa->getParent();
-        return ($parent && $parent->getParent() ? $parent->getNev() . ' / ' : '') . $this->termekfa->getNev();
+        return $this->termekfa ? $this->termekfa->getNevWithParent() : '';
     }
 
     public function setTermekfa($termekfa)
