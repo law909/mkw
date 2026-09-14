@@ -1087,6 +1087,8 @@ $router->map('GET', '/admin/termek/getnetto', 'termekController#getnetto', 'admi
 $router->map('GET', '/admin/termek/getbrutto', 'termekController#getbrutto', 'admintermekgetbrutto');
 $router->map('GET', '/admin/termek/arexport', 'termekController#arexport', 'admintermekarexport');
 $router->map('GET', '/admin/termek/fcmotoexport', 'termekController#fcmotoexport', 'admintermekfcmotoexport');
+// ideiglenes lista az új cikkszámokhoz, menü nélkül
+$router->map('GET', '/admin/termek/fcmotocikkszamexport', 'exportController#fcmotoCikkszamExport', 'admintermekfcmotocikkszamexport');
 $router->map('GET', '/admin/termek/gs1export', 'termekController#gs1export', 'admintermekgs1export');
 $router->map('GET', '/admin/termek/gs1importview', 'termekController#gs1importView', 'admintermekgs1importview');
 $router->map('GET', '/admin/termek/colorexport', 'termekController#colorexport', 'admintermekcolorexport');

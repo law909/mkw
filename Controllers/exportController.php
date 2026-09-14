@@ -1534,31 +1534,25 @@ class exportController extends \mkwhelpers\Controller
         \unlink($filepath);
     }
 
-    public function fcmotostockExport()
+    /**
+     * Az FC-MOTO készletexportba kerülő változatok, az ott használt (színnév alapú) cikkszámmal.
+     *
+     * @return \Generator<array{termek: array, valtozat: TermekValtozat, cikkszam: string}>
+     */
+    private function getFcmotoStockItems(): \Generator
     {
         $trsm = new ResultSetMapping();
         $trsm->addScalarResult('id', 'id');
         $trsm->addScalarResult('cikkszam', 'cikkszam');
+        $trsm->addScalarResult('nev', 'nev');
         $trsm->addScalarResult('kifuto', 'kifuto');
 
         /** @var TermekValtozatErtekRepository $tver */
         $tver = $this->getRepo(TermekValtozatErtek::class);
 
-        $excel = new Spreadsheet();
-        $sor = 1;
-
-        $termekfak = $this->getRepo(TermekFa::class)->getB2BArray();
-
-        $excel->setActiveSheetIndex(0)
-            ->setCellValue('A' . $sor, 'EAN')
-            ->setCellValue('B' . $sor, 'Article number')
-            ->setCellValue('C' . $sor, 'Quantity')
-            ->setCellValue('D' . $sor, 'Discontinued');
-        $sor++;
-
-        foreach ($termekfak as $termekfa) {
+        foreach ($this->getRepo(TermekFa::class)->getB2BArray() as $termekfa) {
             $termekek = $this->getEm()->createNativeQuery(
-                'SELECT t.id,t.cikkszam,t.kifuto '
+                'SELECT t.id,t.cikkszam,t.nev,t.kifuto '
                 . 'FROM termek t '
                 . 'WHERE (t.termekfa1karkod LIKE "' . $termekfa['karkod'] . '%") AND (t.lathato=1) AND (t.inaktiv=0) AND (t.fuggoben=0) ',
                 $trsm
@@ -1567,20 +1561,37 @@ class exportController extends \mkwhelpers\Controller
                 $valtfilter = new FilterDescriptor();
                 $valtfilter->addFilter('termek', '=', $termek['id']);
                 $valtfilter->addFilter('lathato', '=', 1);
-                $valtozatok = $this->getRepo(TermekValtozat::class)->getAll($valtfilter);
                 /** @var TermekValtozat $valtozat */
-                foreach ($valtozatok as $valtozat) {
-                    $excel->setActiveSheetIndex(0)
-                        ->setCellValue('A' . $sor, $valtozat->getVonalkod())
-                        ->setCellValue(
-                            'B' . $sor,
-                            strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret()
-                        )
-                        ->setCellValue('C' . $sor, $valtozat->getAvailableStock())
-                        ->setCellValue('D' . $sor, $termek['kifuto'] ? 1 : 0);
-                    $sor++;
+                foreach ($this->getRepo(TermekValtozat::class)->getAll($valtfilter) as $valtozat) {
+                    yield [
+                        'termek' => $termek,
+                        'valtozat' => $valtozat,
+                        'cikkszam' => strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret(),
+                    ];
                 }
             }
+        }
+    }
+
+    public function fcmotostockExport()
+    {
+        $excel = new Spreadsheet();
+        $sor = 1;
+
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A' . $sor, 'EAN')
+            ->setCellValue('B' . $sor, 'Article number')
+            ->setCellValue('C' . $sor, 'Quantity')
+            ->setCellValue('D' . $sor, 'Discontinued');
+        $sor++;
+
+        foreach ($this->getFcmotoStockItems() as $item) {
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $sor, $item['valtozat']->getVonalkod())
+                ->setCellValue('B' . $sor, $item['cikkszam'])
+                ->setCellValue('C' . $sor, $item['valtozat']->getAvailableStock())
+                ->setCellValue('D' . $sor, $item['termek']['kifuto'] ? 1 : 0);
+            $sor++;
         }
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
@@ -1595,6 +1606,54 @@ class exportController extends \mkwhelpers\Controller
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . $fileSize);
+        header('Content-Disposition: attachment; filename=' . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    /**
+     * Ideiglenes lista az új cikkszámokhoz: az FC-MOTO készletexport változatai, a mostani cikkszám mellett a
+     * szín és a méret charkod-jával (ha az üres, a nevével) képzett cikkszámmal.
+     */
+    public function fcmotoCikkszamExport()
+    {
+        $excel = new Spreadsheet();
+        $excel->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'Termék neve')
+            ->setCellValue('B1', 'FC-MOTO cikkszám')
+            ->setCellValue('C1', 'Új cikkszám');
+
+        $sor = 2;
+        foreach ($this->getFcmotoStockItems() as $item) {
+            /** @var TermekValtozat $valtozat */
+            $valtozat = $item['valtozat'];
+            $szin = $valtozat->getSzinObject();
+            $meret = $valtozat->getMeretObject();
+            $szinCharkod = trim((string)$szin?->getCharkod());
+            $meretCharkod = trim((string)$meret?->getCharkod());
+            $newCikkszam = implode('-', [
+                strtoupper($item['termek']['cikkszam']),
+                $szinCharkod !== '' ? $szinCharkod : trim((string)($szin?->getNev() ?? $valtozat->getSzin())),
+                $meretCharkod !== '' ? $meretCharkod : trim((string)($meret?->getNev() ?? $valtozat->getMeret())),
+            ]);
+            $excel->setActiveSheetIndex(0)
+                ->setCellValue('A' . $sor, $item['termek']['nev'])
+                ->setCellValueExplicit('B' . $sor, $item['cikkszam'], DataType::TYPE_STRING)
+                ->setCellValueExplicit('C' . $sor, $newCikkszam, DataType::TYPE_STRING);
+            $sor++;
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('fcmotocikkszam') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . filesize($filepath));
         header('Content-Disposition: attachment; filename=' . $filename);
 
         readfile($filepath);
