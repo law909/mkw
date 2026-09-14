@@ -725,16 +725,18 @@
                                 {/foreach}
                             </select>
                         </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="KulfoldiKiskerCimkeEdit">{at('Külföldi kisker címke')}:</label></span>
-                            <select id="KulfoldiKiskerCimkeEdit" name="kulfoldikiskercimke">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $kulfoldikiskercimkelist as $_kiskercimke}
-                                    <option
-                                        value="{$_kiskercimke.id}"{if ($_kiskercimke.selected)} selected="selected"{/if}>{$_kiskercimke.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
+                        {foreach $ujpartnercimkek as $_ujpartnercimke}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UjPartnerCimke{$_ujpartnercimke.webshop}Edit">{at('Új partner címkéje')}{if (count($ujpartnercimkek) > 1)} ({$_ujpartnercimke.webshopnev}){/if}:</label></span>
+                                <select id="UjPartnerCimke{$_ujpartnercimke.webshop}Edit" name="ujpartnercimke{$_ujpartnercimke.webshop}">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $_ujpartnercimke.cimkelist as $_cimke}
+                                        <option
+                                            value="{$_cimke.id}"{if ($_cimke.selected)} selected="selected"{/if}>{$_cimke.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        {/foreach}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="NagykerCimkeEdit">{at('Nagyker címke')}:</label></span>
                             <select id="NagykerCimkeEdit" name="nagykercimke">

@@ -765,8 +765,16 @@ class setupController extends \mkwhelpers\Controller
         $partnercimkec = new partnercimkeController();
         $p = $repo->find(\mkw\consts::KiskerCimke);
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
-        $p = $repo->find(\mkw\consts::KulfoldiKiskerCimke);
-        $view->setVar('kulfoldikiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+        $newPartnerCimkek = [];
+        for ($webshop = 1; $webshop <= \mkw\store::getEnabledWebshops(); $webshop++) {
+            $p = $repo->find(\mkw\consts::NewPartnerCimke . $webshop);
+            $newPartnerCimkek[] = [
+                'webshop' => $webshop,
+                'webshopnev' => \mkw\store::getParameter('webshop' . $webshop . 'name') ?: $webshop,
+                'cimkelist' => $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)),
+            ];
+        }
+        $view->setVar('ujpartnercimkek', $newPartnerCimkek);
         $p = $repo->find(\mkw\consts::NagykerCimke);
         $view->setVar('nagykercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::SpanyolCimke);
@@ -2398,11 +2406,9 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::KiskerCimke, '');
         }
 
-        $kulfoldikiskercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('kulfoldikiskercimke', 0));
-        if ($kulfoldikiskercimke) {
-            $this->setObj(\mkw\consts::KulfoldiKiskerCimke, $kulfoldikiskercimke->getId());
-        } else {
-            $this->setObj(\mkw\consts::KulfoldiKiskerCimke, '');
+        for ($webshop = 1; $webshop <= \mkw\store::getEnabledWebshops(); $webshop++) {
+            $cimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('ujpartnercimke' . $webshop, 0));
+            $this->setObj(\mkw\consts::NewPartnerCimke . $webshop, $cimke ? $cimke->getId() : '');
         }
 
         $nagykercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('nagykercimke', 0));

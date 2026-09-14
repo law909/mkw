@@ -18,6 +18,10 @@ trait PartnerRegistration
             $t = $ps[0];
         } else {
             $t = new \Entities\Partner();
+            $cimke = \mkw\store::getNewPartnerCimke();
+            if ($cimke) {
+                $t->addCimke($cimke);
+            }
         }
         (new PartnerWriterService($t, $this->params))->regisztracio();
         $t->setVendeg($vendeg);

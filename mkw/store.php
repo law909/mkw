@@ -1769,6 +1769,13 @@ class store
         return self::getSetupValue('webshopnum', 1);
     }
 
+    /** az ebben a webshopban regisztráló új partner címkéje (Beállítások, webshoponként) */
+    public static function getNewPartnerCimke()
+    {
+        $id = self::getParameter(\mkw\consts::NewPartnerCimke . self::getWebshopNum());
+        return $id ? self::getEm()->getRepository(\Entities\Partnercimketorzs::class)->find($id) : null;
+    }
+
     public static function getTermekmenuName()
     {
         return self::getParameter(\mkw\consts::TermekmenuNev) ?: 'Termék menü';

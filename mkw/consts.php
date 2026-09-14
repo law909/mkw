@@ -71,7 +71,8 @@ class consts
     const Locale5 = 'locale5';
     const NullasAfa = 'nullasafa';
     const KiskerCimke = 'kiskercimke';
-    const KulfoldiKiskerCimke = 'kulfoldikiskercimke';
+    // webshoponként: ujpartnercimke1, ujpartnercimke2, ...
+    const NewPartnerCimke = 'ujpartnercimke';
     const NagykerCimke = 'nagykercimke';
     const FelvetelAlattCimke = 'felvetelalattcimke';
     const FelvetelAlattTipus = 'felvetelalatttipus';

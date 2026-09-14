@@ -57,6 +57,10 @@ class b2bpartnerController extends partnerController
                         $partner->addCimke($spanyol);
                     }
                 }
+                $cimke = \mkw\store::getNewPartnerCimke();
+                if ($cimke) {
+                    $partner->addCimke($cimke);
+                }
                 $this->getEm()->persist($partner);
                 $this->getEm()->flush();
 

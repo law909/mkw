@@ -10,7 +10,6 @@ use Entities\Fizmod;
 use Entities\Kosar;
 use Entities\Orszag;
 use Entities\Partner;
-use Entities\Partnercimketorzs;
 use Entities\Raktar;
 use Entities\Szallitasimod;
 use Entities\Valutanem;
@@ -150,20 +149,6 @@ class mugenraceCheckoutController extends checkoutController
                     case 'maganszemely':
                         $partner->setVatstatus(2); // magánszemély
                         break;
-                }
-            }
-            $kiskercimke = $this->getRepo(Partnercimketorzs::class)->find(\mkw\store::getParameter(\mkw\consts::KiskerCimke));
-            $kulfoldikiskercimke = $this->getRepo(Partnercimketorzs::class)->find(\mkw\store::getParameter(\mkw\consts::KulfoldiKiskerCimke));
-            // amíg a külföldi kisker címke nincs beállítva, a külföldi vevő is a sima kisker címkét kapja
-            if ($kulfoldikiskercimke && !\mkw\store::isMagyarorszag($orszag)) {
-                $partner->addCimke($kulfoldikiskercimke);
-                if ($kiskercimke) {
-                    $partner->removeCimke($kiskercimke);
-                }
-            } elseif ($kiskercimke) {
-                $partner->addCimke($kiskercimke);
-                if ($kulfoldikiskercimke) {
-                    $partner->removeCimke($kulfoldikiskercimke);
                 }
             }
             // a szamlatipus a partner "Származás" mezője; alapértéke a magyar, ezt kapta eddig minden webshopos vevő
