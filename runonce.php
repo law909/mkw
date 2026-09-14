@@ -2669,6 +2669,23 @@ if ($DBVersion < '0176') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0176');
 }
 
+if ($DBVersion < '0177') {
+    // A webshopos partnerek "Származás"-a (szamlatipus) a külföldieknél is magyar maradt. Magyarország id-je
+    // deploymentenként más: a beállításból, annak híján az ISO kódból; ha egyik sincs meg, nem nyúlunk hozzá.
+    $conn = \mkw\store::getEm()->getConnection();
+    $magyarorszagId = \mkw\store::getParameter(\mkw\consts::Magyarorszag)
+        ?: $conn->fetchOne('SELECT id FROM orszag WHERE iso3166 = "HU" LIMIT 1');
+    if ($magyarorszagId) {
+        $conn->executeStatement(
+            'UPDATE partner p INNER JOIN orszag o ON o.id = p.orszag_id'
+            . ' SET p.szamlatipus = IF(o.eu = 1, 1, 2)'
+            . ' WHERE p.szamlatipus = 0 AND p.orszag_id <> ?',
+            [$magyarorszagId]
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0177');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
