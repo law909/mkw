@@ -652,6 +652,8 @@ class mainController extends \mkwhelpers\Controller
                 } else {
                     $kftc = new kapcsolatfelveteltemaController();
                     $view = $this->getTemplateFactory()->createMainView('kapcsolat.tpl');
+                    \mkw\store::fillTemplate($view);
+                    $view->setVar('pagetitle', 'Kapcsolatfelvétel a webáruház ügyfélszolgálatával - ' . \mkw\store::getParameter('oldalcim'));
                     $view->setVar('nev', $nev);
                     $view->setVar('email1', $email1);
                     $view->setVar('email2', $email2);
