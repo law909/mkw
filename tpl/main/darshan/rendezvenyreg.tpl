@@ -78,6 +78,7 @@
                 <div class="row">
                     <div class="col topmargin10">
                         <h5 class="color-darshan">Számlázási adatok</h5>
+                        <p>Ha már jártál nálunk, a meglévő adataidat nem írjuk felül, csak az üres mezőket töltjük ki. Ha változtak, szólj nekünk.</p>
                     </div>
                 </div>
                 <div class="form-group row">

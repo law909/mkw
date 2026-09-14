@@ -68,6 +68,56 @@ class PartnerWriterService
         return $this;
     }
 
+    /**
+     * A fillMissing…() metódusok a meglévő partnerre valók, amikor a kérést bárki beküldheti (publikus jelentkezés):
+     * csak az üres mezőt töltik ki, a meglévő adatot nem írják át és nem törlik.
+     */
+    public function fillMissingNev(): self
+    {
+        $vezeteknev = trim($this->params->getStringRequestParam('vezeteknev'));
+        $keresztnev = trim($this->params->getStringRequestParam('keresztnev'));
+        $this->fillIfEmpty('getVezeteknev', 'setVezeteknev', $vezeteknev);
+        $this->fillIfEmpty('getKeresztnev', 'setKeresztnev', $keresztnev);
+        $this->fillIfEmpty('getNev', 'setNev', trim($vezeteknev . ' ' . $keresztnev));
+        return $this;
+    }
+
+    public function fillMissingKapcsolat(): self
+    {
+        $this->fillIfEmpty('getTelefon', 'setTelefon', trim($this->params->getStringRequestParam('telefon')));
+        return $this;
+    }
+
+    public function fillMissingSzamlacim(): self
+    {
+        $this->fillIfEmpty('getNev', 'setNev', trim($this->params->getStringRequestParam('nev')));
+        $this->fillIfEmpty('getAdoszam', 'setAdoszam', substr(trim($this->params->getStringRequestParam('adoszam')), 0, 13));
+        $this->fillIfEmpty('getIrszam', 'setIrszam', substr(trim($this->params->getStringRequestParam('irszam')), 0, 10));
+        $this->fillIfEmpty('getVaros', 'setVaros', trim($this->params->getStringRequestParam('varos')));
+        $this->fillIfEmpty('getUtca', 'setUtca', trim($this->params->getStringRequestParam('utca')));
+        $this->fillIfEmpty('getHazszam', 'setHazszam', trim($this->params->getStringRequestParam('hazszam')));
+        return $this;
+    }
+
+    /** Feliratkoztat, ha kérte; le nem iratkoztat – a bejelöletlen jelölő nem jelenti, hogy leiratkozna. */
+    public function optInHirlevel(): self
+    {
+        if ($this->params->getBoolRequestParam('akcioshirlevelkell')) {
+            $this->partner->setAkcioshirlevelkell(true);
+        }
+        if ($this->params->getBoolRequestParam('ujdonsaghirlevelkell')) {
+            $this->partner->setUjdonsaghirlevelkell(true);
+        }
+        return $this;
+    }
+
+    private function fillIfEmpty(string $getter, string $setter, string $ertek): void
+    {
+        if ($ertek !== '' && trim((string)$this->partner->$getter()) === '') {
+            $this->partner->$setter($ertek);
+        }
+    }
+
     public function hirlevel(): self
     {
         $this->partner->setAkcioshirlevelkell($this->params->getBoolRequestParam('akcioshirlevelkell'));

@@ -529,15 +529,34 @@ class idopontController extends \mkwhelpers\MattableController
         return $ret;
     }
 
+    /**
+     * Darshanon a meglévő partner adatait a jelentkezés csak pótolja (az emailcímet bárki beírhatja), a lemondott
+     * jelentkezés újra felvehető, és a már élő jelentkezésre nem megy új levél. A többi deploymenten a régi lánc fut.
+     */
     public function regSave()
     {
-        $kellszamlazasiadat = $this->params->getBoolRequestParam('kellszamlazasiadat', false);
         $idopont = $this->findByUid($this->params->getStringRequestParam('r'));
         if (!$idopont) {
             return;
         }
+        $darshan = \mkw\store::isDarshanTheme();
+        // darshanon az időpont dönti el, nem a (kézzel átírható) rejtett mező
+        $kellszamlazasiadat = $darshan
+            ? (bool)$idopont->getKellszamlazasiadat()
+            : $this->params->getBoolRequestParam('kellszamlazasiadat', false);
         $sendemails = false;
-        $email = $this->params->getStringRequestParam('email');
+        $visszaallitva = false;
+        $marjelentkezett = false;
+        $email = $darshan ? trim($this->params->getStringRequestParam('email')) : $this->params->getStringRequestParam('email');
+        if ($darshan && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->showRegForm($idopont, t('Kérjük, ellenőrizd az emailcímed.'));
+            return;
+        }
+        $beirtnev = implode(' ', array_filter([
+            trim($this->params->getStringRequestParam('vezeteknev')),
+            trim($this->params->getStringRequestParam('keresztnev')),
+        ]));
+        $telefon = trim($this->params->getStringRequestParam('telefon'));
 
         $kerdoivvalasz = IdopontKerdoivService::readAnswers($idopont->getKerdoivArray(), $this->params);
         if ($kerdoivvalasz['hiba']) {
@@ -555,19 +574,31 @@ class idopontController extends \mkwhelpers\MattableController
 
         if (!$jel) {
             $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
-            if (!$partner) {
-                $partner = new Partner();
-                $partner->setVatstatus(2);
-            }
-            (new PartnerWriterService($partner, $this->params))->nev()->kapcsolat()->munkahely()->hirlevel()->szamlacim();
+            if ($darshan && $partner) {
+                $writer = (new PartnerWriterService($partner, $this->params))->fillMissingNev()->fillMissingKapcsolat()->optInHirlevel();
+                if ($kellszamlazasiadat) {
+                    $writer->fillMissingSzamlacim();
+                }
+            } else {
+                if (!$partner) {
+                    $partner = new Partner();
+                    $partner->setVatstatus(2);
+                }
+                (new PartnerWriterService($partner, $this->params))->nev()->kapcsolat()->munkahely()->hirlevel()->szamlacim();
 
-            if (!$kellszamlazasiadat) {
-                $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
+                if (!$kellszamlazasiadat) {
+                    $partner->setNev($partner->getVezeteknev() . ' ' . $partner->getKeresztnev());
+                }
             }
             $this->getEm()->persist($partner);
 
             $jel = new Idopontfoglalas();
             $jel->setPartner($partner);
+            if ($darshan) {
+                // a setPartner() a partnertörzs nevét és telefonját másolja: a jelentkezésen a beírt adatok szerepelnek
+                $jel->setPartnernev($beirtnev);
+                $jel->setPartnertelefon($telefon);
+            }
             $jel->setIdopont($idopont);
             $jel->setDatum($idopont->getKezdet() ?: '');
             $jel->setEmailkoszono(true);
@@ -577,11 +608,30 @@ class idopontController extends \mkwhelpers\MattableController
 
             $this->getEm()->flush();
             $sendemails = true;
+        } elseif ($darshan && $jel->getLemondva()) {
+            $betelt = $szabadhely !== null && $szabadhely < 1;
+            if ($betelt && !$idopont->isVarolistavan()) {
+                $this->showRegForm($idopont, t('Sajnáljuk, nincs szabad hely.'));
+                return;
+            }
+            $jel->setLemondva(false);
+            $jel->setLemondasdatum(null);
+            $jel->setLemondasoka('');
+            $jel->setVarolistas($betelt);
+            $jel->setPartnernev($beirtnev);
+            $jel->setPartnertelefon($telefon);
+            $jel->setKerdoivvalasz(IdopontKerdoivService::encodeAnswers($kerdoivvalasz['sorok']));
+            $this->getEm()->persist($jel);
+            $this->getEm()->flush();
+            $sendemails = true;
+            $visszaallitva = true;
         } elseif (!$jel->getLemondva() && $jel->isVarolistas() && ($szabadhely === null || $szabadhely > 0)) {
             $jel->setVarolistas(false);
             $this->getEm()->persist($jel);
             $this->getEm()->flush();
             $sendemails = true;
+        } elseif ($darshan && !$jel->getLemondva()) {
+            $marjelentkezett = true;
         }
 
         if ($sendemails) {
@@ -597,6 +647,8 @@ class idopontController extends \mkwhelpers\MattableController
         $v = $this->getTemplateFactory()->createMainView('rendezvenyregkoszono.tpl');
         $v->setVar('kellszamlazasiadat', $kellszamlazasiadat);
         $v->setVar('jelentkezes', $jel->toLista());
+        $v->setVar('visszaallitva', $visszaallitva);
+        $v->setVar('marjelentkezett', $marjelentkezett);
         echo $v->getTemplateResult();
     }
 

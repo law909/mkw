@@ -8,7 +8,9 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                {if (!$lemondas)}
+                {if (!$lemondas && $marjelentkezett|default)}
+                    <h4 class="color-darshan">MÁR JELENTKEZTÉL</h4>
+                {elseif (!$lemondas)}
                     <h4 class="color-darshan">SIKERES JELENTKEZÉS</h4>
                 {else}
                     <h4 class="color-darshan">SIKERES LEMONDÁS</h4>
@@ -17,7 +19,10 @@
         </div>
         <div class="row">
             <div class="col">
-                {if (!$lemondas)}
+                {if (!$lemondas && $marjelentkezett|default)}
+                    Ezzel az emailcímmel már jelentkeztél erre a rendezvényre, ezért új levelet nem küldtünk.
+                {elseif (!$lemondas)}
+                    {if ($visszaallitva|default)}A korábban lemondott jelentkezésedet visszaállítottuk.{/if}
                     {if ($jelentkezes.varolistas)}Felvettünk a várólistára és küldtünk neked egy emailt a részletekkel.{else}Küldtünk neked egy emailt a részletekkel.{/if}
                     {if ($jelentkezes.rendezvenyar > 0)}
                         Nézd meg az email fiókod és utald el nekünk a részvételi díjat, hogy le tudjuk foglalni a helyed!
