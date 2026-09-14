@@ -57,7 +57,10 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/adategy', 'adategyeztetoController#view', 'adategyeztetoview');
     $router->map('POST', '/adategy/check', 'adategyeztetoController#check', 'adategyeztetocheck');
     $router->map('POST', '/adategy/save', 'adategyeztetoController#save', 'adategyeztetosave');
-    $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');
+    // bármely emailhez kiadta a partner adatlapját; a kisszámlázó (lb) órarendje még ebből tölti elő a nevet
+    if (!\mkw\store::isDarshanTheme()) {
+        $router->map('GET', '/partner/getdata', 'partnerController#getPartnerData', 'partnergetdata');
+    }
 }
 
 if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
