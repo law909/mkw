@@ -207,10 +207,17 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
         $bej->setLemondva(false);
         $bej->setPartnernev($partnernev);
         $bej->setPartneremail($email);
-        // partner híján innen viszi tovább a címet a JogaBejelentkezes::resolvePartner()
-        $bej->setPartnerirszam($irszam);
-        $bej->setPartnervaros($varos);
-        $bej->setPartnerutca($utca);
+        // partner híján innen viszi tovább a címet a JogaBejelentkezes::resolvePartner(); visszaállításnál az üresen
+        // hagyott mező nem törli az első jelentkezéskor megadottat
+        if ($irszam !== '' || !$visszaallitva) {
+            $bej->setPartnerirszam($irszam);
+        }
+        if ($varos !== '' || !$visszaallitva) {
+            $bej->setPartnervaros($varos);
+        }
+        if ($utca !== '' || !$visszaallitva) {
+            $bej->setPartnerutca($utca);
+        }
         $this->getEm()->persist($bej);
         $this->getEm()->flush();
 
