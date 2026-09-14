@@ -20,6 +20,7 @@ $router->map('POST', '/pubadmin/idopontlemond', 'pubadminController#lemondIdopon
 $router->map('POST', '/pubadmin/newidopontfoglalas', 'pubadminController#newIdopontfoglalas', 'pubadminnewidopontfoglalas');
 $router->map('POST', '/pubadmin/newpartnernewidopontfoglalas', 'pubadminController#newIdopontfoglalasWNewPartner', 'pubadminnewpartnernewidopontfoglalas');
 $router->map('GET', '/pubadmin/partnerdata', 'pubadminController#getPartnerData', 'pubadmingetpartnerdata');
+$router->map('GET', '/pubadmin/partnerbyemail', 'pubadminController#getPartnerByEmail', 'pubadmingetpartnerbyemail');
 $router->map('POST', '/pubadmin/newbejelentkezes', 'pubadminController#newBejelentkezes', 'pubadminnewbejelentkezes');
 $router->map('POST', '/pubadmin/newpartnernewbejelentkezes', 'pubadminController#newBejelentkezesWNewPartner', 'pubadminnewpartnernewbejelentkezes');
 

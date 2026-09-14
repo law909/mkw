@@ -19,13 +19,128 @@ $(document).ready(
             });
         }
 
+        const EMAILMINTA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function parseValasz(res) {
+            return (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
+        }
+
+        // Az „Új gyakorló" ablak állapota: a mód dönti el, melyik végpontra megy a mentés.
+        const ujGyakorlo = {
+            cel: 'ora',
+            mod: 'kereses',
+            kivalasztott: null,
+            emailEllenorzes: null,
+            ellenorzottEmail: ''
+        };
+
+        function formatCim(partner) {
+            const varosUtca = [partner.varos, partner.utca].filter(Boolean).join(', ');
+            const cim = [partner.irszam, varosUtca].filter(Boolean).join(' ');
+            return cim ? `Cím: ${cim}` : 'Cím: nincs megadva';
+        }
+
+        function showPartnerHiba(msg) {
+            $('.js-partnerhiba').text(msg).prop('hidden', !msg);
+        }
+
+        function renderPartnerKartya() {
+            const p = ujGyakorlo.kivalasztott;
+            $('.js-partnerkartya').prop('hidden', !p);
+            if (!p) {
+                return;
+            }
+            $('.js-kartyanev').text(p.nev);
+            $('.js-kartyaemail').text(p.email);
+            $('.js-kartyacim').text(formatCim(p));
+            $('.js-kartyaakadaly').text(p.akadaly ? `${p.akadaly.replace(/\.?$/, '.')} Mentés után a nevére kattintva javíthatod.` : '');
+        }
+
+        function currentEmailEllenorzes() {
+            const email = $('#emailedit').val().trim();
+            return (email && email === ujGyakorlo.ellenorzottEmail) ? ujGyakorlo.emailEllenorzes : null;
+        }
+
+        function renderEmailInfo() {
+            const $info = $('.js-emailinfo'),
+                ellenorzes = currentEmailEllenorzes();
+            $info.empty().removeClass('alert-warning alert-info').prop('hidden', !ellenorzes);
+            if (!ellenorzes) {
+                return;
+            }
+            if (ellenorzes.talalt) {
+                const alkalom = ujGyakorlo.cel === 'idopont' ? 'foglaláson' : 'bejelentkezésen';
+                $info.addClass('alert-warning')
+                    .append($('<div>').text(`Ezzel az emailcímmel már van partner: ${ellenorzes.partner.nev}. Hozzá kötjük: a partnertörzsben a nevét nem írjuk át, a címet csak az üres mezőkbe írjuk. Az itt beírt név csak ezen a ${alkalom} szerepel.`))
+                    .append($('<button type="button" class="btn btn-sm btn-outline-dark top-margin-10 js-otvalasztom">').text('Őt választom'));
+            } else {
+                $info.addClass('alert-info').text('Új partner jön létre ezekkel az adatokkal.');
+            }
+        }
+
+        function renderMentesOsszegzes() {
+            const idopontra = ujGyakorlo.cel === 'idopont';
+            let szoveg;
+            if (ujGyakorlo.mod === 'kereses') {
+                const p = ujGyakorlo.kivalasztott;
+                if (!p) {
+                    szoveg = 'Válassz partnert a listából.';
+                } else {
+                    szoveg = idopontra
+                        ? `Mentéskor: ${p.nev} foglalást kap erre az időpontra. Új partner nem jön létre, a partnertörzs nem változik.`
+                        : `Mentéskor: ${p.nev} bejelentkezik erre az órára. Új partner nem jön létre, a partnertörzs nem változik.`;
+                }
+            } else {
+                const ellenorzes = currentEmailEllenorzes();
+                if (!ellenorzes) {
+                    szoveg = 'Mentéskor: az emailcím alapján megkeressük vagy létrehozzuk a partnert.';
+                } else if (ellenorzes.talalt) {
+                    szoveg = idopontra
+                        ? `Mentéskor: foglalás a meglévő partnerhez (${ellenorzes.partner.nev}).`
+                        : `Mentéskor: bejelentkezés a meglévő partnerhez (${ellenorzes.partner.nev}).`;
+                } else {
+                    szoveg = idopontra
+                        ? 'Mentéskor: létrejön az új partner, és foglalást kap erre az időpontra.'
+                        : 'Mentéskor: létrejön az új partner, és bejelentkezik erre az órára.';
+                }
+            }
+            $('.js-mentesosszegzes').text(szoveg);
+        }
+
+        function setPartnerMod(mod) {
+            ujGyakorlo.mod = mod;
+            $('.js-partnermod').each(function() {
+                $(this).toggleClass('active', $(this).data('mod') === mod);
+            });
+            $('.js-modkereses').prop('hidden', mod !== 'kereses');
+            $('.js-moduj').prop('hidden', mod !== 'uj');
+            showPartnerHiba('');
+            renderPartnerKartya();
+            renderEmailInfo();
+            renderMentesOsszegzes();
+        }
+
         function resetPartnerModal() {
-            $('#nevedit').val('');
-            $('#emailedit').val('');
-            $('#irszamedit').val('');
-            $('#varosedit').val('');
-            $('#utcaedit').val('');
-            $('#keresoedit').val(null).trigger('change');
+            $('#nevedit, #emailedit, #irszamedit, #varosedit, #utcaedit').val('');
+            $('#keresoedit').empty().val(null).trigger('change');
+            ujGyakorlo.kivalasztott = null;
+            ujGyakorlo.emailEllenorzes = null;
+            ujGyakorlo.ellenorzottEmail = '';
+            setPartnerMod('kereses');
+        }
+
+        function openPartnerModal(cel) {
+            const $select = cel === 'idopont' ? $('#idopontselect') : $('#oraselect'),
+                alkalom = $select.find(':selected').text().trim(),
+                datum = ($('#datumselect').val() || '').replace(/-/g, '.');
+            resetPartnerModal();
+            ujGyakorlo.cel = cel;
+            $('.js-partnermodalcim').text(`${cel === 'idopont' ? 'Foglalás' : 'Bejelentkeztetés'} – ${alkalom}, ${datum}.`);
+            $('.js-partnerok').text(cel === 'idopont' ? 'Foglalást rögzítem' : 'Bejelentkeztetem');
+            renderMentesOsszegzes();
+            $('#partnerModal').modal({
+                backdrop: 'static'
+            });
         }
 
         function refreshResztvevoList() {
@@ -57,12 +172,11 @@ $(document).ready(
             select2opts.dropdownParent = $keresomodal;
         }
         $keresoedit.select2(select2opts);
-        $('#keresoedit').on('select2:select', function() {
-            $('#nevedit, #emailedit').val('');
-        });
-
-        $('#nevedit, #emailedit').change(function() {
-            $('#keresoedit').val(null).trigger('change');
+        $keresoedit.on('select2:select', function(e) {
+            ujGyakorlo.kivalasztott = e.params.data;
+            showPartnerHiba('');
+            renderPartnerKartya();
+            renderMentesOsszegzes();
         });
 
         $(document)
@@ -278,35 +392,81 @@ $(document).ready(
             .on('click', '.js-newpartner', function(e) {
                 e.preventDefault();
                 // ugyanaz az ablak szolgálja ki az órát és az időpontot, a cél dönti el, hova megy
-                $('#partnerModal').data('cel', 'ora').modal({
-                    backdrop: 'static'
-                });
+                openPartnerModal('ora');
             })
             .on('click', '.js-newidopontpartner', function(e) {
                 e.preventDefault();
-                $('#partnerModal').data('cel', 'idopont').modal({
-                    backdrop: 'static'
+                openPartnerModal('idopont');
+            })
+            .on('click', '.js-partnermod', function(e) {
+                e.preventDefault();
+                setPartnerMod($(this).data('mod'));
+            })
+            .on('input', '#emailedit', function() {
+                renderEmailInfo();
+                renderMentesOsszegzes();
+            })
+            .on('change', '#emailedit', function() {
+                const email = $(this).val().trim();
+                if (!EMAILMINTA.test(email)) {
+                    return;
+                }
+                // global: false – a háttérellenőrzés ne takarja le az ablakot, és hibára se ugorjon fel
+                $.ajax({
+                    method: 'GET',
+                    url: '/pubadmin/partnerbyemail',
+                    data: {email: email},
+                    global: false,
+                    success: function(res) {
+                        const adat = parseValasz(res);
+                        if (!adat) {
+                            return;
+                        }
+                        ujGyakorlo.emailEllenorzes = adat;
+                        ujGyakorlo.ellenorzottEmail = email;
+                        renderEmailInfo();
+                        renderMentesOsszegzes();
+                    }
                 });
+            })
+            .on('click', '.js-otvalasztom', function(e) {
+                e.preventDefault();
+                const p = ujGyakorlo.emailEllenorzes.partner;
+                $('#keresoedit').empty().append(new Option(`${p.nev} (${p.email})`, p.id, true, true)).trigger('change');
+                ujGyakorlo.kivalasztott = p;
+                setPartnerMod('kereses');
             })
             .on('click', '.js-partnerok', function(e) {
                 e.preventDefault();
-                const idopontra = $('#partnerModal').data('cel') === 'idopont';
-                $('#partnerModal').modal('hide');
-                const keresoedit = $('#keresoedit').find(':selected');
-                let partnerid = false;
-                if (keresoedit.length) {
-                    partnerid = keresoedit[0].value;
-                }
+                const idopontra = ujGyakorlo.cel === 'idopont';
                 let url, data;
-                if (partnerid) {
+                if (ujGyakorlo.mod === 'kereses') {
+                    if (!ujGyakorlo.kivalasztott) {
+                        showPartnerHiba('Válassz partnert a listából.');
+                        return;
+                    }
                     url = idopontra ? '/pubadmin/newidopontfoglalas' : '/pubadmin/newbejelentkezes';
-                    data = {datum: $('#datumselect').val(), partnerid: partnerid};
+                    data = {datum: $('#datumselect').val(), partnerid: ujGyakorlo.kivalasztott.id};
                 } else {
+                    const nev = $('#nevedit').val().trim(),
+                        email = $('#emailedit').val().trim();
+                    if (!nev || !email) {
+                        showPartnerHiba('A név és az emailcím megadása kötelező.');
+                        return;
+                    }
+                    if (nev.split(/\s+/).length < 2) {
+                        showPartnerHiba('Add meg a gyakorló teljes nevét (vezeték- és keresztnév).');
+                        return;
+                    }
+                    if (!EMAILMINTA.test(email)) {
+                        showPartnerHiba('Az emailcím formátuma hibás.');
+                        return;
+                    }
                     url = idopontra ? '/pubadmin/newpartnernewidopontfoglalas' : '/pubadmin/newpartnernewbejelentkezes';
                     data = {
                         datum: $('#datumselect').val(),
-                        nev: $('#nevedit').val(),
-                        email: $('#emailedit').val(),
+                        nev: nev,
+                        email: email,
                         irszam: $('#irszamedit').val(),
                         varos: $('#varosedit').val(),
                         utca: $('#utcaedit').val()
@@ -317,13 +477,19 @@ $(document).ready(
                 } else {
                     data.oraid = $('#oraselect').val();
                 }
+                showPartnerHiba('');
                 $.ajax({
                     method: 'POST',
                     url: url,
                     data: data,
                     success: function(res) {
-                        const adat = (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
-                        if (adat && adat.msg) {
+                        const adat = parseValasz(res);
+                        if (!adat || !adat.ok) {
+                            showPartnerHiba((adat && adat.msg) || 'A mentés nem sikerült.');
+                            return;
+                        }
+                        $('#partnerModal').modal('hide');
+                        if (adat.msg) {
                             alert(adat.msg);
                         }
                         if (idopontra) {

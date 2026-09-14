@@ -125,67 +125,65 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Gyakorló</h5>
+                    <h5 class="modal-title js-partnermodalcim">Új gyakorló</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <legend>Keresés</legend>
-                            <div class="form-group">
-                                <label for="keresoedit">Keresés</label>
-                                <select id="keresoedit" name="kereso" class="form-control" autocomplete="off"></select>
+                    <div class="btn-group d-flex bottom-margin-10" role="group">
+                        <button type="button" class="btn btn-outline-secondary w-50 js-partnermod" data-mod="kereses">Már járt nálunk</button>
+                        <button type="button" class="btn btn-outline-secondary w-50 js-partnermod" data-mod="uj">Először jön</button>
+                    </div>
+                    <div class="js-modkereses">
+                        <div class="form-group">
+                            <label for="keresoedit">Keresés névre vagy emailre</label>
+                            <select id="keresoedit" name="kereso" class="form-control" autocomplete="off"></select>
+                            <small class="form-text text-muted">Legalább 3 betű.</small>
+                        </div>
+                        <div class="card js-partnerkartya" hidden>
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted">Partnertörzs – ebből készül a számla</h6>
+                                <div class="font-weight-bold js-kartyanev"></div>
+                                <div class="js-kartyaemail"></div>
+                                <div class="js-kartyacim"></div>
+                                <div class="text-danger js-kartyaakadaly"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <legend>Új felvitel</legend>
-                            <div class="form-group">
-                                <label for="nevedit">Név</label>
-                                <input id="nevedit" name="nev" type="text" class="form-control" autocomplete="off">
+                    <div class="js-moduj" hidden>
+                        <div class="form-group">
+                            <label for="nevedit">Teljes név (vezeték- és keresztnév)</label>
+                            <input id="nevedit" name="nev" type="text" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="emailedit">Email</label>
+                            <input id="emailedit" name="email" type="email" class="form-control" autocomplete="off">
+                        </div>
+                        <div class="alert js-emailinfo" hidden></div>
+                        <p class="mb-2">A cím a számlához kell.</p>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="irszamedit">Irányítószám</label>
+                                    <input id="irszamedit" name="irszam" type="text" class="form-control" maxlength="10"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <label for="varosedit">Város</label>
+                                    <input id="varosedit" name="varos" type="text" class="form-control" autocomplete="off">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="emailedit">Email</label>
-                                <input id="emailedit" name="email" type="email" class="form-control" autocomplete="off">
-                            </div>
+                        <div class="form-group">
+                            <label for="utcaedit">Utca, házszám</label>
+                            <input id="utcaedit" name="utca" type="text" class="form-control" autocomplete="off">
                         </div>
                     </div>
-                    <div class="row js-cimblokk">
-                        <div class="col">
-                            <p class="top-margin-10">Ha először jön hozzánk, add meg a címét hogy ki tudjuk
-                                állítani neki a számlát az óráról.</p>
-                        </div>
-                    </div>
-                    <div class="row js-cimblokk">
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="irszamedit">Irányítószám</label>
-                                <input id="irszamedit" name="irszam" type="text" class="form-control" maxlength="10"
-                                       autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="col-8">
-                            <div class="form-group">
-                                <label for="varosedit">Város</label>
-                                <input id="varosedit" name="varos" type="text" class="form-control" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row js-cimblokk">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="utcaedit">Utca, házszám</label>
-                                <input id="utcaedit" name="utca" type="text" class="form-control" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
+                    <p class="top-margin-10 mb-0 font-italic js-mentesosszegzes"></p>
+                    <div class="alert alert-danger top-margin-10 mb-0 js-partnerhiba" hidden></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary js-partnerok">OK</button>
+                    <button type="button" class="btn btn-primary js-partnerok">Bejelentkeztetem</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
                 </div>
             </div>

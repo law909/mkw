@@ -31,6 +31,8 @@ class pubadminController extends mkwhelpers\Controller
     /** ennyi karakter alatt nem keresünk partnert (a select2 minimumInputLength párja) */
     private const PARTNERKERESES_MINHOSSZ = 3;
 
+    private const PARTNERKERESES_MAXTALALAT = 50;
+
     public function view()
     {
         $view = $this->createPubAdminView('main.tpl');
@@ -844,17 +846,39 @@ class pubadminController extends mkwhelpers\Controller
             return;
         }
         $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter(['nev', 'keresztnev', 'vezeteknev'], 'like', '%' . $q . '%');
-        $partnerek = $this->getRepo(Partner::class)->getAll($filter, ['nev' => 'ASC']);
+        // a kisszámlázó (lb) keresője változatlan; darshanon emailre is, és egy „gmail" ne húzza be a fél törzset
+        $darshan = store::isDarshanTheme();
+        $filter->addFilter($darshan ? ['nev', 'keresztnev', 'vezeteknev', 'email'] : ['nev', 'keresztnev', 'vezeteknev'], 'like', '%' . $q . '%');
+        $partnerek = $this->getRepo(Partner::class)->getAll($filter, ['nev' => 'ASC'], 0, $darshan ? self::PARTNERKERESES_MAXTALALAT : 0);
         /** @var Partner $partner */
         foreach ($partnerek as $partner) {
-            $result[] = [
-                'id' => $partner->getId(),
+            $result[] = array_merge($this->partnerToArray($partner), [
                 'text' => $partner->getNev() . ' (' . $partner->getEmail() . ')'
-            ];
+            ]);
         }
         header('Content-Type: application/json');
         echo json_encode(['results' => $result]);
+    }
+
+    /** Az új gyakorló és a gyakorló módosítás ablak emailellenőrzése: van-e már partner ezzel az emailcímmel. */
+    public function getPartnerByEmail()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $partner = $this->findPartnerByEmail($this->params->getStringRequestParam('email'));
+        echo json_encode($partner ? ['talalt' => true, 'partner' => $this->partnerToArray($partner)] : ['talalt' => false]);
+    }
+
+    private function partnerToArray(Partner $partner): array
+    {
+        return [
+            'id' => $partner->getId(),
+            'nev' => (string)$partner->getNev(),
+            'email' => (string)$partner->getEmail(),
+            'irszam' => (string)$partner->getIrszam(),
+            'varos' => (string)$partner->getVaros(),
+            'utca' => (string)$partner->getUtca(),
+            'akadaly' => $this->getSzamlazasiAkadaly($partner),
+        ];
     }
 
     /**
@@ -990,7 +1014,7 @@ class pubadminController extends mkwhelpers\Controller
             return t('A név és az emailcím megadása kötelező.');
         }
         if (!JogaBejelentkezes::isTeljesNev($nev)) {
-            return t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).');
+            return t('Add meg a gyakorló teljes nevét (vezeték- és keresztnév).');
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return t('Az emailcím formátuma hibás.');
