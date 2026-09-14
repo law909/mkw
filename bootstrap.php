@@ -25,6 +25,7 @@ use Listeners\BizonylattetelListener;
 use Listeners\JogareszvetelListener;
 use Listeners\KuponListener;
 use Listeners\PartnerListener;
+use Listeners\PartnerTermekkategoriaKedvezmenyListener;
 use Listeners\PenztarbizonylatfejListener;
 use Listeners\IdopontListener;
 use Listeners\MPTNGYSzakmaianyagListener;
@@ -124,6 +125,7 @@ $evm->addEventListener(['prePersist'], new KuponListener());
 $evm->addEventListener(['prePersist'], new IdopontListener());
 $evm->addEventListener(['onFlush'], new JogareszvetelListener());
 $evm->addEventListener(['onFlush'], new PartnerListener());
+$evm->addEventListener(['onFlush'], new PartnerTermekkategoriaKedvezmenyListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
 // A BizonylatfejListener UTÁN: a státusznaplózás és a költségsorok után nézzük a changesetet.

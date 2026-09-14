@@ -70,6 +70,7 @@ If you are editing one of these entities, the listed listener runs on `prePersis
 | `Rendezveny`                   | `RendezvenyListener`               | `prePersist`              |
 | `Jogareszvetel`                | `JogareszvetelListener`            | `onFlush`                 |
 | `Partner`                      | `PartnerListener`                  | `onFlush`                 |
+| `PartnerTermekkategoriaKedvezmeny` | `PartnerTermekkategoriaKedvezmenyListener` | `onFlush` (log only) |
 | `MPTNGYSzakmaianyag`           | `MPTNGYSzakmaianyagListener`       | `onFlush`                 |
 | `Arsav`                        | `ArsavListener`                    | `onFlush`                 |
 

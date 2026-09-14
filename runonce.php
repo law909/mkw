@@ -2654,6 +2654,21 @@ if ($DBVersion < '0175') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0175');
 }
 
+if ($DBVersion < '0176') {
+    // A partner kategória kedvezmény napló a Kereskedelem menübe, a partnerek mögé; ahol nincs kategória kedvezmény
+    // (mpt, mptngy), ott nem kell.
+    if (!\mkw\store::isMPT() && !\mkw\store::isMPTNGY()) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' SELECT 1, "Partner kategória kedvezmény napló", "/admin/partnertermekkategoriakedvezmenynaplo/viewlist",'
+            . ' "/admin/partnertermekkategoriakedvezmenynaplo", 40, 1, 1250, ""'
+            . ' FROM DUAL WHERE NOT EXISTS'
+            . ' (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/partnertermekkategoriakedvezmenynaplo/viewlist") m)'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0176');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

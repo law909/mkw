@@ -1134,6 +1134,9 @@ if (!\mkw\store::isClosed()) {
     );
 }
 
+$router->map('GET', '/admin/partnertermekkategoriakedvezmenynaplo/viewlist', 'partnertermekkategoriakedvezmenynaploController#viewlist', 'adminpartnertermekkategoriakedvezmenynaploviewlist');
+$router->map('GET', '/admin/partnertermekkategoriakedvezmenynaplo/getlistbody', 'partnertermekkategoriakedvezmenynaploController#getlistbody', 'adminpartnertermekkategoriakedvezmenynaplogetlistbody');
+
 $router->map(
     'GET',
     '/admin/partnergyartokedvezmeny/getemptyrow',
