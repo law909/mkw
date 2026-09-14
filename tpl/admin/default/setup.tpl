@@ -1668,7 +1668,7 @@
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off5Edit">{at('Publikus felület kikapcsolva')}:</label></span>
-                                <input id="Off5Edit" name="off5" type="checkbox"{if ($off2)} checked="checked"{/if}>
+                                <input id="Off5Edit" name="off5" type="checkbox"{if ($off5)} checked="checked"{/if}>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Locale5Edit">{at('Publikus felület nyelve')}:</label></span>
