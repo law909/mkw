@@ -51,6 +51,9 @@
         <td class="mattable-cell"><label for="BeerkezesdatumEdit{$valtozat.id}">{at('Beérkezés')}:</label></td>
         <td class="mattable-cell"><input id="BeerkezesdatumEdit{$valtozat.id}" name="valtozatbeerkezesdatum_{$valtozat.id}"
                                          class="js-valtozatbeerkezesdatumedit" type="text" size="12" data-datum="{$valtozat.beerkezesdatumstr}"></td>
+        <td class="mattable-cell"><label for="ElorendelhetoEdit{$valtozat.id}">{at('Előrendelhető')}:</label></td>
+        <td class="mattable-cell"><input id="ElorendelhetoEdit{$valtozat.id}" name="valtozatelorendelheto_{$valtozat.id}"
+                                         type="checkbox"{if ($valtozat.elorendelheto)} checked="checked"{/if}></td>
     </tr>
     <tr>
         {if ($setup.szinmode === 'fix')}

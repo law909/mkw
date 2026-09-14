@@ -344,6 +344,12 @@
                                        type="checkbox">
                             </label>
                         </td>
+                        <td class="mattable-cell">
+                            <label for="VElorendelhetoEdit">{at('Előrendelhető')}:
+                                <input id="VElorendelhetoEdit" form="valtozatgeneratorform" name="valtozatelorendelheto"
+                                       type="checkbox">
+                            </label>
+                        </td>
                     </tr>
                     {if ($setup.multishop)}
                         {for $cikl = 2 to $enabledwebshops}

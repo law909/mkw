@@ -196,6 +196,9 @@ class TermekValtozat
     /** @ORM\Column(type="date",nullable=true) */
     private $beerkezesdatum;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $elorendelheto = false;
+
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $minkeszlet;
 
@@ -668,6 +671,22 @@ class TermekValtozat
         } else {
             $this->beerkezesdatum = new \DateTime(\mkw\store::convDate($adat));
         }
+    }
+
+    public function isElorendelheto()
+    {
+        return $this->elorendelheto;
+    }
+
+    public function setElorendelheto($adat)
+    {
+        $this->elorendelheto = (bool)$adat;
+    }
+
+    /** a b2b-n "úton" lévőként jelenik meg: előrendelhető, vagy még el nem múlt beérkezési dátuma van */
+    public function isArrivalExpected()
+    {
+        return $this->elorendelheto || ($this->beerkezesdatum && $this->beerkezesdatum >= new \DateTime());
     }
 
     public function getSzin()

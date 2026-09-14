@@ -857,6 +857,7 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setUnasalaptipus($this->params->getStringRequestParam('valtozatunasalaptipus_' . $valtozatid));
                     }
                     $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
+                    $valtozat->setElorendelheto($this->params->getBoolRequestParam('valtozatelorendelheto_' . $valtozatid));
 
                     if (\mkw\store::isFixSzinMode()) {
                         $szin = $this->getEm()->getRepository(Szin::class)->find(
@@ -967,6 +968,7 @@ class termekController extends \mkwhelpers\MattableController
                             $valtozat->setUnasalaptipus($this->params->getStringRequestParam('valtozatunasalaptipus_' . $valtozatid));
                         }
                         $valtozat->setBeerkezesdatum($this->params->getStringRequestParam('valtozatbeerkezesdatum_' . $valtozatid));
+                        $valtozat->setElorendelheto($this->params->getBoolRequestParam('valtozatelorendelheto_' . $valtozatid));
 
                         if (\mkw\store::isFixSzinMode()) {
                             $szin = $this->getEm()->getRepository(Szin::class)->find(

@@ -70,6 +70,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $x['szabadkeszlet'] = $t->getAvailableStock(null, null, null, false);
         $x['erkezik'] = $t->getIncomingStock();
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
+        $x['elorendelheto'] = $t->isElorendelheto();
         if (\mkw\store::isFixSzinMode()) {
             $x['szinid'] = $t->getSzinId();
             $x['meretid'] = $t->getMeretId();
@@ -193,6 +194,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $lathato14 = $this->params->getBoolRequestParam('valtozatlathato14', false);
         $lathato15 = $this->params->getBoolRequestParam('valtozatlathato15', false);
         $termekfokep = $this->params->getBoolRequestParam('valtozattermekfokep', false);
+        $elorendelheto = $this->params->getBoolRequestParam('valtozatelorendelheto', false);
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
         if (store::isFixSzinMode()) {
@@ -267,6 +269,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                         }
                         $valtozat->setNetto($netto);
                         $valtozat->setTermekfokep($termekfokep);
+                        $valtozat->setElorendelheto($elorendelheto);
                         if (count($cikkszamok) > 0) {
                             if (count($cikkszamok) == 1) {
                                 $valtozat->setCikkszam($cikkszamok[0]);
@@ -379,6 +382,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                     //					$valtozat->setBrutto($brutto);
                     $valtozat->setNetto($netto);
                     $valtozat->setTermekfokep($termekfokep);
+                    $valtozat->setElorendelheto($elorendelheto);
                     if (count($cikkszamok) > 0) {
                         if (count($cikkszamok) == 1) {
                             $valtozat->setCikkszam($cikkszamok[0]);

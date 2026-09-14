@@ -377,7 +377,6 @@ class mainController extends \mkwhelpers\Controller
                     $t['caption'] = $termek->getLocalizedFieldValue('nev');
                     $t['cikkszam'] = $termek->getCikkszam();
                     $valtozatok = $termek->getValtozatok();
-                    $ma = new \DateTime();
                     /** @var TermekValtozat $valt */
                     foreach ($valtozatok as $valt) {
                         if ($valt->getXElerheto() && $valt->getXLathato()) {
@@ -389,7 +388,7 @@ class mainController extends \mkwhelpers\Controller
                                 $vtt[$valt->getSzinId()]['kepurlmedium'] = $valt->getKepurlMedium();
                                 $vtt[$valt->getSzinId()]['kepurllarge'] = $valt->getKepurlLarge();
                                 $vtt[$valt->getSzinId()]['keszlet'] += $valt->getAvailableStock();
-                                $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || (($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma) ? true : false);
+                                $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || $valt->isArrivalExpected();
                                 $vtt[$valt->getSzinId()]['link'] = \mkw\store::getRouter()->generate(
                                     'showtermekm',
                                     false,
@@ -464,7 +463,6 @@ class mainController extends \mkwhelpers\Controller
         $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
 
         $vtt = [];
-        $ma = new \DateTime();
         /** @var TermekValtozat $valt */
         foreach ($termek->getValtozatok() as $valt) {
             if (!$valt->getXElerheto() || !$valt->getXLathato()) {
@@ -485,7 +483,7 @@ class mainController extends \mkwhelpers\Controller
                 'caption' => $szinid ? $valt->getMeretNev() : $valt->getNev(),
                 'keszlet' => $valtkeszlet,
                 'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
-                'bejon' => (($valtkeszlet <= 0) && ($valt->getBeerkezesdatumStr()) && ($valt->getBeerkezesdatum() >= $ma)) ? true : false
+                'bejon' => ($valtkeszlet <= 0) && $valt->isArrivalExpected()
             ];
         }
         if (!$vtt && !$szinid) {
