@@ -73,6 +73,8 @@ class consts
     const KiskerCimke = 'kiskercimke';
     // webshoponként: ujpartnercimke1, ujpartnercimke2, ...
     const NewPartnerCimke = 'ujpartnercimke';
+    // a superzoneb2b-s kategória kedvezmény migráció lefutásának ideje (runonce)
+    const KategoriaKedvezmenyMigrated = 'kategoriakedvezmenymigralva';
     const NagykerCimke = 'nagykercimke';
     const FelvetelAlattCimke = 'felvetelalattcimke';
     const FelvetelAlattTipus = 'felvetelalatttipus';

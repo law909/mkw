@@ -2574,86 +2574,6 @@ if ($DBVersion < '0174') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0174');
 }
 
-if ($DBVersion < '0175') {
-    // A partner termékcsoport kedvezménye termékfa-ágra vált. A régi tábla leképezetlenül megmaradt; a sorokat a
-    // csoport és az ág nevének egyezése (nev vagy nev_l1, kis-nagybetű nélkül) alapján hozzuk át. Pontos egyezés
-    // híján legfeljebb két betű eltérés is elég (ACCESSOIRES, TEXTILE JACKETS), de csak egyértelmű párnál.
-    $conn = \mkw\store::getEm()->getConnection();
-    if ($conn->fetchOne('SHOW TABLES LIKE "partnertermekcsoportkedvezmeny"')) {
-        $normalize = fn($name) => preg_replace('/\s+/u', ' ', mb_strtoupper(trim(html_entity_decode((string)$name))));
-        $treeNodesByName = [];
-        foreach ($conn->fetchAllAssociative('SELECT id, nev, nev_l1, menu1lathato FROM termekfa') as $node) {
-            foreach (array_unique([$normalize($node['nev']), $normalize($node['nev_l1'])]) as $name) {
-                if ($name !== '') {
-                    $treeNodesByName[$name][] = $node;
-                }
-            }
-        }
-        // azonos nevű ágak közül a b2b menüben lévő a nyerő
-        $pickNode = function (array $nodes) {
-            if (count($nodes) === 1) {
-                return $nodes[0];
-            }
-            $menuNodes = array_values(array_filter($nodes, fn($node) => $node['menu1lathato']));
-            return count($menuNodes) === 1 ? $menuNodes[0] : null;
-        };
-        $groups = $conn->fetchAllAssociative(
-            'SELECT DISTINCT tcs.id, tcs.nev FROM partnertermekcsoportkedvezmeny k INNER JOIN termekcsoport tcs ON tcs.id = k.termekcsoport_id'
-        );
-        $mapping = [];
-        foreach ($groups as $group) {
-            $node = $pickNode($treeNodesByName[$normalize($group['nev'])] ?? []);
-            if ($node) {
-                $mapping[$group['id']] = $node['id'];
-            }
-        }
-        $fuzzy = [];
-        foreach ($groups as $group) {
-            if (isset($mapping[$group['id']])) {
-                continue;
-            }
-            $bestName = null;
-            $bestDistance = 3;
-            $tie = false;
-            foreach (array_keys($treeNodesByName) as $name) {
-                $distance = levenshtein($normalize($group['nev']), $name);
-                if ($distance < $bestDistance) {
-                    [$bestName, $bestDistance, $tie] = [$name, $distance, false];
-                } elseif ($distance === $bestDistance) {
-                    $tie = true;
-                }
-            }
-            $node = ($bestName !== null && !$tie) ? $pickNode($treeNodesByName[$bestName]) : null;
-            if ($node && !in_array($node['id'], $mapping)) {
-                $fuzzy[$node['id']][] = $group['id'];
-            }
-        }
-        foreach ($fuzzy as $nodeId => $groupIds) {
-            if (count($groupIds) === 1) {
-                $mapping[$groupIds[0]] = $nodeId;
-            }
-        }
-        foreach ($mapping as $groupId => $nodeId) {
-            // partnerenként duplikált csoportnál a legkisebb id-jű sor: eddig is az érvényesült
-            $conn->executeStatement(
-                'INSERT INTO partnertermekkategoriakedvezmeny (created, lastmod, partner_id, termekfa_id, kedvezmeny)'
-                . ' SELECT k.created, k.lastmod, k.partner_id, ?, k.kedvezmeny FROM partnertermekcsoportkedvezmeny k'
-                . ' WHERE k.id IN (SELECT MIN(k2.id) FROM partnertermekcsoportkedvezmeny k2 WHERE k2.termekcsoport_id = ? GROUP BY k2.partner_id)'
-                . ' AND NOT EXISTS (SELECT 1 FROM partnertermekkategoriakedvezmeny m WHERE m.partner_id = k.partner_id AND m.termekfa_id = ?)',
-                [$nodeId, $groupId, $nodeId]
-            );
-        }
-        $unmatched = array_filter($groups, fn($group) => !isset($mapping[$group['id']]));
-        if ($unmatched) {
-            \mkw\store::writelog(
-                'runonce 0175, termékfára nem párosított termékcsoport kedvezmények: ' . implode(', ', array_column($unmatched, 'nev')),
-                'partnerkedvezmeny_migracio.txt'
-            );
-        }
-    }
-    \mkw\store::setParameter(\mkw\consts::DBVersion, '0175');
-}
-
 if ($DBVersion < '0176') {
     // A partner kategória kedvezmény napló a Kereskedelem menübe, a partnerek mögé; ahol nincs kategória kedvezmény
     // (mpt, mptngy), ott nem kell.
@@ -2684,6 +2604,79 @@ if ($DBVersion < '0177') {
         );
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0177');
+}
+
+// A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
+// verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
+// admin kérés átléptetné. Saját jelzővel fut, és amíg a térkép üres, meg sem próbálja.
+if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::KategoriaKedvezmenyMigrated)) {
+    // termekcsoport id => termekfa id-k. Ha egy partner ugyanarra az ágra több csoportból is kapna, az előbb
+    // szereplő csoport kedvezménye marad. A nevek a 2026-09-14-i fejlesztői DB szerint.
+    $termekcsoportTermekfak = [
+        12 => [33],                   // LEATHER SUIT → BŐRRUHA
+        8 => [42],                    // LEATHER JACKET → BŐRKABÁT
+        9 => [41],                    // LEATHER PANTS → BŐRNADRÁG
+        16 => [36],                   // TEXTILE JACKETS → TEXTIL KABÁT
+        13 => [37],                   // TEXTILE PANTS → TEXTIL NADRÁG
+        14 => [34],                   // KEVLAR JEANS
+        4 => [38],                    // GLOVES → KESZTYŰ
+        3 => [43],                    // BOOTS → CSIZMA
+        2 => [39, 175, 35, 188, 189], // ACCESSOIRES → KIEGÉSZÍTŐK, CSAPAT RUHÁZAT, POLO, M.FORCE FISHING, M.FORCE HUNTING
+        7 => [74],                    // SCORPION
+        11 => [100],                  // ZANDONA
+        6 => [115],                   // EGYÉB
+        28 => [],                     // CROSS GARMENTS (javaslat: 173 CROSS CLOTHING)
+        1 => [],                      // LEATHER SUIT/JACKETS
+        5 => [],                      // TEXILE JACKETS/PANTS/KEVLAR
+        21 => [],                     // KIT FOR KIDS 1 SET (a fában: 142 KIT FOR KIDS SET)
+        22 => [],                     // KIT FOR KIDS 5 SET
+        17 => [],                     // KIT FOR KIDS 15 SET
+        18 => [],                     // KIT FOR ADULT BASIC 1 SET (a fában: 143 KIT FOR ADULT)
+        23 => [],                     // KIT FOR ADULT BASIC 5 SET
+        24 => [],                     // KIT FOR ADULT BASIC 15 SET
+        25 => [],                     // KIT FOR ADULT OHVALE 1 SET
+        26 => [],                     // KIT FOR ADULT OHVALE 5 SET
+        27 => [],                     // KIT FOR ADULT OHVALE 15 SET
+    ];
+    $conn = \mkw\store::getEm()->getConnection();
+    $termekfaIds = array_merge(...array_values($termekcsoportTermekfak));
+    if ($termekfaIds && $conn->fetchOne('SHOW TABLES LIKE "partnertermekcsoportkedvezmeny"')) {
+        $existingTermekfaIds = array_map('intval', $conn->fetchFirstColumn(
+            'SELECT id FROM termekfa WHERE id IN (?)',
+            [$termekfaIds],
+            [\Doctrine\DBAL\ArrayParameterType::INTEGER]
+        ));
+        foreach ($termekcsoportTermekfak as $termekcsoportId => $nodeIds) {
+            foreach (array_intersect($nodeIds, $existingTermekfaIds) as $termekfaId) {
+                // partnerenként duplikált csoportnál a legkisebb id-jű sor: eddig is az érvényesült
+                $conn->executeStatement(
+                    'INSERT INTO partnertermekkategoriakedvezmeny (created, lastmod, partner_id, termekfa_id, kedvezmeny)'
+                    . ' SELECT k.created, k.lastmod, k.partner_id, ?, k.kedvezmeny FROM partnertermekcsoportkedvezmeny k'
+                    . ' WHERE k.id IN (SELECT MIN(k2.id) FROM partnertermekcsoportkedvezmeny k2 WHERE k2.termekcsoport_id = ? GROUP BY k2.partner_id)'
+                    . ' AND NOT EXISTS (SELECT 1 FROM partnertermekkategoriakedvezmeny m WHERE m.partner_id = k.partner_id AND m.termekfa_id = ?)',
+                    [$termekfaId, $termekcsoportId, $termekfaId]
+                );
+            }
+        }
+        $unmapped = $conn->fetchFirstColumn(
+            'SELECT DISTINCT tcs.nev FROM partnertermekcsoportkedvezmeny k INNER JOIN termekcsoport tcs ON tcs.id = k.termekcsoport_id'
+            . ' WHERE k.termekcsoport_id NOT IN (?)',
+            [array_keys(array_filter($termekcsoportTermekfak))],
+            [\Doctrine\DBAL\ArrayParameterType::INTEGER]
+        );
+        $missingTermekfaIds = array_diff($termekfaIds, $existingTermekfaIds);
+        $messages = [];
+        if ($unmapped) {
+            $messages[] = 'át nem vitt termékcsoportok: ' . implode(', ', $unmapped);
+        }
+        if ($missingTermekfaIds) {
+            $messages[] = 'nem létező, kihagyott termékfa id-k: ' . implode(', ', $missingTermekfaIds);
+        }
+        if ($messages) {
+            \mkw\store::writelog('kategória kedvezmény migráció: ' . implode('; ', $messages), 'partnerkedvezmeny_migracio.txt');
+        }
+        \mkw\store::setParameter(\mkw\consts::KategoriaKedvezmenyMigrated, date('Y-m-d H:i:s'));
+    }
 }
 
 /**
