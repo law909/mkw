@@ -153,8 +153,18 @@ class mugenraceCheckoutController extends checkoutController
                 }
             }
             $kiskercimke = $this->getRepo(Partnercimketorzs::class)->find(\mkw\store::getParameter(\mkw\consts::KiskerCimke));
-            if ($kiskercimke) {
+            $kulfoldikiskercimke = $this->getRepo(Partnercimketorzs::class)->find(\mkw\store::getParameter(\mkw\consts::KulfoldiKiskerCimke));
+            // amíg a külföldi kisker címke nincs beállítva, a külföldi vevő is a sima kisker címkét kapja
+            if ($kulfoldikiskercimke && !\mkw\store::isMagyarorszag($orszag)) {
+                $partner->addCimke($kulfoldikiskercimke);
+                if ($kiskercimke) {
+                    $partner->removeCimke($kiskercimke);
+                }
+            } elseif ($kiskercimke) {
                 $partner->addCimke($kiskercimke);
+                if ($kulfoldikiskercimke) {
+                    $partner->removeCimke($kulfoldikiskercimke);
+                }
             }
             // a szamlatipus a partner "Származás" mezője; alapértéke a magyar, ezt kapta eddig minden webshopos vevő
             if (\mkw\store::isMagyarorszag($orszag)) {

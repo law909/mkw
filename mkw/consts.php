@@ -71,6 +71,7 @@ class consts
     const Locale5 = 'locale5';
     const NullasAfa = 'nullasafa';
     const KiskerCimke = 'kiskercimke';
+    const KulfoldiKiskerCimke = 'kulfoldikiskercimke';
     const NagykerCimke = 'nagykercimke';
     const FelvetelAlattCimke = 'felvetelalattcimke';
     const FelvetelAlattTipus = 'felvetelalatttipus';

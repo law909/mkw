@@ -726,6 +726,16 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="KulfoldiKiskerCimkeEdit">{at('Külföldi kisker címke')}:</label></span>
+                            <select id="KulfoldiKiskerCimkeEdit" name="kulfoldikiskercimke">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $kulfoldikiskercimkelist as $_kiskercimke}
+                                    <option
+                                        value="{$_kiskercimke.id}"{if ($_kiskercimke.selected)} selected="selected"{/if}>{$_kiskercimke.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="NagykerCimkeEdit">{at('Nagyker címke')}:</label></span>
                             <select id="NagykerCimkeEdit" name="nagykercimke">
                                 <option value="">{at('válasszon')}</option>
