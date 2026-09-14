@@ -46,6 +46,10 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/berletellenor', 'jogaberletController#getBerletAlkalmak', 'berletellenor');
     $router->map('POST', '/orarend/bejelentkezes', 'jogabejelentkezesController#bejelentkezes', 'orarendbejelentkezes');
     $router->map('POST', '/orarend/lemondas', 'jogabejelentkezesController#lemondas', 'orarendlemondas');
+    if (\mkw\store::isDarshanTheme()) {
+        // POST, hogy az emailcím ne kerüljön URL-be és a hozzáférési naplóba
+        $router->map('POST', '/jelentkezes/emailellenor', 'jogabejelentkezesController#checkEmail', 'jelentkezesemailellenor');
+    }
     $router->map('GET', '/idopont/wp', 'idopontController#exportToWordpress', 'idopontexporttowordpress');
     $router->map('GET', '/idopont/foglalas', 'idopontfoglalasController#showBookingForm', 'idopontfoglalasform');
     $router->map('POST', '/idopont/foglalas/ment', 'idopontfoglalasController#saveBooking', 'idopontfoglalassave');

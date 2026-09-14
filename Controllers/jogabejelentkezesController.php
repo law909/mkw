@@ -5,6 +5,7 @@ namespace Controllers;
 use Entities\JogaBejelentkezes;
 use Entities\Orarend;
 use Entities\Partner;
+use Services\PartnerResolveService;
 
 class jogabejelentkezesController extends \mkwhelpers\MattableController
 {
@@ -130,6 +131,18 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
         $view->setVar('egyed', $this->loadVars($record));
 
         return $view->getTemplateResult();
+    }
+
+    /**
+     * A publikus jelentkezési űrlapoknak: kell-e címet kérni. Szándékosan semmi mást nem ad ki – a név vagy a cím
+     * bárkinek elárulná, kinek mi van a partnertörzsben. Az email ismertsége a /checkemail-lel ma is kideríthető.
+     */
+    public function checkEmail()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $email = trim($this->params->getStringRequestParam('email'));
+        $partner = filter_var($email, FILTER_VALIDATE_EMAIL) ? (new PartnerResolveService())->findByEmail($email) : null;
+        echo json_encode(['ismert' => (bool)$partner, 'cimhianyos' => !$partner || !$partner->hasFullCim()]);
     }
 
     public function bejelentkezes()
