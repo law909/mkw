@@ -13,6 +13,23 @@
             </div>
         </div>
     </div>
+    <div class="row bottom-margin-10">
+        <div class="col">
+            <a class="color-darshan" data-toggle="collapse" href="#partnersugo" role="button" aria-expanded="false"
+               aria-controls="partnersugo"><i class="fas fa-question-circle"></i> Hogyan működik a gyakorló és a partner?</a>
+            <div class="collapse" id="partnersugo">
+                <ol class="top-margin-10 mb-0">
+                    <li><strong>Jelentkezés:</strong> egy sor ezen az alkalmon, saját névvel és emaillel – csak itt látszik.</li>
+                    <li><strong>Partner:</strong> a partnertörzs rekordja, emailcím alapján. A bérlet, az órajegy és a számla a
+                        partnerhez tartozik, a számla a partner nevére és címére készül.</li>
+                    <li>Az <strong>Új gyakorló</strong> gomb azonnal partnert köt vagy létrehoz; az órarendből jelentkezőnek a
+                        Megérkezett vagy a vásárlás gombra jön létre.</li>
+                    <li>A weboldal meglévő partner adatait nem írja át, csak az üres mezőket tölti ki. Átírni a nevére kattintva,
+                        a „Partnertörzs” blokkban lehet.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
     <div id="oralist"></div>
     <div id="resztvevolist"></div>
     <div id="idopontlist"></div>

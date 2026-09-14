@@ -10,9 +10,9 @@
     <div class="row js-resztvevo top-margin-10 color-bkg-darshan">
         {if ($future)}
             <div class="col-1">&nbsp;</div>
-            <div class="col">{$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
-                {include "comp_szamlazasiakadaly.tpl"}
-            </div>
+            <button class="col btn text-left js-partneredit" data-id="{$resztvevo.id}">
+                {include "comp_resztvevonev.tpl"}
+            </button>
             <div class="col">
                 <div class="row">
                     <div class="col">
@@ -36,9 +36,8 @@
                 <button class="col-md-1 btn btn-danger js-megjegyzes" data-id="{$resztvevo.id}">{if ($resztvevo.megjegyzes)}*{/if}
                     M{if ($resztvevo.megjegyzes)}*{/if}</button>
             {/if}
-            <button class="col-md-4{if ($resztvevo.new)} text-danger{/if} btn js-partneredit" data-id="{$resztvevo.id}">
-                {$sorszam}. {$resztvevo.nev} ({$resztvevo.email})
-                {include "comp_szamlazasiakadaly.tpl"}
+            <button class="col-md-4 btn js-partneredit" data-id="{$resztvevo.id}">
+                {include "comp_resztvevonev.tpl"}
             </button>
             <div class="col-md-4">
                 <div class="row">

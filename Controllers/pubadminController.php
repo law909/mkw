@@ -109,11 +109,17 @@ class pubadminController extends mkwhelpers\Controller
                 $rvtomb = [];
                 $rvtomb['tipus'] = false;
                 $rvtomb['berletnincsfizetve'] = false;
-                $rvpartner = $this->getRepo(Partner::class)->findOneBy(['email' => $resztvevo->getPartneremail()]);
+                // üres emailre nem keresünk: eddig egy tetszőleges üres emailű partner bérletét és számlanevét kapta
+                $rvpartner = $this->findPartnerByEmail($resztvevo->getPartneremail());
+                $rvtomb['nev'] = $resztvevo->getPartnernev();
+                $rvtomb['email'] = $resztvevo->getPartneremail();
+                $rvtomb['new'] = !$rvpartner;
+                $rvtomb['nincspartner'] = !$rvpartner;
+                // a számla a partnertörzs nevére készül: ha az eltér a jelentkezésétől, a tanár lássa
+                $rvtomb['szamlanev'] = ($rvpartner && !$this->isSameNev($rvpartner->getNev(), $resztvevo->getPartnernev()))
+                    ? (string)$rvpartner->getNev()
+                    : '';
                 if ($rvpartner) {
-                    $rvtomb['nev'] = $resztvevo->getPartnernev();
-                    $rvtomb['email'] = $resztvevo->getPartneremail();
-                    $rvtomb['new'] = false;
                     $filter->clear();
                     $filter->addFilter('partner', '=', $rvpartner);
                     $filter->addFilter('lejart', '=', false);
@@ -128,10 +134,6 @@ class pubadminController extends mkwhelpers\Controller
                         $rvtomb['lejaratdatum'] = $berlet->getLejaratdatumStr();
                         $rvtomb['berletnincsfizetve'] = $berlet->isNincsfizetve();
                     }
-                } else {
-                    $rvtomb['nev'] = $resztvevo->getPartnernev();
-                    $rvtomb['email'] = $resztvevo->getPartneremail();
-                    $rvtomb['new'] = true;
                 }
                 switch (true) {
                     case $resztvevo->getTipus() == 1:
@@ -1050,7 +1052,7 @@ class pubadminController extends mkwhelpers\Controller
             return sprintf(t('%s, és létrejött az új partner: %s (%s).'), $mi, $partner->getNev(), $partner->getEmail());
         }
         $msg = sprintf(t('%s a meglévő partnerhez: %s (%s).'), $mi, $partner->getNev(), $partner->getEmail());
-        if (mb_strtolower(implode(' ', JogaBejelentkezes::splitNev($nev))) !== mb_strtolower(implode(' ', JogaBejelentkezes::splitNev($partner->getNev())))) {
+        if (!$this->isSameNev($nev, $partner->getNev())) {
             $msg .= ' ' . t('A partner nevét nem írtuk át.');
         }
         $cimkek = ['irszam' => t('irányítószám'), 'varos' => t('város'), 'utca' => t('utca'), 'telefon' => t('telefonszám')];
@@ -1059,6 +1061,13 @@ class pubadminController extends mkwhelpers\Controller
             $msg .= ' ' . t('A partnertörzsben pótoltuk') . ': ' . implode(', ', $potolt) . '.';
         }
         return $msg;
+    }
+
+    /** kis-nagybetűtől és a szóközök számától függetlenül */
+    private function isSameNev($egyik, $masik): bool
+    {
+        return mb_strtolower(implode(' ', JogaBejelentkezes::splitNev($egyik)))
+            === mb_strtolower(implode(' ', JogaBejelentkezes::splitNev($masik)));
     }
 
     private function getAkadalyFigyelmeztetes(?Partner $partner): string

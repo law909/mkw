@@ -11,7 +11,7 @@
 {foreach $foglalaslist as $foglalas}
     <div class="row top-margin-10 color-bkg-darshan">
         <div class="col-md-5">
-            {$sorszam}. {$foglalas.nev} ({$foglalas.email}{if ($foglalas.telefon)}, {$foglalas.telefon}{/if})
+            {$sorszam}. {$foglalas.nev|escape} ({$foglalas.email|escape}{if ($foglalas.telefon)}, {$foglalas.telefon|escape}{/if})
         </div>
         <div class="col-md-3">
             {if ($foglalas.online)}Online{else}Élő{/if}{if ($foglalas.fizetve)} - fizetve{/if}
