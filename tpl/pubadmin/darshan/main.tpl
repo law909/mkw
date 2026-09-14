@@ -213,15 +213,19 @@
                     <h5 class="modal-title">Gyakorló adatai</h5>
                 </div>
                 <div class="modal-body">
-                    <h6 class="color-darshan">Ezen a jelentkezésen</h6>
-                    <p class="small text-muted">Csak ezt az egy bejelentkezést módosítja. Az emailcím köti a jelentkezést a partnerhez.</p>
+                    <h6 class="color-darshan js-ablokkcim">Ezen a jelentkezésen</h6>
+                    <p class="small text-muted js-ablokkszoveg">Csak ezt az egy bejelentkezést módosítja. Az emailcím köti a jelentkezést a partnerhez.</p>
                     <div class="form-group">
-                        <label for="nev2edit">Név a jelentkezésen</label>
+                        <label for="nev2edit" class="js-anevcimke">Név a jelentkezésen</label>
                         <input id="nev2edit" name="nev" type="text" class="form-control" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label for="email2edit">Email</label>
                         <input id="email2edit" name="email" type="email" class="form-control" autocomplete="off">
+                    </div>
+                    <div class="form-group js-telefonsor" hidden>
+                        <label for="telefon2edit">Telefon a foglaláson</label>
+                        <input id="telefon2edit" name="telefon" type="text" class="form-control" autocomplete="off">
                     </div>
                     <div class="alert alert-warning js-emailvaltasinfo" hidden></div>
                     <hr>

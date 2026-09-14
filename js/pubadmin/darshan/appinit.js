@@ -145,6 +145,7 @@ $(document).ready(
 
         // A „Gyakorló adatai" ablak: a partnerblokk csak akkor megy a szerverre, ha a tanár átírta, vagy nincs partner.
         const gyakorloModositas = {
+            cel: 'ora',
             id: 0,
             partnerid: 0,
             eredetiPartnerid: 0,
@@ -183,6 +184,19 @@ $(document).ready(
             $('.js-partneredithiba').text(msg).prop('hidden', !msg);
         }
 
+        // ugyanaz az ablak szolgálja ki az óra jelentkezését és az időpont foglalását; a foglalás emailje nem írható
+        function setModositasCel(cel) {
+            const idopontra = cel === 'idopont';
+            gyakorloModositas.cel = cel;
+            $('.js-ablokkcim').text(idopontra ? 'Ezen a foglaláson' : 'Ezen a jelentkezésen');
+            $('.js-ablokkszoveg').text(idopontra
+                ? 'Csak ezt az egy foglalást módosítja. Az emailcím a foglalás partneréhez köti, itt nem módosítható.'
+                : 'Csak ezt az egy bejelentkezést módosítja. Az emailcím köti a jelentkezést a partnerhez.');
+            $('.js-anevcimke').text(idopontra ? 'Név a foglaláson' : 'Név a jelentkezésen');
+            $('#email2edit').prop('readonly', idopontra);
+            $('.js-telefonsor').prop('hidden', !idopontra);
+        }
+
         /** @param kesz(valtozott) valtozott: a partnerblokk másik partnerre vagy partner nélkülire váltott */
         function checkModositasEmail(email, kesz) {
             $.ajax({
@@ -215,11 +229,16 @@ $(document).ready(
         }
 
         function savePartnerEdit() {
-            const data = {
-                id: gyakorloModositas.id,
-                nev: $('#nev2edit').val().trim(),
-                email: $('#email2edit').val().trim()
-            };
+            const idopontra = gyakorloModositas.cel === 'idopont',
+                data = {
+                    id: gyakorloModositas.id,
+                    nev: $('#nev2edit').val().trim()
+                };
+            if (idopontra) {
+                data.telefon = $('#telefon2edit').val().trim();
+            } else {
+                data.email = $('#email2edit').val().trim();
+            }
             const blokk = getPartnerBlokk(),
                 eredeti = gyakorloModositas.eredeti,
                 atirta = Object.keys(blokk).some((mezo) => blokk[mezo] !== eredeti[mezo]);
@@ -239,7 +258,7 @@ $(document).ready(
             }
             $.ajax({
                 method: 'POST',
-                url: '/pubadmin/partner',
+                url: idopontra ? '/pubadmin/idopontfoglalaspartner' : '/pubadmin/partner',
                 data: data,
                 success: function(res) {
                     const adat = parseValasz(res);
@@ -251,7 +270,11 @@ $(document).ready(
                     if (adat.msg) {
                         alert(adat.msg);
                     }
-                    refreshResztvevoList();
+                    if (idopontra) {
+                        refreshIdopontfoglalasList();
+                    } else {
+                        refreshResztvevoList();
+                    }
                 }
             });
         }
@@ -626,12 +649,44 @@ $(document).ready(
                     success: function(res) {
                         const data = parseValasz(res),
                             jelentkezes = data.jelentkezes || data;
+                        setModositasCel('ora');
                         gyakorloModositas.id = $this.data('id');
                         gyakorloModositas.eredetiPartnerid = data.partner ? data.partner.id : 0;
                         gyakorloModositas.ellenorzottEmail = (jelentkezes.email || '').trim();
                         $('#nev2edit').val(jelentkezes.nev);
                         $('#email2edit').val(jelentkezes.email);
                         fillPartnerBlokk(data.partner, jelentkezes);
+                        showEmailValtasInfo('');
+                        showPartnerEditHiba('');
+                        $('#partnerEditModal')
+                            .modal({
+                                backdrop: 'static'
+                            });
+                    }
+                });
+            })
+            .on('click', '.js-idopontpartneredit', function(e) {
+                const $this = $(this);
+                e.preventDefault();
+                $.ajax({
+                    method: 'GET',
+                    url: '/pubadmin/idopontfoglalaspartner',
+                    data: {
+                        id: $this.data('id')
+                    },
+                    success: function(res) {
+                        const data = parseValasz(res);
+                        if (!data || !data.foglalas) {
+                            return;
+                        }
+                        setModositasCel('idopont');
+                        gyakorloModositas.id = $this.data('id');
+                        gyakorloModositas.eredetiPartnerid = data.partner ? data.partner.id : 0;
+                        gyakorloModositas.ellenorzottEmail = data.foglalas.email;
+                        $('#nev2edit').val(data.foglalas.nev);
+                        $('#email2edit').val(data.foglalas.email);
+                        $('#telefon2edit').val(data.foglalas.telefon);
+                        fillPartnerBlokk(data.partner, data.foglalas);
                         showEmailValtasInfo('');
                         showPartnerEditHiba('');
                         $('#partnerEditModal')
@@ -649,11 +704,16 @@ $(document).ready(
             })
             .on('click', '.js-partnereditok', function(e) {
                 e.preventDefault();
-                const nev = $('#nev2edit').val().trim(),
+                const idopontra = gyakorloModositas.cel === 'idopont',
+                    nev = $('#nev2edit').val().trim(),
                     email = $('#email2edit').val().trim();
                 showPartnerEditHiba('');
                 if (!nev) {
-                    showPartnerEditHiba('Add meg a nevet a jelentkezésen.');
+                    showPartnerEditHiba(idopontra ? 'Add meg a nevet a foglaláson.' : 'Add meg a nevet a jelentkezésen.');
+                    return;
+                }
+                if (idopontra) {
+                    savePartnerEdit();
                     return;
                 }
                 if (!EMAILMINTA.test(email)) {

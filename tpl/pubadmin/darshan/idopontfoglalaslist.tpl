@@ -10,9 +10,17 @@
 {$sorszam = 1}
 {foreach $foglalaslist as $foglalas}
     <div class="row top-margin-10 color-bkg-darshan">
-        <div class="col-md-5">
+        <button class="col-md-5 btn text-left js-idopontpartneredit" data-id="{$foglalas.id}">
             {$sorszam}. {$foglalas.nev|escape} ({$foglalas.email|escape}{if ($foglalas.telefon)}, {$foglalas.telefon|escape}{/if})
-        </div>
+            {if ($foglalas.nincspartner)}
+                <span class="badge badge-warning">Még nincs partner</span>
+            {else}
+                {include "comp_szamlazasiakadaly.tpl" resztvevo=$foglalas}
+            {/if}
+            {if ($foglalas.szamlanev)}
+                <span class="d-block small">Számlán: {$foglalas.szamlanev|escape}</span>
+            {/if}
+        </button>
         <div class="col-md-3">
             {if ($foglalas.online)}Online{else}Élő{/if}{if ($foglalas.fizetve)} - fizetve{/if}
         </div>

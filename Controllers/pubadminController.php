@@ -231,6 +231,7 @@ class pubadminController extends mkwhelpers\Controller
             $filter->addFilter('datum', '=', $datum->format(\mkw\store::$SQLDateFormat));
             /** @var Idopontfoglalas $foglalas */
             foreach ($this->getRepo(Idopontfoglalas::class)->getAll($filter, ['id' => 'ASC']) as $foglalas) {
+                $partner = $foglalas->getPartner();
                 $foglalaslista[] = [
                     'id' => $foglalas->getId(),
                     'nev' => $foglalas->getPartnerNev(),
@@ -240,6 +241,11 @@ class pubadminController extends mkwhelpers\Controller
                     'fizetve' => $foglalas->getFizetve(),
                     'lemondva' => $foglalas->getLemondva(),
                     'megjelent' => $foglalas->isMegjelent(),
+                    'nincspartner' => !$partner,
+                    'szamlazasiakadaly' => $partner ? $this->getSzamlazasiAkadaly($partner) : '',
+                    'szamlanev' => ($partner && !$this->isSameNev($partner->getNev(), $foglalas->getPartnerNev()))
+                        ? (string)$partner->getNev()
+                        : '',
                 ];
             }
         }
@@ -292,9 +298,10 @@ class pubadminController extends mkwhelpers\Controller
         }
         echo json_encode([
             'ok' => true,
-            'msg' => $eredmeny['visszaallitva']
+            'msg' => ($eredmeny['visszaallitva']
                 ? sprintf(t('A korábban lemondott foglalás visszaállítva: %s.'), $partner->getNev())
-                : sprintf(t('A foglalás felvéve: %s (%s).'), $partner->getNev(), $partner->getEmail()),
+                : sprintf(t('A foglalás felvéve: %s (%s).'), $partner->getNev(), $partner->getEmail()))
+                . $this->getAkadalyFigyelmeztetes($partner),
         ]);
     }
 
@@ -332,7 +339,7 @@ class pubadminController extends mkwhelpers\Controller
                 $resolver,
                 $partner,
                 $nev
-            ),
+            ) . $this->getAkadalyFigyelmeztetes($partner),
         ]);
     }
 
@@ -1174,48 +1181,133 @@ class pubadminController extends mkwhelpers\Controller
 
         $msg = $darshan ? t('Mentve. A jelentkezés adatai frissültek, a partnertörzs nem változott.') : '';
         if ($darshan && $this->params->getBoolRequestParam('partnerblokk')) {
-            $partnerid = $this->params->getIntRequestParam('partnerid');
-            $partner = $this->findPartnerByEmail($email);
-            // elavult ablak vagy kézzel átírt azonosító: nem írunk rá egy olyan partnerre, amit a tanár nem látott
-            if (($partner && (int)$partner->getId() !== $partnerid) || (!$partner && $partnerid > 0)) {
-                echo json_encode([
-                    'ok' => false,
-                    'msg' => t('Az emailcímhez tartozó partner időközben megváltozott. Zárd be és nyisd meg újra az ablakot.'),
-                ]);
+            $blokk = $this->savePartnerBlokk($this->findPartnerByEmail($email), $email, t('A jelentkezés'));
+            if ($blokk['hiba']) {
+                echo json_encode(['ok' => false, 'msg' => $blokk['hiba']]);
                 return;
             }
-            $partnernev = implode(' ', JogaBejelentkezes::splitNev($this->params->getStringRequestParam('partnernev')));
-            if (!JogaBejelentkezes::isTeljesNev($partnernev)) {
-                echo json_encode(['ok' => false, 'msg' => t('A partner nevéhez vezeték- és keresztnév kell, a számla erre a névre készül.')]);
-                return;
-            }
-            $irszam = trim($this->params->getStringRequestParam('partnerirszam'));
-            $varos = trim($this->params->getStringRequestParam('partnervaros'));
-            $utca = trim($this->params->getStringRequestParam('partnerutca'));
-            if ($partner) {
-                $nevreszek = JogaBejelentkezes::splitNev($partnernev);
-                $partner->setNev($partnernev);
-                $partner->setVezeteknev($nevreszek[0]);
-                $partner->setKeresztnev(implode(' ', array_slice($nevreszek, 1)));
-                // üresen hagyott mező nem töröl
-                if ($irszam !== '') {
-                    $partner->setIrszam($irszam);
-                }
-                if ($varos !== '') {
-                    $partner->setVaros($varos);
-                }
-                if ($utca !== '') {
-                    $partner->setUtca($utca);
-                }
-                $this->getEm()->persist($partner);
-                $msg = sprintf(t('Mentve. A jelentkezés és %s partner adatai frissültek.'), $partnernev);
-            } else {
-                $partner = (new PartnerResolveService())->resolve($email, $partnernev, $irszam, $varos, $utca);
-                $msg = sprintf(t('Mentve. Létrejött a partner: %s (%s).'), $partner->getNev(), $partner->getEmail());
-            }
+            $msg = $blokk['msg'];
         }
         $this->getEm()->flush();
         echo json_encode(['ok' => true, 'msg' => $msg]);
+    }
+
+    /**
+     * A „Partnertörzs" blokk mentése, flush nélkül. A kérés partnerid-je az a partner, akit a tanár az ablakban
+     * látott: ha a mostani nem ő, az ablak elavult (vagy kézzel átírták), és semmit nem írunk.
+     *
+     * @param string $mi „A jelentkezés" / „A foglalás" – az üzenethez
+     *
+     * @return array{hiba: string, msg: string, partner: Partner|null}
+     */
+    private function savePartnerBlokk(?Partner $partner, string $email, string $mi): array
+    {
+        $partnerid = $this->params->getIntRequestParam('partnerid');
+        if (($partner && (int)$partner->getId() !== $partnerid) || (!$partner && $partnerid > 0)) {
+            return [
+                'hiba' => t('Az emailcímhez tartozó partner időközben megváltozott. Zárd be és nyisd meg újra az ablakot.'),
+                'msg' => '',
+                'partner' => null,
+            ];
+        }
+        $partnernev = implode(' ', JogaBejelentkezes::splitNev($this->params->getStringRequestParam('partnernev')));
+        if (!JogaBejelentkezes::isTeljesNev($partnernev)) {
+            return ['hiba' => t('A partner nevéhez vezeték- és keresztnév kell, a számla erre a névre készül.'), 'msg' => '', 'partner' => null];
+        }
+        $irszam = trim($this->params->getStringRequestParam('partnerirszam'));
+        $varos = trim($this->params->getStringRequestParam('partnervaros'));
+        $utca = trim($this->params->getStringRequestParam('partnerutca'));
+        if ($partner) {
+            $nevreszek = JogaBejelentkezes::splitNev($partnernev);
+            $partner->setNev($partnernev);
+            $partner->setVezeteknev($nevreszek[0]);
+            $partner->setKeresztnev(implode(' ', array_slice($nevreszek, 1)));
+            // üresen hagyott mező nem töröl
+            if ($irszam !== '') {
+                $partner->setIrszam($irszam);
+            }
+            if ($varos !== '') {
+                $partner->setVaros($varos);
+            }
+            if ($utca !== '') {
+                $partner->setUtca($utca);
+            }
+            $this->getEm()->persist($partner);
+            return ['hiba' => '', 'msg' => sprintf(t('Mentve. %s és %s partner adatai frissültek.'), $mi, $partnernev), 'partner' => $partner];
+        }
+        $resolver = new PartnerResolveService();
+        $partner = $resolver->resolve($email, $partnernev, $irszam, $varos, $utca);
+        return [
+            'hiba' => '',
+            'msg' => $resolver->isCreated()
+                ? sprintf(t('Mentve. Létrejött a partner: %s (%s).'), $partner->getNev(), $partner->getEmail())
+                : sprintf(t('Mentve. %s a meglévő partnerhez került: %s (%s).'), $mi, $partner->getNev(), $partner->getEmail()),
+            'partner' => $partner,
+        ];
+    }
+
+    /** A „Gyakorló adatai" ablak az időpont foglalójához. Az email nem szerkeszthető: az a foglalás partnerkapcsolata. */
+    public function getIdopontfoglalasPartner()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $foglalas = $this->getSajatIdopontfoglalas($this->params->getIntRequestParam('id'));
+        $partner = $foglalas ? $foglalas->getPartner() : null;
+        echo json_encode([
+            'foglalas' => $foglalas
+                ? [
+                    'nev' => (string)$foglalas->getPartnerNev(),
+                    'email' => (string)$foglalas->getPartnerEmail(),
+                    'telefon' => (string)$foglalas->getPartnerTelefon(),
+                ]
+                : null,
+            'partner' => $partner ? $this->partnerToArray($partner) : null,
+        ]);
+    }
+
+    public function postIdopontfoglalasPartner()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $foglalas = $this->getSajatIdopontfoglalas($this->params->getIntRequestParam('id'));
+        if (!$foglalas) {
+            echo json_encode(['ok' => false, 'msg' => t('A foglalás nem található.')]);
+            return;
+        }
+        $nev = implode(' ', JogaBejelentkezes::splitNev($this->params->getStringRequestParam('nev')));
+        if ($nev === '') {
+            echo json_encode(['ok' => false, 'msg' => t('Add meg a nevet a foglaláson.')]);
+            return;
+        }
+        $telefon = trim($this->params->getStringRequestParam('telefon'));
+        $foglalas->setPartnernev($nev);
+        $foglalas->setPartnertelefon($telefon);
+        $this->getEm()->persist($foglalas);
+
+        $msg = t('Mentve. A foglalás adatai frissültek, a partnertörzs nem változott.');
+        if ($this->params->getBoolRequestParam('partnerblokk')) {
+            $elozo = $foglalas->getPartner();
+            $blokk = $this->savePartnerBlokk($elozo, (string)$foglalas->getPartnerEmail(), t('A foglalás'));
+            if ($blokk['hiba']) {
+                echo json_encode(['ok' => false, 'msg' => $blokk['hiba']]);
+                return;
+            }
+            if (!$elozo) {
+                // a setPartner() a partnertörzs nevét és telefonját másolja a foglalásra
+                $foglalas->setPartner($blokk['partner']);
+                $foglalas->setPartnernev($nev);
+                $foglalas->setPartnertelefon($telefon);
+            }
+            $msg = $blokk['msg'];
+        }
+        $this->getEm()->flush();
+        echo json_encode(['ok' => true, 'msg' => $msg]);
+    }
+
+    /** @return Idopontfoglalas|null csak a saját időpontunk foglalása */
+    private function getSajatIdopontfoglalas($id)
+    {
+        /** @var Idopontfoglalas|null $foglalas */
+        $foglalas = $id ? $this->getRepo(Idopontfoglalas::class)->find($id) : null;
+        return ($foglalas && $this->getSajatIdopont($foglalas->getIdopontId())) ? $foglalas : null;
     }
 
     /** @return \Entities\Partner|null */

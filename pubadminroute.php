@@ -29,6 +29,8 @@ $router->map('POST', '/pubadmin/megjegyzes', 'pubadminController#postMegjegyzes'
 
 $router->map('GET', '/pubadmin/partner', 'pubadminController#getPartner', 'pubadmingetpartner');
 $router->map('POST', '/pubadmin/partner', 'pubadminController#postPartner', 'pubadminpostpartner');
+$router->map('GET', '/pubadmin/idopontfoglalaspartner', 'pubadminController#getIdopontfoglalasPartner', 'pubadmingetidopontfoglalaspartner');
+$router->map('POST', '/pubadmin/idopontfoglalaspartner', 'pubadminController#postIdopontfoglalasPartner', 'pubadminpostidopontfoglalaspartner');
 
 $router->map('POST', '/pubadmin/lemond', 'pubadminController#lemondOra', 'pubadminlemondora');
 
