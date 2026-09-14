@@ -1043,13 +1043,7 @@ class pubadminController extends mkwhelpers\Controller
         if ($email === '' || !$datum) {
             return null;
         }
-        $talalatok = $this->getRepo(JogaBejelentkezes::class)->findBy(['orarend' => $ora, 'datum' => $datum, 'partneremail' => $email]);
-        foreach ($talalatok as $talalat) {
-            if (!$talalat->isLemondva()) {
-                return $talalat;
-            }
-        }
-        return $talalatok[0] ?? null;
+        return $this->getRepo(JogaBejelentkezes::class)->findForEmail($ora, $datum, $email);
     }
 
     /** A válaszüzenet: új partner jött-e létre, vagy egy meglévőhöz kötöttük, és azon mit pótoltunk. */

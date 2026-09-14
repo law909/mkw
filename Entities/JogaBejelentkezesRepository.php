@@ -59,4 +59,20 @@ class JogaBejelentkezesRepository extends \mkwhelpers\Repository
         return $r;
     }
 
+    /**
+     * Az óra adott napi jelentkezése ezzel az emailcímmel; ha régről több is van, az élő előnyben.
+     *
+     * @return JogaBejelentkezes|null
+     */
+    public function findForEmail($orarend, \DateTime $datum, string $email)
+    {
+        $talalatok = $this->findBy(['orarend' => $orarend, 'datum' => $datum, 'partneremail' => $email]);
+        foreach ($talalatok as $talalat) {
+            if (!$talalat->isLemondva()) {
+                return $talalat;
+            }
+        }
+        return $talalatok[0] ?? null;
+    }
+
 }

@@ -29,17 +29,50 @@
 
             function windowOnClick(event) {
                 if (event.target === modal) {
-                    toggleModal(0);
+                    closeBejelentkezes();
                 } else if (event.target === lemondmodal) {
                     toggleLemondmodal(0);
                 }
             }
 
+            const EMAILMINTA = /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                CIMSZOVEG_ALAP = 'Ha először jössz, add meg a címed a számlához. A már megadott adataidat nem írjuk felül.',
+                HIBA_ALAP = 'A bejelentkezés nem sikerült, kérjük, próbáld újra.';
+            // sikeres bejelentkezés után a bezárás újratölt, hogy a szabad helyek száma frissüljön
+            let bejelentkezesSikeres = false;
+
+            function parseValasz(res) {
+                return (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
+            }
+
+            function showBejelentkezesHiba(msg) {
+                $('.js-hiba').text(msg).toggle(!!msg);
+            }
+
+            function resetBejelentkezes() {
+                bejelentkezesSikeres = false;
+                $('#modal-form').show().find('input[type="email"], input[type="text"]').val('');
+                $('.js-siker').text('').hide();
+                $('.js-bezaras').hide();
+                $('.js-cimszoveg').text(CIMSZOVEG_ALAP);
+                $('.js-cimmezok').show();
+                showBejelentkezesHiba('');
+            }
+
+            function closeBejelentkezes() {
+                toggleModal(0);
+                if (bejelentkezesSikeres) {
+                    location.reload();
+                }
+            }
+
             $('body').on('click', '.js-bejelentkezes', function (e) {
-                var $this = $(this);
+                const $this = $(this);
                 e.preventDefault();
+                resetBejelentkezes();
                 $('input[name="id"]').val($this.data('id'));
                 $('input[name="datum"]').val($this.data('datum'));
+                $('.js-alcim').text($this.attr('data-oranev') + ' – ' + $this.attr('data-idopont'));
                 toggleModal(this.getBoundingClientRect().y);
             });
             $('body').on('click', '.js-lemondas', function (e) {
@@ -49,47 +82,62 @@
                 $('input[name="lemonddatum"]').val($this.data('datum'));
                 toggleLemondmodal(this.getBoundingClientRect().y);
             });
-            $('input[name="email"]').change(function (e) {
-                var ee = $(this);
+            // csak azt tudjuk meg, kell-e címet kérni: nevet, címet a szerver nem ad ki
+            $('input[name="email"]').on('change', function () {
+                const email = $(this).val().trim();
+                if (!EMAILMINTA.test(email)) {
+                    return;
+                }
                 $.ajax({
-                    url: '/partner/getdata',
-                    type: 'GET',
+                    url: '/jelentkezes/emailellenor',
+                    type: 'POST',
                     data: {
-                        email: ee.val()
+                        email: email
                     },
-                    success: function (data) {
-                        var d = JSON.parse(data);
-                        if (d.id) {
-                            $('input[name="partnernev"]').val(d.nev);
+                    success: function (res) {
+                        const adat = parseValasz(res);
+                        if (!adat || $('input[name="email"]').val().trim() !== email) {
+                            return;
+                        }
+                        if (adat.ismert && !adat.cimhianyos) {
+                            $('.js-cimmezok').hide().find('input').val('');
+                            $('.js-cimszoveg').text('Ezzel az emailcímmel már jártál nálunk, a számlázási adataid megvannak.');
+                        } else {
+                            $('.js-cimmezok').show();
+                            $('.js-cimszoveg').text(adat.ismert
+                                ? 'Ezzel az emailcímmel már jártál nálunk, de a számládhoz hiányzik a címed. Kérjük, add meg.'
+                                : 'Első alkalom? Add meg a címed, hogy ki tudjuk állítani a számlát az óráról.');
                         }
                     }
                 });
             });
             $('.close-button').click(function (e) {
                 e.preventDefault();
-                toggleModal(0);
+                closeBejelentkezes();
+            });
+            $('.js-bezaras').click(function (e) {
+                e.preventDefault();
+                closeBejelentkezes();
             });
             $('.lemondclose-button').click(function (e) {
                 e.preventDefault();
                 toggleLemondmodal(0);
             });
             $('.js-ok').click(function (e) {
+                const $gomb = $(this),
+                    nev = ($('input[name="partnernev"]').val() || '').trim(),
+                    email = ($('input[name="email"]').val() || '').trim();
                 e.preventDefault();
-                // ha nev input hidden
-                // akkor lekerdezni, hogy ismerjuk-e az emailt
-                //      ha nem, akkor megjeleniteni a nev inputot
-                //      es ismeretlen input legyen true
-                //      egyebkent ismeretlen input legyen false es menteni
-                // egyebkent menteni
-                const nev = ($('input[name="partnernev"]').val() || '').trim();
-                if (!$('input[name="email"]').val()) {
-                    alert('Add meg az email címed!');
-                } else if (!nev) {
-                    alert('Add meg a neved!');
+                if (!email || !nev) {
+                    showBejelentkezesHiba('Add meg az emailcímed és a teljes neved.');
                 } else if (nev.split(/\s+/).length < 2) {
                     // a számlához vezeték- és keresztnév is kell, a szerver is ezt kéri
-                    alert('Kérjük, add meg a teljes neved (vezeték- és keresztnév).');
+                    showBejelentkezesHiba('Kérjük, add meg a teljes neved (vezeték- és keresztnév).');
+                } else if (!EMAILMINTA.test(email)) {
+                    showBejelentkezesHiba('Kérjük, ellenőrizd az emailcímed.');
                 } else {
+                    showBejelentkezesHiba('');
+                    $gomb.prop('disabled', true);
                     $.ajax({
                         url: '/orarend/bejelentkezes',
                         type: 'POST',
@@ -97,19 +145,27 @@
                             id: $('input[name="id"]').val(),
                             datum: $('input[name="datum"]').val(),
                             partnernev: nev,
-                            email: $('input[name="email"]').val(),
+                            email: email,
                             irszam: $('input[name="irszam"]').val(),
                             varos: $('input[name="varos"]').val(),
                             utca: $('input[name="utca"]').val()
                         },
                         success: function (res) {
-                            const adat = (typeof res === 'string') ? (res ? JSON.parse(res) : null) : res;
-                            if (adat && adat.msg) {
-                                alert(adat.msg);
+                            const adat = parseValasz(res);
+                            if (!adat || !adat.ok) {
+                                showBejelentkezesHiba((adat && adat.msg) || HIBA_ALAP);
                                 return;
                             }
-                            toggleModal(0);
-                            location.reload();
+                            bejelentkezesSikeres = true;
+                            $('#modal-form').hide();
+                            $('.js-siker').text(adat.msg).show();
+                            $('.js-bezaras').show();
+                        },
+                        error: function () {
+                            showBejelentkezesHiba(HIBA_ALAP);
+                        },
+                        complete: function () {
+                            $gomb.prop('disabled', false);
                         }
                     });
                 }
@@ -337,6 +393,23 @@
             line-height: 1.4;
         }
 
+        .form-alcim {
+            margin: 0 0 1rem;
+            font-weight: bold;
+        }
+
+        .form-hiba {
+            margin: 0 0 1rem;
+            color: #B63535;
+            font-weight: bold;
+        }
+
+        .form-siker {
+            margin: 0 0 1rem;
+            color: #000;
+            font-size: 16px;
+        }
+
         .form-label {
             padding-top: calc(.375rem + 1px);
             padding-bottom: calc(.375rem + 1px);
@@ -416,7 +489,8 @@
                         {if (!$ora['elmarad'] && $ora['bejelentkezeskell'] && $ora['megvanhely'])}
                             <div>
                                 <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-bejelentkezes" data-id="{$ora['id']}"
-                                   data-datum="{$ora['datum']}">
+                                   data-datum="{$ora['datum']}" data-oranev="{$ora['oranev']|escape}"
+                                   data-idopont="{$nap['napnev']|escape} {$nap['napdatum']|escape} {$ora['kezdet']|escape}">
                                     {if ($ora['onlineurl'])}1. {/if}Bejelentkezek
                                 </a>
                             </div>
@@ -448,34 +522,40 @@
 <div class="modal">
     <div class="modal-content">
         <span class="close-button">×</span>
-        <h1>Add meg az adataidat</h1>
+        <h1>Bejelentkezés</h1>
+        <p class="form-alcim js-alcim"></p>
         <form id="modal-form">
             <div class="form-group">
                 <label class="form-label">Email</label>
                 <input class="form-control" type="email" name="email" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Név</label>
+                <label class="form-label">Teljes név</label>
                 <input class="form-control" type="text" name="partnernev" required>
             </div>
-            <p class="form-hint">Ha először jösz hozzánk, kérjük add meg a címedet, hogy ki tudjuk állítani
-                a számlát az óráról.</p>
-            <div class="form-group">
-                <label class="form-label">Irányítószám</label>
-                <input class="form-control" type="text" name="irszam" maxlength="10">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Város</label>
-                <input class="form-control" type="text" name="varos">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Utca, házszám</label>
-                <input class="form-control" type="text" name="utca">
+            <p class="form-hint">Vezeték- és keresztnév.</p>
+            <p class="form-hint js-cimszoveg">Ha először jössz, add meg a címed a számlához. A már megadott adataidat nem írjuk felül.</p>
+            <div class="js-cimmezok">
+                <div class="form-group">
+                    <label class="form-label">Irányítószám</label>
+                    <input class="form-control" type="text" name="irszam" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Város</label>
+                    <input class="form-control" type="text" name="varos">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Utca, házszám</label>
+                    <input class="form-control" type="text" name="utca">
+                </div>
             </div>
             <input type="hidden" name="id">
             <input type="hidden" name="datum">
-            <button class="js-ok bejelentkezesbtn">OK</button>
+            <p class="form-hiba js-hiba" style="display: none"></p>
+            <button class="js-ok bejelentkezesbtn">Bejelentkezem</button>
         </form>
+        <p class="form-siker js-siker" style="display: none"></p>
+        <button class="bejelentkezesbtn js-bezaras" style="display: none">Bezárás</button>
     </div>
 </div>
 <div class="lemondmodal">

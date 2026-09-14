@@ -145,14 +145,100 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
         echo json_encode(['ismert' => (bool)$partner, 'cimhianyos' => !$partner || !$partner->hasFullCim()]);
     }
 
+    /**
+     * A publikus órarend „Bejelentkezek" gombja. A partner itt nem jön létre (azt a pubadmin Megérkezett vagy
+     * vásárlás gombja hozza létre); a meglévő partnernek csak az üres címmezőit töltjük ki.
+     */
     public function bejelentkezes()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!\mkw\store::isDarshanTheme()) {
+            $this->saveKisszamlazoBejelentkezes();
+            return;
+        }
+        $partnernev = implode(' ', JogaBejelentkezes::splitNev($this->params->getStringRequestParam('partnernev')));
+        $email = trim($this->params->getStringRequestParam('email'));
+        if ($email === '' || $partnernev === '') {
+            echo json_encode(['ok' => false, 'msg' => t('Add meg az emailcímed és a teljes neved.')]);
+            return;
+        }
+        if (!JogaBejelentkezes::isTeljesNev($partnernev)) {
+            echo json_encode(['ok' => false, 'msg' => t('Kérjük, add meg a teljes neved (vezeték- és keresztnév).')]);
+            return;
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['ok' => false, 'msg' => t('Kérjük, ellenőrizd az emailcímed.')]);
+            return;
+        }
+        /** @var Orarend|null $ora */
+        $ora = $this->getRepo(Orarend::class)->find($this->params->getIntRequestParam('id'));
+        $datum = $this->parseDatum($this->params->getStringRequestParam('datum'));
+        if (!$ora || !$datum) {
+            echo json_encode(['ok' => false, 'msg' => t('Ezt az órát nem találjuk.')]);
+            return;
+        }
+
+        $bej = $this->getRepo()->findForEmail($ora, $datum, $email);
+        if ($bej && !$bej->isLemondva()) {
+            echo json_encode(['ok' => false, 'msg' => t('Erre az órára ezzel az emailcímmel már be vagy jelentkezve.')]);
+            return;
+        }
+        // a visszaállított jelentkezés is helyet foglal; ugyanaz a szabály, mint az órarend „BETELT" felirata
+        $max = (int)$ora->getMaxferohely();
+        if ($max > 0 && $this->getRepo()->getAdottOraCount($datum, $ora->getId()) >= $max) {
+            echo json_encode(['ok' => false, 'msg' => t('Erre az órára már nincs szabad hely.')]);
+            return;
+        }
+
+        $irszam = trim($this->params->getStringRequestParam('irszam'));
+        $varos = trim($this->params->getStringRequestParam('varos'));
+        $utca = trim($this->params->getStringRequestParam('utca'));
+        $partner = (new PartnerResolveService())->findByEmail($email);
+        if ($partner) {
+            $partner->fillMissingCim($irszam, $varos, $utca);
+            $this->getEm()->persist($partner);
+        }
+        $visszaallitva = (bool)$bej;
+        if (!$bej) {
+            $bej = new JogaBejelentkezes();
+            $bej->setOrarend($ora);
+            $bej->setDatum($datum);
+        }
+        $bej->setLemondva(false);
+        $bej->setPartnernev($partnernev);
+        $bej->setPartneremail($email);
+        // partner híján innen viszi tovább a címet a JogaBejelentkezes::resolvePartner()
+        $bej->setPartnerirszam($irszam);
+        $bej->setPartnervaros($varos);
+        $bej->setPartnerutca($utca);
+        $this->getEm()->persist($bej);
+        $this->getEm()->flush();
+
+        $this->sendJogaBejelentkezesEmails($ora, $datum, $email, $partnernev, $partner);
+
+        echo json_encode([
+            'ok' => true,
+            'msg' => $visszaallitva
+                ? sprintf(t('A korábban lemondott bejelentkezésedet visszaállítottuk. Visszaigazolást küldtünk a(z) %s címre.'), $email)
+                : sprintf(
+                    t('Köszönjük, bejelentkeztél: %s, %s %s %s. Visszaigazolást küldtünk a(z) %s címre.'),
+                    $ora->getNev(),
+                    $ora->getNapNev(),
+                    $datum->format(\mkw\store::$DateFormat),
+                    $ora->getKezdetStr(),
+                    $email
+                ),
+        ]);
+    }
+
+    /** A kisszámlázó (lb) órarendjének mai mentési útja: se email-ellenőrzés, se férőhely, se visszaállítás. */
+    private function saveKisszamlazoBejelentkezes()
     {
         $partnernev = trim($this->params->getStringRequestParam('partnernev'));
         $email = $this->params->getStringRequestParam('email');
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = new \DateTime($datumstr);
         $orarendid = $this->params->getIntRequestParam('id');
-        header('Content-Type: application/json; charset=utf-8');
         if (!JogaBejelentkezes::isTeljesNev($partnernev)) {
             echo json_encode(['msg' => t('Kérjük, add meg a teljes neved (vezeték- és keresztnév).')]);
             return;
@@ -185,87 +271,107 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                 $obj->setOrarend($ora);
                 $this->getEm()->persist($obj);
                 $this->getEm()->flush();
-                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesKoszonoSablon));
-                if ($email && $emailtpl) {
-                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                    $body = \mkw\store::getTemplateFactory()->createMainView(
-                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
-                    );
-                    $body->setVar('oranev', $ora->getNev());
-                    $body->setVar('tanarnev', $ora->getDolgozoNev());
-                    $body->setVar('idopont', $ora->getKezdetStr());
-                    if ($partner) {
-                        $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
-                        $body->setVar('partnervezeteknev', $partner->getVezeteknev());
-                    } else {
-                        $body->setVar('partnerkeresztnev', $partnernev);
-                    }
-                    $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
-
-                    if (\mkw\store::isDeveloper()) {
-                        \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
-                        \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
-                    } else {
-                        $mailer = \mkw\store::getMailer();
-
-                        $mailer->addTo($email);
-                        $mailer->setSubject($subject->getTemplateResult());
-                        $mailer->setMessage($body->getTemplateResult());
-
-                        $mailer->send();
-                    }
-                }
-                $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesErtesitoSablon));
-                $tanaremail = $ora->getDolgozoEmail();
-                if ($tanaremail && $emailtpl && $ora->isBejelentkezesertesitokell()) {
-                    $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-                    $subject->setVar('oranev', $ora->getNev());
-                    $subject->setVar('tanarnev', $ora->getDolgozoNev());
-                    $subject->setVar('idopont', $ora->getKezdetStr());
-                    if ($partner) {
-                        $subject->setVar('partnerkeresztnev', $partner->getKeresztnev());
-                        $subject->setVar('partnervezeteknev', $partner->getVezeteknev());
-                    } else {
-                        $subject->setVar('partnerkeresztnev', $partnernev);
-                    }
-                    $subject->setVar('datum', $datum->format(\mkw\store::$DateFormat));
-                    $subject->setVar('napnev', $ora->getNapNev());
-
-                    $body = \mkw\store::getTemplateFactory()->createMainView(
-                        'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
-                    );
-                    $body->setVar('oranev', $ora->getNev());
-                    $body->setVar('tanarnev', $ora->getDolgozoNev());
-                    $body->setVar('idopont', $ora->getKezdetStr());
-                    if ($partner) {
-                        $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
-                        $body->setVar('partnervezeteknev', $partner->getVezeteknev());
-                    } else {
-                        $body->setVar('partnerkeresztnev', $partnernev);
-                    }
-                    $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
-
-                    if (\mkw\store::isDeveloper()) {
-                        \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
-                        \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
-                    } else {
-                        $mailer = \mkw\store::getMailer();
-
-                        $mailer->addTo($tanaremail);
-                        $mailer->setSubject($subject->getTemplateResult());
-                        $mailer->setMessage($body->getTemplateResult());
-
-                        $mailer->send();
-                    }
-                }
+                $this->sendJogaBejelentkezesEmails($ora, $datum, $email, $partnernev, $partner);
             }
         }
         echo json_encode([]);
     }
 
+    /** A gyakorló visszaigazolása és a tanár értesítése; developer módban csak naplóba. */
+    private function sendJogaBejelentkezesEmails(Orarend $ora, \DateTime $datum, $email, $partnernev, ?Partner $partner)
+    {
+        $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesKoszonoSablon));
+        if ($email && $emailtpl) {
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $body = \mkw\store::getTemplateFactory()->createMainView(
+                'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+            );
+            $body->setVar('oranev', $ora->getNev());
+            $body->setVar('tanarnev', $ora->getDolgozoNev());
+            $body->setVar('idopont', $ora->getKezdetStr());
+            if ($partner) {
+                $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                $body->setVar('partnervezeteknev', $partner->getVezeteknev());
+            } else {
+                $body->setVar('partnerkeresztnev', $partnernev);
+            }
+            $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+
+            if (\mkw\store::isDeveloper()) {
+                \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
+                \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
+            } else {
+                $mailer = \mkw\store::getMailer();
+
+                $mailer->addTo($email);
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+
+                $mailer->send();
+            }
+        }
+        $emailtpl = $this->getRepo('\Entities\Emailtemplate')->find(\mkw\store::getParameter(\mkw\consts::JogaBejelentkezesErtesitoSablon));
+        $tanaremail = $ora->getDolgozoEmail();
+        if ($tanaremail && $emailtpl && $ora->isBejelentkezesertesitokell()) {
+            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+            $subject->setVar('oranev', $ora->getNev());
+            $subject->setVar('tanarnev', $ora->getDolgozoNev());
+            $subject->setVar('idopont', $ora->getKezdetStr());
+            if ($partner) {
+                $subject->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                $subject->setVar('partnervezeteknev', $partner->getVezeteknev());
+            } else {
+                $subject->setVar('partnerkeresztnev', $partnernev);
+            }
+            $subject->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+            $subject->setVar('napnev', $ora->getNapNev());
+
+            $body = \mkw\store::getTemplateFactory()->createMainView(
+                'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
+            );
+            $body->setVar('oranev', $ora->getNev());
+            $body->setVar('tanarnev', $ora->getDolgozoNev());
+            $body->setVar('idopont', $ora->getKezdetStr());
+            if ($partner) {
+                $body->setVar('partnerkeresztnev', $partner->getKeresztnev());
+                $body->setVar('partnervezeteknev', $partner->getVezeteknev());
+            } else {
+                $body->setVar('partnerkeresztnev', $partnernev);
+            }
+            $body->setVar('datum', $datum->format(\mkw\store::$DateFormat));
+
+            if (\mkw\store::isDeveloper()) {
+                \mkw\store::writelog($subject->getTemplateResult(), 'orabejelentkezesemail.html');
+                \mkw\store::writelog($body->getTemplateResult(), 'orabejelentkezesemail.html');
+            } else {
+                $mailer = \mkw\store::getMailer();
+
+                $mailer->addTo($tanaremail);
+                $mailer->setSubject($subject->getTemplateResult());
+                $mailer->setMessage($body->getTemplateResult());
+
+                $mailer->send();
+            }
+        }
+    }
+
+    /** @return \DateTime|null */
+    private function parseDatum($datumstr)
+    {
+        $datumstr = trim((string)$datumstr);
+        if ($datumstr === '') {
+            return null;
+        }
+        try {
+            return new \DateTime($datumstr);
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
     public function lemondas()
     {
-        $email = $this->params->getStringRequestParam('email');
+        $email = trim($this->params->getStringRequestParam('email'));
         $datumstr = $this->params->getStringRequestParam('datum');
         $datum = new \DateTime($datumstr);
         $orarendid = $this->params->getIntRequestParam('id');
