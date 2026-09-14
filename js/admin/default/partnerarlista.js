@@ -47,5 +47,18 @@ $(document).ready(function () {
         .on('click', '#ArlistaTab .js-arlistasordelbutton', function (e) {
             e.preventDefault();
             $(this).closest('tr').remove();
+        })
+        // a karbantartó formon belül nem lehet űrlap, ezért a nyomtatás egy ideiglenes, új lapra küldött űrlapból megy
+        .on('click', '#ArlistaTab .js-arlistanyomtatas', function (e) {
+            e.preventDefault();
+            const $form = $('<form method="post" action="/admin/arlista/partnerprint" target="_blank"></form>');
+            const addField = (name, value) => $form.append($('<textarea></textarea>').attr('name', name).val(value));
+            addField('partner', $(this).attr('data-partner'));
+            addField('fejszoveg', $('#ArlistaTab .js-arlistafejszoveg').val());
+            addField('labszoveg', $('#ArlistaTab .js-arlistalabszoveg').val());
+            $('#ArlistaTab .js-arlistacimke:checked').each(function () {
+                addField('cimkek[]', $(this).val());
+            });
+            $form.hide().appendTo('body').submit().remove();
         });
 });

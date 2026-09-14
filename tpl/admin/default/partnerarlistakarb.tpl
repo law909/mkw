@@ -33,4 +33,31 @@
         </tbody>
     </table>
     <a class="js-arlistasornewbutton" href="#" title="{at('Új kategória')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+    {if ($partner.id)}
+        <div class="matt-hseparator"></div>
+        <h4>{at('Árlista nyomtatás')}</h4>
+        <p>{at('A mentett árlistát nyomtatja, a partner nyelvén, ársávjának és valutanemének nettó árával.')}</p>
+        <div>
+            <label>{at('Szöveg a táblázat fölött')}:</label><br>
+            <textarea class="js-arlistafejszoveg" rows="3" cols="80"></textarea>
+        </div>
+        <div>
+            <label>{at('Szöveg a táblázat alatt')}:</label><br>
+            <textarea class="js-arlistalabszoveg" rows="3" cols="80"></textarea>
+        </div>
+        <div>
+            <label>{at('Csak ezekkel a címkékkel jelölt termékek (ha egy sincs bejelölve: mind)')}:</label>
+            <div style="max-height: 180px; overflow: auto">
+                {foreach $partner.arlistacimkekat as $_cimkekat}
+                    <div>
+                        <strong>{$_cimkekat.caption}:</strong>
+                        {foreach $_cimkekat.cimkek as $_cimke}
+                            <label><input type="checkbox" class="js-arlistacimke" value="{$_cimke.id}"> {$_cimke.caption}</label>
+                        {/foreach}
+                    </div>
+                {/foreach}
+            </div>
+        </div>
+        <a class="js-arlistanyomtatas" href="#" data-partner="{$partner.id}">{at('Nyomtatás')}</a>
+    {/if}
 </div>

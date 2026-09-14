@@ -134,6 +134,7 @@ class partnerController extends \mkwhelpers\MattableController
             $x['termekkategoriakedvezmenyek'] = $kedv;
             if (\mkw\store::isMugenrace2026()) {
                 $x['arlista'] = (new PartnerArlistaService())->getArlista($t);
+                $x['arlistacimkekat'] = (new termekcimkekatController())->getWithCimkek(null);
             }
             $kedv = [];
             foreach ($t->getTermekkedvezmenyek() as $tar) {

@@ -327,6 +327,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/arlista/view', 'arlistaController#view', 'adminarlistaview');
 $router->map('GET', '/admin/arlista/get', 'arlistaController#createLista', 'adminarlistaget');
 $router->map('GET', '/admin/arlista/export', 'arlistaController#exportLista', 'adminarlistaexport');
+$router->map('POST', '/admin/arlista/partnerprint', 'arlistaController#printPartnerArlista', 'adminarlistapartnerprint');
 
 $router->map('GET', '/admin/refreshkintlevoseg', 'adminController#refreshKintlevoseg', 'adminrefreshkintlevoseg');
 $router->map('GET', '/admin/refreshspanyolkintlevoseg', 'adminController#refreshSpanyolKintlevoseg', 'adminrefreshspanyolkintlevoseg');

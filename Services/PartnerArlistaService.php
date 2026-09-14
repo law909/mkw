@@ -5,7 +5,10 @@ namespace Services;
 use Entities\Partner;
 use Entities\PartnerArlistaKedvezmeny;
 use Entities\PartnerArlistaSav;
+use Entities\Termek;
+use Entities\Termekcimketorzs;
 use Entities\TermekFa;
+use mkwhelpers\FilterDescriptor;
 use mkwhelpers\ParameterHandler;
 
 /**
@@ -13,6 +16,88 @@ use mkwhelpers\ParameterHandler;
  */
 class PartnerArlistaService
 {
+
+    /**
+     * A nyomtatott árlista: az árlista kategóriái, alattuk azok a termékek, amelyeknek ez a legszűkebb árlistás
+     * kategóriájuk, a partner ársávjának és valutanemének nettó árával és sávonként a kedvezményes árral. Árlistán
+     * nem szereplő kategóriájú és ár nélküli termék nem kerül bele.
+     *
+     * @param int[] $cimkeIds ha nem üres, csak ezek valamelyikével jelölt termékek
+     */
+    public function getPrintData(Partner $partner, array $cimkeIds = []): array
+    {
+        $em = \mkw\store::getEm();
+        $arlista = $this->getArlista($partner);
+        $locale = \mkw\store::translateToLongLocaleName($partner->getBizonylatnyelv() ?: 'hu_hu');
+
+        $groups = [];
+        foreach ($arlista['sorok'] as $sor) {
+            $groups[$sor['termekfaid']] = [
+                'karkod' => $sor['termekfa']->getKarkod(),
+                'nev' => $sor['termekfa']->getLocalizedFieldValue('nev', $locale) ?: $sor['termekfa']->getNev(),
+                'kedvezmenyek' => $sor['kedvezmenyek'],
+                'termekek' => [],
+            ];
+        }
+        if ($groups) {
+            $filter = new FilterDescriptor();
+            $filter->addFilter(
+                ['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'],
+                'LIKE',
+                array_map(fn($group) => $group['karkod'] . '%', array_values($groups))
+            );
+            $filter->addFilter('inaktiv', '=', false);
+            $filter->addFilter('fuggoben', '=', false);
+            if ($cimkeIds) {
+                $termekIds = array_column($em->getRepository(Termekcimketorzs::class)->getTermekIdsWithCimke($cimkeIds), 'id');
+                $filter->addFilter('id', 'IN', $termekIds ?: [0]);
+            }
+            /** @var Termek $termek */
+            foreach ($em->getRepository(Termek::class)->getAll($filter, ['cikkszam' => 'ASC']) as $termek) {
+                $groupId = $this->findGroup($groups, $termek);
+                $price = $groupId ? $termek->getKedvezmenynelkuliNettoAr(null, $partner) : 0;
+                if ($price <= 0) {
+                    continue;
+                }
+                $bandPrices = [];
+                foreach ($arlista['savok'] as $sav) {
+                    $kedvezmeny = $groups[$groupId]['kedvezmenyek'][$sav['id']] ?? null;
+                    $bandPrices[] = $kedvezmeny === null ? null : $price * (100 - $kedvezmeny) / 100;
+                }
+                $groups[$groupId]['termekek'][] = [
+                    'cikkszam' => $termek->getCikkszam(),
+                    'nev' => $termek->getLocalizedFieldValue('nev', $locale) ?: $termek->getNev(),
+                    'ar' => $price,
+                    'savarak' => $bandPrices,
+                ];
+            }
+        }
+        return [
+            'locale' => $locale,
+            'savok' => $arlista['savok'],
+            'csoportok' => array_values(array_filter($groups, fn($group) => $group['termekek'])),
+        ];
+    }
+
+    /** a termék kategóriái (termekfa1-3) közül a leghosszabb karkodú árlistás ág */
+    private function findGroup(array $groups, Termek $termek)
+    {
+        $found = null;
+        $foundLength = -1;
+        foreach (['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'] as $field) {
+            $karkod = (string)$termek->getFieldValue($field);
+            if ($karkod === '') {
+                continue;
+            }
+            foreach ($groups as $termekfaid => $group) {
+                if (str_starts_with($karkod, $group['karkod']) && strlen($group['karkod']) > $foundLength) {
+                    $found = $termekfaid;
+                    $foundLength = strlen($group['karkod']);
+                }
+            }
+        }
+        return $found;
+    }
 
     /**
      * A sávok sorrendben, és kategóriánként a sávok kedvezménye (sáv id => %), a fa sorrendjében.

@@ -9,9 +9,44 @@ use Entities\TermekFa;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Services\PartnerArlistaService;
 
 class arlistaController extends \mkwhelpers\Controller
 {
+
+    /**
+     * A partner sávos árlistájának PDF-je a partner nyelvén. Az oldalak háttere (fejléc, lábléc) az
+     * exporttemplates/arlista_<téma>.pdf első oldala, ha van ilyen fájl.
+     */
+    public function printPartnerArlista()
+    {
+        /** @var Partner $partner */
+        $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partner'));
+        if (!$partner) {
+            echo t('Nincs ilyen partner.');
+            return;
+        }
+        $data = (new PartnerArlistaService())->getPrintData($partner, $this->params->getArrayRequestParam('cimkek'));
+        $valutanem = (string)$partner->getValutanem()?->getNev();
+
+        $view = $this->createView('partnerarlistapdf.tpl');
+        $view->setVar('savok', $data['savok']);
+        $view->setVar('csoportok', $data['csoportok']);
+        $view->setVar('fejszoveg', $this->params->getStringRequestParam('fejszoveg'));
+        $view->setVar('labszoveg', $this->params->getStringRequestParam('labszoveg'));
+        $view->setVar('penznem', ['EUR' => '€', 'USD' => '$', 'HUF' => 'Ft'][$valutanem] ?? $valutanem);
+        $view->setVar('tizedes', $valutanem === 'HUF' ? 0 : 2);
+        $view->setVar('feliratok', $data['locale'] === 'hu_hu'
+            ? ['kiskerar' => 'KISKER ÁR', 'savok' => 'Vásárlási sávok kedvezménye (' . $valutanem . ')', 'ures' => 'Az árlistán nincs termék.']
+            : ['kiskerar' => 'RETAIL PRICE', 'savok' => 'Purchase limits discount in ' . $valutanem, 'ures' => 'There are no products on this price list.']);
+
+        $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
+        $background = \mkw\store::exporttemplatePath('arlista_' . \mkw\store::getTheme() . '.pdf');
+        if (is_file($background)) {
+            $pdf->getEngine()->SetDocTemplate($background, true);
+        }
+        $pdf->inline('arlista-' . $partner->getId() . '.pdf');
+    }
 
     public function view()
     {
