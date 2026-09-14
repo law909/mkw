@@ -2562,7 +2562,7 @@ if ($DBVersion < '0174') {
     // A mugenrace angol rendelési leveleiben a szállítási és fizetési mód magyarul jelent meg: a sablon a
     // törzsnevet (szallitasimodnev) írta ki, nem a rendelés nyelvén lévőt. A _locale magyar rendelésen
     // ugyanazt adja, tehát a csere a magyar levelek szövegét nem változtatja.
-    if (\mkw\store::isMugenrace2026()) {
+    if (\mkw\store::isSuperzoneB2B()) {
         $csere = 'szoveg';
         foreach (['szallitasimodnev', 'fizmodnev'] as $mezo) {
             foreach ([']', '}'] as $zaro) {
@@ -2640,36 +2640,39 @@ if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::Kateg
         12 => [33],                   // LEATHER SUIT → BŐRRUHA
         8 => [42],                    // LEATHER JACKET → BŐRKABÁT
         9 => [41],                    // LEATHER PANTS → BŐRNADRÁG
-        16 => [36],                   // TEXTILE JACKETS → TEXTIL KABÁT
-        13 => [37],                   // TEXTILE PANTS → TEXTIL NADRÁG
+        16 => [36, 175],                   // TEXTILE JACKETS → TEXTIL KABÁT
+        13 => [37, 175],                   // TEXTILE PANTS → TEXTIL NADRÁG
         14 => [34],                   // KEVLAR JEANS
         4 => [38],                    // GLOVES → KESZTYŰ
         3 => [43],                    // BOOTS → CSIZMA
-        2 => [39, 175, 35, 188, 189], // ACCESSOIRES → KIEGÉSZÍTŐK, CSAPAT RUHÁZAT, POLO, M.FORCE FISHING, M.FORCE HUNTING
+        2 => [39, 175, 35], // ACCESSOIRES → KIEGÉSZÍTŐK, CSAPAT RUHÁZAT, POLO
         7 => [74],                    // SCORPION
         11 => [100],                  // ZANDONA
         6 => [115],                   // EGYÉB
-        28 => [],                     // CROSS GARMENTS (javaslat: 173 CROSS CLOTHING)
-        1 => [],                      // LEATHER SUIT/JACKETS
-        5 => [],                      // TEXILE JACKETS/PANTS/KEVLAR
-        21 => [],                     // KIT FOR KIDS 1 SET (a fában: 142 KIT FOR KIDS SET)
-        22 => [],                     // KIT FOR KIDS 5 SET
-        17 => [],                     // KIT FOR KIDS 15 SET
-        18 => [],                     // KIT FOR ADULT BASIC 1 SET (a fában: 143 KIT FOR ADULT)
-        23 => [],                     // KIT FOR ADULT BASIC 5 SET
-        24 => [],                     // KIT FOR ADULT BASIC 15 SET
-        25 => [],                     // KIT FOR ADULT OHVALE 1 SET
-        26 => [],                     // KIT FOR ADULT OHVALE 5 SET
-        27 => [],                     // KIT FOR ADULT OHVALE 15 SET
+        28 => [173],                     // CROSS GARMENTS (javaslat: 173 CROSS CLOTHING)
+        1 => [33, 41, 42],                      // LEATHER SUIT/JACKETS
+        5 => [34, 36, 37, 40],                      // TEXILE JACKETS/PANTS/KEVLAR
+        21 => [142],                     // KIT FOR KIDS 1 SET (a fában: 142 KIT FOR KIDS SET)
+        22 => [142],                     // KIT FOR KIDS 5 SET
+        17 => [142],                     // KIT FOR KIDS 15 SET
+        18 => [143],                     // KIT FOR ADULT BASIC 1 SET (a fában: 143 KIT FOR ADULT)
+        23 => [143],                     // KIT FOR ADULT BASIC 5 SET
+        24 => [143],                     // KIT FOR ADULT BASIC 15 SET
+        25 => [143],                     // KIT FOR ADULT OHVALE 1 SET
+        26 => [143],                     // KIT FOR ADULT OHVALE 5 SET
+        27 => [143],                     // KIT FOR ADULT OHVALE 15 SET
     ];
     $conn = \mkw\store::getEm()->getConnection();
     $termekfaIds = array_merge(...array_values($termekcsoportTermekfak));
     if ($termekfaIds && $conn->fetchOne('SHOW TABLES LIKE "partnertermekcsoportkedvezmeny"')) {
-        $existingTermekfaIds = array_map('intval', $conn->fetchFirstColumn(
-            'SELECT id FROM termekfa WHERE id IN (?)',
-            [$termekfaIds],
-            [\Doctrine\DBAL\ArrayParameterType::INTEGER]
-        ));
+        $existingTermekfaIds = array_map(
+            'intval',
+            $conn->fetchFirstColumn(
+                'SELECT id FROM termekfa WHERE id IN (?)',
+                [$termekfaIds],
+                [\Doctrine\DBAL\ArrayParameterType::INTEGER]
+            )
+        );
         foreach ($termekcsoportTermekfak as $termekcsoportId => $nodeIds) {
             foreach (array_intersect($nodeIds, $existingTermekfaIds) as $termekfaId) {
                 // partnerenként duplikált csoportnál a legkisebb id-jű sor: eddig is az érvényesült
