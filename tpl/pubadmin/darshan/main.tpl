@@ -210,30 +210,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Gyakorló módosítás</h5>
+                    <h5 class="modal-title">Gyakorló adatai</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="nev2edit">Név</label>
-                                <input id="nev2edit" name="nev" type="text" class="form-control" autocomplete="off">
-                            </div>
-                        </div>
+                    <h6 class="color-darshan">Ezen a jelentkezésen</h6>
+                    <p class="small text-muted">Csak ezt az egy bejelentkezést módosítja. Az emailcím köti a jelentkezést a partnerhez.</p>
+                    <div class="form-group">
+                        <label for="nev2edit">Név a jelentkezésen</label>
+                        <input id="nev2edit" name="nev" type="text" class="form-control" autocomplete="off">
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="email2edit">Email</label>
-                                <input id="email2edit" name="email" type="email" class="form-control" autocomplete="off">
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="email2edit">Email</label>
+                        <input id="email2edit" name="email" type="email" class="form-control" autocomplete="off">
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <p class="top-margin-10">A cím a számlához kell. Ha van már partnere, az ő
-                                címét látod itt, és a mentés arra is rákerül.</p>
-                        </div>
+                    <div class="alert alert-warning js-emailvaltasinfo" hidden></div>
+                    <hr>
+                    <h6 class="color-darshan">Partnertörzs – ebből készül a számla</h6>
+                    <p class="small text-muted js-partnerblokkszoveg"></p>
+                    <div class="form-group">
+                        <label for="partnernev2edit">Név a számlán (vezeték- és keresztnév)</label>
+                        <input id="partnernev2edit" name="partnernev" type="text" class="form-control" autocomplete="off">
                     </div>
                     <div class="row">
                         <div class="col-4">
@@ -250,17 +246,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label for="utca2edit">Utca, házszám</label>
-                                <input id="utca2edit" name="utca" type="text" class="form-control" autocomplete="off">
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="utca2edit">Utca, házszám</label>
+                        <input id="utca2edit" name="utca" type="text" class="form-control" autocomplete="off">
                     </div>
+                    <div class="text-danger small js-partnereditakadaly"></div>
+                    <div class="alert alert-danger top-margin-10 mb-0 js-partneredithiba" hidden></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary js-partnereditok">OK</button>
+                    <button type="button" class="btn btn-primary js-partnereditok">Mentés</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Mégsem</button>
                 </div>
             </div>

@@ -143,6 +143,119 @@ $(document).ready(
             });
         }
 
+        // A „Gyakorló adatai" ablak: a partnerblokk csak akkor megy a szerverre, ha a tanár átírta, vagy nincs partner.
+        const gyakorloModositas = {
+            id: 0,
+            partnerid: 0,
+            eredetiPartnerid: 0,
+            eredeti: {},
+            ellenorzottEmail: ''
+        };
+
+        function getPartnerBlokk() {
+            return {
+                nev: $('#partnernev2edit').val().trim(),
+                irszam: $('#irszam2edit').val().trim(),
+                varos: $('#varos2edit').val().trim(),
+                utca: $('#utca2edit').val().trim()
+            };
+        }
+
+        function fillPartnerBlokk(partner, tartalek) {
+            const forras = partner || tartalek || {};
+            $('#partnernev2edit').val(forras.nev || '');
+            $('#irszam2edit').val(forras.irszam || '');
+            $('#varos2edit').val(forras.varos || '');
+            $('#utca2edit').val(forras.utca || '');
+            gyakorloModositas.partnerid = partner ? partner.id : 0;
+            gyakorloModositas.eredeti = getPartnerBlokk();
+            $('.js-partnerblokkszoveg').text(partner
+                ? 'Amit itt átírsz, az a partnertörzsben felülíródik, és a következő számlákon már így szerepel. Üresen hagyott mező nem törli a meglévő adatot.'
+                : 'Még nincs partner – mentéskor létrejön ezekkel az adatokkal.');
+            $('.js-partnereditakadaly').text((partner && partner.akadaly) || '');
+        }
+
+        function showEmailValtasInfo(msg) {
+            $('.js-emailvaltasinfo').text(msg).prop('hidden', !msg);
+        }
+
+        function showPartnerEditHiba(msg) {
+            $('.js-partneredithiba').text(msg).prop('hidden', !msg);
+        }
+
+        /** @param kesz(valtozott) valtozott: a partnerblokk másik partnerre vagy partner nélkülire váltott */
+        function checkModositasEmail(email, kesz) {
+            $.ajax({
+                method: 'GET',
+                url: '/pubadmin/partnerbyemail',
+                data: {email: email},
+                global: false,
+                success: function(res) {
+                    const adat = parseValasz(res);
+                    let valtozott = false;
+                    if (adat) {
+                        gyakorloModositas.ellenorzottEmail = email;
+                        if (adat.talalt && adat.partner.id !== gyakorloModositas.partnerid) {
+                            fillPartnerBlokk(adat.partner);
+                            showEmailValtasInfo(adat.partner.id === gyakorloModositas.eredetiPartnerid
+                                ? ''
+                                : `Ezzel az emailcímmel másik partner van: ${adat.partner.nev}. Mentés után ez a jelentkezés hozzá tartozik – a bérletét és a számláját ő kapja.`);
+                            valtozott = true;
+                        } else if (!adat.talalt && gyakorloModositas.partnerid) {
+                            fillPartnerBlokk(null, getPartnerBlokk());
+                            showEmailValtasInfo('Ezzel az emailcímmel nincs partner. Mentéskor új partner jön létre; ha csak a partner emailcíme volt elírva, azt az adminban javítsd.');
+                            valtozott = true;
+                        }
+                    }
+                    if (kesz) {
+                        kesz(valtozott);
+                    }
+                }
+            });
+        }
+
+        function savePartnerEdit() {
+            const data = {
+                id: gyakorloModositas.id,
+                nev: $('#nev2edit').val().trim(),
+                email: $('#email2edit').val().trim()
+            };
+            const blokk = getPartnerBlokk(),
+                eredeti = gyakorloModositas.eredeti,
+                atirta = Object.keys(blokk).some((mezo) => blokk[mezo] !== eredeti[mezo]);
+            if (!gyakorloModositas.partnerid || atirta) {
+                if (blokk.nev.split(/\s+/).filter(Boolean).length < 2) {
+                    showPartnerEditHiba('A partner nevéhez vezeték- és keresztnév kell, a számla erre a névre készül.');
+                    return;
+                }
+                Object.assign(data, {
+                    partnerblokk: 1,
+                    partnerid: gyakorloModositas.partnerid,
+                    partnernev: blokk.nev,
+                    partnerirszam: blokk.irszam,
+                    partnervaros: blokk.varos,
+                    partnerutca: blokk.utca
+                });
+            }
+            $.ajax({
+                method: 'POST',
+                url: '/pubadmin/partner',
+                data: data,
+                success: function(res) {
+                    const adat = parseValasz(res);
+                    if (!adat || !adat.ok) {
+                        showPartnerEditHiba((adat && adat.msg) || 'A mentés nem sikerült.');
+                        return;
+                    }
+                    $('#partnerEditModal').modal('hide');
+                    if (adat.msg) {
+                        alert(adat.msg);
+                    }
+                    refreshResztvevoList();
+                }
+            });
+        }
+
         function refreshResztvevoList() {
             $('#oraselect').change();
         }
@@ -504,19 +617,23 @@ $(document).ready(
             .on('click', '.js-partneredit', function(e) {
                 const $this = $(this);
                 e.preventDefault();
-                $('.js-partnereditok').data('id', $this.data('id'));
                 $.ajax({
                     method: 'GET',
                     url: '/pubadmin/partner',
                     data: {
                         id: $this.data('id')
                     },
-                    success: function(data) {
-                        $('#nev2edit').val(data.nev);
-                        $('#email2edit').val(data.email);
-                        $('#irszam2edit').val(data.irszam);
-                        $('#varos2edit').val(data.varos);
-                        $('#utca2edit').val(data.utca);
+                    success: function(res) {
+                        const data = parseValasz(res),
+                            jelentkezes = data.jelentkezes || data;
+                        gyakorloModositas.id = $this.data('id');
+                        gyakorloModositas.eredetiPartnerid = data.partner ? data.partner.id : 0;
+                        gyakorloModositas.ellenorzottEmail = (jelentkezes.email || '').trim();
+                        $('#nev2edit').val(jelentkezes.nev);
+                        $('#email2edit').val(jelentkezes.email);
+                        fillPartnerBlokk(data.partner, jelentkezes);
+                        showEmailValtasInfo('');
+                        showPartnerEditHiba('');
                         $('#partnerEditModal')
                             .modal({
                                 backdrop: 'static'
@@ -524,27 +641,35 @@ $(document).ready(
                     }
                 });
             })
+            .on('change', '#email2edit', function() {
+                const email = $(this).val().trim();
+                if (EMAILMINTA.test(email) && email !== gyakorloModositas.ellenorzottEmail) {
+                    checkModositasEmail(email);
+                }
+            })
             .on('click', '.js-partnereditok', function(e) {
-                const $this = $(this);
                 e.preventDefault();
-                $.ajax({
-                    method: 'POST',
-                    url: '/pubadmin/partner',
-                    data: {
-                        id: $this.data('id'),
-                        nev: $('#nev2edit').val(),
-                        email: $('#email2edit').val(),
-                        irszam: $('#irszam2edit').val(),
-                        varos: $('#varos2edit').val(),
-                        utca: $('#utca2edit').val()
-                    },
-                    success: function() {
-                        $('#partnerEditModal').modal('hide');
-                        $this.data('id', '');
-                        $('#nev2edit, #email2edit, #irszam2edit, #varos2edit, #utca2edit').val('');
-                        refreshResztvevoList();
-                    }
-                });
+                const nev = $('#nev2edit').val().trim(),
+                    email = $('#email2edit').val().trim();
+                showPartnerEditHiba('');
+                if (!nev) {
+                    showPartnerEditHiba('Add meg a nevet a jelentkezésen.');
+                    return;
+                }
+                if (!EMAILMINTA.test(email)) {
+                    showPartnerEditHiba('Az emailcím formátuma hibás.');
+                    return;
+                }
+                // az ellenőrzés még nem futott le erre az emailre: ha a partnerblokk emiatt vált, a tanár előbb lássa
+                if (email !== gyakorloModositas.ellenorzottEmail) {
+                    checkModositasEmail(email, (valtozott) => {
+                        if (!valtozott) {
+                            savePartnerEdit();
+                        }
+                    });
+                    return;
+                }
+                savePartnerEdit();
             })
             .on('click', '.js-refresh', function(e) {
                 e.preventDefault();

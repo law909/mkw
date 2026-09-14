@@ -1119,6 +1119,13 @@ class pubadminController extends mkwhelpers\Controller
             $r['irszam'] = (string)$rv->getPartnerirszam();
             $r['varos'] = (string)$rv->getPartnervaros();
             $r['utca'] = (string)$rv->getPartnerutca();
+            $r['jelentkezes'] = [
+                'nev' => (string)$rv->getPartnernev(),
+                'email' => (string)$rv->getPartneremail(),
+                'irszam' => $r['irszam'],
+                'varos' => $r['varos'],
+                'utca' => $r['utca'],
+            ];
             // a számla a partnertörzsből készül, tehát a partner címe az érvényes: azt mutatjuk,
             // és csak ott esünk vissza a bejelentkezés mezőire, ahol a partneren nincs adat
             $partner = $this->findPartnerByEmail($rv->getPartneremail());
@@ -1127,43 +1134,88 @@ class pubadminController extends mkwhelpers\Controller
                 $r['varos'] = trim((string)$partner->getVaros()) ?: $r['varos'];
                 $r['utca'] = trim((string)$partner->getUtca()) ?: $r['utca'];
             }
+            $r['partner'] = $partner ? $this->partnerToArray($partner) : null;
         }
         header('Content-Type: application/json');
         echo json_encode($r);
     }
 
+    /**
+     * A név és az email mindig csak a jelentkezésre megy. A partnertörzset csak a darshan ablak „Partnertörzs"
+     * blokkja írja (partnerblokk=1, a kisszámlázó sosem küldi), és akkor felülírja: a tanár a partner adatait
+     * látta és javította.
+     */
     public function postPartner()
     {
-        $id = $this->params->getIntRequestParam('id');
-        $nev = $this->params->getStringRequestParam('nev');
-        $email = $this->params->getStringRequestParam('email');
+        header('Content-Type: application/json; charset=utf-8');
         /** @var JogaBejelentkezes $rv */
-        $rv = $this->getSajatBejelentkezes($id);
-        if ($rv) {
-            $rv->setPartnernev($nev);
-            $rv->setPartneremail($email);
-            // a címmezőket csak az a képernyő küldi, amelyik ki is teszi őket (a kisszámlázóé nem):
-            // paraméter nélkül hozzá sem nyúlunk, különben az ő mentése kinullázná a címet
-            if ($this->params->existsRequestParam('irszam')) {
-                $irszam = trim($this->params->getStringRequestParam('irszam'));
-                $varos = trim($this->params->getStringRequestParam('varos'));
-                $utca = trim($this->params->getStringRequestParam('utca'));
-                $rv->setPartnerirszam($irszam);
-                $rv->setPartnervaros($varos);
-                $rv->setPartnerutca($utca);
-                // a tanár a partner címét látta és javította, ezért felül is írjuk vele – a
-                // resolvePartner() fillMissingCim()-je csak a hiányzó mezőket pótolná
-                $partner = $this->findPartnerByEmail($email);
-                if ($partner) {
-                    $partner->setIrszam($irszam);
-                    $partner->setVaros($varos);
-                    $partner->setUtca($utca);
-                    $this->getEm()->persist($partner);
-                }
-            }
-            $this->getEm()->persist($rv);
-            $this->getEm()->flush();
+        $rv = $this->getSajatBejelentkezes($this->params->getIntRequestParam('id'));
+        if (!$rv) {
+            echo json_encode(['ok' => false, 'msg' => t('A jelentkezés nem található.')]);
+            return;
         }
+        $darshan = store::isDarshanTheme();
+        $nev = trim($this->params->getStringRequestParam('nev'));
+        $email = trim($this->params->getStringRequestParam('email'));
+        if ($darshan) {
+            $nev = implode(' ', JogaBejelentkezes::splitNev($nev));
+            if ($nev === '') {
+                echo json_encode(['ok' => false, 'msg' => t('Add meg a nevet a jelentkezésen.')]);
+                return;
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                echo json_encode(['ok' => false, 'msg' => t('Az emailcím formátuma hibás.')]);
+                return;
+            }
+        }
+        $rv->setPartnernev($nev);
+        $rv->setPartneremail($email);
+        $this->getEm()->persist($rv);
+
+        $msg = $darshan ? t('Mentve. A jelentkezés adatai frissültek, a partnertörzs nem változott.') : '';
+        if ($darshan && $this->params->getBoolRequestParam('partnerblokk')) {
+            $partnerid = $this->params->getIntRequestParam('partnerid');
+            $partner = $this->findPartnerByEmail($email);
+            // elavult ablak vagy kézzel átírt azonosító: nem írunk rá egy olyan partnerre, amit a tanár nem látott
+            if (($partner && (int)$partner->getId() !== $partnerid) || (!$partner && $partnerid > 0)) {
+                echo json_encode([
+                    'ok' => false,
+                    'msg' => t('Az emailcímhez tartozó partner időközben megváltozott. Zárd be és nyisd meg újra az ablakot.'),
+                ]);
+                return;
+            }
+            $partnernev = implode(' ', JogaBejelentkezes::splitNev($this->params->getStringRequestParam('partnernev')));
+            if (!JogaBejelentkezes::isTeljesNev($partnernev)) {
+                echo json_encode(['ok' => false, 'msg' => t('A partner nevéhez vezeték- és keresztnév kell, a számla erre a névre készül.')]);
+                return;
+            }
+            $irszam = trim($this->params->getStringRequestParam('partnerirszam'));
+            $varos = trim($this->params->getStringRequestParam('partnervaros'));
+            $utca = trim($this->params->getStringRequestParam('partnerutca'));
+            if ($partner) {
+                $nevreszek = JogaBejelentkezes::splitNev($partnernev);
+                $partner->setNev($partnernev);
+                $partner->setVezeteknev($nevreszek[0]);
+                $partner->setKeresztnev(implode(' ', array_slice($nevreszek, 1)));
+                // üresen hagyott mező nem töröl
+                if ($irszam !== '') {
+                    $partner->setIrszam($irszam);
+                }
+                if ($varos !== '') {
+                    $partner->setVaros($varos);
+                }
+                if ($utca !== '') {
+                    $partner->setUtca($utca);
+                }
+                $this->getEm()->persist($partner);
+                $msg = sprintf(t('Mentve. A jelentkezés és %s partner adatai frissültek.'), $partnernev);
+            } else {
+                $partner = (new PartnerResolveService())->resolve($email, $partnernev, $irszam, $varos, $utca);
+                $msg = sprintf(t('Mentve. Létrejött a partner: %s (%s).'), $partner->getNev(), $partner->getEmail());
+            }
+        }
+        $this->getEm()->flush();
+        echo json_encode(['ok' => true, 'msg' => $msg]);
     }
 
     /** @return \Entities\Partner|null */
