@@ -31,7 +31,7 @@ class PartnerTermekKedvezmeny {
     private $lastmod;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="termekcsoportkedvezmenyek")
+     * @ORM\ManyToOne(targetEntity="Partner",inversedBy="termekkedvezmenyek")
      * @ORM\JoinColumn(name="partner_id",referencedColumnName="id",onDelete="cascade")
      */
     private $partner;
