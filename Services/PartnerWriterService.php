@@ -11,11 +11,11 @@ use Entities\MPTTagozat;
 use Entities\MPTTagsagforma;
 use Entities\Orszag;
 use Entities\Partner;
-use Entities\PartnerTermekcsoportKedvezmeny;
+use Entities\PartnerTermekkategoriaKedvezmeny;
 use Entities\PartnerTermekKedvezmeny;
 use Entities\Szallitasimod;
 use Entities\Termek;
-use Entities\Termekcsoport;
+use Entities\TermekFa;
 use mkwhelpers\ParameterHandler;
 
 class PartnerWriterService
@@ -124,27 +124,30 @@ class PartnerWriterService
     public function kedvezmenyek(): self
     {
         $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
+        $usedTermekfaIds = [];
         foreach ($kdids as $kdid) {
             $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
-            $termekcsoport = $this->em->getRepository(Termekcsoport::class)->find(
-                $this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid)
+            $termekfa = $this->em->getRepository(TermekFa::class)->find(
+                $this->params->getIntRequestParam('kedvezmenytermekfa_' . $kdid)
             );
-            if ($termekcsoport) {
-                if ($oper === 'add') {
-                    $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
+            if ($termekfa) {
+                // egy ág partnerenként egyszer kaphat kedvezményt: a már szereplő ágra felvett új sor elmarad
+                if ($oper === 'add' && !isset($usedTermekfaIds[$termekfa->getId()])) {
+                    $kedv = new \Entities\PartnerTermekkategoriaKedvezmeny();
                     $kedv->setPartner($this->partner);
-                    $kedv->setTermekcsoport($termekcsoport);
+                    $kedv->setTermekfa($termekfa);
                     $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                     $this->em->persist($kedv);
                 } elseif ($oper === 'edit') {
-                    $kedv = $this->em->getRepository(PartnerTermekcsoportKedvezmeny::class)->find($kdid);
+                    $kedv = $this->em->getRepository(PartnerTermekkategoriaKedvezmeny::class)->find($kdid);
                     if ($kedv) {
                         $kedv->setPartner($this->partner);
-                        $kedv->setTermekcsoport($termekcsoport);
+                        $kedv->setTermekfa($termekfa);
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                         $this->em->persist($kedv);
                     }
                 }
+                $usedTermekfaIds[$termekfa->getId()] = true;
             }
         }
         $kdids = $this->params->getArrayRequestParam('termekkedvezmenyid');

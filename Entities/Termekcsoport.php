@@ -27,9 +27,6 @@ class Termekcsoport
     /** @ORM\OneToMany(targetEntity="Termek", mappedBy="termekcsoport",cascade={"persist"}) */
     private $termekek;
 
-    /** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="termekcsoport",cascade={"persist"}) */
-    private $kedvezmenyek;
-
     /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
 

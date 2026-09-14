@@ -14,14 +14,14 @@ use Entities\Orszag;
 use Entities\Partner;
 use Entities\Partnercimketorzs;
 use Entities\PartnerDok;
-use Entities\PartnerTermekcsoportKedvezmeny;
+use Entities\PartnerTermekkategoriaKedvezmeny;
 use Entities\PartnerGyartoKedvezmeny;
 use Entities\Partnertelephely;
 use Entities\PartnerTermekKedvezmeny;
 use Entities\Partnertipus;
 use Entities\Szallitasimod;
 use Entities\Termek;
-use Entities\Termekcsoport;
+use Entities\TermekFa;
 use Entities\Uzletkoto;
 use Entities\Valutanem;
 use Traits\PartnerAuth;
@@ -66,7 +66,7 @@ class partnerController extends \mkwhelpers\MattableController
 
     public function loadVars($t, $forKarb = false)
     {
-        $kedvCtrl = new partnertermekcsoportkedvezmenyController();
+        $kedvCtrl = new partnertermekkategoriakedvezmenyController();
         $termekkedvCtrl = new partnertermekkedvezmenyController();
         $gyartokedvCtrl = new partnergyartokedvezmenyController();
         $telephelyCtrl = new partnertelephelyController();
@@ -127,10 +127,10 @@ class partnerController extends \mkwhelpers\MattableController
         }
         if ($forKarb) {
             $kedv = [];
-            foreach ($t->getTermekcsoportkedvezmenyek() as $tar) {
+            foreach ($t->getTermekkategoriakedvezmenyek() as $tar) {
                 $kedv[] = $kedvCtrl->loadVars($tar, true);
             }
-            $x['termekcsoportkedvezmenyek'] = $kedv;
+            $x['termekkategoriakedvezmenyek'] = $kedv;
             $kedv = [];
             foreach ($t->getTermekkedvezmenyek() as $tar) {
                 $kedv[] = $termekkedvCtrl->loadVars($tar, true);
@@ -323,27 +323,30 @@ class partnerController extends \mkwhelpers\MattableController
         }
 
         $kdids = $this->params->getArrayRequestParam('kedvezmenyid');
+        $usedTermekfaIds = [];
         foreach ($kdids as $kdid) {
             $oper = $this->params->getStringRequestParam('kedvezmenyoper_' . $kdid);
-            $termekcsoport = $this->getEm()->getRepository(Termekcsoport::class)->find(
-                $this->params->getIntRequestParam('kedvezmenytermekcsoport_' . $kdid)
+            $termekfa = $this->getEm()->getRepository(TermekFa::class)->find(
+                $this->params->getIntRequestParam('kedvezmenytermekfa_' . $kdid)
             );
-            if ($termekcsoport) {
-                if ($oper === 'add') {
-                    $kedv = new \Entities\PartnerTermekcsoportKedvezmeny();
+            if ($termekfa) {
+                // egy ág partnerenként egyszer kaphat kedvezményt: a már szereplő ágra felvett új sor elmarad
+                if ($oper === 'add' && !isset($usedTermekfaIds[$termekfa->getId()])) {
+                    $kedv = new \Entities\PartnerTermekkategoriaKedvezmeny();
                     $kedv->setPartner($obj);
-                    $kedv->setTermekcsoport($termekcsoport);
+                    $kedv->setTermekfa($termekfa);
                     $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                     $this->getEm()->persist($kedv);
                 } elseif ($oper === 'edit') {
-                    $kedv = $this->getEm()->getRepository(PartnerTermekcsoportKedvezmeny::class)->find($kdid);
+                    $kedv = $this->getEm()->getRepository(PartnerTermekkategoriaKedvezmeny::class)->find($kdid);
                     if ($kedv) {
                         $kedv->setPartner($obj);
-                        $kedv->setTermekcsoport($termekcsoport);
+                        $kedv->setTermekfa($termekfa);
                         $kedv->setKedvezmeny($this->params->getNumRequestParam('kedvezmeny_' . $kdid));
                         $this->getEm()->persist($kedv);
                     }
                 }
+                $usedTermekfaIds[$termekfa->getId()] = true;
             }
         }
 
@@ -582,8 +585,6 @@ class partnerController extends \mkwhelpers\MattableController
         $view->setVar('partnertipuslist', $partnertipus->getSelectList(0));
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
-        $tcs = new termekcsoportController();
-        $view->setVar('tcsktermekcsoportlist', $tcs->getSelectList());
         $emailtpl = new emailtemplateController();
         $view->setVar('emailsablonlist', $emailtpl->getSelectList());
         $ec = new mptngyegyetemController();

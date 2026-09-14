@@ -9,7 +9,7 @@ use Controllers\szamlafejController;
 use Controllers\garanciaugyfejController;
 use Controllers\orszagController;
 use Controllers\korzetszamController;
-use Controllers\partnertermekcsoportkedvezmenyController;
+use Controllers\partnertermekkategoriakedvezmenyController;
 use Services\PartnerWriterService;
 
 trait PartnerFiok
@@ -51,7 +51,7 @@ trait PartnerFiok
             $telkorzetc = new korzetszamController();
             $view->setVar('telkorzetlist', $telkorzetc->getSelectList($user->getTelkorzet()));
 
-            $ptcsk = new partnertermekcsoportkedvezmenyController();
+            $ptcsk = new partnertermekkategoriakedvezmenyController();
             $ptcsklist = $ptcsk->getFiokList();
             $view->setVar('discountlist', $ptcsklist);
             $view->printTemplateResult(true);

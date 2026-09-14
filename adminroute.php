@@ -1121,16 +1121,16 @@ if (!\mkw\store::isClosed()) {
 
 $router->map(
     'GET',
-    '/admin/partnertermekcsoportkedvezmeny/getemptyrow',
-    'partnertermekcsoportkedvezmenyController#getemptyrow',
-    'adminpartnertermekcsoportkedvezmenygetemptyrow'
+    '/admin/partnertermekkategoriakedvezmeny/getemptyrow',
+    'partnertermekkategoriakedvezmenyController#getemptyrow',
+    'adminpartnertermekkategoriakedvezmenygetemptyrow'
 );
 if (!\mkw\store::isClosed()) {
     $router->map(
         'POST',
-        '/admin/partnertermekcsoportkedvezmeny/save',
-        'partnertermekcsoportkedvezmenyController#save',
-        'adminpartnertermekcsoportkedvezmenysave'
+        '/admin/partnertermekkategoriakedvezmeny/save',
+        'partnertermekkategoriakedvezmenyController#save',
+        'adminpartnertermekkategoriakedvezmenysave'
     );
 }
 
@@ -1480,7 +1480,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partnerdok/del', 'partnerdokController#del', 'adminpartnerdokdel');
     $router->map('POST', '/admin/partner/anonym/do', 'partnerController#doAnonym', 'adminpartnerdoanonym');
     $router->map('POST', '/admin/partner/arsavcsere', 'partnerController#arsavcsere', 'adminpartnerarsavcsere');
-    $router->map('POST', '/admin/partner/tcskedit', 'partnerController#tcskedit', 'adminpartnertcskedit');
+    $router->map('POST', '/admin/partner/termekkategoriakedvezmenyedit', 'partnerController#setTermekkategoriaKedvezmenyek', 'adminpartnertermekkategoriakedvezmenyedit');
     $router->map('POST', '/admin/partner/setflag', 'partnerController#setflag', 'adminpartnersetflag');
     $router->map('POST', '/admin/partner/sendemailsablonok', 'partnerController#sendEmailSablonok', 'adminpartnersendemailsablonok');
     $router->map('GET', '/admin/partner/querytaxpayer', 'partnerController#querytaxpayer', 'adminquerytaxpayer');

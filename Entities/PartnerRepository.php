@@ -22,7 +22,7 @@ class PartnerRepository extends \mkwhelpers\Repository
         $btch['megjegyzesexport'] = 'Megjegyzés export';
         $btch['hirlevelexport'] = 'Hírlevél export';
         $btch['arsavcsere'] = 'Ársáv csere';
-        $btch['termekcsoportkedvezmenyedit'] = 'Termékcsoport kedvezmény módosítás';
+        $btch['termekkategoriakedvezmenyedit'] = 'Termékkategória kedvezmény módosítás';
         $btch['sendemailsablon'] = 'Email sablon küldés';
         if (\mkw\store::isMPTNGY()) {
             $btch['mptngyszamlazasexport'] = 'MPT nagygyűlés export';

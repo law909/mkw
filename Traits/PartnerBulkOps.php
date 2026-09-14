@@ -4,7 +4,7 @@ namespace Traits;
 
 use Entities\Emailtemplate;
 use Entities\Partner;
-use Entities\PartnerTermekcsoportKedvezmeny;
+use Entities\PartnerTermekkategoriaKedvezmeny;
 
 trait PartnerBulkOps
 {
@@ -33,11 +33,14 @@ trait PartnerBulkOps
         $this->getEm()->flush();
     }
 
-    public function tcskedit()
+    public function setTermekkategoriaKedvezmenyek()
     {
         $ids = $this->params->getArrayRequestParam('ids');
-        $tcs = $this->params->getStringRequestParam('tcs');
+        $termekfaid = $this->params->getIntRequestParam('termekfa');
         $kedvvalt = $this->params->getNumRequestParam('kedv');
+        if (!$termekfaid) {
+            return;
+        }
 
         $filter = new \mkwhelpers\FilterDescriptor();
         if ($ids) {
@@ -46,11 +49,11 @@ trait PartnerBulkOps
         $partnerek = $this->getRepo()->getAll($filter);
         /** @var Partner $partner */
         foreach ($partnerek as $partner) {
-            /** @var PartnerTermekcsoportKedvezmeny $tcsk */
-            foreach ($partner->getTermekcsoportkedvezmenyek() as $tcsk) {
-                if ($tcsk->getTermekcsoportId() == $tcs) {
-                    $tcsk->setKedvezmeny($kedvvalt);
-                    $this->getEm()->persist($tcsk);
+            /** @var PartnerTermekkategoriaKedvezmeny $kdv */
+            foreach ($partner->getTermekkategoriakedvezmenyek() as $kdv) {
+                if ($kdv->getTermekfaId() == $termekfaid) {
+                    $kdv->setKedvezmeny($kedvvalt);
+                    $this->getEm()->persist($kdv);
                 }
             }
         }

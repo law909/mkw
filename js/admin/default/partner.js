@@ -97,16 +97,57 @@ function termekAutocompleteConfig() {
     };
 }
 
+// termékfa-ág választó: az ág azonosítóját a gomb melletti rejtett mezőbe írja
+function pickTermekfa($button) {
+    $('#termekfapicker').remove();
+    const $picker = $('<div id="termekfapicker"></div>').appendTo('body');
+    $picker.jstree({
+        core: {animation: 100},
+        plugins: ['themeroller', 'json_data', 'ui'],
+        themeroller: {item: ''},
+        json_data: {
+            ajax: {url: '/admin/termekfa/jsonlist'}
+        },
+        ui: {select_limit: 1}
+    })
+        .on('loaded.jstree', () => {
+            $picker.jstree('open_node', $('#termekfa_1', $picker).parent());
+        });
+    $picker.dialog({
+        title: 'Termékkategória',
+        resizable: true,
+        height: 340,
+        modal: true,
+        buttons: {
+            'OK': function () {
+                $picker.jstree('get_selected').each(function () {
+                    const $node = $(this).children('a');
+                    $button.siblings('input[type="hidden"]').val($node.attr('id').split('_')[1]);
+                    $button.buttonLabel($node.text());
+                });
+                $(this).dialog('close');
+            },
+            'Bezár': function () {
+                $(this).dialog('close');
+            }
+        },
+        close: () => $picker.remove()
+    });
+}
 
 $(document).ready(function () {
     const dialogcenter = $('#dialogcenter');
+    $(document).on('click', '.js-termekkategoriafabutton', function (e) {
+        e.preventDefault();
+        pickTermekfa($(this));
+    });
     const partner = new MattkarbConfig({
         entityName: 'partner',
         beforeShow: function () {
             var szuletesiidoedit = $('#SzuletesiidoEdit'),
                 mpt_tagsagdateedit = $('#MPTTagsagdateEdit'),
                 mptngybefdatumedit = $('#MptngyBefdatumEdit'),
-                termekcsoportkedvezmenytab = $('#KedvezmenyTab'),
+                termekkategoriakedvezmenytab = $('#KedvezmenyTab'),
                 gyartokedvezmenytab = $('#GyartoKedvezmenyTab'),
                 termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                 telephelytab = $('#TelephelyTab'),
@@ -255,21 +296,20 @@ $(document).ready(function () {
                     finder.popup();
                 });
             $('.js-doknewbutton,.js-dokbrowsebutton,.js-dokdelbutton,.js-dokopenbutton,.js-dokopen2button').button();
-            termekcsoportkedvezmenytab.on('click', '.js-termekcsoportkedvezmenynewbutton', function (e) {
-                var $this = $(this);
+            termekkategoriakedvezmenytab.on('click', '.js-termekkategoriakedvezmenynewbutton', function (e) {
+                const $this = $(this);
                 e.preventDefault();
                 $.ajax({
-                    url: '/admin/partnertermekcsoportkedvezmeny/getemptyrow',
+                    url: '/admin/partnertermekkategoriakedvezmeny/getemptyrow',
                     type: 'GET',
                     success: function (data) {
-                        var tbody = $('#KedvezmenyTab');
-                        tbody.append(data);
-                        $('.js-termekcsoportkedvezmenynewbutton,.js-termekcsoportkedvezmenydelbutton').button();
+                        termekkategoriakedvezmenytab.append(data);
+                        $('.js-termekkategoriakedvezmenynewbutton,.js-termekkategoriakedvezmenydelbutton,.js-termekkategoriafabutton', termekkategoriakedvezmenytab).button();
                         $this.remove();
                     }
                 });
             })
-                .on('click', '.js-termekcsoportkedvezmenydelbutton', function (e) {
+                .on('click', '.js-termekkategoriakedvezmenydelbutton', function (e) {
                     e.preventDefault();
                     var argomb = $(this),
                         arid = argomb.attr('data-id');
@@ -283,7 +323,7 @@ $(document).ready(function () {
                             buttons: {
                                 'Igen': function () {
                                     $.ajax({
-                                        url: '/admin/partnertermekcsoportkedvezmeny/save',
+                                        url: '/admin/partnertermekkategoriakedvezmeny/save',
                                         type: 'POST',
                                         data: {
                                             id: arid,
@@ -302,7 +342,7 @@ $(document).ready(function () {
                         });
                     }
                 });
-            $('.js-termekcsoportkedvezmenynewbutton, .js-termekcsoportkedvezmenydelbutton').button();
+            $('.js-termekkategoriakedvezmenynewbutton,.js-termekkategoriakedvezmenydelbutton,.js-termekkategoriafabutton', termekkategoriakedvezmenytab).button();
             gyartokedvezmenytab.on('click', '.js-gyartokedvezmenynewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();
@@ -759,37 +799,36 @@ $(document).ready(function () {
                             }
                         });
                         break;
-                    case 'termekcsoportkedvezmenyedit':
-                        $sel = $('select[name="tcsktermekcsoport"]');
-                        dialogcenter.html($('#termekcsoportkedvezmenyedit').show()).dialog({
+                    case 'termekkategoriakedvezmenyedit':
+                        dialogcenter.html($('#termekkategoriakedvezmenyedit').show()).dialog({
                             resizable: false,
-                            height: 140,
+                            height: 160,
                             modal: true,
                             buttons: {
                                 'OK': function () {
-                                    var $this = $(this);
+                                    const $this = $(this);
                                     $.ajax({
-                                        url: '/admin/partner/tcskedit',
+                                        url: '/admin/partner/termekkategoriakedvezmenyedit',
                                         type: 'POST',
                                         data: {
                                             ids: tomb,
-                                            tcs: $('option:selected', $sel).val(),
-                                            kedv: $('input.js-tcskkedvvaltozas').val()
+                                            termekfa: $('#TermekkategoriaKedvezmenyFaEdit').val(),
+                                            kedv: $('input.js-tkkedvvaltozas').val()
                                         },
-                                        success: function (data) {
-                                            $('option:selected', $sel).val(data);
+                                        success: function () {
                                             $this.dialog('close');
-                                            $('#termekcsoportkedvezmenyedit').hide();
+                                            $('#termekkategoriakedvezmenyedit').hide();
                                             $('.mattable-tablerefresh').click();
                                         }
                                     });
                                 },
                                 'Mégsem': function () {
                                     $(this).dialog('close');
-                                    $('#termekcsoportkedvezmenyedit').hide();
+                                    $('#termekkategoriakedvezmenyedit').hide();
                                 }
                             }
                         });
+                        $('.js-termekkategoriafabutton', dialogcenter).button();
                         break;
                     case 'sendemailsablon':
                         let $dia = $('#emailsablondialog');

@@ -2574,6 +2574,86 @@ if ($DBVersion < '0174') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0174');
 }
 
+if ($DBVersion < '0175') {
+    // A partner termékcsoport kedvezménye termékfa-ágra vált. A régi tábla leképezetlenül megmaradt; a sorokat a
+    // csoport és az ág nevének egyezése (nev vagy nev_l1, kis-nagybetű nélkül) alapján hozzuk át. Pontos egyezés
+    // híján legfeljebb két betű eltérés is elég (ACCESSOIRES, TEXTILE JACKETS), de csak egyértelmű párnál.
+    $conn = \mkw\store::getEm()->getConnection();
+    if ($conn->fetchOne('SHOW TABLES LIKE "partnertermekcsoportkedvezmeny"')) {
+        $normalize = fn($name) => preg_replace('/\s+/u', ' ', mb_strtoupper(trim(html_entity_decode((string)$name))));
+        $treeNodesByName = [];
+        foreach ($conn->fetchAllAssociative('SELECT id, nev, nev_l1, menu1lathato FROM termekfa') as $node) {
+            foreach (array_unique([$normalize($node['nev']), $normalize($node['nev_l1'])]) as $name) {
+                if ($name !== '') {
+                    $treeNodesByName[$name][] = $node;
+                }
+            }
+        }
+        // azonos nevű ágak közül a b2b menüben lévő a nyerő
+        $pickNode = function (array $nodes) {
+            if (count($nodes) === 1) {
+                return $nodes[0];
+            }
+            $menuNodes = array_values(array_filter($nodes, fn($node) => $node['menu1lathato']));
+            return count($menuNodes) === 1 ? $menuNodes[0] : null;
+        };
+        $groups = $conn->fetchAllAssociative(
+            'SELECT DISTINCT tcs.id, tcs.nev FROM partnertermekcsoportkedvezmeny k INNER JOIN termekcsoport tcs ON tcs.id = k.termekcsoport_id'
+        );
+        $mapping = [];
+        foreach ($groups as $group) {
+            $node = $pickNode($treeNodesByName[$normalize($group['nev'])] ?? []);
+            if ($node) {
+                $mapping[$group['id']] = $node['id'];
+            }
+        }
+        $fuzzy = [];
+        foreach ($groups as $group) {
+            if (isset($mapping[$group['id']])) {
+                continue;
+            }
+            $bestName = null;
+            $bestDistance = 3;
+            $tie = false;
+            foreach (array_keys($treeNodesByName) as $name) {
+                $distance = levenshtein($normalize($group['nev']), $name);
+                if ($distance < $bestDistance) {
+                    [$bestName, $bestDistance, $tie] = [$name, $distance, false];
+                } elseif ($distance === $bestDistance) {
+                    $tie = true;
+                }
+            }
+            $node = ($bestName !== null && !$tie) ? $pickNode($treeNodesByName[$bestName]) : null;
+            if ($node && !in_array($node['id'], $mapping)) {
+                $fuzzy[$node['id']][] = $group['id'];
+            }
+        }
+        foreach ($fuzzy as $nodeId => $groupIds) {
+            if (count($groupIds) === 1) {
+                $mapping[$groupIds[0]] = $nodeId;
+            }
+        }
+        foreach ($mapping as $groupId => $nodeId) {
+            // partnerenként duplikált csoportnál a legkisebb id-jű sor: eddig is az érvényesült
+            $conn->executeStatement(
+                'INSERT INTO partnertermekkategoriakedvezmeny (created, lastmod, partner_id, termekfa_id, kedvezmeny)'
+                . ' SELECT k.created, k.lastmod, k.partner_id, ?, k.kedvezmeny FROM partnertermekcsoportkedvezmeny k'
+                . ' WHERE k.id IN (SELECT MIN(k2.id) FROM partnertermekcsoportkedvezmeny k2 WHERE k2.termekcsoport_id = ? GROUP BY k2.partner_id)'
+                . ' AND NOT EXISTS (SELECT 1 FROM partnertermekkategoriakedvezmeny m WHERE m.partner_id = k.partner_id AND m.termekfa_id = ?)',
+                [$nodeId, $groupId, $nodeId]
+            );
+        }
+        $unmatched = array_filter($groups, fn($group) => !isset($mapping[$group['id']]));
+        if ($unmatched) {
+            \mkw\store::writelog(
+                'runonce 0175, termékfára nem párosított termékcsoport kedvezmények: ' . implode(', ', array_column($unmatched, 'nev')),
+                'partnerkedvezmeny_migracio.txt'
+            );
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0175');
+}
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre

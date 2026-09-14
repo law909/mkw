@@ -288,8 +288,8 @@ class Partner
      */
     private $szallitasimod;
 
-    /** @ORM\OneToMany(targetEntity="PartnerTermekcsoportKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
-    private $termekcsoportkedvezmenyek;
+    /** @ORM\OneToMany(targetEntity="PartnerTermekkategoriaKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
+    private $termekkategoriakedvezmenyek;
 
     /** @ORM\OneToMany(targetEntity="PartnerTermekKedvezmeny", mappedBy="partner", cascade={"persist", "remove"}) */
     private $termekkedvezmenyek;
@@ -609,7 +609,7 @@ class Partner
         $this->kosarak = new ArrayCollection();
         $this->termekertesitok = new ArrayCollection();
         $this->telephelyek = new ArrayCollection();
-        $this->termekcsoportkedvezmenyek = new ArrayCollection();
+        $this->termekkategoriakedvezmenyek = new ArrayCollection();
         $this->termekkedvezmenyek = new ArrayCollection();
         $this->gyartokedvezmenyek = new ArrayCollection();
         $this->kontaktok = new ArrayCollection();
@@ -1641,11 +1641,11 @@ class Partner
     }
 
     /**
-     * @return \Entities\PartnerTermekcsoportKedvezmeny
+     * @return \Entities\PartnerTermekkategoriaKedvezmeny
      */
-    public function getTermekcsoportkedvezmenyek()
+    public function getTermekkategoriakedvezmenyek()
     {
-        return $this->termekcsoportkedvezmenyek;
+        return $this->termekkategoriakedvezmenyek;
     }
 
     /**

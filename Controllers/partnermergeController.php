@@ -181,7 +181,7 @@ class partnermergeController extends \mkwhelpers\MattableController
             $st->executeStatement();
 
             $st = $conn->prepare(
-                'UPDATE partnertermekcsoportkedvezmeny SET'
+                'UPDATE partnertermekkategoriakedvezmeny SET'
                 . ' partner_id=' . $partnerreid
                 . ' WHERE partner_id=' . $partnerrolid
             );

@@ -3,6 +3,7 @@
 {block "inhead"}
     <script type="text/javascript" src="/js/admin/default/jquery.mattable.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/partner.js"></script>
 {/block}
 
@@ -203,19 +204,15 @@
             {/foreach}
         </select>
     </div>
-    <div id="termekcsoportkedvezmenyedit" class="hidden">
+    <div id="termekkategoriakedvezmenyedit" class="hidden">
         <div>
-            <label>Termék csoport:</label>
-            <select id="tcskTermekcsoportEdit{$kd.id}" name="tcsktermekcsoport">
-                <option value="">{at('válasszon')}</option>
-                {foreach $tcsktermekcsoportlist as $_valuta}
-                    <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
-                {/foreach}
-            </select>
+            <label>{at('Termékkategória')}:</label>
+            <input id="TermekkategoriaKedvezmenyFaEdit" type="hidden">
+            <a class="js-termekkategoriafabutton" href="#" data-text="{at('válasszon')}">{at('válasszon')}</a>
         </div>
         <div>
-            <label>Új kedvezmény:</label>
-            <input class="js-tcskkedvvaltozas" type="number" step="any"/>
+            <label>{at('Új kedvezmény')}:</label>
+            <input class="js-tkkedvvaltozas" type="number" step="any"/>
         </div>
     </div>
     <div id="emailsablondialog" class="hidden">

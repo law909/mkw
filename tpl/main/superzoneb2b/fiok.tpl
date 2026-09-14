@@ -266,7 +266,7 @@
                                            value="{$discount.kedvezmeny}">
                                     <input type="hidden" name="kedvezmenyid[]" value="{$discount.id}">
                                     <input type="hidden" name="kedvezmenyoper_{$discount.id}" value="{$discount.oper}">
-                                    <input type="hidden" name="kedvezmenytermekcsoport_{$discount.id}" value="{$discount.tcsid}">
+                                    <input type="hidden" name="kedvezmenytermekfa_{$discount.id}" value="{$discount.termekfaid}">
                                 </div>
                             </div>
                         {/foreach}

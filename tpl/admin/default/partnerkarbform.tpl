@@ -653,10 +653,10 @@
                 </a>
             </div>
             <div id="KedvezmenyTab" class="mattkarb-page" data-visible="visible">
-                {foreach $partner.termekcsoportkedvezmenyek as $kd}
-                    {include 'partnertermekcsoportkedvezmenykarb.tpl'}
+                {foreach $partner.termekkategoriakedvezmenyek as $kd}
+                    {include 'partnertermekkategoriakedvezmenykarb.tpl'}
                 {/foreach}
-                <a class="js-termekcsoportkedvezmenynewbutton" href="#" title="{at('Új')}">
+                <a class="js-termekkategoriakedvezmenynewbutton" href="#" title="{at('Új')}">
                     <span class="ui-icon ui-icon-circle-plus"></span>
                 </a>
             </div>

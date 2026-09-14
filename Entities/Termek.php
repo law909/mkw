@@ -2423,21 +2423,14 @@ class Termek
     }
 
     /**
+     * A termék kategóriáira (termekfa1-3) adott partnerkedvezmény; ha több ág is kap, a legszűkebb számít.
+     *
      * @param \Entities\Partner $partner
      */
-    public function getTermekcsoportKedvezmeny($partner = null)
+    public function getTermekkategoriaKedvezmeny($partner = null)
     {
-        $kedvezmeny = 0;
-        if ($partner) {
-            $tcs = $this->getTermekcsoport();
-            if ($tcs) {
-                $kdv = \mkw\store::getEm()->getRepository(PartnerTermekcsoportKedvezmeny::class)->getByPartnerTermekcsoport($partner, $tcs);
-                if ($kdv) {
-                    $kedvezmeny = $kdv->getKedvezmeny();
-                }
-            }
-        }
-        return $kedvezmeny * 1;
+        return \mkw\store::getEm()->getRepository(PartnerTermekkategoriaKedvezmeny::class)
+            ->getKedvezmenyForKarkodok($partner, [$this->termekfa1karkod, $this->termekfa2karkod, $this->termekfa3karkod]);
     }
 
     /**
@@ -2478,7 +2471,7 @@ class Termek
     {
         $kedvezmeny = $this->getTermekKedvezmeny($partner);
         if (!$kedvezmeny) {
-            $kedvezmeny = $this->getTermekcsoportKedvezmeny($partner);
+            $kedvezmeny = $this->getTermekkategoriaKedvezmeny($partner);
         }
         if (!$kedvezmeny) {
             $kedvezmeny = $this->getGyartoKedvezmeny($partner);

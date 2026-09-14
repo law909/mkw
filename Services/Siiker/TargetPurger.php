@@ -27,7 +27,7 @@ class TargetPurger extends AbstractMigrator
         'idopontfoglalas', 'idopontreszvetel', 'jogaberlet', 'jogareszvetel', 'jogaszamlazatlaneladas',
         'fifoertek', 'fiforeteg', 'fifovaltozas', 'elallas', 'elallasnaplo', 'glsutanvet',
         'fizmod_hatar', 'szallitasimod_hatar', 'szallitasimod_orszag', 'szallitasimod_fizmodnovelo',
-        'partnertermekkedvezmeny', 'partnertermekcsoportkedvezmeny', 'partnergyartokedvezmeny',
+        'partnertermekkedvezmeny', 'partnertermekkategoriakedvezmeny', 'partnergyartokedvezmeny',
         'partnertermekszerzodes', 'partnertermekcsoportszerzodes', 'termekvaltozat', 'termekar', 'termekkep',
     ];
 

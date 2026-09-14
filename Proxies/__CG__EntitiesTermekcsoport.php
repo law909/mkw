@@ -67,10 +67,10 @@ class Termekcsoport extends \Entities\Termekcsoport implements \Doctrine\ORM\Pro
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'migrid'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'migrid'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'kedvezmenyek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'migrid'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'id', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'nev', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'termekek', '' . "\0" . 'Entities\\Termekcsoport' . "\0" . 'migrid'];
     }
 
     /**

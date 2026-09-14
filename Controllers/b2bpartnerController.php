@@ -98,7 +98,7 @@ class b2bpartnerController extends partnerController
         $view->setVar('pagetitle', t('Regisztráció') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('hibak', $hibak);
         \mkw\store::fillTemplate($view);
-        $ptcsk = new partnertermekcsoportkedvezmenyController();
+        $ptcsk = new partnertermekkategoriakedvezmenyController();
         $ptcsklist = $ptcsk->getFiokList(true);
         $view->setVar('discountlist', $ptcsklist);
         $view->printTemplateResult(true);
