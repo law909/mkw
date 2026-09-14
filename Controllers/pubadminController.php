@@ -23,6 +23,7 @@ use Entities\Termek;
 use Entities\Valutanem;
 use mkw\store;
 use mkwhelpers, Entities;
+use Services\PartnerResolveService;
 
 class pubadminController extends mkwhelpers\Controller
 {
@@ -277,99 +278,106 @@ class pubadminController extends mkwhelpers\Controller
         /** @var Partner|null $partner */
         $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partnerid'));
         if (!$partner) {
-            echo json_encode(['msg' => t('A gyakorló nem található.')]);
+            echo json_encode(['ok' => false, 'msg' => t('A gyakorló nem található.')]);
             return;
         }
-        echo json_encode(['msg' => $this->createIdopontfoglalas($partner)]);
+        $eredmeny = $this->createIdopontfoglalas($partner, (string)$partner->getNev());
+        if ($eredmeny['hiba']) {
+            echo json_encode(['ok' => false, 'msg' => $eredmeny['hiba']]);
+            return;
+        }
+        echo json_encode([
+            'ok' => true,
+            'msg' => $eredmeny['visszaallitva']
+                ? sprintf(t('A korábban lemondott foglalás visszaállítva: %s.'), $partner->getNev())
+                : sprintf(t('A foglalás felvéve: %s (%s).'), $partner->getNev(), $partner->getEmail()),
+        ]);
     }
 
     /**
-     * Új foglalás új partnerrel: ha az emailcímhez már van partner, azt használjuk, különben
-     * felvesszük – ugyanúgy, ahogy az óráknál a bejelentkezésből lesz partner.
+     * Új foglalás új partnerrel: ha az emailcímhez már van partner, ahhoz kötjük (az adatait csak pótoljuk),
+     * különben a foglalással együtt felvesszük.
      */
     public function newIdopontfoglalasWNewPartner()
     {
         header('Content-Type: application/json; charset=utf-8');
-        $nev = trim($this->params->getStringRequestParam('nev'));
+        $nev = implode(' ', JogaBejelentkezes::splitNev($this->params->getStringRequestParam('nev')));
         $email = trim($this->params->getStringRequestParam('email'));
-        if (!$nev || !$email) {
-            echo json_encode(['msg' => t('A név és az emailcím megadása kötelező.')]);
+        $hiba = $this->checkUjGyakorlo($nev, $email);
+        if ($hiba) {
+            echo json_encode(['ok' => false, 'msg' => $hiba]);
             return;
         }
-        if (!JogaBejelentkezes::isTeljesNev($nev)) {
-            echo json_encode(['msg' => t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).')]);
-            return;
-        }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo json_encode(['msg' => t('Az emailcím formátuma hibás.')]);
-            return;
-        }
-        /** @var Partner|null $partner */
-        $partner = $this->getRepo(Partner::class)->findOneBy(['email' => $email]);
-        if (!$partner) {
-            $partner = new Partner();
-            $partner->setEmail($email);
-            $partner->setNev($nev);
-            $partner->setSzamlatipus(0);
-            $partner->setVatstatus(2);
-        }
-        $partner->fillMissingCim(
-            $this->params->getStringRequestParam('irszam'),
-            $this->params->getStringRequestParam('varos'),
-            $this->params->getStringRequestParam('utca')
+        $resolver = new PartnerResolveService();
+        $partner = $resolver->resolve(
+            $email,
+            $nev,
+            trim($this->params->getStringRequestParam('irszam')),
+            trim($this->params->getStringRequestParam('varos')),
+            trim($this->params->getStringRequestParam('utca'))
         );
-        $this->getEm()->persist($partner);
-        $this->getEm()->flush();
-        echo json_encode(['msg' => $this->createIdopontfoglalas($partner)]);
+        $eredmeny = $this->createIdopontfoglalas($partner, $nev);
+        if ($eredmeny['hiba']) {
+            echo json_encode(['ok' => false, 'msg' => $eredmeny['hiba']]);
+            return;
+        }
+        echo json_encode([
+            'ok' => true,
+            'msg' => $this->describePartnerLink(
+                $eredmeny['visszaallitva'] ? t('A korábban lemondott foglalás visszaállítva') : t('A foglalás felvéve'),
+                $resolver,
+                $partner,
+                $nev
+            ),
+        ]);
     }
 
     /**
      * A foglalás létrehozása. A telt alkalomra és a duplikált foglalásra ugyanaz a szabály
      * vonatkozik, mint a publikus foglalóűrlapon; a lemondott foglalás viszont újra élővé tehető.
+     * Egyetlen flush a végén: hibánál a még nem mentett új partner sem kerül be.
      *
-     * @return string a felhasználónak szóló üzenet
+     * @return array{hiba: string, visszaallitva: bool}
      */
-    private function createIdopontfoglalas(Partner $partner): string
+    private function createIdopontfoglalas(Partner $partner, string $nev): array
     {
         $datum = $this->datumParam();
         $idopont = $this->getSajatIdopont($this->params->getIntRequestParam('idopontid'));
         if (!$idopont || !$datum) {
-            return t('Az időpont nem található.');
+            return ['hiba' => t('Az időpont nem található.'), 'visszaallitva' => false];
         }
         if (!$idopont->isValidOccurrenceDate($datum)) {
-            return t('Erre a napra nincs ilyen időpont.');
+            return ['hiba' => t('Erre a napra nincs ilyen időpont.'), 'visszaallitva' => false];
         }
 
         /** @var Idopontfoglalas|null $meglevo */
-        $meglevo = $this->getRepo(Idopontfoglalas::class)->findOneBy([
-            'idopont' => $idopont,
-            'partner' => $partner,
-            'datum' => $datum,
-        ]);
+        $meglevo = $partner->getId()
+            ? $this->getRepo(Idopontfoglalas::class)->findOneBy([
+                'idopont' => $idopont,
+                'partner' => $partner,
+                'datum' => $datum,
+            ])
+            : null;
         if ($meglevo && !$meglevo->getLemondva()) {
-            return t('Ennek a gyakorlónak már van foglalása erre az alkalomra.');
+            return ['hiba' => sprintf(t('%s már foglalt erre az alkalomra.'), $meglevo->getPartnerNev()), 'visszaallitva' => false];
         }
         if (!$idopont->isBookable($datum)) {
-            return t('Erre az alkalomra már nincs szabad hely.');
+            return ['hiba' => t('Erre az alkalomra már nincs szabad hely.'), 'visszaallitva' => false];
         }
 
-        if ($meglevo) {
-            // lemondott foglalás újraélesztése – a unique kulcs miatt új sort úgysem lehetne
-            $meglevo->setLemondva(false);
-            $meglevo->setLemondasdatum(null);
-            $meglevo->setLemondasoka('');
-            $this->getEm()->persist($meglevo);
-            $this->getEm()->flush();
-            return t('A korábban lemondott foglalás visszaállítva.');
-        }
-
-        $foglalas = new Idopontfoglalas();
+        // lemondott foglalás újraélesztése – a unique kulcs miatt új sort úgysem lehetne
+        $foglalas = $meglevo ?: new Idopontfoglalas();
         $foglalas->setIdopont($idopont);
         $foglalas->setPartner($partner);
+        // a setPartner() a partnertörzs nevét másolja: a foglaláson a beírt név szerepel
+        $foglalas->setPartnernev($nev);
         $foglalas->setDatum($datum);
+        $foglalas->setLemondva(false);
+        $foglalas->setLemondasdatum(null);
+        $foglalas->setLemondasoka('');
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
-        return t('A foglalás felvéve.');
+        return ['hiba' => '', 'visszaallitva' => (bool)$meglevo];
     }
 
     /**
@@ -849,51 +857,192 @@ class pubadminController extends mkwhelpers\Controller
         echo json_encode(['results' => $result]);
     }
 
+    /**
+     * Bejelentkeztetés a keresőben kiválasztott partnerrel. A kisszámlázó (lb) a választ nem nézi; nála a
+     * duplikáció-ellenőrzés sincs.
+     */
     public function newBejelentkezes()
     {
-        $oraid = $this->params->getIntRequestParam('oraid');
-        $datum = $this->params->getStringRequestParam('datum');
-        $ora = $this->getSajatOra($oraid, $datum);
-        $partnerid = $this->params->getIntRequestParam('partnerid');
-        /** @var Partner $partner */
-        $partner = $this->getRepo(Partner::class)->find($partnerid);
-        if ($partner && $ora) {
-            $obj = new JogaBejelentkezes();
-            $obj->setDatum($datum);
-            $obj->setPartnernev($partner->getNev());
-            $obj->setPartneremail($partner->getEmail());
-            $obj->setOrarend($ora);
-            $this->getEm()->persist($obj);
-            $this->getEm()->flush();
-        }
-    }
-
-    public function newBejelentkezesWNewPartner()
-    {
-        $oraid = $this->params->getIntRequestParam('oraid');
-        $datum = $this->params->getStringRequestParam('datum');
-        $ora = $this->getSajatOra($oraid, $datum);
-        $nev = trim($this->params->getStringRequestParam('nev'));
-        $email = trim($this->params->getStringRequestParam('email'));
         header('Content-Type: application/json; charset=utf-8');
-        if (!JogaBejelentkezes::isTeljesNev($nev)) {
-            echo json_encode(['msg' => t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).')]);
+        $datum = $this->params->getStringRequestParam('datum');
+        $ora = $this->getSajatOra($this->params->getIntRequestParam('oraid'), $datum);
+        /** @var Partner|null $partner */
+        $partner = $this->getRepo(Partner::class)->find($this->params->getIntRequestParam('partnerid'));
+        if (!$partner || !$ora) {
+            echo json_encode(['ok' => false, 'msg' => t('A gyakorló vagy az óra nem található.')]);
             return;
         }
-        if ($ora && $nev && $email) {
+        $obj = null;
+        if (store::isDarshanTheme()) {
+            // a jelentkezést csak az emailcím köti a partnerhez: enélkül a Megérkezett gomb új partnert venne fel
+            if (!trim((string)$partner->getEmail())) {
+                echo json_encode([
+                    'ok' => false,
+                    'msg' => sprintf(t('%s partnernek nincs emailcíme, ezért nem jelentkeztethető be. Az adminban pótold.'), $partner->getNev()),
+                ]);
+                return;
+            }
+            $obj = $this->findBejelentkezes($ora, $partner->getEmail());
+            if ($obj && !$obj->isLemondva()) {
+                echo json_encode(['ok' => false, 'msg' => sprintf(t('Már be van jelentkezve erre az órára: %s.'), $obj->getPartnernev())]);
+                return;
+            }
+        }
+        $visszaallitva = (bool)$obj;
+        if (!$obj) {
             $obj = new JogaBejelentkezes();
             $obj->setDatum($datum);
-            $obj->setPartnernev($nev);
-            $obj->setPartneremail($email);
-            // a cím a számlához kell: a partnerre a resolvePartner() vezeti át
-            $obj->setPartnerirszam(trim($this->params->getStringRequestParam('irszam')));
-            $obj->setPartnervaros(trim($this->params->getStringRequestParam('varos')));
-            $obj->setPartnerutca(trim($this->params->getStringRequestParam('utca')));
             $obj->setOrarend($ora);
-            $this->getEm()->persist($obj);
-            $this->getEm()->flush();
         }
-        echo json_encode([]);
+        $obj->setLemondva(false);
+        $obj->setPartnernev($partner->getNev());
+        $obj->setPartneremail($partner->getEmail());
+        $this->getEm()->persist($obj);
+        $this->getEm()->flush();
+        $msg = $visszaallitva
+            ? sprintf(t('A korábban lemondott bejelentkezés visszaállítva: %s.'), $partner->getNev())
+            : sprintf(t('Bejelentkeztetve: %s (%s).'), $partner->getNev(), $partner->getEmail());
+        echo json_encode([
+            'ok' => true,
+            'msg' => $msg . (store::isDarshanTheme() ? $this->getAkadalyFigyelmeztetes($partner) : ''),
+        ]);
+    }
+
+    /**
+     * Bejelentkeztetés beírt adatokkal. Darshanon a partner azonnal létrejön vagy hozzákötődik (a meglévőt csak
+     * pótoljuk); a kisszámlázón (lb) marad a lusta út: a partnert a Megérkezett vagy a vásárlás gomb hozza létre.
+     */
+    public function newBejelentkezesWNewPartner()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $datum = $this->params->getStringRequestParam('datum');
+        $ora = $this->getSajatOra($this->params->getIntRequestParam('oraid'), $datum);
+        $nev = trim($this->params->getStringRequestParam('nev'));
+        $email = trim($this->params->getStringRequestParam('email'));
+        $irszam = trim($this->params->getStringRequestParam('irszam'));
+        $varos = trim($this->params->getStringRequestParam('varos'));
+        $utca = trim($this->params->getStringRequestParam('utca'));
+
+        if (!store::isDarshanTheme()) {
+            if (!JogaBejelentkezes::isTeljesNev($nev)) {
+                echo json_encode(['ok' => false, 'msg' => t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).')]);
+                return;
+            }
+            if ($ora && $nev && $email) {
+                $obj = new JogaBejelentkezes();
+                $obj->setDatum($datum);
+                $obj->setPartnernev($nev);
+                $obj->setPartneremail($email);
+                // a cím a számlához kell: a partnerre a resolvePartner() vezeti át
+                $obj->setPartnerirszam($irszam);
+                $obj->setPartnervaros($varos);
+                $obj->setPartnerutca($utca);
+                $obj->setOrarend($ora);
+                $this->getEm()->persist($obj);
+                $this->getEm()->flush();
+            }
+            echo json_encode(['ok' => (bool)($ora && $nev && $email), 'msg' => '']);
+            return;
+        }
+
+        $nev = implode(' ', JogaBejelentkezes::splitNev($nev));
+        $hiba = $ora ? $this->checkUjGyakorlo($nev, $email) : t('Az óra nem található.');
+        if ($hiba) {
+            echo json_encode(['ok' => false, 'msg' => $hiba]);
+            return;
+        }
+        $obj = $this->findBejelentkezes($ora, $email);
+        if ($obj && !$obj->isLemondva()) {
+            echo json_encode(['ok' => false, 'msg' => sprintf(t('Már be van jelentkezve erre az órára: %s.'), $obj->getPartnernev())]);
+            return;
+        }
+        $visszaallitva = (bool)$obj;
+        if (!$obj) {
+            $obj = new JogaBejelentkezes();
+            $obj->setDatum($datum);
+            $obj->setOrarend($ora);
+        }
+        $obj->setLemondva(false);
+        $obj->setPartnernev($nev);
+        $obj->setPartneremail($email);
+        $obj->setPartnerirszam($irszam);
+        $obj->setPartnervaros($varos);
+        $obj->setPartnerutca($utca);
+        $this->getEm()->persist($obj);
+        $resolver = new PartnerResolveService();
+        $partner = $resolver->resolve($email, $nev, $irszam, $varos, $utca);
+        $this->getEm()->flush();
+        echo json_encode([
+            'ok' => true,
+            'msg' => $this->describePartnerLink(
+                $visszaallitva ? t('A korábban lemondott bejelentkezés visszaállítva') : t('Bejelentkeztetve'),
+                $resolver,
+                $partner,
+                $nev
+            ) . $this->getAkadalyFigyelmeztetes($partner),
+        ]);
+    }
+
+    /** @return string hibaüzenet, üres, ha a beírt adatokkal felvehető a gyakorló */
+    private function checkUjGyakorlo(string $nev, string $email): string
+    {
+        if ($nev === '' || $email === '') {
+            return t('A név és az emailcím megadása kötelező.');
+        }
+        if (!JogaBejelentkezes::isTeljesNev($nev)) {
+            return t('Kérjük, adja meg a teljes nevét (vezeték- és keresztnév).');
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return t('Az emailcím formátuma hibás.');
+        }
+        return '';
+    }
+
+    /**
+     * Az óra aznapi bejelentkezése ezzel az emailcímmel; ha régről több is van, az élő előnyben.
+     *
+     * @return JogaBejelentkezes|null
+     */
+    private function findBejelentkezes(Orarend $ora, $email)
+    {
+        $email = trim((string)$email);
+        $datum = $this->datumParam();
+        if ($email === '' || !$datum) {
+            return null;
+        }
+        $talalatok = $this->getRepo(JogaBejelentkezes::class)->findBy(['orarend' => $ora, 'datum' => $datum, 'partneremail' => $email]);
+        foreach ($talalatok as $talalat) {
+            if (!$talalat->isLemondva()) {
+                return $talalat;
+            }
+        }
+        return $talalatok[0] ?? null;
+    }
+
+    /** A válaszüzenet: új partner jött-e létre, vagy egy meglévőhöz kötöttük, és azon mit pótoltunk. */
+    private function describePartnerLink(string $mi, PartnerResolveService $resolver, Partner $partner, string $nev): string
+    {
+        if ($resolver->isCreated()) {
+            return sprintf(t('%s, és létrejött az új partner: %s (%s).'), $mi, $partner->getNev(), $partner->getEmail());
+        }
+        $msg = sprintf(t('%s a meglévő partnerhez: %s (%s).'), $mi, $partner->getNev(), $partner->getEmail());
+        if (mb_strtolower(implode(' ', JogaBejelentkezes::splitNev($nev))) !== mb_strtolower(implode(' ', JogaBejelentkezes::splitNev($partner->getNev())))) {
+            $msg .= ' ' . t('A partner nevét nem írtuk át.');
+        }
+        $cimkek = ['irszam' => t('irányítószám'), 'varos' => t('város'), 'utca' => t('utca'), 'telefon' => t('telefonszám')];
+        $potolt = array_map(fn($mezo) => $cimkek[$mezo] ?? $mezo, $resolver->getFilledFields());
+        if ($potolt) {
+            $msg .= ' ' . t('A partnertörzsben pótoltuk') . ': ' . implode(', ', $potolt) . '.';
+        }
+        return $msg;
+    }
+
+    private function getAkadalyFigyelmeztetes(?Partner $partner): string
+    {
+        $akadaly = $this->getSzamlazasiAkadaly($partner);
+        return $akadaly
+            ? ' ' . t('Figyelem') . ': ' . rtrim($akadaly, '.') . '. ' . t('A nevére kattintva javíthatod.')
+            : '';
     }
 
     public function getMegjegyzes()
