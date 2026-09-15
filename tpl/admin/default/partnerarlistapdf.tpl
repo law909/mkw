@@ -15,6 +15,11 @@
         .szoveg {
             margin-bottom: 3mm;
         }
+        .szoveg.fej {
+            text-align: center;
+            font-weight: bold;
+            font-size: 9pt;
+        }
         {* összevont szegélynél a sorokon átívelő cellák mPDF figyelmeztetést adnak, ami fejlesztői módban a PDF elé kerül *}
         table.arlista {
             width: 100%;
@@ -47,7 +52,7 @@
 </head>
 <body>
 {if ($fejszoveg)}
-    <div class="szoveg">{$fejszoveg|escape|nl2br}</div>
+    <div class="szoveg fej">{$fejszoveg|escape|nl2br}</div>
 {/if}
 {if ($csoportok)}
     <table class="arlista">

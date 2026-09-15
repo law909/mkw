@@ -43,11 +43,11 @@
             <p>{at('A mentett árlistát nyomtatja, a partner nyelvén, ársávjának és valutanemének nettó árával.')}</p>
             <div>
                 <label>{at('Szöveg a táblázat fölött')}:</label><br>
-                <textarea class="js-arlistafejszoveg" rows="3" cols="80"></textarea>
+                <textarea class="js-arlistafejszoveg" name="arlistafejszoveg" rows="3" cols="80">{$partner.arlistafejszoveg|escape}</textarea>
             </div>
             <div>
                 <label>{at('Szöveg a táblázat alatt')}:</label><br>
-                <textarea class="js-arlistalabszoveg" rows="3" cols="80"></textarea>
+                <textarea class="js-arlistalabszoveg" name="arlistalabszoveg" rows="3" cols="80">{$partner.arlistalabszoveg|escape}</textarea>
             </div>
             <div>
                 <label>{at('Csak ezekkel a címkékkel jelölt termékek (ha egy sincs kiválasztva: mind)')}:</label>

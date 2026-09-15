@@ -344,6 +344,12 @@ class Partner
      */
     private $arlistasavok;
 
+    /** @ORM\Column(type="text",nullable=true) */
+    private $arlistafejszoveg;
+
+    /** @ORM\Column(type="text",nullable=true) */
+    private $arlistalabszoveg;
+
     /**
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Dolgozo")
@@ -1863,6 +1869,26 @@ class Partner
     public function removeArlistasav(PartnerArlistaSav $sav)
     {
         $this->arlistasavok->removeElement($sav);
+    }
+
+    public function getArlistafejszoveg()
+    {
+        return $this->arlistafejszoveg;
+    }
+
+    public function setArlistafejszoveg($arlistafejszoveg)
+    {
+        $this->arlistafejszoveg = $arlistafejszoveg;
+    }
+
+    public function getArlistalabszoveg()
+    {
+        return $this->arlistalabszoveg;
+    }
+
+    public function setArlistalabszoveg($arlistalabszoveg)
+    {
+        $this->arlistalabszoveg = $arlistalabszoveg;
     }
 
     /**
