@@ -151,6 +151,7 @@ $(document).ready(function () {
                 gyartokedvezmenytab = $('#GyartoKedvezmenyTab'),
                 termekkedvezmenytab = $('#TermekKedvezmenyTab'),
                 telephelytab = $('#TelephelyTab'),
+                arlistatab = $('#ArlistaTab'),
                 doktab = $('#DokTab'),
                 mptfolyoszamlatab = $('#MPTFolyoszamlaTab');
 
@@ -343,6 +344,7 @@ $(document).ready(function () {
                     }
                 });
             $('.js-termekkategoriakedvezmenynewbutton,.js-termekkategoriakedvezmenydelbutton,.js-termekkategoriafabutton', termekkategoriakedvezmenytab).button();
+            $('.js-arlistasavnewbutton,.js-arlistasavdelbutton,.js-arlistasornewbutton,.js-arlistasordelbutton,.js-termekkategoriafabutton,.js-arlistanyomtatas', arlistatab).button();
             gyartokedvezmenytab.on('click', '.js-gyartokedvezmenynewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();

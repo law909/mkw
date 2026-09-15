@@ -9,7 +9,7 @@ $(document).ready(function () {
         .on('click', '#ArlistaTab .js-arlistasavnewbutton', function (e) {
             e.preventDefault();
             const savid = newId();
-            $(this).closest('th').before(
+            const $sav = $(
                 `<th class="js-arlistasav" data-sav="${savid}">
                     <input type="hidden" name="arlistasavid[]" value="${savid}">
                     <input name="arlistasavtol_${savid}" type="text" size="9"> -
@@ -17,6 +17,8 @@ $(document).ready(function () {
                     <a class="js-arlistasavdelbutton" href="#" title="Töröl"><span class="ui-icon ui-icon-circle-minus"></span></a>
                 </th>`
             );
+            $(this).closest('th').before($sav);
+            $('.js-arlistasavdelbutton', $sav).button();
             $('#ArlistaTab tr.js-arlistasor').each(function () {
                 $(this).children('td').last().before(kedvezmenyCell($(this).attr('data-sor'), savid));
             });
@@ -33,7 +35,7 @@ $(document).ready(function () {
                 .map((i, th) => kedvezmenyCell(sorid, $(th).attr('data-sav')))
                 .get()
                 .join('');
-            $('#ArlistaTab tbody.js-arlistasorok').append(
+            const $sor = $(
                 `<tr class="js-arlistasor" data-sor="${sorid}">
                     <td>
                         <input type="hidden" name="arlistasor[]" value="${sorid}">
@@ -43,6 +45,8 @@ $(document).ready(function () {
                     ${cells}<td></td>
                 </tr>`
             );
+            $('#ArlistaTab tbody.js-arlistasorok').append($sor);
+            $('.js-arlistasordelbutton,.js-termekkategoriafabutton', $sor).button();
         })
         .on('click', '#ArlistaTab .js-arlistasordelbutton', function (e) {
             e.preventDefault();
