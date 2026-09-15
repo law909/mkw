@@ -25,7 +25,7 @@
                 <li><a href="#TermekKedvezmenyTab">{at('Termék kedvezmények')}</a></li>
                 <li><a href="#GyartoKedvezmenyTab">{at('Kedvezmények gyártónként')}</a></li>
             {/if}
-            {if ($maintheme === 'mugenrace2026')}
+            {if ($maintheme === 'superzoneb2b')}
                 <li><a href="#ArlistaTab">{at('Árlista')}</a></li>
             {/if}
             <li><a href="#LoginTab">{at('Bejelentkezés')}</a></li>
@@ -680,7 +680,7 @@
                 </a>
             </div>
         {/if}
-        {if ($maintheme === 'mugenrace2026')}
+        {if ($maintheme === 'superzoneb2b')}
             {include 'partnerarlistakarb.tpl'}
         {/if}
         <div id="LoginTab" class="mattkarb-page" data-visible="visible">
