@@ -2632,72 +2632,59 @@ if ($DBVersion < '0178') {
 
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
-// admin kérés átléptetné. Saját jelzővel fut, és amíg a térkép üres, meg sem próbálja.
+// admin kérés átléptetné. Saját jelzővel fut.
 if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::KategoriaKedvezmenyMigrated)) {
-    // termekcsoport id => termekfa id-k. Ha egy partner ugyanarra az ágra több csoportból is kapna, az előbb
-    // szereplő csoport kedvezménye marad. A nevek a 2026-09-14-i fejlesztői DB szerint.
-    $termekcsoportTermekfak = [
-        12 => [33],                   // LEATHER SUIT → BŐRRUHA
-        8 => [42],                    // LEATHER JACKET → BŐRKABÁT
-        9 => [41],                    // LEATHER PANTS → BŐRNADRÁG
-        16 => [36, 175],                   // TEXTILE JACKETS → TEXTIL KABÁT
-        13 => [37, 175],                   // TEXTILE PANTS → TEXTIL NADRÁG
-        14 => [34],                   // KEVLAR JEANS
-        4 => [38],                    // GLOVES → KESZTYŰ
-        3 => [43],                    // BOOTS → CSIZMA
-        2 => [39, 175, 35], // ACCESSOIRES → KIEGÉSZÍTŐK, CSAPAT RUHÁZAT, POLO
-        7 => [74],                    // SCORPION
-        11 => [100],                  // ZANDONA
-        6 => [115],                   // EGYÉB
-        28 => [173],                     // CROSS GARMENTS (javaslat: 173 CROSS CLOTHING)
-        1 => [33, 41, 42],                      // LEATHER SUIT/JACKETS
-        5 => [34, 36, 37, 40],                      // TEXILE JACKETS/PANTS/KEVLAR
-        21 => [142],                     // KIT FOR KIDS 1 SET (a fában: 142 KIT FOR KIDS SET)
-        22 => [142],                     // KIT FOR KIDS 5 SET
-        17 => [142],                     // KIT FOR KIDS 15 SET
-        18 => [143],                     // KIT FOR ADULT BASIC 1 SET (a fában: 143 KIT FOR ADULT)
-        23 => [143],                     // KIT FOR ADULT BASIC 5 SET
-        24 => [143],                     // KIT FOR ADULT BASIC 15 SET
-        25 => [143],                     // KIT FOR ADULT OHVALE 1 SET
-        26 => [143],                     // KIT FOR ADULT OHVALE 5 SET
-        27 => [143],                     // KIT FOR ADULT OHVALE 15 SET
-    ];
     $conn = \mkw\store::getEm()->getConnection();
-    $termekfaIds = array_merge(...array_values($termekcsoportTermekfak));
-    if ($termekfaIds && $conn->fetchOne('SHOW TABLES LIKE "partnertermekcsoportkedvezmeny"')) {
-        $existingTermekfaIds = array_map(
-            'intval',
-            $conn->fetchFirstColumn(
-                'SELECT id FROM termekfa WHERE id IN (?)',
-                [$termekfaIds],
-                [\Doctrine\DBAL\ArrayParameterType::INTEGER]
-            )
+    if ($conn->fetchOne('SHOW TABLES LIKE "partnertermekcsoportkedvezmeny"')) {
+        // Csak levélágra: a fa-ág kedvezményét az alágai is öröklik, a MUGENRACE ágon álló 2 kiegészítő az egész márkát vinné.
+        $leafCondition = 'NOT EXISTS (SELECT 1 FROM termekfa c WHERE c.parent_id = fa.id)';
+        // a SCORPION csoport nem a termékei ágaira, hanem egyben a SCORPION ágra kap kedvezményt
+        $scorpionTermekcsoportId = 7;
+        $scorpionTermekfaId = 74;
+        $pairs = $conn->fetchAllAssociative(
+            'SELECT DISTINCT t.termekcsoport_id, t.termekfa1_id FROM termek t'
+            . ' INNER JOIN termekcsoport tcs ON tcs.id = t.termekcsoport_id'
+            . ' INNER JOIN termekfa fa ON fa.id = t.termekfa1_id'
+            . ' WHERE ' . $leafCondition . ' AND t.termekcsoport_id <> ?'
+            . ' ORDER BY t.termekcsoport_id, t.termekfa1_id',
+            [$scorpionTermekcsoportId]
         );
-        foreach ($termekcsoportTermekfak as $termekcsoportId => $nodeIds) {
-            foreach (array_intersect($nodeIds, $existingTermekfaIds) as $termekfaId) {
-                // partnerenként duplikált csoportnál a legkisebb id-jű sor: eddig is az érvényesült
-                $conn->executeStatement(
-                    'INSERT INTO partnertermekkategoriakedvezmeny (created, lastmod, partner_id, termekfa_id, kedvezmeny)'
-                    . ' SELECT k.created, k.lastmod, k.partner_id, ?, k.kedvezmeny FROM partnertermekcsoportkedvezmeny k'
-                    . ' WHERE k.id IN (SELECT MIN(k2.id) FROM partnertermekcsoportkedvezmeny k2 WHERE k2.termekcsoport_id = ? GROUP BY k2.partner_id)'
-                    . ' AND NOT EXISTS (SELECT 1 FROM partnertermekkategoriakedvezmeny m WHERE m.partner_id = k.partner_id AND m.termekfa_id = ?)',
-                    [$termekfaId, $termekcsoportId, $termekfaId]
-                );
-            }
-        }
-        $unmapped = $conn->fetchFirstColumn(
-            'SELECT DISTINCT tcs.nev FROM partnertermekcsoportkedvezmeny k INNER JOIN termekcsoport tcs ON tcs.id = k.termekcsoport_id'
-            . ' WHERE k.termekcsoport_id NOT IN (?)',
-            [array_keys(array_filter($termekcsoportTermekfak))],
-            [\Doctrine\DBAL\ArrayParameterType::INTEGER]
-        );
-        $missingTermekfaIds = array_diff($termekfaIds, $existingTermekfaIds);
         $messages = [];
-        if ($unmapped) {
-            $messages[] = 'át nem vitt termékcsoportok: ' . implode(', ', $unmapped);
+        if ($conn->fetchOne('SELECT COUNT(*) FROM termekfa WHERE id = ?', [$scorpionTermekfaId])) {
+            $pairs[] = ['termekcsoport_id' => $scorpionTermekcsoportId, 'termekfa1_id' => $scorpionTermekfaId];
+        } else {
+            $messages[] = 'a SCORPION ág (' . $scorpionTermekfaId . ') nem létezik, a SCORPION csoport kedvezménye nem ment át';
         }
-        if ($missingTermekfaIds) {
-            $messages[] = 'nem létező, kihagyott termékfa id-k: ' . implode(', ', $missingTermekfaIds);
+        foreach ($pairs as $pair) {
+            // partnerenként duplikált csoportnál a legkisebb id-jű sor: eddig is az érvényesült. Ha több csoportból eltérő %
+            // jut ugyanarra az ágra, mind külön sor lesz; az egyező %-ot nem duplikálja, így az újrafuttatás sem.
+            $conn->executeStatement(
+                'INSERT INTO partnertermekkategoriakedvezmeny (created, lastmod, partner_id, termekfa_id, kedvezmeny)'
+                . ' SELECT k.created, k.lastmod, k.partner_id, ?, k.kedvezmeny FROM partnertermekcsoportkedvezmeny k'
+                . ' WHERE k.id IN (SELECT MIN(k2.id) FROM partnertermekcsoportkedvezmeny k2 WHERE k2.termekcsoport_id = ? GROUP BY k2.partner_id)'
+                . ' AND NOT EXISTS (SELECT 1 FROM partnertermekkategoriakedvezmeny m WHERE m.partner_id = k.partner_id AND m.termekfa_id = ?'
+                . ' AND m.kedvezmeny <=> k.kedvezmeny)',
+                [$pair['termekfa1_id'], $pair['termekcsoport_id'], $pair['termekfa1_id']]
+            );
+        }
+        $skipped = $conn->fetchAllKeyValue(
+            'SELECT tcs.nev, COUNT(*) FROM termek t'
+            . ' INNER JOIN termekcsoport tcs ON tcs.id = t.termekcsoport_id'
+            . ' LEFT JOIN termekfa fa ON fa.id = t.termekfa1_id'
+            . ' WHERE (fa.id IS NULL OR NOT ' . $leafCondition . ')'
+            . ' AND t.termekcsoport_id IN (SELECT termekcsoport_id FROM partnertermekcsoportkedvezmeny)'
+            . ' AND t.termekcsoport_id <> ?'
+            . ' GROUP BY tcs.nev',
+            [$scorpionTermekcsoportId]
+        );
+        foreach ($skipped as $termekcsoportNev => $db) {
+            $messages[] = $termekcsoportNev . ': ' . $db . ' termék nem levélágon vagy kategória nélkül, kedvezmény nélkül marad';
+        }
+        $multiple = (int)$conn->fetchOne(
+            'SELECT COUNT(*) FROM (SELECT 1 FROM partnertermekkategoriakedvezmeny GROUP BY partner_id, termekfa_id HAVING COUNT(*) > 1) x'
+        );
+        if ($multiple) {
+            $messages[] = $multiple . ' partner + ág párnak több kedvezmény sora van';
         }
         if ($messages) {
             \mkw\store::writelog('kategória kedvezmény migráció: ' . implode('; ', $messages), 'partnerkedvezmeny_migracio.txt');
