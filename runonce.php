@@ -2706,6 +2706,22 @@ if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::Kateg
     }
 }
 
+
+/**
+ * SELECT t.termekcsoport_id,
+ * tcs.nev AS termekcsoport_nev,
+ * t.id    AS termek_id,
+ * t.cikkszam,
+ * t.nev   AS termek_nev,
+ * t.termekfa1_id,
+ * tf.nev  AS termekfa1_nev
+ * FROM termek t
+ * JOIN termekcsoport tcs ON tcs.id = t.termekcsoport_id
+ * LEFT JOIN termekfa tf ON tf.id = t.termekfa1_id
+ * ORDER BY tcs.nev, tf.nev, t.nev;
+ */
+
+
 /**
  * ures partner nevbe betenni vezeteknev+keresztnevet
  * partner nevben cserelni dupla es tripla szokozoket szokozre
