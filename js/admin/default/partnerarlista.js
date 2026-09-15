@@ -52,6 +52,10 @@ $(document).ready(function () {
             e.preventDefault();
             $(this).closest('tr').remove();
         })
+        .on('click', '#ArlistaTab .js-arlistacimke', function (e) {
+            e.preventDefault();
+            $(this).toggleClass('js-selectedcimke ui-state-hover');
+        })
         // a karbantartó formon belül nem lehet űrlap, ezért a nyomtatás egy ideiglenes, új lapra küldött űrlapból megy
         .on('click', '#ArlistaTab .js-arlistanyomtatas', function (e) {
             e.preventDefault();
@@ -60,8 +64,8 @@ $(document).ready(function () {
             addField('partner', $(this).attr('data-partner'));
             addField('fejszoveg', $('#ArlistaTab .js-arlistafejszoveg').val());
             addField('labszoveg', $('#ArlistaTab .js-arlistalabszoveg').val());
-            $('#ArlistaTab .js-arlistacimke:checked').each(function () {
-                addField('cimkek[]', $(this).val());
+            $('#ArlistaTab .js-arlistacimke.js-selectedcimke').each(function () {
+                addField('cimkek[]', $(this).attr('data-id'));
             });
             $form.hide().appendTo('body').submit().remove();
         });

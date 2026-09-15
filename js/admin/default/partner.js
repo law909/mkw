@@ -345,6 +345,13 @@ $(document).ready(function () {
                 });
             $('.js-termekkategoriakedvezmenynewbutton,.js-termekkategoriakedvezmenydelbutton,.js-termekkategoriafabutton', termekkategoriakedvezmenytab).button();
             $('.js-arlistasavnewbutton,.js-arlistasavdelbutton,.js-arlistasornewbutton,.js-arlistasordelbutton,.js-termekkategoriafabutton,.js-arlistanyomtatas', arlistatab).button();
+            // saját osztályok: a mattaccord oldalszinten köt, a mentés pedig minden .js-cimkekarb-ot partnercímkének vesz
+            $('#arlistacimkecontainer').mattaccord({
+                header: '#arlistacimkecontainerhead',
+                page: '.js-arlistacimkepage',
+                closeUp: '.js-arlistacimkecloseupbutton',
+                collapse: '#arlistacimkecollapse'
+            });
             gyartokedvezmenytab.on('click', '.js-gyartokedvezmenynewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();
