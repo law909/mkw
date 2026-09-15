@@ -132,7 +132,7 @@ class partnerController extends \mkwhelpers\MattableController
                 $kedv[] = $kedvCtrl->loadVars($tar, true);
             }
             $x['termekkategoriakedvezmenyek'] = $kedv;
-            if (\mkw\store::isMugenrace2026()) {
+            if (\mkw\store::isSuperzoneB2B()) {
                 $x['arlista'] = (new PartnerArlistaService())->getArlista($t);
                 $x['arlistacimkekat'] = (new termekcimkekatController())->getWithCimkek(null);
             }
