@@ -16,7 +16,7 @@ class arlistaController extends \mkwhelpers\Controller
 
     /**
      * A partner sávos árlistájának PDF-je a partner nyelvén. Az oldalak háttere (fejléc, lábléc) az
-     * exporttemplates/arlista_<téma>.pdf első oldala, ha van ilyen fájl.
+     * exporttemplates/arlista_mugenrace2026.pdf első oldala, ha van ilyen fájl.
      */
     public function printPartnerArlista()
     {
@@ -41,7 +41,8 @@ class arlistaController extends \mkwhelpers\Controller
             : ['kiskerar' => 'RETAIL PRICE', 'savok' => 'Purchase limits discount in ' . $valutanem, 'ures' => 'There are no products on this price list.']);
 
         $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
-        $background = \mkw\store::exporttemplatePath('arlista_' . \mkw\store::getTheme() . '.pdf');
+        // a fül superzoneb2b alatt él, de a háttér a mugenrace2026 arculata: a téma nevéből nem rakható össze
+        $background = \mkw\store::exporttemplatePath('arlista_mugenrace2026.pdf');
         if (is_file($background)) {
             $pdf->getEngine()->SetDocTemplate($background, true);
         }
