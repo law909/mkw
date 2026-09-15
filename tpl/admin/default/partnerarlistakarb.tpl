@@ -31,8 +31,12 @@
             </tr>
         {/foreach}
         </tbody>
+        <tfoot>
+        <tr>
+            <td><a class="js-arlistasornewbutton" href="#" title="{at('Új kategória')}"><span class="ui-icon ui-icon-circle-plus"></span></a></td>
+        </tr>
+        </tfoot>
     </table>
-    <a class="js-arlistasornewbutton" href="#" title="{at('Új kategória')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
     {if ($partner.id)}
         <fieldset class="mattkarb-doboz">
             <legend>{at('Árlista nyomtatás')}</legend>
