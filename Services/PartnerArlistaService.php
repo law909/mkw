@@ -2,6 +2,7 @@
 
 namespace Services;
 
+use Entities\Arsav;
 use Entities\Partner;
 use Entities\PartnerArlistaKedvezmeny;
 use Entities\PartnerArlistaSav;
@@ -29,6 +30,9 @@ class PartnerArlistaService
         $em = \mkw\store::getEm();
         $arlista = $this->getArlista($partner);
         $locale = \mkw\store::translateToLongLocaleName($partner->getBizonylatnyelv() ?: 'hu_hu');
+        // a getKedvezmenynelkuliNettoAr is erre az ársávra esik vissza, ha a partnernek nincs sajátja
+        $arsavId = \mkw\store::getParameter(\mkw\consts::Arsav);
+        $arsav = $partner->getArsav() ?: ($arsavId ? $em->getRepository(Arsav::class)->find($arsavId) : null);
 
         $groups = [];
         foreach ($arlista['sorok'] as $sor) {
@@ -74,6 +78,7 @@ class PartnerArlistaService
         }
         return [
             'locale' => $locale,
+            'arsavnev' => (string)$arsav?->getNev(),
             'savok' => $arlista['savok'],
             'csoportok' => array_values(array_filter($groups, fn($group) => $group['termekek'])),
         ];

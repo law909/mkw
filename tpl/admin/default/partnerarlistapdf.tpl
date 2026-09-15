@@ -72,7 +72,7 @@
             </tr>
             <tr>
                 <td class="ures" colspan="2"></td>
-                <td class="fej">{$feliratok.kiskerar}</td>
+                <td class="fej">{$arsavnev|escape}</td>
                 {foreach $savok as $_sav}
                     <td class="fej">{if (isset($_csoport.kedvezmenyek[$_sav.id]))}-{str_replace('.', ',', $_csoport.kedvezmenyek[$_sav.id])}%{/if}</td>
                 {/foreach}

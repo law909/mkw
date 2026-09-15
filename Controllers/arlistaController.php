@@ -31,14 +31,15 @@ class arlistaController extends \mkwhelpers\Controller
 
         $view = $this->createView('partnerarlistapdf.tpl');
         $view->setVar('savok', $data['savok']);
+        $view->setVar('arsavnev', $data['arsavnev']);
         $view->setVar('csoportok', $data['csoportok']);
         $view->setVar('fejszoveg', $this->params->getStringRequestParam('fejszoveg'));
         $view->setVar('labszoveg', $this->params->getStringRequestParam('labszoveg'));
         $view->setVar('penznem', ['EUR' => '€', 'USD' => '$', 'HUF' => 'Ft'][$valutanem] ?? $valutanem);
         $view->setVar('tizedes', $valutanem === 'HUF' ? 0 : 2);
         $view->setVar('feliratok', $data['locale'] === 'hu_hu'
-            ? ['kiskerar' => 'KISKER ÁR', 'savok' => 'Vásárlási sávok kedvezménye (' . $valutanem . ')', 'ures' => 'Az árlistán nincs termék.']
-            : ['kiskerar' => 'RETAIL PRICE', 'savok' => 'Purchase limits discount in ' . $valutanem, 'ures' => 'There are no products on this price list.']);
+            ? ['savok' => 'Vásárlási sávok kedvezménye (' . $valutanem . ')', 'ures' => 'Az árlistán nincs termék.']
+            : ['savok' => 'Purchase limits discount in ' . $valutanem, 'ures' => 'There are no products on this price list.']);
 
         $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
         // a fül superzoneb2b alatt él, de a háttér a mugenrace2026 arculata: a téma nevéből nem rakható össze
