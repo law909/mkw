@@ -1172,6 +1172,9 @@ class termekController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
             $filter->addFilter('gyarto', '=', $this->params->getIntRequestParam('gyartofilter'));
         }
+        if (!is_null($this->params->getRequestParam('termekcsoportfilter', null))) {
+            $filter->addFilter('termekcsoport', '=', $this->params->getIntRequestParam('termekcsoportfilter'));
+        }
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $nflike = '%' . str_replace("'", "''", $this->params->getStringRequestParam('nevfilter')) . '%';
             $lit = "'" . $nflike . "'";

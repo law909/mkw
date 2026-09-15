@@ -1008,7 +1008,7 @@ $(document).ready(function () {
     });
 
     if ($.fn.mattable) {
-        var lfilternames = ['#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
+        var lfilternames = ['#gyartofilter', '#termekcsoportfilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
             '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter'];
         for (var cikl = 2; cikl <= 15; cikl++) {
             lfilternames.push('#lathato' + cikl + 'filter');
