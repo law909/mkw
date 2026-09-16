@@ -115,6 +115,10 @@
 
         let defaultOrder, defaultOrderdir;
 
+        // a karbból visszatérve a böngésző még az üres (AJAX-ra váró) táblára állítaná vissza a görgetést
+        const scrollStorageKey = `mattable-scroll:${window.location.pathname}`;
+        let pendingScrollY = null;
+
         let selectContainer = this,
             header = $(setup.header),
             table = $(setup.table),
@@ -530,6 +534,10 @@
                     $('.' + _pagerIds.pagecount).text(resp.pagecount).attr(_dataattr.pagecount, resp.pagecount);
                     $('.' + _pagerIds.elemperpage).val(resp.elemperpage);
                     $('.' + _pagerIds.elemcountinfo).text('Tétel ' + resp.firstelemno + ' - ' + resp.lastelemno + ' / ' + resp.elemcount);
+                    if (pendingScrollY !== null) {
+                        scrollToSaved(tbody, pendingScrollY);
+                        pendingScrollY = null;
+                    }
                     if (resp.pagecount == 1) {
                         $('.' + _pagerIds.first + ',.' + _pagerIds.prev).addClass('ui-state-disabled');
                         $('.' + _pagerIds.next + ',.' + _pagerIds.end).addClass('ui-state-disabled');
@@ -550,6 +558,41 @@
                     }
                 }
             });
+        };
+
+        const saveScrollY = function (e) {
+            // új fülön nyíló karbból nem ide térünk vissza
+            if (e.ctrlKey || e.metaKey || e.shiftKey || this.target === '_blank') {
+                return;
+            }
+            try {
+                sessionStorage.setItem(scrollStorageKey, JSON.stringify({search: window.location.search, y: window.scrollY}));
+            } catch (err) {
+            }
+        };
+
+        // egyszer használatos, hogy a menüből később megnyitott lista már felülről induljon
+        const takeSavedScrollY = function () {
+            try {
+                const saved = JSON.parse(sessionStorage.getItem(scrollStorageKey));
+                sessionStorage.removeItem(scrollStorageKey);
+                return saved && saved.search === window.location.search ? saved.y : null;
+            } catch (err) {
+                return null;
+            }
+        };
+
+        const scrollToSaved = function (tbody, y) {
+            const scroll = () => window.scrollTo(0, y);
+            const loading = tbody.find('img').toArray().filter((img) => !img.complete);
+            scroll();
+            if (loading.length) {
+                // a sorok képei méret nélküliek, betöltésükkor nő a sor magassága
+                Promise.all(loading.map((img) => new Promise((resolve) => {
+                    img.addEventListener('load', resolve, {once: true});
+                    img.addEventListener('error', resolve, {once: true});
+                }))).then(scroll);
+            }
         };
 
         var styleTbody = function () {
@@ -658,6 +701,8 @@
             if (orderdirselect && orderdirselect[0]) {
                 defaultOrderdir = orderdirselect[0].options[orderdirselect[0].selectedIndex].value;
             }
+            selectContainer.on('click', 'a[href*="/viewkarb"]', saveScrollY);
+            pendingScrollY = takeSavedScrollY();
             // megosztható / könyvjelzőzhető nézet visszaállítása az URL alapján
             // (kezdeti betöltés: csak az aktuális előzmény-bejegyzést cseréljük, nem hozunk létre újat)
             var initState = applyUrlToControls();
@@ -675,6 +720,7 @@
             // mentése utáni "vissza" lépéskor –, frissítsük a listát, hogy a mentett változás látszódjon.
             window.addEventListener('pageshow', function (event) {
                 if (event.persisted) {
+                    pendingScrollY = takeSavedScrollY();
                     reloadTbody('replace');
                 }
             });
