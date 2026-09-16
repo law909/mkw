@@ -1226,7 +1226,11 @@ class termekController extends \mkwhelpers\MattableController
             foreach ($res as $sor) {
                 $cimkefilter[] = $sor['id'];
             }
-            if ($cimkefilter) {
+            if ($this->params->getIntRequestParam('cimkefilternincs')) {
+                if ($cimkefilter) {
+                    $filter->addFilter('id', 'NOT IN', $cimkefilter);
+                }
+            } elseif ($cimkefilter) {
                 $filter->addFilter('id', 'IN', $cimkefilter);
             } else {
                 $filter->addFilter('id', '=', false);
@@ -2765,6 +2769,41 @@ class termekController extends \mkwhelpers\MattableController
             $this->getEm()->flush();
             $this->getEm()->clear();
         }
+    }
+
+    public function addCimkeToTermekek()
+    {
+        $this->changeCimkeOnTermekek(true);
+    }
+
+    public function removeCimkeFromTermekek()
+    {
+        $this->changeCimkeOnTermekek(false);
+    }
+
+    private function changeCimkeOnTermekek(bool $add): void
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        /** @var Termekcimketorzs $cimke */
+        $cimke = $this->getRepo(Termekcimketorzs::class)->find($this->params->getIntRequestParam('cimke'));
+        if (!$ids || !$cimke) {
+            return;
+        }
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', 'IN', $ids);
+        /** @var Termek $termek */
+        foreach ($this->getRepo()->getAll($filter, []) as $termek) {
+            if ($add) {
+                $termek->addCimke($cimke);
+            } else {
+                $termek->removeCimke($cimke);
+            }
+            // csak a kapcsolat változik, arra a PreUpdate nem frissítené a cimkenevek mezőt
+            $termek->doStuffOnPrePersist();
+            $this->getEm()->persist($termek);
+        }
+        $this->getEm()->flush();
+        $this->getEm()->clear();
     }
 
     private function getLeirasTisztitoSanitizer()

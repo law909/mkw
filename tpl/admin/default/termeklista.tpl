@@ -95,6 +95,14 @@
             <div class="matt-hseparator"></div>
             <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"></div>
             <div class="matt-hseparator"></div>
+            <div>
+                <label for="cimkefilternincs">{at('Címkeszűrő')}: </label>
+                <select id="cimkefilternincs" name="cimkefilternincs">
+                    <option value="">{at('van valamelyik kiválasztott címkéje')}</option>
+                    <option value="1">{at('nincs egyik kiválasztott címkéje sem')}</option>
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
             <div id="cimkefiltercontainer">
                 <div id="cimkefiltercontainerhead"><a id="cimkefiltercollapse" href="#"
                                                       data-visible="visible">{at('Kinyit/becsuk')}</a></div>
@@ -167,6 +175,12 @@
             {foreach $termekcsoportlist as $_tcs}
                 <option value="{$_tcs.id}">{$_tcs.caption}</option>
             {/foreach}
+        </select>
+    </div>
+    <div id="cimkeset" class="hidden">
+        <label>{at('Címke')}: </label>
+        <select class="js-cimkeset">
+            {include "../partials/termekcimke.options.tpl"}
         </select>
     </div>
 {/block}

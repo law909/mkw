@@ -27,6 +27,8 @@ class TermekRepository extends \mkwhelpers\Repository
             'tcsset' => 'Termékcsoport módosítás',
             'kategoriaset' => 'Termék kategória módosítás',
             'leirastisztitas' => 'Leírás tisztítása',
+            'cimkehozzaadas' => 'Címke hozzáadása',
+            'cimketorles' => 'Címke törlése',
         ]);
     }
 

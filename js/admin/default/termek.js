@@ -1009,7 +1009,7 @@ $(document).ready(function () {
 
     if ($.fn.mattable) {
         var lfilternames = ['#gyartofilter', '#termekcsoportfilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
-            '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter'];
+            '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter', '#cimkefilternincs'];
         for (var cikl = 2; cikl <= 15; cikl++) {
             lfilternames.push('#lathato' + cikl + 'filter');
         }
@@ -1260,6 +1260,42 @@ $(document).ready(function () {
                             }
                         });
                         break;
+                    case 'cimkehozzaadas':
+                    case 'cimketorles': {
+                        const add = batch === 'cimkehozzaadas';
+                        // másolat: az eredeti #cimkeset-et a dialogcenter következő .html()-je eldobná
+                        dialogcenter.html($('#cimkeset').html()).dialog({
+                            title: add ? 'Címke hozzáadása' : 'Címke törlése',
+                            resizable: false,
+                            width: 400,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    const dia = $(this),
+                                        cimke = $('.js-cimkeset', dia).val();
+                                    if (!cimke) {
+                                        return;
+                                    }
+                                    $.ajax({
+                                        url: add ? '/admin/termek/cimkehozzaadas' : '/admin/termek/cimketorles',
+                                        type: 'POST',
+                                        data: {
+                                            ids: tomb,
+                                            cimke: cimke
+                                        },
+                                        success: () => {
+                                            dia.dialog('close');
+                                            $('.mattable-tablerefresh').click();
+                                        }
+                                    });
+                                },
+                                'Mégsem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
+                    }
                     case 'leirastisztitas':
                         // A kijelölt termékek leírásából kiszedjük a html tag-eken lévő style és class attributumokat.
                         dialogcenter.html('Biztos, hogy tisztítja ' + tomb.length + ' termék leírását? A html tag-ekről lekerülnek a style és class attributumok.').dialog({
