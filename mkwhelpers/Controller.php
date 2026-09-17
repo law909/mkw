@@ -44,6 +44,21 @@ abstract class Controller
         }
     }
 
+    /**
+     * A lapozón túlcímzett kérés (?pageno=99) eddig a legutolsó oldalt adta vissza 200-zal:
+     * ugyanaz a tartalom több URL-en, a keresőnek soft 404.
+     *
+     * @param array|int $lapozo a PagerCalc::loadValues() tömbje, vagy 0, ha nincs találat
+     */
+    protected function pagenoOutOfRange($lapozo)
+    {
+        $pageno = $this->params->getIntRequestParam('pageno', 1);
+        if ($pageno <= 1) {
+            return false;
+        }
+        return !is_array($lapozo) || $pageno > $lapozo['pagecount'];
+    }
+
     public function getEntityName()
     {
         return $this->entityName;

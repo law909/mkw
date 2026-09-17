@@ -50,9 +50,7 @@ class mainController extends \mkwhelpers\Controller
         $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
         $this->view->setVar('seodescription', t('Sajnos nem találjuk.'));
         $this->view->setVar('pagetitle', t('Sajnos nem találjuk.'));
-        if ($head) {
-            header($head);
-        }
+        \mkw\store::sendNotFoundHeaders($head);
         $this->view->printTemplateResult(false);
     }
 
@@ -148,6 +146,10 @@ class mainController extends \mkwhelpers\Controller
                 $t = $tf->gettermeklistaforparent($ag, 'termekfa');
                 // a b2b ág lapos terméklistát ad vissza, nem sablonváltozók tömbjét
                 $termeklista = \mkw\store::isGalad();
+                if (!$termeklista && $this->pagenoOutOfRange($t['lapozo'] ?? 0)) {
+                    \mkw\store::redirectTo404($com);
+                    return;
+                }
             }
             if ($termeklista) {
                 $this->view->setVar('termeklista', $t);
@@ -183,6 +185,10 @@ class mainController extends \mkwhelpers\Controller
             } else {
                 $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
                 $t = $tf->gettermeklistaforparent($ag, 'categories');
+                if ($this->pagenoOutOfRange($t['lapozo'] ?? 0)) {
+                    \mkw\store::redirectTo404($com);
+                    return;
+                }
             }
             foreach ($t as $k => $v) {
                 $this->view->setVar($k, $v);
@@ -207,6 +213,10 @@ class mainController extends \mkwhelpers\Controller
         if ($c) {
             $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
             $t = $tf->gettermeklistaforparent(null, 'marka');
+            if ($this->pagenoOutOfRange($t['lapozo'] ?? 0)) {
+                \mkw\store::redirectTo404($com);
+                return;
+            }
             foreach ($t as $k => $v) {
                 $this->view->setVar($k, $v);
             }

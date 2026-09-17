@@ -303,9 +303,10 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
         // '' when this request is not cacheable. OFF unless config pagecache=1.
         $pckey = \mkw\pagecache::begin($match);
         try {
-            if ($match && !callTheController($match['target'], $match)) {
+            // !$match is the "no route at all" case: without it an unknown URL fell
+            // through both branches and answered 200 with an empty body
+            if (!$match || !callTheController($match['target'], $match)) {
                 \mkw\pagecache::discard();
-                header('HTTP/1.1 404 Not found');
                 callTheController('mainController#show404', []);
             } elseif ($pckey !== '') {
                 \mkw\pagecache::commit($pckey);

@@ -225,7 +225,7 @@ class blogposztController extends \mkwhelpers\MattableController
         $com = $this->params->getStringParam('blogposzt');
         /** @var \Entities\Blogposzt $blogposzt */
         $blogposzt = $this->getRepo()->findOneBySlug($com);
-        if ($blogposzt) {
+        if ($blogposzt && $blogposzt->getLathato()) {
             $view = $this->getTemplateFactory()->createMainView('blogposzt.tpl');
             \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $blogposzt->getShowCim());
@@ -263,6 +263,10 @@ class blogposztController extends \mkwhelpers\MattableController
                 $t[] = $poszt->convertToArray();
             }
             $view->setVar('lapozo', $pager->loadValues());
+        }
+        if ($this->pagenoOutOfRange($posztdb > 0 ? $pager->loadValues() : 0)) {
+            \mkw\store::redirectTo404('');
+            return;
         }
 
         \mkw\store::fillTemplate($view);

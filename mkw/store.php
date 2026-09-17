@@ -810,7 +810,7 @@ class store
         \mkw\store::getMainSession()->prevuri = $_SERVER['REQUEST_URI'];
     }
 
-    public static function redirectTo404($keresendo)
+    public static function redirectTo404($keresendo, $head = null)
     {
         $view = self::getTemplateFactory()->createMainView('404.tpl');
         $tc = new \Controllers\termekController();
@@ -818,7 +818,27 @@ class store
         \mkw\store::fillTemplate($view);
         $view->setVar('seodescription', t('Sajnos nem találjuk: ') . $keresendo);
         $view->setVar('pagetitle', t('Sajnos nem találjuk: ') . $keresendo);
+        self::sendNotFoundHeaders($head);
         $view->printTemplateResult(false);
+    }
+
+    /**
+     * A hibalapok fejlécei egy helyen: a kereső enélkül soft 404-et lát (200 + "nem találjuk"
+     * sablon), és a hibalapot indexeli.
+     *
+     * @param string|null $head teljes status sor, ha nem 404 a válasz (pl. 'HTTP/1.1 410 Gone')
+     */
+    public static function sendNotFoundHeaders($head = null)
+    {
+        if (headers_sent()) {
+            return;
+        }
+        if ($head) {
+            header($head);
+        } else {
+            http_response_code(404);
+        }
+        header('X-Robots-Tag: noindex');
     }
 
     public static function getFullUrl($slug = null, $url = null)
