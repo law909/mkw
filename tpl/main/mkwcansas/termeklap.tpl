@@ -188,8 +188,8 @@
                                                         <span>{number_format($_kapcsolodo.bruttohuf,0,',',' ')} Ft</span>
                                                         {/if}
                                                     </h5>
-                                                    <a href="{$_kapcsolodo.link}" class="btn okbtn">Részletek</a>
                                                 </a>
+                                                <a href="{$_kapcsolodo.link}" class="btn okbtn">Részletek</a>
                                             </div>
                                         </div>
                                         {/if}
@@ -221,8 +221,8 @@
                                                         <span>{number_format($_hasonlo.bruttohuf,0,',',' ')} Ft</span>
                                                         {/if}
                                                     </h5>
-                                                    <a href="{$_hasonlo.link}" class="btn okbtn">Részletek</a>
                                                 </a>
+                                                <a href="{$_hasonlo.link}" class="btn okbtn">Részletek</a>
                                             </div>
                                         </div>
                                         {/if}
@@ -289,8 +289,8 @@
                                 {$i=$i+1}
                                 <div class="kat" data-href="/blogposzt/{$_child.slug}">
                                     <div class="kattext">
-                                        <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}" rel="nofollow"><img src="{$_child.kepurlsmall}"</a></div>
-                                        <div class="kattitle"><a href="/blogposzt/{$_child.slug}" rel="nofollow">{$_child.cim}</a></div>
+                                        <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}"><img src="{$_child.kepurlsmall}" alt="{$_child.cim|escape}" loading="lazy"></a></div>
+                                        <div class="kattitle"><a href="/blogposzt/{$_child.slug}">{$_child.cim}</a></div>
                                         <div>{$_child.megjelenesdatumstr}</div>
                                         <div class="katcopy">{$_child.kivonat}</div>
                                     </div>

@@ -23,7 +23,7 @@
 			{foreach $children as $_child}
 				<div class="kat" data-href="/blogposzt/{$_child.slug}">
 					<div class="kattext">
-                        <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}"><img src="{$_child.kepurlsmall}"</a></div>
+                        <div class="blogkivonatkep"><a href="/blogposzt/{$_child.slug}"><img src="{$_child.kepurlsmall}" alt="{$_child.cim|escape}" loading="lazy"></a></div>
 						<div class="kattitle"><a href="/blogposzt/{$_child.slug}">{$_child.cim}</a></div>
                         <div>{$_child.megjelenesdatumstr}</div>
 						<div class="katcopy">{$_child.kivonat}</div>

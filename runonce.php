@@ -2664,6 +2664,36 @@ if ($DBVersion < '0181') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0181');
 }
 
+if ($DBVersion < '0182') {
+    if (\mkw\store::isMindentkapni()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        // A terméklap "Szállítás és fizetés" fülének CMS szövegében a saját oldalra mutató link
+        // http://-es, abszolút és nofollow volt: a keresőnek elveszett belső link, a látogatónak
+        // fölösleges átirányítás. A statlapok többi nofollow linkje külső oldalra megy, az marad.
+        $conn->executeStatement(
+            'UPDATE statlap SET szoveg = REPLACE(szoveg,'
+            . ' \'<a href="http://www.mindentkapni.hu/statlap/szallitasi-feltetelek-es-tudnivalok" rel="nofollow"\','
+            . ' \'<a href="/statlap/szallitasi-feltetelek-es-tudnivalok"\')'
+            . ' WHERE szoveg LIKE \'%mindentkapni.hu/statlap/szallitasi-feltetelek-es-tudnivalok" rel="nofollow"%\''
+        );
+        // a maradék saját domainre mutató abszolút hivatkozás relatívvá tétele (http → nincs átirányítás)
+        foreach (['http://www.mindentkapni.hu/', 'https://www.mindentkapni.hu/'] as $prefix) {
+            $conn->executeStatement(
+                'UPDATE statlap SET szoveg = REPLACE(szoveg, ?, \'/\') WHERE szoveg LIKE ?',
+                [$prefix, '%' . $prefix . '%']
+            );
+        }
+        // a záró perjel nélküli, főoldalra mutató alak
+        foreach (['"http://www.mindentkapni.hu"', '"https://www.mindentkapni.hu"'] as $fooldal) {
+            $conn->executeStatement(
+                'UPDATE statlap SET szoveg = REPLACE(szoveg, ?, \'"/"\') WHERE szoveg LIKE ?',
+                [$fooldal, '%' . $fooldal . '%']
+            );
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0182');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

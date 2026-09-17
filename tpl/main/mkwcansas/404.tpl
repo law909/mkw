@@ -52,8 +52,8 @@
                                 <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
                                 {/if}
                             </h5>
-                            <a href="{$_termek.link}" class="btn okbtn">Részletek</a>
                         </a>
+                        <a href="{$_termek.link}" class="btn okbtn">Részletek</a>
                     </div>
                 </div>
                 {/if}
