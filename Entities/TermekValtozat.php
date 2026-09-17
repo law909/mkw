@@ -601,6 +601,21 @@ class TermekValtozat
         $this->cikkszam = $cikkszam;
     }
 
+    /**
+     * Az egyedi változat-cikkszám: TERMÉKCIKKSZÁM-színkód-méretkód. A kód a szín/méret charkodja, ha az üres, a neve; az
+     * üres rész kimarad. Üres termékcikkszámnál, vagy ha se szín, se méret nincs, üres szöveg.
+     */
+    public static function composeCikkszam($termekCikkszam, $szinCharkod, $szinNev, $meretCharkod, $meretNev): string
+    {
+        $termekCikkszam = trim((string)$termekCikkszam);
+        $code = fn($charkod, $nev) => trim((string)$charkod) !== '' ? trim((string)$charkod) : trim((string)$nev);
+        $parts = array_filter([$code($szinCharkod, $szinNev), $code($meretCharkod, $meretNev)], fn($part) => $part !== '');
+        if ($termekCikkszam === '' || !$parts) {
+            return '';
+        }
+        return implode('-', [strtoupper($termekCikkszam), ...$parts]);
+    }
+
     public function getNev()
     {
         if (\mkw\store::isFixSzinMode()) {

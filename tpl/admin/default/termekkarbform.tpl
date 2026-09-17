@@ -455,7 +455,8 @@
                             <label for="VCikkszamEdit">{at('Cikkszám')}:</label>
                         </td>
                         <td class="mattable-cell">
-                            <input id="VCikkszamEdit" name="valtozatcikkszamgen" type="text"
+                            <input id="VCikkszamEdit" name="valtozatcikkszamgen" type="text" size="50"
+                                   {if ($setup.szinmode === 'fix')}placeholder="{at('üresen: TERMÉKCIKKSZÁM-színkód-méretkód')}"{/if}
                                    form="valtozatgeneratorform">
                         </td>
                         <td class="mattable-cell">

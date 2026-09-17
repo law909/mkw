@@ -2705,7 +2705,7 @@ if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::Kateg
 }
 
 // A termékváltozat cikkszáma eddig a termékével egyezett, ezentúl TERMÉKCIKKSZÁM-színkód-méretkód, ahogy az ideiglenes
-// FC-MOTO cikkszám lista (exportController::fcmotoCikkszamExport) mutatta: a charkod, ha üres, a szín/méret neve. Csak a
+// FC-MOTO cikkszám lista mutatta, és ahogy a változatgenerátor is képzi (TermekValtozat::composeCikkszam). Csak a
 // mugenrace DB-n; saját jelzővel, mert a DBVersion közös, és egy ott futó másik deployment admin kérése átléptetné.
 if (in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace2026'], true)
     && !\mkw\store::getParameter(\mkw\consts::ValtozatCikkszamMigrated)) {
@@ -2741,19 +2741,17 @@ if (in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace202
                 $counts['saját cikkszámú, nem változott']++;
                 continue;
             }
-            $szin = trim((string)$row['szincharkod']);
-            if ($szin === '') {
-                $szin = trim($row['szin_id'] ? (string)$row['szinnev'] : $ertek($row, $szinTipus));
-            }
-            $meret = trim((string)$row['meretcharkod']);
-            if ($meret === '') {
-                $meret = trim($row['meret_id'] ? (string)$row['meretnev'] : $ertek($row, $meretTipus));
-            }
-            if ($szin === '' && $meret === '') {
+            $uj = \Entities\TermekValtozat::composeCikkszam(
+                $termekCikkszam,
+                $row['szincharkod'],
+                $row['szin_id'] ? $row['szinnev'] : $ertek($row, $szinTipus),
+                $row['meretcharkod'],
+                $row['meret_id'] ? $row['meretnev'] : $ertek($row, $meretTipus)
+            );
+            if ($uj === '') {
                 $counts['nincs szín és méret']++;
                 continue;
             }
-            $uj = implode('-', array_filter([strtoupper($termekCikkszam), $szin, $meret], fn($resz) => $resz !== ''));
             if (mb_strlen($uj) > 50) {
                 $counts['hosszabb 50-nél']++;
                 continue;

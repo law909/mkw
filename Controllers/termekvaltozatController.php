@@ -205,7 +205,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 $meretsor = $this->getEm()->getRepository(Meretsor::class)->find($meretsorid);
                 if ($szin && $meretsor) {
                     $meretek = $meretsor->getMeretek();
-                    $cikkszamok = explode(';', $cikkszam);
+                    // üresen hagyott mezőnél a cikkszám a termékéből és a szín, méret kódjából képződik
+                    $cikkszamok = trim($cikkszam) === '' ? [] : explode(';', $cikkszam);
                     $idegencikkszamok = explode(';', $idegencikkszam);
                     $cikl = 0;
                     $atSzin = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
@@ -270,12 +271,20 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                         $valtozat->setNetto($netto);
                         $valtozat->setTermekfokep($termekfokep);
                         $valtozat->setElorendelheto($elorendelheto);
-                        if (count($cikkszamok) > 0) {
-                            if (count($cikkszamok) == 1) {
-                                $valtozat->setCikkszam($cikkszamok[0]);
-                            } elseif (array_key_exists($cikl, $cikkszamok)) {
-                                $valtozat->setCikkszam($cikkszamok[$cikl]);
-                            }
+                        if (!$cikkszamok) {
+                            $generated = TermekValtozat::composeCikkszam(
+                                $termek->getCikkszam(),
+                                $szin->getCharkod(),
+                                $szin->getNev(),
+                                $meret->getCharkod(),
+                                $meret->getNev()
+                            );
+                            // a mező 50 karakteres: a csonkolt cikkszám ütközhetne, inkább üres marad
+                            $valtozat->setCikkszam(mb_strlen($generated) <= 50 ? $generated : '');
+                        } elseif (count($cikkszamok) == 1) {
+                            $valtozat->setCikkszam($cikkszamok[0]);
+                        } elseif (array_key_exists($cikl, $cikkszamok)) {
+                            $valtozat->setCikkszam($cikkszamok[$cikl]);
                         }
                         if (count($idegencikkszamok) > 0) {
                             if (count($idegencikkszamok) == 1) {
