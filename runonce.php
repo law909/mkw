@@ -2693,6 +2693,72 @@ if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::Kateg
     }
 }
 
+// A termékváltozat cikkszáma eddig a termékével egyezett, ezentúl TERMÉKCIKKSZÁM-színkód-méretkód, ahogy az ideiglenes
+// FC-MOTO cikkszám lista (exportController::fcmotoCikkszamExport) mutatta: a charkod, ha üres, a szín/méret neve. Csak a
+// mugenrace DB-n; saját jelzővel, mert a DBVersion közös, és egy ott futó másik deployment admin kérése átléptetné.
+if (in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace2026'], true)
+    && !\mkw\store::getParameter(\mkw\consts::ValtozatCikkszamMigrated)) {
+    $conn = \mkw\store::getEm()->getConnection();
+    $szinTipus = \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin);
+    $meretTipus = \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret);
+    // szín/méret törzs nélküli változatnál a TermekValtozat::getSzin()/getMeret() szövege
+    $ertek = fn(array $row, $tipus) => match (true) {
+        $tipus && $row['adattipus1_id'] == $tipus => (string)$row['ertek1'],
+        $tipus && $row['adattipus2_id'] == $tipus => (string)$row['ertek2'],
+        default => '',
+    };
+    $rows = $conn->fetchAllAssociative(
+        'SELECT tv.id, tv.cikkszam, t.cikkszam AS termekcikkszam, tv.adattipus1_id, tv.ertek1, tv.adattipus2_id, tv.ertek2,'
+        . ' tv.szin_id, s.nev AS szinnev, s.charkod AS szincharkod, tv.meret_id, m.nev AS meretnev, m.charkod AS meretcharkod'
+        . ' FROM termekvaltozat tv'
+        . ' INNER JOIN termek t ON t.id = tv.termek_id'
+        . ' LEFT JOIN szin s ON s.id = tv.szin_id'
+        . ' LEFT JOIN meret m ON m.id = tv.meret_id'
+    );
+    $counts = ['átírva' => 0, 'nincs termékcikkszám' => 0, 'saját cikkszámú, nem változott' => 0, 'nincs szín és méret' => 0, 'hosszabb 50-nél' => 0];
+    $conn->beginTransaction();
+    try {
+        foreach ($rows as $row) {
+            $termekCikkszam = trim((string)$row['termekcikkszam']);
+            $cikkszam = trim((string)$row['cikkszam']);
+            if ($termekCikkszam === '') {
+                $counts['nincs termékcikkszám']++;
+                continue;
+            }
+            // amit már kézzel vagy importtal egyedire állítottak, azt nem írjuk felül
+            if ($cikkszam !== '' && mb_strtolower($cikkszam) !== mb_strtolower($termekCikkszam)) {
+                $counts['saját cikkszámú, nem változott']++;
+                continue;
+            }
+            $szin = trim((string)$row['szincharkod']);
+            if ($szin === '') {
+                $szin = trim($row['szin_id'] ? (string)$row['szinnev'] : $ertek($row, $szinTipus));
+            }
+            $meret = trim((string)$row['meretcharkod']);
+            if ($meret === '') {
+                $meret = trim($row['meret_id'] ? (string)$row['meretnev'] : $ertek($row, $meretTipus));
+            }
+            if ($szin === '' && $meret === '') {
+                $counts['nincs szín és méret']++;
+                continue;
+            }
+            $uj = implode('-', array_filter([strtoupper($termekCikkszam), $szin, $meret], fn($resz) => $resz !== ''));
+            if (mb_strlen($uj) > 50) {
+                $counts['hosszabb 50-nél']++;
+                continue;
+            }
+            $conn->executeStatement('UPDATE termekvaltozat SET cikkszam = ? WHERE id = ?', [$uj, $row['id']]);
+            $counts['átírva']++;
+        }
+        $conn->commit();
+    } catch (\Throwable $e) {
+        $conn->rollBack();
+        throw $e;
+    }
+    \mkw\store::writelog('termékváltozat cikkszám átírás: ' . json_encode($counts, JSON_UNESCAPED_UNICODE), 'valtozat_cikkszam_migracio.txt');
+    \mkw\store::setParameter(\mkw\consts::ValtozatCikkszamMigrated, date('Y-m-d H:i:s'));
+}
+
 
 /**
  * SELECT t.termekcsoport_id,
