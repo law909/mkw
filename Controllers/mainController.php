@@ -112,6 +112,14 @@ class mainController extends \mkwhelpers\Controller
                 $toPrint = false;
                 header('Location: ' . \mkw\store::getRouter()->generate('mptngyszakmaianyagok'));
                 break;
+
+            case \mkw\store::isMPT():
+                // a tagi felület nem függhet a setup mustlogin kapcsolójától
+                if (!\mkw\store::getLoggedInUser()) {
+                    $toPrint = false;
+                    header('Location: ' . \mkw\store::getRouter()->generate('showlogin'));
+                }
+                break;
         }
         if ($toPrint) {
             $this->view->printTemplateResult(true);

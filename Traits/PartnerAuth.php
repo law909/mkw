@@ -151,6 +151,8 @@ trait PartnerAuth
             \mkw\session::writeClose();
             if (\mkw\store::isMPTNGY()) {
                 header('Location: ' . \mkw\store::getRouter()->generate('mptngyszakmaianyagok'));
+            } elseif (\mkw\store::isMPT()) {
+                header('Location: ' . \mkw\store::getRouter()->generate('home', true));
             } else {
                 header('Location: ' . \mkw\store::getRouter()->generate('showaccount'));
             }
