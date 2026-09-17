@@ -1092,6 +1092,9 @@ $router->map('GET', '/admin/termek/fcmotoexport', 'termekController#fcmotoexport
 $router->map('GET', '/admin/termek/fcmotocikkszamexport', 'exportController#fcmotoCikkszamExport', 'admintermekfcmotocikkszamexport');
 $router->map('GET', '/admin/termek/gs1export', 'termekController#gs1export', 'admintermekgs1export');
 $router->map('GET', '/admin/termek/gs1importview', 'termekController#gs1importView', 'admintermekgs1importview');
+$router->map('GET', '/admin/termek/gs1cikkszamview', 'termekController#gs1CikkszamView', 'admintermekgs1cikkszamview');
+// csak a feltöltött táblázatot írja, az adatbázist nem
+$router->map('POST', '/admin/termek/gs1cikkszam', 'termekController#gs1CikkszamUpdate', 'admintermekgs1cikkszam');
 $router->map('GET', '/admin/termek/colorexport', 'termekController#colorexport', 'admintermekcolorexport');
 $router->map('GET', '/admin/termek/cikkszamosexport', 'termekController#cikkszamosexport', 'admintermekcikkszamosexport');
 $router->map('GET', '/admin/termek/minkeszletexport', 'termekController#minKeszletExport', 'admintermekminkeszletexport');

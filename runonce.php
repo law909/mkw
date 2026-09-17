@@ -2630,6 +2630,17 @@ if ($DBVersion < '0178') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0178');
 }
 
+if ($DBVersion < '0179') {
+    // GS1 cikkszám frissítés: ott látszik, ahol a GS1 vonalkód import is
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "GS1 cikkszám frissítés", "/admin/termek/gs1cikkszamview", "/admin/termek", 40,'
+        . ' IFNULL((SELECT lathato FROM (SELECT lathato FROM menu WHERE url = "/admin/termek/gs1importview" LIMIT 1) g), 0), 565, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/termek/gs1cikkszamview") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0179');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

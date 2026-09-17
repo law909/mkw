@@ -49,6 +49,10 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <a href="/admin/termek/gs1cikkszamview" class="js-szeanimport">GS1 cikkszám frissítés</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <a href="/admin/import/szmeretimport" class="js-szmeretimport">Termék méretek</a>
                     </div>
                     <div class="matt-hseparator"></div>

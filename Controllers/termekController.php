@@ -32,6 +32,8 @@ use Entities\Valutanem;
 use Entities\Vtsz;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
+use Doctrine\DBAL\ArrayParameterType;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -42,6 +44,9 @@ class termekController extends \mkwhelpers\MattableController
     /** a GS1 export AC oszlopa: a saját azonosító melyik törzsre mutat */
     private const GS1AZONOSITOTIPUS_TERMEK = 'termek';
     private const GS1AZONOSITOTIPUS_VALTOZAT = 'valtozat';
+    // a GS1 termékadat-export 1. sorában az attribútumkódok: GTIN, illetve "További kereskedelmi áru azonosító"
+    private const GS1KOD_GTIN = '3059a';
+    private const GS1KOD_AZONOSITO = '3060a';
 
     private const GS1MARKANEV = 'MUGENRACE';
     private const GS1NETTOMENNYISEG = 1;
@@ -2581,6 +2586,123 @@ class termekController extends \mkwhelpers\MattableController
         $view = $this->createView('gs1import.tpl');
         $view->setVar('pagetitle', t('GS1 vonalkód import'));
         $view->printTemplateResult();
+    }
+
+    public function gs1CikkszamView()
+    {
+        $view = $this->createView('gs1cikkszam.tpl');
+        $view->setVar('pagetitle', t('GS1 cikkszám frissítés'));
+        $view->printTemplateResult();
+    }
+
+    /**
+     * A GS1-ből letöltött termékadat-táblázatba a vonalkód szerinti termékváltozat cikkszámát írja; az adatbázishoz nem
+     * nyúl. A kész xlsx base64-ben jön vissza a JSON-ban, hogy mellé a megjegyzések is elférjenek.
+     */
+    public function gs1CikkszamUpdate()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $filepath = \mkw\store::moveUploadedFile('toimport', 'gs1cikkszam', ['xlsx']);
+        if (!$filepath) {
+            $this->jsonFail(t('Csak .xlsx fájl tölthető fel.'));
+            return;
+        }
+        try {
+            $excel = IOFactory::createReader('Xlsx')->load($filepath);
+        } catch (\Exception $e) {
+            $this->jsonFail(t('A fájl nem olvasható táblázatként') . ': ' . $e->getMessage());
+            return;
+        } finally {
+            \unlink($filepath);
+        }
+
+        $result = $this->updateGs1Cikkszam($excel);
+        if (isset($result['error'])) {
+            $this->jsonFail($result['error']);
+            return;
+        }
+        ob_start();
+        IOFactory::createWriter($excel, 'Xlsx')->save('php://output');
+        $xlsx = ob_get_clean();
+        $excel->disconnectWorksheets();
+
+        echo json_encode([
+            'ok' => true,
+            'msg' => sprintf(t('%d sor, ebből %d cikkszám átírva, %d már egyezett.'), $result['sorok'], $result['atirva'], $result['egyezett']),
+            'hibak' => $result['hibak'],
+            'filename' => pathinfo((string)($_FILES['toimport']['name'] ?? 'gs1'), PATHINFO_FILENAME) . '_cikkszam.xlsx',
+            'file' => base64_encode($xlsx),
+        ]);
+    }
+
+    /**
+     * @return array{sorok: int, atirva: int, egyezett: int, hibak: string[]}|array{error: string}
+     */
+    private function updateGs1Cikkszam(Spreadsheet $excel): array
+    {
+        $sheet = $excel->getSheetByName('Data') ?: $excel->getActiveSheet();
+        $gtinCol = null;
+        $azonositoCol = null;
+        $maxcol = Coordinate::columnIndexFromString($sheet->getHighestColumn());
+        for ($col = 1; $col <= $maxcol; ++$col) {
+            $kod = (string)$sheet->getCell([$col, 1])->getValue();
+            if (!$gtinCol && str_starts_with($kod, self::GS1KOD_GTIN)) {
+                $gtinCol = $col;
+            }
+            // a kód kétszer szerepel: az első oszlop az érték, a második az azonosító típusa
+            if (!$azonositoCol && str_starts_with($kod, self::GS1KOD_AZONOSITO)) {
+                $azonositoCol = $col;
+            }
+        }
+        if (!$gtinCol || !$azonositoCol) {
+            return ['error' => t('Ez nem a GS1 termékadat-táblázata: az első sorban nincs GTIN és "További kereskedelmi áru azonosító" oszlop.')];
+        }
+
+        $maxrow = (int)$sheet->getHighestRow();
+        $gtins = [];
+        for ($row = 3; $row <= $maxrow; ++$row) {
+            $gtin = trim((string)$sheet->getCell([$gtinCol, $row])->getValue());
+            if ($gtin !== '') {
+                $gtins[$row] = $gtin;
+            }
+        }
+        $cikkszamok = [];
+        if ($gtins) {
+            $valtozatok = $this->getEm()->getConnection()->fetchAllAssociative(
+                'SELECT vonalkod, cikkszam FROM termekvaltozat WHERE vonalkod IN (?)',
+                [array_values(array_unique($gtins))],
+                [ArrayParameterType::STRING]
+            );
+            foreach ($valtozatok as $valtozat) {
+                $cikkszamok[trim((string)$valtozat['vonalkod'])][] = trim((string)$valtozat['cikkszam']);
+            }
+        }
+
+        $result = ['sorok' => count($gtins), 'atirva' => 0, 'egyezett' => 0, 'hibak' => []];
+        foreach ($gtins as $row => $gtin) {
+            $talalt = array_unique($cikkszamok[$gtin] ?? []);
+            if (!$talalt) {
+                $result['hibak'][] = sprintf(t('%d. sor: nincs termékváltozat ezzel a vonalkóddal (%s).'), $row, $gtin);
+                continue;
+            }
+            if (count($talalt) > 1) {
+                $result['hibak'][] = sprintf(t('%d. sor: a %s vonalkód több, eltérő cikkszámú változaton is szerepel (%s), nem írtuk át.'), $row, $gtin, implode(', ', $talalt));
+                continue;
+            }
+            $cikkszam = reset($talalt);
+            if ($cikkszam === '') {
+                $result['hibak'][] = sprintf(t('%d. sor: a %s vonalkódú változatnak nincs cikkszáma.'), $row, $gtin);
+                continue;
+            }
+            if ((string)$sheet->getCell([$azonositoCol, $row])->getValue() === $cikkszam) {
+                $result['egyezett']++;
+                continue;
+            }
+            $sheet->setCellValueExplicit([$azonositoCol, $row], $cikkszam, DataType::TYPE_STRING);
+            $result['atirva']++;
+        }
+        return $result;
     }
 
     public function colorexport()
