@@ -220,6 +220,163 @@ class SeoService
         ]);
     }
 
+    /** A webshop pénznemének kódja a strukturált adatokhoz. */
+    public static function getCurrencyCode(): string
+    {
+        return store::getWebshopValutanem()?->getNev() ?: 'HUF';
+    }
+
+    /**
+     * Product JSON-LD a terméklap látható adataiból (a toTermekLap() tömbjéből).
+     * A `gtin`, a `brand`, a súly és az értékelés csak akkor kerül bele, ha tényleg van adat —
+     * kitalált mező a strukturált adatban kézzelfogható kockázat.
+     *
+     * @param array $t a `termek` sablonváltozó
+     * @param string $category a morzsalánc kategóriaága, ' > '-vel fűzve
+     */
+    public static function productJsonLd(array $t, string $category = ''): string
+    {
+        $url = self::getCanonicalUrl();
+        $images = [];
+        foreach (array_merge([['kepurl' => $t['kepurl'] ?? '']], $t['kepek'] ?? []) as $kep) {
+            $abs = self::absoluteUrl($kep['kepurl'] ?? '');
+            if ($abs && !in_array($abs, $images, true)) {
+                $images[] = $abs;
+            }
+        }
+
+        $product = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Product',
+            '@id' => $url . '#product',
+            'name' => self::plainText($t['caption'] ?? '', 0),
+            'url' => $url,
+        ];
+        if ($images) {
+            $product['image'] = $images;
+        }
+        $description = self::plainText($t['leiras'] ?? '', 500) ?: self::plainText($t['rovidleiras'] ?? '', 500);
+        if ($description) {
+            $product['description'] = $description;
+        }
+        if (!empty($t['cikkszam'])) {
+            $product['sku'] = $t['cikkszam'];
+        }
+        $gtin = preg_replace('/\D/', '', (string)($t['vonalkod'] ?? ''));
+        if (in_array(strlen($gtin), [8, 12, 13, 14], true)) {
+            $product['gtin'] = $gtin;
+        }
+        if (!empty($t['marka'])) {
+            $product['brand'] = ['@type' => 'Brand', 'name' => self::plainText($t['marka'], 0)];
+        }
+        if ($category) {
+            $product['category'] = $category;
+        }
+        $properties = [];
+        foreach ($t['cimkelapon'] ?? [] as $cimke) {
+            if (!empty($cimke['ismarka']) || empty($cimke['kategorianev']) || empty($cimke['caption'])) {
+                continue;
+            }
+            $properties[] = [
+                '@type' => 'PropertyValue',
+                'name' => self::plainText($cimke['kategorianev'], 0),
+                'value' => self::plainText($cimke['caption'], 0),
+            ];
+        }
+        if ($properties) {
+            $product['additionalProperty'] = $properties;
+        }
+        // a suly decimal, üresen "0.00"-ként jön: az empty() nem szűrné ki
+        if ((float)($t['suly'] ?? 0) > 0) {
+            $product['weight'] = [
+                '@type' => 'QuantitativeValue',
+                'value' => (float)$t['suly'],
+                'unitCode' => 'KGM',
+            ];
+        }
+        if ((int)($t['ertekelesdb'] ?? 0) > 0 && (float)($t['ertekelesatlag'] ?? 0) > 0) {
+            $product['aggregateRating'] = [
+                '@type' => 'AggregateRating',
+                'ratingValue' => (float)$t['ertekelesatlag'],
+                'reviewCount' => (int)$t['ertekelesdb'],
+                'bestRating' => 5,
+                'worstRating' => 1,
+            ];
+        }
+        $product['offers'] = self::buildOffer($t, $url);
+        return self::jsonLd($product);
+    }
+
+    private static function buildOffer(array $t, string $url): array
+    {
+        $ar = (float)($t['bruttohuf'] ?? 0);
+        $offer = [
+            '@type' => 'Offer',
+            'url' => $url,
+            'priceCurrency' => self::getCurrencyCode(),
+            'price' => (string)round($ar),
+            'availability' => empty($t['nemkaphato'])
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
+            'itemCondition' => 'https://schema.org/NewCondition',
+            'seller' => ['@id' => self::getOrganizationId()],
+        ];
+
+        $shipping = [
+            '@type' => 'OfferShippingDetails',
+            'shippingDestination' => ['@type' => 'DefinedRegion', 'addressCountry' => 'HU'],
+            'shippingRate' => [
+                '@type' => 'MonetaryAmount',
+                // a szállítási költség kosárérték-sávos, itt a termék saját árához tartozó sáv díja
+                'value' => (string)round(store::calcSzallitasiKoltseg($ar)),
+                'currency' => self::getCurrencyCode(),
+            ],
+        ];
+        $max = (int)($t['szallitasiido'] ?? 0);
+        if ($max > 0) {
+            $min = (int)($t['minszallitasiido'] ?? 0);
+            $shipping['deliveryTime'] = [
+                '@type' => 'ShippingDeliveryTime',
+                // a terméklapon látható "max. X munkanap" a teljes átfutás, külön csomagolási idő nincs
+                'handlingTime' => ['@type' => 'QuantitativeValue', 'minValue' => 0, 'maxValue' => 0, 'unitCode' => 'DAY'],
+                'transitTime' => ['@type' => 'QuantitativeValue', 'minValue' => $min, 'maxValue' => $max, 'unitCode' => 'DAY'],
+            ];
+        }
+        $offer['shippingDetails'] = $shipping;
+        return $offer;
+    }
+
+    /**
+     * ItemList a listaoldalakhoz: a kártyákon lévő termékek sorrendje és URL-je.
+     * A kártyákra nem való Product/Offer: az árat és a készletet a terméklap mondja meg.
+     */
+    public static function itemListJsonLd(array $termekek, int $offset = 0): string
+    {
+        $elements = [];
+        $seen = [];
+        foreach ($termekek as $termek) {
+            $slug = $termek['slug'] ?? '';
+            // a lista változatonként külön sort mutat, ugyanarra a termékre; az ItemList-ben egyszer szerepel
+            if (!$slug || isset($seen[$slug])) {
+                continue;
+            }
+            $seen[$slug] = true;
+            $elements[] = [
+                '@type' => 'ListItem',
+                'position' => $offset + count($elements) + 1,
+                'url' => self::absoluteUrl('/termek/' . $slug),
+            ];
+        }
+        if (!$elements) {
+            return '';
+        }
+        return self::jsonLd([
+            '@context' => 'https://schema.org',
+            '@type' => 'ItemList',
+            'itemListElement' => $elements,
+        ]);
+    }
+
     /**
      * Egységes morzsalánc: az első elem mindig a Főoldal, az utolsóé (ahol állunk) nem link.
      * A bejövő elemek `caption` + `url` vagy `link` kulcsot hozhatnak (a getMorzsa() `link`-et ad).

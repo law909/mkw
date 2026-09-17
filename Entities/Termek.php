@@ -880,6 +880,8 @@ class Termek
         $x['rovidleiras'] = $this->getLocalizedFieldValue('rovidleiras');
         $x['leiras'] = $this->getLocalizedFieldValue('leiras');
         $x['cikkszam'] = $this->getCikkszam();
+        $x['vonalkod'] = $this->getVonalkod();
+        $x['suly'] = $this->getSuly();
         $x['me'] = $this->getMe();
         $x['hozzaszolas'] = $this->getHozzaszolas();
         $x['akcios'] = $this->getAkcios();

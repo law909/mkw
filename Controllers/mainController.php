@@ -53,6 +53,19 @@ class mainController extends \mkwhelpers\Controller
         }
     }
 
+    /**
+     * ItemList a listaoldalra: a kártyák sorrendje és URL-je. A kártyákon nincs Product/Offer
+     * microdata, az árat és a készletet a terméklap mondja meg.
+     */
+    protected function setItemList($t)
+    {
+        if (!is_array($t) || empty($t['termekek'])) {
+            return;
+        }
+        $offset = is_array($t['lapozo'] ?? null) ? (int)$t['lapozo']['firstelemno'] - 1 : 0;
+        $this->view->setVar('itemlistjsonld', \Services\SeoService::itemListJsonLd($t['termekek'], $offset));
+    }
+
     public function show404($head = null)
     {
         $this->view = $this->getTemplateFactory()->createMainView('404.tpl');
@@ -173,6 +186,7 @@ class mainController extends \mkwhelpers\Controller
             }
             \mkw\store::fillTemplate($this->view);
             $this->setEmptyListRobots($t);
+            $this->setItemList($t);
             $this->view->setVar('kategorianev', $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('morzsa', $tf->getMorzsa($ag));
             $this->setBreadcrumb($this->view, $tf->getMorzsa($ag));
@@ -238,6 +252,7 @@ class mainController extends \mkwhelpers\Controller
             }
             \mkw\store::fillTemplate($this->view);
             $this->setEmptyListRobots($t);
+            $this->setItemList($t);
             $this->setBreadcrumb($this->view, [
                 ['caption' => t('Márkák'), 'url' => \mkw\store::getRouter()->generate('markak')],
                 ['caption' => $c->getNev()],
@@ -369,8 +384,16 @@ class mainController extends \mkwhelpers\Controller
                         $this->view->setVar($k, $v);
                     }
                     $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());
+                    $kategoriaut = [];
+                    foreach ($morzsa as $elem) {
+                        $kategoriaut[] = \Services\SeoService::plainText($elem['caption'], 0);
+                    }
                     $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev')];
                     $this->setBreadcrumb($this->view, $morzsa);
+                    $this->view->setVar(
+                        'termekjsonld',
+                        \Services\SeoService::productJsonLd($t['termek'], implode(' > ', $kategoriaut))
+                    );
                     if (\mkw\store::isLampion()) {
                         // a katalógus a gyökér nélküli, linkelt morzsát használja, nem a navigatort
                         $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());

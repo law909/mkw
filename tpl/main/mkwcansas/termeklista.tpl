@@ -2,6 +2,7 @@
 
 {block "kozep"}
 {include 'morzsa.tpl'}
+{$itemlistjsonld|default}
 <div class="container whitebg">
 	<div class="row">
 		<div class="span3">
@@ -146,31 +147,29 @@
 			{if ($lapozo.elemcount>0)}
 				{if ($vt==1)}
 					{foreach $termekek as $_termek}
-						<div class="row" itemscope itemtype="http://schema.org/Product">
+						<div class="row">
                             <div class="span9 termek">
                                 <div class="row">
                                     <div class="span2 termekimage">
                                         {if ($_termek.akcios)}
                                             <div class="akciosplecsni"><span class="akciosplecsniszoveg">-{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                         {/if}
-                                        <a href="/termek/{$_termek.slug}"><img id="termekkiskep{$_termek.id}-{$_termek.valtozatid|default}" itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                        <a href="/termek/{$_termek.slug}"><img id="termekkiskep{$_termek.id}-{$_termek.valtozatid|default}" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                     </div>
                                     <div class="span5 termektext">
-                                        <a href="/termek/{$_termek.slug}" itemprop="url"><span class="termekcaption" itemprop="name">{$_termek.caption}</span></a>
-                                        <span itemprop="sku" content="{$_termek.cikkszam}"></span>
-                                        {if ($_termek.marka)}<span itemprop="brand" content="{$_termek.marka}"></span>{/if}
-                                        <p itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</p>
+                                        <a href="/termek/{$_termek.slug}"><span class="termekcaption">{$_termek.caption}</span></a>
+                                        <p class="textalignjustify">{$_termek.rovidleiras}</p>
                                         {if ($_termek.ertekelesdb)}
-                                            <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                                            <div class="termekertekelesosszegzo">
                                                 <div class="c-rating" data-rating-value="{$_termek.ertekelesatlag}">
                                                     <button>1</button>
                                                     <button>2</button>
                                                     <button>3</button>
                                                     <button>4</button>
                                                     <button>5</button>
-                                                    <span class="c-rating-value" itemprop="ratingValue">{$_termek.ertekelesatlag}</span>
+                                                    <span class="c-rating-value">{$_termek.ertekelesatlag}</span>
                                                 </div>
-                                                <div><span itemprop="reviewCount">{$_termek.ertekelesdb}</span> értékelésből</div>
+                                                <div>{$_termek.ertekelesdb} értékelésből</div>
                                             </div>
                                         {/if}
                                         {if ($_termek.szallitasiido && (!$_termek.nemkaphato))}
@@ -226,14 +225,8 @@
                                             <div class="akciosarszoveg textalignright">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span></div>
                                             <div class="akciosarszoveg textalignright">Megtakarítás: <span>{number_format(100 - ($_termek.bruttohuf / $_termek.eredetibruttohuf * 100),0,',',' ')} %</span></div>
                                         {/if}
-                                        <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                            {if ($_termek.nemkaphato)}
-                                                <link itemprop="availability" href="http://schema.org/OutOfStock">
-                                            {else}
-                                                <link itemprop="availability" href="http://schema.org/InStock">
-                                            {/if}
-                                            <link href="/termek/{$_termek.slug}" itemprop="url">
-                                            <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($_termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF">Ft</span></span>
+                                        <div id="termekprice{$_termek.id}-{$_termek.valtozatid|default}" class="termekprice">
+                                            <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
                                         </div>
                                         {if ($_termek.nemkaphato)}
                                             <div class="textalignright">
@@ -261,17 +254,15 @@
                         {for $j=0 to $step-1}
                         {$_termek=$termekek[$i+$j]}
                         {if ($_termek)}
-                            <div class="spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if} itemscope itemtype="http://schema.org/Product">
+                            <div class="spanmkw3 gtermek{if (($j==$step-1)||($i+$j>=$termekcnt))} gtermekszelso{/if}">
                                 <div class="gtermekinner"><div class="gtermekinnest">
                                     <div class="pull-left gtermekupper">
                                         <div class="gtermekleft pull-left">
-                                            <a href="/termek/{$_termek.slug}"><img itemprop="image" src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
+                                            <a href="/termek/{$_termek.slug}"><img src="{$_termek.kiskepurl}" title="{$_termek.caption}" alt="{$_termek.caption}"></a>
                                         </div>
                                         <div class="gtermekright pull-left">
-                                        <a itemprop="url" href="/termek/{$_termek.slug}"><span class="gtermekcaption" itemprop="name">{$_termek.caption}</span></a>
-                                        <div itemprop="description" class="textalignjustify">{$_termek.rovidleiras}</div>
-                                            <span itemprop="sku" content="{$_termek.cikkszam}"></span>
-                                            {if ($_termek.marka)}<span itemprop="brand" content="{$_termek.marka}"></span>{/if}
+                                        <a href="/termek/{$_termek.slug}"><span class="gtermekcaption">{$_termek.caption}</span></a>
+                                        <div class="textalignjustify">{$_termek.rovidleiras}</div>
                                         </div>
                                     </div>
                                     <div class="pull-left gtermekcenter">
@@ -325,17 +316,11 @@
                                         </div>
                                     </div>
                                     <div class="pull-right">
-                                        <div class="termekprice" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                        <div class="termekprice">
                                             {if ($_termek.akcios)}
                                             <span class="akciosarszoveg">Eredeti ár: <span class="akciosar">{number_format($_termek.eredetibruttohuf,0,',',' ')} Ft</span></span>
                                             {/if}
-                                            {if ($_termek.nemkaphato)}
-                                                <link itemprop="availability" href="http://schema.org/OutOfStock">
-                                            {else}
-                                                <link itemprop="availability" href="http://schema.org/InStock">
-                                            {/if}
-                                            <link href="/termek/{$_termek.slug}" itemprop="url">
-                                            <span itemprop="price" content="{number_format($_termek.bruttohuf,0,'','')}">{number_format($_termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF">Ft</span></span>
+                                            <span>{number_format($_termek.bruttohuf,0,',',' ')} Ft</span>
                                         </div>
                                         <div class="pull-right">
                                         {if ($_termek.nemkaphato)}

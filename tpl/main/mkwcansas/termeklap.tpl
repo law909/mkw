@@ -16,18 +16,18 @@
 {block "kozep"}
 {include 'morzsa.tpl'}
 <div class="container whitebg">
-	<article itemtype="http://schema.org/Product" itemscope="">
+	{$termekjsonld|default}
+	<article class="termeklap">
         <div class="row">
             <div class="span9">
                 <div class="row">
                     <div class="span6">
-                        <div class="textaligncenter"><h1 itemprop="name" class="termeknev">{$termek.caption}</h1></div>
+                        <div class="textaligncenter"><h1 class="termeknev">{$termek.caption}</h1></div>
                         <div class="termekimagecontainer textaligncenter">
                             <a id="termekkeplink{$termek.id}" href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
-                                <img id="termekkep{$termek.id}" itemprop="image" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
+                                <img id="termekkep{$termek.id}" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
                             </a>
                         </div>
-                        {if ($termek.marka)}<span itemprop="brand" content="{$termek.marka}"></span>{/if}
                         {$kcnt=count($termek.kepek)}
                         {if ($kcnt>0)}
                         <div class="js-termekimageslider termekimageslider termekimagecontainer textaligncenter royalSlider contentSlider rsDefaultInv">
@@ -50,19 +50,19 @@
                     <div class="span3 hatter">
                         <div class="korbepadding">
                             {if ($termek.ertekelesdb)}
-                                <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                                <div class="termekertekelesosszegzo">
                                     <div class="c-rating" data-rating-value="{$termek.ertekelesatlag}">
                                         <button>1</button>
                                         <button>2</button>
                                         <button>3</button>
                                         <button>4</button>
                                         <button>5</button>
-                                        <span class="c-rating-value" itemprop="ratingValue">{$termek.ertekelesatlag}</span>
+                                        <span class="c-rating-value">{$termek.ertekelesatlag}</span>
                                     </div>
-                                    <div><a href="#ertekelesTab" class="js-showertekeles"><span itemprop="reviewCount">{$termek.ertekelesdb}</span> értékelésből</a></div>
+                                    <div><a href="#ertekelesTab" class="js-showertekeles">{$termek.ertekelesdb} értékelésből</a></div>
                                 </div>
                             {/if}
-                            <div><span class="bold">Cikkszám:</span> <span itemprop="sku">{$termek.cikkszam}</span></div>
+                            <div><span class="bold">Cikkszám:</span> <span>{$termek.cikkszam}</span></div>
                             <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
                             {if ($termek.me)}
                             <div><span class="bold">Kiszerelés:</span> {$termek.me}</div>
@@ -106,14 +106,8 @@
                             {if ($termek.akcios)}
                             <div class="akciosarszoveg akciosarszovegtermeklap textalignright">Eredeti ár: <span class="akciosar">{number_format($termek.eredetibruttohuf,0,',',' ')} Ft</span></div>
                             {/if}
-                            <div id="termekprice{$termek.id}" class="itemPrice textalignright" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                {if ($termek.nemkaphato)}
-                                    <link itemprop="availability" href="http://schema.org/OutOfStock">
-                                {else}
-                                    <link itemprop="availability" href="http://schema.org/InStock">
-                                {/if}
-                                <link href="/termek/{$termek.slug}" itemprop="url">
-                                <span itemprop="price" content="{number_format($termek.bruttohuf,0,'','')}">{number_format($termek.bruttohuf,0,',',' ')} <span itemprop="priceCurrency" content="HUF"> Ft</span></span>
+                            <div id="termekprice{$termek.id}" class="itemPrice textalignright">
+                                <span>{number_format($termek.bruttohuf,0,',',' ')} Ft</span>
                             </div>
                             {if ($termek.nemkaphato)}
                             <div class="textalignright">
@@ -155,7 +149,7 @@
                             </ul>
                             <div class="tab-content termektabbablekeret">
                                 <div id="leirasTab" class="tab-pane active">
-                                    <span itemprop="description">{$termek.leiras}</span>
+                                    {$termek.leiras}
                                 </div>
                                 {if (count($termek.cimkelapon)!=0)}
                                 <div id="tulajdonsagTab" class="tab-pane">
