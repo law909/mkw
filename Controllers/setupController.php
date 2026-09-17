@@ -391,6 +391,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Hozzavasarolttermekdb, ($p ? $p->getErtek() : 6));
         $p = $repo->find(\mkw\consts::Autologoutmin);
         $view->setVar(\mkw\consts::Autologoutmin, ($p ? $p->getErtek() : 10));
+        $p = $repo->find(\mkw\consts::CanonicalBaseUrl);
+        $view->setVar(\mkw\consts::CanonicalBaseUrl, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GAFollow);
         $view->setVar(\mkw\consts::GAFollow, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GMapsApiKey);
@@ -1735,6 +1737,7 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Blogposztdb, $this->params->getIntRequestParam('blogposztdb', 15));
         $this->setObj(\mkw\consts::BlogposztTermeklapdb, $this->params->getIntRequestParam('blogposzttermeklapdb', 3));
         $this->setObj(\mkw\consts::BlogposztKategoriadb, $this->params->getIntRequestParam('blogposztkategoriadb', 3));
+        $this->setObj(\mkw\consts::CanonicalBaseUrl, rtrim($this->params->getStringRequestParam('canonicalbaseurl'), '/'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));

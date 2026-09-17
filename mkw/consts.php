@@ -185,6 +185,7 @@ class consts
     const Blogposztdb = 'blogposztdb';
     const BlogposztTermeklapdb = 'blogposzttermeklapdb';
     const BlogposztKategoriadb = 'blogposztkategoriadb';
+    const CanonicalBaseUrl = 'canonicalbaseurl';
     const GAFollow = 'gafollow';
     const GMapsApiKey = 'gmapsapikey';
     const FBAppId = 'fbappid';

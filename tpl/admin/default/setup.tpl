@@ -1189,6 +1189,11 @@
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <tbody>
                         <tr>
+                            <td><label for="CanonicalBaseUrlEdit">{at('Kanonikus URL')}:</label></td>
+                            <td colspan="3"><input id="CanonicalBaseUrlEdit" name="canonicalbaseurl" type="text" size="75" maxlength="255"
+                                                   value="{$canonicalbaseurl}" placeholder="https://www.pelda.hu"></td>
+                        </tr>
+                        <tr>
                             <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
                             <td colspan="3"><input id="OldalCimEdit" name="oldalcim" type="text" size="75" maxlength="255" value="{$oldalcim}"></td>
                         </tr>

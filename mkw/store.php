@@ -669,6 +669,8 @@ class store
             $v->setVar('termekdb', \mkwhelpers\TypeConverter::toInt($minidata['termekdb']));
         }
         $v->setVar('serverurl', self::getFullUrl());
+        $v->setVar('canonical', \Services\SeoService::getCanonicalUrl());
+        $v->setVar('robots', \Services\SeoService::getRobots());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $oc = new orszagController();
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));
@@ -818,6 +820,8 @@ class store
         \mkw\store::fillTemplate($view);
         $view->setVar('seodescription', t('Sajnos nem találjuk: ') . $keresendo);
         $view->setVar('pagetitle', t('Sajnos nem találjuk: ') . $keresendo);
+        $view->setVar('canonical', '');
+        $view->setVar('robots', 'noindex,follow');
         self::sendNotFoundHeaders($head);
         $view->printTemplateResult(false);
     }

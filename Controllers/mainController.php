@@ -50,6 +50,8 @@ class mainController extends \mkwhelpers\Controller
         $this->view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
         $this->view->setVar('seodescription', t('Sajnos nem találjuk.'));
         $this->view->setVar('pagetitle', t('Sajnos nem találjuk.'));
+        $this->view->setVar('canonical', '');
+        $this->view->setVar('robots', 'noindex,follow');
         \mkw\store::sendNotFoundHeaders($head);
         $this->view->printTemplateResult(false);
     }

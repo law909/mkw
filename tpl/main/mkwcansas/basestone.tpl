@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta property="og:site_name" content="Mindentkapni.hu"/>
+    {if ($canonical|default)}<link rel="canonical" href="{$canonical|escape}">{/if}
     {block "meta"}{/block}
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
