@@ -126,7 +126,7 @@
             <label for="CikkszamEdit_{$valtozat.id}">{at('Cikkszám')}:</label>
         </td>
         <td class="mattable-cell">
-            <input id="CikkszamEdit_{$valtozat.id}" name="valtozatcikkszam_{$valtozat.id}" type="text" value="{$valtozat.cikkszam}">
+            <input id="CikkszamEdit_{$valtozat.id}" name="valtozatcikkszam_{$valtozat.id}" type="text" size="50" maxlength="50" value="{$valtozat.cikkszam}">
         </td>
         <td class="mattable-cell">
             <label for="IdegenCikkszamEdit_{$valtozat.id}">{at('Szállítói cikkszám')}:</label>
