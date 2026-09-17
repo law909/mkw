@@ -42,6 +42,17 @@ class mainController extends \mkwhelpers\Controller
         $this->view->printTemplateResult(false);
     }
 
+    /**
+     * Üres kategória/márkaoldal nem való az indexbe: tartalom nélkül vékony oldal,
+     * a robots fejléc viszont továbbengedi a linkeken a keresőt.
+     */
+    protected function setEmptyListRobots($t)
+    {
+        if (is_array($t) && array_key_exists('lapozo', $t) && !$t['lapozo']) {
+            $this->view->setVar('robots', 'noindex,follow');
+        }
+    }
+
     public function show404($head = null)
     {
         $this->view = $this->getTemplateFactory()->createMainView('404.tpl');
@@ -161,6 +172,7 @@ class mainController extends \mkwhelpers\Controller
                 }
             }
             \mkw\store::fillTemplate($this->view);
+            $this->setEmptyListRobots($t);
             $this->view->setVar('kategorianev', $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('morzsa', $tf->getMorzsa($ag));
             $this->view->setVar('sketchfabmodelid', $ag->getSketchfabmodelid());
@@ -196,6 +208,7 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar($k, $v);
             }
             \mkw\store::fillTemplate($this->view);
+            $this->setEmptyListRobots($t);
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
             $this->view->setVar('seodescription', $ag->getShowSeodescription());
@@ -223,6 +236,7 @@ class mainController extends \mkwhelpers\Controller
                 $this->view->setVar($k, $v);
             }
             \mkw\store::fillTemplate($this->view);
+            $this->setEmptyListRobots($t);
 
             $mpt = \mkw\store::getParameter(\mkw\consts::Markaoldalcim);
             if ($mpt) {

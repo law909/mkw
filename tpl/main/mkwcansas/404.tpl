@@ -1,9 +1,5 @@
 {extends "base.tpl"}
 
-{block "meta"}
-    <meta name="robots" content="noindex,follow">
-{/block}
-
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">
