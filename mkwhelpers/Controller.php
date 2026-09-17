@@ -59,6 +59,20 @@ abstract class Controller
         return !is_array($lapozo) || $pageno > $lapozo['pagecount'];
     }
 
+    /**
+     * Morzsalánc a nézetbe: a látható lánc (`morzsalanc`) és a hozzá tartozó
+     * BreadcrumbList JSON-LD (`morzsajsonld`). A sablon a `morzsa.tpl`-lel írja ki.
+     *
+     * @param array $items [['caption' => ..., 'url'|'link' => ...], ...] — a Főoldal és az
+     *                     utolsó elem link-nélkülisége magától áll elő
+     */
+    protected function setBreadcrumb($view, array $items)
+    {
+        $chain = \Services\SeoService::buildBreadcrumb($items);
+        $view->setVar('morzsalanc', $chain);
+        $view->setVar('morzsajsonld', \Services\SeoService::breadcrumbJsonLd($chain));
+    }
+
     public function getEntityName()
     {
         return $this->entityName;

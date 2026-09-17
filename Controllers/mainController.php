@@ -175,6 +175,7 @@ class mainController extends \mkwhelpers\Controller
             $this->setEmptyListRobots($t);
             $this->view->setVar('kategorianev', $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('morzsa', $tf->getMorzsa($ag));
+            $this->setBreadcrumb($this->view, $tf->getMorzsa($ag));
             $this->view->setVar('sketchfabmodelid', $ag->getSketchfabmodelid());
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
@@ -237,6 +238,10 @@ class mainController extends \mkwhelpers\Controller
             }
             \mkw\store::fillTemplate($this->view);
             $this->setEmptyListRobots($t);
+            $this->setBreadcrumb($this->view, [
+                ['caption' => t('Márkák'), 'url' => \mkw\store::getRouter()->generate('markak')],
+                ['caption' => $c->getNev()],
+            ]);
 
             $mpt = \mkw\store::getParameter(\mkw\consts::Markaoldalcim);
             if ($mpt) {
@@ -271,6 +276,7 @@ class mainController extends \mkwhelpers\Controller
             $this->view->setVar($k, $v);
         }
         \mkw\store::fillTemplate($this->view);
+        $this->setBreadcrumb($this->view, [['caption' => t('Szűrő')]]);
         $this->view->printTemplateResult(true);
     }
 
@@ -306,6 +312,7 @@ class mainController extends \mkwhelpers\Controller
                     }
                 }
                 \mkw\store::fillTemplate($this->view);
+                $this->setBreadcrumb($this->view, [['caption' => t('A keresett kifejezés: ') . $keresoszo]]);
                 $this->view->setVar('keresett', $keresoszo);
                 $this->view->setVar('seodescription', t('A keresett kifejezés: ') . $keresoszo);
                 $this->view->setVar('pagetitle', t('A keresett kifejezés: ') . $keresoszo);
@@ -361,6 +368,9 @@ class mainController extends \mkwhelpers\Controller
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);
                     }
+                    $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());
+                    $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev')];
+                    $this->setBreadcrumb($this->view, $morzsa);
                     if (\mkw\store::isLampion()) {
                         // a katalógus a gyökér nélküli, linkelt morzsát használja, nem a navigatort
                         $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());

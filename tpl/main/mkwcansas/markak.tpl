@@ -1,6 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
+{include 'morzsa.tpl'}
 <div class="container whitebg">
     <div class="row">
         {foreach $markalista as $_marka}

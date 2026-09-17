@@ -106,6 +106,7 @@ class statlapController extends \mkwhelpers\MattableController
             \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $statlap->getShowOldalcim());
             $view->setVar('seodescription', $statlap->getShowSeodescription());
+            $this->setBreadcrumb($view, [['caption' => $statlap->getLocalizedFieldValue('oldalcim')]]);
             $view->setVar('statlap', $this->getstatlap($statlap));
             $view->printTemplateResult(true);
         } else {

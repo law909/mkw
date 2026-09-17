@@ -110,6 +110,52 @@ class SeoService
         return $url;
     }
 
+    /**
+     * Egységes morzsalánc: az első elem mindig a Főoldal, az utolsóé (ahol állunk) nem link.
+     * A bejövő elemek `caption` + `url` vagy `link` kulcsot hozhatnak (a getMorzsa() `link`-et ad).
+     *
+     * @param array $items [['caption' => ..., 'url'|'link' => ...], ...]
+     */
+    public static function buildBreadcrumb(array $items): array
+    {
+        $chain = [['caption' => t('Főoldal'), 'url' => '/']];
+        foreach ($items as $item) {
+            $caption = trim((string)($item['caption'] ?? ''));
+            if ($caption === '') {
+                continue;
+            }
+            $chain[] = ['caption' => $caption, 'url' => (string)($item['url'] ?? $item['link'] ?? '')];
+        }
+        $chain[count($chain) - 1]['url'] = '';
+        return $chain;
+    }
+
+    /** BreadcrumbList JSON-LD a buildBreadcrumb() láncából. */
+    public static function breadcrumbJsonLd(array $chain): string
+    {
+        if (count($chain) < 2) {
+            return '';
+        }
+        $elements = [];
+        foreach (array_values($chain) as $i => $item) {
+            $element = [
+                '@type' => 'ListItem',
+                'position' => $i + 1,
+                // a nevek HTML-entitásokkal jönnek a törzsadatból, a JSON-LD-be tiszta szöveg kell
+                'name' => self::plainText($item['caption'], 0),
+            ];
+            if ($item['url']) {
+                $element['item'] = self::absoluteUrl($item['url']);
+            }
+            $elements[] = $element;
+        }
+        return self::jsonLd([
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $elements,
+        ]);
+    }
+
     /** Sablonba/JSON-LD-be szánt tiszta szöveg: HTML nélkül, egy sorban, hosszra vágva. */
     public static function plainText(?string $html, int $maxLength = 500): string
     {

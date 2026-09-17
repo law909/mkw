@@ -230,6 +230,10 @@ class blogposztController extends \mkwhelpers\MattableController
             \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $blogposzt->getShowCim());
             $view->setVar('seodescription', $blogposzt->getShowSeodescription());
+            $this->setBreadcrumb($view, [
+                ['caption' => t('Blog'), 'url' => \mkw\store::getRouter()->generate('showblogposztlist')],
+                ['caption' => $blogposzt->getCim()],
+            ]);
             $view->setVar('blogposzt', $blogposzt->convertToArray());
             $view->printTemplateResult(false);
         } else {
@@ -287,6 +291,7 @@ class blogposztController extends \mkwhelpers\MattableController
         }
         $view->setVar('seodescription', $msd);
 
+        $this->setBreadcrumb($view, [['caption' => t('Blog')]]);
         $view->setVar('children', $t);
         $view->printTemplateResult(false);
     }

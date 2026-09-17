@@ -131,6 +131,10 @@ class hirController extends \mkwhelpers\MattableController
             \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $hir->getShowCim());
             $view->setVar('seodescription', $hir->getShowSeodescription());
+            $this->setBreadcrumb($view, [
+                ['caption' => t('Hírek'), 'url' => \mkw\store::getRouter()->generate('showhirlist')],
+                ['caption' => $hir->getCim()],
+            ]);
             $view->setVar('hir', $hir->convertToArray());
             $view->printTemplateResult(false);
         } else {
@@ -164,6 +168,7 @@ class hirController extends \mkwhelpers\MattableController
         }
         $view->setVar('seodescription', $msd);
 
+        $this->setBreadcrumb($view, [['caption' => t('Hírek')]]);
         $view->setVar('children', $t);
         $view->printTemplateResult(false);
     }

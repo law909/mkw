@@ -1,22 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container morzsa">
-	<div class="row">
-		<div class="span12 morzsaszoveg">
-		{foreach $navigator as $_navi}
-			{if ($_navi.url!='')}
-				<a href="{$_navi.url}">
-					{$_navi.caption}
-				</a>
-				/
-			{else}
-				{$_navi.caption}
-			{/if}
-		{/foreach}
-		</div>
-	</div>
-</div>
+{include 'morzsa.tpl'}
 <div class="container whitebg">
 	<div class="row">
 		<div class="span12">

@@ -1,29 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
-<div class="container morzsa whitebg">
-	<div class="row">
-		<div class="span12 morzsaszoveg" xmlns:v="http://rdf.data-vocabulary.org/#">
-            <b>Ön itt áll: </b>
-            <span itemprop="breadcrumb">
-                {if ($navigator|default)}
-		{foreach $navigator as $_navi}
-			{if ($_navi.url|default)}
-                <span typeof="v:Breadcrumb">
-				<a href="/termekfa/{$_navi.url}" rel="v:url" property="v:title">
-					{$_navi.caption}
-				</a>
-                </span>
-				/
-			{else}
-				{$_navi.caption}
-			{/if}
-		{/foreach}
-        {/if}
-        </span>
-		</div>
-	</div>
-</div>
+{include 'morzsa.tpl'}
 <div class="container whitebg">
 	<div class="row">
 		<div class="span3">

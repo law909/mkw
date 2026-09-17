@@ -988,6 +988,13 @@ thead.acc-megrendelestetellist td {
 .o404ImageContainer {
   min-height: 150px;
 }
+.morzsaelvalaszto {
+  margin: 0 4px;
+  color: #999;
+}
+.morzsaaktualis {
+  font-weight: bold;
+}
 .uresKategoria {
   font-size: 20px;
   line-height: 28px;

@@ -254,6 +254,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
                 $m[] = $c->toLista();
             }
         }
+        $this->setBreadcrumb($view, [['caption' => t('Márkák')]]);
         $view->setVar('markalista', $m);
         $view->printTemplateResult();
     }
