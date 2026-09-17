@@ -28,7 +28,6 @@
         <div class="adatok">
             <h1>{$termek.caption}</h1>
             <dl class="jellemzok">
-                {if ($termek.cikkszam)}<dt>{t('Cikkszám')}</dt><dd>{$termek.cikkszam}</dd>{/if}
                 {if ($termek.me)}<dt>{t('Mennyiségi egység')}</dt><dd>{$termek.me}</dd>{/if}
                 {if ($termek.marka|default)}<dt>{t('Márka')}</dt><dd>{$termek.marka}</dd>{/if}
             </dl>

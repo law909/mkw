@@ -183,7 +183,6 @@ img { max-width: 100%; height: auto; }
 .dobozszoveg h3 { margin: 0; }
 .dobozszoveg h3 a { color: var(--tinta); }
 .dobozszoveg h3 a:hover { color: var(--kiemeles); }
-.cikkszam { font-size: .78rem; color: var(--halvany); letter-spacing: .03em; }
 .rovid { margin: 0; font-size: .88rem; color: var(--halvany); }
 
 .katdoboz .dobozkep { aspect-ratio: 3 / 2; }

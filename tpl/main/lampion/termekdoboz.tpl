@@ -9,7 +9,6 @@
     </a>
     <div class="dobozszoveg">
         <h3><a href="{$termek.link}">{$termek.caption}</a></h3>
-        {if ($termek.cikkszam)}<div class="cikkszam">{$termek.cikkszam}</div>{/if}
         {if ($termek.rovidleiras)}<p class="rovid">{$termek.rovidleiras|strip_tags|truncate:110}</p>{/if}
     </div>
 </article>
