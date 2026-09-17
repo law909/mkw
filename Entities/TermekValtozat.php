@@ -199,6 +199,14 @@ class TermekValtozat
     /** @ORM\Column(type="boolean",nullable=false) */
     private $elorendelheto = false;
 
+    /**
+     * Benne van-e a cikkszámban a szín és a méret kódja (composeCikkszam). A változatgenerátor kapcsolja be, és a
+     * cikkszám átíró képernyő csak azokkal foglalkozik, amelyeken hamis.
+     *
+     * @ORM\Column(type="boolean",nullable=false)
+     */
+    private $kodoltcikkszam = false;
+
     /** @ORM\Column(type="decimal",precision=14,scale=2,nullable=true) */
     private $minkeszlet;
 
@@ -599,6 +607,16 @@ class TermekValtozat
     public function setCikkszam($cikkszam)
     {
         $this->cikkszam = $cikkszam;
+    }
+
+    public function getKodoltcikkszam(): bool
+    {
+        return (bool)$this->kodoltcikkszam;
+    }
+
+    public function setKodoltcikkszam($kodoltcikkszam): void
+    {
+        $this->kodoltcikkszam = (bool)$kodoltcikkszam;
     }
 
     /**

@@ -1220,9 +1220,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekvaltozat/generate', 'termekvaltozatController#generate', 'admintermekvaltozatgenerate');
     $router->map('POST', '/admin/termekvaltozat/save', 'termekvaltozatController#save', 'admintermekvaltozatsave');
     $router->map('POST', '/admin/termekvaltozat/delall', 'termekvaltozatController#delall', 'admintermekvaltozatdelall');
+    $router->map('POST', '/admin/termekvaltozat/cikkszamatiras', 'termekvaltozatController#cikkszamAtiras', 'admintermekvaltozatcikkszamatiras');
 }
 $router->map('GET', '/admin/termekvaltozat/getkeszletbyraktar', 'termekvaltozatController#getKeszletByRaktar', 'admingetvaltozatkeszletbyraktar');
 $router->map('GET', '/admin/termekvaltozat/cikkszamreport', 'termekvaltozatController#cikkszamReport', 'admintermekvaltozatcikkszamreport');
+$router->map('GET', '/admin/termekvaltozat/cikkszamatirasview', 'termekvaltozatController#cikkszamAtirasView', 'admintermekvaltozatcikkszamatirasview');
 
 $router->map('GET', '/admin/szallitasimod/viewlist', 'szallitasimodController#viewlist', 'adminszallitasimodviewlist');
 $router->map('GET', '/admin/szallitasimod/getlistbody', 'szallitasimodController#getlistbody', 'adminszallitasimodgetlistbody');

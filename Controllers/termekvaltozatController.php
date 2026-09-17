@@ -12,6 +12,7 @@ use Entities\TermekValtozatErtek;
 use mkw\store;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Services\TermekValtozatCikkszamReportService;
+use Services\TermekValtozatCikkszamService;
 
 class termekvaltozatController extends \mkwhelpers\MattableController
 {
@@ -147,6 +148,29 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $this->getEm()->remove($valt);
         }
         $this->getEm()->flush();
+    }
+
+    public function cikkszamAtirasView()
+    {
+        $view = $this->createView('valtozatcikkszamatiras.tpl');
+        $view->setVar('pagetitle', t('Változat cikkszám átírás'));
+        $view->setVar('erintett', (new TermekValtozatCikkszamService())->countPending());
+        $view->printTemplateResult();
+    }
+
+    public function cikkszamAtiras()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $counts = (new TermekValtozatCikkszamService())->rewrite();
+        $uzenet = [];
+        foreach ($counts as $mit => $db) {
+            $uzenet[] = $db . ' ' . $mit;
+        }
+        echo json_encode([
+            'ok' => true,
+            'msg' => implode(', ', $uzenet) . '.',
+            'erintett' => (new TermekValtozatCikkszamService())->countPending(),
+        ]);
     }
 
     public function cikkszamReport()
@@ -294,6 +318,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                             );
                             // a mező 50 karakteres: a csonkolt cikkszám ütközhetne, inkább üres marad
                             $valtozat->setCikkszam(mb_strlen($generated) <= 50 ? $generated : '');
+                            $valtozat->setKodoltcikkszam($valtozat->getCikkszam() !== '');
                         } elseif ($valtozatCikkszam !== null) {
                             $valtozat->setCikkszam($valtozatCikkszam);
                         }
