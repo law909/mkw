@@ -574,7 +574,9 @@ $(document).ready(function() {
     });
 
     if ($('.js-blog').length > 0) {
-        $('.pageedit').on('click', function () {
+        // a linknek valódi href-je van (a kereső bejárja), a kattintást viszont a JS viszi
+        $('.pageedit').on('click', function (e) {
+            e.preventDefault();
             $('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
             mkw.bloglapozas();
         });
@@ -589,7 +591,10 @@ $(document).ready(function() {
             $('.orderedit').val($(this).val());
             mkw.lapozas();
         });
-        $('.pageedit').on('click', function () {
+        // a linknek valódi href-je van (a kereső bejárja), a kattintást viszont a JS viszi,
+        // hogy a beállított rendezés/szűrés megmaradjon
+        $('.pageedit').on('click', function (e) {
+            e.preventDefault();
             $('.lapozoform').attr('data-pageno', $(this).attr('data-pageno'));
             mkw.lapozas();
         });

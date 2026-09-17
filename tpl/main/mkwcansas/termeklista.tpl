@@ -55,9 +55,11 @@
 		</div>
 		<div class="span9">
             <h1>{$kategoria.nev}</h1>
+			{if (($lapozo.pageno|default:1) <= 1)}
 			<div>
 				{$kategoria.leiras2}
 			</div>
+			{/if}
             {if (count($blogposztok))}
                 <div>
                     <h3>Kapcsolódó blogbejegyzések</h3>
@@ -133,17 +135,19 @@
 							<img src="/themes/main/mkwcansas/img/i_list.png" alt="Lista">
 						{/if}
 						<select name="elemperpage" class="elemperpageedit">
-							{$elemszam=array(10,20,30,40,$lapozo.elemcount)}
-							{$elemnev=array("10 darab","20 darab","30 darab","40 darab","Mind")}
+							{$elemszam=array(10,20,30,40)}
+							{$elemnev=array("10 darab","20 darab","30 darab","40 darab")}
 							{foreach $elemszam as $c}
 							<option value="{$c}"{if ($c==$lapozo.elemperpage)} selected="selected"{/if}>{$elemnev[$c@index]}</option>
 							{/foreach}
+							{* a "Mind" csak akkor opció, ha tényleg többet mutat a legnagyobb fix értéknél *}
+							{if ($lapozo.elemcount>40)}
+							<option value="{$lapozo.elemcount}"{if ($lapozo.elemcount==$lapozo.elemperpage)} selected="selected"{/if}>{t('Mind')} ({$lapozo.elemcount})</option>
+							{/if}
 						</select>
 					</td>
 					<td class="lapozooldalak">
-						{if ($lapozo.pageno>1)}<a href="#" class="pageedit" data-pageno="{$lapozo.pageno-1}">< {t('Előző')}</a>{/if}
-						{for $i=1 to $lapozo.pagecount} {if ($i==$lapozo.pageno)}<span class="aktualislap">{$i}</span>{else}<a href="#" class="pageedit" data-pageno="{$i}">{$i}</a>{/if}{/for}
-						{if ($lapozo.pageno<$lapozo.pagecount)}<a href="#" class="pageedit" data-pageno="{$lapozo.pageno+1}">{t('Következő')} ></a>{/if}
+						{include 'lapozolinkek.tpl' lapozourl=$url}
 					</td>
 					<td class="lapozorendezes">
 						<select name="order" class="orderedit">
@@ -382,16 +386,16 @@
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
 					<table><tbody><tr>
 					<td class="lapozooldalak">
-						{if ($lapozo.pageno>1)}<a href="#" class="pageedit" data-pageno="{$lapozo.pageno-1}">< {t('Előző')}</a>{/if}
-						{for $i=1 to $lapozo.pagecount} {if ($i==$lapozo.pageno)}<span class="aktualislap">{$i}</span>{else}<a href="#" class="pageedit" data-pageno="{$i}">{$i}</a>{/if}{/for}
-						{if ($lapozo.pageno<$lapozo.pagecount)}<a href="#" class="pageedit" data-pageno="{$lapozo.pageno+1}">{t('Következő')} ></a>{/if}
+						{include 'lapozolinkek.tpl' lapozourl=$url}
 					</td>
 					</tr></tbody></table>
 				</form>
 			</div>
+            {if (($lapozo.pageno|default:1) <= 1)}
             <div>
                 {$kategoria.leiras3}
             </div>
+            {/if}
         </div>
 	</div>
 
