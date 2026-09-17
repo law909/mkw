@@ -37,16 +37,6 @@
     </div>
 </div>
 <div class="container whitebg headbgtakaro">
-    <div class="hide" itemscope="" itemtype="http://schema.org/Organization">
-        <span itemprop="name">Mindent Kapni Webáruház</span>
-        <span itemprop="telephone">+36 20/342-1511</span>
-        <span itemprop="address" itemscope=""
-              itemtype="http://schema.org/PostalAddress">
-            <span itemprop="postalCode">3300</span>
-            <span itemprop="addressLocality">Eger</span>
-            <span itemprop="streetAddress">Pápay Sámuel utca 2.</span>
-        </span>
-    </div>
     <div class="headermid container whitebg">
         <div class="row">
             <div class="span12">

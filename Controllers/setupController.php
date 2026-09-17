@@ -67,6 +67,20 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::TulajKontaktEmail, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::TulajKontaktTelefon);
         $view->setVar(\mkw\consts::TulajKontaktTelefon, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajmarkanev);
+        $view->setVar(\mkw\consts::Tulajmarkanev, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajcegjegyzekszam);
+        $view->setVar(\mkw\consts::Tulajcegjegyzekszam, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajalapitas);
+        $view->setVar(\mkw\consts::Tulajalapitas, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajnyitvatartas);
+        $view->setVar(\mkw\consts::Tulajnyitvatartas, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajsameas);
+        $view->setVar(\mkw\consts::Tulajsameas, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajvisszakuldesnap);
+        $view->setVar(\mkw\consts::Tulajvisszakuldesnap, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Tulajvisszakuldeskoltseg);
+        $view->setVar(\mkw\consts::Tulajvisszakuldeskoltseg, ($p ? $p->getErtek() : 'vasarlo'));
 
         $p = $repo->find(\mkw\consts::ProgramNev);
         $view->setVar(\mkw\consts::ProgramNev, ($p ? $p->getErtek() : ''));
@@ -1510,6 +1524,13 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::TulajKontaktNev, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktNev));
         $this->setObj(\mkw\consts::TulajKontaktEmail, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktEmail));
         $this->setObj(\mkw\consts::TulajKontaktTelefon, $this->params->getStringRequestParam(\mkw\consts::TulajKontaktTelefon));
+        $this->setObj(\mkw\consts::Tulajmarkanev, $this->params->getStringRequestParam(\mkw\consts::Tulajmarkanev));
+        $this->setObj(\mkw\consts::Tulajcegjegyzekszam, $this->params->getStringRequestParam(\mkw\consts::Tulajcegjegyzekszam));
+        $this->setObj(\mkw\consts::Tulajalapitas, $this->params->getStringRequestParam(\mkw\consts::Tulajalapitas));
+        $this->setObj(\mkw\consts::Tulajnyitvatartas, $this->params->getStringRequestParam(\mkw\consts::Tulajnyitvatartas));
+        $this->setObj(\mkw\consts::Tulajsameas, $this->params->getStringRequestParam(\mkw\consts::Tulajsameas));
+        $this->setObj(\mkw\consts::Tulajvisszakuldesnap, $this->params->getIntRequestParam(\mkw\consts::Tulajvisszakuldesnap));
+        $this->setObj(\mkw\consts::Tulajvisszakuldeskoltseg, $this->params->getStringRequestParam(\mkw\consts::Tulajvisszakuldeskoltseg));
         $this->setObj(\mkw\consts::ProgramNev, $this->params->getStringRequestParam(\mkw\consts::ProgramNev));
 
         $tulajpartner = \mkw\store::getEm()->getRepository(Partner::class);

@@ -108,6 +108,13 @@ class consts
     const Tulajpartner = 'tulajpartner';
     const TulajKontaktNev = 'tulajkontaktnev';
     const TulajKontaktEmail = 'tulajkontaktemail';
+    const Tulajmarkanev = 'tulajmarkanev';
+    const Tulajcegjegyzekszam = 'tulajcegjegyzekszam';
+    const Tulajalapitas = 'tulajalapitas';
+    const Tulajnyitvatartas = 'tulajnyitvatartas';
+    const Tulajsameas = 'tulajsameas';
+    const Tulajvisszakuldesnap = 'tulajvisszakuldesnap';
+    const Tulajvisszakuldeskoltseg = 'tulajvisszakuldeskoltseg';
     const TulajKontaktTelefon = 'tulajkontakttelefon';
     const ProgramNev = 'programnev';
 

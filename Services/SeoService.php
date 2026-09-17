@@ -111,6 +111,116 @@ class SeoService
     }
 
     /**
+     * A Beállítások → Tulajdonos adatai fülről a láblécnek és a strukturált adatoknak.
+     * Egy helyen, hogy a látható cégadatok és a JSON-LD ne tudjanak elcsúszni egymástól.
+     */
+    public static function getOwnerData(): array
+    {
+        $sameas = array_values(array_filter(array_map(
+            'trim',
+            preg_split('/[\r\n,]+/', (string)store::getParameter(\mkw\consts::Tulajsameas, ''))
+        ), 'strlen'));
+        return [
+            'markanev' => (string)store::getParameter(\mkw\consts::Tulajmarkanev, ''),
+            'nev' => (string)store::getParameter(\mkw\consts::Tulajnev, ''),
+            'irszam' => (string)store::getParameter(\mkw\consts::Tulajirszam, ''),
+            'varos' => (string)store::getParameter(\mkw\consts::Tulajvaros, ''),
+            'utca' => (string)store::getParameter(\mkw\consts::Tulajutca, ''),
+            'adoszam' => (string)store::getParameter(\mkw\consts::Tulajadoszam, ''),
+            'cegjegyzekszam' => (string)store::getParameter(\mkw\consts::Tulajcegjegyzekszam, ''),
+            'email' => (string)store::getParameter(\mkw\consts::TulajKontaktEmail, ''),
+            'telefon' => (string)store::getParameter(\mkw\consts::TulajKontaktTelefon, ''),
+            'nyitvatartas' => (string)store::getParameter(\mkw\consts::Tulajnyitvatartas, ''),
+            'alapitas' => (string)store::getParameter(\mkw\consts::Tulajalapitas, ''),
+            'sameas' => $sameas,
+            'visszakuldesnap' => (int)store::getParameter(\mkw\consts::Tulajvisszakuldesnap, 0),
+            'visszakuldeskoltseg' => (string)store::getParameter(\mkw\consts::Tulajvisszakuldeskoltseg, 'vasarlo'),
+        ];
+    }
+
+    /** A webáruház @id-je; erre hivatkozik a termékek Offer.seller-e és a WebSite.publisher. */
+    public static function getOrganizationId(): string
+    {
+        return self::getBaseUrl() . '/#organization';
+    }
+
+    /**
+     * OnlineStore + WebSite @graph. Minden oldal fejlécébe kikerül, hogy a lapon lévő
+     * hivatkozások (`seller`, `publisher`) helyben feloldhatók legyenek.
+     */
+    public static function organizationJsonLd(): string
+    {
+        $o = self::getOwnerData();
+        $name = $o['markanev'] ?: store::getParameter(\mkw\consts::Oldalcim, '');
+        if (!$name) {
+            return '';
+        }
+        $org = [
+            '@type' => 'OnlineStore',
+            '@id' => self::getOrganizationId(),
+            'name' => self::plainText($name, 0),
+            'url' => self::getBaseUrl() . '/',
+        ];
+        if ($o['nev']) {
+            $org['legalName'] = $o['nev'];
+        }
+        $logo = store::getParameter(\mkw\consts::Logo, '');
+        if ($logo) {
+            $org['logo'] = self::absoluteUrl($logo);
+        }
+        if ($o['alapitas']) {
+            $org['foundingDate'] = $o['alapitas'];
+        }
+        if ($o['telefon']) {
+            $org['telephone'] = $o['telefon'];
+        }
+        if ($o['email']) {
+            $org['email'] = $o['email'];
+        }
+        if ($o['adoszam']) {
+            $org['taxID'] = $o['adoszam'];
+        }
+        if ($o['varos'] || $o['utca']) {
+            $org['address'] = array_filter([
+                '@type' => 'PostalAddress',
+                'streetAddress' => $o['utca'],
+                'postalCode' => $o['irszam'],
+                'addressLocality' => $o['varos'],
+                'addressCountry' => 'HU',
+            ], 'strlen');
+        }
+        if ($o['sameas']) {
+            $org['sameAs'] = $o['sameas'];
+        }
+        if ($o['visszakuldesnap'] > 0) {
+            $org['hasMerchantReturnPolicy'] = [
+                '@type' => 'MerchantReturnPolicy',
+                'applicableCountry' => 'HU',
+                'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                'merchantReturnDays' => $o['visszakuldesnap'],
+                'returnMethod' => 'https://schema.org/ReturnByMail',
+                'returnFees' => $o['visszakuldeskoltseg'] === 'elado'
+                    ? 'https://schema.org/FreeReturn'
+                    : 'https://schema.org/ReturnFeesCustomerResponsibility',
+            ];
+        }
+        return self::jsonLd([
+            '@context' => 'https://schema.org',
+            '@graph' => [
+                $org,
+                [
+                    '@type' => 'WebSite',
+                    '@id' => self::getBaseUrl() . '/#website',
+                    'url' => self::getBaseUrl() . '/',
+                    'name' => $org['name'],
+                    'inLanguage' => str_replace('_', '-', (string)store::getWebshopLongLocale() ?: 'hu-HU'),
+                    'publisher' => ['@id' => self::getOrganizationId()],
+                ],
+            ],
+        ]);
+    }
+
+    /**
      * Egységes morzsalánc: az első elem mindig a Főoldal, az utolsóé (ahol állunk) nem link.
      * A bejövő elemek `caption` + `url` vagy `link` kulcsot hozhatnak (a getMorzsa() `link`-et ad).
      *

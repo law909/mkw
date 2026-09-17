@@ -113,6 +113,7 @@
         var hs = document.getElementById("barat_hud_sr_script");
         hs.parentNode.insertBefore(hst, hs);
     </script>
+    {$orgjsonld|default}
 </head>
 <body class="bgimg">
 {block "body"}

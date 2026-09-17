@@ -671,6 +671,8 @@ class store
         $v->setVar('serverurl', self::getFullUrl());
         $v->setVar('canonical', \Services\SeoService::getCanonicalUrl());
         $v->setVar('robots', \Services\SeoService::getRobots());
+        $v->setVar('cegadatok', \Services\SeoService::getOwnerData());
+        $v->setVar('orgjsonld', \Services\SeoService::organizationJsonLd());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $oc = new orszagController();
         $v->setVar('orszaglist', $oc->getSelectList(self::getMainSession()->orszag));

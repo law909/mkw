@@ -1012,6 +1012,36 @@
                             <td><input id="TulajKontaktTelefonEdit" type="text" name="tulajkontakttelefon" value="{$tulajkontakttelefon}"></td>
                         </tr>
                         <tr>
+                            <td><label for="TulajmarkanevEdit">{at('Webáruház neve')}:</label></td>
+                            <td colspan="3"><input id="TulajmarkanevEdit" name="tulajmarkanev" type="text" size="40" maxlength="255" value="{$tulajmarkanev}"
+                                                   placeholder="{at('a strukturált adatokban megjelenő rövid név')}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TulajcegjegyzekszamEdit">{at('Cégjegyzékszám')}:</label></td>
+                            <td><input id="TulajcegjegyzekszamEdit" name="tulajcegjegyzekszam" type="text" value="{$tulajcegjegyzekszam}"></td>
+                            <td><label for="TulajalapitasEdit">{at('Alapítás éve')}:</label></td>
+                            <td><input id="TulajalapitasEdit" name="tulajalapitas" type="text" size="6" maxlength="4" value="{$tulajalapitas}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TulajnyitvatartasEdit">{at('Nyitvatartás')}:</label></td>
+                            <td colspan="3"><input id="TulajnyitvatartasEdit" name="tulajnyitvatartas" type="text" size="75" maxlength="255"
+                                                   value="{$tulajnyitvatartas}" placeholder="{at('pl. munkanapokon 9:00-15:30')}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TulajsameasEdit">{at('Közösségi oldalak')}:</label></td>
+                            <td colspan="3"><textarea id="TulajsameasEdit" name="tulajsameas" cols="75" rows="3"
+                                                      placeholder="{at('soronként egy URL')}">{$tulajsameas}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td><label for="TulajvisszakuldesnapEdit">{at('Elállási határidő (nap)')}:</label></td>
+                            <td><input id="TulajvisszakuldesnapEdit" name="tulajvisszakuldesnap" type="number" min="0" value="{$tulajvisszakuldesnap}"></td>
+                            <td><label for="TulajvisszakuldeskoltsegEdit">{at('Visszaküldés költsége')}:</label></td>
+                            <td><select id="TulajvisszakuldeskoltsegEdit" name="tulajvisszakuldeskoltseg">
+                                    <option value="vasarlo"{if ($tulajvisszakuldeskoltseg != 'elado')} selected="selected"{/if}>{at('a vásárlót terheli')}</option>
+                                    <option value="elado"{if ($tulajvisszakuldeskoltseg == 'elado')} selected="selected"{/if}>{at('ingyenes')}</option>
+                                </select></td>
+                        </tr>
+                        <tr>
                             <td><label for="TulajpartnerEdit">Partner:</label></td>
                             <td><select id="TulajpartnerEdit" name="tulajpartner">
                                     <option value="">{at('válasszon')}</option>

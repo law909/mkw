@@ -44,10 +44,22 @@
                          title="A kényelmes és biztonságos online fizetést a Barion Payment Zrt. biztosítja, MNB engedély száma: H-EN-I-1064/2013 Bankkártya adatai áruházunkhoz nem jutnak el.">
                 </a>
             </div>
+            <div class="cegadatok">
+                <h5>{t('Üzemeltető')}</h5>
+                <ul>
+                    {if ($cegadatok.nev)}<li>{$cegadatok.nev}</li>{/if}
+                    {if ($cegadatok.varos)}<li>{t('Székhely')}: {$cegadatok.irszam} {$cegadatok.varos}, {$cegadatok.utca}</li>{/if}
+                    {if ($cegadatok.adoszam)}<li>{t('Adószám')}: {$cegadatok.adoszam}</li>{/if}
+                    {if ($cegadatok.cegjegyzekszam)}<li>{t('Cégjegyzékszám')}: {$cegadatok.cegjegyzekszam}</li>{/if}
+                    {if ($cegadatok.email)}<li>{t('E-mail')}: <a href="mailto:{$cegadatok.email|escape}">{$cegadatok.email}</a></li>{/if}
+                    {if ($cegadatok.telefon)}<li>{t('Telefon')}: <a href="tel:{$cegadatok.telefon|replace:' ':''|replace:'-':''|replace:'/':''|escape}">{$cegadatok.telefon}</a></li>{/if}
+                    {if ($cegadatok.nyitvatartas)}<li>{t('Ügyfélszolgálat')}: {$cegadatok.nyitvatartas}</li>{/if}
+                </ul>
+            </div>
             <div class="copyright">
                 Az oldalainkon szereplő márkanevek a tulajdonosok védjegyei, itt csak a termékek bemutatására szerepelnek.
                 <br>A webáruház lapjain látható képek csak illusztrációk, a valós termék ezektől némileg eltérhet.
-                <br>Copyright &copy; 2007-{'Y'|date}, Quixoft Informatikai Szolgáltató Bt.
+                <br>Copyright &copy; {if ($cegadatok.alapitas)}{$cegadatok.alapitas}-{/if}{'Y'|date}{if ($cegadatok.nev)}, {$cegadatok.nev}{/if}
             </div>
         </div>
     </div>
