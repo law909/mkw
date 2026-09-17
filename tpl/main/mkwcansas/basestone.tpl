@@ -5,7 +5,6 @@
     <meta name="description" content="{$seodescription|default}">
     <meta name="robots" content="{$robots|default:'index,follow'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     {if ($canonical|default)}<link rel="canonical" href="{$canonical|escape}">{/if}
     <meta property="og:site_name" content="{$cegadatok.markanev|default:'Mindentkapni.hu'|escape}">
     <meta property="og:locale" content="{$oglocale|default:'hu_HU'}">
@@ -25,14 +24,10 @@
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
-    <!--link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/bootstrap-responsive.min.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/jquery.slider.min.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/magnific-popup.css"-->
     <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/royalslider.css">
     <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
     <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/mkw.css">
-    <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css?v=4">
+    <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
     {block "css"}{/block}
     {if ($dev)}
         <script src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>
@@ -120,6 +115,7 @@
     <script id="barat_hud_sr_script">
         var hst = document.createElement("script");
         hst.src = "//admin.fogyasztobarat.hu/h-api.js";
+        hst.async = true;
         hst.type = "text/javascript";
         hst.setAttribute("data-id", "M6CJIN2L");
         hst.setAttribute("id", "fbarat");
@@ -141,15 +137,5 @@
     <div class="modal-footer"></div>
 </div>
 <div id="messagecenter" class="mfp-hide"></div>
-<!--
-<script type="text/javascript">
-    (function(e,a){
-        var t,r=e.getElementsByTagName("head")[0],c=e.location.protocol;
-        t=e.createElement("script");t.type="text/javascript";
-        t.charset="utf-8";t.async=!0;t.defer=!0;
-        t.src=c+"//front.optimonk.com/public/"+a+"/js/preload.js";r.appendChild(t);
-    })(document,"31897");
-</script>
--->
 </body>
 </html>

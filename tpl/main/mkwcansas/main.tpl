@@ -1,16 +1,5 @@
 {extends "base.tpl"}
 
-{block "body"}
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-{/block}
-
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">
@@ -82,13 +71,12 @@
                                 <button>3</button>
                                 <button>4</button>
                                 <button>5</button>
-                                <span class="c-rating-value" itemprop="ratingValue">{$_ertekeles.ertekeles}</span>
+                                <span class="c-rating-value">{$_ertekeles.ertekeles}</span>
                             </div>
                         </div>
                     </div>
                 {/foreach}
             {/if}
-        <div class="fb-like-box" data-href="http://www.facebook.com/pages/Mindent-Kapni-Web%C3%A1ruh%C3%A1z/182178395162369" data-width="100%" data-height="400" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="false"></div>
         </div>
         <div class="span8">
             {if (count($korhintalista)>0)}

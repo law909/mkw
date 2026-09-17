@@ -4,10 +4,6 @@
     <meta name="itemId" content="{$termek.id}">
 {/block}
 
-{block "script"}
-    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-{/block}
-
 {block "kozep"}
 {include 'morzsa.tpl'}
 <div class="container whitebg">
