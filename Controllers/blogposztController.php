@@ -234,7 +234,10 @@ class blogposztController extends \mkwhelpers\MattableController
                 ['caption' => t('Blog'), 'url' => \mkw\store::getRouter()->generate('showblogposztlist')],
                 ['caption' => $blogposzt->getCim()],
             ]);
-            $view->setVar('blogposzt', $blogposzt->convertToArray());
+            $poszt = $blogposzt->convertToArray();
+            $view->setVar('blogposzt', $poszt);
+            $view->setVar('blogszerzo', \Services\SeoService::getBlogAuthor());
+            $view->setVar('blogjsonld', \Services\SeoService::blogPostingJsonLd($poszt));
             $view->printTemplateResult(false);
         } else {
             \mkw\store::redirectTo404($com);

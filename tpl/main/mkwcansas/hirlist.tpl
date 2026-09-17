@@ -5,6 +5,7 @@
 <div class="container whitebg">
 	<div class="row">
 		<div class="span12">
+			<h1>{t('Híreink')}</h1>
 			{foreach $children as $_child}
 				<div class="kat" data-href="/hir/{$_child.slug}">
 					<div class="kattext">

@@ -135,12 +135,16 @@ class Blogposzt
             'cim' => $this->getCim(),
             'kivonat' => $this->getKivonat(),
             'kepurlsmall' => $this->getKepurlSmall(),
+            'kepurllarge' => $this->getKepurlLarge(),
             'kepleiras' => $this->getKepleiras(),
             'szoveg' => $this->getSzoveg(),
             'url' => $this->getLink(),
             'seodescription' => $this->getShowSeodescription(),
             'megjelenesdatum' => $this->getMegjelenesdatumStr(),
             'megjelenesdatumstr' => $this->getMegjelenesdatumStr(),
+            'megjelenesdatumiso' => $this->getMegjelenesdatum()?->format('Y-m-d'),
+            'lastmodstr' => $this->getLastmod()?->format(\mkw\store::$DateFormat),
+            'lastmodiso' => $this->getLastmod()?->format('Y-m-d'),
             'showseodescription' => $this->getShowSeodescription(),
             'lathato' => $this->getLathato()
         ];

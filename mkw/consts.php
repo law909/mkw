@@ -189,6 +189,8 @@ class consts
     const Hirekseodescription = 'hirekseodescription';
     const Blogoldalcim = 'blogoldalcim';
     const Blogseodescription = 'blogseodescription';
+    const Blogszerzo = 'blogszerzo';
+    const Blogszerzoleiras = 'blogszerzoleiras';
     const Blogposztdb = 'blogposztdb';
     const BlogposztTermeklapdb = 'blogposzttermeklapdb';
     const BlogposztKategoriadb = 'blogposztkategoriadb';

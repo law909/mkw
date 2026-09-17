@@ -405,6 +405,10 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Hozzavasarolttermekdb, ($p ? $p->getErtek() : 6));
         $p = $repo->find(\mkw\consts::Autologoutmin);
         $view->setVar(\mkw\consts::Autologoutmin, ($p ? $p->getErtek() : 10));
+        $p = $repo->find(\mkw\consts::Blogszerzo);
+        $view->setVar(\mkw\consts::Blogszerzo, ($p ? $p->getErtek() : ''));
+        $p = $repo->find(\mkw\consts::Blogszerzoleiras);
+        $view->setVar(\mkw\consts::Blogszerzoleiras, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::CanonicalBaseUrl);
         $view->setVar(\mkw\consts::CanonicalBaseUrl, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GAFollow);
@@ -1758,6 +1762,8 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Blogposztdb, $this->params->getIntRequestParam('blogposztdb', 15));
         $this->setObj(\mkw\consts::BlogposztTermeklapdb, $this->params->getIntRequestParam('blogposzttermeklapdb', 3));
         $this->setObj(\mkw\consts::BlogposztKategoriadb, $this->params->getIntRequestParam('blogposztkategoriadb', 3));
+        $this->setObj(\mkw\consts::Blogszerzo, $this->params->getStringRequestParam('blogszerzo'));
+        $this->setObj(\mkw\consts::Blogszerzoleiras, $this->params->getStringRequestParam('blogszerzoleiras'));
         $this->setObj(\mkw\consts::CanonicalBaseUrl, rtrim($this->params->getStringRequestParam('canonicalbaseurl'), '/'));
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));

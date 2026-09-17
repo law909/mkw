@@ -346,6 +346,53 @@ class SeoService
         return $offer;
     }
 
+    /** A blog szerzője a beállításokból; üres név esetén maga a webáruház a szerző. */
+    public static function getBlogAuthor(): array
+    {
+        return [
+            'nev' => (string)store::getParameter(\mkw\consts::Blogszerzo, ''),
+            'leiras' => (string)store::getParameter(\mkw\consts::Blogszerzoleiras, ''),
+        ];
+    }
+
+    /** BlogPosting JSON-LD a blogposzt látható adataiból. */
+    public static function blogPostingJsonLd(array $poszt): string
+    {
+        $url = self::getCanonicalUrl();
+        $szerzo = self::getBlogAuthor();
+        $data = [
+            '@context' => 'https://schema.org',
+            '@type' => 'BlogPosting',
+            '@id' => $url . '#blogposting',
+            'mainEntityOfPage' => $url,
+            'url' => $url,
+            'headline' => self::plainText($poszt['cim'] ?? '', 110),
+            'author' => $szerzo['nev']
+                ? array_filter([
+                    '@type' => 'Person',
+                    'name' => $szerzo['nev'],
+                    'description' => $szerzo['leiras'],
+                ], 'strlen')
+                : ['@id' => self::getOrganizationId()],
+            'publisher' => ['@id' => self::getOrganizationId()],
+        ];
+        $kep = self::absoluteUrl($poszt['kepurllarge'] ?? '');
+        if ($kep) {
+            $data['image'] = [$kep];
+        }
+        $kivonat = self::plainText($poszt['kivonat'] ?? '', 500);
+        if ($kivonat) {
+            $data['description'] = $kivonat;
+        }
+        if (!empty($poszt['megjelenesdatumiso'])) {
+            $data['datePublished'] = $poszt['megjelenesdatumiso'];
+        }
+        if (!empty($poszt['lastmodiso'])) {
+            $data['dateModified'] = $poszt['lastmodiso'];
+        }
+        return self::jsonLd($data);
+    }
+
     /**
      * ItemList a listaoldalakhoz: a kártyákon lévő termékek sorrendje és URL-je.
      * A kártyákra nem való Product/Offer: az árat és a készletet a terméklap mondja meg.

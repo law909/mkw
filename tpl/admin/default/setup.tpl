@@ -1329,6 +1329,16 @@
                             <td colspan="3"><textarea id="BlogSeodescriptionEdit" name="blogseodescription"
                                                       cols="75">{$blogseodescription}</textarea></td>
                         </tr>
+                        <tr>
+                            <td><label for="BlogszerzoEdit">{at('Blog szerzője')}:</label></td>
+                            <td colspan="3"><input id="BlogszerzoEdit" name="blogszerzo" type="text" size="75" maxlength="255" value="{$blogszerzo}"
+                                                   placeholder="{at('valós személy vagy szerep')}"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="BlogszerzoleirasEdit">{at('Szerző bemutatkozása')}:</label></td>
+                            <td colspan="3"><input id="BlogszerzoleirasEdit" name="blogszerzoleiras" type="text" size="75" maxlength="255"
+                                                   value="{$blogszerzoleiras}"></td>
+                        </tr>
                         </tbody>
                     </table>
                     <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">

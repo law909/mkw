@@ -669,6 +669,7 @@ class store
             $v->setVar('termekdb', \mkwhelpers\TypeConverter::toInt($minidata['termekdb']));
         }
         $v->setVar('serverurl', self::getFullUrl());
+        $v->setVar('canonicalbase', \Services\SeoService::getBaseUrl());
         $v->setVar('canonical', \Services\SeoService::getCanonicalUrl());
         $v->setVar('robots', \Services\SeoService::getRobots());
         $v->setVar('cegadatok', \Services\SeoService::getOwnerData());

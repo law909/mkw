@@ -3,7 +3,7 @@
 {block "kozep"}
 {include 'morzsa.tpl'}
 <div class="container whitebg">
-	<article itemtype="http://schema.org/Article" itemscope="">
+	<article class="statlap">
 			<div class="row">
 				<div class="span12">
 					{$statlap.szoveg}

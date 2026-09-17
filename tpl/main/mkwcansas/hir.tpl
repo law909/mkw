@@ -3,10 +3,10 @@
 {block "kozep"}
 {include 'morzsa.tpl'}
 <div class="container whitebg">
-<article itemtype="http://schema.org/Article" itemscope="">
+<article class="hir">
 		<div class="row">
                     <div class="span10 offset1">
-                        <h2>{$hir.cim}</h2>
+                        <h1>{$hir.cim}</h1>
                         {$hir.szoveg}
                     </div>
                     <div class="hiralairas">
