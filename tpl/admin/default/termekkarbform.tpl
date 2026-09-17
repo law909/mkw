@@ -456,7 +456,6 @@
                         </td>
                         <td class="mattable-cell">
                             <input id="VCikkszamEdit" name="valtozatcikkszamgen" type="text" size="50"
-                                   {if ($setup.szinmode === 'fix')}placeholder="{at('üresen: TERMÉKCIKKSZÁM-színkód-méretkód')}"{/if}
                                    form="valtozatgeneratorform">
                         </td>
                         <td class="mattable-cell">
@@ -467,6 +466,16 @@
                                    form="valtozatgeneratorform">
                         </td>
                     </tr>
+                    {if ($setup.szinmode === 'fix')}
+                        <tr>
+                            <td class="mattable-cell" colspan="4">
+                                <label for="VGenCharkodEdit">{at('Színkód és méretkód a cikkszám végére (üres cikkszámnál a termékéhez)')}:
+                                    <input id="VGenCharkodEdit" form="valtozatgeneratorform" name="valtozatgencharkod"
+                                           type="checkbox"{if ($valtozatgencharkod)} checked="checked"{/if}>
+                                </label>
+                            </td>
+                        </tr>
+                    {/if}
                     {if ($setup.unas)}
                         <tr>
                             <td class="mattable-cell">

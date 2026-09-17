@@ -1736,6 +1736,7 @@ class termekController extends \mkwhelpers\MattableController
 
         $meretsor = new meretsorController();
         $view->setVar('meretsorlist', $meretsor->getSelectList());
+        $view->setVar('valtozatgencharkod', termekvaltozatController::isGenerateCharkodCikkszam());
 
         $kep = new termekkepController();
         $view->setVar('keplist', $kep->getSelectList($termek, null));

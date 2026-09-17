@@ -77,6 +77,8 @@ class consts
     const KategoriaKedvezmenyMigrated = 'kategoriakedvezmenymigralva';
     // a mugenrace DB-s termékváltozat cikkszám átírás lefutásának ideje (runonce)
     const ValtozatCikkszamMigrated = 'valtozatcikkszammigralva';
+    // webshoponként: valtozatgencharkod1, valtozatgencharkod2, ... – a változatgenerátor legutóbbi színkód/méretkód pipája
+    const ValtozatGenCharkod = 'valtozatgencharkod';
     const NagykerCimke = 'nagykercimke';
     const FelvetelAlattCimke = 'felvetelalattcimke';
     const FelvetelAlattTipus = 'felvetelalatttipus';

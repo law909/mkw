@@ -147,6 +147,12 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $this->getEm()->flush();
     }
 
+    // webshoponként, mert a mugenrace deploymentek közös DB-n vannak
+    public static function isGenerateCharkodCikkszam(): bool
+    {
+        return (bool)store::getParameter(\mkw\consts::ValtozatGenCharkod . store::getWebshopNum(), store::isSuperzoneB2B() ? '1' : '0');
+    }
+
     public function generate()
     {
         $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
@@ -198,6 +204,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
         if (store::isFixSzinMode()) {
+            $withCharkod = $this->params->getBoolRequestParam('valtozatgencharkod', false);
+            store::setParameter(\mkw\consts::ValtozatGenCharkod . store::getWebshopNum(), $withCharkod ? '1' : '0');
             $szinid = $this->params->getIntRequestParam('valtozatszinid');
             $meretsorid = $this->params->getIntRequestParam('valtozatmeretsorid');
             if ($szinid && $meretsorid) {
@@ -205,8 +213,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 $meretsor = $this->getEm()->getRepository(Meretsor::class)->find($meretsorid);
                 if ($szin && $meretsor) {
                     $meretek = $meretsor->getMeretek();
-                    // üresen hagyott mezőnél a cikkszám a termékéből és a szín, méret kódjából képződik
-                    $cikkszamok = trim($cikkszam) === '' ? [] : explode(';', $cikkszam);
+                    $cikkszamok = explode(';', $cikkszam);
                     $idegencikkszamok = explode(';', $idegencikkszam);
                     $cikl = 0;
                     $atSzin = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(
@@ -271,9 +278,10 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                         $valtozat->setNetto($netto);
                         $valtozat->setTermekfokep($termekfokep);
                         $valtozat->setElorendelheto($elorendelheto);
-                        if (!$cikkszamok) {
+                        $valtozatCikkszam = count($cikkszamok) == 1 ? $cikkszamok[0] : ($cikkszamok[$cikl] ?? null);
+                        if ($withCharkod) {
                             $generated = TermekValtozat::composeCikkszam(
-                                $termek->getCikkszam(),
+                                trim((string)$valtozatCikkszam) !== '' ? $valtozatCikkszam : $termek->getCikkszam(),
                                 $szin->getCharkod(),
                                 $szin->getNev(),
                                 $meret->getCharkod(),
@@ -281,10 +289,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                             );
                             // a mező 50 karakteres: a csonkolt cikkszám ütközhetne, inkább üres marad
                             $valtozat->setCikkszam(mb_strlen($generated) <= 50 ? $generated : '');
-                        } elseif (count($cikkszamok) == 1) {
-                            $valtozat->setCikkszam($cikkszamok[0]);
-                        } elseif (array_key_exists($cikl, $cikkszamok)) {
-                            $valtozat->setCikkszam($cikkszamok[$cikl]);
+                        } elseif ($valtozatCikkszam !== null) {
+                            $valtozat->setCikkszam($valtozatCikkszam);
                         }
                         if (count($idegencikkszamok) > 0) {
                             if (count($idegencikkszamok) == 1) {
