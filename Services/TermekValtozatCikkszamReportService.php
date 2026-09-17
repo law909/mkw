@@ -2,6 +2,8 @@
 
 namespace Services;
 
+use Doctrine\DBAL\ArrayParameterType;
+use Entities\TermekFa;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -10,7 +12,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 /**
  * A nem egyedi termékváltozat-cikkszámok kimutatása: az ütköző cikkszámok változatonként az okukkal, a több terméken
  * használt termékcikkszámok, a terméken többször felvett szín+méret, és az FC-MOTO készletexporton belüli ütközések.
- * A cikkszámokat a MySQL rendezése szerint hasonlítja, tehát a kis- és nagybetű nem számít.
+ * Csak azokkal a termékekkel foglalkozik, amelyek kategóriáján (termekfa1, örökléssel) be van kapcsolva a szín+méretes
+ * cikkszám – máshol a változat cikkszáma nem ebből a szabályból jön. A cikkszámokat a MySQL rendezése szerint
+ * hasonlítja, tehát a kis- és nagybetű nem számít.
  */
 class TermekValtozatCikkszamReportService
 {
@@ -18,11 +22,16 @@ class TermekValtozatCikkszamReportService
     private const REASON_SZINMERET = 'ugyanaz a szín+méret többször a terméken';
     private const REASON_KOD = 'eltérő szín/méret azonos kóddal';
 
+    /** @var int[] a szín+méretes cikkszámú termékfa ágak */
+    private array $termekfaIds = [];
+
     /**
      * @param array<int, true> $fcmotoValtozatIds az FC-MOTO készletexport változatai
      */
     public function createSpreadsheet(array $fcmotoValtozatIds): Spreadsheet
     {
+        // üres lista mellett az IN () hibás lenne, a 0 id-jű ág pedig nem létezik
+        $this->termekfaIds = \mkw\store::getEm()->getRepository(TermekFa::class)->getSzinmeretcikkszamIds() ?: [0];
         $excel = new Spreadsheet();
         [$collisions, $fcmotoCollisions] = $this->getCollisions($fcmotoValtozatIds);
         $this->writeSheet(
@@ -64,12 +73,16 @@ class TermekValtozatCikkszamReportService
             'SELECT x.cikkszam AS csoport, x.db, tv.id, tv.cikkszam, tv.vonalkod, tv.lathato, tv.inaktiv, tv.termek_id, t.cikkszam AS termekcikkszam,'
             . ' t.nev AS termeknev, t.inaktiv AS termekinaktiv, tv.adattipus1_id, tv.ertek1, tv.adattipus2_id, tv.ertek2, s.nev AS szinnev, m.nev AS meretnev'
             . ' FROM termekvaltozat tv'
-            . ' INNER JOIN (SELECT cikkszam, COUNT(*) AS db FROM termekvaltozat WHERE cikkszam <> "" GROUP BY cikkszam HAVING COUNT(*) > 1) x'
+            . ' INNER JOIN (SELECT tv2.cikkszam, COUNT(*) AS db FROM termekvaltozat tv2'
+            . ' INNER JOIN termek t2 ON t2.id = tv2.termek_id AND t2.termekfa1_id IN (?)'
+            . ' WHERE tv2.cikkszam <> "" GROUP BY tv2.cikkszam HAVING COUNT(*) > 1) x'
             . ' ON x.cikkszam = tv.cikkszam'
-            . ' INNER JOIN termek t ON t.id = tv.termek_id'
+            . ' INNER JOIN termek t ON t.id = tv.termek_id AND t.termekfa1_id IN (?)'
             . ' LEFT JOIN szin s ON s.id = tv.szin_id'
             . ' LEFT JOIN meret m ON m.id = tv.meret_id'
-            . ' ORDER BY x.cikkszam, tv.termek_id, tv.id'
+            . ' ORDER BY x.cikkszam, tv.termek_id, tv.id',
+            [$this->termekfaIds, $this->termekfaIds],
+            [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER]
         );
         // színtörzs nélküli (régi, szöveges) változatnál a TermekValtozat::getSzin()/getMeret() szövege
         $ertek = fn(array $row, $tipus) => match (true) {
@@ -134,9 +147,13 @@ class TermekValtozatCikkszamReportService
             'SELECT t.id, t.cikkszam, t.nev, t.inaktiv, t.lathato, x.db,'
             . ' (SELECT COUNT(*) FROM termekvaltozat tv WHERE tv.termek_id = t.id) AS valtozatdb'
             . ' FROM termek t'
-            . ' INNER JOIN (SELECT cikkszam, COUNT(*) AS db FROM termek WHERE cikkszam <> "" GROUP BY cikkszam HAVING COUNT(*) > 1) x'
+            . ' INNER JOIN (SELECT cikkszam, COUNT(*) AS db FROM termek WHERE cikkszam <> "" AND termekfa1_id IN (?)'
+            . ' GROUP BY cikkszam HAVING COUNT(*) > 1) x'
             . ' ON x.cikkszam = t.cikkszam'
-            . ' ORDER BY x.cikkszam, t.id'
+            . ' WHERE t.termekfa1_id IN (?)'
+            . ' ORDER BY x.cikkszam, t.id',
+            [$this->termekfaIds, $this->termekfaIds],
+            [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER]
         );
         return array_map(fn($row) => [
             $row['cikkszam'], (int)$row['db'], (int)$row['id'], $row['nev'], $this->yes($row['inaktiv']), $this->yes($row['lathato']),
@@ -152,10 +169,12 @@ class TermekValtozatCikkszamReportService
             . ' INNER JOIN (SELECT termek_id, szin_id, meret_id, COUNT(*) AS db FROM termekvaltozat'
             . ' WHERE szin_id IS NOT NULL AND meret_id IS NOT NULL GROUP BY termek_id, szin_id, meret_id HAVING COUNT(*) > 1) x'
             . ' ON x.termek_id = tv.termek_id AND x.szin_id = tv.szin_id AND x.meret_id = tv.meret_id'
-            . ' INNER JOIN termek t ON t.id = tv.termek_id'
+            . ' INNER JOIN termek t ON t.id = tv.termek_id AND t.termekfa1_id IN (?)'
             . ' INNER JOIN szin s ON s.id = tv.szin_id'
             . ' INNER JOIN meret m ON m.id = tv.meret_id'
-            . ' ORDER BY t.cikkszam, tv.termek_id, s.nev, m.nev, tv.id'
+            . ' ORDER BY t.cikkszam, tv.termek_id, s.nev, m.nev, tv.id',
+            [$this->termekfaIds],
+            [ArrayParameterType::INTEGER]
         );
         return array_map(fn($row) => [
             (int)$row['termek_id'], $row['cikkszam'], $row['nev'], $row['szin'], $row['meret'], (int)$row['db'], (int)$row['id'],
