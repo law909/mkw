@@ -158,11 +158,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         IOFactory::createWriter($excel, 'Xlsx')->save('php://output');
     }
 
-    public static function isGenerateCharkodCikkszam(): bool
-    {
-        return (bool)store::getParameter(\mkw\consts::ValtozatGenCharkod, store::isSuperzoneB2B() ? '1' : '0');
-    }
-
     public function generate()
     {
         $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
@@ -214,8 +209,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $kepid = $this->params->getIntRequestParam('valtozatkepid');
 
         if (store::isFixSzinMode()) {
-            $withCharkod = $this->params->getBoolRequestParam('valtozatgencharkod', false);
-            store::setParameter(\mkw\consts::ValtozatGenCharkod, $withCharkod ? '1' : '0');
+            // a termék fő kategóriája dönti el, kell-e a cikkszámba a szín- és a méretkód (a fa örökléses jelölése)
+            $withCharkod = (bool)$termek->getTermekfa1()?->isSzinmeretcikkszamEnabled();
             $szinid = $this->params->getIntRequestParam('valtozatszinid');
             $meretsorid = $this->params->getIntRequestParam('valtozatmeretsorid');
             if ($szinid && $meretsorid) {
