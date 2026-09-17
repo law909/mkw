@@ -9,9 +9,7 @@ use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekKep;
 use Entities\TermekValtozat;
-use Entities\TermekValtozatErtek;
 use Entities\TermekValtozatErtekKodszotar;
-use Entities\TermekValtozatErtekRepository;
 use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
@@ -1535,7 +1533,7 @@ class exportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Az FC-MOTO készletexportba kerülő változatok, az ott használt (színnév alapú) cikkszámmal.
+     * Az FC-MOTO készletexportba kerülő változatok, a változat saját cikkszámával.
      *
      * @return \Generator<array{termek: array, valtozat: TermekValtozat, cikkszam: string}>
      */
@@ -1546,9 +1544,6 @@ class exportController extends \mkwhelpers\Controller
         $trsm->addScalarResult('cikkszam', 'cikkszam');
         $trsm->addScalarResult('nev', 'nev');
         $trsm->addScalarResult('kifuto', 'kifuto');
-
-        /** @var TermekValtozatErtekRepository $tver */
-        $tver = $this->getRepo(TermekValtozatErtek::class);
 
         foreach ($this->getRepo(TermekFa::class)->getB2BArray() as $termekfa) {
             $termekek = $this->getEm()->createNativeQuery(
@@ -1566,7 +1561,7 @@ class exportController extends \mkwhelpers\Controller
                     yield [
                         'termek' => $termek,
                         'valtozat' => $valtozat,
-                        'cikkszam' => strtoupper($termek['cikkszam']) . '-' . $tver->translateColor($valtozat->getSzin()) . '-' . $valtozat->getMeret(),
+                        'cikkszam' => $valtozat->getCikkszam(),
                     ];
                 }
             }

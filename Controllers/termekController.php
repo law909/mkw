@@ -2286,7 +2286,7 @@ class termekController extends \mkwhelpers\MattableController
                         $excel->setActiveSheetIndex(0)
                             ->setCellValue('A' . $sor, $termek->getId())
                             ->setCellValue('B' . $sor, $valtozat->getId())
-                            ->setCellValue('C' . $sor, strtoupper($termek->getCikkszam()))
+                            ->setCellValue('C' . $sor, $valtozat->getCikkszam())
                             ->setCellValue('D' . $sor, $nev)
                             ->setCellValue('E' . $sor, $leiras)
                             ->setCellValue('F' . $sor, \mkw\store::getFullUrl($termek->getKepurl(), \mkw\store::getConfigValue('mainurl')))
