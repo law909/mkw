@@ -673,6 +673,11 @@ class store
         $v->setVar('canonical', \Services\SeoService::getCanonicalUrl());
         $v->setVar('robots', \Services\SeoService::getRobots());
         $v->setVar('cegadatok', \Services\SeoService::getOwnerData());
+        $v->setVar('oglocale', \Services\SeoService::getOgLocale());
+        $v->setVar('ogtype', 'website');
+        $ogkep = \Services\SeoService::ogImage();
+        $v->setVar('ogimage', $ogkep['url']);
+        $v->setVar('ogimagesajat', $ogkep['sajat']);
         $v->setVar('orgjsonld', \Services\SeoService::organizationJsonLd());
         $v->setVar('logo', self::getParameter(\mkw\consts::Logo));
         $oc = new orszagController();

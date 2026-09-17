@@ -192,6 +192,7 @@ class mainController extends \mkwhelpers\Controller
             $this->setBreadcrumb($this->view, $tf->getMorzsa($ag));
             $this->view->setVar('sketchfabmodelid', $ag->getSketchfabmodelid());
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
+            $this->setOpenGraph($this->view, null, $ag->getKepurlLarge(), $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
             $this->view->setVar('seodescription', $ag->getShowSeodescription());
             $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
@@ -275,6 +276,7 @@ class mainController extends \mkwhelpers\Controller
                 $msd = \mkw\store::getParameter(\mkw\consts::Seodescription);
             }
             $this->view->setVar('seodescription', $msd);
+            $this->setOpenGraph($this->view, null, $c->getKepurlLarge(), $c->getNev());
 
             $this->view->printTemplateResult(true);
         } else {
@@ -393,6 +395,13 @@ class mainController extends \mkwhelpers\Controller
                     $this->view->setVar(
                         'termekjsonld',
                         \Services\SeoService::productJsonLd($t['termek'], implode(' > ', $kategoriaut))
+                    );
+                    $this->setOpenGraph(
+                        $this->view,
+                        'product',
+                        $t['termek']['kepurl'],
+                        $termek->getLocalizedFieldValue('nev'),
+                        $t['termek']['rovidleiras']
                     );
                     if (\mkw\store::isLampion()) {
                         // a katalógus a gyökér nélküli, linkelt morzsát használja, nem a navigatort

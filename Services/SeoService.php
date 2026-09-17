@@ -220,6 +220,29 @@ class SeoService
         ]);
     }
 
+    /** OpenGraph locale (hu_HU alak). */
+    public static function getOgLocale(): string
+    {
+        $locale = (string)store::getWebshopLongLocale() ?: 'hu_hu';
+        $parts = explode('_', $locale);
+        return count($parts) === 2 ? strtolower($parts[0]) . '_' . strtoupper($parts[1]) : $locale;
+    }
+
+    /**
+     * Az oldal megosztási képe: az oldaltípus saját képe, ha van, különben a beállított
+     * alapértelmezett megosztási kép.
+     *
+     * @return array{url: string, sajat: bool} a `sajat` false esetén az alapkép méretei ismertek (1200x630)
+     */
+    public static function ogImage(?string $sajatKep = null): array
+    {
+        $url = self::absoluteUrl($sajatKep ?: '');
+        if ($url) {
+            return ['url' => $url, 'sajat' => true];
+        }
+        return ['url' => self::absoluteUrl(store::getParameter(\mkw\consts::Ogkep, '')), 'sajat' => false];
+    }
+
     /** A webshop pénznemének kódja a strukturált adatokhoz. */
     public static function getCurrencyCode(): string
     {

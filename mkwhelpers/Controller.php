@@ -73,6 +73,30 @@ abstract class Controller
         $view->setVar('morzsajsonld', \Services\SeoService::breadcrumbJsonLd($chain));
     }
 
+    /**
+     * Oldaltípus-specifikus OpenGraph adatok. A fillTemplate() adja az alapértékeket
+     * (website típus, a beállított megosztási kép), itt csak a különbség kerül be.
+     *
+     * @param string|null $kepurl az oldal saját képe; üresen az alapértelmezett megosztási kép marad
+     */
+    protected function setOpenGraph($view, $type = null, $kepurl = null, $title = null, $desc = null)
+    {
+        if ($type) {
+            $view->setVar('ogtype', $type);
+        }
+        if ($title) {
+            $view->setVar('ogtitle', $title);
+        }
+        if ($desc) {
+            $view->setVar('ogdesc', $desc);
+        }
+        if ($kepurl) {
+            $kep = \Services\SeoService::ogImage($kepurl);
+            $view->setVar('ogimage', $kep['url']);
+            $view->setVar('ogimagesajat', $kep['sajat']);
+        }
+    }
+
     public function getEntityName()
     {
         return $this->entityName;

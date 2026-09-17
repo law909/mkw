@@ -1,11 +1,6 @@
 {extends "base.tpl"}
 
 {block "meta"}
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="{$blogposzt.cim|escape}">
-    <meta property="og:url" content="{$canonical|escape}">
-    <meta property="og:description" content="{$blogposzt.kivonat|strip_tags|strip|trim|escape}">
-    {if ($blogposzt.kepurllarge)}<meta property="og:image" content="{$canonicalbase}{$blogposzt.kepurllarge|escape}">{/if}
     <meta property="article:published_time" content="{$blogposzt.megjelenesdatumiso}">
     {if ($blogposzt.lastmodiso)}<meta property="article:modified_time" content="{$blogposzt.lastmodiso}">{/if}
 {/block}

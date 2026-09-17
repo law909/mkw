@@ -6,8 +6,21 @@
     <meta name="robots" content="{$robots|default:'index,follow'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta property="og:site_name" content="Mindentkapni.hu"/>
     {if ($canonical|default)}<link rel="canonical" href="{$canonical|escape}">{/if}
+    <meta property="og:site_name" content="{$cegadatok.markanev|default:'Mindentkapni.hu'|escape}">
+    <meta property="og:locale" content="{$oglocale|default:'hu_HU'}">
+    <meta property="og:type" content="{$ogtype|default:'website'}">
+    <meta property="og:title" content="{$ogtitle|default:$pagetitle|default|escape}">
+    <meta property="og:description" content="{$ogdesc|default:$seodescription|default|strip_tags|strip|trim|escape}">
+    {if ($canonical|default)}<meta property="og:url" content="{$canonical|escape}">{/if}
+    {if ($ogimage|default)}
+        <meta property="og:image" content="{$ogimage|escape}">
+        {if (!$ogimagesajat)}
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+        {/if}
+    {/if}
+    <meta name="twitter:card" content="summary_large_image">
     {block "meta"}{/block}
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">

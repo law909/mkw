@@ -238,6 +238,7 @@ class blogposztController extends \mkwhelpers\MattableController
             $view->setVar('blogposzt', $poszt);
             $view->setVar('blogszerzo', \Services\SeoService::getBlogAuthor());
             $view->setVar('blogjsonld', \Services\SeoService::blogPostingJsonLd($poszt));
+            $this->setOpenGraph($view, 'article', $poszt['kepurllarge'], $poszt['cim'], $poszt['kivonat']);
             $view->printTemplateResult(false);
         } else {
             \mkw\store::redirectTo404($com);

@@ -1,12 +1,7 @@
 {extends "base.tpl"}
 
 {block "meta"}
-    <meta property="og:title" content="{$pagetitle|default}"/>
-    <meta property="og:url" content="{$canonical|escape}"/>
-    <meta property="og:description" content="{$termek.rovidleiras|strip_tags|strip|trim|escape}"/>
-    <meta property="og:image" content="{$termek.fullkepurl}"/>
-    <meta property="og:type" content="product"/>
-    <meta name='itemId' content='{$termek.id}'>
+    <meta name="itemId" content="{$termek.id}">
 {/block}
 
 {block "script"}

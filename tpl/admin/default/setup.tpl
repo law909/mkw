@@ -1224,6 +1224,11 @@
                                                    value="{$canonicalbaseurl}" placeholder="https://www.pelda.hu"></td>
                         </tr>
                         <tr>
+                            <td><label for="OgkepEdit">{at('Megosztási kép')}:</label></td>
+                            <td colspan="3"><input id="OgkepEdit" name="ogkep" type="text" size="75" maxlength="255" value="{$ogkep}"
+                                                   placeholder="{at('1200x630 px, pl. /kepek/og/megosztas.jpg')}"></td>
+                        </tr>
+                        <tr>
                             <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
                             <td colspan="3"><input id="OldalCimEdit" name="oldalcim" type="text" size="75" maxlength="255" value="{$oldalcim}"></td>
                         </tr>
