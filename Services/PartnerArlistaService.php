@@ -20,8 +20,8 @@ class PartnerArlistaService
 
     /**
      * A nyomtatott árlista: az árlista kategóriái, alattuk azok a termékek, amelyeknek ez a legszűkebb árlistás
-     * kategóriájuk, a partner ársávjának és valutanemének nettó árával és sávonként a kedvezményes árral. Árlistán
-     * nem szereplő kategóriájú és ár nélküli termék nem kerül bele.
+     * kategóriájuk, a partner ársávjának és valutanemének nettó árából a partner áfakulcsával számolt bruttó árral és
+     * sávonként a kedvezményes árral. Árlistán nem szereplő kategóriájú és ár nélküli termék nem kerül bele.
      *
      * @param int[] $cimkeIds ha nem üres, csak ezek valamelyikével jelölt termékek
      */
@@ -33,6 +33,8 @@ class PartnerArlistaService
         // a getKedvezmenynelkuliNettoAr is erre az ársávra esik vissza, ha a partnernek nincs sajátja
         $arsavId = \mkw\store::getParameter(\mkw\consts::Arsav);
         $arsav = $partner->getArsav() ?: ($arsavId ? $em->getRepository(Arsav::class)->find($arsavId) : null);
+        // a partner országa és adószáma szerinti kulcs; ha abból nem dönthető el, a termék saját áfája
+        $partnerAfa = $partner->getAFAOverride();
 
         $groups = [];
         foreach ($arlista['sorok'] as $sor) {
@@ -59,10 +61,12 @@ class PartnerArlistaService
             /** @var Termek $termek */
             foreach ($em->getRepository(Termek::class)->getAll($filter, ['cikkszam' => 'ASC']) as $termek) {
                 $groupId = $this->findGroup($groups, $termek);
-                $price = $groupId ? $termek->getKedvezmenynelkuliNettoAr(null, $partner) : 0;
-                if ($price <= 0) {
+                $netto = $groupId ? $termek->getKedvezmenynelkuliNettoAr(null, $partner) : 0;
+                if ($netto <= 0) {
                     continue;
                 }
+                $afa = $partnerAfa ?: $termek->getAfa();
+                $price = $afa ? $afa->calcBrutto($netto) : $netto;
                 $bandPrices = [];
                 foreach ($arlista['savok'] as $sav) {
                     $kedvezmeny = $groups[$groupId]['kedvezmenyek'][$sav['id']] ?? null;
