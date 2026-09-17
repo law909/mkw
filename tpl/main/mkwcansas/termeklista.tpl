@@ -376,7 +376,7 @@
 					{/for}
 				{/if}
 			{else}
-                <h1>A termékek jelenleg feltöltés alatt állnak!</h1>
+                <p class="uresKategoria">A termékek jelenleg feltöltés alatt állnak!</p>
 			{/if}
 			<div class="lapozo">
 				<form class="lapozoform" action="{$url}" method="post" data-url="{$url}" data-pageno="{$lapozo.pageno}">
