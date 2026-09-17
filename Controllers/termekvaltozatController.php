@@ -10,6 +10,8 @@ use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
 use Entities\TermekValtozatErtek;
 use mkw\store;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Services\TermekValtozatCikkszamReportService;
 
 class termekvaltozatController extends \mkwhelpers\MattableController
 {
@@ -145,6 +147,15 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $this->getEm()->remove($valt);
         }
         $this->getEm()->flush();
+    }
+
+    public function cikkszamReport()
+    {
+        $excel = (new TermekValtozatCikkszamReportService())->createSpreadsheet((new exportController())->getFcmotoStockValtozatIds());
+        header('Cache-Control: private');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename=cikkszam-utkozesek-' . date('Ymd') . '.xlsx');
+        IOFactory::createWriter($excel, 'Xlsx')->save('php://output');
     }
 
     public static function isGenerateCharkodCikkszam(): bool

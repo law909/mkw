@@ -1568,6 +1568,16 @@ class exportController extends \mkwhelpers\Controller
         }
     }
 
+    /** @return array<int, true> az FC-MOTO készletexport változatainak id-je */
+    public function getFcmotoStockValtozatIds(): array
+    {
+        $ids = [];
+        foreach ($this->getFcmotoStockItems() as $item) {
+            $ids[$item['valtozat']->getId()] = true;
+        }
+        return $ids;
+    }
+
     public function fcmotostockExport()
     {
         $excel = new Spreadsheet();

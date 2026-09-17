@@ -2641,6 +2641,18 @@ if ($DBVersion < '0179') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0179');
 }
 
+if ($DBVersion < '0180') {
+    // a nem egyedi változat-cikkszámok xlsx kimutatása; a közös mugenrace DB-n látszik, máshol rejtve
+    $lathato = in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace2026'], true) ? 1 : 0;
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 9, "Változat cikkszám ütközések", "/admin/termekvaltozat/cikkszamreport", "/admin/termekvaltozat", 40, ?, 570, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/termekvaltozat/cikkszamreport") m)',
+        [$lathato]
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0180');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
