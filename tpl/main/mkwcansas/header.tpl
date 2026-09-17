@@ -41,7 +41,7 @@
         <div class="row">
             <div class="span12">
             <div class="pull-left">
-                <a href="/"><img src="{$logo}" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház"></a>
+                <a href="/"><img src="{$logo}" alt="Mindent Kapni Webáruház logo" title="Mindent Kapni Webáruház" fetchpriority="high"></a>
             </div>
             <div class="pull-left">
                 <form id="searchform" name="searchbox" method="get" action="/kereses" autocomplete="off">

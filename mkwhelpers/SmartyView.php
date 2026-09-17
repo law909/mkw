@@ -9,6 +9,7 @@ class SmartyView extends View
     private static $assetRoot = null;
     // fájlonkénti módosítási idő gyorsítótár (kéréseN belül), hogy ne stat-eljünk feleslegesen
     private static $assetMtime = [];
+    private static $imageSize = [];
 
     public function __construct($compiledtplpath, $tplpath, $tplfilename, $configdir = '', $cachedir = '')
     {
@@ -101,6 +102,56 @@ class SmartyView extends View
     {
         // a kirenderelt HTML helyi .js/.css hivatkozásaihoz automatikusan ?v=<mtime> kerül
         $this->tplengine->registerFilter('output', ['\mkwhelpers\SmartyView', 'versionAssets']);
+        $this->tplengine->registerFilter('output', ['\mkwhelpers\SmartyView', 'improveImages']);
+    }
+
+    /**
+     * A kész HTML helyi <img> tagjait egészíti ki: valódi `width`/`height` (a fájl fejlécéből)
+     * és `loading="lazy"`. Így nem kell húsz sablonban kézzel karbantartani, és a méretek
+     * mindig a tényleges képhez tartoznak — a képgenerálás megtartja az arányt, tehát beégetett
+     * magasságot nem lehetne írni.
+     *
+     * A hajtás feletti képeket a sablon `fetchpriority="high"`-jal jelöli: azokat nem lazyzza.
+     * A már meglévő `loading` / `width` / `height` attribútumokat nem írja felül.
+     *
+     * Smarty output filter callback: ($output, $template) => string
+     */
+    public static function improveImages($output, $template = null)
+    {
+        if (self::$assetRoot === null) {
+            self::$assetRoot = \dirname(__DIR__);
+        }
+        return \preg_replace_callback(
+            '#<img\s[^>]*>#i',
+            function ($m) {
+                $tag = $m[0];
+                $add = '';
+                if (!\preg_match('#\sloading=#i', $tag) && !\preg_match('#\sfetchpriority=#i', $tag)) {
+                    $add .= ' loading="lazy"';
+                }
+                if (!\preg_match('#\s(?:width|height)=#i', $tag)
+                    && \preg_match('#\ssrc="(/[^"?]+)#i', $tag, $src)
+                ) {
+                    $size = self::localImageSize($src[1]);
+                    if ($size) {
+                        $add .= ' width="' . $size[0] . '" height="' . $size[1] . '"';
+                    }
+                }
+                return $add === '' ? $tag : \rtrim(\substr($tag, 0, -1), '/ ') . $add . '>';
+            },
+            $output
+        );
+    }
+
+    /** Egy helyi kép mérete a fájl fejlécéből, kérésenként egyszer beolvasva. */
+    private static function localImageSize(string $path): ?array
+    {
+        if (!\array_key_exists($path, self::$imageSize)) {
+            $file = self::$assetRoot . \rawurldecode($path);
+            $size = \is_file($file) ? @\getimagesize($file) : false;
+            self::$imageSize[$path] = ($size && $size[0] && $size[1]) ? [$size[0], $size[1]] : null;
+        }
+        return self::$imageSize[$path];
     }
 
     /**

@@ -2023,6 +2023,7 @@ class termekController extends \mkwhelpers\MattableController
         $termekek = $this->getRepo()->getFeedTermek();
         foreach ($termekek as $termek) {
             $view->setVar('kepurl', $termek->getKepUrlSmall());
+            $view->setVar('nev', $termek->getNev());
             $view->setVar('szoveg', $termek->getRovidLeiras());
             $view->setVar('url', \mkw\store::getRouter()->generate('showtermek', true, ['slug' => $termek->getSlug()]));
             $entries[] = [

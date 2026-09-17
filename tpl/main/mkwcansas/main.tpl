@@ -94,7 +94,8 @@
             {/if}
             <div>
                 <h1 class="main">Háztartási webáruházunkban tényleg Mindent Kapni!</h1>
-                <img src="\themes\main\mkwcansas\img\mindentkapni.hu-haztartasi-webaruhaz.jpg">
+                <img src="/themes/main/mkwcansas/img/mindentkapni.hu-haztartasi-webaruhaz.jpg"
+                     alt="Háztartási webáruház - Mindent Kapni Webáruház">
                 <p>Az online vásárlás modern világunk egyik nagy találmánya. Anélkül vásárolhatunk ma már szinte
                 bármit, hogy el kellene mennünk otthonról. Amennyiben military felszerelésekre, ruhákra, műszaki
                 cikkekre, sportszerekre van szüksége, vagy játékokat keres gyermekének, érdemes felkeresnie

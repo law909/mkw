@@ -160,7 +160,7 @@
                                                     <a href="{$megr.termekertekelesurl}" class="js-termekertekeles btn okbtn">{t('Értékelés')}</a>
                                                 {/if}
                                             </td>
-                                            <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png"></a></td>
+                                            <td><a href="#" class=""><img src="/themes/main/mkwcansas/img/i_down.png" alt=""></a></td>
                                         </tr>
                                         <tr class="notvisible acc-megrendelesborderbottom">
                                             <td colspan="6">

@@ -16,7 +16,10 @@
                         <div class="textaligncenter"><h1 class="termeknev">{$termek.caption}</h1></div>
                         <div class="termekimagecontainer textaligncenter">
                             <a id="termekkeplink{$termek.id}" href="{$termek.kepurl}" class="js-lightbox" title="{$termek.caption}">
-                                <img id="termekkep{$termek.id}" src="{$termek.kozepeskepurl}" alt="{$termek.caption}" title="{$termek.caption}">
+                                <img id="termekkep{$termek.id}" src="{$termek.kepurl}"
+                                     srcset="{$termek.kozepeskepurl} 250w, {$termek.kepurl400} 400w, {$termek.kepurl} 1000w"
+                                     sizes="(max-width: 767px) 100vw, 460px"
+                                     fetchpriority="high" alt="{$termek.caption}" title="{$termek.caption}">
                             </a>
                         </div>
                         {$kcnt=count($termek.kepek)}

@@ -41,6 +41,7 @@
             <div>
                 <a href="https://www.barion.com/en/about-secure-online-payment" target="_blank" class="pull-right barionbanner">
                     <img src="/themes/main/mkwcansas/img/barion-card-payment-mark-2017-400px.png"
+                         alt="Barion - biztonságos online bankkártyás fizetés"
                          title="A kényelmes és biztonságos online fizetést a Barion Payment Zrt. biztosítja, MNB engedély száma: H-EN-I-1064/2013 Bankkártya adatai áruházunkhoz nem jutnak el.">
                 </a>
             </div>
