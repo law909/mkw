@@ -147,10 +147,9 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $this->getEm()->flush();
     }
 
-    // webshoponként, mert a mugenrace deploymentek közös DB-n vannak
     public static function isGenerateCharkodCikkszam(): bool
     {
-        return (bool)store::getParameter(\mkw\consts::ValtozatGenCharkod . store::getWebshopNum(), store::isSuperzoneB2B() ? '1' : '0');
+        return (bool)store::getParameter(\mkw\consts::ValtozatGenCharkod, store::isSuperzoneB2B() ? '1' : '0');
     }
 
     public function generate()
@@ -205,7 +204,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
 
         if (store::isFixSzinMode()) {
             $withCharkod = $this->params->getBoolRequestParam('valtozatgencharkod', false);
-            store::setParameter(\mkw\consts::ValtozatGenCharkod . store::getWebshopNum(), $withCharkod ? '1' : '0');
+            store::setParameter(\mkw\consts::ValtozatGenCharkod, $withCharkod ? '1' : '0');
             $szinid = $this->params->getIntRequestParam('valtozatszinid');
             $meretsorid = $this->params->getIntRequestParam('valtozatmeretsorid');
             if ($szinid && $meretsorid) {
