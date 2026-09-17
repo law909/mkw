@@ -75,7 +75,7 @@ class consts
     const NewPartnerCimke = 'ujpartnercimke';
     // a superzoneb2b-s kategória kedvezmény migráció lefutásának ideje (runonce)
     const KategoriaKedvezmenyMigrated = 'kategoriakedvezmenymigralva';
-    // a mugenrace DB-s termékváltozat cikkszám átírás lefutásának ideje (runonce)
+    // a runonce-ban már átírt cikkszámú termékfa ágak id-je, vesszővel (lásd runonce.php)
     const ValtozatCikkszamMigrated = 'valtozatcikkszammigralva';
     const NagykerCimke = 'nagykercimke';
     const FelvetelAlattCimke = 'felvetelalattcimke';

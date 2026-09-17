@@ -2716,11 +2716,15 @@ if (\mkw\store::isSuperzoneB2B() && !\mkw\store::getParameter(\mkw\consts::Kateg
     }
 }
 
-// A termékváltozat cikkszáma eddig a termékével egyezett, ezentúl TERMÉKCIKKSZÁM-színkód-méretkód, ahogy az ideiglenes
-// FC-MOTO cikkszám lista mutatta, és ahogy a változatgenerátor is képzi (TermekValtozat::composeCikkszam). Csak a
-// mugenrace DB-n; saját jelzővel, mert a DBVersion közös, és egy ott futó másik deployment admin kérése átléptetné.
-if (in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace2026'], true)
-    && !\mkw\store::getParameter(\mkw\consts::ValtozatCikkszamMigrated)) {
+// A termékváltozat cikkszáma TERMÉKCIKKSZÁM-színkód-méretkód azokon az ágakon, amelyeken a termékfa szín+méretes
+// cikkszám jelölése (örökléssel) be van kapcsolva – ugyanaz a szabály, mint a változatgenerátorban
+// (TermekValtozat::composeCikkszam). Nem verzióblokk és nem is egyszeri: az ágakat a telepítés UTÁN jelölik meg, ezért
+// minden admin kérés megnézi, van-e újonnan bekapcsolt ág, és annak a termékeit írja át. A jelző a már feldolgozott
+// ágak id-je, így a később bekapcsolt ág is sorra kerül.
+$szinmeretIds = \mkw\store::getEm()->getRepository(\Entities\TermekFa::class)->getSzinmeretcikkszamIds();
+$migraltIds = array_map('intval', array_filter(explode(',', (string)\mkw\store::getParameter(\mkw\consts::ValtozatCikkszamMigrated)), 'ctype_digit'));
+$ujSzinmeretIds = array_values(array_diff($szinmeretIds, $migraltIds));
+if ($ujSzinmeretIds) {
     $conn = \mkw\store::getEm()->getConnection();
     $szinTipus = \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin);
     $meretTipus = \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret);
@@ -2734,9 +2738,11 @@ if (in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace202
         'SELECT tv.id, tv.cikkszam, t.cikkszam AS termekcikkszam, tv.adattipus1_id, tv.ertek1, tv.adattipus2_id, tv.ertek2,'
         . ' tv.szin_id, s.nev AS szinnev, s.charkod AS szincharkod, tv.meret_id, m.nev AS meretnev, m.charkod AS meretcharkod'
         . ' FROM termekvaltozat tv'
-        . ' INNER JOIN termek t ON t.id = tv.termek_id'
+        . ' INNER JOIN termek t ON t.id = tv.termek_id AND t.termekfa1_id IN (?)'
         . ' LEFT JOIN szin s ON s.id = tv.szin_id'
-        . ' LEFT JOIN meret m ON m.id = tv.meret_id'
+        . ' LEFT JOIN meret m ON m.id = tv.meret_id',
+        [$ujSzinmeretIds],
+        [\Doctrine\DBAL\ArrayParameterType::INTEGER]
     );
     $counts = ['átírva' => 0, 'nincs termékcikkszám' => 0, 'saját cikkszámú, nem változott' => 0, 'nincs szín és méret' => 0, 'hosszabb 50-nél' => 0];
     $conn->beginTransaction();
@@ -2776,8 +2782,11 @@ if (in_array(\mkw\store::getTheme(), ['superzoneb2b', 'mugenrace', 'mugenrace202
         $conn->rollBack();
         throw $e;
     }
-    \mkw\store::writelog('termékváltozat cikkszám átírás: ' . json_encode($counts, JSON_UNESCAPED_UNICODE), 'valtozat_cikkszam_migracio.txt');
-    \mkw\store::setParameter(\mkw\consts::ValtozatCikkszamMigrated, date('Y-m-d H:i:s'));
+    \mkw\store::writelog(
+        'termékváltozat cikkszám átírás (' . count($ujSzinmeretIds) . ' új ág): ' . json_encode($counts, JSON_UNESCAPED_UNICODE),
+        'valtozat_cikkszam_migracio.txt'
+    );
+    \mkw\store::setParameter(\mkw\consts::ValtozatCikkszamMigrated, implode(',', $szinmeretIds));
 }
 
 
