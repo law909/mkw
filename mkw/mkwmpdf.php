@@ -33,13 +33,17 @@ class mkwmpdf
     private $engine;
     private $html;
 
-    public function __construct($html)
+    /**
+     * @param float $marginHeader a fejléc távolsága a lap tetejétől (mm), pl. egy háttér-PDF fejléce alatt
+     */
+    public function __construct($html, $marginHeader = self::MARGIN_HEADER)
     {
         $this->raiseLimits();
         $this->html = $html;
         [$headerheight, $footerheight] = $this->measureRunningBlocks($html);
         $this->engine = new shortdashmpdf($this->getConfig([
-            'margin_top' => self::MARGIN_HEADER + $headerheight + self::MARGIN_PADDING,
+            'margin_header' => $marginHeader,
+            'margin_top' => $marginHeader + $headerheight + self::MARGIN_PADDING,
             'margin_bottom' => self::MARGIN_FOOTER + $footerheight + self::MARGIN_PADDING,
         ]));
         // A tételtáblák oszlopszélessége milliméterben van megadva (lásd biz_paged_base.tpl).

@@ -41,7 +41,8 @@ class arlistaController extends \mkwhelpers\Controller
             ? ['savok' => 'Vásárlási sávok kedvezménye (' . $valutanem . ')', 'ures' => 'Az árlistán nincs termék.']
             : ['savok' => 'Purchase limits discount in ' . $valutanem, 'ures' => 'There are no products on this price list.']);
 
-        $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
+        // a sávfej a háttér-PDF 30 mm-es fejléce alá kerül (27 + az mkwmpdf 3 mm-es köze)
+        $pdf = new \mkw\mkwmpdf($view->getTemplateResult(), 27);
         // a fül superzoneb2b alatt él, de a háttér a mugenrace2026 arculata: a téma nevéből nem rakható össze
         $background = \mkw\store::exporttemplatePath('arlista_mugenrace2026.pdf');
         if (is_file($background)) {
