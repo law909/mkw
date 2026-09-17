@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
     php-opcache \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN a2enmod rewrite proxy_fcgi setenvif
+RUN a2enmod rewrite proxy_fcgi setenvif headers
 RUN a2enconf php8.3-fpm
 
 COPY docker/apache.local.conf /etc/apache2/sites-available/000-default.conf

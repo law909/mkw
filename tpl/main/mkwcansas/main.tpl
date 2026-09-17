@@ -1,5 +1,14 @@
 {extends "base.tpl"}
 
+{block "vendorcss"}
+    <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/royalslider.css">
+    <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
+{/block}
+
+{block "script"}
+    <script defer src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>
+{/block}
+
 {block "kozep"}
 <div class="container whitebg">
 	<div class="row">

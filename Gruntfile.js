@@ -14,7 +14,6 @@ module.exports = function (grunt) {
                     'js/main/mkwcansas/jquery-migrate-1.2.1.js',
                     'js/main/mkwcansas/jquery.magnific-popup.min.js',
                     'js/main/mkwcansas/jquery.slider.min.js',
-                    'js/main/mkwcansas/jquery.royalslider.min.js',
                     'js/main/mkwcansas/jquery.debounce.min.js',
                     'js/main/mkwcansas/jquery.inputmask.min.js',
                     'js/main/mkwcansas/bootstrap-transition.js',

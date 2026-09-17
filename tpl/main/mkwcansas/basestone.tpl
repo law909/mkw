@@ -24,42 +24,42 @@
     <title>{$pagetitle|default}</title>
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">
     <link type="application/rss+xml" rel="alternate" title="{$feedtermektitle|default}" href="/feed/termek">
-    <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/royalslider.css">
-    <link rel="stylesheet" href="/themes/main/mkwcansas/royalslider/skins/default-inverted/rs-default-inverted.css">
+    {* külső könyvtárak stíluslapjai: a téma saját CSS-e írja őket felül, ezért előbb jönnek *}
+    {block "vendorcss"}{/block}
     <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/mkw.css">
     <link type="text/css" rel="stylesheet" href="/themes/main/mkwcansas/style.css">
     {block "css"}{/block}
     {if ($dev)}
-        <script src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>
-        <script src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
-        <script src="/js/main/mkwcansas/mkwerrorlog.js"></script>
-        <script src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
-        <script src="/js/main/mkwcansas/jquery.slider.min.js"></script>
-        <script src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>
-        <script src="/js/main/mkwcansas/jquery.debounce.min.js"></script>
-        <script src="/js/main/mkwcansas/jquery.inputmask.min.js"></script>
-        <script src="/js/main/mkwcansas/bootstrap-transition.js"></script>
-        <script src="/js/main/mkwcansas/bootstrap-modal.js"></script>
-        <script src="/js/main/mkwcansas/bootstrap-tab.js"></script>
-        <script src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
-        <script src="/js/main/mkwcansas/bootstrap-tooltip.js"></script>
-        <script src="/js/main/mkwcansas/h5f.js"></script>
-        <script src="/js/main/mkwcansas/matt-accordion.js"></script>
+        <script defer src="/js/main/mkwcansas/jquery-1.11.1.min.js"></script>
+        <script defer src="/js/main/mkwcansas/jquery-migrate-1.2.1.js"></script>
+        <script defer src="/js/main/mkwcansas/mkwerrorlog.js"></script>
+        <script defer src="/js/main/mkwcansas/jquery.magnific-popup.min.js"></script>
+        <script defer src="/js/main/mkwcansas/jquery.slider.min.js"></script>
+        <script defer src="/js/main/mkwcansas/jquery.debounce.min.js"></script>
+        <script defer src="/js/main/mkwcansas/jquery.inputmask.min.js"></script>
+        <script defer src="/js/main/mkwcansas/bootstrap-transition.js"></script>
+        <script defer src="/js/main/mkwcansas/bootstrap-modal.js"></script>
+        <script defer src="/js/main/mkwcansas/bootstrap-tab.js"></script>
+        <script defer src="/js/main/mkwcansas/bootstrap-typeahead.js"></script>
+        <script defer src="/js/main/mkwcansas/bootstrap-tooltip.js"></script>
+        <script defer src="/js/main/mkwcansas/h5f.js"></script>
+        <script defer src="/js/main/mkwcansas/matt-accordion.js"></script>
     {else}
-        <script src="/js/main/mkwcansas/mkwbootstrap.js?v={$bootstrapjsversion}"></script>
+        <script defer src="/js/main/mkwcansas/mkwbootstrap.js?v={$bootstrapjsversion}"></script>
     {/if}
+    {* Ide csak önálló, jQuery-független kód való: a fenti csomagok defer-esek, tehát később futnak. *}
     {block "script"}{/block}
     {if ($dev)}
-        <script src="/js/main/mkwcansas/mkwmsg.js"></script>
-        <script src="/js/main/mkwcansas/mkw.js"></script>
-        <script src="/js/main/mkwcansas/checks.js"></script>
-        <script src="/js/main/mkwcansas/checkout.js"></script>
-        <script src="/js/main/mkwcansas/cart.js"></script>
-        <script src="/js/main/mkwcansas/fiok.js"></script>
-        <script src="/js/main/mkwcansas/termekertekeles.js"></script>
-        <script src="/js/main/mkwcansas/mkwcansas.js"></script>
+        <script defer src="/js/main/mkwcansas/mkwmsg.js"></script>
+        <script defer src="/js/main/mkwcansas/mkw.js"></script>
+        <script defer src="/js/main/mkwcansas/checks.js"></script>
+        <script defer src="/js/main/mkwcansas/checkout.js"></script>
+        <script defer src="/js/main/mkwcansas/cart.js"></script>
+        <script defer src="/js/main/mkwcansas/fiok.js"></script>
+        <script defer src="/js/main/mkwcansas/termekertekeles.js"></script>
+        <script defer src="/js/main/mkwcansas/mkwcansas.js"></script>
     {else}
-        <script src="/js/main/mkwcansas/mkwapp.js?v={$jsversion}"></script>
+        <script defer src="/js/main/mkwcansas/mkwapp.js?v={$jsversion}"></script>
     {/if}
     {if ($GAFollow)}
         <script async src="https://www.googletagmanager.com/gtag/js?id={$GAFollow}"></script>

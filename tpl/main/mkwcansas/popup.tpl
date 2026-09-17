@@ -41,4 +41,4 @@
     {/foreach}
 </script>
 
-<script src="/js/main/mkwcansas/popup.js"></script>
+<script defer src="/js/main/mkwcansas/popup.js"></script>
