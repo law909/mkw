@@ -574,7 +574,42 @@ class TermekRepository extends \mkwhelpers\Repository
         return (int)$conn->executeStatement($sql);
     }
 
-    public function getForSitemapXml()
+    /** A sitemapba való termékek szűrése: aktív, látható, nem függőben lévő, van slugja. */
+    private function getSitemapWhere()
+    {
+        return ' WHERE (inaktiv=0) AND (fuggoben=0) AND (' . \mkw\store::getWebshopFieldName('lathato') . '=1)'
+            . ' AND (slug IS NOT NULL) AND (slug <> "")';
+    }
+
+    /** A legfrissebb tartalmi változás a publikus termékeken (a sitemap főoldal-lastmod-ja). */
+    public function getMaxSitemapLastmod()
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('lastmod', 'lastmod');
+        $q = $this->_em->createNativeQuery(
+            'SELECT MAX(contentmod) AS lastmod FROM termek' . $this->getSitemapWhere(),
+            $rsm
+        );
+        $res = $q->getScalarResult();
+        return $res[0]['lastmod'] ?? null;
+    }
+
+    public function getSitemapXmlCount()
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('db', 'db');
+        $q = $this->_em->createNativeQuery('SELECT COUNT(*) AS db FROM termek' . $this->getSitemapWhere(), $rsm);
+        $res = $q->getScalarResult();
+        return (int)$res[0]['db'];
+    }
+
+    /**
+     * A lastmod a contentmod, **nem** a lastmod: az utóbbi minden készlet- és árszinkronnál
+     * frissül, attól még a terméklap tartalma ugyanaz (lásd Listeners\TermekListener).
+     * Ha még nincs rögzített tartalmi változás, a sorból elmarad a lastmod — a hiányzó
+     * lastmod becsületes, a "ma módosult" hazugságtól a Google az egész mezőt figyelmen kívül hagyja.
+     */
+    public function getForSitemapXml($offset = 0, $limit = 0)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
@@ -583,10 +618,11 @@ class TermekRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('kepurl', 'kepurl');
         $rsm->addScalarResult('kepleiras', 'kepleiras');
         $q = $this->_em->createNativeQuery(
-            'SELECT id,slug,lastmod,kepurl,kepleiras'
-            . ' FROM termek '
-            . ' WHERE (inaktiv=0) AND (fuggoben=0) AND (' . \mkw\store::getWebshopFieldName('lathato') . '=1)'
-            . ' ORDER BY id',
+            'SELECT id,slug,contentmod AS lastmod,kepurl,kepleiras'
+            . ' FROM termek'
+            . $this->getSitemapWhere()
+            . ' ORDER BY id'
+            . ($limit > 0 ? ' LIMIT ' . (int)$limit . ' OFFSET ' . (int)$offset : ''),
             $rsm
         );
         return $q->getScalarResult();

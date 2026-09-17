@@ -4,6 +4,9 @@
 {foreach $urls as $_url}
 <url>
 <loc>{$_url.url}</loc>
+{if ($_url.lastmod|default)}
+<lastmod>{$_url.lastmod}</lastmod>
+{/if}
 {if ($_url.images|default)}
 {foreach $_url.images as $_image}
 <image:image>
@@ -14,9 +17,6 @@
 </image:image>
 {/foreach}
 {/if}
-<lastmod>{$_url.lastmod}</lastmod>
-<changefreq>{$_url.changefreq}</changefreq>
-<priority>{$_url.priority}</priority>
 </url>
 {/foreach}
 </urlset>

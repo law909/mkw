@@ -52,6 +52,15 @@ class Termek
      */
     private $lastmod;
 
+    /**
+     * A termék *tartalmi* mezőinek utolsó változása (a sitemap lastmod-ja ebből jön).
+     * A lastmod minden mentéskor frissül, tehát egy napi készletszinkron után az egész
+     * kínálat "ma módosult"-nak látszana a keresőnek. A TermekListener írja.
+     *
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $contentmod;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
 
@@ -2367,6 +2376,16 @@ class Termek
             return true;
         }
         return false;
+    }
+
+    public function getContentmod()
+    {
+        return $this->contentmod;
+    }
+
+    public function setContentmod($adat)
+    {
+        $this->contentmod = $adat;
     }
 
     public function getLastmod()

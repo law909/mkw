@@ -76,6 +76,13 @@ superzonesetup.ini
 /lampion.sh
 /tokens/
 /keys/
+/sitemap.xml
+/sitemap_index.xml
+/sitemap-pages.xml
+/sitemap-categories.xml
+/sitemap-brands.xml
+/sitemap-blog.xml
+/sitemap-products-*.xml
 /storage/pagecache/
 /storage/mpdf/
 /docs/

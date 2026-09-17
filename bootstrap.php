@@ -27,6 +27,7 @@ use Listeners\KuponListener;
 use Listeners\PartnerListener;
 use Listeners\PartnerTermekkategoriaKedvezmenyListener;
 use Listeners\PenztarbizonylatfejListener;
+use Listeners\TermekListener;
 use Listeners\IdopontListener;
 use Listeners\MPTNGYSzakmaianyagListener;
 use Listeners\UnasOutboxListener;
@@ -128,6 +129,7 @@ $evm->addEventListener(['onFlush'], new PartnerListener());
 $evm->addEventListener(['onFlush'], new PartnerTermekkategoriaKedvezmenyListener());
 $evm->addEventListener(['onFlush'], new MPTNGYSzakmaianyagListener());
 $evm->addEventListener(['onFlush'], new ArsavListener());
+$evm->addEventListener(['onFlush'], new TermekListener());
 // A BizonylatfejListener UTÁN: a státusznaplózás és a költségsorok után nézzük a changesetet.
 $evm->addEventListener(['onFlush'], new UnasOutboxListener());
 

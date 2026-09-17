@@ -24,7 +24,7 @@ class StatlapRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('lastmod', 'lastmod');
         $q = $this->_em->createNativeQuery(
             'SELECT id,slug,lastmod'
-            . ' FROM statlap '
+            . ' FROM statlap WHERE slug IS NOT NULL AND slug <> ""'
             . ' ORDER BY id',
             $rsm
         );

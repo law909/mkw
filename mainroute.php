@@ -218,7 +218,14 @@ $router->map('POST', '/setorszag', 'mainController#setOrszag', 'setorszag');
 $router->map('GET', '/szamlaprint', 'szamlafejController#doPrint', 'szamlaprint');
 $router->map('GET', '/szamlapdf', 'szamlafejController#doPDF', 'szamlapdf');
 
+// a régi, mindent tartalmazó /sitemap.xml 301-gyel az indexre megy
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
+$router->map('GET', '/sitemap_index.xml', 'sitemapController#index', 'sitemapindex');
+$router->map('GET', '/sitemap-pages.xml', 'sitemapController#pages', 'sitemappages');
+$router->map('GET', '/sitemap-categories.xml', 'sitemapController#categories', 'sitemapcategories');
+$router->map('GET', '/sitemap-brands.xml', 'sitemapController#brands', 'sitemapbrands');
+$router->map('GET', '/sitemap-blog.xml', 'sitemapController#blog', 'sitemapblog');
+$router->map('GET', '/sitemap-products-[i:num].xml', 'sitemapController#products', 'sitemapproducts');
 // az árösszehasonlító és B2B exportok árat adnak ki, katalógus üzemmódban nincs rájuk szükség
 if (!\mkw\store::isKatalogus()) {
     $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');

@@ -31,7 +31,7 @@ class BlogposztRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('lastmod', 'lastmod');
         $q = $this->_em->createNativeQuery(
             'SELECT id,slug,lastmod'
-            . ' FROM blogposzt '
+            . ' FROM blogposzt WHERE lathato=1 AND slug IS NOT NULL AND slug <> ""'
             . ' ORDER BY id',
             $rsm
         );

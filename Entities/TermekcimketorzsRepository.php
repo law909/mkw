@@ -133,6 +133,36 @@ class TermekcimketorzsRepository extends \mkwhelpers\Repository
         return $this->getWithJoins($filter, ['sorrend' => 'ASC']);
     }
 
+    /**
+     * Márkák a sitemaphez: csak az, amelyikhez tartozik legalább egy aktív, látható termék.
+     * A lastmod a márka saját módosítása (a törzsadat lapja ennyit mond).
+     */
+    public function getForSitemapXml()
+    {
+        $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('slug', 'slug');
+        $rsm->addScalarResult('lastmod', 'lastmod');
+        // a cimketorzs táblán nincs időbélyeg, ezért a márka termékeinek utolsó tartalmi változása a lastmod
+        $lathato = \mkw\store::getWebshopFieldName('t.lathato');
+        $aktiv = 't.inaktiv=0 AND t.fuggoben=0 AND ' . $lathato . '=1';
+        $q = $this->_em->createNativeQuery(
+            'SELECT c.id,c.slug,'
+            . ' (SELECT MAX(t.contentmod) FROM termek_cimkek tc'
+            . '    INNER JOIN termek t ON t.id = tc.termek_id'
+            . '    WHERE tc.cimketorzs_id = c.id AND ' . $aktiv . ') AS lastmod'
+            . ' FROM cimketorzs c'
+            . ' WHERE c.osztaly = "termek" AND c.cimkekat_id = ?'
+            . ' AND (c.slug IS NOT NULL) AND (c.slug <> "")'
+            . ' AND EXISTS (SELECT 1 FROM termek_cimkek tc INNER JOIN termek t ON t.id = tc.termek_id'
+            . '   WHERE tc.cimketorzs_id = c.id AND ' . $aktiv . ')'
+            . ' ORDER BY c.id',
+            $rsm
+        );
+        $q->setParameter(1, (int)\mkw\store::getParameter(\mkw\consts::MarkaCs, 0));
+        return $q->getScalarResult();
+    }
+
     public function getMarkak()
     {
         $filter = new FilterDescriptor();

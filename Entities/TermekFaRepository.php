@@ -185,6 +185,11 @@ class TermekFaRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    /**
+     * Csak az az ág kerül a sitemapba, amelynek az alfájában van aktív termék: az üres
+     * kategórialap vékony tartalom, a T-008 óta amúgy is noindex.
+     * A karkod a fa útvonala, ezért egy LIKE az egész alfát lefedi.
+     */
     public function getForSitemapXml()
     {
         $rsm = new ResultSetMapping();
@@ -193,10 +198,16 @@ class TermekFaRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('lastmod', 'lastmod');
         $rsm->addScalarResult('kepurl', 'kepurl');
         $rsm->addScalarResult('kepleiras', 'kepleiras');
+        $lathato = \mkw\store::getWebshopFieldName('t.lathato');
         $q = $this->_em->createNativeQuery(
-            'SELECT id,slug,lastmod,kepurl,kepleiras'
-            . ' FROM termekfa WHERE ((inaktiv=0) OR (inaktiv IS NULL)) AND ((menu1lathato=1) OR (menu2lathato=1) OR (menu3lathato=1) OR (menu4lathato=1))'
-            . ' ORDER BY id',
+            'SELECT f.id,f.slug,f.lastmod,f.kepurl,f.kepleiras'
+            . ' FROM termekfa f'
+            . ' WHERE ((f.inaktiv=0) OR (f.inaktiv IS NULL))'
+            . ' AND ((f.menu1lathato=1) OR (f.menu2lathato=1) OR (f.menu3lathato=1) OR (f.menu4lathato=1))'
+            . ' AND (f.slug IS NOT NULL) AND (f.slug <> "")'
+            . ' AND EXISTS (SELECT 1 FROM termek t WHERE t.inaktiv=0 AND t.fuggoben=0 AND ' . $lathato . '=1'
+            . '   AND t.termekfa1karkod LIKE CONCAT(f.karkod, "%"))'
+            . ' ORDER BY f.id',
             $rsm
         );
         return $q->getScalarResult();

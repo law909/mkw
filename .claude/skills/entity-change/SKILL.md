@@ -73,6 +73,7 @@ If you are editing one of these entities, the listed listener runs on `prePersis
 | `PartnerTermekkategoriaKedvezmeny` | `PartnerTermekkategoriaKedvezmenyListener` | `onFlush` (log only) |
 | `MPTNGYSzakmaianyag`           | `MPTNGYSzakmaianyagListener`       | `onFlush`                 |
 | `Arsav`                        | `ArsavListener`                    | `onFlush`                 |
+| `Termek`                       | `TermekListener`                   | `onFlush` (contentmod)    |
 
 Source of truth: `bootstrap.php` lines 118–127. If you add a new listener, update both `bootstrap.php` and this table.
 
