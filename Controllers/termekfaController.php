@@ -68,6 +68,7 @@ class termekfaController extends \mkwhelpers\MattableController
         $x['parentnev'] = $t->getParentNev();
         $x['parentnev_locale'] = $t->getParentNevLocale();
         $x['path'] = implode('/', $t->getPath($t));
+        $x['szinmeretcikkszamoroklott'] = (bool)$t->getParent()?->isSzinmeretcikkszamEnabled();
         return $x;
     }
 
@@ -80,7 +81,14 @@ class termekfaController extends \mkwhelpers\MattableController
     {
         $this->setEntityFieldsFromRequest($obj, [
             'raw' => ['leiras', 'leiras2', 'leiras3', 'leiras_l1', 'leiras2_l1', 'leiras3_l1'],
+            // háromállású (üres = örökli), az automatikus bool olvasás az üreset hamissá tenné
+            'skip' => ['szinmeretcikkszam'],
         ]);
+        // csak fix színmódban van a formon; ahol nincs, ott nem nullázzuk
+        if ($this->params->existsRequestParam('szinmeretcikkszam')) {
+            $value = $this->params->getStringRequestParam('szinmeretcikkszam');
+            $obj->setSzinmeretcikkszam($value === '' ? null : $value === '1');
+        }
 
         $parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
         if ($parent) {

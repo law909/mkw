@@ -201,6 +201,14 @@ class TermekFa
      */
     private $gpc;
 
+    /**
+     * A változatgenerátor és a cikkszám átírás TERMÉKCIKKSZÁM-színkód-méretkód cikkszámot képez-e az ág termékeinél.
+     * null: nincs beállítva, a szülőtől örökli (lásd isSzinmeretcikkszamEnabled()).
+     *
+     * @ORM\Column(type="boolean",nullable=true)
+     */
+    private $szinmeretcikkszam;
+
     public function __toString()
     {
         return (string)$this->id . ' - ' . $this->nev;
@@ -1101,6 +1109,27 @@ class TermekFa
             $kat = $kat->getParent();
         }
         return '';
+    }
+
+    public function getSzinmeretcikkszam(): ?bool
+    {
+        return $this->szinmeretcikkszam;
+    }
+
+    public function setSzinmeretcikkszam(?bool $szinmeretcikkszam): void
+    {
+        $this->szinmeretcikkszam = $szinmeretcikkszam;
+    }
+
+    /** a legközelebbi beállított ág dönt (önmaga, majd felfelé a szülők); ha sehol nincs beállítva, nem */
+    public function isSzinmeretcikkszamEnabled(): bool
+    {
+        for ($kat = $this; $kat; $kat = $kat->getParent()) {
+            if ($kat->getSzinmeretcikkszam() !== null) {
+                return $kat->getSzinmeretcikkszam();
+            }
+        }
+        return false;
     }
 
     /**

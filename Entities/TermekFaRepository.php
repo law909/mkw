@@ -211,6 +211,35 @@ class TermekFaRepository extends \mkwhelpers\Repository
         return false;
     }
 
+    /**
+     * Azoknak az ágaknak az id-je, ahol a szín+méretes cikkszám érvényes: a TermekFa::isSzinmeretcikkszamEnabled()
+     * öröklési szabálya, egy lekérdezéssel az egész fára.
+     *
+     * @return int[]
+     */
+    public function getSzinmeretcikkszamIds(): array
+    {
+        $nodes = [];
+        foreach ($this->_em->getConnection()->fetchAllAssociative('SELECT id, parent_id, szinmeretcikkszam FROM termekfa') as $row) {
+            $nodes[(int)$row['id']] = $row;
+        }
+        $enabled = [];
+        $resolve = function ($id) use (&$resolve, &$enabled, $nodes): bool {
+            if (!isset($nodes[$id])) {
+                return false;
+            }
+            if (!array_key_exists($id, $enabled)) {
+                $value = $nodes[$id]['szinmeretcikkszam'];
+                $enabled[$id] = $value !== null ? (bool)$value : $resolve((int)$nodes[$id]['parent_id']);
+            }
+            return $enabled[$id];
+        };
+        foreach (array_keys($nodes) as $id) {
+            $resolve($id);
+        }
+        return array_keys(array_filter($enabled));
+    }
+
     public function getB2BArray()
     {
         $tfrsm = new ResultSetMapping();

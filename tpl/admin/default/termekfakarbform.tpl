@@ -29,6 +29,18 @@
                     <td><input id="GpcEdit" name="gpc" type="text" maxlength="20" value="{$egyed.gpc}"
                                title="{at('Ha üres, a fölérendelt kategória besorolása érvényes.')}"></td>
                 </tr>
+                {if ($setup.szinmode === 'fix')}
+                    <tr>
+                        <td><label for="SzinmeretcikkszamEdit">{at('Változat cikkszám színkóddal, méretkóddal')}:</label></td>
+                        <td>
+                            <select id="SzinmeretcikkszamEdit" name="szinmeretcikkszam">
+                                <option value=""{if ($egyed.szinmeretcikkszam === null)} selected="selected"{/if}>{at('örökli')} ({if ($egyed.szinmeretcikkszamoroklott)}{at('igen')}{else}{at('nem')}{/if})</option>
+                                <option value="1"{if ($egyed.szinmeretcikkszam === true)} selected="selected"{/if}>{at('igen')}</option>
+                                <option value="0"{if ($egyed.szinmeretcikkszam === false)} selected="selected"{/if}>{at('nem')}</option>
+                            </select>
+                        </td>
+                    </tr>
+                {/if}
                 </tbody>
             </table>
             {include 'termekfaimagekarb.tpl'}
