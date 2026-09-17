@@ -19,9 +19,10 @@ class PartnerArlistaService
 {
 
     /**
-     * A nyomtatott árlista: az árlista kategóriái, alattuk azok a termékek, amelyeknek ez a legszűkebb árlistás
-     * kategóriájuk, a partner ársávjának és valutanemének nettó árából a partner áfakulcsával számolt bruttó árral és
-     * sávonként a kedvezményes árral. Árlistán nem szereplő kategóriájú és ár nélküli termék nem kerül bele.
+     * A nyomtatott árlista: a termékek a saját legalsó kategóriájuk szerint csoportosítva, a fa sorrendjében, a
+     * partner ársávjának és valutanemének nettó árából a partner áfakulcsával számolt bruttó árral és sávonként a
+     * kedvezményes árral. A kedvezmény a termék legszűkebb árlistás kategóriájáé, akkor is, ha a csoport annak egy
+     * alkategóriája. Árlistán nem szereplő kategóriájú és ár nélküli termék nem kerül bele.
      *
      * @param int[] $cimkeIds ha nem üres, csak ezek valamelyikével jelölt termékek
      */
@@ -40,11 +41,11 @@ class PartnerArlistaService
         foreach ($arlista['sorok'] as $sor) {
             $groups[$sor['termekfaid']] = [
                 'karkod' => $sor['termekfa']->getKarkod(),
-                'nev' => $sor['termekfa']->getLocalizedFieldValue('nev', $locale) ?: $sor['termekfa']->getNev(),
                 'kedvezmenyek' => $sor['kedvezmenyek'],
-                'termekek' => [],
             ];
         }
+        $csoportok = [];
+        $treePaths = [];
         if ($groups) {
             $filter = new FilterDescriptor();
             $filter->addFilter(
@@ -60,11 +61,13 @@ class PartnerArlistaService
             }
             /** @var Termek $termek */
             foreach ($em->getRepository(Termek::class)->getAll($filter, ['cikkszam' => 'ASC']) as $termek) {
-                $groupId = $this->findGroup($groups, $termek);
-                $netto = $groupId ? $termek->getKedvezmenynelkuliNettoAr(null, $partner) : 0;
+                $found = $this->findGroup($groups, $termek);
+                $netto = $found ? $termek->getKedvezmenynelkuliNettoAr(null, $partner) : 0;
                 if ($netto <= 0) {
                     continue;
                 }
+                /** @var TermekFa $termekfa */
+                [$groupId, $termekfa] = $found;
                 $afa = $partnerAfa ?: $termek->getAfa();
                 $price = $afa ? $afa->calcBrutto($netto) : $netto;
                 $bandPrices = [];
@@ -72,7 +75,16 @@ class PartnerArlistaService
                     $kedvezmeny = $groups[$groupId]['kedvezmenyek'][$sav['id']] ?? null;
                     $bandPrices[] = $kedvezmeny === null ? null : $price * (100 - $kedvezmeny) / 100;
                 }
-                $groups[$groupId]['termekek'][] = [
+                $csoportId = $termekfa->getId();
+                if (!isset($csoportok[$csoportId])) {
+                    $csoportok[$csoportId] = [
+                        'nev' => $termekfa->getLocalizedFieldValue('nev', $locale) ?: $termekfa->getNev(),
+                        'kedvezmenyek' => $groups[$groupId]['kedvezmenyek'],
+                        'termekek' => [],
+                    ];
+                    $treePaths[$csoportId] = $this->getTreePath($termekfa);
+                }
+                $csoportok[$csoportId]['termekek'][] = [
                     'cikkszam' => $termek->getCikkszam(),
                     'nev' => $termek->getLocalizedFieldValue('nev', $locale) ?: $termek->getNev(),
                     'ar' => $price,
@@ -80,32 +92,66 @@ class PartnerArlistaService
                 ];
             }
         }
+        uksort($csoportok, fn($a, $b) => $this->compareTreePaths($treePaths[$a], $treePaths[$b]));
         return [
             'locale' => $locale,
             'arsavnev' => (string)$arsav?->getNev(),
             'savok' => $arlista['savok'],
-            'csoportok' => array_values(array_filter($groups, fn($group) => $group['termekek'])),
+            'csoportok' => array_values($csoportok),
         ];
     }
 
-    /** a termék kategóriái (termekfa1-3) közül a leghosszabb karkodú árlistás ág */
-    private function findGroup(array $groups, Termek $termek)
+    /**
+     * A termék kategóriái (termekfa1-3) közül a leghosszabb karkodú árlistás ág, és a termék alatta lévő legmélyebb
+     * kategóriája.
+     *
+     * @return array{0: int, 1: TermekFa}|null
+     */
+    private function findGroup(array $groups, Termek $termek): ?array
     {
         $found = null;
-        $foundLength = -1;
-        foreach (['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'] as $field) {
-            $karkod = (string)$termek->getFieldValue($field);
-            if ($karkod === '') {
+        foreach ([1, 2, 3] as $i) {
+            $termekfa = $termek->{'getTermekfa' . $i}();
+            $karkod = (string)$termek->getFieldValue('termekfa' . $i . 'karkod');
+            if (!$termekfa || $karkod === '') {
                 continue;
             }
             foreach ($groups as $termekfaid => $group) {
-                if (str_starts_with($karkod, $group['karkod']) && strlen($group['karkod']) > $foundLength) {
-                    $found = $termekfaid;
-                    $foundLength = strlen($group['karkod']);
+                if (!str_starts_with($karkod, $group['karkod'])) {
+                    continue;
+                }
+                $rank = [strlen($group['karkod']), strlen($karkod)];
+                if (!$found || $rank > $found['rank']) {
+                    $found = ['rank' => $rank, 'group' => $termekfaid, 'termekfa' => $termekfa];
                 }
             }
         }
-        return $found;
+        return $found ? [$found['group'], $found['termekfa']] : null;
+    }
+
+    /** a gyökértől az ágig szintenként [sorrend, név, id] */
+    private function getTreePath(TermekFa $termekfa): array
+    {
+        $path = [];
+        for ($node = $termekfa; $node; $node = $node->getParent()) {
+            array_unshift($path, [(int)$node->getSorrend(), $node->getNev(), $node->getId()]);
+        }
+        return $path;
+    }
+
+    // a szülő a gyerekei elé kerül; a PHP a különböző hosszú tömböket előbb hossz szerint hasonlítaná
+    private function compareTreePaths(array $a, array $b): int
+    {
+        foreach ($a as $level => $node) {
+            if (!isset($b[$level])) {
+                return 1;
+            }
+            $cmp = $node <=> $b[$level];
+            if ($cmp !== 0) {
+                return $cmp;
+            }
+        }
+        return count($a) <=> count($b);
     }
 
     /**
