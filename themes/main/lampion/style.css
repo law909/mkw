@@ -185,7 +185,6 @@ img { max-width: 100%; height: auto; }
 .dobozszoveg h3 a:hover { color: var(--kiemeles); }
 .cikkszam { font-size: .78rem; color: var(--halvany); letter-spacing: .03em; }
 .rovid { margin: 0; font-size: .88rem; color: var(--halvany); }
-.ar { margin-top: auto; padding-top: 8px; font-weight: 700; font-size: 1.05rem; }
 
 .katdoboz .dobozkep { aspect-ratio: 3 / 2; }
 
@@ -224,7 +223,6 @@ img { max-width: 100%; height: auto; }
 .jellemzok { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 0 0 20px; font-size: .92rem; }
 .jellemzok dt { color: var(--halvany); }
 .jellemzok dd { margin: 0; }
-.lapar { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
 .lead { color: var(--halvany); margin-bottom: 24px; }
 
 

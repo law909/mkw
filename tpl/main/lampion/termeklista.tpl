@@ -22,8 +22,6 @@
                 <select name="order" id="order" onchange="this.form.submit()">
                     <option value="nevasc"{if ($order|default) == 'nevasc'} selected{/if}>{t('Név szerint A-Z')}</option>
                     <option value="nevdesc"{if ($order|default) == 'nevdesc'} selected{/if}>{t('Név szerint Z-A')}</option>
-                    <option value="arasc"{if ($order|default) == 'arasc'} selected{/if}>{t('Ár szerint növekvő')}</option>
-                    <option value="ardesc"{if ($order|default) == 'ardesc'} selected{/if}>{t('Ár szerint csökkenő')}</option>
                 </select>
             </form>
 

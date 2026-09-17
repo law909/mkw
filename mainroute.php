@@ -143,8 +143,11 @@ $router->map('GET', '/termek/[:slug]/[:szin_id]', 'mainController#termek', 'show
 $router->map('GET', '/product/[:slug]', 'mainController#termek', 'showproduct');
 $router->map('GET', '/product/[:slug]/[:szin_id]', 'mainController#termek', 'showproductszin');
 $router->map('GET', '/marka/[:slug]', 'mainController#marka', 'showmarka');
-$router->map('GET', '/valtozatar', 'mainController#valtozatar', 'valtozatar');
-$router->map('GET', '/valtozat', 'mainController#valtozat', 'valtozat');
+// katalógus üzemmódban az ár nem publikus, ezek JSON-ban adnák ki
+if (!\mkw\store::isKatalogus()) {
+    $router->map('GET', '/valtozatar', 'mainController#valtozatar', 'valtozatar');
+    $router->map('GET', '/valtozat', 'mainController#valtozat', 'valtozat');
+}
 $router->map('GET', '/kereses', 'mainController#kereses', 'kereses');
 $router->map('GET', '/search', 'mainController#kereses', 'search');
 $router->map('GET', '/markak', 'termekcimkeController#showMarkak', 'markak');
@@ -215,25 +218,28 @@ $router->map('POST', '/setorszag', 'mainController#setOrszag', 'setorszag');
 $router->map('GET', '/szamlaprint', 'szamlafejController#doPrint', 'szamlaprint');
 $router->map('GET', '/szamlapdf', 'szamlafejController#doPDF', 'szamlapdf');
 
-$router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
-$router->map('GET', '/export/vatera', 'exportController#VateraExport', 'vateraexport');
-$router->map('HEAD', '/export/vatera', 'exportController#VateraHeadExport', 'vateraheadexport');
-$router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
-$router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');
-$router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
-$router->map('GET', '/export/olcso', 'exportController#OlcsoExport', 'olcsoexport');
-$router->map('GET', '/export/argep', 'exportController#ArgepExport', 'argepexport');
-$router->map('GET', '/export/yusp', 'exportController#YuspExport', 'yuspexport');
-$router->map('GET', '/export/arukereso', 'exportController#ArukeresoExport', 'arukeresoexport');
-$router->map('GET', '/export/olcsobbat', 'exportController#OlcsobbatExport', 'olcsobbatexport');
-$router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mugenraceexport');
-$router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport', 'superzonehuexport');
-$router->map('GET', '/export/kaposimoto', 'exportController#KaposimotoExport', 'kaposimotoexport');
-$router->map('GET', '/export/depo', 'exportController#DepoExport', 'depoexport');
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
-$router->map('GET', '/export/orderform', 'exportController#orderformExport', 'orderformexport');
-$router->map('GET', '/export/fcmotostock', 'exportController#fcmotostockExport', 'fcmotostockexport');
-$router->map('GET', '/export/eanstock', 'exportController#eanstockExport', 'eanstockexport');
+// az árösszehasonlító és B2B exportok árat adnak ki, katalógus üzemmódban nincs rájuk szükség
+if (!\mkw\store::isKatalogus()) {
+    $router->map('GET', '/export/grando', 'exportController#GrandoExport', 'grandoexport');
+    $router->map('GET', '/export/vatera', 'exportController#VateraExport', 'vateraexport');
+    $router->map('HEAD', '/export/vatera', 'exportController#VateraHeadExport', 'vateraheadexport');
+    $router->map('GET', '/export/shophunter', 'exportController#ShopHunterExport', 'shophunterexport');
+    $router->map('GET', '/export/arfurkesz', 'exportController#ArfurkeszExport', 'arfurkeszexport');
+    $router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
+    $router->map('GET', '/export/olcso', 'exportController#OlcsoExport', 'olcsoexport');
+    $router->map('GET', '/export/argep', 'exportController#ArgepExport', 'argepexport');
+    $router->map('GET', '/export/yusp', 'exportController#YuspExport', 'yuspexport');
+    $router->map('GET', '/export/arukereso', 'exportController#ArukeresoExport', 'arukeresoexport');
+    $router->map('GET', '/export/olcsobbat', 'exportController#OlcsobbatExport', 'olcsobbatexport');
+    $router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mugenraceexport');
+    $router->map('GET', '/export/superzonehu', 'exportController#SuperzonehuExport', 'superzonehuexport');
+    $router->map('GET', '/export/kaposimoto', 'exportController#KaposimotoExport', 'kaposimotoexport');
+    $router->map('GET', '/export/depo', 'exportController#DepoExport', 'depoexport');
+    $router->map('GET', '/export/orderform', 'exportController#orderformExport', 'orderformexport');
+    $router->map('GET', '/export/fcmotostock', 'exportController#fcmotostockExport', 'fcmotostockexport');
+    $router->map('GET', '/export/eanstock', 'exportController#eanstockExport', 'eanstockexport');
+}
 
 $router->map('GET', '/t/reintexdownload', 'toolController#reintexDownload', 'reintexdownload');
 $router->map('GET', '/t/makszutovdownload', 'toolController#makszutovDownload', 'makszutovdownload');

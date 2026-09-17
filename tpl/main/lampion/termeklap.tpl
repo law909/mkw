@@ -33,10 +33,6 @@
                 {if ($termek.marka|default)}<dt>{t('Márka')}</dt><dd>{$termek.marka}</dd>{/if}
             </dl>
 
-            {if ($termek.bruttohuf|default) > 0}
-                <div class="lapar">{$termek.bruttohuf|bizformat:0} {$valutanemnev|default:'Ft'}</div>
-            {/if}
-
             {if ($termek.rovidleiras)}<div class="lead">{$termek.rovidleiras}</div>{/if}
         </div>
 

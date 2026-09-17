@@ -908,6 +908,10 @@ class termekfaController extends \mkwhelpers\MattableController
             case \mkw\store::isLampion():
                 // katalógus: lapozott terméklista, ár- és címkeszűrő nélkül – itt nem lehet vásárolni,
                 // a szűrősáv és a kiemelt blokk csak zaj lenne
+                // az ár nem publikus, a kézzel beírt ?order=arasc se árulja el a sorrendjét
+                if (!in_array($pOrd, ['nevasc', 'nevdesc'], true)) {
+                    $pOrd = 'nevasc';
+                }
                 $ret = [
                     'termekek' => [],
                     'lapozo' => 0,
@@ -928,7 +932,7 @@ class termekfaController extends \mkwhelpers\MattableController
                     $pager = $tc->getPager();
                     $termekek = $termekrepo->getTermekLista(
                         $keresofilter->merge($this->buildNativTermekfaFilter($parent)),
-                        $this->orderMap($pOrd ?: 'nevasc'),
+                        $this->orderMap($pOrd),
                         $pager->getOffset(),
                         $pager->getElemPerPage()
                     );
