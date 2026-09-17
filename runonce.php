@@ -2192,7 +2192,14 @@ if ($DBVersion < '0155') {
 if ($DBVersion < '0156') {
     $conn = \mkw\store::getEm()->getConnection();
     $conn->executeStatement('UPDATE partner SET gyarto = 1 WHERE szallito = 1');
-    $conn->executeStatement('UPDATE termek SET beszallito_id = gyarto_id WHERE beszallito_id IS NULL AND gyarto_id IS NOT NULL');
+    $vanoszlop = $conn->fetchOne(
+        'SELECT COUNT(*) FROM information_schema.columns'
+        . ' WHERE table_schema = DATABASE() AND table_name = ? AND column_name = ?',
+        ['termek', 'beszallito_id']
+    );
+    if ($vanoszlop) {
+        $conn->executeStatement('UPDATE termek SET beszallito_id = gyarto_id WHERE beszallito_id IS NULL AND gyarto_id IS NOT NULL');
+    }
     $conn->executeStatement(
         'UPDATE termek t LEFT JOIN partner p ON (p.id = t.gyarto_id)'
         . ' SET t.gyarto_id = NULL WHERE t.gyarto_id IS NOT NULL AND (p.id IS NULL OR p.gyarto = 0)'
