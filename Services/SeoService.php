@@ -81,9 +81,17 @@ class SeoService
      * Csak a hosztot igazítja, a sémát nem: a séma az app felől nem látszik megbízhatóan
      * (`setup.ssl` kapcsoló, proxy mögötti TLS), egy rossz tipp pedig végtelen 301-hurok lenne.
      * A http → https átirányítás ezért a `.htaccess`-ben, a FORCE_HTTPS környezeti változó mögött van.
+     *
+     * Fejlesztői módban (`config.ini developer = 1`) nem fut: a lemásolt adatbázisban a paraméter
+     * az éles domaint tartalmazza, és a fejlesztői gépről az éles boltba dobna át.
      */
     public static function enforceCanonicalHost(): void
     {
+        // fejlesztői másolaton a kanonikus domain az élesé: átirányítva a fejlesztői gépről
+        // minden kérés az éles boltban kötne ki
+        if (store::getConfigValue('developer', false)) {
+            return;
+        }
         if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
             return;
         }

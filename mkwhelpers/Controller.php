@@ -60,6 +60,30 @@ abstract class Controller
     }
 
     /**
+     * Morzsa egy kategóriafában: a gyökér alatti ágtól az adott kategóriáig, mindegyik a saját
+     * kategórialapjára hivatkozva. A gyökér kimarad — az csak tároló, a menü is alatta kezdődik.
+     *
+     * A fa és az útvonal témánként más (`/termekfa/` vagy `/categories/`), a bejárás ugyanaz.
+     *
+     * @param object|null $kategoria a fa egy ága (TermekFa | TermekMenu | TermekMenu2)
+     * @param string $routeName a kategórialap útvonalneve
+     *
+     * @return array [['caption' => ..., 'link' => ...], …]
+     */
+    protected function buildTreeMorzsa($kategoria, $routeName)
+    {
+        $morzsa = [];
+        while ($kategoria && $kategoria->getParent()) {
+            array_unshift($morzsa, [
+                'caption' => $kategoria->getLocalizedFieldValue('nev'),
+                'link' => \mkw\store::getRouter()->generate($routeName, false, ['slug' => $kategoria->getSlug()])
+            ]);
+            $kategoria = $kategoria->getParent();
+        }
+        return $morzsa;
+    }
+
+    /**
      * Morzsalánc a nézetbe: a látható lánc (`morzsalanc`) és a hozzá tartozó
      * BreadcrumbList JSON-LD (`morzsajsonld`). A sablon a `morzsa.tpl`-lel írja ki.
      *

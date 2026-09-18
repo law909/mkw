@@ -205,22 +205,13 @@ class termekmenuController extends \mkwhelpers\MattableController
     }
 
     /**
-     * Morzsalánc a menüág fölé: a gyökér (a fa névtelen tetője) kimarad, a linkek a
-     * /categories/ ágra mutatnak.
+     * Morzsa a menüfában, a /categories/ kategórialapokra hivatkozva.
      *
-     * @return array [['caption' => ..., 'link' => ...], …]
+     * @param TermekMenu|TermekMenu2|null $kategoria
      */
     public function getMorzsa($kategoria)
     {
-        $morzsa = [];
-        while ($kategoria && $kategoria->getParent()) {
-            array_unshift($morzsa, [
-                'caption' => $kategoria->getLocalizedFieldValue('nev'),
-                'link' => \mkw\store::getRouter()->generate('showtermekmenu', false, ['slug' => $kategoria->getSlug()])
-            ]);
-            $kategoria = $kategoria->getParent();
-        }
-        return $morzsa;
+        return $this->buildTreeMorzsa($kategoria, 'showtermekmenu');
     }
 
     public function getNavigator(TermekMenu|TermekMenu2 $parent, $elsourlkell = true)

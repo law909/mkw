@@ -386,25 +386,13 @@ class termekfaController extends \mkwhelpers\MattableController
     }
 
     /**
-     * Morzsa a termékfában: a gyökér alatti ágtól az adott kategóriáig, mindegyik a saját
-     * kategórialapjára hivatkozva. A fa gyökere kimarad — az csak tároló, a menü is alatta
-     * kezdődik.
+     * Morzsa a termékfában, a /termekfa/ kategórialapokra hivatkozva.
      *
      * @param TermekFa|null $kategoria
-     *
-     * @return array [['caption' => ..., 'link' => ...], …]
      */
     public function getMorzsa($kategoria)
     {
-        $morzsa = [];
-        while ($kategoria && $kategoria->getParent()) {
-            array_unshift($morzsa, [
-                'caption' => $kategoria->getLocalizedFieldValue('nev'),
-                'link' => \mkw\store::getRouter()->generate('showtermekfa', false, ['slug' => $kategoria->getSlug()])
-            ]);
-            $kategoria = $kategoria->getParent();
-        }
-        return $morzsa;
+        return $this->buildTreeMorzsa($kategoria, 'showtermekfa');
     }
 
     public function getNavigator($parent, $elsourlkell = true)
