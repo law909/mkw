@@ -2,7 +2,9 @@
 <html lang="{$shortlocale|default:'en'}">
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="{$seodescription|default}">
+    {* üres vagy HTML-es description helyett inkább semmi: a Google jobb snippetet generál *}
+    {$_desc = $seodescription|default|strip_tags|strip|trim}
+    {if ($_desc)}<meta name="description" content="{$_desc|truncate:300:'…'|escape}">{/if}
     <meta name="robots" content="{$robots|default:'index,follow'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">

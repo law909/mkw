@@ -1398,10 +1398,12 @@ class Termek
             return $this->seodescription;
         }
         $result = \mkw\store::getParameter(\mkw\consts::Termekseodescription);
-        if (!$result) {
-            return \mkw\store::getParameter(\mkw\consts::Seodescription);
+        if ($result) {
+            return $this->fillSeoPlaceholders($result, \mkw\store::getParameter(\mkw\consts::Seodescription));
         }
-        return $this->fillSeoPlaceholders($result, \mkw\store::getParameter(\mkw\consts::Seodescription));
+        // sablon híján a termék saját rövid leírása jobb snippet, mint minden lapon ugyanaz a globális szöveg
+        $rovid = \Services\SeoService::plainText($this->getLocalizedFieldValueOrDefault('rovidleiras'), 160);
+        return $rovid ?: \mkw\store::getParameter(\mkw\consts::Seodescription);
     }
 
     /**

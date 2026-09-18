@@ -534,9 +534,10 @@ class TermekMenu
                 $result = str_replace('[kategorianev]', $this->getLocalizedFieldValueOrDefault('nev'), $result);
                 $result = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $result);
                 return $result;
-            } else {
-                return store::getParameter(\mkw\consts::Seodescription);
             }
+            // sablon híján a kategória saját rövid leírása egyedibb, mint a globális szöveg
+            $rovid = \Services\SeoService::plainText($this->getLocalizedFieldValueOrDefault('rovidleiras'), 160);
+            return $rovid ?: store::getParameter(\mkw\consts::Seodescription);
         }
     }
 
