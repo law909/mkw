@@ -1539,6 +1539,11 @@
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
                             <tr>
+                                <td><label for="CanonicalBaseUrl2Edit">{at('Kanonikus URL')}:</label></td>
+                                <td colspan="2"><input id="CanonicalBaseUrl2Edit" name="canonicalbaseurl2" type="text" size="55" maxlength="255"
+                                                       value="{$canonicalbaseurl2}" placeholder="https://www.pelda.hu"></td>
+                            </tr>
+                            <tr>
                                 <td><label>{at('Logo')}:</label></td>
                                 <td><input name="logo2" type="text" value="{$logo2}"></td>
                                 <td><a class="js-kepbrowsebutton" data-name="logo2" href="#" title="{at('Browse')}">{at('...')}</a></td>
@@ -1616,6 +1621,11 @@
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
                             <tr>
+                                <td><label for="CanonicalBaseUrl3Edit">{at('Kanonikus URL')}:</label></td>
+                                <td colspan="2"><input id="CanonicalBaseUrl3Edit" name="canonicalbaseurl3" type="text" size="55" maxlength="255"
+                                                       value="{$canonicalbaseurl3}" placeholder="https://www.pelda.hu"></td>
+                            </tr>
+                            <tr>
                                 <td><label>{at('Logo')}:</label></td>
                                 <td><input name="logo3" type="text" value="{$logo3}"></td>
                                 <td><a class="js-kepbrowsebutton" data-name="logo3" href="#" title="{at('Browse')}">{at('...')}</a></td>
@@ -1692,6 +1702,11 @@
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
+                            <tr>
+                                <td><label for="CanonicalBaseUrl4Edit">{at('Kanonikus URL')}:</label></td>
+                                <td colspan="2"><input id="CanonicalBaseUrl4Edit" name="canonicalbaseurl4" type="text" size="55" maxlength="255"
+                                                       value="{$canonicalbaseurl4}" placeholder="https://www.pelda.hu"></td>
+                            </tr>
                             <tr>
                                 <td><label for="WS4PriceEdit">{at('Ársáv')}:</label></td>
                                 <td><select id="WS4PriceEdit" name="arsav4">
@@ -1775,6 +1790,11 @@
                         </div>
                         <table class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <tbody>
+                            <tr>
+                                <td><label for="CanonicalBaseUrl5Edit">{at('Kanonikus URL')}:</label></td>
+                                <td colspan="2"><input id="CanonicalBaseUrl5Edit" name="canonicalbaseurl5" type="text" size="55" maxlength="255"
+                                                       value="{$canonicalbaseurl5}" placeholder="https://www.pelda.hu"></td>
+                            </tr>
                             <tr>
                                 <td><label>{at('Logo')}:</label></td>
                                 <td><input name="logo5" type="text" value="{$logo5}"></td>

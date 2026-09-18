@@ -413,6 +413,11 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::Ogkep, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::CanonicalBaseUrl);
         $view->setVar(\mkw\consts::CanonicalBaseUrl, ($p ? $p->getErtek() : ''));
+        // a többi webshop kanonikus domainje: egy adatbázison több bolt is futhat külön domainen
+        for ($i = 2; $i <= 5; $i++) {
+            $p = $repo->find(\mkw\consts::CanonicalBaseUrl . $i);
+            $view->setVar(\mkw\consts::CanonicalBaseUrl . $i, ($p ? $p->getErtek() : ''));
+        }
         $p = $repo->find(\mkw\consts::GAFollow);
         $view->setVar(\mkw\consts::GAFollow, ($p ? $p->getErtek() : ''));
         $p = $repo->find(\mkw\consts::GMapsApiKey);
@@ -1297,6 +1302,10 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::NewPartnerCimke . '3',
             \mkw\consts::NewPartnerCimke . '4',
             \mkw\consts::NewPartnerCimke . '5',
+            \mkw\consts::CanonicalBaseUrl . '2',
+            \mkw\consts::CanonicalBaseUrl . '3',
+            \mkw\consts::CanonicalBaseUrl . '4',
+            \mkw\consts::CanonicalBaseUrl . '5',
         ],
         'mptngyfulvan' => [
             \mkw\consts::MPTNGYRegVisszaigSablon,
@@ -1768,6 +1777,12 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::Blogszerzoleiras, $this->params->getStringRequestParam('blogszerzoleiras'));
         $this->setObj(\mkw\consts::Ogkep, $this->params->getStringRequestParam('ogkep'));
         $this->setObj(\mkw\consts::CanonicalBaseUrl, rtrim($this->params->getStringRequestParam('canonicalbaseurl'), '/'));
+        for ($i = 2; $i <= 5; $i++) {
+            $this->setObj(
+                \mkw\consts::CanonicalBaseUrl . $i,
+                rtrim($this->params->getStringRequestParam('canonicalbaseurl' . $i), '/')
+            );
+        }
         $this->setObj(\mkw\consts::GAFollow, $this->params->getStringRequestParam('gafollow'));
         $this->setObj(\mkw\consts::GMapsApiKey, $this->params->getStringRequestParam('gmapsapikey'));
         $this->setObj(\mkw\consts::FBAppId, $this->params->getStringRequestParam('fbappid'));

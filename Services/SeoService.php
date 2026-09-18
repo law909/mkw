@@ -59,8 +59,8 @@ class SeoService
 
     /**
      * A kanonikus séma + domain, záró / nélkül. A beállított domaint csak akkor fogadja el, ha a
-     * kérés is onnan jön (www-vel vagy anélkül): a mugenes boltok közös adatbázison osztoznak, ott
-     * egy canonicalbaseurl jut négy domainre. CLI-n (nincs HTTP_HOST) marad a beállított domain.
+     * kérés is onnan jön (www-vel vagy anélkül), különben a kérés domainjéből képzi az URL-t.
+     * CLI-n (nincs HTTP_HOST) marad a beállított domain.
      */
     public static function getBaseUrl(): string
     {
@@ -68,7 +68,7 @@ class SeoService
             $requestHost = self::getRequestHost();
             $url = '';
             $candidates = [
-                store::getParameter(\mkw\consts::CanonicalBaseUrl, ''),
+                self::getConfiguredBaseUrl(),
                 store::getConfigValue('mainurl', ''),
             ];
             foreach ($candidates as $candidate) {
@@ -89,6 +89,16 @@ class SeoService
         return self::$baseUrl;
     }
 
+    /**
+     * A Beállítások → Kanonikus URL értéke. Webshoponként külön kulcs (`canonicalbaseurl`,
+     * `canonicalbaseurl2`, …), mert egy adatbázison több bolt is futhat külön domainen.
+     */
+    private static function getConfiguredBaseUrl(): string
+    {
+        $key = store::getWebshopFieldName(\mkw\consts::CanonicalBaseUrl);
+        return trim((string)store::getParameter($key, ''));
+    }
+
     /** Az aktuális kérés hosztja, port nélkül, kisbetűsen; CLI-n üres. */
     private static function getRequestHost(): string
     {
@@ -105,11 +115,11 @@ class SeoService
     }
 
     /**
-     * A kanonikus hoszt kikényszerítése 301-gyel. A `canonicalbaseurl` paraméter dönt: ha az
-     * üres (fejlesztői gép, még be nem állított telepítés), nem történik semmi.
+     * A kanonikus hoszt kikényszerítése 301-gyel. Az aktuális webshop Kanonikus URL beállítása
+     * dönt: ha az üres (fejlesztői gép, még be nem állított telepítés), nem történik semmi.
      *
-     * Csak a beállított domain www-s és www nélküli alakja közt igazít: a közös adatbázison osztozó
-     * boltok saját domainjét (shop.mugenrace.com) nem szabad ide terelni. Aliast a vhost terel.
+     * Csak a beállított domain www-s és www nélküli alakja közt igazít: a más boltokhoz tartozó
+     * domaineket (shop.mugenrace.com, superzone.hu) nem szabad ide terelni. Aliast a vhost terel.
      *
      * Csak a hosztot igazítja, a sémát nem: a séma az app felől nem látszik megbízhatóan
      * (`setup.ssl` kapcsoló, proxy mögötti TLS), egy rossz tipp pedig végtelen 301-hurok lenne.
@@ -128,7 +138,7 @@ class SeoService
         if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
             return;
         }
-        $canonicalHost = parse_url(trim((string)store::getParameter(\mkw\consts::CanonicalBaseUrl, '')), PHP_URL_HOST);
+        $canonicalHost = parse_url(self::getConfiguredBaseUrl(), PHP_URL_HOST);
         $requestHost = self::getRequestHost();
         if (!$canonicalHost || !$requestHost || strcasecmp($canonicalHost, $requestHost) === 0) {
             return;
