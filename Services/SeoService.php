@@ -113,7 +113,7 @@ class SeoService
      *
      * Csak a hosztot igazítja, a sémát nem: a séma az app felől nem látszik megbízhatóan
      * (`setup.ssl` kapcsoló, proxy mögötti TLS), egy rossz tipp pedig végtelen 301-hurok lenne.
-     * A http → https átirányítás ezért a `.htaccess`-ben, a FORCE_HTTPS környezeti változó mögött van.
+     * A http → https átirányítás ezért a vhost dolga, nem az alkalmazásé.
      *
      * Fejlesztői módban (`config.ini developer = 1`) nem fut: a lemásolt adatbázisban a paraméter
      * az éles domaint tartalmazza, és a fejlesztői gépről az éles boltba dobna át.
