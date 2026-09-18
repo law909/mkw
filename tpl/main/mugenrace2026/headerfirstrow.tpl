@@ -39,14 +39,9 @@
 
                         <h2>{t('Válassz országot')}</h2>
 
-                        <div class="country-list">
-                            {foreach $orszaglist as $f}
-                                {if ($f.caption)}
-                                    <button class="button bordered {if ($f.selected)} selected{/if}"
-                                            data-value="{$f.id}">{$f.caption|lower|capitalize}</button>{/if}
-                            {/foreach}
-
-                        </div>
+                        {* a gomblistát a JS építi fel a fenti select-ből, amikor a modál megnyílik:
+                           kétszer kiírva az országnevek minden oldal HTML-jének felét kitennék *}
+                        <div class="country-list"></div>
                     </div>
                 </div>
 

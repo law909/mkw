@@ -2254,10 +2254,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Header Country selector
+
+// A 251 elemű gomblistát nem a szerver rendereli: a select-ben már ott az adat, abból
+// építjük fel a modál megnyitásakor. Így az országnevek nem duplázódnak minden oldal HTML-jében.
+function buildCountryList() {
+    const list = document.querySelector('.country-list');
+    const select = document.querySelector('.headerorszag');
+    if (!list || !select || list.dataset.filled) {
+        return;
+    }
+    const gombok = document.createDocumentFragment();
+    Array.from(select.options).forEach(option => {
+        if (!option.text.trim()) {
+            return;
+        }
+        const gomb = document.createElement('button');
+        gomb.type = 'button';
+        gomb.className = 'button bordered' + (option.selected ? ' selected' : '');
+        gomb.dataset.value = option.value;
+        gomb.textContent = option.text;
+        gombok.appendChild(gomb);
+    });
+    list.appendChild(gombok);
+    list.dataset.filled = '1';
+}
+
 document.addEventListener('click', function (e) {
 
     // Header szöveg kattintás → modal nyitás
     if (e.target.closest('#countryTrigger')) {
+        buildCountryList();
         const modal = document.getElementById('countryModal');
         if (modal) modal.classList.add('active');
     }
