@@ -389,13 +389,21 @@ class SeoService
         }
         if (!empty($t['cikkszam'])) {
             $product['sku'] = $t['cikkszam'];
+            // a cikkszám nálunk gyártói cikkszám is: a Google a kettőt külön mezőben várja
+            $product['mpn'] = $t['cikkszam'];
         }
         $gtin = preg_replace('/\D/', '', (string)($t['vonalkod'] ?? ''));
         if (in_array(strlen($gtin), [8, 12, 13, 14], true)) {
             $product['gtin'] = $gtin;
         }
-        if (!empty($t['marka'])) {
-            $product['brand'] = ['@type' => 'Brand', 'name' => self::plainText($t['marka'], 0)];
+        $marka = $t['marka'] ?? '';
+        if (!$marka && store::getSetupValue('sajatmarka')) {
+            // saját gyártású készletnél a bolt márkája a termék márkája is; enélkül nincs
+            // brand a strukturált adatban, és a Google elutasítja a rich resultot
+            $marka = self::getOwnerData()['markanev'];
+        }
+        if ($marka) {
+            $product['brand'] = ['@type' => 'Brand', 'name' => self::plainText($marka, 0)];
         }
         if ($category) {
             $product['category'] = $category;
@@ -464,9 +472,14 @@ class SeoService
             $variant = [
                 '@type' => 'Product',
                 'name' => trim(self::plainText($t['caption'] ?? '', 0) . ' ' . $valtozat['szin'] . ' ' . $valtozat['meret']),
-                'sku' => $valtozat['cikkszam'],
                 'url' => $url,
             ];
+            // csak a változat SAJÁT cikkszáma megy ki: a termékét örökölve minden változat
+            // ugyanazt az sku-t kapná, amit a Google duplikátumként utasít el
+            if ($valtozat['sajatcikkszam']) {
+                $variant['sku'] = $valtozat['sajatcikkszam'];
+                $variant['mpn'] = $valtozat['sajatcikkszam'];
+            }
             $gtin = preg_replace('/\D/', '', (string)$valtozat['vonalkod']);
             if (strlen($gtin) === 13) {
                 $variant['gtin13'] = $gtin;

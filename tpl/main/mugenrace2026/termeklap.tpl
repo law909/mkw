@@ -165,7 +165,7 @@
                                     <div class="accordion-item">
                                         <div class="accordion-header">{t('Leírás')}<span class="arrow"></span></div>
                                         <div class="accordion-content">
-                                            {$termek.leiras}
+                                            {$termek.leiras|demoteh1}
                                         </div>
                                     </div>
 

@@ -19,7 +19,7 @@
 
 				<div class="row static-page__content">
 					<div class="col">
-						{$statlap.szoveg}
+						{$statlap.szoveg|demoteh1}
 					</div>
 				</div>
 		</article>

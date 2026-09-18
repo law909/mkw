@@ -1024,6 +1024,7 @@ class Termek
             $valtozatlista[] = [
                 'id' => $valt->getId(),
                 'cikkszam' => $valt->getCikkszam() ?: $this->getCikkszam(),
+                'sajatcikkszam' => $valt->getCikkszam(),
                 'vonalkod' => $valt->getVonalkod(),
                 'szin' => $valt->getSzinNev() ?: (string)$valt->getSzin(),
                 'meret' => $valt->getMeretNev() ?: (string)$valt->getMeret(),

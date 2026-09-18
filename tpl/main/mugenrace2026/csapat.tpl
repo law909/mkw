@@ -23,7 +23,7 @@
                         {/if}
                         <h1 class="teams-datasheet__title">{$csapat.nev}</h1>
                         <div class="teams-datasheet__lead">
-                            {$csapat.leiras}
+                            {$csapat.leiras|demoteh1}
                         </div>
                     </div>
                 </div>

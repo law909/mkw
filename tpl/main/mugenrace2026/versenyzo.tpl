@@ -42,7 +42,7 @@
                     {/if}
                     {if ($versenyzo.leiras)}
                         <div class="sponsored-riders-datasheet__content">
-                            {$versenyzo.leiras}
+                            {$versenyzo.leiras|demoteh1}
                         </div>
                     {/if}
                     {* kereskedelmi kilépés a versenyzőoldalról: enélkül a lap zsákutca *}

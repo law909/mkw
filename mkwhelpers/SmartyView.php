@@ -57,6 +57,8 @@ class SmartyView extends View
         $this->tplengine->registerPlugin('modifier', 'number_format', '\number_format');
         $this->tplengine->registerPlugin('modifier', 'prefixUrl', '\prefixUrl');
         $this->tplengine->registerPlugin('modifier', 'trim', '\trim');
+        // szerkesztőből érkező HTML-ben a h1 a lap saját h1-ével versenyezne
+        $this->tplengine->registerPlugin('modifier', 'demoteh1', ['\mkwhelpers\SmartyView', 'demoteH1']);
 
         // sablonban használt PHP függvények: regisztráció nélkül a Smarty 4 deprecated-et naplóz.
         // Szándékosan \ nélkül: így a fordított kód közvetlen hívás lesz, nem call_user_func_array.
@@ -98,6 +100,15 @@ class SmartyView extends View
                 $params['url'] ?? ''
             );
         });
+    }
+
+    /**
+     * A CMS-mezőkben (termékleírás, statikus lap, hír) beírt `<h1>` `<h2>`-vé válik: a lap
+     * címsorát a sablon adja, két h1 a lapon összezavarja a lap témáját.
+     */
+    public static function demoteH1($html)
+    {
+        return \preg_replace('#<(/?)h1(\s[^>]*)?>#i', '<$1h2$2>', (string)$html);
     }
 
     private function registerOutputFilters(): void

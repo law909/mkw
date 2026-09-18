@@ -37,7 +37,7 @@
                     <div class="country-modal__content">
                         <i class="icon close country-modal__close icon__click"></i>
 
-                        <h2>{t('Válassz országot')}</h2>
+                        <div class="country-modal__title">{t('Válassz országot')}</div>
 
                         {* a gomblistát a JS építi fel a fenti select-ből, amikor a modál megnyílik:
                            kétszer kiírva az országnevek minden oldal HTML-jének felét kitennék *}

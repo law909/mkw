@@ -149,6 +149,17 @@ if ($webshopnum == '1') {
     $webshopnum = '';
 }
 $match = $router->match();
+if (!$match) {
+    // ismeretlen útvonal: a 404 lap is a storefronton fut, ezért ugyanúgy kell neki a main
+    // mód és a beállított ország (enélkül az ajánlott termékek ÁFA nélkül szálltak el)
+    store::setMainMode();
+    if (!store::getMainSession()->orszag) {
+        $orszag = store::getParameter(\mkw\consts::Orszag);
+        if ($orszag) {
+            (new \Controllers\mainController(null))->setOrszagFunc($orszag, false);
+        }
+    }
+}
 if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
     substr($match['name'], 0, 5) !== 'admin' &&
     substr($match['name'], 0, 8) !== 'pubadmin'

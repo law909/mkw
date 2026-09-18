@@ -175,6 +175,9 @@ class TermekMenuRepository extends \mkwhelpers\Repository
      * Csak olyan menüág kerül a sitemapba, aminek van megjeleníthető tartalma: vagy látható
      * alkategóriája (csempés lap), vagy saját, publikus terméke. Az üres kategórialap vékony
      * tartalom, amit a storefront amúgy is noindex-szel ad ki.
+     *
+     * A láthatóság feltétele ugyanaz, mint a mainController::termekmenu()-ben (inaktiv + lathato):
+     * a menuNlathato csak azt mondja meg, melyik menüben jelenik meg az ág, nem azt, hogy elérhető-e.
      */
     public function getForSitemapXml()
     {
@@ -191,7 +194,6 @@ class TermekMenuRepository extends \mkwhelpers\Repository
             . ' WHERE ((m.inaktiv=0) OR (m.inaktiv IS NULL)) AND (m.lathato=1)'
             . ' AND (m.parent_id IS NOT NULL)'
             . ' AND (m.slug IS NOT NULL) AND (m.slug <> "")'
-            . ' AND ((m.menu1lathato=1) OR (m.menu2lathato=1) OR (m.menu3lathato=1) OR (m.menu4lathato=1))'
             . ' AND ('
             . '   EXISTS (SELECT 1 FROM termekmenu c WHERE c.parent_id=m.id AND ((c.inaktiv=0) OR (c.inaktiv IS NULL)) AND c.lathato=1)'
             . '   OR EXISTS (SELECT 1 FROM termek t WHERE t.inaktiv=0 AND t.fuggoben=0 AND ' . $lathato . '=1'

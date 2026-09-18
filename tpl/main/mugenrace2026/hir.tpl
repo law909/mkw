@@ -35,7 +35,7 @@
                         {if ($hir.kepurllarge)}
                             <img src="{$imagepath}{$hir.kepurllarge}" class="news-datasheet__image" alt="{$hir.kepleiras}">
                         {/if}
-                        {$hir.szoveg}
+                        {$hir.szoveg|demoteh1}
                     </div>
                 </div>
             </div>

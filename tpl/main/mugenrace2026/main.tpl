@@ -17,7 +17,9 @@
         <div id="MainContent">
             {foreach $blokklista as $_blokk}
                 {if ($_blokk.tipus==1)}
-                    {if ($_blokk@first)}{$_cimszint='h1'}{else}{$_cimszint='h2'}{/if}
+                    {* a lap h1-e az első címmel rendelkező blokk: ha a legfelső blokk címe üres,
+                       a következő kapja meg — a szöveg magában a blokkban szerkeszthető *}
+                    {if (!($_volth1|default) && ($_blokk.cim|default))}{$_cimszint='h1'}{$_volth1=true}{else}{$_cimszint='h2'}{/if}
                     {include 'blokkok/blokk.tpl' blokk=$_blokk cimszint=$_cimszint}
                 {elseif ($_blokk.tipus==2)}
                     {include 'blokkok/duplablokk.tpl' blokk=$_blokk}
