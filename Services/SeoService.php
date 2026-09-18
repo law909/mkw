@@ -250,7 +250,7 @@ class SeoService
                 'streetAddress' => $o['utca'],
                 'postalCode' => $o['irszam'],
                 'addressLocality' => $o['varos'],
-                'addressCountry' => 'HU',
+                'addressCountry' => self::getCountryCode(),
             ], 'strlen');
         }
         if ($o['sameas']) {
@@ -259,7 +259,7 @@ class SeoService
         if ($o['visszakuldesnap'] > 0) {
             $org['hasMerchantReturnPolicy'] = [
                 '@type' => 'MerchantReturnPolicy',
-                'applicableCountry' => 'HU',
+                'applicableCountry' => self::getCountryCode(),
                 'returnPolicyCategory' => 'https://schema.org/MerchantReturnFiniteReturnWindow',
                 'merchantReturnDays' => $o['visszakuldesnap'],
                 'returnMethod' => 'https://schema.org/ReturnByMail',
@@ -305,6 +305,32 @@ class SeoService
             return ['url' => $url, 'sajat' => true];
         }
         return ['url' => self::absoluteUrl(store::getParameter(\mkw\consts::Ogkep, '')), 'sajat' => false];
+    }
+
+    /**
+     * A készlet a változatokból: ha egyetlen látható változat sem elérhető, a termék
+     * elfogyott. Változat nélküli terméknél a termék saját "nem kapható" jelzője dönt.
+     */
+    private static function getAvailability(array $t): string
+    {
+        $valtozatok = $t['valtozatlista'] ?? [];
+        if ($valtozatok) {
+            foreach ($valtozatok as $valtozat) {
+                if ($valtozat['elerheto']) {
+                    return 'https://schema.org/InStock';
+                }
+            }
+            return 'https://schema.org/OutOfStock';
+        }
+        return empty($t['nemkaphato'])
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock';
+    }
+
+    /** A bolt országa ISO 3166-1 alpha-2 kóddal; ez megy a szállítási és a visszaküldési szabályba. */
+    public static function getCountryCode(): string
+    {
+        return store::getOrszag()?->getIso3166() ?: 'HU';
     }
 
     /** A webshop pénznemének kódja a strukturált adatokhoz. */
@@ -391,7 +417,10 @@ class SeoService
                 'worstRating' => 1,
             ];
         }
-        $product['offers'] = self::buildOffer($t, $url);
+        $offer = self::buildOffer($t, $url);
+        if ($offer) {
+            $product['offers'] = $offer;
+        }
 
         $valtozatok = self::buildVariants($t, $url);
         if ($valtozatok) {
@@ -470,24 +499,29 @@ class SeoService
         return array_values($tulajdonsagok);
     }
 
+    /**
+     * A termék ajánlata. Nulla áron nem ad vissza semmit: a 0-s ár nem ajánlat, és
+     * Offerként jelölve a Google is, a vásárló is félrevezetőnek látja.
+     */
     private static function buildOffer(array $t, string $url): array
     {
         $ar = (float)($t['bruttohuf'] ?? 0);
+        if ($ar <= 0) {
+            return [];
+        }
         $offer = [
             '@type' => 'Offer',
             'url' => $url,
             'priceCurrency' => self::getCurrencyCode(),
             'price' => (string)round($ar),
-            'availability' => empty($t['nemkaphato'])
-                ? 'https://schema.org/InStock'
-                : 'https://schema.org/OutOfStock',
+            'availability' => self::getAvailability($t),
             'itemCondition' => 'https://schema.org/NewCondition',
             'seller' => ['@id' => self::getOrganizationId()],
         ];
 
         $shipping = [
             '@type' => 'OfferShippingDetails',
-            'shippingDestination' => ['@type' => 'DefinedRegion', 'addressCountry' => 'HU'],
+            'shippingDestination' => ['@type' => 'DefinedRegion', 'addressCountry' => self::getCountryCode()],
             'shippingRate' => [
                 '@type' => 'MonetaryAmount',
                 // a szállítási költség kosárérték-sávos, itt a termék saját árához tartozó sáv díja
