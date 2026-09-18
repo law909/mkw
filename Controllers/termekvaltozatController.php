@@ -13,6 +13,7 @@ use mkw\store;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Services\TermekValtozatCikkszamReportService;
 use Services\TermekValtozatCikkszamService;
+use Services\TermekValtozatMergeService;
 
 class termekvaltozatController extends \mkwhelpers\MattableController
 {
@@ -171,6 +172,187 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             'msg' => implode(', ', $uzenet) . '.',
             'erintett' => (new TermekValtozatCikkszamService())->countPending(),
         ]);
+    }
+
+    /** a kimutatás és a visszajelzés sorainak felirata */
+    private const OSSZEVONASFELIRAT = [
+        'bizonylattetel' => 'Bizonylattétel',
+        'munkalap' => 'Munkalap (bizonylat feje)',
+        'kosar' => 'Kosár',
+        'leltartetel' => 'Leltártétel',
+        'minkeszlet' => 'Raktáras minimum készlet',
+        'optkeszlet' => 'Raktáras optimális készlet',
+        'fiforeteg' => 'FIFO réteg',
+        'fifoertek' => 'FIFO készletérték',
+    ];
+
+    /** ez alatt a jog alatt a képernyő és a hozzá tartozó végpontok sem érhetők el */
+    private const OSSZEVONASJOG = 40;
+
+    /**
+     * Változat összevonás. A képernyő három lépésben dolgozik: termék- és változatválasztás,
+     * az érintett sorok kimutatása, végül két megerősítés után a végrehajtás. Magát a műveletet
+     * a Services\TermekValtozatMergeService végzi, itt csak a kérés és a válasz áll össze.
+     */
+    public function osszevonasView()
+    {
+        if (!store::haveJog(self::OSSZEVONASJOG)) {
+            return;
+        }
+        $view = $this->createView('valtozatosszevonas.tpl');
+        $view->setVar('pagetitle', t('Változat összevonás'));
+        $view->printTemplateResult();
+    }
+
+    /** Termékkereső az összevonáshoz: név, cikkszám, vonalkód és a változatok cikkszáma szerint. */
+    public function osszevonasTermekLista()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!store::haveJog(self::OSSZEVONASJOG)) {
+            $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
+            return;
+        }
+        $term = trim($this->params->getStringRequestParam('term'));
+        $ret = [];
+        if (mb_strlen($term) >= 2) {
+            /** @var Termek $termek */
+            foreach ($this->getRepo(Termek::class)->getBizonylattetelLista($term) as $termek) {
+                $ret[] = [
+                    'id' => $termek->getId(),
+                    'label' => trim($termek->getCikkszam() . ' ' . $termek->getNev()),
+                    'value' => $termek->getNev(),
+                ];
+            }
+        }
+        echo json_encode($ret);
+    }
+
+    /**
+     * Egy termék változatai a két választóhoz. A getValtozatList()-tel szemben az inaktívakat is
+     * adja: összevonni tipikusan éppen azokat kell.
+     */
+    public function osszevonasValtozatLista()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!store::haveJog(self::OSSZEVONASJOG)) {
+            $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
+            return;
+        }
+        /** @var Termek|null $termek */
+        $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('termekid'));
+        if (!$termek) {
+            $this->jsonFail(t('Nincs ilyen termék.'));
+            return;
+        }
+        $valtozatok = [];
+        /** @var TermekValtozat $valt */
+        foreach ($termek->getValtozatok() ?? [] as $valt) {
+            $valtozatok[] = [
+                'id' => $valt->getId(),
+                'nev' => $valt->getNev(),
+                'cikkszam' => $valt->getCikkszam(),
+                'inaktiv' => (bool)$valt->getInaktiv(),
+                'lathato' => (bool)$valt->getLathato(),
+                'keszlet' => $valt->getKeszlet() * 1,
+            ];
+        }
+        echo json_encode([
+            'ok' => true,
+            'termeknev' => $termek->getNev(),
+            'termekcikkszam' => $termek->getCikkszam(),
+            // a függőben és az inaktív a terméké: a változatnak csak inaktív jelzője van
+            'termekfuggoben' => (bool)$termek->getFuggoben(),
+            'termekinaktiv' => (bool)$termek->getInaktiv(),
+            'valtozatok' => $valtozatok,
+        ]);
+    }
+
+    /** Az első OK: mit érint az összevonás. Nem módosít semmit. */
+    public function osszevonasStat()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!store::haveJog(self::OSSZEVONASJOG)) {
+            $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
+            return;
+        }
+        $service = new TermekValtozatMergeService();
+        try {
+            [$forras, $cel] = $this->getOsszevonasValtozatok();
+            $service->check($forras, $cel);
+            $adat = $service->collect($forras, $cel);
+        } catch (\Throwable $e) {
+            $this->jsonFail($e->getMessage());
+            return;
+        }
+        $sorok = [];
+        $osszes = 0;
+        foreach ($adat['sorok'] as $sor) {
+            $osszes += $sor['db'];
+            $sorok[] = [
+                'nev' => t(self::OSSZEVONASFELIRAT[$sor['kulcs']] ?? $sor['kulcs']),
+                'db' => $sor['db'],
+                'utkozes' => $sor['utkozes'],
+            ];
+        }
+        echo json_encode([
+            'ok' => true,
+            'forras' => $this->getOsszevonasValtozatNev($forras),
+            'cel' => $this->getOsszevonasValtozatNev($cel),
+            'sorok' => $sorok,
+            'osszes' => $osszes,
+        ]);
+    }
+
+    /** A két megerősítés után: a tényleges összevonás. */
+    public function osszevonas()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!store::haveJog(self::OSSZEVONASJOG)) {
+            $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
+            return;
+        }
+        try {
+            [$forras, $cel] = $this->getOsszevonasValtozatok();
+            $forrasnev = $this->getOsszevonasValtozatNev($forras);
+            $celnev = $this->getOsszevonasValtozatNev($cel);
+            $forrastorles = $this->params->getBoolRequestParam('forrastorles');
+            $riport = (new TermekValtozatMergeService())->merge($forras, $cel, $forrastorles);
+        } catch (\Throwable $e) {
+            store::writelog('Változat összevonás hiba: ' . $e->getMessage());
+            $this->jsonFail($e->getMessage());
+            return;
+        }
+        $reszek = [];
+        foreach ($riport['atirt'] as $kulcs => $db) {
+            if ($db) {
+                $reszek[] = $db . ' ' . mb_strtolower(t(self::OSSZEVONASFELIRAT[$kulcs] ?? $kulcs));
+            }
+        }
+        $uzenet = sprintf(t('%s → %s összevonva.'), $forrasnev, $celnev)
+            . ($reszek ? ' ' . sprintf(t('Átírva: %s.'), implode(', ', $reszek)) : ' ' . t('Átírandó sor nem volt.'))
+            . ($riport['forrastorolve'] ? ' ' . t('A forrás változat törölve.') : '');
+        store::writelog('Változat összevonás: ' . $uzenet);
+        echo json_encode(['ok' => true, 'msg' => $uzenet]);
+    }
+
+    /**
+     * @return TermekValtozat[] [forrás, cél]
+     * @throws \RuntimeException ha valamelyik változat nincs meg
+     */
+    private function getOsszevonasValtozatok(): array
+    {
+        $repo = $this->getRepo(TermekValtozat::class);
+        $forras = $repo->find($this->params->getIntRequestParam('forrasid'));
+        $cel = $repo->find($this->params->getIntRequestParam('celid'));
+        if (!$forras || !$cel) {
+            throw new \RuntimeException(t('Mindkét változatot ki kell választani.'));
+        }
+        return [$forras, $cel];
+    }
+
+    private function getOsszevonasValtozatNev(TermekValtozat $valtozat): string
+    {
+        return trim($valtozat->getCikkszam() . ' ' . $valtozat->getNev()) ?: ('#' . $valtozat->getId());
     }
 
     public function cikkszamReport()
