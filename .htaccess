@@ -11,8 +11,6 @@
     RewriteEngine on
     RewriteBase /
 
-    # A http → https átirányítás a vhost dolga, a hoszt kanonizálását (www / nem-www) pedig a
-    # canonicalbaseurl paraméter végzi: egyik sem való ebbe a mind a 12 telepítésre közös fájlba.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 
