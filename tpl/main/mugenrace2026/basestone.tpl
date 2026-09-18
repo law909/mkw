@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="{$shortlocale|default:'en'}">
 <head>
     <meta charset="utf-8">
     <meta name="description" content="{$seodescription|default}">
