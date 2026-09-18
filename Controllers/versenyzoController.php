@@ -147,14 +147,27 @@ class versenyzoController extends \mkwhelpers\MattableController
         if ($record) {
             $record = $record[0];
         }
+        if (!$record) {
+            \mkw\store::redirectTo404($slug);
+            return;
+        }
         $view = $this->createMainView('versenyzo.tpl');
         $versenyzo = $this->loadVars($record, true);
         $view->setVar('versenyzo', $versenyzo);
         \mkw\store::fillTemplate($view);
+        $this->setBreadcrumb($view, [
+            ['caption' => t('Szponzorált versenyzők'), 'url' => \mkw\store::getRouter()->generate('versenyzoindex')],
+            ['caption' => $versenyzo['nev']],
+        ]);
         $view->setVar('pagetitle', $versenyzo['nev'] . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar(
             'seodescription',
             \Services\SeoService::plainText($versenyzo['rovidleiras'] ?: $versenyzo['leiras'], 160)
+        );
+        $this->setOpenGraph($view, 'profile', $versenyzo['kepurl1large'] ?: $versenyzo['kepurllarge'], $versenyzo['nev']);
+        $view->setVar(
+            'versenyzojsonld',
+            \Services\SeoService::personJsonLd($versenyzo, \Services\SeoService::getCanonicalUrl())
         );
         $view->printTemplateResult();
     }

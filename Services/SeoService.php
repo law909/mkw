@@ -300,7 +300,7 @@ class SeoService
      */
     public static function ogImage(?string $sajatKep = null): array
     {
-        $url = self::absoluteUrl($sajatKep ?: '');
+        $url = self::absoluteUrl(self::imageUrl($sajatKep ?: ''));
         if ($url) {
             return ['url' => $url, 'sajat' => true];
         }
@@ -541,6 +541,96 @@ class SeoService
         }
         $offer['shippingDetails'] = $shipping;
         return $offer;
+    }
+
+    /**
+     * Person JSON-LD a szponzorált versenyzőhöz. A `sponsor` köti a márka entitásához:
+     * ez a weboldal legerősebb Experience-jelzése, ma viszont sehol nincs kimondva.
+     *
+     * @param array $versenyzo a `versenyzo` sablonváltozó
+     */
+    public static function personJsonLd(array $versenyzo, string $url): string
+    {
+        if (empty($versenyzo['nev'])) {
+            return '';
+        }
+        $data = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Person',
+            '@id' => $url . '#person',
+            'name' => self::plainText($versenyzo['nev'], 0),
+            'url' => $url,
+            'jobTitle' => t('Motorversenyző'),
+            'sponsor' => ['@id' => self::getOrganizationId()],
+        ];
+        $kep = self::absoluteUrl(self::imageUrl($versenyzo['kepurl12000'] ?? $versenyzo['kepurl2000'] ?? ''));
+        if ($kep) {
+            $data['image'] = [$kep];
+        }
+        $leiras = self::plainText($versenyzo['rovidleiras'] ?? '', 500) ?: self::plainText($versenyzo['leiras'] ?? '', 500);
+        if ($leiras) {
+            $data['description'] = $leiras;
+        }
+        if (!empty($versenyzo['csapatnev'])) {
+            $data['memberOf'] = ['@type' => 'SportsTeam', 'name' => self::plainText($versenyzo['csapatnev'], 0)];
+        }
+        if (!empty($versenyzo['versenysorozat'])) {
+            $data['knowsAbout'] = self::plainText($versenyzo['versenysorozat'], 0);
+        }
+        return self::jsonLd($data);
+    }
+
+    /** SportsTeam JSON-LD a csapatoldalhoz, a márkához kötött szponzorációval. */
+    public static function sportsTeamJsonLd(array $csapat, string $url): string
+    {
+        if (empty($csapat['nev'])) {
+            return '';
+        }
+        $data = [
+            '@context' => 'https://schema.org',
+            '@type' => 'SportsTeam',
+            '@id' => $url . '#sportsteam',
+            'name' => self::plainText($csapat['nev'], 0),
+            'url' => $url,
+            'sport' => t('Motorsport'),
+            'sponsor' => ['@id' => self::getOrganizationId()],
+        ];
+        $logo = self::absoluteUrl(self::imageUrl($csapat['logourllarge'] ?? ''));
+        if ($logo) {
+            $data['logo'] = $logo;
+        }
+        $kep = self::absoluteUrl(self::imageUrl($csapat['kepurl2000'] ?? ''));
+        if ($kep) {
+            $data['image'] = [$kep];
+        }
+        $leiras = self::plainText($csapat['leiras'] ?? '', 500);
+        if ($leiras) {
+            $data['description'] = $leiras;
+        }
+        $tagok = [];
+        foreach ($csapat['versenyzok'] ?? [] as $versenyzo) {
+            if (!empty($versenyzo['nev'])) {
+                $tagok[] = ['@type' => 'Person', 'name' => self::plainText($versenyzo['nev'], 0)];
+            }
+        }
+        if ($tagok) {
+            $data['member'] = $tagok;
+        }
+        return self::jsonLd($data);
+    }
+
+    /**
+     * Képhivatkozás abszolút URL-hez: a képeket külön hoszt is kiszolgálhatja
+     * (config.ini `main.imagepath`), a sablonok is ezzel az előtaggal írják ki őket.
+     */
+    public static function imageUrl(?string $kepurl): string
+    {
+        $kepurl = (string)$kepurl;
+        if ($kepurl === '' || preg_match('#^https?://#i', $kepurl)) {
+            return $kepurl;
+        }
+        $prefix = rtrim((string)store::getConfigValue('main.imagepath', ''), '/');
+        return $prefix . '/' . ltrim($kepurl, '/');
     }
 
     /** A blog szerzője a beállításokból; üres név esetén maga a webáruház a szerző. */

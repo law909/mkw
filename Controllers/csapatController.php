@@ -172,12 +172,25 @@ class csapatController extends \mkwhelpers\MattableController
         if ($csapat) {
             $csapat = $csapat[0];
         }
+        if (!$csapat) {
+            \mkw\store::redirectTo404($com);
+            return;
+        }
         $view = $this->createMainView('csapat.tpl');
         $adat = $this->loadVars($csapat);
         $view->setVar('csapat', $adat);
         \mkw\store::fillTemplate($view);
+        $this->setBreadcrumb($view, [
+            ['caption' => t('Csapatok'), 'url' => \mkw\store::getRouter()->generate('csapatindex')],
+            ['caption' => $adat['nev']],
+        ]);
         $view->setVar('pagetitle', $adat['nev'] . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $view->setVar('seodescription', \Services\SeoService::plainText($adat['leiras'], 160));
+        $this->setOpenGraph($view, 'profile', $adat['kepurllarge'], $adat['nev']);
+        $view->setVar(
+            'csapatjsonld',
+            \Services\SeoService::sportsTeamJsonLd($adat, \Services\SeoService::getCanonicalUrl())
+        );
         $view->printTemplateResult();
     }
 }

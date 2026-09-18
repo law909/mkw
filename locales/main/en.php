@@ -338,4 +338,7 @@ return [
     'Azok a csapatok, amelyeket a Mugen Race támogat.' => 'The teams sponsored by Mugen Race.',
     'A webáruházban kapható márkák.' => 'The brands available in our shop.',
     'Márkák' => 'Brands',
+    'Motorversenyző' => 'Motorcycle racer',
+    'Motorsport' => 'Motorcycle racing',
+    'Nézd meg a Mugen Race felszereléseket' => 'Shop Mugen Race gear',
 ];

@@ -1,12 +1,21 @@
 {extends "base.tpl"}
 
 {block "kozep"}
+    {$csapatjsonld|default}
+    <div class="container page-header">
+        <div class="row">
+            <div class="col">
+                {include 'morzsa.tpl'}
+            </div>
+        </div>
+    </div>
     <div class="teams-datasheet">
         <article class="teams-datasheet__article">
             <div class="row">
                 <div class="col ">
                     <div class="teams-datasheet__image-wrapper">
-                        <img src="{$imagepath}{$csapat.kepurl2000}" alt="{$csapat.kepleiras}" class="teams-datasheet__image">
+                        <img src="{$imagepath}{$csapat.kepurl2000}" alt="{if ($csapat.kepleiras)}{$csapat.kepleiras|escape}{else}{$csapat.nev|escape}{/if}"
+                             class="teams-datasheet__image" fetchpriority="high">
                     </div>
                     <div class="teams-datasheet__meta">
                         {if ($csapat.logourlmini)}
@@ -63,6 +72,11 @@
                     {/foreach}
                 </div>
             </div>
+        </div>
+    {/if}
+    {if ($menu1[0].children[0].slug|default)}
+        <div class="container teams-datasheet__cta textaligncenter">
+            <a href="/categories/{$menu1[0].children[0].slug}" class="button bordered">{t('Nézd meg a Mugen Race felszereléseket')}</a>
         </div>
     {/if}
     <div id="lightbox" class="lightbox hidden">
