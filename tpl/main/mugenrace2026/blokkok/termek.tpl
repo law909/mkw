@@ -1,4 +1,4 @@
-<div class="carousel-item product-list-item spanmkw3 gtermek itemscope itemtype=" http://schema.org/Product">
+<div class="carousel-item product-list-item spanmkw3 gtermek">
 <div class="gtermekinner">
     <div class="gtermekinnest product-list-item__inner">
         <div class="textaligncenter product-list-item__image-container">
@@ -23,13 +23,12 @@
                     <div class="flag sale-product">{t('Top 10')}</div>
                 {/if} *}
             </div>
-            <a href="/product/{$termek.slug}/{$termek.szin_id}"><img class="product-list-item__image" itemprop="image"
+            <a href="/product/{$termek.slug}/{$termek.szin_id}"><img class="product-list-item__image"
                                                                      src="{$imagepath}{if (is_array($termek.szinkepek))}{$termek.szinkepek[0].kepurl}{else}{$termek.kepurl}{/if}"
                                                                      title="{$termek.caption}" alt="{$termek.caption}"></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__title">
-            <a itemprop="url" href="/product/{$termek.slug}/{$termek.szin_id}"><span class="gtermekcaption"
-                                                                                     itemprop="name">{$termek.caption|lower|capitalize}{if ($termek.szin)} ({$termek.szin}){/if}</span></a>
+            <a href="/product/{$termek.slug}/{$termek.szin_id}"><span class="gtermekcaption">{$termek.caption|lower|capitalize}{if ($termek.szin)} ({$termek.szin}){/if}</span></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__code">
             <a href="/product/{$termek.slug}/{$termek.szin_id}">{$termek.cikkszam}</a>
@@ -62,17 +61,13 @@
             {/if}
         </div>
         <div class="flex-tb flex-col product-list-item__price-block">
-            <div class="termekprice pull-left" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            {* a kártyán nincs Product/Offer jelölés: a lista ItemList-et ad, az árat a terméklap mondja meg *}
+            <div class="termekprice pull-left">
                 {if ((isset($termek.eredetibrutto) && $termek.eredetibrutto>0))}
                     <span class="akciosarszoveg">{t('Eredeti ár')}:&nbsp;<span
                             class="akciosar">{number_format($termek.eredetibrutto,0,',',' ')} {$termek.valutanemnev}</span></span>
                 {/if}
-                {if (isset($termek.nemkaphato) && $termek.nemkaphato)}
-                    <link itemprop="availability" href="http://schema.org/OutOfStock" content="Nem kapható">
-                {else}
-                    <link itemprop="availability" href="http://schema.org/InStock" content="Kapható">
-                {/if}
-                <span class="product-list-item__price" itemprop="price">{number_format($termek.brutto,0,',',' ')}
+                <span class="product-list-item__price">{number_format($termek.brutto,0,',',' ')}
                     {$termek.valutanemnev}
                         </span>
             </div>

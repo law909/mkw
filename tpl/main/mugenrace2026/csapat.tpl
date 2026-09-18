@@ -2,7 +2,7 @@
 
 {block "kozep"}
     <div class="teams-datasheet">
-        <article itemtype="http://schema.org/Article" itemscope="">
+        <article class="teams-datasheet__article">
             <div class="row">
                 <div class="col ">
                     <div class="teams-datasheet__image-wrapper">

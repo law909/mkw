@@ -24,9 +24,10 @@
 {/block}
 
 {block "kozep"}
+    {$termekjsonld|default}
     <div class="container whitebg product-datasheet">
 
-        <article itemtype="http://schema.org/Product" itemscope="">
+        <article class="product-datasheet__article">
             <div class="row product-datasheet__content">
                 <div class="col">
                     <div class="row">
@@ -96,10 +97,9 @@
                             <div class="korbepadding">
 
                                 {include 'morzsa.tpl'}
-                                <div class="textaligncenter product-datasheet__title"><h1 itemprop="name"
-                                                                                          class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
+                                <div class="textaligncenter product-datasheet__title"><h1 class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
                                 <div>
-                                    <span class="bold">{t('Cikkszám')}:</span> <span itemprop="productID">{$termek.cikkszam}</span>
+                                    <span class="bold">{t('Cikkszám')}:</span> <span class="termekcikkszam">{$termek.cikkszam}</span>
                                 </div>
                                 {if ($termek.me)}
                                     <div><span class="bold">{t('Kiszerelés')}:</span> {$termek.me}</div>
@@ -108,18 +108,13 @@
                                     <div><span class="bold">{t('Szállítási idő')}:</span> max. <span
                                             id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> {t('munkanap')}</div>
                                 {/if}
-                                <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright" itemprop="offers" itemscope
-                                     itemtype="http://schema.org/Offer">
+                                {* az ár és a készlet strukturált adata a JSON-LD-ben van, itt csak a látható szöveg *}
+                                <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright">
                                     {if (isset($termek.eredetibrutto) && $termek.eredetibrutto>0)}
                                         <span class="akciosarszoveg"><strong>{t('Eredeti ár')}:</strong>&nbsp;<span
                                                 class="akciosar">{number_format($termek.eredetibrutto,0,',',' ')} {$termek.valutanemnev}</span></span>
                                     {/if}
-                                    {if ($termek.nemkaphato)}
-                                        <link itemprop="availability" href="http://schema.org/OutOfStock" content="{t('Nem kapható')}">
-                                    {else}
-                                        <link itemprop="availability" href="http://schema.org/InStock" content="{t('Kapható')}">
-                                    {/if}
-                                    <span itemprop="price">{number_format($termek.brutto,0,',',' ')} {$valutanemnev}</span>
+                                    <span class="termekar">{number_format($termek.brutto,0,',',' ')} {$valutanemnev}</span>
                                 </div>
                                 <div>
                                     <ul class="simalista">
@@ -177,7 +172,7 @@
                                     <div class="accordion-item">
                                         <div class="accordion-header">{t('Leírás')}<span class="arrow"></span></div>
                                         <div class="accordion-content">
-                                            <span itemprop="description">{$termek.leiras}</span>
+                                            {$termek.leiras}
                                         </div>
                                     </div>
 

@@ -1,6 +1,7 @@
 {extends "base.tpl"}
 
 {block "kozep"}
+    {$itemlistjsonld|default}
     <div class="container page-header">
         <div class="row">
             <div class="col">

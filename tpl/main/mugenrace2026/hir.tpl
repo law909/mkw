@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="container-sm  news-datasheet">
-        <article itemtype="http://schema.org/Article" itemscope="">
+        <article class="news-datasheet__article">
             <div class="row">
                 <div class="col ">
                     

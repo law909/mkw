@@ -2,7 +2,7 @@
 
 {block "kozep"}
 	<div class="container whitebg static-page">
-		<article itemtype="http://schema.org/Article" itemscope="">
+		<article class="static-page__article">
 
 				<div class="container page-header static-page__header">
 					<div class="row">

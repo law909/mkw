@@ -2,7 +2,7 @@
 
 {block "kozep"}
     <div class="sponsored-riders-datasheet">
-        <article itemtype="http://schema.org/Article" itemscope="">
+        <article class="sponsored-riders-datasheet__article">
             <div class="row">
                 <div class="col ">
                     {if ($versenyzo.kepurl12000)}
