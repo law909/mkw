@@ -1013,6 +1013,26 @@ class Termek
             $x['szinek'] = $vtt;
         }
 
+        // a GS1 vonalkód változat szinten van meg: a strukturált adatban ez az egyetlen
+        // globális termékazonosító, amivel a Google és az AI-keresők párosítani tudnak
+        $valtozatlista = [];
+        /** @var TermekValtozat $valt */
+        foreach ($this->getValtozatok() as $valt) {
+            if ($valt->getInaktiv() || !$valt->getXLathato()) {
+                continue;
+            }
+            $valtozatlista[] = [
+                'id' => $valt->getId(),
+                'cikkszam' => $valt->getCikkszam() ?: $this->getCikkszam(),
+                'vonalkod' => $valt->getVonalkod(),
+                'szin' => $valt->getSzinNev() ?: (string)$valt->getSzin(),
+                'meret' => $valt->getMeretNev() ?: (string)$valt->getMeret(),
+                'elerheto' => (bool)$valt->getXElerheto(),
+                'brutto' => $this->calcValtozatBrutto($valt),
+            ];
+        }
+        $x['valtozatlista'] = $valtozatlista;
+
         $hasontomb = [];
         $r = \mkw\store::getEm()->getRepository(Termek::class);
         $hason = $r->getHasonloTermekek(
@@ -1034,6 +1054,17 @@ class Termek
         $x['blogposztok'] = $bpt;
 
         return $x;
+    }
+
+    /** Egy változat bruttó ára a webshop pénznemében, a terméklapéval azonos szabály szerint. */
+    private function calcValtozatBrutto($valtozat)
+    {
+        if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
+            $afa = \mkw\store::getOrszag()?->getAfa();
+            $valutanem = \mkw\store::getWebshopValutanem();
+            return $afa ? $afa->calcBrutto($this->calcSalePrice($valutanem?->getId(), $valtozat)) : 0;
+        }
+        return $this->getBruttoAr($valtozat, \mkw\store::getLoggedInUser());
     }
 
     public function toKapcsolodo($valtozat = null)

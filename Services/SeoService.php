@@ -392,7 +392,82 @@ class SeoService
             ];
         }
         $product['offers'] = self::buildOffer($t, $url);
+
+        $valtozatok = self::buildVariants($t, $url);
+        if ($valtozatok) {
+            // több változat esetén a Google a ProductGroup + hasVariant szerkezetet várja,
+            // a GTIN pedig változatonként külön azonosít
+            $product['@type'] = 'ProductGroup';
+            $product['productGroupID'] = $t['cikkszam'] ?? '';
+            $product['variesBy'] = self::variesBy($t);
+            $product['hasVariant'] = $valtozatok;
+        }
         return self::jsonLd($product);
+    }
+
+    /**
+     * A termék változatai önálló Product-ként, saját cikkszámmal, GTIN-nel és ajánlattal.
+     * Csak akkor ad vissza bármit, ha legalább két látható változat van: egyváltozatos
+     * terméknél a ProductGroup felesleges réteg lenne.
+     */
+    private static function buildVariants(array $t, string $url): array
+    {
+        $valtozatok = $t['valtozatlista'] ?? [];
+        if (count($valtozatok) < 2) {
+            return [];
+        }
+        $elemek = [];
+        foreach ($valtozatok as $valtozat) {
+            $variant = [
+                '@type' => 'Product',
+                'name' => trim(self::plainText($t['caption'] ?? '', 0) . ' ' . $valtozat['szin'] . ' ' . $valtozat['meret']),
+                'sku' => $valtozat['cikkszam'],
+                'url' => $url,
+            ];
+            $gtin = preg_replace('/\D/', '', (string)$valtozat['vonalkod']);
+            if (strlen($gtin) === 13) {
+                $variant['gtin13'] = $gtin;
+            } elseif (in_array(strlen($gtin), [8, 12, 14], true)) {
+                $variant['gtin'] = $gtin;
+            }
+            if ($valtozat['szin']) {
+                $variant['color'] = $valtozat['szin'];
+            }
+            if ($valtozat['meret']) {
+                $variant['size'] = $valtozat['meret'];
+            }
+            $ar = (float)$valtozat['brutto'];
+            if ($ar > 0) {
+                $variant['offers'] = [
+                    '@type' => 'Offer',
+                    'url' => $url,
+                    'priceCurrency' => self::getCurrencyCode(),
+                    'price' => (string)round($ar),
+                    'availability' => $valtozat['elerheto']
+                        ? 'https://schema.org/InStock'
+                        : 'https://schema.org/OutOfStock',
+                    'itemCondition' => 'https://schema.org/NewCondition',
+                    'seller' => ['@id' => self::getOrganizationId()],
+                ];
+            }
+            $elemek[] = $variant;
+        }
+        return $elemek;
+    }
+
+    /** Mi különbözteti meg a változatokat: szín, méret, vagy mindkettő. */
+    private static function variesBy(array $t): array
+    {
+        $tulajdonsagok = [];
+        foreach ($t['valtozatlista'] ?? [] as $valtozat) {
+            if ($valtozat['szin']) {
+                $tulajdonsagok['color'] = 'color';
+            }
+            if ($valtozat['meret']) {
+                $tulajdonsagok['size'] = 'size';
+            }
+        }
+        return array_values($tulajdonsagok);
     }
 
     private static function buildOffer(array $t, string $url): array
