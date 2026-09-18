@@ -331,4 +331,5 @@ return [
     'A választott fizetési mód nem választható.' => 'The chosen payment method is not available.',
     'Üres a kosara.' => 'Your cart is empty.',
     'A rendelés összege nem éri el a minimális vásárlási limitet (%s Ft).' => 'The order total is below the minimum order value (%s HUF).',
+    'Keresési találatok' => 'Search results',
 ];

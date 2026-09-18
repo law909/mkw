@@ -84,10 +84,10 @@
                         </a>
                     {else}
                         {if ($termek.brutto > 0)}
-                            <a href="/kosar/add?id={$termek.id}" rel="nofollow"
-                               class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
+                            <button type="button" data-url="/kosar/add?id={$termek.id}"
+                                    class="js-kosarbaszinvaltozat button primary full-width cartbtn pull-right" data-termek="{$termek.id}">
                                 {t('Kosárba')}
-                            </a>
+                            </button>
                         {/if}
                     {/if}
                 {/if}

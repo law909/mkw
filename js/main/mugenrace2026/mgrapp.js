@@ -1560,7 +1560,7 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: $this.attr('href'),
+            url: $this.data('url') || $this.attr('href'),
             data: {
                 jax: 1
             },
@@ -1585,7 +1585,7 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: $this.attr('href'),
+            url: $this.data('url') || $this.attr('href'),
             data: {
                 jax: 2,
                 vid: $this.attr('data-vid')
@@ -1628,7 +1628,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'POST',
-                url: $this.attr('href'),
+                url: $this.data('url') || $this.attr('href'),
                 data: {
                     jax: 3,
                     tip: tipusok,
@@ -1666,7 +1666,7 @@ $(document).ready(function () {
         } else {
             $.ajax({
                 type: 'POST',
-                url: $this.attr('href'),
+                url: $this.data('url') || $this.attr('href'),
                 data: {
                     jax: 2,
                     vid: valtozatid

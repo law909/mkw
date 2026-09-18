@@ -351,8 +351,10 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::fillTemplate($this->view);
                 $this->setBreadcrumb($this->view, [['caption' => t('A keresett kifejezés: ') . $keresoszo]]);
                 $this->view->setVar('keresett', $keresoszo);
-                $this->view->setVar('seodescription', t('A keresett kifejezés: ') . $keresoszo);
-                $this->view->setVar('pagetitle', t('A keresett kifejezés: ') . $keresoszo);
+                // a title-be nem tükrözzük vissza a beírt szöveget: minden keresés más címet
+                // adna ugyanannak a lapnak, és a SERP-ben a látogató szavai jelennének meg
+                $this->view->setVar('seodescription', t('Keresési találatok'));
+                $this->view->setVar('pagetitle', t('Keresési találatok') . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
                 $this->view->printTemplateResult(true);
             } else {
                 $this->view = $this->getTemplateFactory()->createMainView('nincstalalat.tpl');

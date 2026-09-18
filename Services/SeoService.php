@@ -31,8 +31,29 @@ class SeoService
         'msclkid',
     ];
 
-    /** Ezeken az útvonalneveken sosem indexelünk (kereső, szűrő). */
-    const NOINDEXROUTES = ['kereses', 'search', 'showszuro'];
+    /**
+     * Ezeken az útvonalneveken sosem indexelünk: belső kereső, szűrő, és a vásárlási
+     * folyamat lapjai. Utóbbiakon tartalom nincs, viszont a crawl budgetet viszik, és a
+     * keresőben megjelenve (üres kosár, bejelentkezés) rontják a találati képet.
+     */
+    const NOINDEXROUTES = [
+        'kereses',
+        'search',
+        'showszuro',
+        'showcheckout',
+        'showcheckoutfizetes',
+        'checkoutkoszonjuk',
+        'checkoutbarionerror',
+        'showlogin',
+        'showregistration',
+        'showaccount',
+        'showpassreminder',
+        'showertekelesform',
+        'termekertekeleskoszonjuk',
+        'kosarget',
+        'kosaredit',
+        'kapcsolatkosz',
+    ];
 
     private static $baseUrl;
 
@@ -113,11 +134,17 @@ class SeoService
      */
     public static function isIndexable(): bool
     {
-        if (in_array((string)store::getRouteName(), self::NOINDEXROUTES, true)) {
+        if (self::isNoindexRoute()) {
             return false;
         }
         $allowed = array_merge(self::INDEXABLEPARAMS, self::TRACKINGPARAMS);
         return !array_diff(array_keys($_GET), $allowed);
+    }
+
+    /** Maga az oldaltípus nem indexelhető — nem csak a rákerült szűrőparaméterek miatt. */
+    public static function isNoindexRoute(): bool
+    {
+        return in_array((string)store::getRouteName(), self::NOINDEXROUTES, true);
     }
 
     public static function getRobots(): string
@@ -132,6 +159,11 @@ class SeoService
      */
     public static function getCanonicalUrl(): string
     {
+        // a kereső, a kosár és a vásárlási folyamat lapjai nem kapnak canonicalt: a noindex
+        // az egyértelmű jelzés, a kettő együtt csak ellentmondana egymásnak
+        if (self::isNoindexRoute()) {
+            return '';
+        }
         $url = self::getBaseUrl() . (self::getPath() === '/' ? '/' : self::getPath());
         if (self::isIndexable()) {
             $pageno = (int)($_GET['pageno'] ?? 0);
