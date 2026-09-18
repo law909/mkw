@@ -1005,6 +1005,36 @@ $(document).ready(function () {
                 });
             }
         },
+        // a szerver a máshol is meglévő cikkszámra kérdez vissza; igenre ugyanaz a form megy újra,
+        // a megerősítő mezővel — a mező mentés után visszaáll, hogy a következő mentés újra kérdezzen
+        onConfirm: function (data) {
+            let $jelzo = $('input[name="cikkszamutkozesrendben"]');
+            if (!$jelzo.length) {
+                // saját termekkarbform.tpl-t vivő témán hiányozhat a mező
+                $jelzo = $('<input>').attr({type: 'hidden', name: 'cikkszamutkozesrendben', value: '0'})
+                    .appendTo('#mattkarb-form');
+            }
+            $('#dialogcenter')
+                .empty()
+                .append($('<div>').css('white-space', 'pre-line').text(data.error))
+                .dialog({
+                    title: 'Cikkszám ütközés',
+                    resizable: false,
+                    modal: true,
+                    width: 520,
+                    buttons: {
+                        'Mentés így is': function () {
+                            $(this).dialog('close');
+                            $jelzo.val('1');
+                            $('#mattkarb-form').submit();
+                            $jelzo.val('0');
+                        },
+                        'Mégsem': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+        },
     });
 
     if ($.fn.mattable) {

@@ -40,6 +40,8 @@ class MattkarbConfig {
             beforeShow: noop,
             beforeHide: noop,
             onSubmit: noop,
+            // a szerver {ok:false, confirm:'…'} válaszára fut, ha a képernyő megadja
+            onConfirm: null,
             afterSave: null,
             onCancel: noop
         };

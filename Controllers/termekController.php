@@ -503,6 +503,108 @@ class termekController extends \mkwhelpers\MattableController
      *
      * @return mixed
      */
+    /**
+     * Mentés előtt megnézzük, hogy a cikkszám (és a változatoké) nem foglalt-e máshol. A duplikált
+     * cikkszám nem tilos – a bolt több telepítésén szándékos –, ezért nem hiba, hanem kérdés: a
+     * válasz 200-as {ok:false, confirm:'cikkszam'}, és a képernyő rákérdez. A megerősítést a
+     * `cikkszamutkozesrendben` mező hozza vissza.
+     */
+    public function save()
+    {
+        if (!$this->params->getBoolRequestParam('cikkszamutkozesrendben')) {
+            $utkozesek = $this->getCikkszamUtkozesek();
+            if ($utkozesek) {
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode([
+                    'ok' => false,
+                    'confirm' => 'cikkszam',
+                    'error' => implode("\n", $utkozesek) . "\n\n" . t('Így is menti a terméket?'),
+                ]);
+                return;
+            }
+        }
+        parent::save();
+    }
+
+    /**
+     * A beküldött cikkszámok ütközései, emberi mondatokban. A termék cikkszámát a többi termékhez,
+     * a változatokét **más termékek** változataihoz méri: egy termék változatai jellemzően ugyanazt
+     * a cikkszámot viselik, azokra kérdezni minden mentésnél zaj lenne.
+     *
+     * @return string[]
+     */
+    private function getCikkszamUtkozesek(): array
+    {
+        $conn = $this->getEm()->getConnection();
+        $termekid = (int)$this->params->getRequestParam($this->idName, 0);
+        // "mentés új termékként": a form a régi id-t küldi, de új sor születik, tehát az is ütközés
+        if ($this->params->getStringRequestParam($this->operationName) !== $this->editOperation) {
+            $termekid = 0;
+        }
+        $ret = [];
+
+        $cikkszam = trim((string)$this->params->getStringRequestParam('cikkszam'));
+        if ($cikkszam !== '') {
+            $sorok = $conn->fetchAllAssociative(
+                'SELECT id, nev FROM termek WHERE cikkszam = ? AND id <> ? ORDER BY nev LIMIT 5',
+                [$cikkszam, $termekid]
+            );
+            if ($sorok) {
+                $ret[] = sprintf(
+                    t('A(z) "%s" cikkszám már szerepel másik terméknél: %s.'),
+                    $cikkszam,
+                    $this->getUtkozesLista($sorok)
+                );
+            }
+        }
+
+        foreach ($this->getBekuldottValtozatCikkszamok() as $valtozatcikkszam) {
+            $sorok = $conn->fetchAllAssociative(
+                'SELECT t.id, t.nev FROM termekvaltozat tv'
+                . ' JOIN termek t ON t.id = tv.termek_id'
+                . ' WHERE tv.cikkszam = ? AND tv.termek_id <> ?'
+                . ' GROUP BY t.id, t.nev ORDER BY t.nev LIMIT 5',
+                [$valtozatcikkszam, $termekid]
+            );
+            if ($sorok) {
+                $ret[] = sprintf(
+                    t('A(z) "%s" változat cikkszám már szerepel másik termék változatánál: %s.'),
+                    $valtozatcikkszam,
+                    $this->getUtkozesLista($sorok)
+                );
+            }
+        }
+        return $ret;
+    }
+
+    /** A formon lévő, törlésre nem jelölt változatok cikkszámai, üresek nélkül, egyszer. */
+    private function getBekuldottValtozatCikkszamok(): array
+    {
+        if (!\mkw\store::getSetupValue('termekvaltozat')) {
+            return [];
+        }
+        $ret = [];
+        foreach ($this->params->getArrayRequestParam('valtozatid') as $valtozatid) {
+            if ($this->params->getStringRequestParam('valtozatoper_' . $valtozatid) === 'del') {
+                continue;
+            }
+            $cikkszam = trim((string)$this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
+            if ($cikkszam !== '') {
+                $ret[$cikkszam] = $cikkszam;
+            }
+        }
+        return array_values($ret);
+    }
+
+    private function getUtkozesLista(array $sorok): string
+    {
+        $nevek = [];
+        foreach ($sorok as $sor) {
+            $nevek[] = trim($sor['nev']) !== '' ? $sor['nev'] : ('#' . $sor['id']);
+        }
+        return implode(', ', $nevek) . (count($sorok) === 5 ? ' …' : '');
+    }
+
     protected function setFields($obj)
     {
         $oldnemkaphato = $obj->getNemkaphato();

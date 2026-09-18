@@ -139,6 +139,11 @@
                     // ilyenkor nincs mit frissíteni, és az önálló karb oldal sem írhatja ki, hogy
                     // "A mentés sikerült". (Az üres válasz viszont jogos: pl. a setup mentése.)
                     if (data && data.ok === false) {
+                        // a válasz kérdés is lehet, nem csak hiba: a képernyő dönt, mit kezd vele
+                        if (data.confirm && typeof setup.onConfirm === 'function') {
+                            setup.onConfirm.call(this, data);
+                            return;
+                        }
                         mkwHiba(data.error);
                         return;
                     }

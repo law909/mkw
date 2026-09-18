@@ -872,6 +872,8 @@
     </div>
     <input name="oper" type="hidden" value="{$oper}">
     <input name="id" type="hidden" value="{$egyed.id}">
+    {* a máshol is meglévő cikkszám jóváhagyása: a termek.js állítja 1-re, ha a felhasználó így is menti *}
+    <input name="cikkszamutkozesrendben" type="hidden" value="0">
 
     <div class="mattkarb-footer">
         <input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
