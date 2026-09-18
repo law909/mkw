@@ -96,13 +96,6 @@
                             <div class="korbepadding">
 
                                 {include 'morzsa.tpl'}
-                                            <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
-                                        {else}
-                                            {$_navi.caption|lower|capitalize}
-                                        {/if}
-                                    {/foreach}
-                                    {/if}
-                                </span>
                                 <div class="textaligncenter product-datasheet__title"><h1 itemprop="name"
                                                                                           class="termeknev">{$termek.caption|lower|capitalize}</h1></div>
                                 <div>

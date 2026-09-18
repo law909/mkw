@@ -5,22 +5,11 @@
         <div class="row">
             <div class="col">
 				{include 'morzsa.tpl'}
-                                <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
-                            {else}
-                                {$_navi.caption|capitalize}
-                            {/if}
-                        {/foreach}
-                        {/if}
-				</span>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <h1 class="page-header__title" typeof="v:Breadcrumb">
-                    <a href="/news/" rel="v:url" property="v:title">
-                        {t('Hírek')}
-                    </a>
-                </h1>
+                <h1 class="page-header__title">{$hir.cim}</h1>
             </div>
             <div class="col flex-cr">
                 <a href="/news/" class="button bordered">{t('Vissza a hírekhez')}</a>
@@ -31,7 +20,7 @@
         <article itemtype="http://schema.org/Article" itemscope="">
             <div class="row">
                 <div class="col ">
-                    <h2 class="news-datasheet__title">{$hir.cim}</h2>
+                    
                     <div class="news-datasheet__meta">
                         <div class="news-datasheet__date">
                             {$hir.datum}

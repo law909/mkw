@@ -17,8 +17,8 @@
              class="featured-collection-slider featured-collection-slider__{$hatterszin} carousel-section  {if (isset($blokk))}{$blokk.cssclass} {/if}" {if (isset($blokk.cssstyle) && $blokk.cssstyle)} style="{$blokk.cssstyle}" {/if}>
         <div class="container section-header small row flex-cb">
             <div class="col flex-lc flex-col ta-l">
-                <h2>{if (isset($fejlecszoveg))} {$fejlecszoveg} {else} {$blokk.nev} {/if}</h2>
-                <p></p>
+                {$_fejlec = $fejlecszoveg|default:($blokk.nev|default)}
+                {if ($_fejlec)}<h2>{$_fejlec}</h2>{/if}
             </div>
             <div class="col flex-cr">
                 <div class="carousel-controls">

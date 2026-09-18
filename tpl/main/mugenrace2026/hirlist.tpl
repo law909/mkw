@@ -5,22 +5,11 @@
         <div class="row">
             <div class="col">
 				{include 'morzsa.tpl'}
-                            <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
-                        {else}
-                            {$_navi.caption|capitalize}
-                        {/if}
-                    {/foreach}
-                    {/if}
-				</span>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <h1 class="page-header__title" typeof="v:Breadcrumb">
-                    <a href="/news/" rel="v:url" property="v:title">
-                        {t('Hírek')}
-                    </a>
-                </h1>
+                <h1 class="page-header__title">{t('Hírek')}</h1>
             </div>
         </div>
     </div>

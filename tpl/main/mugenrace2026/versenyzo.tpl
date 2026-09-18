@@ -16,7 +16,7 @@
                                 {$versenyzo.csapatnev}
                             </div>
                         {/if}
-                        <h2 class="sponsored-riders-datasheet__title">{$versenyzo.nev}</h2>
+                        <h1 class="sponsored-riders-datasheet__title">{$versenyzo.nev}</h1>
                         {if ($versenyzo.versenysorozat)}
                             <div class="sponsored-riders-datasheet__category">
                                 {$versenyzo.versenysorozat}

@@ -12,7 +12,7 @@
                         {if ($csapat.logourlmini)}
                             <img src="{$imagepath}{$csapat.logourlmini}" alt="" class="teams-datasheet__logo">
                         {/if}
-                        <h2 class="teams-datasheet__title">{$csapat.nev}</h2>
+                        <h1 class="teams-datasheet__title">{$csapat.nev}</h1>
                         <div class="teams-datasheet__lead">
                             {$csapat.leiras}
                         </div>

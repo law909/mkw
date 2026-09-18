@@ -10,12 +10,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <h1 class="page-header__title" typeof="v:Breadcrumb">
-                        <a href="#" rel="v:url" property="v:title">
-                            {t('Csapatok')}
-                        </a>
-
-                    </h1>
+                    <h1 class="page-header__title">{t('Csapatok')}</h1>
                 </div>
             </div>
         </div>

@@ -35,8 +35,10 @@
         {/if}
         flex-col flex-cc
       ">
+            {* egy lapon egy h1: a főoldal első blokkja kapja, a többi blokk címe h2 *}
             {if (isset($blokk.cim) && $blokk.cim)}
-                <h1>{$blokk.cim}</h1>
+                {$_cimszint = $cimszint|default:'h2'}
+                <{$_cimszint}>{$blokk.cim}</{$_cimszint}>
             {/if}
             {if (isset($blokk.leiras) && $blokk.leiras)}
                 <p>{$blokk.leiras}</p>

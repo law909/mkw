@@ -7,6 +7,11 @@
 			{include 'morzsa.tpl'}
 		</div>
 	</div>
+	<div class="row">
+		<div class="col">
+			<h1 class="page-header__title">{$kategorianev|default}</h1>
+		</div>
+	</div>
 </div>
 <div class="container whitebg">
 	<div class="row">

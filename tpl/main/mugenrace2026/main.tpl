@@ -24,7 +24,8 @@
         <div id="MainContent">
             {foreach $blokklista as $_blokk}
                 {if ($_blokk.tipus==1)}
-                    {include 'blokkok/blokk.tpl' blokk=$_blokk}
+                    {if ($_blokk@first)}{$_cimszint='h1'}{else}{$_cimszint='h2'}{/if}
+                    {include 'blokkok/blokk.tpl' blokk=$_blokk cimszint=$_cimszint}
                 {elseif ($_blokk.tipus==2)}
                     {include 'blokkok/duplablokk.tpl' blokk=$_blokk}
                 {elseif ($_blokk.tipus==3)}

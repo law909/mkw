@@ -247,6 +247,7 @@ class mainController extends \mkwhelpers\Controller
             $this->setEmptyListRobots($t);
             $this->setItemList($t);
             $this->setBreadcrumb($this->view, $tf->getMorzsa($ag));
+            $this->view->setVar('kategorianev', $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
             $this->setOpenGraph($this->view, null, $ag->getKepurlLarge(), $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
@@ -281,6 +282,7 @@ class mainController extends \mkwhelpers\Controller
                 ['caption' => t('Márkák'), 'url' => \mkw\store::getRouter()->generate('markak')],
                 ['caption' => $c->getNev()],
             ]);
+            $this->view->setVar('kategorianev', $c->getNev());
 
             $mpt = \mkw\store::getParameter(\mkw\consts::Markaoldalcim);
             if ($mpt) {
@@ -317,6 +319,7 @@ class mainController extends \mkwhelpers\Controller
         }
         \mkw\store::fillTemplate($this->view);
         $this->setBreadcrumb($this->view, [['caption' => t('Szűrő')]]);
+        $this->view->setVar('kategorianev', t('Szűrő'));
         $this->view->printTemplateResult(true);
     }
 
@@ -354,6 +357,7 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::fillTemplate($this->view);
                 $this->setBreadcrumb($this->view, [['caption' => t('A keresett kifejezés: ') . $keresoszo]]);
                 $this->view->setVar('keresett', $keresoszo);
+                $this->view->setVar('kategorianev', t('A keresett kifejezés: ') . $keresoszo);
                 // a title-be nem tükrözzük vissza a beírt szöveget: minden keresés más címet
                 // adna ugyanannak a lapnak, és a SERP-ben a látogató szavai jelennének meg
                 $this->view->setVar('seodescription', t('Keresési találatok'));

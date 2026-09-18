@@ -18,20 +18,11 @@
         <div class="row">
             <div class="col">
             {include 'morzsa.tpl'}
-                        <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
-                    {else}
-                        {$_navi.caption|lower|capitalize}
-                    {/if}
-                {/foreach}
-                {/if}
-            </span>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <h1 class="page-header__title" typeof="v:Breadcrumb">
-                    {t('Kosár')}
-                </h1>
+                <h1 class="page-header__title">{t('Kosár')}</h1>
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="span8 offset1">
 			<div class="form-header">
-				<h2>{t('Küldjön nekünk üzenetet')}</h2>
+				<h1>{t('Küldjön nekünk üzenetet')}</h1>
 			</div>
 			<form id="Kapcsolatform" class="form-horizontal" action="/kapcsolat/ment" method="post">
 				<fieldset>

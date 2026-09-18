@@ -3,8 +3,7 @@
              class="featured-collection-slider featured-collection-slider__dark carousel-section {$blokk.cssclass}" {if (isset($blokk.cssstyle) && $blokk.cssstyle)} style="{$blokk.cssstyle}" {/if}>
         <div class="container section-header small row flex-cb">
             <div class="col flex-lc flex-col ta-l">
-                <h2>{$blokk.cim}</h2>
-                <p></p>
+                {if ($blokk.cim)}<h2>{$blokk.cim}</h2>{/if}
             </div>
             <div class="col flex-cr">
                 <div class="carousel-controls">

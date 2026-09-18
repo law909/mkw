@@ -5,26 +5,11 @@
         <div class="row">
             <div class="col">
             {include 'morzsa.tpl'}
-                        <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
-                    {else}
-                        {$_navi.caption|lower|capitalize}
-                    {/if}
-                {/foreach}
-                {/if}
-            </span>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                {foreach $navigator as $_navi}
-                    {if ($_navi@last)}
-                        <h1 class="page-header__title" typeof="v:Breadcrumb">
-                            <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
-                                {$_navi.caption|lower|capitalize}
-                            </a>
-                        </h1>
-                    {/if}
-                {/foreach}
+                <h1 class="page-header__title">{$kategorianev|default|lower|capitalize}</h1>
             </div>
             <div class="col flex-cr">
                 <button class="bordered product-filter__toggle">
