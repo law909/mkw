@@ -48,10 +48,10 @@
                                    termék képei bekerülnek az indexbe. A bélyegképek sorrendje azonos
                                    az alábbi images tömbbel, mert a JS az index alapján vált képet. *}
                                 <div class="thumbs" id="thumbs">
-                                    <img src="{$imagepath}{$termek.kepurl400}" class="active" alt="{$termek.caption|escape}"
+                                    <img src="{$imagepath}{$termek.minikepurl}" class="active" alt="{$termek.caption|escape}"
                                          title="{$termek.caption|escape}">
                                     {foreach $termek.kepek as $_kep}
-                                        <img src="{$imagepath}{$_kep.kepurl400}" alt="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}"
+                                        <img src="{$imagepath}{$_kep.minikepurl}" alt="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}"
                                              title="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}">
                                     {/foreach}
                                 </div>
@@ -59,7 +59,7 @@
                                 <div class="main-image-wrapper">
 
                                     <img id="mainImage" class="main-image" src="{$imagepath}{$termek.kepurl}"
-                                         srcset="{$imagepath}{$termek.kepurl400} 400w, {$imagepath}{$termek.kepurl} 1000w"
+                                         srcset="{$imagepath}{$termek.kozepeskepurl} 250w, {$imagepath}{$termek.kepurl} 1000w"
                                          sizes="(max-width: 768px) 100vw, 640px"
                                          alt="{$termek.caption|escape}" title="{$termek.caption|escape}" fetchpriority="high">
 

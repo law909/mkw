@@ -23,14 +23,16 @@
                     <div class="flag sale-product">{t('Top 10')}</div>
                 {/if} *}
             </div>
+            {* a kártyakép a 250 px-es származék: a _400 és a _2000 csak az újabb feltöltésekhez
+               készült el, a régebbi képeknél 404 lenne *}
             {if (is_array($termek.szinkepek))}
-                {$_kartyakep = $termek.szinkepek[0].kepurl400}{$_kartyakepnagy = $termek.szinkepek[0].kepurllarge}
+                {$_kartyakep = $termek.szinkepek[0].kepurlmedium}{$_kartyakepnagy = $termek.szinkepek[0].kepurllarge}
             {else}
-                {$_kartyakep = $termek.kepurl400}{$_kartyakepnagy = $termek.kepurl}
+                {$_kartyakep = $termek.kozepeskepurl}{$_kartyakepnagy = $termek.kepurl}
             {/if}
             <a href="/product/{$termek.slug}/{$termek.szin_id}"><img class="product-list-item__image"
                                                                      src="{$imagepath}{$_kartyakep}"
-                                                                     srcset="{$imagepath}{$_kartyakep} 400w, {$imagepath}{$_kartyakepnagy} 1000w"
+                                                                     srcset="{$imagepath}{$_kartyakep} 250w, {$imagepath}{$_kartyakepnagy} 1000w"
                                                                      sizes="(max-width: 768px) 45vw, 320px"
                                                                      title="{$termek.caption}" alt="{$termek.caption}"></a>
         </div>
