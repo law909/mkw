@@ -75,7 +75,7 @@
         </div>
     {/if}
     {if ($menu1[0].children[0].slug|default)}
-        <div class="container teams-datasheet__cta textaligncenter">
+        <div class="container teams-datasheet__cta flex-cc">
             <a href="/categories/{$menu1[0].children[0].slug}" class="button bordered">{t('Nézd meg a Mugen Race felszereléseket')}</a>
         </div>
     {/if}

@@ -47,7 +47,7 @@
                     {/if}
                     {* kereskedelmi kilépés a versenyzőoldalról: enélkül a lap zsákutca *}
                     {if ($menu1[0].children[0].slug|default)}
-                        <div class="sponsored-riders-datasheet__cta textaligncenter">
+                        <div class="sponsored-riders-datasheet__cta flex-cc">
                             <a href="/categories/{$menu1[0].children[0].slug}" class="button bordered">{t('Nézd meg a Mugen Race felszereléseket')}</a>
                         </div>
                     {/if}
