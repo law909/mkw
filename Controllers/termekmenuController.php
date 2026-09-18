@@ -204,6 +204,25 @@ class termekmenuController extends \mkwhelpers\MattableController
         }
     }
 
+    /**
+     * Morzsalánc a menüág fölé: a gyökér (a fa névtelen tetője) kimarad, a linkek a
+     * /categories/ ágra mutatnak.
+     *
+     * @return array [['caption' => ..., 'link' => ...], …]
+     */
+    public function getMorzsa($kategoria)
+    {
+        $morzsa = [];
+        while ($kategoria && $kategoria->getParent()) {
+            array_unshift($morzsa, [
+                'caption' => $kategoria->getLocalizedFieldValue('nev'),
+                'link' => \mkw\store::getRouter()->generate('showtermekmenu', false, ['slug' => $kategoria->getSlug()])
+            ]);
+            $kategoria = $kategoria->getParent();
+        }
+        return $morzsa;
+    }
+
     public function getNavigator(TermekMenu|TermekMenu2 $parent, $elsourlkell = true)
     {
         $navi = [];

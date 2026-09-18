@@ -245,7 +245,10 @@ class mainController extends \mkwhelpers\Controller
             }
             \mkw\store::fillTemplate($this->view);
             $this->setEmptyListRobots($t);
+            $this->setItemList($t);
+            $this->setBreadcrumb($this->view, $tf->getMorzsa($ag));
             $this->view->setVar('kepurl', $ag->getKepurlLarge());
+            $this->setOpenGraph($this->view, null, $ag->getKepurlLarge(), $ag->getLocalizedFieldValue('nev'));
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
             $this->view->setVar('seodescription', $ag->getShowSeodescription());
             $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
@@ -407,7 +410,11 @@ class mainController extends \mkwhelpers\Controller
                     foreach ($t as $k => $v) {
                         $this->view->setVar($k, $v);
                     }
-                    $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());
+                    // a linkelt kategóriafa témánként más: a mugenrace2026 a /categories/ menüfát
+                    // járja, a többi telepítés a /termekfa/ ágat
+                    $morzsa = (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu())
+                        ? \mkw\store::getTermekmenuController()->getMorzsa($termek->getTermekmenu1())
+                        : (new termekfaController())->getMorzsa($termek->getTermekfa1());
                     $kategoriaut = [];
                     foreach ($morzsa as $elem) {
                         $kategoriaut[] = \Services\SeoService::plainText($elem['caption'], 0);

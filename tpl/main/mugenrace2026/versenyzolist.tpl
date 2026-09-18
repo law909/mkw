@@ -4,10 +4,8 @@
     <div class="container whitebg sponsored-riders">
         <div class="container page-header sponsored-riders__header">
             <div class="row">
-                <div class="col" xmlns:v="http://rdf.data-vocabulary.org/#">
-                                <span class="page-header__breadcrumb flex-lc" itemprop="breadcrumb ">
-
-                                </span>
+                <div class="col">
+                                {include 'morzsa.tpl'}
                 </div>
             </div>
             <div class="row">

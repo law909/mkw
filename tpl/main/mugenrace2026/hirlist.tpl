@@ -3,22 +3,8 @@
 {block "kozep"}
     <div class="container page-header">
         <div class="row">
-            <div class="col" xmlns:v="http://rdf.data-vocabulary.org/#">
-				<span class="page-header__breadcrumb flex-lc" itemprop="breadcrumb ">
-                    {if ($navigator|default)}
-                        <a href="/" rel="v:url" property="v:title">
-                                    {t('Home')}
-                            </a>
-                        <i class="icon arrow-right"></i>
-
-
-{foreach $navigator as $_navi}
-                        {if ($_navi.url|default)}
-                            <span typeof="v:Breadcrumb" class="breadcrumb-{$_navi.url}">
-                                    <a href="/categories/{$_navi.url}" rel="v:url" property="v:title">
-                                        {$_navi.caption|capitalize}
-                                    </a>
-                                </span>
+            <div class="col">
+				{include 'morzsa.tpl'}
                             <i class="icon arrow-right breadcrumb-{$_navi.url}"></i>
                         {else}
                             {$_navi.caption|capitalize}

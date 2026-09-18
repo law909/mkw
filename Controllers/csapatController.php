@@ -157,6 +157,7 @@ class csapatController extends \mkwhelpers\MattableController
         $view = $this->createMainView('csapatlist.tpl');
         $view->setVar('csapatlista', $this->getListAsArray());
         \mkw\store::fillTemplate($view);
+        $this->setBreadcrumb($view, [['caption' => t('Csapatok')]]);
         $view->printTemplateResult();
     }
 

@@ -132,6 +132,7 @@ class versenyzoController extends \mkwhelpers\MattableController
         $view = $this->createMainView('versenyzolist.tpl');
         $view->setVar('versenyzolista', $this->getListAsArray());
         \mkw\store::fillTemplate($view);
+        $this->setBreadcrumb($view, [['caption' => t('Szponzorált versenyzők')]]);
         $view->printTemplateResult();
     }
 
