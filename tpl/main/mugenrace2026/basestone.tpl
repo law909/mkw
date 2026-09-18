@@ -10,7 +10,7 @@
     <meta property="og:site_name" content="mugenrace.com"/>
     {if ($canonical|default)}<meta property="og:url" content="{$canonical|escape}">{/if}
     {block "meta"}{/block}
-    <title>{$pagetitle|default}</title>
+    <title>{$pagetitle|default:$globaltitle|default}</title>
     {$orgjsonld|default}
     {include 'headtrackingcodes.tpl'}
     <link type="application/rss+xml" rel="alternate" title="{$feedhirtitle|default}" href="/feed/hir">

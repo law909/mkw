@@ -158,6 +158,8 @@ class csapatController extends \mkwhelpers\MattableController
         $view->setVar('csapatlista', $this->getListAsArray());
         \mkw\store::fillTemplate($view);
         $this->setBreadcrumb($view, [['caption' => t('Csapatok')]]);
+        $view->setVar('pagetitle', t('Csapatok') . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
+        $view->setVar('seodescription', t('Azok a csapatok, amelyeket a Mugen Race támogat.'));
         $view->printTemplateResult();
     }
 
@@ -171,8 +173,11 @@ class csapatController extends \mkwhelpers\MattableController
             $csapat = $csapat[0];
         }
         $view = $this->createMainView('csapat.tpl');
-        $view->setVar('csapat', $this->loadVars($csapat));
+        $adat = $this->loadVars($csapat);
+        $view->setVar('csapat', $adat);
         \mkw\store::fillTemplate($view);
+        $view->setVar('pagetitle', $adat['nev'] . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
+        $view->setVar('seodescription', \Services\SeoService::plainText($adat['leiras'], 160));
         $view->printTemplateResult();
     }
 }

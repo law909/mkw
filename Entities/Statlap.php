@@ -72,7 +72,7 @@ class Statlap
 
     public function getShowOldalcim()
     {
-        return $this->getLocalizedFieldValue('oldalcim') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim);
+        return $this->getLocalizedFieldValueOrDefault('oldalcim') . ' - ' . \mkw\store::getParameter(\mkw\consts::Oldalcim);
     }
 
     public function setOldalcim($adat)

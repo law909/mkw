@@ -505,7 +505,7 @@ class TermekMenu
         } else {
             $result = store::getParameter(\mkw\consts::Katoldalcim);
             if ($result) {
-                $result = str_replace('[kategorianev]', $this->getLocalizedFieldValue('nev'), $result);
+                $result = str_replace('[kategorianev]', $this->getLocalizedFieldValueOrDefault('nev'), $result);
                 $result = str_replace('[global]', store::getParameter(\mkw\consts::Oldalcim), $result);
                 return $result;
             } else {
@@ -531,7 +531,7 @@ class TermekMenu
         } else {
             $result = store::getParameter(\mkw\consts::Katseodescription);
             if ($result) {
-                $result = str_replace('[kategorianev]', $this->getNev(), $result);
+                $result = str_replace('[kategorianev]', $this->getLocalizedFieldValueOrDefault('nev'), $result);
                 $result = str_replace('[global]', store::getParameter(\mkw\consts::Seodescription), $result);
                 return $result;
             } else {

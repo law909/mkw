@@ -1361,21 +1361,15 @@ class Termek
 
     public function getShowOldalcim()
     {
-        if ($this->oldalcim) {
-            return $this->oldalcim;
-        } else {
-            $result = \mkw\store::getParameter(\mkw\consts::Termekoldalcim);
-            if ($result) {
-                $result = str_replace('[termeknev]', $this->getNev(), $result);
-                $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
-                $result = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Oldalcim), $result);
-                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''), $result);
-                $result = str_replace('[rovidleiras]', $this->getRovidleiras(), $result);
-                return $result;
-            } else {
-                return \mkw\store::getParameter(\mkw\consts::Oldalcim);
-            }
+        $sajat = $this->getLocalizedFieldValueOrDefault('oldalcim');
+        if ($sajat) {
+            return $sajat;
         }
+        $result = \mkw\store::getParameter(\mkw\consts::Termekoldalcim);
+        if (!$result) {
+            return \mkw\store::getParameter(\mkw\consts::Oldalcim);
+        }
+        return $this->fillSeoPlaceholders($result, \mkw\store::getParameter(\mkw\consts::Oldalcim));
     }
 
     public function setOldalcim($oldalcim)
@@ -1402,19 +1396,42 @@ class Termek
     {
         if ($this->seodescription) {
             return $this->seodescription;
-        } else {
-            $result = \mkw\store::getParameter(\mkw\consts::Termekseodescription);
-            if ($result) {
-                $result = str_replace('[termeknev]', $this->getNev(), $result);
-                $result = str_replace('[kategorianev]', $this->getTermekfa1Nev(), $result);
-                $result = str_replace('[global]', \mkw\store::getParameter(\mkw\consts::Seodescription), $result);
-                $result = str_replace('[bruttoar]', number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''), $result);
-                $result = str_replace('[rovidleiras]', $this->getRovidleiras(), $result);
-                return $result;
-            } else {
-                return \mkw\store::getParameter(\mkw\consts::Seodescription);
-            }
         }
+        $result = \mkw\store::getParameter(\mkw\consts::Termekseodescription);
+        if (!$result) {
+            return \mkw\store::getParameter(\mkw\consts::Seodescription);
+        }
+        return $this->fillSeoPlaceholders($result, \mkw\store::getParameter(\mkw\consts::Seodescription));
+    }
+
+    /**
+     * A termékoldalcim / termekseodescription sablonok helykitöltői. A név, a kategória és a
+     * rövid leírás a webshop nyelvén megy be: fordított boltban magyar title jelenne meg az
+     * angol tartalom fölött.
+     */
+    private function fillSeoPlaceholders($sablon, $global)
+    {
+        return str_replace(
+            ['[termeknev]', '[kategorianev]', '[global]', '[bruttoar]', '[rovidleiras]'],
+            [
+                $this->getLocalizedFieldValueOrDefault('nev'),
+                $this->getKategoriaNev(),
+                (string)$global,
+                number_format($this->getBruttoAr(null, \mkw\store::getLoggedInUser()), 0, ',', ''),
+                $this->getLocalizedFieldValueOrDefault('rovidleiras'),
+            ],
+            $sablon
+        );
+    }
+
+    /** Az elsődleges kategória neve a webshop nyelvén; a téma dönti el, melyik fa az elsődleges. */
+    public function getKategoriaNev()
+    {
+        $kat = (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) ? $this->termekmenu1 : $this->termekfa1;
+        if ($kat && $kat->getId() > 1) {
+            return $kat->getLocalizedFieldValueOrDefault('nev');
+        }
+        return '';
     }
 
     public function setSeodescription($seodescription)

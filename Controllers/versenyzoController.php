@@ -133,6 +133,8 @@ class versenyzoController extends \mkwhelpers\MattableController
         $view->setVar('versenyzolista', $this->getListAsArray());
         \mkw\store::fillTemplate($view);
         $this->setBreadcrumb($view, [['caption' => t('Szponzorált versenyzők')]]);
+        $view->setVar('pagetitle', t('Szponzorált versenyzők') . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
+        $view->setVar('seodescription', t('Azok a versenyzők, akiket a Mugen Race támogat.'));
         $view->printTemplateResult();
     }
 
@@ -146,8 +148,14 @@ class versenyzoController extends \mkwhelpers\MattableController
             $record = $record[0];
         }
         $view = $this->createMainView('versenyzo.tpl');
-        $view->setVar('versenyzo', $this->loadVars($record, true));
+        $versenyzo = $this->loadVars($record, true);
+        $view->setVar('versenyzo', $versenyzo);
         \mkw\store::fillTemplate($view);
+        $view->setVar('pagetitle', $versenyzo['nev'] . ' | ' . \mkw\store::getParameter(\mkw\consts::Oldalcim));
+        $view->setVar(
+            'seodescription',
+            \Services\SeoService::plainText($versenyzo['rovidleiras'] ?: $versenyzo['leiras'], 160)
+        );
         $view->printTemplateResult();
     }
 }

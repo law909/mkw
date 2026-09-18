@@ -255,6 +255,8 @@ class termekcimkeController extends \mkwhelpers\MattableController
             }
         }
         $this->setBreadcrumb($view, [['caption' => t('Márkák')]]);
+        $view->setVar('pagetitle', t('Márkák') . ' | ' . store::getParameter(\mkw\consts::Oldalcim));
+        $view->setVar('seodescription', t('A webáruházban kapható márkák.'));
         $view->setVar('markalista', $m);
         $view->printTemplateResult();
     }

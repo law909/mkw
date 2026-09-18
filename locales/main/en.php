@@ -334,4 +334,8 @@ return [
     'Keresési találatok' => 'Search results',
     'Főoldal' => 'Home',
     'Morzsalánc' => 'Breadcrumb',
+    'Azok a versenyzők, akiket a Mugen Race támogat.' => 'The riders sponsored by Mugen Race.',
+    'Azok a csapatok, amelyeket a Mugen Race támogat.' => 'The teams sponsored by Mugen Race.',
+    'A webáruházban kapható márkák.' => 'The brands available in our shop.',
+    'Márkák' => 'Brands',
 ];
