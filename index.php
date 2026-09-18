@@ -148,7 +148,9 @@ $webshopnum = store::getSetupValue('webshopnum', '1');
 if ($webshopnum == '1') {
     $webshopnum = '';
 }
-$match = $router->match();
+// a HEAD-nek ugyanazt kell adnia, mint a GET-nek: az útvonalak GET-re vannak regisztrálva, az
+// AltoRouter viszont a HEAD-et külön metódusnak látja, és találat híján a főoldal is 404 lett
+$match = $router->match(null, ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD' ? 'GET' : null);
 if (!$match) {
     // ismeretlen útvonal: a 404 lap is a storefronton fut, ezért ugyanúgy kell neki a main
     // mód és a beállított ország (enélkül az ajánlott termékek ÁFA nélkül szálltak el)
