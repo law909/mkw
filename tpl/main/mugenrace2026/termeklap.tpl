@@ -1,7 +1,6 @@
 {extends "base.tpl"}
 {block "meta"}
     <meta property="og:title" content="{$pagetitle|default}"/>
-    <meta property="og:url" content="{$serverurl}/product/{$termek.slug}"/>
     <meta property="og:description" content="{$termek.rovidleiras|strip_tags|strip|trim|escape}"/>
     <meta property="og:image" content="{$termek.fullkepurl}"/>
     <meta property="og:type" content="product"/>

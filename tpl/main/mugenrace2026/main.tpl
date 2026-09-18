@@ -2,7 +2,6 @@
 
 {block "meta"}
     <meta property="og:title" content="{$globaltitle}">
-    <meta property="og:url" content="http://www.mugenrace.com">
     <meta property="og:image" content="{$logo}">
     <meta property="og:type" content="website"/>
     <meta property="og:description" content="{$seodescription}">

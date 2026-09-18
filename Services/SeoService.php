@@ -89,6 +89,15 @@ class SeoService
         return self::getBaseUrl() . '/' . ltrim($path, '/');
     }
 
+    /**
+     * A termék kanonikus útvonala. A mugenrace2026 fa a /product/ és a /categories/ prefixet
+     * linkeli, a /termek/ és a /termekfa/ ugyanarra a tartalomra mutató, örökölt alias.
+     */
+    public static function termekPath(?string $slug): string
+    {
+        return (store::isMugenrace2026() || store::isSuperzoneHu() ? '/product/' : '/termek/') . $slug;
+    }
+
     /** Az aktuális kérés útvonala kisbetűsen, záró / nélkül. */
     public static function getPath(): string
     {
@@ -279,10 +288,11 @@ class SeoService
      *
      * @param array $t a `termek` sablonváltozó
      * @param string $category a morzsalánc kategóriaága, ' > '-vel fűzve
+     * @param string $url a lap kanonikus URL-je; üresen az aktuális kérésé
      */
-    public static function productJsonLd(array $t, string $category = ''): string
+    public static function productJsonLd(array $t, string $category = '', string $url = ''): string
     {
-        $url = self::getCanonicalUrl();
+        $url = $url ?: self::getCanonicalUrl();
         $images = [];
         foreach (array_merge([['kepurl' => $t['kepurl'] ?? '']], $t['kepek'] ?? []) as $kep) {
             $abs = self::absoluteUrl($kep['kepurl'] ?? '');

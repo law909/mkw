@@ -196,9 +196,29 @@ class mainController extends \mkwhelpers\Controller
             $this->view->setVar('pagetitle', $ag->getShowOldalcim());
             $this->view->setVar('seodescription', $ag->getShowSeodescription());
             $this->view->setVar('blogposztdb', \mkw\store::getParameter(\mkw\consts::BlogposztKategoriadb, 3));
+            $this->setTermekfaAliasCanonical($com);
             $this->view->printTemplateResult(true);
         } else {
             \mkw\store::redirectTo404($com);
+        }
+    }
+
+    /**
+     * A mugenrace2026 fán a menü (és minden belső link) a /categories/ ágat használja,
+     * a /termekfa/ ugyanannak a tartalomnak az örökölt alias-a. Ahol van azonos slugú
+     * menüág, oda kanonizálunk, ahol nincs, ott a lap nem való az indexbe.
+     */
+    private function setTermekfaAliasCanonical($slug)
+    {
+        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
+            return;
+        }
+        $menuag = \mkw\store::getTermekmenuController()->getRepo()->findOneBySlug($slug);
+        if ($menuag) {
+            $this->setCanonical($this->view, '/categories/' . $menuag->getSlug());
+        } else {
+            $this->setCanonical($this->view, '');
+            $this->view->setVar('robots', 'noindex,follow');
         }
     }
 
@@ -392,9 +412,16 @@ class mainController extends \mkwhelpers\Controller
                     }
                     $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev')];
                     $this->setBreadcrumb($this->view, $morzsa);
+                    // a /termek/ alias és a változatra mutató /product/{slug}/{szin_id} is
+                    // ugyanaz a lap: mindegyik a változat nélküli terméklapra kanonizál
+                    $this->setCanonical($this->view, \Services\SeoService::termekPath($termek->getSlug()));
                     $this->view->setVar(
                         'termekjsonld',
-                        \Services\SeoService::productJsonLd($t['termek'], implode(' > ', $kategoriaut))
+                        \Services\SeoService::productJsonLd(
+                            $t['termek'],
+                            implode(' > ', $kategoriaut),
+                            $this->view->getVar('canonical')
+                        )
                     );
                     $this->setOpenGraph(
                         $this->view,

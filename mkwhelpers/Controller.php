@@ -74,6 +74,17 @@ abstract class Controller
     }
 
     /**
+     * A kanonikus URL felülírása ott, ahol az nem a kért útvonal: változatos terméklap,
+     * régi útvonal-alias, ugyanannak a lapnak a másik prefixe. Üres útvonal = nincs canonical.
+     *
+     * @param string $path helyi útvonal (/product/xy), abszolúttá a SeoService teszi
+     */
+    protected function setCanonical($view, $path)
+    {
+        $view->setVar('canonical', $path ? \Services\SeoService::absoluteUrl($path) : '');
+    }
+
+    /**
      * Oldaltípus-specifikus OpenGraph adatok. A fillTemplate() adja az alapértékeket
      * (website típus, a beállított megosztási kép), itt csak a különbség kerül be.
      *
