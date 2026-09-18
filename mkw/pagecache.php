@@ -213,6 +213,8 @@ final class pagecache
     private static function keyFor($orszagId): string
     {
         $parts = [
+            // a hoszt is kulcs: az abszolút URL-ek a kérés domainjéből képződnek
+            $_SERVER['HTTP_HOST'] ?? '',
             store::getConfigValue('main.theme', ''),
             store::getSetupValue('webshopnum', '1'),
             (string)store::getWebshopLongLocale(),

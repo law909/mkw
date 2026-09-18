@@ -57,26 +57,59 @@ class SeoService
 
     private static $baseUrl;
 
-    /** A kanonikus séma + domain, záró / nélkül. */
+    /**
+     * A kanonikus séma + domain, záró / nélkül. A beállított domaint csak akkor fogadja el, ha a
+     * kérés is onnan jön (www-vel vagy anélkül): a mugenes boltok közös adatbázison osztoznak, ott
+     * egy canonicalbaseurl jut négy domainre. CLI-n (nincs HTTP_HOST) marad a beállított domain.
+     */
     public static function getBaseUrl(): string
     {
         if (self::$baseUrl === null) {
-            $url = trim((string)store::getParameter(\mkw\consts::CanonicalBaseUrl, ''));
-            if (!$url) {
-                $url = trim((string)store::getConfigValue('mainurl', ''));
+            $requestHost = self::getRequestHost();
+            $url = '';
+            $candidates = [
+                store::getParameter(\mkw\consts::CanonicalBaseUrl, ''),
+                store::getConfigValue('mainurl', ''),
+            ];
+            foreach ($candidates as $candidate) {
+                $candidate = trim((string)$candidate);
+                if ($candidate && (!$requestHost || self::isSameSite(parse_url($candidate, PHP_URL_HOST), $requestHost))) {
+                    $url = $candidate;
+                    break;
+                }
             }
             if (!$url) {
-                $scheme = store::isSSL() ? 'https' : 'http';
-                $url = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? '');
+                $https = store::isSSL()
+                    || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                    || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+                $url = ($https ? 'https' : 'http') . '://' . $requestHost;
             }
             self::$baseUrl = rtrim($url, '/');
         }
         return self::$baseUrl;
     }
 
+    /** Az aktuális kérés hosztja, port nélkül, kisbetűsen; CLI-n üres. */
+    private static function getRequestHost(): string
+    {
+        return strtolower((string)strtok((string)($_SERVER['HTTP_HOST'] ?? ''), ':'));
+    }
+
+    /** Ugyanaz a domain www-vel vagy anélkül? A shop.mugenrace.com már nem az. */
+    private static function isSameSite(?string $host1, ?string $host2): bool
+    {
+        $bare = static function ($host) {
+            return preg_replace('#^www\.#', '', strtolower(trim((string)$host)));
+        };
+        return $bare($host1) !== '' && $bare($host1) === $bare($host2);
+    }
+
     /**
      * A kanonikus hoszt kikényszerítése 301-gyel. A `canonicalbaseurl` paraméter dönt: ha az
      * üres (fejlesztői gép, még be nem állított telepítés), nem történik semmi.
+     *
+     * Csak a beállított domain www-s és www nélküli alakja közt igazít: a közös adatbázison osztozó
+     * boltok saját domainjét (shop.mugenrace.com) nem szabad ide terelni. Aliast a vhost terel.
      *
      * Csak a hosztot igazítja, a sémát nem: a séma az app felől nem látszik megbízhatóan
      * (`setup.ssl` kapcsoló, proxy mögötti TLS), egy rossz tipp pedig végtelen 301-hurok lenne.
@@ -96,8 +129,11 @@ class SeoService
             return;
         }
         $canonicalHost = parse_url(trim((string)store::getParameter(\mkw\consts::CanonicalBaseUrl, '')), PHP_URL_HOST);
-        $requestHost = strtok((string)($_SERVER['HTTP_HOST'] ?? ''), ':');
+        $requestHost = self::getRequestHost();
         if (!$canonicalHost || !$requestHost || strcasecmp($canonicalHost, $requestHost) === 0) {
+            return;
+        }
+        if (!self::isSameSite($canonicalHost, $requestHost)) {
             return;
         }
         header('HTTP/1.1 301 Moved Permanently');
