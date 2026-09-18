@@ -52,11 +52,22 @@
                                     {/if} *}
                                 </div>
 
-                                <div class="thumbs" id="thumbs"></div>
+                                {* a galéria a szerverválaszban van: a fő kép így az LCP-elem, és a
+                                   termék képei bekerülnek az indexbe. A bélyegképek sorrendje azonos
+                                   az alábbi images tömbbel, mert a JS az index alapján vált képet. *}
+                                <div class="thumbs" id="thumbs">
+                                    <img src="{$imagepath}{$termek.kepurl400}" class="active" alt="{$termek.caption|escape}"
+                                         title="{$termek.caption|escape}">
+                                    {foreach $termek.kepek as $_kep}
+                                        <img src="{$imagepath}{$_kep.kepurl400}" alt="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}"
+                                             title="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}">
+                                    {/foreach}
+                                </div>
 
                                 <div class="main-image-wrapper">
 
-                                    <img id="mainImage" class="main-image" src=""/>
+                                    <img id="mainImage" class="main-image" src="{$imagepath}{$termek.kepurl}"
+                                         alt="{$termek.caption|escape}" title="{$termek.caption|escape}" fetchpriority="high">
 
                                     <div class="nav-btn-container flex-cr">
                                         <div class="nav-btn nav-left" id="prevBtn">⟨</div>
@@ -68,27 +79,15 @@
                                     <div class="lightbox-backdrop"></div>
                                     <button class="lightbox-nav lightbox-prev">‹</button>
                                     <button class="lightbox-nav lightbox-next">›</button>
-                                    <img id="lightboxImage" class="lightbox-image" src="" alt="">
+                                    {* src nélkül: az üres src-t a böngésző a saját oldal URL-jével tölti le *}
+                                    <img id="lightboxImage" class="lightbox-image" alt="">
                                     <div class="lightbox-close">×</div>
                                 </div>
                             </div>
                             <script>
                                 const images = [
-                                    "{$imagepath}{$termek.kepurl}",
-
-                                    {$kcnt=count($termek.kepek)}
-                                    {if ($kcnt>0)}
-                                    {$step=4}
-                                    {for $i=0 to $kcnt-1 step $step}
-                                    {for $j=0 to $step-1}
-                                    {if ($i+$j<$kcnt)}
-                                    {$_kep=$termek.kepek[$i+$j]}
-                                    "{$imagepath}{$_kep.kepurl}",
-                                    {/if}
-                                    {/for}
-                                    {/for}
-                                    {/if}
-
+                                    "{$imagepath}{$termek.kepurl}"{foreach $termek.kepek as $_kep},
+                                    "{$imagepath}{$_kep.kepurl}"{/foreach}
                                 ];
                             </script>
                         </div>

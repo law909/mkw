@@ -2349,7 +2349,6 @@ $(document).ready(function () {
 
     const thumbsContainer = document.getElementById("thumbs");
     const mainImage = document.getElementById("mainImage");
-    const carouselImages = Array.from(document.querySelectorAll("#thumbs img")).map(img => img.src);
     let currentIndex = 0;
     if (mainImage) {
         mainImage.addEventListener("click", () => {
@@ -2357,26 +2356,29 @@ $(document).ready(function () {
         });
     }
 
+    // a nagyítóba a nagy képek kellenek, a bélyegkép csak a 400 px-es származék
     function getCarouselImages() {
+        if (typeof images !== "undefined" && images && images.length) {
+            return images;
+        }
         return Array.from(document.querySelectorAll("#thumbs img")).map(img => img.src);
     }
 
-    document.querySelectorAll("#thumbs img").forEach((thumb, i) => {
-        thumb.addEventListener("click", () => {
-            openLightboxByIndex(carouselImages, i);
-        });
-    });
-
-
-    if (typeof images !== "undefined" && images) {
-
-        images.forEach((src, index) => {
-            const img = document.createElement("img");
-            img.src = src;
+    if (typeof images !== "undefined" && images && thumbsContainer) {
+        // a bélyegképeket a szerver rendereli; ha valamiért mégsem, JS-ből pótoljuk
+        if (!thumbsContainer.querySelector("img")) {
+            images.forEach((src) => {
+                const img = document.createElement("img");
+                img.src = src;
+                thumbsContainer.appendChild(img);
+            });
+        }
+        thumbsContainer.querySelectorAll("img").forEach((img, index) => {
             img.dataset.index = index;
-            if (index === 0) img.classList.add("active");
+            if (index === 0) {
+                img.classList.add("active");
+            }
             img.onclick = () => changeImage(index, true);
-            thumbsContainer.appendChild(img);
         });
 
         const preloaded = images.map(src => {
@@ -2485,8 +2487,8 @@ $(document).ready(function () {
         };
     }
 
-    // Init
-    if (typeof images !== "undefined" && images) {
+    // Init: a fő kép src-jét a szerver adja, a JS csak akkor tölti ki, ha hiányzik
+    if (typeof images !== "undefined" && images && mainImage && !mainImage.getAttribute("src")) {
         mainImage.src = images[0];
     }
 
@@ -2557,7 +2559,7 @@ $(document).ready(function () {
 
     function closeLightbox() {
         lightbox.classList.add("hidden");
-        lightboxImage.src = "";
+        lightboxImage.removeAttribute("src");
         document.body.style.overflow = "";
     }
 
