@@ -68,6 +68,11 @@ class sitemapController extends \mkwhelpers\Controller
         $this->sendXml($this->renderUrlset($this->buildBlog()));
     }
 
+    public function ridersTeams()
+    {
+        $this->sendXml($this->renderUrlset($this->buildRidersTeams()));
+    }
+
     public function products()
     {
         $num = max(1, $this->params->getIntParam('num', 1));
@@ -87,6 +92,9 @@ class sitemapController extends \mkwhelpers\Controller
         $files['sitemap-categories.xml'] = $this->renderUrlset($this->buildCategories());
         $files['sitemap-brands.xml'] = $this->renderUrlset($this->buildBrands());
         $files['sitemap-blog.xml'] = $this->renderUrlset($this->buildBlog());
+        if ($this->buildRidersTeams()) {
+            $files['sitemap-riders-teams.xml'] = $this->renderUrlset($this->buildRidersTeams());
+        }
         for ($i = 1; $i <= $this->getProductFileCount(); $i++) {
             $files['sitemap-products-' . $i . '.xml'] = $this->renderUrlset($this->buildProducts($i));
         }
@@ -118,12 +126,20 @@ class sitemapController extends \mkwhelpers\Controller
 
     private function buildIndex()
     {
+        // üres altérképet nem jelentünk be: a Google hibaként naplózza
         $sitemaps = [
             ['url' => SeoService::absoluteUrl('/sitemap-pages.xml')],
-            ['url' => SeoService::absoluteUrl('/sitemap-categories.xml')],
-            ['url' => SeoService::absoluteUrl('/sitemap-brands.xml')],
-            ['url' => SeoService::absoluteUrl('/sitemap-blog.xml')],
         ];
+        foreach ([
+            '/sitemap-categories.xml' => $this->buildCategories(),
+            '/sitemap-brands.xml' => $this->buildBrands(),
+            '/sitemap-blog.xml' => $this->buildBlog(),
+            '/sitemap-riders-teams.xml' => $this->buildRidersTeams(),
+        ] as $path => $urls) {
+            if ($urls) {
+                $sitemaps[] = ['url' => SeoService::absoluteUrl($path)];
+            }
+        }
         for ($i = 1; $i <= $this->getProductFileCount(); $i++) {
             $sitemaps[] = ['url' => SeoService::absoluteUrl('/sitemap-products-' . $i . '.xml')];
         }
@@ -147,16 +163,50 @@ class sitemapController extends \mkwhelpers\Controller
         return array_merge($urls, $urls2);
     }
 
+    /** A linkelt kategóriafa témánként más: /categories/ a menüfából, vagy /termekfa/. */
     private function buildCategories()
     {
         $urls = [];
         $router = \mkw\store::getRouter();
-        foreach ($this->getRepo(\Entities\TermekFa::class)->getForSitemapXml() as $sor) {
+        $menufa = \mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu();
+        $repo = $menufa
+            ? \mkw\store::getTermekmenuController()->getRepo()
+            : $this->getRepo(\Entities\TermekFa::class);
+        foreach ($repo->getForSitemapXml() as $sor) {
             $this->addUrl(
                 $urls,
-                $router->generate('showtermekfa', false, ['slug' => $sor['slug']]),
+                $router->generate($menufa ? 'showtermekmenu' : 'showtermekfa', false, ['slug' => $sor['slug']]),
                 $sor['lastmod'],
                 $this->buildImages($sor['kepurl'], $sor['kepleiras'])
+            );
+        }
+        return $urls;
+    }
+
+    /** Szponzorált versenyzők és csapatok — csak azokon a telepítéseken, ahol van ilyen útvonal. */
+    private function buildRidersTeams()
+    {
+        if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
+            return [];
+        }
+        $urls = [];
+        $router = \mkw\store::getRouter();
+        $this->addUrl($urls, $router->generate('versenyzoindex'));
+        foreach ($this->getRepo(\Entities\Versenyzo::class)->getAll() as $versenyzo) {
+            $this->addUrl(
+                $urls,
+                $router->generate('versenyzo', false, ['slug' => $versenyzo->getSlug()]),
+                null,
+                $this->buildImages($versenyzo->getKepurl(), $versenyzo->getNev())
+            );
+        }
+        $this->addUrl($urls, $router->generate('csapatindex'));
+        foreach ($this->getRepo(\Entities\Csapat::class)->getAll() as $csapat) {
+            $this->addUrl(
+                $urls,
+                $router->generate('csapat', false, ['slug' => $csapat->getSlug()]),
+                null,
+                $this->buildImages($csapat->getKepurl(), $csapat->getNev())
             );
         }
         return $urls;
@@ -193,7 +243,7 @@ class sitemapController extends \mkwhelpers\Controller
             foreach ($kepekrepo->getByTermekForSitemapXml($sor['id']) as $kep) {
                 $kepek = array_merge($kepek, $this->buildImages($kep['url'], $kep['leiras']));
             }
-            $this->addUrl($urls, $router->generate('showtermek', false, ['slug' => $sor['slug']]), $sor['lastmod'], $kepek);
+            $this->addUrl($urls, SeoService::termekPath($sor['slug']), $sor['lastmod'], $kepek);
         }
         return $urls;
     }
@@ -229,8 +279,12 @@ class sitemapController extends \mkwhelpers\Controller
             return [];
         }
         return [[
-            // a sitemapba a nagy (1000 px-es) változat való, nem az eredeti feltöltött fájl
-            'url' => htmlspecialchars(SeoService::absoluteUrl(\mkw\store::createBigImageUrl($kepurl)), ENT_XML1),
+            // a sitemapba a nagy (1000 px-es) változat való, nem az eredeti feltöltött fájl;
+            // a képeket külön hoszt is kiszolgálhatja (config.ini main.imagepath)
+            'url' => htmlspecialchars(
+                SeoService::absoluteUrl(SeoService::imageUrl(\mkw\store::createBigImageUrl($kepurl))),
+                ENT_XML1
+            ),
             'title' => htmlspecialchars((string)$leiras, ENT_XML1),
         ]];
     }

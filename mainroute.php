@@ -227,6 +227,9 @@ $router->map('GET', '/sitemap-pages.xml', 'sitemapController#pages', 'sitemappag
 $router->map('GET', '/sitemap-categories.xml', 'sitemapController#categories', 'sitemapcategories');
 $router->map('GET', '/sitemap-brands.xml', 'sitemapController#brands', 'sitemapbrands');
 $router->map('GET', '/sitemap-blog.xml', 'sitemapController#blog', 'sitemapblog');
+if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
+    $router->map('GET', '/sitemap-riders-teams.xml', 'sitemapController#ridersTeams', 'sitemapridersteams');
+}
 $router->map('GET', '/sitemap-products-[i:num].xml', 'sitemapController#products', 'sitemapproducts');
 // az árösszehasonlító és B2B exportok árat adnak ki, katalógus üzemmódban nincs rájuk szükség
 if (!\mkw\store::isKatalogus()) {
