@@ -833,6 +833,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getKategoriaNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getKategoriaNev', []);
+
+        return parent::getKategoriaNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setSeodescription($seodescription)
     {
 
@@ -3820,6 +3831,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocalizedFieldValue', [$fieldname, $locale]);
 
         return parent::getLocalizedFieldValue($fieldname, $locale);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocalizedFieldValueOrDefault($fieldname, $locale = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocalizedFieldValueOrDefault', [$fieldname, $locale]);
+
+        return parent::getLocalizedFieldValueOrDefault($fieldname, $locale);
     }
 
 }

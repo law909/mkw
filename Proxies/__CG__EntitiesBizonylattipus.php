@@ -1402,4 +1402,15 @@ class Bizonylattipus extends \Entities\Bizonylattipus implements \Doctrine\ORM\P
         return parent::getLocalizedFieldValue($fieldname, $locale);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getLocalizedFieldValueOrDefault($fieldname, $locale = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLocalizedFieldValueOrDefault', [$fieldname, $locale]);
+
+        return parent::getLocalizedFieldValueOrDefault($fieldname, $locale);
+    }
+
 }
