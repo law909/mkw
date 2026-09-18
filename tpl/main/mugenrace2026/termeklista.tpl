@@ -139,12 +139,7 @@
                             <tbody>
                             <tr>
                                 <td class="lapozooldalak">
-                                    {if ($lapozo.pageno>1)}<a href="#" class="pageedit" data-pageno="{$lapozo.pageno-1}">< {t('Előző')}</a>{/if}
-                                    {for $i=1 to $lapozo.pagecount} {if ($i==$lapozo.pageno)}<span class="aktualislap">{$i}</span>{else}<a href="#"
-                                                                                                                                           class="pageedit"
-                                                                                                                                           data-pageno="{$i}">{$i}</a>{/if}{/for}
-                                    {if ($lapozo.pageno<$lapozo.pagecount)}<a href="#" class="pageedit" data-pageno="{$lapozo.pageno+1}">{t('Következő')}
-                                        ></a>{/if}
+                                    {include 'lapozolinkek.tpl' lapozourl=$url}
                                 </td>
                             </tr>
                             </tbody>
