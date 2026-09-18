@@ -93,6 +93,33 @@ module.exports = function (grunt) {
                 ],
                 dest: 'js/main/mugenrace2026/mgrapp.js'
             },
+            mugenrace2026lib: {
+                src: [
+                    'js/main/mugenrace2026/jquery-1.11.1.min.js',
+                    'js/main/mugenrace2026/jquery-migrate-1.2.1.js',
+                    'js/main/mugenrace2026/mgrerrorlog.js',
+                    'js/main/mugenrace2026/jquery.magnific-popup.min.js',
+                    'js/main/mugenrace2026/jquery.slider.min.js',
+                    'js/main/mugenrace2026/jquery.debounce.min.js',
+                    'js/main/mugenrace2026/bootstrap-transition.js',
+                    'js/main/mugenrace2026/bootstrap-modal.js',
+                    'js/main/mugenrace2026/bootstrap-tab.js',
+                    'js/main/mugenrace2026/bootstrap-typeahead.js',
+                    'js/main/mugenrace2026/bootstrap-tooltip.js',
+                    'js/main/mugenrace2026/h5f.js',
+                    'js/main/mugenrace2026/matt-accordion.js'
+                ],
+                dest: 'js/main/mugenrace2026/mgrbootstrap.js'
+            },
+            // a téma egyetlen stíluslapja: a hat különálló fájl hat render-blocking kérés volt
+            mugenrace2026css: {
+                src: [
+                    'themes/main/mugenrace2026/mgr.css',
+                    'themes/main/mugenrace2026/style.css',
+                    'themes/main/mugenrace2026/style-2.css'
+                ],
+                dest: 'themes/main/mugenrace2026/mgrall.css'
+            },
             mugenracecss: {
                 src: [
                     'themes/main/mugenrace/bootstrap.min.css',

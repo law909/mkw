@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Chicle&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+/* A betűkészletet a basestone.tpl <link>-eli: a CSS-be ágyazott @import láncolt kérés, ami blokkolja a renderelést. */
 
 html {
   font-size: var(--font-size-base);

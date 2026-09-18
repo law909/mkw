@@ -7,7 +7,6 @@
 {/block}
 
 {block "script"}
-    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
     <script>
         // document.addEventListener('DOMContentLoaded', function () {
         //     if (typeof fbq === 'function') {
