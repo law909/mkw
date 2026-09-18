@@ -3,14 +3,17 @@
 		<div class="col flex-col footer__left">
 			<a href="/"><img class="footer__logo" src="/themes/main/mugenrace2026/img/mugen-logo-white.svg" alt="Mugenrace Webshop" title="Mugenrace Webshop"></a>
 
-			<a href="https://www.stripe.com" target="_blank" class="pull-right stripe-logo">
-				<img class="footer__stripe" src="/themes/main/mugenrace2026/img/stripe-logo-white.svg" title="Secure and comfortable online payment is provided by Barion Payment Inc, license number: H-EN-I-1064/2013 Your card details are not disclosed to our shop.">
+			<a href="https://www.stripe.com" target="_blank" rel="noopener" class="pull-right stripe-logo">
+				<img class="footer__stripe" src="/themes/main/mugenrace2026/img/stripe-logo-white.svg" alt="Stripe"
+					 title="Secure and comfortable online payment is provided by Barion Payment Inc, license number: H-EN-I-1064/2013 Your card details are not disclosed to our shop.">
 			</a>
-			<ul>
+			<ul class="footer__social">
 				<li>
-					<a href="https://www.facebook.com/MugenRaceOfficial" target="_blank"><i class="icon white facebook"></i> 
-					<a href="https://instagram.com/mugenraceofficial/" target="_blank"><i class="icon white instagram"></i>
+					<a href="https://www.facebook.com/MugenRaceOfficial" target="_blank" rel="noopener" aria-label="Facebook"><i class="icon white facebook"></i></a>
+				</li>
 				<li>
+					<a href="https://instagram.com/mugenraceofficial/" target="_blank" rel="noopener" aria-label="Instagram"><i class="icon white instagram"></i></a>
+				</li>
 			</ul>
 			<p>
 				{t('A Mugen Race Shop prémium motoros ruházatot és felszerelést kínál, amely a legmagasabb szintű biztonságot és stílust ötvözi. Válogass minőségi bőrruhák, kabátok, kesztyűk, csizmák és kiegészítők széles kínálatából – minden termék a teljesítményre és tartósságra tervezve. Fedezd fel a Mugen Race világát, és találd meg a számodra tökéletes motoros felszerelést!')}
@@ -47,7 +50,7 @@
 			<div class="col flex-cc">
 					<div class="copyright">
 							<br>{t('A képek illusztrációk, a valós termék eltérő lehet.')}
-							<br>Copyright &copy; 2025, Mugenrace
+							<br>Copyright &copy; {$smarty.now|date_format:"%Y"}, {$cegadatok.markanev|default:'Mugenrace'}
 					</div>
 			</div>
 	</div>
