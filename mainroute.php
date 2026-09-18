@@ -218,6 +218,8 @@ $router->map('POST', '/setorszag', 'mainController#setOrszag', 'setorszag');
 $router->map('GET', '/szamlaprint', 'szamlafejController#doPrint', 'szamlaprint');
 $router->map('GET', '/szamlapdf', 'szamlafejController#doPDF', 'szamlapdf');
 
+// a webgyökérben lévő fizikai robots.txt-t az Apache adja ki, ez csak akkor fut, ha nincs ilyen fájl
+$router->map('GET', '/robots.txt', 'robotsController#show', 'robots');
 // a régi, mindent tartalmazó /sitemap.xml 301-gyel az indexre megy
 $router->map('GET', '/sitemap.xml', 'sitemapController#toBot', 'sitemap');
 $router->map('GET', '/sitemap_index.xml', 'sitemapController#index', 'sitemapindex');
