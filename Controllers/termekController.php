@@ -558,7 +558,14 @@ class termekController extends \mkwhelpers\MattableController
             }
         }
 
-        foreach ($this->getBekuldottValtozatCikkszamok() as $valtozatcikkszam) {
+        foreach ($this->getBekuldottValtozatCikkszamok() as $valtozatcikkszam => $db) {
+            if ($db > 1) {
+                $ret[] = sprintf(
+                    t('A(z) "%s" cikkszám a terméken belül %d változatnál is szerepel.'),
+                    $valtozatcikkszam,
+                    $db
+                );
+            }
             $sorok = $conn->fetchAllAssociative(
                 'SELECT t.id, t.nev FROM termekvaltozat tv'
                 . ' JOIN termek t ON t.id = tv.termek_id'
@@ -577,7 +584,11 @@ class termekController extends \mkwhelpers\MattableController
         return $ret;
     }
 
-    /** A formon lévő, törlésre nem jelölt változatok cikkszámai, üresek nélkül, egyszer. */
+    /**
+     * A formon lévő, törlésre nem jelölt változatok cikkszámai, üresek nélkül.
+     *
+     * @return array<string, int> cikkszám => hány változaton szerepel a formon
+     */
     private function getBekuldottValtozatCikkszamok(): array
     {
         if (!\mkw\store::getSetupValue('termekvaltozat')) {
@@ -590,10 +601,10 @@ class termekController extends \mkwhelpers\MattableController
             }
             $cikkszam = trim((string)$this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
             if ($cikkszam !== '') {
-                $ret[$cikkszam] = $cikkszam;
+                $ret[$cikkszam] = ($ret[$cikkszam] ?? 0) + 1;
             }
         }
-        return array_values($ret);
+        return $ret;
     }
 
     private function getUtkozesLista(array $sorok): string
