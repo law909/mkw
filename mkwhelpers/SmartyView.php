@@ -10,6 +10,8 @@ class SmartyView extends View
     // fájlonkénti módosítási idő gyorsítótár (kéréseN belül), hogy ne stat-eljünk feleslegesen
     private static $assetMtime = [];
     private static $imageSize = [];
+    // a képeket kiszolgáló külön hoszt előtagja (config.ini main.imagepath), ha van
+    private static $imagePrefix = null;
 
     public function __construct($compiledtplpath, $tplpath, $tplfilename, $configdir = '', $cachedir = '')
     {
@@ -130,9 +132,9 @@ class SmartyView extends View
                     $add .= ' loading="lazy"';
                 }
                 if (!\preg_match('#\s(?:width|height)=#i', $tag)
-                    && \preg_match('#\ssrc="(/[^"?]+)#i', $tag, $src)
+                    && \preg_match('#\ssrc="([^"?]+)#i', $tag, $src)
                 ) {
-                    $size = self::localImageSize($src[1]);
+                    $size = self::localImageSize(self::toLocalPath($src[1]));
                     if ($size) {
                         $add .= ' width="' . $size[0] . '" height="' . $size[1] . '"';
                     }
@@ -143,9 +145,31 @@ class SmartyView extends View
         );
     }
 
+    /**
+     * A képhivatkozás útvonala a webgyökérhez képest. Több telepítés külön hosztról szolgálja
+     * ki a képeket (config.ini `main.imagepath`), a fájl viszont helyben van, tehát a méretét
+     * akkor is ki tudjuk olvasni. Idegen hivatkozásra üres stringet ad.
+     */
+    private static function toLocalPath(string $src): string
+    {
+        if ($src !== '' && $src[0] === '/') {
+            return $src;
+        }
+        if (self::$imagePrefix === null) {
+            self::$imagePrefix = \rtrim((string)\mkw\store::getConfigValue('main.imagepath', ''), '/');
+        }
+        if (self::$imagePrefix !== '' && \str_starts_with($src, self::$imagePrefix . '/')) {
+            return \substr($src, \strlen(self::$imagePrefix));
+        }
+        return '';
+    }
+
     /** Egy helyi kép mérete a fájl fejlécéből, kérésenként egyszer beolvasva. */
     private static function localImageSize(string $path): ?array
     {
+        if ($path === '') {
+            return null;
+        }
         if (!\array_key_exists($path, self::$imageSize)) {
             $file = self::$assetRoot . \rawurldecode($path);
             $size = \is_file($file) ? @\getimagesize($file) : false;

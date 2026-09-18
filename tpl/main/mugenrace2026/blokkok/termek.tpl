@@ -23,8 +23,15 @@
                     <div class="flag sale-product">{t('Top 10')}</div>
                 {/if} *}
             </div>
+            {if (is_array($termek.szinkepek))}
+                {$_kartyakep = $termek.szinkepek[0].kepurl400}{$_kartyakepnagy = $termek.szinkepek[0].kepurllarge}
+            {else}
+                {$_kartyakep = $termek.kepurl400}{$_kartyakepnagy = $termek.kepurl}
+            {/if}
             <a href="/product/{$termek.slug}/{$termek.szin_id}"><img class="product-list-item__image"
-                                                                     src="{$imagepath}{if (is_array($termek.szinkepek))}{$termek.szinkepek[0].kepurl}{else}{$termek.kepurl}{/if}"
+                                                                     src="{$imagepath}{$_kartyakep}"
+                                                                     srcset="{$imagepath}{$_kartyakep} 400w, {$imagepath}{$_kartyakepnagy} 1000w"
+                                                                     sizes="(max-width: 768px) 45vw, 320px"
                                                                      title="{$termek.caption}" alt="{$termek.caption}"></a>
         </div>
         <div class="textaligncenter product-list-item__content product-list-item__title">

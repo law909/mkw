@@ -10,7 +10,7 @@
                     </div>
                     <div class="teams-datasheet__meta">
                         {if ($csapat.logourlmini)}
-                            <img src="{$imagepath}{$csapat.logourlmini}" alt="" class="teams-datasheet__logo">
+                            <img src="{$imagepath}{$csapat.logourlmini}" alt="{$csapat.nev|escape}" class="teams-datasheet__logo">
                         {/if}
                         <h1 class="teams-datasheet__title">{$csapat.nev}</h1>
                         <div class="teams-datasheet__lead">
@@ -53,7 +53,7 @@
                     {foreach $csapat.versenyzok as $_versenyzo}
                         <div class="kat sponsored-riders__item" data-href="/riders/{$_versenyzo.slug}/">
                             <div class="kattext sponsored-riders__item-content">
-                                <img src="{$imagepath}{$_versenyzo.kepurl400}" alt="" class="sponsored-riders__item-image">
+                                <img src="{$imagepath}{$_versenyzo.kepurl400}" alt="{$_versenyzo.nev|escape}" class="sponsored-riders__item-image">
                                 {if ($_versenyzo.versenysorozat)}
                                     <div class="sponsored-riders__item-category">{$_versenyzo.versenysorozat}</div>
                                 {/if}
@@ -69,7 +69,7 @@
         <div class="lightbox-backdrop"></div>
         <button class="lightbox-nav lightbox-prev">‹</button>
         <button class="lightbox-nav lightbox-next">›</button>
-        <img id="lightboxImage" class="lightbox-image" src="" alt="">
+        <img id="lightboxImage" class="lightbox-image" alt="">
         <div class="lightbox-close">×</div>
     </div>
 {/block}

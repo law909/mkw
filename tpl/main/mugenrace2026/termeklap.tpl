@@ -67,6 +67,8 @@
                                 <div class="main-image-wrapper">
 
                                     <img id="mainImage" class="main-image" src="{$imagepath}{$termek.kepurl}"
+                                         srcset="{$imagepath}{$termek.kepurl400} 400w, {$imagepath}{$termek.kepurl} 1000w"
+                                         sizes="(max-width: 768px) 100vw, 640px"
                                          alt="{$termek.caption|escape}" title="{$termek.caption|escape}" fetchpriority="high">
 
                                     <div class="nav-btn-container flex-cr">
