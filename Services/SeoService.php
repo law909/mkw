@@ -53,6 +53,29 @@ class SeoService
         return self::$baseUrl;
     }
 
+    /**
+     * A kanonikus hoszt kikényszerítése 301-gyel. A `canonicalbaseurl` paraméter dönt: ha az
+     * üres (fejlesztői gép, még be nem állított telepítés), nem történik semmi.
+     *
+     * Csak a hosztot igazítja, a sémát nem: a séma az app felől nem látszik megbízhatóan
+     * (`setup.ssl` kapcsoló, proxy mögötti TLS), egy rossz tipp pedig végtelen 301-hurok lenne.
+     * A http → https átirányítás ezért a `.htaccess`-ben, a FORCE_HTTPS környezeti változó mögött van.
+     */
+    public static function enforceCanonicalHost(): void
+    {
+        if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
+            return;
+        }
+        $canonicalHost = parse_url(trim((string)store::getParameter(\mkw\consts::CanonicalBaseUrl, '')), PHP_URL_HOST);
+        $requestHost = strtok((string)($_SERVER['HTTP_HOST'] ?? ''), ':');
+        if (!$canonicalHost || !$requestHost || strcasecmp($canonicalHost, $requestHost) === 0) {
+            return;
+        }
+        header('HTTP/1.1 301 Moved Permanently');
+        header('Location: ' . self::getBaseUrl() . ($_SERVER['REQUEST_URI'] ?? '/'));
+        exit;
+    }
+
     /** Helyi útvonalból (/termek/xy) abszolút URL; a kész abszolút URL-t nem bántja. */
     public static function absoluteUrl(?string $path): string
     {

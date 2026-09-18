@@ -125,6 +125,8 @@ try {
     throw $e;
 }
 
+\Services\SeoService::enforceCanonicalHost();
+
 if (store::getSetupValue('rewrite301')) {
     $rw301c = new \Controllers\rewrite301Controller([]);
     $rw301c->rewrite();

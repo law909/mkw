@@ -10,6 +10,15 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
     RewriteBase /
+
+    # http → https. Telepítésenként kapcsolható, mert a TLS-t sok helyen proxy zárja le, és egy
+    # rossz tipp itt végtelen 301-hurok: a vhost-ban kell hozzá egy "SetEnv FORCE_HTTPS 1".
+    # A hoszt kanonizálását (www / nem-www) nem itt, hanem a canonicalbaseurl paraméter végzi.
+    RewriteCond %{ENV:FORCE_HTTPS} =1
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 
