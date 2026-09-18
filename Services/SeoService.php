@@ -250,7 +250,9 @@ class SeoService
                 'streetAddress' => $o['utca'],
                 'postalCode' => $o['irszam'],
                 'addressLocality' => $o['varos'],
-                'addressCountry' => self::getCountryCode(),
+                // a cég székhelye, nem a bolt piaca: a telepítések üzemeltetője magyar cég
+                // (a Beállítások → Tulajdonos adatai fülön ma nincs ország mező)
+                'addressCountry' => 'HU',
             ], 'strlen');
         }
         if ($o['sameas']) {
@@ -277,11 +279,18 @@ class SeoService
                     '@id' => self::getBaseUrl() . '/#website',
                     'url' => self::getBaseUrl() . '/',
                     'name' => $org['name'],
-                    'inLanguage' => str_replace('_', '-', (string)store::getWebshopLongLocale() ?: 'hu-HU'),
+                    'inLanguage' => self::getLanguageTag(),
                     'publisher' => ['@id' => self::getOrganizationId()],
                 ],
             ],
         ]);
+    }
+
+    /** BCP 47 nyelvcímke (en-US alak) a hu_hu / en_us belső locale-ból. */
+    public static function getLanguageTag(): string
+    {
+        $parts = explode('_', (string)store::getWebshopLongLocale() ?: 'hu_hu');
+        return count($parts) === 2 ? strtolower($parts[0]) . '-' . strtoupper($parts[1]) : $parts[0];
     }
 
     /** OpenGraph locale (hu_HU alak). */
@@ -327,10 +336,15 @@ class SeoService
             : 'https://schema.org/OutOfStock';
     }
 
-    /** A bolt országa ISO 3166-1 alpha-2 kóddal; ez megy a szállítási és a visszaküldési szabályba. */
+    /**
+     * A bolt alapértelmezett országa ISO 3166-1 alpha-2 kóddal. Szándékosan nem a látogató
+     * által választott ország: a strukturált adat nem változhat munkamenetenként.
+     */
     public static function getCountryCode(): string
     {
-        return store::getOrszag()?->getIso3166() ?: 'HU';
+        $orszag = store::getEm()->getRepository(\Entities\Orszag::class)
+            ->find(store::getParameter(\mkw\consts::Orszag, 0));
+        return $orszag?->getIso3166() ?: 'HU';
     }
 
     /** A webshop pénznemének kódja a strukturált adatokhoz. */

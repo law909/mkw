@@ -94,6 +94,7 @@ class mainController extends \mkwhelpers\Controller
         $tec = new termekertekelesController();
         $this->view->setVar('pagetitle', \mkw\store::getParameter(\mkw\consts::Oldalcim));
         $this->view->setVar('seodescription', \mkw\store::getParameter(\mkw\consts::Seodescription));
+        $this->setOpenGraph($this->view, 'website', \mkw\store::getParameter(\mkw\consts::Logo));
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $this->view->setVar('hirek', $hc->gethirlist());

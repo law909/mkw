@@ -8,8 +8,20 @@
     <meta name="robots" content="{$robots|default:'index,follow'}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {if ($canonical|default)}<link rel="canonical" href="{$canonical|escape}">{/if}
-    <meta property="og:site_name" content="mugenrace.com"/>
+    <meta property="og:site_name" content="{$cegadatok.markanev|default:'Mugen Race'|escape}">
+    <meta property="og:locale" content="{$oglocale|default:'en_US'}">
+    <meta property="og:type" content="{$ogtype|default:'website'}">
+    <meta property="og:title" content="{$ogtitle|default:$pagetitle|default|escape}">
+    <meta property="og:description" content="{$_desc|escape}">
     {if ($canonical|default)}<meta property="og:url" content="{$canonical|escape}">{/if}
+    {if ($ogimage|default)}
+        <meta property="og:image" content="{$ogimage|escape}">
+        {if (!$ogimagesajat)}
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+        {/if}
+    {/if}
+    <meta name="twitter:card" content="summary_large_image">
     {block "meta"}{/block}
     <title>{$pagetitle|default:$globaltitle|default}</title>
     {$orgjsonld|default}
