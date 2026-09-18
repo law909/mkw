@@ -99,6 +99,9 @@ class Bizonylattetel
     private $cikkszam;
 
     /** @ORM\Column(type="string",length=50,nullable=true) */
+    private $valtozatcikkszam;
+
+    /** @ORM\Column(type="string",length=50,nullable=true) */
     private $idegencikkszam;
 
     /**
@@ -444,6 +447,12 @@ class Bizonylattetel
             $ret['valtertek2'] = $valt->getErtek2();
         }
         $ret['valtozatok'] = $v;
+        $ret['valtozatcikkszam'] = $this->getValtozatcikkszam();
+        // a bizonylat tételsorába a változat cikkszáma megy, ha van: az mondja meg pontosan,
+        // melyik színt/méretet adtuk el, a termék cikkszáma csak a terméket azonosítja
+        if ($ret['valtozatcikkszam']) {
+            $ret['cikkszam'] = $ret['valtozatcikkszam'];
+        }
         return $ret;
     }
 
@@ -895,6 +904,16 @@ class Bizonylattetel
     public function setCikkszam($val)
     {
         $this->cikkszam = $val;
+    }
+
+    public function getValtozatcikkszam()
+    {
+        return $this->valtozatcikkszam;
+    }
+
+    public function setValtozatcikkszam($val)
+    {
+        $this->valtozatcikkszam = $val;
     }
 
     public function getIdegencikkszam()
@@ -1573,6 +1592,7 @@ class Bizonylattetel
                 $this->setValtozatertek2($val->getErtek2());
                 $this->setValtozatadattipus1($val->getAdattipus1());
                 $this->setValtozatadattipus2($val->getAdattipus2());
+                $this->setValtozatcikkszam($val->getCikkszam());
             }
         }
     }
@@ -1586,6 +1606,7 @@ class Bizonylattetel
                 $this->setValtozatertek2('');
                 $this->setValtozatadattipus1(null);
                 $this->setValtozatadattipus2(null);
+                $this->setValtozatcikkszam('');
             }
         }
     }
