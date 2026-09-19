@@ -2,6 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" src="/js/main/darshan/idopontiframe.js"></script>
     <script type="text/javascript" src="/js/main/darshan/iframeResizer.contentWindow.min.js"></script>
     {include 'idopontpublicstyle.tpl'}
 </head>

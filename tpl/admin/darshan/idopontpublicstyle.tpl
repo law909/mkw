@@ -237,6 +237,11 @@
         font-size: 18px;
     }
 
+    .foglalasemail {
+        margin-top: 8px;
+        font-weight: bold;
+    }
+
     .foglalascim {
         color: #80008C;
         font-size: 26px;

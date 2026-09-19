@@ -977,7 +977,8 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $this->getEm()->persist($foglalas);
         $this->getEm()->flush();
 
-        if ($this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonKoszono, 'idopontfoglalaskoszonoemail.html')) {
+        $emailkiment = $this->sendFoglalasEmail($foglalas, \mkw\consts::IdopontfoglalasSablonKoszono, 'idopontfoglalaskoszonoemail.html');
+        if ($emailkiment) {
             $foglalas->setEmailkoszono(true);
             $this->getEm()->flush();
         }
@@ -987,6 +988,8 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('partnernev', $nev);
         $view->setVar('online', $online);
         $view->setVar('varolista', $varolista);
+        $view->setVar('emailkiment', $emailkiment);
+        $view->setVar('email', $email);
         $view->printTemplateResult();
     }
 
