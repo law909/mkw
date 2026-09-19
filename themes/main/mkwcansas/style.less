@@ -1125,12 +1125,40 @@ thead.acc-megrendelestetellist {
 }
 
 .blogmeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
   margin-bottom: 15px;
   color: #777;
 
   span + span:before {
     content: "·";
     margin: 0 6px;
+  }
+}
+
+.blogmetaszerzo {
+  flex-shrink: 0;
+  max-width: 55%;
+  text-align: right;
+}
+
+.blogmetaszerzoleiras {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+// a mobil hasáb szűk ahhoz, hogy a dátum és a szerző egy sorban elférjen
+@media (max-width: 767px) {
+  .blogmeta {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .blogmetaszerzo {
+    max-width: none;
+    text-align: left;
   }
 }
 
