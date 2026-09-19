@@ -366,6 +366,10 @@ class idopontController extends \mkwhelpers\MattableController
      */
     public function exportToWordpress()
     {
+        // a heti nézet a wordpress oldal iframe-jében él: egy lementett példány a betelt
+        // alkalomra is kiadná a Foglalok gombot
+        header('Cache-Control: no-store, max-age=0');
+        header('Pragma: no-cache');
         $offset = $this->params->getIntRequestParam('o', 0);
         $tanarkod = $this->params->getIntRequestParam('t', 0);
         $temakod = $this->params->getIntRequestParam('tema', 0);

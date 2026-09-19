@@ -54,7 +54,7 @@
                                    class="dttorarendbutton margin-bottom-5">Jelentkezek</a>
                             {else}
                                 <a href="/idopont/foglalas?id={$idopont['id']}&d={$idopont['datum']}{$szuroparam}"
-                                   class="dttorarendbutton margin-bottom-5">Foglalok</a>
+                                   class="dttorarendbutton margin-bottom-5">{if (!$idopont['megvanhely'])}Várólistára{else}Foglalok{/if}</a>
                             {/if}
                         {/if}
                         <a href="/idopont/lemond?rid={$idopont['uid']|escape:'url'}&d={$idopont['datum']}{$szuroparam}"

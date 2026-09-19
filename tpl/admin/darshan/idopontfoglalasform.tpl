@@ -11,7 +11,7 @@
     {if ($hiba)}
         <div class="foglalashiba">{$hiba}</div>
     {/if}
-    {if ($idopontid)}
+    {if ($idopontid && $foglalhato)}
         <div class="foglalasfejlec">
             <div><strong>{$temanev}</strong></div>
             <div>{$napnev} - {$datum} {$idotartam}</div>

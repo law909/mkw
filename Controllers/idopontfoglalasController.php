@@ -843,19 +843,36 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
      */
     public function showBookingForm()
     {
+        $this->sendNoStoreHeaders();
         /** @var \Entities\Idopont $idopont */
         $idopont = $this->getRepo(Idopont::class)->findWithJoins($this->params->getIntRequestParam('id'));
         $datum = $this->getOccurrenceDatum($idopont);
 
+        // a heti nézet a wordpress oldalon cache-elődhet, ezért a gomb megnyomásakor újra
+        // megnézzük a szabad helyet: betelt alkalomra ki sem adjuk az űrlapot
+        $hiba = $this->checkBooking($idopont, $datum);
         $view = $this->createView('idopontfoglalasform.tpl');
         $this->setBookingFormVars($view, $idopont, $datum);
-        $view->setVar('hiba', $this->checkBooking($idopont, $datum));
+        $view->setVar('hiba', $hiba);
+        $view->setVar('foglalhato', $hiba === '');
         $view->setVar('egyed', $this->getBookingFormFields());
         $view->printTemplateResult();
     }
 
+    /**
+     * A publikus lapok a wordpress oldal iframe-jében élnek: egy lementett példány azzal a
+     * helyszámmal mutatná a hetet, ami a mentéskor volt, és a betelt alkalomra is kiadná a
+     * Foglalok gombot.
+     */
+    private function sendNoStoreHeaders()
+    {
+        header('Cache-Control: no-store, max-age=0');
+        header('Pragma: no-cache');
+    }
+
     public function saveBooking()
     {
+        $this->sendNoStoreHeaders();
         /** @var \Entities\Idopont $idopont */
         $idopont = $this->getRepo(Idopont::class)->findWithJoins($this->params->getIntRequestParam('id'));
         $datum = $this->getOccurrenceDatum($idopont);
@@ -869,6 +886,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $online = $idopont && $idopont->isOnlinevalaszthato() && $this->params->getStringRequestParam('reszvetel') === 'online';
 
         $hiba = $this->checkBooking($idopont, $datum);
+        $foglalhato = $hiba === '';
         if (!$hiba) {
             if (!$nev || !$email || !$telefon) {
                 $hiba = t('A név, az emailcím és a telefonszám megadása kötelező.');
@@ -898,6 +916,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             $view = $this->createView('idopontfoglalasform.tpl');
             $this->setBookingFormVars($view, $idopont, $datum);
             $view->setVar('hiba', $hiba);
+            $view->setVar('foglalhato', $foglalhato);
             $view->setVar('egyed', $this->getBookingFormFields());
             $view->printTemplateResult();
             return;
@@ -978,6 +997,7 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
      */
     public function cancelBooking()
     {
+        $this->sendNoStoreHeaders();
         $uid = trim($this->params->getStringRequestParam('rid'));
         /** @var \Entities\Idopont $idopont */
         $idopont = $uid === '' ? null : $this->getRepo(Idopont::class)->findOneBy(['uid' => $uid]);
