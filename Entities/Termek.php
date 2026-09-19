@@ -1026,6 +1026,9 @@ class Termek
                 'cikkszam' => $valt->getCikkszam() ?: $this->getCikkszam(),
                 'sajatcikkszam' => $valt->getCikkszam(),
                 'vonalkod' => $valt->getVonalkod(),
+                // saját kép csak akkor van, ha a változat képhez van kötve; a Google a
+                // hasVariant minden elemére külön kéri, üresen elutasítja a terméket
+                'kepurl' => $valt->getKepurlLarge() ?: $this->getKepurlLarge(),
                 'szin' => $valt->getSzinNev() ?: (string)$valt->getSzin(),
                 'meret' => $valt->getMeretNev() ?: (string)$valt->getMeret(),
                 'elerheto' => (bool)$valt->getXElerheto(),

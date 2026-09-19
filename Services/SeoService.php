@@ -498,7 +498,7 @@ class SeoService
             $product['offers'] = $offer;
         }
 
-        $valtozatok = self::buildVariants($t, $url);
+        $valtozatok = self::buildVariants($t, $url, $description);
         if ($valtozatok) {
             // több változat esetén a Google a ProductGroup + hasVariant szerkezetet várja,
             // a GTIN pedig változatonként külön azonosít
@@ -515,12 +515,13 @@ class SeoService
      * Csak akkor ad vissza bármit, ha legalább két látható változat van: egyváltozatos
      * terméknél a ProductGroup felesleges réteg lenne.
      */
-    private static function buildVariants(array $t, string $url): array
+    private static function buildVariants(array $t, string $url, string $description = ''): array
     {
         $valtozatok = $t['valtozatlista'] ?? [];
         if (count($valtozatok) < 2) {
             return [];
         }
+        $termekkep = self::absoluteUrl($t['kepurl'] ?? '');
         $elemek = [];
         foreach ($valtozatok as $valtozat) {
             $variant = [
@@ -528,6 +529,15 @@ class SeoService
                 'name' => trim(self::plainText($t['caption'] ?? '', 0) . ' ' . $valtozat['szin'] . ' ' . $valtozat['meret']),
                 'url' => $url,
             ];
+            // a Merchant listing minden Producttől képet és leírást vár: a változatnak ritkán
+            // van sajátja, ilyenkor a termékét örökli
+            $kep = self::absoluteUrl($valtozat['kepurl'] ?? '') ?: $termekkep;
+            if ($kep) {
+                $variant['image'] = $kep;
+            }
+            if ($description) {
+                $variant['description'] = $description;
+            }
             // csak a változat SAJÁT cikkszáma megy ki: a termékét örökölve minden változat
             // ugyanazt az sku-t kapná, amit a Google duplikátumként utasít el
             if ($valtozat['sajatcikkszam']) {
