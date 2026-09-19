@@ -10,9 +10,9 @@
 <div class="dtt foglalaseredmeny">
     <div class="foglalasfejlec">
         {if ($varolista)}
-            <div><strong>Felvettünk a várólistára, {$partnernev|escape}!</strong></div>
+            <div class="foglalascim">Felvettünk a várólistára, {$partnernev|escape}!</div>
         {else}
-            <div><strong>Köszönjük a foglalást, {$partnernev|escape}!</strong></div>
+            <div class="foglalascim">Köszönjük a foglalást, {$partnernev|escape}!</div>
         {/if}
         <div>{$temanev}</div>
         <div>{$napnev} - {$datum} {$idotartam}</div>

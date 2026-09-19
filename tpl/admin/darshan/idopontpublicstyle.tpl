@@ -237,6 +237,14 @@
         font-size: 18px;
     }
 
+    .foglalascim {
+        color: #80008C;
+        font-size: 26px;
+        font-weight: bold;
+        line-height: 1.3;
+        margin-bottom: 8px;
+    }
+
     /* Responsive Styles Smartphone Landscape */
     @media all and (max-width: 980px) {
         .dttlapozo {
