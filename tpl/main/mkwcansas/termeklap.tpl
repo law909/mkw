@@ -9,10 +9,6 @@
     <script defer src="/js/main/mkwcansas/jquery.royalslider.min.js"></script>
 {/block}
 
-{block "meta"}
-    <meta name="itemId" content="{$termek.id}">
-{/block}
-
 {block "kozep"}
 {include 'morzsa.tpl'}
 <div class="container whitebg">

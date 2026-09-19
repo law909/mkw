@@ -271,7 +271,6 @@ class mindentkapniCheckoutController extends checkoutController
 
             $lasttermeknevek = [];
             $lasttermekids = [];
-            $lasttermekadat = [];
             foreach ($kosartetelek as $kt) {
                 $t = new \Entities\Bizonylattetel();
                 $t->setBizonylatfej($megrendfej);
@@ -289,11 +288,6 @@ class mindentkapniCheckoutController extends checkoutController
                 $t->calc();
                 $lasttermeknevek[] = $t->getTermeknev();
                 $lasttermekids[] = $t->getTermekId();
-                $lasttermekadat[] = [
-                    'id' => $t->getTermekId(),
-                    'unitprice' => $t->getBruttoegysar(),
-                    'qty' => $t->getMennyiseg()
-                ];
                 $this->getEm()->persist($t);
             }
             $this->getEm()->persist($megrendfej);
@@ -305,7 +299,6 @@ class mindentkapniCheckoutController extends checkoutController
             \mkw\store::getMainSession()->lasttermekids = $lasttermekids;
             \mkw\store::getMainSession()->lastszallmod = $szallitasimod;
             \mkw\store::getMainSession()->lastfizmod = $fizetesimod;
-            \mkw\store::getMainSession()->lasttermekadat = $lasttermekadat;
             $kc = new kosarController();
             $kc->clear();
 
