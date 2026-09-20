@@ -241,7 +241,6 @@ if (!\mkw\store::isKatalogus()) {
     $router->map('GET', '/export/armutato', 'exportController#ArmutatoExport', 'armutatoexport');
     $router->map('GET', '/export/olcso', 'exportController#OlcsoExport', 'olcsoexport');
     $router->map('GET', '/export/argep', 'exportController#ArgepExport', 'argepexport');
-    $router->map('GET', '/export/yusp', 'exportController#YuspExport', 'yuspexport');
     $router->map('GET', '/export/arukereso', 'exportController#ArukeresoExport', 'arukeresoexport');
     $router->map('GET', '/export/olcsobbat', 'exportController#OlcsobbatExport', 'olcsobbatexport');
     $router->map('GET', '/export/mugenrace', 'exportController#MugenraceExport', 'mugenraceexport');
