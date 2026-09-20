@@ -62,6 +62,9 @@
                                 </div>
                             {/if}
                             <div><span class="bold">Cikkszám:</span> <span>{$termek.cikkszam}</span></div>
+                            {if ($termek.vonalkod)}
+                                <div><span class="bold">EAN:</span> <span>{$termek.vonalkod}</span></div>
+                            {/if}
                             <div><span class="bold">Kapható hűségpont:</span> {$termek.husegpont}</div>
                             {if ($termek.me)}
                             <div><span class="bold">Kiszerelés:</span> {$termek.me}</div>
