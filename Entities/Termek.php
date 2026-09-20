@@ -959,7 +959,12 @@ class Termek
 
         $altomb = [];
         foreach ($this->getTermekKapcsolodok() as $kapcsolodo) {
-            $altomb[] = $kapcsolodo->getAlTermek()->toKapcsolodo();
+            $altermek = $kapcsolodo->getAlTermek();
+            // a hasonló és a hozzávásárolt lista a lekérdezésben szűr, a kapcsolódó viszont
+            // kézzel felvett hivatkozás: itt kell kihagyni, ami a webshopban nem vásárolható
+            if ($altermek && $altermek->isWebshopVisible()) {
+                $altomb[] = $altermek->toKapcsolodo();
+            }
         }
         $x['kapcsolodok'] = $altomb;
 
@@ -3255,6 +3260,19 @@ class Termek
     public function getXLathato()
     {
         return $this->getNLathato(\mkw\store::getSetupValue('webshopnum', 1));
+    }
+
+    /**
+     * Megjelenhet-e a termék a webshop ajánló listáiban: aktív, az aktuális webshopban látható,
+     * kapható és nincs függőben. A repository `addAktivLathatoFilter()` + `nemkaphato` szűrőjének
+     * entitásszintű párja.
+     */
+    public function isWebshopVisible(): bool
+    {
+        return !$this->getInaktiv()
+            && $this->getXLathato()
+            && !$this->getNemkaphato()
+            && !$this->getFuggoben();
     }
 
     /**
