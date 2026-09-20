@@ -59,6 +59,10 @@
                     <td><input id="SzolgaltatoiSzallitasiDijEdit" name="szolgaltatoiszallitasidij" type="checkbox"{if ($egyed.szolgaltatoiszallitasidij)} checked="checked"{/if}></td>
                 </tr>
                 <tr>
+                    <td><label for="CsomagpontEdit">{at('Csomagpont')}:</label></td>
+                    <td><input id="CsomagpontEdit" name="csomagpont" type="checkbox"{if ($egyed.csomagpont)} checked="checked"{/if}></td>
+                </tr>
+                <tr>
                     <td><label for="TermekSelect">{at('Kezelési költség')}:</label></td>
                     <td>
                         {if ($setup.termekautocomplete)}

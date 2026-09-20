@@ -103,7 +103,7 @@ class munkalapfejController extends bizonylatfejController
 
     protected function validate($obj, $parancs)
     {
-        $hibak = [];
+        $hibak = parent::validate($obj, $parancs);
         $azonosito = trim((string)$obj->getMunkalapegyediazonosito());
         if ($azonosito) {
             if (!$obj->getMunkalaptermek()) {

@@ -47,6 +47,13 @@ class Szallitasimod
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $terminaltipus;
+    /**
+     * Csomagpontra (automatába, átvevőpontra) szállít: a checkout kihagyja a listából, ha a
+     * kosárban van csomagpontba nem szállítható termék.
+     *
+     * @ORM\Column(type="boolean")
+     */
+    private $csomagpont = false;
     /** @ORM\Column(type="boolean") */
     private $webes2 = false;
     /** @ORM\Column(type="boolean") */
@@ -167,6 +174,16 @@ class Szallitasimod
     /**
      * @return mixed
      */
+    public function getCsomagpont()
+    {
+        return $this->csomagpont;
+    }
+
+    public function setCsomagpont($csomagpont)
+    {
+        $this->csomagpont = $csomagpont;
+    }
+
     public function getTerminaltipus()
     {
         return $this->terminaltipus;

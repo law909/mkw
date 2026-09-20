@@ -393,6 +393,9 @@ class Termek
     /** @ORM\Column(type="boolean",nullable=false) */
     private $kifuto = false;
 
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $csomagpontbanemszallithato = false;
+
     /** @ORM\OneToMany(targetEntity="TermekErtesito", mappedBy="termek",cascade={"persist"}) */
     private $termekertesitok;
 
@@ -2895,6 +2898,16 @@ class Termek
     public function setGyarto($gyarto)
     {
         $this->gyarto = $gyarto;
+    }
+
+    public function getCsomagpontbanemszallithato()
+    {
+        return $this->csomagpontbanemszallithato;
+    }
+
+    public function setCsomagpontbanemszallithato($d)
+    {
+        $this->csomagpontbanemszallithato = $d;
     }
 
     public function getFuggoben()

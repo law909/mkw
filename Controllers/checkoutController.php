@@ -28,6 +28,25 @@ class checkoutController extends \mkwhelpers\MattableController
         return $b;
     }
 
+    /**
+     * A kosárban van csomagpontba nem szállítható termék: a csomagpontos szállítási módok
+     * nem kerülhetnek a listába, és beküldve sem fogadhatók el.
+     */
+    protected function isCsomagpontTiltott()
+    {
+        return $this->getRepo(Kosar::class)->hasCsomagpontTiltottTermek(\mkw\session::getId());
+    }
+
+    /** @return bool csomagpontos-e a megadott szállítási mód */
+    protected function isCsomagpontSzallitasimod($szallitasimodid)
+    {
+        /** @var \Entities\Szallitasimod $szallitasimod */
+        $szallitasimod = $szallitasimodid
+            ? $this->getRepo(\Entities\Szallitasimod::class)->find($szallitasimodid)
+            : null;
+        return $szallitasimod && $szallitasimod->getCsomagpont();
+    }
+
     public function getCheckout()
     {
         $p = \mkw\store::getMainSession()->params;
@@ -54,7 +73,7 @@ class checkoutController extends \mkwhelpers\MattableController
         }
 
         $szm = new szallitasimodController();
-        $szlist = $szm->getSelectList(null, false, $valu, $sum);
+        $szlist = $szm->getSelectList(null, false, $valu, $sum, $this->isCsomagpontTiltott());
 
         $u = \mkw\store::getLoggedInUser();
         if ($u) {
@@ -185,7 +204,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $fr = $this->getRepo(Fizmod::class);
         $fc = new fizmodController();
         $szm = new szallitasimodController();
-        $szlist = $szm->getSelectList(null, false, \mkw\store::getWebshopValutanem(), $sum);
+        $szlist = $szm->getSelectList(null, false, \mkw\store::getWebshopValutanem(), $sum, $this->isCsomagpontTiltott());
         foreach ($szlist as $szallmod) {
             $fmlist = explode(',', $szallmod['fizmodok']);
             $fmarr = [];

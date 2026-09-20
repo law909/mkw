@@ -86,6 +86,10 @@ class mugenraceCheckoutController extends checkoutController
             $ok = false;
             $errorlogtext[] = '7szallmod';
             $errors[] = t('Nem adta meg a szállítási módot.');
+        } elseif ($this->isCsomagpontSzallitasimod($szallitasimod) && $this->isCsomagpontTiltott()) {
+            $ok = false;
+            $errorlogtext[] = '7csomagpont';
+            $errors[] = t('A kosarában van olyan termék, amit nem lehet csomagpontra szállítani.');
         }
 
         if (!$fizetesimod) {

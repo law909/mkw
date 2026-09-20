@@ -1332,6 +1332,36 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         return $obj;
     }
 
+    /**
+     * A csomagpontos szállítási mód és a csomagpontba nem szállítható termék kizárja egymást.
+     * A stornó kimarad: a régi bizonylatot akkor is rontani kell tudni, ha a tiltás azóta került fel.
+     *
+     * @param \Entities\Bizonylatfej $obj
+     */
+    protected function validate($obj, $parancs)
+    {
+        if (($parancs === $this->stornoOperation) || !$obj->getSzallitasimod()?->getCsomagpont()) {
+            return [];
+        }
+        $nevek = [];
+        /** @var \Entities\Bizonylattetel $tetel */
+        foreach ($obj->getBizonylattetelek() as $tetel) {
+            $termek = $tetel->getTermek();
+            if ($termek && $termek->getCsomagpontbanemszallithato()) {
+                $nevek[$termek->getId()] = $termek->getNev();
+            }
+        }
+        if (!$nevek) {
+            return [];
+        }
+        return [
+            'szallitasimod' => sprintf(
+                t('Csomagpontos szállítási mód nem választható, mert csomagpontba nem szállítható termék van a bizonylaton: %s.'),
+                implode(', ', $nevek)
+            )
+        ];
+    }
+
     protected function afterSave($o, $parancs = null)
     {
         $oper = $this->params->getStringRequestParam('oper');

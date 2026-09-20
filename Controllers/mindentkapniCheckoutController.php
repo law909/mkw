@@ -77,6 +77,9 @@ class mindentkapniCheckoutController extends checkoutController
             $ok = $ok && $tofterminalid;
         }
 
+        $csomagponthiba = $this->isCsomagpontSzallitasimod($szallitasimod) && $this->isCsomagpontTiltott();
+        $ok = $ok && !$csomagponthiba;
+
         if (!$ok) {
             $errorlogtext[] = '1alapadat';
             if (!$vezeteknev) {
@@ -119,6 +122,9 @@ class mindentkapniCheckoutController extends checkoutController
             }
             if ((\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) && (!$csomagterminalid)) {
                 $errors[] = 'Nem adta meg a csomagterminált.';
+            }
+            if ($csomagponthiba) {
+                $errors[] = 'A kosarában van olyan termék, amit nem lehet csomagpontra szállítani.';
             }
             if (!$fizetesimod) {
                 $errors[] = 'Nem adta meg a fizetési módot.';

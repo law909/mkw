@@ -824,6 +824,11 @@
                                            name="bonthato"{if ($egyed.bonthato)} checked="checked"{/if}>{at('Bontható kiszerelés')}
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2"><input id="CsomagpontbaNemSzallithatoEdit" type="checkbox"
+                                           name="csomagpontbanemszallithato"{if ($egyed.csomagpontbanemszallithato)} checked="checked"{/if}>{at('Csomagpontba nem szállítható')}
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>

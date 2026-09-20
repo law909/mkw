@@ -84,6 +84,18 @@ class KosarRepository extends \mkwhelpers\Repository
         return $this->getCount($filter) == 0;
     }
 
+    /** Van-e a kosárban olyan termék, amit nem lehet csomagpontra küldeni. */
+    public function hasCsomagpontTiltottTermek($sessionid)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT COUNT(_xx) FROM Entities\Kosar _xx'
+            . ' JOIN _xx.termek _t'
+            . ' WHERE _xx.sessionid = :sessionid AND _t.csomagpontbanemszallithato = 1'
+        );
+        $q->setParameter('sessionid', $sessionid);
+        return $q->getSingleScalarResult() > 0;
+    }
+
     public function getDataBySessionId($sessionid)
     {
         $filter = new FilterDescriptor();

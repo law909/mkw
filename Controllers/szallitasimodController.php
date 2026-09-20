@@ -225,7 +225,11 @@ class szallitasimodController extends \mkwhelpers\MattableController
         return $view->getTemplateResult();
     }
 
-    public function getSelectList($selid = null, $mind = false, $valutanem = null, $ertek = 0)
+    /**
+     * @param bool $csomagpontnelkul a csomagpontos módok maradjanak ki – a kosárban
+     *                               csomagpontba nem szállítható termék van
+     */
+    public function getSelectList($selid = null, $mind = false, $valutanem = null, $ertek = 0, $csomagpontnelkul = false)
     {
         if ($mind) {
             $rec = $this->getRepo()->getAll([], ['sorrend' => 'ASC', 'nev' => 'ASC']);
@@ -237,6 +241,9 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $vanvalasztott = true; // \mkw\store::getTheme() !== 'mkwcansas';
         /** @var Szallitasimod $sor */
         foreach ($rec as $sor) {
+            if ($csomagpontnelkul && $sor->getCsomagpont()) {
+                continue;
+            }
             $r = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getLocalizedFieldValue('nev'),
@@ -246,6 +253,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 'gls' => \mkw\store::isGLSSzallitasimod($sor->getId()),
                 'fedex' => \mkw\store::isFedexSzallitasimod($sor->getId()),
                 'terminaltipus' => $sor->getTerminaltipus(),
+                'csomagpont' => $sor->getCsomagpont(),
                 'brutto' => $this->getRepo()->getSzallitasiKoltseg($sor->getId(), null, $valutanem, $ertek),
                 'fizmodok' => $sor->getFizmodok()
             ];
