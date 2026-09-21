@@ -134,7 +134,7 @@
                 {/if}
                 {if ($showautokiserobutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="autokiserofej" data-oper="inherit"
-                       title="{at('Gépjármű kísérő')}"><span class="ui-icon ui-icon-arrowreturnthick-1-e"></span></a>
+                       title="{at('Gépjármű kísérő')}"><span{if (!$bizonylattipuslist['autokisero'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['autokisero']['azonosito']}</span></a>
                 {/if}
                 {if ($showcsomagbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
