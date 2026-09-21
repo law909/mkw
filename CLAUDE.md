@@ -30,9 +30,11 @@ php cron.php --list              # scheduled tasks + whether they are on for thi
 php cron.php <task> --quiet      # run one scheduled task (this is what crontab calls) — docs/cron.md
 npx grunt                        # bundle JS (concat) + CSS (less/sass) per theme
 docker compose up                # local apache + php-fpm 8.3 stack, exposes mkw.test via Traefik
+vendor/bin/phpunit               # PHPUnit 10 tests in tests/ (in-memory SQLite, never the shared MySQL)
 ```
 
-There is no formal test framework. Per `.junie/AGENTS.md`: do not create tests unless explicitly asked.
+PHPUnit 10 (require-dev) runs `tests/`; DB tests extend `tests/DatabaseTestCase.php`, which builds an in-memory SQLite
+EntityManager with only the listed entities' tables. Per `.junie/AGENTS.md`: do not create tests unless explicitly asked.
 
 ## Configuration
 
