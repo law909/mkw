@@ -462,32 +462,24 @@ class mainController extends \mkwhelpers\Controller
                 break;
 
             case \mkw\store::isGalad():
-                // egylépcsős: a terméklapon mindjárt az összes változat választható, nincs
-                // külön szín, majd méret oldal
-                $com = $this->params->getStringParam('slug');
-                $tc = new termekController();
-                /** @var Termek $termek */
-                $termek = $tc->getRepo()->findOneBySlug($com);
-                if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
-                    $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
-                    $tf = new termekfaController();
-                    $morzsa = $tf->getMorzsa($termek->getTermekfa1());
-                    // a lánc végén maga a termék, link nélkül: ott vagyunk
-                    $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev'), 'link' => ''];
-                    $this->view->setVar('morzsa', $morzsa);
-                    $this->showB2BTermeklap($termek);
-                } else {
-                    \mkw\store::redirectTo404($com);
-                }
-                break;
-
             case \mkw\store::isSuperzoneB2B():
                 $com = $this->params->getStringParam('slug');
                 $tc = new termekController();
                 /** @var Termek $termek */
                 $termek = $tc->getRepo()->findOneBySlug($com);
                 if ($termek && !$termek->getInaktiv() && $termek->getXLathato() && !$termek->getFuggoben()) {
+                    // a galad termékeinek többsége változat vagy szín nélküli: ott nincs mit a szín
+                    // oldalon választani, ezért azok egy lapon mutatják a változataikat
+                    if (\mkw\store::isGalad() && !$this->hasSzinesValtozat($termek)) {
+                        $this->view = $this->getTemplateFactory()->createMainView('termeklap.tpl');
+                        $this->setGaladMorzsa($termek);
+                        $this->showB2BTermeklap($termek);
+                        break;
+                    }
                     $this->view = $this->getTemplateFactory()->createMainView('termeklapszin.tpl');
+                    if (\mkw\store::isGalad()) {
+                        $this->setGaladMorzsa($termek);
+                    }
                     \mkw\store::fillTemplate($this->view);
                     $this->view->setVar('pagetitle', $termek->getShowOldalcim());
                     $this->view->setVar('seodescription', $termek->getShowSeodescription());
@@ -527,7 +519,7 @@ class mainController extends \mkwhelpers\Controller
         }
     }
 
-    // superzone színhez tartozó méretek
+    // superzoneb2b és galad: a színhez tartozó méretek
     public function termekm()
     {
         $com = $this->params->getStringParam('slug');
@@ -539,15 +531,38 @@ class mainController extends \mkwhelpers\Controller
             return;
         }
         $this->view = $this->getTemplateFactory()->createMainView('termeklapmeret.tpl');
+        if (\mkw\store::isGalad()) {
+            $this->setGaladMorzsa($termek);
+        }
         $this->showB2BTermeklap($termek, $this->params->getIntRequestParam('szin'));
+    }
+
+    /** Van-e a terméknek a szín oldalon választható (elérhető, látható, színes) változata. */
+    private function hasSzinesValtozat(Termek $termek)
+    {
+        /** @var TermekValtozat $valt */
+        foreach ($termek->getValtozatok() ?? [] as $valt) {
+            if ($valt->getXElerheto() && $valt->getXLathato() && $valt->getSzin()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** A galad morzsa a termékfában elfoglalt helyhez; a lánc végén maga a termék, link nélkül. */
+    private function setGaladMorzsa(Termek $termek)
+    {
+        $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());
+        $morzsa[] = ['caption' => $termek->getLocalizedFieldValue('nev'), 'link' => ''];
+        $this->view->setVar('morzsa', $morzsa);
     }
 
     /**
      * A b2b termékoldal kirenderelése az előre beállított nézetbe: fejadatok, a belépett
      * partner kedvezményével számolt ár, és a rendelhető változatok.
      *
-     * @param int|null $szinid csak az adott szín változatai (superzoneb2b kétlépcsős szín →
-     *                         méret útja); null esetén a termék összes változata
+     * @param int|null $szinid csak az adott szín változatai (a kétlépcsős szín → méret út);
+     *                         null esetén a termék összes változata (galad, szín nélküli termék)
      */
     private function showB2BTermeklap(Termek $termek, $szinid = null)
     {

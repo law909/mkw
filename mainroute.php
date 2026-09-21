@@ -16,9 +16,9 @@ if (\mkw\store::isMindentkapni()) {
     $router->map('POST', '/elallas/ment', 'elallasController#elallasment', 'saveelallas');
 }
 
-// a superzoneb2b kétlépcsős útja: a terméklapról a szín, onnan a szín méretei. A galad
-// egylépcsős, ott a terméklap mindjárt az összes változatot kínálja.
-if (\mkw\store::isSuperzoneB2B()) {
+// a b2b kétlépcsős útja: a terméklapról a szín, onnan a szín méretei. A galad szín nélküli
+// termékei ezt kihagyják, ott a terméklap mindjárt az összes változatot kínálja.
+if (\mkw\store::isSuperzoneB2B() || \mkw\store::isGalad()) {
     $router->map('GET', '/termekm/[:slug]', 'mainController#termekm', 'showtermekm');
 }
 
