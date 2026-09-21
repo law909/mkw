@@ -2741,6 +2741,21 @@ if ($DBVersion < '0186') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0186');
 }
 
+if ($DBVersion < '0187') {
+    // A mkwcansas lábléc ezekre a slugokra linkel; a tartalmukat (fogyasztóbarát szkript) kézzel töltik fel
+    if (\mkw\store::isMindentkapni()) {
+        foreach (['impresszum' => 'Impresszum', 'cookie-tajekoztato' => 'Cookie tájékoztató', 'tanusitvany' => 'Tanúsítvány'] as $slug => $oldalcim) {
+            \mkw\store::getEm()->getConnection()->executeStatement(
+                'INSERT INTO statlap (oldalcim, slug, created, lastmod)'
+                . ' SELECT ?, ?, NOW(), NOW()'
+                . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM statlap WHERE slug = ?) s)',
+                [$oldalcim, $slug, $slug]
+            );
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0187');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

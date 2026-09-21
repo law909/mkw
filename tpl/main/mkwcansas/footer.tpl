@@ -22,6 +22,7 @@
                 <li><a href="/statlap/ugyfelszolgalat-elerhetosegei">Ügyfélszolgálat elérhetősége</a></li>
                 <li><a href="/statlap/merettablazat-ruhanemukhoz">Mérettáblázat ruhaneműkhöz</a></li>
                 <li><a href="/statlap/aszf">Általános szerződési feltételek</a></li>
+                <li><a href="/statlap/impresszum">Impresszum</a></li>
                 <li><a href="/statlap/penzvisszafizetesi-garancia">Pénzvisszafizetési garancia</a></li>
                 <li><a href="/statlap/husegpontok">Hűségpontok</a></li>
             </ul>
@@ -45,6 +46,8 @@
                 <li><a href="/statlap/gy-i-k-leggyakoribb-kerdesek#meretcsere">Méretcsere</a></li>
                 <li><a href="/statlap/vasarloink-visszajelzesei">Vásárlóink visszajelzései</a></li>
                 <li><a href="/statlap/vasarloi-adatok-kezelese">Vásárlói adatok védelme</a></li>
+                <li><a href="/statlap/cookie-tajekoztato">Cookie tájékoztató</a></li>
+                <li><a href="/statlap/tanusitvany">Tanúsítvány</a></li>
             </ul>
         </nav>
     </div>
