@@ -364,6 +364,27 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         IOFactory::createWriter($excel, 'Xlsx')->save('php://output');
     }
 
+    /**
+     * A termék meglévő változatainak kulcsai, hogy az újragenerálás ne duplázza őket. Fix
+     * színmódban a szín és a méret azonosítója a kulcs, egyébként a két megjelenített érték.
+     *
+     * @param Termek $termek
+     *
+     * @return array<string, true>
+     */
+    private function getMeglevoParok($termek)
+    {
+        $ret = [];
+        $fix = store::isFixSzinMode();
+        foreach ($termek->getValtozatok() ?? [] as $valtozat) {
+            $kulcs = $fix
+                ? $valtozat->getSzinId() . '|' . $valtozat->getMeretId()
+                : trim((string)$valtozat->getErtek1()) . '|' . trim((string)$valtozat->getErtek2());
+            $ret[$kulcs] = true;
+        }
+        return $ret;
+    }
+
     public function generate()
     {
         $termek = store::getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termekid'));
@@ -424,6 +445,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                 $meretsor = $this->getEm()->getRepository(Meretsor::class)->find($meretsorid);
                 if ($szin && $meretsor) {
                     $meretek = $meretsor->getMeretek();
+                    $meglevo = $this->getMeglevoParok($termek);
                     $cikkszamok = explode(';', $cikkszam);
                     $idegencikkszamok = explode(';', $idegencikkszam);
                     $cikl = 0;
@@ -434,6 +456,11 @@ class termekvaltozatController extends \mkwhelpers\MattableController
                         \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)
                     );
                     foreach ($meretek as $meret) {
+                        // meglévő terméken újragenerálva a már felvitt szín+méret pár kimaradna
+                        if (isset($meglevo[$szin->getId() . '|' . $meret->getId()])) {
+                            $cikl++;
+                            continue;
+                        }
                         $valtdb = 0;
                         $valtozat = new \Entities\TermekValtozat();
                         $termek->addValtozat($valtozat);
@@ -552,8 +579,13 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             $cikl = 0;
             $at1 = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find($adattipus1);
             $at2 = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find($adattipus2);
+            $meglevo = $this->getMeglevoParok($termek);
             foreach ($ertekek1 as $ertek1) {
                 foreach ($ertekek2 as $ertek2) {
+                    if (isset($meglevo[trim($ertek1) . '|' . trim($ertek2)])) {
+                        $cikl++;
+                        continue;
+                    }
                     $valtdb = 0;
                     $valtozat = new \Entities\TermekValtozat();
                     $termek->addValtozat($valtozat);
