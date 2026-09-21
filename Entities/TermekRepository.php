@@ -1037,6 +1037,27 @@ class TermekRepository extends \mkwhelpers\Repository
         return false;
     }
 
+    /**
+     * A B2B keresés találatai: a termék neve, oldalcíme, cikkszáma, leírása és vonalkódja, valamint
+     * bármelyik változatának cikkszáma és vonalkódja szerint.
+     *
+     * @return int[]
+     */
+    public function getIdsByKeresoszo($keresoszo)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $q = $this->_em->createNativeQuery(
+            'SELECT t.id FROM termek t'
+            . ' WHERE (t.nev LIKE :k) OR (t.oldalcim LIKE :k) OR (t.cikkszam LIKE :k) OR (t.leiras LIKE :k) OR (t.vonalkod LIKE :k)'
+            . ' UNION'
+            . ' SELECT v.termek_id FROM termekvaltozat v WHERE (v.cikkszam LIKE :k) OR (v.vonalkod LIKE :k)',
+            $rsm
+        );
+        $q->setParameter('k', '%' . $keresoszo . '%');
+        return array_map('intval', array_column($q->getScalarResult(), 'id'));
+    }
+
     public function getNevek($keresett)
     {
         $filter = new FilterDescriptor();

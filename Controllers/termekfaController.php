@@ -953,7 +953,8 @@ class termekfaController extends \mkwhelpers\MattableController
                 if ($this->params) {
                     $pKeresoszo = $this->params->getStringRequestParam('keresett');
                     if ($pKeresoszo) {
-                        $keresofilter->addFilter(['_xx.nev', '_xx.oldalcim', '_xx.cikkszam', '_xx.leiras'], 'LIKE', '%' . $pKeresoszo . '%');
+                        // a változatok kódjai is számítanak, ezért a találat id-listaként szűr
+                        $keresofilter->addFilter('_xx.id', 'IN', $termekrepo->getIdsByKeresoszo($pKeresoszo) ?: [0]);
                     }
                 }
                 $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'DESC']);
