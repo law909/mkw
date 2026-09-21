@@ -1039,7 +1039,8 @@ $(document).ready(function () {
 
     if ($.fn.mattable) {
         var lfilternames = ['#gyartofilter', '#termekcsoportfilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
-            '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter', '#cimkefilternincs'];
+            '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter', '#cimkefilternincs',
+            '#keszletmezofilter', '#keszletfilter', '#keszletraktarfilter'];
         for (var cikl = 2; cikl <= 15; cikl++) {
             lfilternames.push('#lathato' + cikl + 'filter');
         }

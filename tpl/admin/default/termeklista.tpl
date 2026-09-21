@@ -91,6 +91,28 @@
                 </select>
             </div>
             <div class="matt-hseparator"></div>
+            <div>
+                <label for="keszletfilter">{at('Készlet szűrő')}: </label>
+                <select id="keszletmezofilter" name="keszletmezofilter">
+                    <option value="keszlet">{at('Készlet')}</option>
+                    <option value="szabad">{at('Szabad készlet')}</option>
+                    <option value="foglalt">{at('Foglalt')}</option>
+                    <option value="erkezik">{at('Érkezik')}</option>
+                </select>
+                <select id="keszletfilter" name="keszletfilter">
+                    <option value="">{at('Mindegy')}</option>
+                    <option value="van">{at('Van')}</option>
+                    <option value="nulla">{at('Nulla')}</option>
+                    <option value="negativ">{at('Negatív')}</option>
+                </select>
+                <select id="keszletraktarfilter" name="keszletraktarfilter">
+                    <option value="0">{at('Céges szint')}</option>
+                    {foreach $raktarlist as $_r}
+                        <option value="{$_r.id}">{$_r.caption}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="matt-hseparator"></div>
             <div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
             <div class="matt-hseparator"></div>
             <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"></div>

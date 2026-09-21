@@ -671,6 +671,63 @@ class KeszletService
         );
     }
 
+    /** A terméklista készletszűrőjének mértékei. */
+    public const SZURO_MEZOK = ['keszlet', 'szabad', 'foglalt', 'erkezik'];
+
+    /**
+     * Azok a termékek, amelyeknek a termékszintű (az összes változatot összegző) készlete,
+     * szabad készlete, foglalása vagy érkező mennyisége a feltételnek megfelel – a terméklista
+     * készletszűrőjéhez. A szűrések a soronkénti számítás (getKeszlet(), getFoglaltMennyiseg(),
+     * getIncomingStock()) natív SQL párjai; mozgás nélküli termék nem jön vissza, a nulla
+     * feltételt ezért a hívó `<> 0`-val és NOT IN-nel kérdezi.
+     *
+     * @param string $mezo a SZURO_MEZOK egyike
+     * @param string $relacio `>`, `<` vagy `<>` (nullához képest)
+     * @param int|null $raktarid null esetén minden raktár együtt (céges szint)
+     *
+     * @return int[]
+     */
+    public static function getTermekIdsByKeszlet(string $mezo, string $relacio, $raktarid = null): array
+    {
+        if (!in_array($mezo, self::SZURO_MEZOK, true) || !in_array($relacio, ['>', '<', '<>'], true)) {
+            throw new \InvalidArgumentException('Ismeretlen készletszűrő: ' . $mezo . ' ' . $relacio);
+        }
+        $params = ['most' => (new \DateTime())->format('Y-m-d H:i:s')];
+        $foglalo = [];
+        foreach (array_values(Bizonylattipus::getFoglalIdList()) as $i => $tipus) {
+            $foglalo[] = ':ft' . $i;
+            $params['ft' . $i] = $tipus;
+        }
+        $mozgat = 'bt.mozgat = 1';
+        $foglal = $foglalo ? '(bt.foglal = 1 AND bf.bizonylattipus_id IN (' . implode(',', $foglalo) . '))' : '(1 = 0)';
+        $rendelt = 'bt.erkezik = 1';
+        // az addMegjottFilter() termékszintű párja, EXISTS-szel, hogy a fej indexét használja
+        $megjott = 'EXISTS (SELECT 1 FROM bizonylattetel ebt WHERE ebt.bizonylatfej_id = bf.tarsbizonylat_id'
+            . ' AND ebt.erkezik = 1 AND ebt.termek_id = bt.termek_id)';
+        $osszeg = static fn($feltetel) => 'SUM(CASE WHEN ' . $feltetel . ' THEN bt.mennyiseg * bt.irany ELSE 0 END)';
+        [$szukites, $ertek] = match ($mezo) {
+            'keszlet' => [$mozgat, $osszeg($mozgat)],
+            'foglalt' => [$foglal, '-' . $osszeg($foglal)],
+            // készlet − foglalt, és a foglalás kimenő (negatív) mozgás: a kettő összege
+            'szabad' => ['(' . $mozgat . ' OR ' . $foglal . ')', $osszeg($mozgat) . ' + ' . $osszeg($foglal)],
+            'erkezik' => ['(' . $rendelt . ' OR ' . $megjott . ')', $osszeg($rendelt) . ' - ' . $osszeg($megjott)],
+        };
+        $sql = 'SELECT bt.termek_id AS id FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
+            . ' WHERE ((bt.rontott = 0) OR (bt.rontott IS NULL)) AND (bf.teljesites <= :most) AND ' . $szukites
+            . ($raktarid ? ' AND (bf.raktar_id = :raktar)' : '')
+            . ' GROUP BY bt.termek_id'
+            . ' HAVING (' . $ertek . ') ' . $relacio . ' 0';
+        if ($raktarid) {
+            $params['raktar'] = $raktarid;
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $q = \mkw\store::getEm()->createNativeQuery($sql, $rsm);
+        $q->setParameters($params);
+        return array_map('intval', array_column($q->getScalarResult(), 'id'));
+    }
+
     /**
      * Egy listaoldal készlete, foglalása és érkező mennyisége hat lekérdezéssel. Enélkül a soronkénti
      * getKeszlet()/getFoglaltMennyiseg() termékenként és változatonként külön SUM-ot indít:

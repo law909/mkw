@@ -1337,6 +1337,8 @@ class termekController extends \mkwhelpers\MattableController
                 break;
         }
 
+        $this->addKeszletFilter($filter);
+
         $fv = $this->params->getArrayRequestParam('cimkefilter');
         if (!empty($fv)) {
             $res = \mkw\store::getEm()->getRepository(Termekcimketorzs::class)->getTermekIdsWithCimke($fv);
@@ -1417,6 +1419,32 @@ class termekController extends \mkwhelpers\MattableController
         $this->preloadKeszlet($egyedek);
 
         echo json_encode($this->loadDataToView($egyedek, 'termeklista', $view));
+    }
+
+    /**
+     * Készletszűrő: van (> 0) / nulla / negatív, a választott mérték (készlet, szabad készlet,
+     * foglalt, érkezik) termékszintű összegére, egy raktárra vagy céges szinten.
+     */
+    private function addKeszletFilter(\mkwhelpers\FilterDescriptor $filter)
+    {
+        $allapot = $this->params->getStringRequestParam('keszletfilter');
+        $mezo = $this->params->getStringRequestParam('keszletmezofilter', 'keszlet');
+        $relacio = ['van' => '>', 'negativ' => '<', 'nulla' => '<>'][$allapot] ?? null;
+        if (!$relacio || !in_array($mezo, \Services\KeszletService::SZURO_MEZOK, true)) {
+            return;
+        }
+        $ids = \Services\KeszletService::getTermekIdsByKeszlet(
+            $mezo,
+            $relacio,
+            $this->params->getIntRequestParam('keszletraktarfilter') ?: null
+        );
+        if ($allapot === 'nulla') {
+            if ($ids) {
+                $filter->addFilter('id', 'NOT IN', $ids);
+            }
+        } else {
+            $filter->addFilter('id', 'IN', $ids ?: [0]);
+        }
     }
 
     /**
@@ -1810,6 +1838,8 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('gyartolist', $gyarto->getGyartoSelectList(0));
         $tcs = new termekcsoportController();
         $view->setVar('termekcsoportlist', $tcs->getSelectList());
+        $rc = new raktarController();
+        $view->setVar('raktarlist', $rc->getSelectList());
         $view->printTemplateResult();
     }
 
