@@ -940,6 +940,7 @@ class Termek
         }
         $x['nemkaphato'] = $this->getNemkaphato() || $this->getFuggoben();
         $x['ingyenszallitas'] = (\mkw\store::calcSzallitasiKoltseg($x['bruttohuf']) == 0);
+        $x['csomagpontbanemszallithato'] = $this->getCsomagpontbanemszallithato();
         $x['husegpont'] = floor($x['bruttohuf'] * $this->getHparany() / 100);
 
         $x['szallitasiido'] = $this->calcSzallitasiido($valtozat);

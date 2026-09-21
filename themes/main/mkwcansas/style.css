@@ -1081,6 +1081,11 @@ thead.acc-megrendelestetellist td {
 .kosarbacontainer {
   padding-top: 15px;
 }
+.csomagpontbanemszallithato {
+  color: #e42721;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 .termeklapaddthis div.addthis_toolbox {
   width: 202px;
   margin: 0 auto;

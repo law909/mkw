@@ -111,6 +111,11 @@
                             <div id="termekprice{$termek.id}" class="itemPrice textalignright">
                                 <span>{number_format($termek.bruttohuf,0,',',' ')} Ft</span>
                             </div>
+                            {if ($termek.csomagpontbanemszallithato)}
+                            <div class="csomagpontbanemszallithato textalignright" title="{t('Ezt a terméket nem tudjuk csomagpontra vagy csomagautomatába szállítani.')}">
+                                <i class="icon-info-sign"></i> {t('Csomagpontba nem szállítható')}
+                            </div>
+                            {/if}
                             {if ($termek.nemkaphato)}
                             <div class="textalignright">
                                 <a href="#" rel="nofollow" class="js-termekertesitobtn btn btn-large graybtn" data-termek="{$termek.id}" data-id="{$termek.id}">
