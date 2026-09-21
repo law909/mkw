@@ -16,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *      @ORM\UniqueConstraint(name="eppjelszoazonosito_idx",columns={"azonosito"})
  * },
  * indexes={
- *      @ORM\index(name="eppjelszokereso_idx",columns={"oldalid","jelszokereso"})
+ *      @ORM\index(name="eppjelszohash_idx",columns={"oldalid","jelszohash"})
  * })
  */
 class Eppjelszo
@@ -66,12 +66,9 @@ class Eppjelszo
      * @ORM\Column(type="integer",nullable=false) */
     private $oldalid = 0;
 
-    /** @ORM\Column(type="string",length=255,nullable=false) */
-    private $jelszohash = '';
-
-    /** gyors, indexelt keresés az oldal sok jelszava között; a bcrypt csak a talált jelöltre fut
+    /** só nélküli HMAC-SHA256 (hashJelszo()), a /validate az oldallal együtt indexszel keresi meg
      * @ORM\Column(type="string",length=64,nullable=false) */
-    private $jelszokereso = '';
+    private $jelszohash = '';
 
     /** @ORM\Column(type="datetime",nullable=false) */
     private $lejarat;
@@ -122,23 +119,22 @@ class Eppjelszo
         for ($i = 0; $i < self::JELSZOHOSSZ; $i++) {
             $jelszo .= self::JELSZOABC[random_int(0, strlen(self::JELSZOABC) - 1)];
         }
-        $this->jelszohash = password_hash($jelszo, PASSWORD_DEFAULT);
-        $this->jelszokereso = self::searchHash($jelszo);
+        $this->jelszohash = self::hashJelszo($jelszo);
         return $jelszo;
     }
 
     /**
-     * Gyors hash, ezért csak a rendszer által sorsolt jelszóra biztonságos: ~69 bit véletlen nem
-     * törhető SHA-256 mellett sem. Kézzel megadott jelszót ne engedj be ezzel.
+     * Gyors, só nélküli hash, ezért csak a rendszer által sorsolt jelszóra biztonságos: ~69 bit
+     * véletlen SHA-256 mellett sem törhető. Kézzel megadott jelszót ne engedj be ezzel.
      */
-    public static function searchHash(string $jelszo): string
+    public static function hashJelszo(string $jelszo): string
     {
         return hash_hmac('sha256', $jelszo, 'eppjelszo');
     }
 
     public function checkJelszo(string $jelszo): bool
     {
-        return password_verify($jelszo, $this->jelszohash);
+        return hash_equals($this->jelszohash, self::hashJelszo($jelszo));
     }
 
     public function isVisszavonva(): bool

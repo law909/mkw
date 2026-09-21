@@ -27,9 +27,6 @@ class EppService
     public const RATEWINDOW = 15;
     public const LOGRETENTION = 90;
 
-    // találat nélkül is lefut egy bcrypt, így a hibás és a helyes jelszó válaszideje egyforma
-    private const DUMMYHASH = '$2y$10$HfDhtLd4efeEfCCW7keV5.uIk2Fzxx2GJ4ng4Og.8BXM8KlDbotq6';
-
     private $em;
     private $apiKey;
     private $rateLimit;
@@ -86,15 +83,10 @@ class EppService
             return $this->invalid();
         }
 
-        $jelszavak = $this->em->getRepository(Eppjelszo::class)
-            ->getAktivByKereso($oldalid, Eppjelszo::searchHash($jelszo), new \DateTime());
-        if (!$jelszavak) {
-            password_verify($jelszo, self::DUMMYHASH);
-        }
-        foreach ($jelszavak as $eppjelszo) {
-            if ($eppjelszo->checkJelszo($jelszo)) {
-                return $this->valid($eppjelszo);
-            }
+        $eppjelszo = $this->em->getRepository(Eppjelszo::class)
+            ->findAktivByHash($oldalid, Eppjelszo::hashJelszo($jelszo), new \DateTime());
+        if ($eppjelszo) {
+            return $this->valid($eppjelszo);
         }
         $this->log(Eppnaplo::VEGPONTVALIDATE, $oldalid, Eppnaplo::EREDMENYHIBAS, $ip);
         return $this->invalid();

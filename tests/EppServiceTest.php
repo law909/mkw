@@ -317,43 +317,21 @@ class EppServiceTest extends DatabaseTestCase
         $this->assertCount(1, $this->getLogRows());
     }
 
-    public function testValidationTimeDoesNotGrowWithPasswordCount(): void
+    public function testCorrectPasswordIsFoundAmongManyOnThePage(): void
     {
         [$eppjelszo, $jelszo] = $this->createPassword(self::PAGE);
-        $otherHash = password_hash('other', PASSWORD_DEFAULT);
         $conn = $this->em->getConnection();
         for ($i = 0; $i < 300; $i++) {
             $conn->insert('eppjelszo', [
                 'azonosito' => bin2hex(random_bytes(16)),
                 'oldalid' => self::PAGE,
-                'jelszohash' => $otherHash,
-                'jelszokereso' => Eppjelszo::searchHash('other' . $i),
+                'jelszohash' => Eppjelszo::hashJelszo('other' . $i),
                 'lejarat' => (new \DateTime('+1 day'))->format('Y-m-d H:i:s'),
             ]);
         }
 
-        $start = microtime(true);
-        $valid = $this->requestValidate(self::PAGE, $jelszo);
-        $invalid = $this->requestValidate(self::PAGE, 'wrong-password');
-        $elapsed = microtime(true) - $start;
-
-        $this->assertSame($eppjelszo->getAzonosito(), $valid[1]['password_id']);
-        $this->assertSame(['valid' => false], $invalid[1]);
-        // végigpróbálva 300 bcrypt ~12 mp lenne
-        $this->assertLessThan(2, $elapsed);
-    }
-
-    public function testMatchingSearchHashAloneIsNotEnough(): void
-    {
-        [$eppjelszo, $jelszo] = $this->createPassword(self::PAGE);
-        $this->em->getConnection()->update(
-            'eppjelszo',
-            ['jelszohash' => password_hash('something-else', PASSWORD_DEFAULT)],
-            ['id' => $eppjelszo->getId()]
-        );
-        $this->em->clear();
-
-        $this->assertSame([200, ['valid' => false]], $this->requestValidate(self::PAGE, $jelszo));
+        $this->assertSame($eppjelszo->getAzonosito(), $this->requestValidate(self::PAGE, $jelszo)[1]['password_id']);
+        $this->assertSame(['valid' => false], $this->requestValidate(self::PAGE, 'wrong-password')[1]);
     }
 
     public function testGeneratedPasswordHasNoAmbiguousCharacters(): void
@@ -371,7 +349,7 @@ class EppServiceTest extends DatabaseTestCase
         $row = $this->em->getConnection()->fetchAssociative('SELECT * FROM eppjelszo WHERE id = ?', [$eppjelszo->getId()]);
 
         $this->assertStringNotContainsString($jelszo, json_encode($row));
-        $this->assertTrue(password_verify($jelszo, $row['jelszohash']));
+        $this->assertSame(Eppjelszo::hashJelszo($jelszo), $row['jelszohash']);
     }
 
     /**
