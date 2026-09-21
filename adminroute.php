@@ -1695,6 +1695,13 @@ $router->map('GET', '/admin/minkeszletlista/get', 'minkeszletlistaController#cre
 $router->map('GET', '/admin/minkeszletlista/export', 'minkeszletlistaController#exportLista', 'adminminkeszletlistaexport');
 $router->map('GET', '/admin/minkeszletlista/exportbizonylat', 'minkeszletlistaController#exportBizonylat', 'adminminkeszletlistaexportbizonylat');
 
+$router->map('GET', '/admin/gyartoirendeles/view', 'gyartoirendelesController#view', 'admingyartoirendelesview');
+$router->map('GET', '/admin/gyartoirendeles/get', 'gyartoirendelesController#createLista', 'admingyartoirendelesget');
+$router->map('GET', '/admin/gyartoirendeles/export', 'gyartoirendelesController#exportLista', 'admingyartoirendelesexport');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/gyartoirendeles/createbizonylat', 'gyartoirendelesController#createBizonylat', 'admingyartoirendelescreatebizonylat');
+}
+
 $router->map('GET', '/admin/keszletlista/view', 'keszletlistaController#view', 'adminkeszletlistaview');
 $router->map('GET', '/admin/keszletlista/get', 'keszletlistaController#createLista', 'adminkeszletlistaget');
 $router->map('GET', '/admin/keszletlista/export', 'keszletlistaController#exportLista', 'adminkeszletlistaexport');
