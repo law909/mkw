@@ -86,3 +86,6 @@ superzonesetup.ini
 /storage/pagecache/
 /storage/mpdf/
 /docs/
+
+# PHPUnit
+/.phpunit.cache/
