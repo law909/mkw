@@ -18,15 +18,16 @@ class EppjelszoRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * @return Eppjelszo[] az oldal nem visszavont, le nem járt jelszavai
+     * @return Eppjelszo[] az oldal nem visszavont, le nem járt jelszavai ezzel a kereső hash-sel (jellemzően 0 vagy 1)
      */
-    public function getAktivByOldal(int $oldalid, \DateTimeInterface $most): array
+    public function getAktivByKereso(int $oldalid, string $jelszokereso, \DateTimeInterface $most): array
     {
         return $this->_em->createQuery(
             'SELECT _xx FROM Entities\Eppjelszo _xx'
-            . ' WHERE _xx.oldalid = :oldalid AND _xx.visszavonvaon IS NULL AND _xx.lejarat > :most'
+            . ' WHERE _xx.oldalid = :oldalid AND _xx.jelszokereso = :kereso'
+            . ' AND _xx.visszavonvaon IS NULL AND _xx.lejarat > :most'
         )
-            ->setParameters(['oldalid' => $oldalid, 'most' => $most])
+            ->setParameters(['oldalid' => $oldalid, 'kereso' => $jelszokereso, 'most' => $most])
             ->getResult();
     }
 

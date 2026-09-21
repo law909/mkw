@@ -16,13 +16,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *      @ORM\UniqueConstraint(name="eppjelszoazonosito_idx",columns={"azonosito"})
  * },
  * indexes={
- *      @ORM\index(name="eppjelszooldalid_idx",columns={"oldalid"})
+ *      @ORM\index(name="eppjelszokereso_idx",columns={"oldalid","jelszokereso"})
  * })
  */
 class Eppjelszo
 {
 
     public const JELSZOHOSSZ = 12;
+    // emailből gépelik be: kimarad a 0/O/o, 1/l/I/i
+    private const JELSZOABC = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -67,6 +69,10 @@ class Eppjelszo
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $jelszohash = '';
 
+    /** gyors, indexelt keresés az oldal sok jelszava között; a bcrypt csak a talált jelöltre fut
+     * @ORM\Column(type="string",length=64,nullable=false) */
+    private $jelszokereso = '';
+
     /** @ORM\Column(type="datetime",nullable=false) */
     private $lejarat;
 
@@ -94,9 +100,22 @@ class Eppjelszo
      */
     public function generateJelszo(): string
     {
-        $jelszo = \mkw\store::generatePassword(self::JELSZOHOSSZ);
+        $jelszo = '';
+        for ($i = 0; $i < self::JELSZOHOSSZ; $i++) {
+            $jelszo .= self::JELSZOABC[random_int(0, strlen(self::JELSZOABC) - 1)];
+        }
         $this->jelszohash = password_hash($jelszo, PASSWORD_DEFAULT);
+        $this->jelszokereso = self::searchHash($jelszo);
         return $jelszo;
+    }
+
+    /**
+     * Gyors hash, ezért csak a rendszer által sorsolt jelszóra biztonságos: ~69 bit véletlen nem
+     * törhető SHA-256 mellett sem. Kézzel megadott jelszót ne engedj be ezzel.
+     */
+    public static function searchHash(string $jelszo): string
+    {
+        return hash_hmac('sha256', $jelszo, 'eppjelszo');
     }
 
     public function checkJelszo(string $jelszo): bool
