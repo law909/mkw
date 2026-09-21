@@ -53,7 +53,7 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         $view->setVar('raktarlist', $rc->getSelectList(\mkw\store::getParameter(\mkw\consts::Raktar)));
         $view->setVar('masikraktarlist', $rc->getSelectList());
         $gyarto = new partnerController();
-        $view->setVar('gyartolist', $gyarto->getSzallitoSelectList(0));
+        $view->setVar('gyartolist', $gyarto->getGyartoSelectList(0));
         $view->setVar(
             self::KESZLETSZAMIT,
             \Services\DolgozoParameterService::getBoolParameter($this->getKeszletSzamitKey()) ? 1 : 0
