@@ -111,6 +111,11 @@ class dolgozoController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $filterarr->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
         }
+        // a lista alapból csak az aktív dolgozókat mutatja, 9 = mindegy
+        $f = $this->params->getNumRequestParam('inaktivfilter', 0);
+        if ($f != 9) {
+            $filterarr->addFilter('inaktiv', '=', $f);
+        }
 
         $this->initPager($this->getRepo()->getCount($filterarr));
 

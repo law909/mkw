@@ -21,7 +21,7 @@ $(document).ready(function () {
 
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#nevfilter']
+                fields: ['#nevfilter', '#inaktivfilter']
             },
             tablebody: {
                 url: '/admin/dolgozo/getlistbody'

@@ -11,6 +11,11 @@
         <div id="mattable-filterwrapper">
             <label for="nevfilter">{at('Szűrés')}</label>
             <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
+            <select id="inaktivfilter" name="inaktivfilter">
+                <option value="0">{at('Aktív')}</option>
+                <option value="1">{at('Inaktív')}</option>
+                <option value="9">{at('Mindegy')}</option>
+            </select>
         </div>
         <div class="mattable-pagerwrapper">
             <div class="mattable-order">
