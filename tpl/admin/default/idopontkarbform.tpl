@@ -165,6 +165,14 @@
                     <td colspan="3"><input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
                                            value="{$egyed.onlineurl}"></td>
                 </tr>
+                {if ($setup.epp|default:0)}
+                    <tr>
+                        <td><label for="WpoldalidEdit">{at('WP oldal ID')}:</label></td>
+                        <td colspan="3"><input id="WpoldalidEdit" name="wpoldalid" type="number" min="1" style="width: 10em"
+                                               value="{$egyed.wpoldalid}">
+                            <span>{at('a jelszóval védett WordPress oldal (post) azonosítója; a jelentkezők ehhez kaphatnak jelszót')}</span></td>
+                    </tr>
+                {/if}
                 <tr>
                     <td><label for="KellszamlazasiadatEdit">{at('Számlázási adat bekérés')}:</label></td>
                     <td><input id="KellszamlazasiadatEdit" name="kellszamlazasiadat" type="checkbox"{if ($egyed.kellszamlazasiadat)} checked="checked"{/if}></td>

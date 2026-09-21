@@ -67,10 +67,10 @@ class Eppjelszo extends \Entities\Eppjelszo implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'id', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'created', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'createdby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'oldalid', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszohash', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszokereso', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lejarat', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaon', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaby'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'id', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'created', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'createdby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'oldalid', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszohash', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszokereso', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lejarat', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'nev', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'email', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'honap', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'idopontfoglalas', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaon', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaby'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'id', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'created', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'createdby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'oldalid', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszohash', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszokereso', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lejarat', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaon', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaby'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'id', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'created', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lastmod', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'createdby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'updatedby', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'azonosito', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'oldalid', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszohash', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'jelszokereso', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'lejarat', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'megjegyzes', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'nev', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'email', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'honap', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'idopontfoglalas', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaon', '' . "\0" . 'Entities\\Eppjelszo' . "\0" . 'visszavonvaby'];
     }
 
     /**
@@ -421,6 +421,94 @@ class Eppjelszo extends \Entities\Eppjelszo implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMegjegyzes', [$megjegyzes]);
 
         return parent::setMegjegyzes($megjegyzes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getNev()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNev', []);
+
+        return parent::getNev();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setNev($nev)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setNev', [$nev]);
+
+        return parent::setNev($nev);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getEmail()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEmail', []);
+
+        return parent::getEmail();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEmail($email)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$email]);
+
+        return parent::setEmail($email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getHonap()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getHonap', []);
+
+        return parent::getHonap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setHonap($honap)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setHonap', [$honap]);
+
+        return parent::setHonap($honap);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdopontfoglalas()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdopontfoglalas', []);
+
+        return parent::getIdopontfoglalas();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdopontfoglalas(?\Entities\Idopontfoglalas $idopontfoglalas)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdopontfoglalas', [$idopontfoglalas]);
+
+        return parent::setIdopontfoglalas($idopontfoglalas);
     }
 
     /**

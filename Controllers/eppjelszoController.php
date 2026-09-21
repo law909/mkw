@@ -46,6 +46,10 @@ class eppjelszoController extends \mkwhelpers\MattableController
         $x['visszavonva'] = $t->isVisszavonva();
         $x['visszavonvaonstr'] = $t->getVisszavonvaonStr();
         $x['visszavonvabynev'] = $t->getVisszavonvabyNev();
+        $foglalas = $t->getIdopontfoglalas();
+        $x['jelentkezes'] = $foglalas
+            ? trim($foglalas->getIdopont()?->getNev() . ' ' . $foglalas->getDatumStr())
+            : '';
         $x['allapot'] = match (true) {
             $t->isVisszavonva() => t('visszavonva'),
             $t->getLejarat() && $t->isLejart() => t('lejárt'),
@@ -67,6 +71,8 @@ class eppjelszoController extends \mkwhelpers\MattableController
             $this->generatedJelszo = $obj->generateJelszo();
         }
         $obj->setMegjegyzes($this->params->getStringRequestParam('megjegyzes'));
+        $obj->setNev($this->params->getStringRequestParam('nev'));
+        $obj->setEmail($this->params->getStringRequestParam('email'));
         $lejarat = \DateTime::createFromFormat(self::LEJARATINPUTFORMAT, $this->params->getStringRequestParam('lejarat'));
         if ($lejarat) {
             $obj->setLejarat($lejarat);
@@ -114,9 +120,9 @@ class eppjelszoController extends \mkwhelpers\MattableController
         if ($oldalid) {
             $filter->addFilter('oldalid', '=', $oldalid);
         }
-        $megjegyzes = $this->params->getStringRequestParam('megjegyzesfilter');
-        if ($megjegyzes !== '') {
-            $filter->addFilter('megjegyzes', 'LIKE', '%' . $megjegyzes . '%');
+        $szoveg = $this->params->getStringRequestParam('szovegfilter');
+        if ($szoveg !== '') {
+            $filter->addFilter(['nev', 'email', 'megjegyzes'], 'LIKE', '%' . $szoveg . '%');
         }
         $most = date('Y-m-d H:i:s');
         switch ($this->params->getStringRequestParam('allapotfilter')) {

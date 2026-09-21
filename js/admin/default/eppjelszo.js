@@ -52,7 +52,7 @@ $(document).ready(function () {
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#oldalidfilter', '#megjegyzesfilter', '#allapotfilter']
+                fields: ['#oldalidfilter', '#szovegfilter', '#allapotfilter']
             },
             tablebody: {
                 url: '/admin/eppjelszo/getlistbody'

@@ -22,13 +22,28 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="NevEdit">{at('Név')}:</label></td>
+                    <td><input id="NevEdit" name="nev" type="text" size="50" maxlength="255" value="{$egyed.nev}"></td>
+                </tr>
+                <tr>
+                    <td><label for="EmailEdit">{at('Email')}:</label></td>
+                    <td><input id="EmailEdit" name="email" type="email" size="50" maxlength="255" value="{$egyed.email}"></td>
+                </tr>
+                <tr>
                     <td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
                     <td><input id="MegjegyzesEdit" name="megjegyzes" type="text" size="80" maxlength="255" value="{$egyed.megjegyzes}"></td>
                 </tr>
                 <tr>
                     <td><label for="LejaratEdit">{at('Lejárat')}:</label></td>
-                    <td><input id="LejaratEdit" name="lejarat" type="datetime-local" value="{$egyed.lejaratinput}" required></td>
+                    <td><input id="LejaratEdit" name="lejarat" type="datetime-local" value="{$egyed.lejaratinput}" required>
+                        {if ($egyed.honap)}<span>{at('kiadva')} {$egyed.honap} {at('hónapra')}</span>{/if}</td>
                 </tr>
+                {if ($egyed.jelentkezes)}
+                    <tr>
+                        <td>{at('Jelentkezés')}:</td>
+                        <td>{$egyed.jelentkezes}</td>
+                    </tr>
+                {/if}
                 {if ($egyed.id)}
                     <tr>
                         <td>{at('Azonosító')}:</td>

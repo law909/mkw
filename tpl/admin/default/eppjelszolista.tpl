@@ -15,8 +15,8 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
-                <label for="megjegyzesfilter">{at('Megjegyzés')}: </label>
-                <input id="megjegyzesfilter" name="megjegyzesfilter" type="text" size="30" maxlength="255">
+                <label for="szovegfilter">{at('Név, email, megjegyzés')}: </label>
+                <input id="szovegfilter" name="szovegfilter" type="text" size="30" maxlength="255">
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -43,6 +43,7 @@
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox"></th>
                 <th>{at('Oldal ID')}</th>
+                <th>{at('Kinek')}</th>
                 <th>{at('Megjegyzés')}</th>
                 <th>{at('Lejárat')}</th>
                 <th>{at('Állapot')}</th>

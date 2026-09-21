@@ -79,6 +79,24 @@ class Eppjelszo
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $megjegyzes;
 
+    /** kinek készült
+     * @ORM\Column(type="string",length=255,nullable=true) */
+    private $nev;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $email;
+
+    /** hány hónapra adtuk ki (a jelentkezésből generáltnál); a lejárat ebből képződött
+     * @ORM\Column(type="integer",nullable=true) */
+    private $honap;
+
+    /**
+     * a jelentkezés, amiből generáltuk
+     * @ORM\ManyToOne(targetEntity="Idopontfoglalas")
+     * @ORM\JoinColumn(name="idopontfoglalas_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+     */
+    private $idopontfoglalas;
+
     /** @ORM\Column(type="datetime",nullable=true) */
     private $visszavonvaon;
 
@@ -235,6 +253,47 @@ class Eppjelszo
     public function setMegjegyzes($megjegyzes)
     {
         $this->megjegyzes = $megjegyzes;
+    }
+
+    public function getNev()
+    {
+        return $this->nev;
+    }
+
+    public function setNev($nev)
+    {
+        $this->nev = $nev;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($email)
+    {
+        $email = mb_strtolower(trim((string)$email));
+        $this->email = $email === '' ? null : $email;
+    }
+
+    public function getHonap()
+    {
+        return $this->honap;
+    }
+
+    public function setHonap($honap)
+    {
+        $this->honap = $honap ? (int)$honap : null;
+    }
+
+    public function getIdopontfoglalas()
+    {
+        return $this->idopontfoglalas;
+    }
+
+    public function setIdopontfoglalas(?Idopontfoglalas $idopontfoglalas)
+    {
+        $this->idopontfoglalas = $idopontfoglalas;
     }
 
     public function getVisszavonvaon()

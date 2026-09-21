@@ -102,6 +102,10 @@ class Idopont
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $onlineurl = '';
 
+    /** a WordPress oldal (post ID), amihez a jelentkezők WP jelszót kaphatnak (setup: epp)
+     * @ORM\Column(type="integer",nullable=true) */
+    private $wpoldalid;
+
     /** @ORM\Column(type="boolean", nullable=false) */
     private $onlinevalaszthato = false;
 
@@ -694,6 +698,16 @@ class Idopont
     public function getUrl()
     {
         return $this->url;
+    }
+
+    public function getWpoldalid()
+    {
+        return $this->wpoldalid;
+    }
+
+    public function setWpoldalid($wpoldalid)
+    {
+        $this->wpoldalid = $wpoldalid ? (int)$wpoldalid : null;
     }
 
     public function setUrl($url)
