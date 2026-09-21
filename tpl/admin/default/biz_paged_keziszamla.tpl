@@ -52,7 +52,7 @@
 {block "itemrows"}
     <tr class="tetelsor">
         <td>{$teteldb + 1}</td>
-        <td colspan="8" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}({$tetel.vtszszam})</td>
+        <td colspan="8" width="{$w.nevsor}" class="bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}{if ($tetel.vtszszam|default)}({$tetel.vtszszam}){/if}</td>
     </tr>
     <tr class="tetelsor">
         <td width="{$w.sorszam}" class="dashedline"></td>
