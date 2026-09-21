@@ -129,7 +129,7 @@
                     {/foreach}
                 </select>
         </tr>
-        <tr class="js-egyediazonositorow_{$tetel.id}"{if (!($tetel.kellegyediazonosito|default))} style="display:none;"{/if}>
+        <tr class="js-egyediazonositorow_{$tetel.id}"{if (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))} style="display:none;"{/if}>
             <td class="mattable-important"><label for="TermekegyediazonositoEdit{$tetel.id}">{at('Egyedi azonosító')}:</label></td>
             <td colspan="5">
                 <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
