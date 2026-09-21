@@ -235,6 +235,17 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getFreeStock($datum = NULL, $raktarid = NULL, $kivevebiz = NULL)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFreeStock', [$datum, $raktarid, $kivevebiz]);
+
+        return parent::getFreeStock($datum, $raktarid, $kivevebiz);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAvailableStock($datum = NULL, $raktarid = NULL, $kivevebiz = NULL, $clamp = true, $ignoreminkeszlet = false, $ignorefoglalas = false)
     {
 
