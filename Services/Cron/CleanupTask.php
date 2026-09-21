@@ -10,6 +10,7 @@ use Entities\Cronlog;
  * A méret- és korhatárok a config.ini-ből jönnek:
  *   cron.logmaxsize   = 10M   ; ennél nagyobb naplót forgat (0 = nincs forgatás)
  *   cron.logretention = 30    ; ennyi napnál régebbi cron napló sor törlődik (0 = nincs törlés)
+ *   epp.logretention  = 90    ; ugyanez az External Page Passwords napló sorain (csak epp = 1 mellett)
  *
  * Az UNAS letöltött termékadatbázisát és a nyers rendelés-XML-eket szándékosan NEM bántja:
  * egy félbehagyott sorablakos import fájljából folytatható a menet (lásd
@@ -39,13 +40,16 @@ class CleanupTask implements CronTask
         $cache = \mkw\pagecache::gc();
         $forgatva = $this->rotateLogs();
         $torolve = $this->purgeCronlog();
+        $eppTorolve = \mkw\store::isEpp() ? (new \Services\EppService())->purgeLog() : 0;
 
         return sprintf(
-            'oldalcache: %d lejárt fájl, %d félbehagyott .tmp | napló: %d forgatva | cron napló: %d sor törölve',
+            'oldalcache: %d lejárt fájl, %d félbehagyott .tmp | napló: %d forgatva | cron napló: %d sor törölve'
+            . ' | epp napló: %d sor törölve',
             $cache['fajl'],
             $cache['tmp'],
             count($forgatva),
-            $torolve
+            $torolve,
+            $eppTorolve
         ) . ($forgatva ? ' (' . implode(', ', $forgatva) . ')' : '');
     }
 

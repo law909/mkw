@@ -267,6 +267,12 @@ $router->map('GET', '/stripe/success', 'stripeController#paymentSuccess', 'strip
 
 $router->map('POST', '/a2a', 'a2aController#processCmd', 'a2aprocesscmd');
 
+// a WordPress External Page Passwords plugin hívja szerverről (EPP_API_URL = https://<domain>/epp)
+if (\mkw\store::isEpp()) {
+    $router->map('POST', '/epp/validate', 'eppController#validate', 'eppvalidate');
+    $router->map('POST', '/epp/status', 'eppController#status', 'eppstatus');
+}
+
 $router->map('POST', '/wcwh/ordercr', 'wcwebhookController#orderCreated', 'wcwhordercr');
 $router->map('POST', '/wcwh/orderup', 'wcwebhookController#orderUpdated', 'wcwhorderup');
 $router->map('POST', '/wcwh/partnercr', 'wcwebhookController#partnerCreated', 'wcwhpartnercr');

@@ -289,6 +289,8 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'szamlaprint',
                             'szamlapdf',
                             'a2aprocesscmd',
+                            'eppvalidate',
+                            'eppstatus',
                             'orderformexport',
                             'fcmotostockexport',
                             'eanstockexport',

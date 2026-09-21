@@ -11,6 +11,10 @@
     RewriteEngine on
     RewriteBase /
 
+    # php-fpm alatt az Apache nem adja át az Authorization fejlécet (az /epp API Bearer kulcsa)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 
