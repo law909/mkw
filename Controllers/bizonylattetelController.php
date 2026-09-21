@@ -334,7 +334,10 @@ class bizonylattetelController extends \mkwhelpers\MattableController
 
     /**
      * A minkeszletlistaController::exportBizonylat() formátumú xlsx sorai tételnek.
-     * Oszlopok: A=termék id, B=változat id, C=cikkszám, D=vonalkód, E=mennyiség.
+     * Oszlopok: A=termék id, B=változat id, C=cikkszám, D=vonalkód, E=mennyiség, F=nettó egységár.
+     *
+     * Az F oszlopot az export nem írja, kézzel viszont kitölthető: ahol van benne ár, az kerül a
+     * tételre, ahol nincs, ott marad a termék ára.
      */
     public function importXlsx()
     {
@@ -363,6 +366,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             $cikkszam = trim((string)$sheet->getCell('C' . $row)->getValue());
             $vonalkod = trim((string)$sheet->getCell('D' . $row)->getValue());
             $mennyiseg = (float)$sheet->getCell('E' . $row)->getValue();
+            $nettoegysar = $this->cellAr($sheet->getCell('F' . $row)->getValue());
             if (!$termekid && ($cikkszam === '') && ($vonalkod === '')) {
                 continue;
             }
@@ -375,7 +379,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
                 }
                 continue;
             }
-            $tetelek[] = $this->tetelAdat($talalat, $mennyiseg);
+            $tetelek[] = $this->tetelAdat($talalat, $mennyiseg, $nettoegysar);
         }
         \unlink($file);
 
@@ -470,7 +474,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     }
 
     /** Az Oxford (GALAD) számla-munkafüzet oszlopai. A fejlécsor az A oszlopban „Code". */
-    private const OXFORD_OSZLOPOK = ['cikkszam' => 'A', 'nev' => 'B', 'mennyiseg' => 'H'];
+    private const OXFORD_OSZLOPOK = ['cikkszam' => 'A', 'nev' => 'B', 'nettoegysar' => 'G', 'mennyiseg' => 'H'];
 
     /**
      * Oxford számla xlsx tételei. A munkafüzet számlánként egy munkalapot tartalmaz, a lap neve
@@ -481,6 +485,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
      * jogi szövegek így maradnak ki. A cikkszám a termék vagy a változat cikkszáma; ha nincs meg,
      * a beállított alapértelmezett termék kerül a tételre, a tétel nevébe és cikkszámába a lapon
      * szereplő adatokkal, és a kliens pirossal jelöli.
+     *
+     * A tétel nettó egységára a lapról jön; üres ár esetén marad a termék ára.
      */
     public function importOxford()
     {
@@ -529,10 +535,11 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             }
             $nev = trim((string)$sheet->getCell($oszlop['nev'] . $row)->getValue());
             $mennyiseg = (float)$sheet->getCell($oszlop['mennyiseg'] . $row)->getValue();
+            $nettoegysar = $this->cellAr($sheet->getCell($oszlop['nettoegysar'] . $row)->getValue());
 
             $talalat = $this->findTermek(0, 0, $cikkszam, '');
             if ($talalat) {
-                $tetelek[] = $this->tetelAdat($talalat, $mennyiseg);
+                $tetelek[] = $this->tetelAdat($talalat, $mennyiseg, $nettoegysar);
                 continue;
             }
             if (!$alaptermek) {
@@ -543,7 +550,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
                 );
                 continue;
             }
-            $adat = $this->tetelAdat([$alaptermek, null], $mennyiseg);
+            $adat = $this->tetelAdat([$alaptermek, null], $mennyiseg, $nettoegysar);
             // a fel nem ismert cikkszám és a szállító megnevezése a tétel nevébe, a cikkszám a
             // tétel cikkszám mezőjébe is – a helykitöltő termék sajátja ott semmit nem mondana
             $adat['value'] = trim($cikkszam . ' ' . $nev);
@@ -560,6 +567,21 @@ class bizonylattetelController extends \mkwhelpers\MattableController
             // a lap neve a szállító számlaszáma
             'erbizonylatszam' => $sheetnev,
         ]);
+    }
+
+    /**
+     * Egy árcella értéke, vagy null, ha nincs ott szám (üres cella, szöveg, hiányzó oszlop) – akkor
+     * a termék ára marad érvényben. A nulla ár érvényes ár, ezért nem esik egybe az üressel.
+     *
+     * @return float|null
+     */
+    private function cellAr($ertek)
+    {
+        if (is_null($ertek)) {
+            return null;
+        }
+        $ertek = str_replace(',', '.', trim((string)$ertek));
+        return is_numeric($ertek) ? (float)$ertek : null;
     }
 
     /**
@@ -615,12 +637,16 @@ class bizonylattetelController extends \mkwhelpers\MattableController
     /**
      * @param array{0: Termek, 1: TermekValtozat|null} $talalat
      */
-    private function tetelAdat($talalat, $mennyiseg)
+    private function tetelAdat($talalat, $mennyiseg, $nettoegysar = null)
     {
         [$termek, $valtozat] = $talalat;
         $adat = (new termekController())->getBizonylattetelAdat($termek, $valtozat ? $valtozat->getId() : 0);
         // a nem pozitív mennyiséget a kliens a szokásos alapértelmezéssel tölti ki
         $adat['mennyiseg'] = $mennyiseg > 0 ? $mennyiseg : 0;
+        // ár nélkül a kliens a termék árát tölti be, ahogy kézi tételfelvitelkor
+        if (!is_null($nettoegysar)) {
+            $adat['nettoegysar'] = $nettoegysar;
+        }
         return $adat;
     }
 

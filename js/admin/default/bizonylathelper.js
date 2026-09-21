@@ -1293,7 +1293,8 @@ let bizonylathelper = function ($) {
     }
 
     // A fájlból beazonosított termékek felvitele – soronként egy tétel, ugyanazokkal a
-    // lépésekkel, mint kézi rögzítéskor (üres sor, termék, mennyiség, árszámítás).
+    // lépésekkel, mint kézi rögzítéskor (üres sor, termék, mennyiség, árszámítás). Ahol a fájl
+    // árat is adott, az felülírja a termék árát.
     function importTetelek(bizonylattipus, tetelek) {
         tetelek.forEach(function (termek) {
             let sorid = ujTetelSor(bizonylattipus);
@@ -1305,6 +1306,11 @@ let bizonylathelper = function ($) {
             fillTetelTermek(sorid, termek, termek.valtozat);
             if (termek.mennyiseg > 0) {
                 $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.mennyiseg);
+            }
+            // a fájlból jött nettó egységár a termékárra ül rá – a mennyiség change-e számolja
+            // belőle a többi mezőt és a haszonszázalékot
+            if ((termek.nettoegysar !== undefined) && (termek.nettoegysar !== null)) {
+                $('input[name="tetelnettoegysar_' + sorid + '"]').val(termek.nettoegysar);
             }
             $('input[name="tetelmennyiseg_' + sorid + '"]').change();
         });
