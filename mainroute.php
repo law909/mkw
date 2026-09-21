@@ -250,7 +250,7 @@ if (!\mkw\store::isKatalogus()) {
     $router->map('GET', '/export/orderform', 'exportController#orderformExport', 'orderformexport');
     $router->map('GET', '/export/fcmotostock', 'exportController#fcmotostockExport', 'fcmotostockexport');
     $router->map('GET', '/export/eanstock', 'exportController#eanstockExport', 'eanstockexport');
-    if (\mkw\store::isSuperzoneB2B()) {
+    if (\mkw\store::isSuperzoneB2B() || \mkw\store::isMugenrace2026()) {
         $router->map('GET', '/export/stocklist', 'exportController#stocklistExport', 'stocklistexport');
     }
 }
