@@ -6,6 +6,7 @@
     {if ($pos|default)}
         <script type="text/javascript" src="/js/admin/default/bizonylatpos.js"></script>
     {/if}
+    <script type="text/javascript" src="/js/admin/default/dokumentumtar.js"></script>
     <script type="text/javascript" src="/js/admin/default/bizonylathelper.js?v=5"></script>
     <script type="text/javascript" src="/js/admin/default/{$controllerscript}"></script>
 {/block}

@@ -1825,6 +1825,7 @@ let bizonylathelper = function ($) {
                     dialogcenter = $('#dialogcenter');
                 let doktab = $('#DokTab');
 
+                initDokumentumUpload(doktab);
                 doktab
                     .on('click', '.js-doknewbutton', function (e) {
                         let $this = $(this);

@@ -375,7 +375,9 @@ class KeszletService
     }
 
     /**
-     * A termék még raktáron lévő egyedi azonosítói.
+     * A termékhez felkínálható egyedi azonosítók: ami készleten van, és ami szállítói
+     * megrendelésen szerepel, de még nem érkezett meg (a felvitelkor már ki kell tudni
+     * választani). A megérkezett darab a készletes ágon jön vissza, az eladott egyiken sem.
      *
      * @param \Entities\Termek $termek
      * @param int|null $valtozatid csak az adott változat azonosítói
@@ -386,34 +388,56 @@ class KeszletService
      */
     public static function getEgyediazonositoKeszlet($termek, $valtozatid = null, $term = '', $raktarid = null)
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('azonosito', 'azonosito');
-
-        $sql = 'SELECT bt.termekegyediazonosito AS azonosito'
-            . ' FROM bizonylattetel bt'
-            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
-            . ' WHERE bt.termek_id = :termekid'
-            . ' AND bt.mozgat = 1'
-            . ' AND ((bt.rontott = 0) OR (bt.rontott IS NULL))'
-            . ' AND bt.termekegyediazonosito IS NOT NULL'
-            . " AND bt.termekegyediazonosito <> ''"
-            . ' AND bt.termekegyediazonosito LIKE :term';
         $params = [
             'termekid' => $termek->getId(),
             'term' => '%' . $term . '%',
         ];
+        $kozos = ' WHERE bt.termek_id = :termekid'
+            . ' AND ((bt.rontott = 0) OR (bt.rontott IS NULL))'
+            . ' AND bt.termekegyediazonosito IS NOT NULL'
+            . " AND bt.termekegyediazonosito <> ''"
+            . ' AND bt.termekegyediazonosito LIKE :term';
         if ($valtozatid) {
-            $sql .= ' AND bt.termekvaltozat_id = :valtozatid';
+            $kozos .= ' AND bt.termekvaltozat_id = :valtozatid';
             $params['valtozatid'] = $valtozatid;
         }
         if ($raktarid) {
-            $sql .= ' AND bf.raktar_id = :raktarid';
+            $kozos .= ' AND bf.raktar_id = :raktarid';
             $params['raktarid'] = $raktarid;
         }
-        $sql .= ' GROUP BY bt.termekegyediazonosito'
-            . ' HAVING SUM(bt.mennyiseg * bt.irany) > 0'
-            . ' ORDER BY bt.termekegyediazonosito ASC';
 
+        $keszleten = 'SELECT bt.termekegyediazonosito AS azonosito'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
+            . $kozos
+            . ' AND bt.mozgat = 1'
+            . ' GROUP BY bt.termekegyediazonosito'
+            . ' HAVING SUM(bt.mennyiseg * bt.irany) > 0';
+
+        // a szállítói megrendelés nem mozgat készletet, ezért a fenti lekérdezésbe soha nem
+        // fér bele; a NOT EXISTS azt zárja ki, ami időközben már megjött vagy el is fogyott
+        $uton = 'SELECT DISTINCT bt.termekegyediazonosito AS azonosito'
+            . ' FROM bizonylattetel bt'
+            . ' JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
+            . $kozos
+            . ' AND bf.bizonylattipus_id = :szallmegr'
+            . ' AND NOT EXISTS (SELECT 1 FROM bizonylattetel m WHERE m.termek_id = bt.termek_id'
+            . ' AND m.termekegyediazonosito = bt.termekegyediazonosito AND m.mozgat = 1'
+            . ' AND ((m.rontott = 0) OR (m.rontott IS NULL)))';
+
+        $ret = array_unique(array_merge(
+            self::egyediazonositoSorok($keszleten, $params),
+            self::egyediazonositoSorok($uton, $params + ['szallmegr' => Bizonylattipus::SZALLITOIMEGRENDELES])
+        ));
+        usort($ret, 'strnatcasecmp');
+        return $ret;
+    }
+
+    /** @return string[] */
+    private static function egyediazonositoSorok($sql, array $params): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('azonosito', 'azonosito');
         $q = \mkw\store::getEm()->createNativeQuery($sql, $rsm);
         $q->setParameters($params);
         $ret = [];

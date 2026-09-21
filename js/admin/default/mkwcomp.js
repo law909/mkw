@@ -274,6 +274,66 @@ var mkwcomp = (function ($) {
         }
     }
 
+    /**
+     * A státusz szűrő összehangolása a bizonylattípus szűrővel, a szerveroldali szabály szerint
+     * (bizonylatstatuszController::getSelectList): amelyik bejelölt típushoz van kötött státusz,
+     * onnan csak azok jönnek; amelyikhez nincs egy sem, ahhoz a típushoz nem kötött státuszok.
+     * Bejelölt típus nélkül mind.
+     */
+    function bizonylatstatuszFilter() {
+
+        function init(tipusSel, statuszSel) {
+            const $tipusok = $(tipusSel),
+                $statusz = $(statuszSel);
+            if (!$tipusok.length || !$statusz.length) {
+                return;
+            }
+            // a teljes lista megmarad: a típusváltásnál ebből épül újra a select
+            const osszes = $statusz.find('option').clone();
+
+            // azok a típusok, amikhez van kötött státusz – a többi a típus nélkülieket kapja
+            const sajatos = [];
+            osszes.each(function () {
+                const tipus = String($(this).attr('data-bizonylattipus') || '');
+                if (tipus && sajatos.indexOf(tipus) < 0) {
+                    sajatos.push(tipus);
+                }
+            });
+
+            const szur = function () {
+                const kivalasztott = $tipusok.filter(':checked').map(function () {
+                    return String($(this).val());
+                }).get();
+                const kellTipusnelkuli = !kivalasztott.length || kivalasztott.some(function (tipus) {
+                    return sajatos.indexOf(tipus) < 0;
+                });
+                const ertek = $statusz.val();
+                $statusz.empty();
+                osszes.each(function () {
+                    const tipus = String($(this).attr('data-bizonylattipus') || '');
+                    const latszik = tipus
+                        ? (!kivalasztott.length || kivalasztott.indexOf(tipus) > -1)
+                        : kellTipusnelkuli;
+                    if (latszik) {
+                        $statusz.append($(this).clone());
+                    }
+                });
+                // ha a kiválasztott státusz kiesett, a lista első eleme („Mindegy") marad
+                const megvan = $statusz.find('option').filter(function () {
+                    return this.value === ertek;
+                }).length;
+                $statusz.val(megvan ? ertek : $statusz.find('option').first().val());
+            };
+
+            $tipusok.on('change', szur);
+            szur();
+        }
+
+        return {
+            init: init
+        }
+    }
+
     function partnercimkeFilter() {
 
         function getFilter(sel) {
@@ -528,6 +588,7 @@ var mkwcomp = (function ($) {
         termekmenuFilter: jstreeFilter('/admin/termekmenu/jsonlist'),
         datumEdit: datumEdit(),
         bizonylattipusFilter: bizonylattipusFilter(),
+        bizonylatstatuszFilter: bizonylatstatuszFilter(),
         partnercimkeFilter: partnercimkeFilter(),
         keszletBizonylatok: keszletBizonylatok(),
         kerdoivSzerkeszto: kerdoivSzerkeszto()

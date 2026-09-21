@@ -139,6 +139,9 @@ class Bizonylattipus
      */
     public const SZAMLATIPUSOK = ['szamla', 'esetiszamla', 'keziszamla'];
 
+    /** A szállítói megrendelés típusa: az ezen szereplő áru még úton van. */
+    public const SZALLITOIMEGRENDELES = 'szallmegr';
+
     /** @var string[]|null a getFoglalIdList() kérésen belüli cache-e */
     private static $foglalIdList;
 

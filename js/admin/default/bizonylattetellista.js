@@ -25,6 +25,7 @@ $(document).ready(function () {
                 mkwcomp.datumEdit.init('#TolEdit');
                 mkwcomp.datumEdit.init('#IgEdit');
                 mkwcomp.termekfaFilter.init('#termekfa');
+                mkwcomp.bizonylatstatuszFilter.init('input[name="bizonylattipus[]"]', 'select[name="bizonylatstatusz"]');
 
                 $('.js-partnerautocomplete').autocomplete(partnerAutocompleteConfig())
                     .autocompleteRenderer(partnerAutocompleteRenderer);

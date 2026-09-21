@@ -134,9 +134,9 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
     }
 
     /**
-     * @param string|null $biztipusid a bizonylat típusa – ilyenkor csak az ehhez a típushoz
-     *                                kötött és a típus nélküli (bármelyiken használható)
-     *                                státuszok kerülnek a listába
+     * @param string|null $biztipusid a bizonylat típusa. Ha a törzsben van ehhez a típushoz kötött
+     *                                státusz, csak azok kerülnek a listába; ha nincs egy sem, akkor
+     *                                a típushoz nem kötött státuszok. Más típus státusza sosem.
      */
     public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null, $biztipusid = null)
     {
@@ -155,17 +155,33 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
             }
         }
         $rec = $this->getRepo()->getAll($filter, ['sorrend' => 'ASC', 'nev' => 'ASC']);
+
+        // a bizonylattípus szűrése itt, nem a lekérdezésben: az addSql nyersen interpolál,
+        // a típusazonosító pedig szöveg – a törzs pár tucat soros, nincs mit spórolni rajta
+        $vansajat = false;
+        if ($biztipusid) {
+            foreach ($rec as $sor) {
+                if ($sor->getBizonylattipusId() == $biztipusid) {
+                    $vansajat = true;
+                    break;
+                }
+            }
+        }
+
         $res = [];
         foreach ($rec as $sor) {
-            // a bizonylattípus szűrése itt, nem a lekérdezésben: az addSql nyersen interpolál,
-            // a típusazonosító pedig szöveg – a törzs pár tucat soros, nincs mit spórolni rajta
-            if ($biztipusid && $sor->getBizonylattipusId() && $sor->getBizonylattipusId() != $biztipusid) {
+            if ($biztipusid
+                && ($vansajat ? ($sor->getBizonylattipusId() != $biztipusid) : (bool)$sor->getBizonylattipusId())
+                // a bizonylaton éppen beállított státusz akkor is kell, különben a mentés kinullázná
+                && ($sor->getId() != $selid)) {
                 continue;
             }
             $res[] = [
                 'id' => $sor->getId(),
                 'caption' => $sor->getNev(),
                 'selected' => ($sor->getId() == $selid),
+                // a kliens ez alapján szűri a listát a bizonylattípus szűrőhöz (üres = bármelyiken)
+                'bizonylattipus' => $sor->getBizonylattipusId(),
                 // a státuszváltáskor csak akkor van értelme email értesítést kérdezni,
                 // ha a státuszhoz be van állítva email sablon
                 'vanemailtemplate' => (bool)$sor->getEmailtemplateId(),
