@@ -173,7 +173,8 @@
                     <tr>
                         <td><label for="ShowstornoEdit">Stornó:</label></td>
                         <td><input id="ShowstornoEdit" name="showstorno" type="checkbox"{if ($egyed.showstorno)} checked="checked"{/if}></td>
-                        <td colspan="2"></td>
+                        <td><label for="ShowautokiserobuttonEdit">Gépjármű kísérő:</label></td>
+                        <td><input id="ShowautokiserobuttonEdit" name="showautokiserobutton" type="checkbox"{if ($egyed.showautokiserobutton)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
                         <td><label for="ShowbackorderEdit">Backorder:</label></td>

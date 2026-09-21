@@ -58,6 +58,9 @@ class Bizonylattipus
     private $showszallmegrbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showboltieladasbutton = false;
+    /** Gépjármű kísérő képezhető belőle. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showautokiserobutton = false;
     /** Megrendelésen: előlegszámla képezhető belőle (fej-only inherit, egyetlen előlegsorral). */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showelolegbutton = false;
@@ -172,6 +175,7 @@ class Bizonylattipus
             'showbevetbutton' => $this->getShowbevetbutton(),
             'showszallmegrbutton' => $this->getShowszallmegrbutton(),
             'showboltieladasbutton' => $this->getShowboltieladasbutton(),
+            'showautokiserobutton' => $this->getShowautokiserobutton(),
             'showelolegbutton' => $this->getShowelolegbutton(),
             'showelolegbeszamitas' => $this->getShowelolegbeszamitas(),
             'nyomtatni' => $this->getNyomtatni(),
@@ -474,6 +478,16 @@ class Bizonylattipus
     public function setShowboltieladasbutton($val)
     {
         $this->showboltieladasbutton = $val;
+    }
+
+    public function getShowautokiserobutton()
+    {
+        return $this->showautokiserobutton;
+    }
+
+    public function setShowautokiserobutton($val)
+    {
+        $this->showautokiserobutton = $val;
     }
 
     public function getShowelolegbutton()

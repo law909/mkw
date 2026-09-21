@@ -626,6 +626,10 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="boltieladasfej" data-oper="inherit"
                        title="{at('Bolti eladás')}">{at('Bolti eladás')}</a>
                 {/if}
+                {if ($showautokiserobutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="autokiserofej" data-oper="inherit"
+                       title="{at('Gépjármű kísérő')}">{at('Gépjármű kísérő')}</a>
+                {/if}
                 {if ($showelolegbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="elolegszamlafej" data-oper="inherit"
                        title="{at('Előlegszámla')}">{at('Előlegszámla')}</a>
