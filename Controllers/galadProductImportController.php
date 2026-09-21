@@ -29,9 +29,13 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * - B üres: sima termék változatok nélkül (cikkszám C, név G, vonalkód J).
  * - B kitöltött: változatos termék. A csoport minden sorából változat lesz – az "X"-szel
  *   jelölt sorból is –, a termék adatai (cikkszám, név, kategória, ár) az "X" sorból jönnek.
+ * - Változatos sorban a szín és a méret párban jár: ha csak az egyik van kitöltve, a másik "Uni".
  */
 class galadProductImportController extends \mkwhelpers\Controller
 {
+
+    /** a változat üresen maradt szín/méret jellemzőjének értéke, ha a párja ki van töltve */
+    private const UNI = 'Uni';
 
     private $galadSzinCache = [];
     private $galadMeretCache = [];
@@ -201,6 +205,15 @@ class galadProductImportController extends \mkwhelpers\Controller
             if ($cikkszam === '' || $nev === '') {
                 $this->skippedRows++;
                 continue;
+            }
+
+            // a változatmátrixnak mindkét tengely kell: fél párból "Uni" lesz a másik oldal
+            if ($csoport !== '') {
+                if ($szin !== '' && $meret === '') {
+                    $meret = self::UNI;
+                } elseif ($meret !== '' && $szin === '') {
+                    $szin = self::UNI;
+                }
             }
 
             $kulcs = $csoport !== '' ? 'v:' . $csoport : 's:' . $cikkszam;
