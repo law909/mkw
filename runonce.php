@@ -2756,6 +2756,25 @@ if ($DBVersion < '0187') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0187');
 }
 
+if ($DBVersion < '0188') {
+    // A tétel mennyiségi egysége ([$_tetel.me]) eddig is ott volt a levélsablonok adatában, csak egyik sablon sem írta ki.
+    // Csak a mkwcansas-on: a mugenrace angol sablonjában a magyar "db" rosszul mutatna.
+    if (\mkw\store::isMindentkapni()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $templates = $conn->fetchAllKeyValue('SELECT id, szoveg FROM emailtemplate WHERE szoveg LIKE ?', ['%number_format($_tetel.mennyiseg,%']);
+        foreach ($templates as $id => $szoveg) {
+            if (str_contains($szoveg, '$_tetel.me]')) {
+                continue;
+            }
+            $updated = preg_replace('/(\[number_format\(\$_tetel\.mennyiseg,[^\]]*\)\])/', '$1 [$_tetel.me]', $szoveg);
+            if ($updated !== null && $updated !== $szoveg) {
+                $conn->executeStatement('UPDATE emailtemplate SET szoveg = ? WHERE id = ?', [$updated, $id]);
+            }
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0188');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
