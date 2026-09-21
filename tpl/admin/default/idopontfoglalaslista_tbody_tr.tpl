@@ -103,6 +103,12 @@
         {if ($kezdessablonvan && !$_egyed.lemondva)}
             <div><a class="js-emailkezdes" href="#" data-id="{$_egyed.id}">{at('Kezdés emlékeztető email')}</a></div>
         {/if}
+        {if (($setup.epp|default:0) && $_egyed.wpoldalid && !$_egyed.lemondva && $_egyed.partneremail)}
+            {if ($_egyed.eppjelszolejarat)}
+                <div>{at('WP jelszó lejár')}: {$_egyed.eppjelszolejarat}</div>
+            {/if}
+            <div><a class="js-eppjelszo" href="#" data-id="{$_egyed.id}">{at('WP jelszó')}</a></div>
+        {/if}
         {if ($_egyed.lemondva)}
             <div><a class="js-visszaallit" href="#" data-id="{$_egyed.id}">{at('Visszaállít')}</a></div>
         {else}

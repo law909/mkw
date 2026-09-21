@@ -192,4 +192,15 @@
             <textarea id="alemondasokaedit" name="alemondasoka"></textarea>
         </div>
     </form>
+    {if ($setup.epp|default:0)}
+        <form id="eppjelszoform" class="hidden" title="{at('WP oldal jelszó')}">
+            <p class="js-eppjelszokinek"></p>
+            <p class="js-eppjelszomeglevo mattable-important"></p>
+            <div>
+                <label for="aeppjelszohonapedit">{at('Hány hónapra szóljon a jelszó?')}</label>
+                <input id="aeppjelszohonapedit" name="honap" type="number" min="1" style="width: 5em" required>
+            </div>
+            <p>{at('A jelszót emailben kiküldjük a jelentkezőnek; a rendszer utána nem mutatja meg.')}</p>
+        </form>
+    {/if}
 {/block}

@@ -18,6 +18,7 @@ use Entities\Penztarbizonylatfej;
 use Entities\Penztarbizonylattetel;
 use Entities\Termek;
 use mkwhelpers\FilterDescriptor;
+use Services\EppjelszoService;
 use Services\IdopontKerdoivService;
 
 class idopontfoglalasController extends \mkwhelpers\MattableController
@@ -94,6 +95,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $x['szamlazvateljesites'] = $t->getSzamlazvateljesitesStr();
         $x['szamlaszamlink'] = $this->getBizonylatUrl($t->getSzamlaszam(), Bizonylatfej::class);
         $x['kerdoivvalaszok'] = $t->getKerdoivvalaszSorok();
+        $x['wpoldalid'] = $idopont?->getWpoldalid();
+        if (\mkw\store::isEpp() && $t->getId()) {
+            $x['eppjelszolejarat'] = (new EppjelszoService($this->getEm()))->findByIdopontfoglalas($t)?->getLejarat()?->format('Y.m.d.');
+        }
         return $x;
     }
 
@@ -402,6 +407,104 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             $view->setVar('partnerlist', (new partnerController())->getSelectList($record?->getPartner()?->getId()));
         }
         return $view->getTemplateResult();
+    }
+
+    /**
+     * A lista sorának „WP jelszó" gombja nyitja: kinek, melyik oldalhoz, és van-e már érvényes jelszava.
+     */
+    public function getEppjelszoInfo()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        $hiba = $this->checkEppjelszo($foglalas);
+        if ($hiba) {
+            echo json_encode(['result' => 'error', 'msg' => $hiba]);
+            return;
+        }
+        $oldalid = $foglalas->getIdopont()->getWpoldalid();
+        $meglevo = (new EppjelszoService($this->getEm()))->findAktiv($oldalid, $foglalas->getPartnerEmail());
+        echo json_encode([
+            'result' => 'ok',
+            'nev' => $foglalas->getPartnerNev(),
+            'email' => $foglalas->getPartnerEmail(),
+            'oldalid' => $oldalid,
+            'meglevo' => $meglevo ? $meglevo[0]->getLejarat()->format('Y.m.d.') : null,
+            'maxhonap' => EppjelszoService::MAXHONAP,
+        ]);
+    }
+
+    /**
+     * Jelszó a jelentkezőnek az időpont WP oldalához, emailben. Ha már van érvényes jelszava, csak
+     * a `csere` jelzéssel ad újat, és a régit visszavonja.
+     */
+    public function generateEppjelszo()
+    {
+        /** @var \Entities\Idopontfoglalas $foglalas */
+        $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
+        $hiba = $this->checkEppjelszo($foglalas);
+        $honap = $this->params->getIntRequestParam('honap');
+        if (!$hiba && ($honap < 1 || $honap > EppjelszoService::MAXHONAP)) {
+            $hiba = sprintf(at('A hónapok száma 1 és %d között legyen.'), EppjelszoService::MAXHONAP);
+        }
+        if ($hiba) {
+            echo json_encode(['msg' => $hiba]);
+            return;
+        }
+        $service = new EppjelszoService($this->getEm());
+        $oldalid = $foglalas->getIdopont()->getWpoldalid();
+        if ($service->findAktiv($oldalid, $foglalas->getPartnerEmail()) && !$this->params->getBoolRequestParam('csere')) {
+            echo json_encode(['msg' => at('A jelentkezőnek már van érvényes jelszava ehhez az oldalhoz.')]);
+            return;
+        }
+        $conn = $this->getEm()->getConnection();
+        $conn->beginTransaction();
+        try {
+            [$eppjelszo, $jelszo] = $service->issue(
+                $oldalid,
+                (string)$foglalas->getPartnerNev(),
+                $foglalas->getPartnerEmail(),
+                $honap,
+                $foglalas,
+                \mkw\store::getLoggedInDolgozo()
+            );
+            $wpurl = (string)\mkw\store::getParameter(\mkw\consts::EppWordpressUrl);
+            $this->sendFoglalasEmail($foglalas, \mkw\consts::EppSablonJelszo, 'eppjelszoemail.html', [
+                'jelszo' => $jelszo,
+                'lejarat' => $eppjelszo->getLejarat()->format('Y.m.d. H:i'),
+                'honap' => $honap,
+                'oldalurl' => $wpurl !== '' ? $wpurl . '/?p=' . $oldalid : '',
+            ]);
+            $conn->commit();
+        } catch (\Throwable $e) {
+            $conn->rollBack();
+            throw $e;
+        }
+        echo json_encode(['msg' => sprintf(at('A jelszó elkészült és kiküldtük: %s'), htmlspecialchars($foglalas->getPartnerEmail()))]);
+    }
+
+    /**
+     * @param \Entities\Idopontfoglalas|null $foglalas
+     *
+     * @return string hibaüzenet, üres, ha adható jelszó
+     */
+    private function checkEppjelszo($foglalas)
+    {
+        if (!\mkw\store::isEpp() || !$foglalas) {
+            return at('A jelentkezés nem található.');
+        }
+        if ($foglalas->getLemondva()) {
+            return at('Lemondott jelentkezéshez nem adható jelszó.');
+        }
+        if (!$foglalas->getPartnerEmail()) {
+            return at('A jelentkezőnek nincs emailcíme.');
+        }
+        if (!$foglalas->getIdopont()?->getWpoldalid()) {
+            return at('Az időponthoz nincs megadva WP oldal ID.');
+        }
+        if (!$this->getRepo(Emailtemplate::class)->find((int)\mkw\store::getParameter(\mkw\consts::EppSablonJelszo))) {
+            return at('Nincs beállítva a WP oldal jelszó levél sablonja (Beállítások).');
+        }
+        return '';
     }
 
     /**
@@ -1061,10 +1164,11 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
      * @param \Entities\Idopontfoglalas $foglalas
      * @param string $parameter \mkw\consts::Idopontfoglalas… paraméternév
      * @param string $logfile developer módban ide írjuk a levelet küldés helyett
+     * @param array $extraVars további sablonváltozók a `foglalas` mellé
      *
      * @return bool ment-e ki levél
      */
-    private function sendFoglalasEmail($foglalas, $parameter, $logfile)
+    private function sendFoglalasEmail($foglalas, $parameter, $logfile, array $extraVars = [])
     {
         if (!$foglalas || !$foglalas->getPartnerEmail()) {
             return false;
@@ -1083,6 +1187,9 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
             $v->setVar('foglalas', $tpldata);
             // a rendezvény sablonok ezen a néven hivatkoznak ugyanerre
             $v->setVar('jelentkezes', $tpldata);
+            foreach ($extraVars as $nev => $ertek) {
+                $v->setVar($nev, $ertek);
+            }
         }
         $helyszin = $foglalas->getIdopont()?->getJogahelyszin();
         if ($helyszin) {

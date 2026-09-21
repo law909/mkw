@@ -308,6 +308,10 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/idopontfoglalas/visszaallit', 'idopontfoglalasController#visszaallit', 'adminidopontfoglalasvisszaallit');
     $router->map('POST', '/admin/idopontfoglalas/fizet', 'idopontfoglalasController#fizet', 'adminidopontfoglalasfizet');
     $router->map('POST', '/admin/idopontfoglalas/szamlaz', 'idopontfoglalasController#szamlaz', 'adminidopontfoglalasszamlaz');
+    if (\mkw\store::isEpp()) {
+        $router->map('GET', '/admin/idopontfoglalas/eppjelszo/info', 'idopontfoglalasController#getEppjelszoInfo', 'adminidopontfoglalaseppjelszoinfo');
+        $router->map('POST', '/admin/idopontfoglalas/eppjelszo', 'idopontfoglalasController#generateEppjelszo', 'adminidopontfoglalaseppjelszo');
+    }
 }
 $router->map('GET', '/admin/idopontallapot/viewlist', 'idopontallapotController#viewlist', 'adminidopontallapotviewlist');
 $router->map('GET', '/admin/idopontallapot/getlistbody', 'idopontallapotController#getlistbody', 'adminidopontallapotgetlistbody');

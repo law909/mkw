@@ -227,6 +227,81 @@ $(document).ready(function () {
         });
     }
 
+    // WP oldal jelszó a jelentkezőnek: a hónapok számát kérdezzük, a meglévő érvényes jelszót a szerver cseréli
+    function eppjelszoDialog(id) {
+        $.ajax({
+            url: '/admin/idopontfoglalas/eppjelszo/info',
+            type: 'GET',
+            data: {id: id},
+            success: function (data) {
+                const d = JSON.parse(data);
+                if (d.result !== 'ok') {
+                    showError(d.msg);
+                    return;
+                }
+                const $form = $('#eppjelszoform');
+                const $honap = $('#aeppjelszohonapedit');
+                $form.find('.js-eppjelszokinek').text(`${d.nev} (${d.email}), WP oldal: ${d.oldalid}`);
+                $form.find('.js-eppjelszomeglevo')
+                    .text(d.meglevo ? `Már van érvényes jelszava ehhez az oldalhoz (lejár: ${d.meglevo}). Az új jelszóval a régi azonnal érvénytelen lesz.` : '')
+                    .toggle(!!d.meglevo);
+                $honap.attr('max', d.maxhonap).val(lastEppHonap());
+                const close = () => {
+                    $form.dialog('close').dialog('destroy');
+                    $form.hide();
+                };
+                $form.show().dialog({
+                    resizable: false,
+                    width: 460,
+                    modal: true,
+                    buttons: [
+                        {
+                            text: d.meglevo ? 'Új jelszó küldése' : 'Jelszó küldése',
+                            click: function () {
+                                const honap = parseInt($honap.val(), 10);
+                                if (!(honap >= 1 && honap <= d.maxhonap)) {
+                                    $honap.trigger('focus');
+                                    return;
+                                }
+                                saveEppHonap(honap);
+                                close();
+                                $.ajax({
+                                    url: '/admin/idopontfoglalas/eppjelszo',
+                                    type: 'POST',
+                                    data: {id: id, honap: honap, csere: d.meglevo ? 1 : 0},
+                                    success: function (valasz) {
+                                        showError(JSON.parse(valasz).msg);
+                                        $('.mattable-tablerefresh').click();
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            text: 'Mégsem',
+                            click: close
+                        }
+                    ]
+                });
+            }
+        });
+    }
+
+    function lastEppHonap() {
+        try {
+            return window.localStorage.getItem('eppjelszohonap') || '';
+        } catch (e) {
+            return '';
+        }
+    }
+
+    function saveEppHonap(honap) {
+        try {
+            window.localStorage.setItem('eppjelszohonap', String(honap));
+        } catch (e) {
+            // privát ablakban nincs localStorage, csak nem emlékszünk az értékre
+        }
+    }
+
     const mattkarbconfig = new MattkarbConfig({
         entityName: 'idopontfoglalas',
         // a szerver a mentést is elutasítja (409), de a hibaüzenetet itt tudjuk megmutatni.
@@ -323,7 +398,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/idopontfoglalas/getlistbody',
                 onStyle: function () {
-                    $('.js-emailemlekezteto, .js-emaildijbekero, .js-emailkezdes, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz').button();
+                    $('.js-emailemlekezteto, .js-emaildijbekero, .js-emailkezdes, .js-lemond, .js-visszaallit, .js-fizet, .js-szamlaz, .js-eppjelszo').button();
                 }
             },
             karb: mattkarbconfig
@@ -356,6 +431,10 @@ $(document).ready(function () {
             .on('click', '.js-szamlaz', function (e) {
                 e.preventDefault();
                 szamlazDialog($(this).data('id'));
+            })
+            .on('click', '.js-eppjelszo', function (e) {
+                e.preventDefault();
+                eppjelszoDialog($(this).data('id'));
             });
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
