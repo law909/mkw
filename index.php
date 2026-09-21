@@ -294,6 +294,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                             'orderformexport',
                             'fcmotostockexport',
                             'eanstockexport',
+                            'stocklistexport',
                             'mptngygetszerepkorlist',
                             'mptngysaveregistration',
                             'partnercheckemail',
