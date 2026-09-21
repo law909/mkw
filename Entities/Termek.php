@@ -3591,7 +3591,15 @@ class Termek
     }
 
     /**
-     * Szabad készlet: készlet − foglalt − min. bolti készlet.
+     * Szabad készlet: készlet − foglalt, nullára vágás nélkül.
+     */
+    public function getFreeStock($datum = null, $raktarid = null, $kivevebiz = null)
+    {
+        return \Services\KeszletService::getFreeStock($this, $datum, $raktarid, $kivevebiz);
+    }
+
+    /**
+     * A webshopon eladható mennyiség: készlet − foglalt − min. bolti készlet.
      * A számítás egyetlen helyen él, lásd \Services\KeszletService::calcAvailableStock().
      */
     public function getAvailableStock(

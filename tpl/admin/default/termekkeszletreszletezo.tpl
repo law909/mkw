@@ -4,7 +4,7 @@
             <th>{at('Raktár')}</th>
             <th>{at('Készlet')}</th>
             <th>{at('Foglalt')}</th>
-            <th title="{at('Készlet − min. készlet − foglalás')}">{at('Szabad')}</th>
+            <th title="{at('Készlet − foglalás')}">{at('Szabad')}</th>
             <th>{at('Érkezik')}</th>
         </tr>
     </thead>

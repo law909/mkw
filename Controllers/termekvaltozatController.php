@@ -71,7 +71,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         $x['keszlet'] = $t->getKeszlet();
         $x['fifo'] = \mkw\store::isFifo() ? \Services\FifoService::getErtek($t) : null;
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
-        $x['szabadkeszlet'] = $t->getAvailableStock(null, null, null, false);
+        $x['szabadkeszlet'] = $t->getFreeStock();
         $x['erkezik'] = $t->getIncomingStock();
         $x['beerkezesdatumstr'] = $t->getBeerkezesdatumStr();
         $x['elorendelheto'] = $t->isElorendelheto();

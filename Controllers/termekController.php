@@ -134,8 +134,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['fifo'] = \mkw\store::isFifo() ? \Services\FifoService::getErtek($t) : null;
         $x['termekcsoportnev'] = $t->getTermekcsoportNev();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
-        // clamp nélkül: a listán a tényleges hiány is látszik, nem nulla
-        $x['szabadkeszlet'] = $t->getAvailableStock(null, null, null, false);
+        $x['szabadkeszlet'] = $t->getFreeStock();
         $x['erkezik'] = $t->getIncomingStock();
         if (\mkw\store::getSetupValue('termekvaltozat')) {
             foreach ($t->getValtozatok() as $tvaltozat) {

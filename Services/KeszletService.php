@@ -13,8 +13,9 @@ use Entities\TermekValtozatMinkeszlet;
 use mkwhelpers\FilterDescriptor;
 
 /**
- * Készletszámítás: a bizonylattételekből összegzett raktárkészlet és foglalás, a polcon tartandó
- * minimum ("min. bolti készlet") feloldása, és a háromból a szabad készlet.
+ * Készletszámítás: a bizonylattételekből összegzett raktárkészlet és foglalás, ebből a szabad
+ * készlet (készlet − foglalás), valamint a polcon tartandó minimum ("min. bolti készlet")
+ * feloldása, ami a webshopon eladható mennyiséget szűkíti.
  *
  * A minimum feloldási létrája – a szűkebb beállítás nyer, raktáras érték üti a globálisat:
  *   1. termekvaltozatminkeszlet(változat, raktár)  – ha nem nulla
@@ -94,8 +95,8 @@ class KeszletService
      * @return array<int, array{raktarnev: string, keszlet: mixed, foglalt: mixed, erkezik: mixed}>
      */
     /**
-     * Raktáranként készlet, foglalás, szabad készlet és érkező mennyiség. A szabad készlet
-     * nincs nullára vágva, hogy a hiány is látsszon.
+     * Raktáranként készlet, foglalás, szabad készlet (készlet − foglalás) és érkező mennyiség.
+     * A szabad készlet nincs nullára vágva, hogy a hiány is látsszon.
      *
      * @param \Entities\Termek|\Entities\TermekValtozat $entity
      *
@@ -103,8 +104,6 @@ class KeszletService
      */
     public static function getKeszletByRaktar($entity)
     {
-        $valtozat = $entity instanceof TermekValtozat ? $entity : null;
-        $termek = $valtozat ? $valtozat->getTermek() : $entity;
         $res = [];
         foreach (\mkw\store::getEm()->getRepository(Raktar::class)->getAllActive() as $raktar) {
             $res[] = [
@@ -112,7 +111,7 @@ class KeszletService
                 'raktarnev' => $raktar->getNev(),
                 'keszlet' => self::getKeszlet($entity, null, $raktar->getId()),
                 'foglalt' => self::getFoglaltMennyiseg($entity, null, null, $raktar->getId()),
-                'szabad' => self::calcAvailableStock($termek, $valtozat, null, $raktar->getId(), null, false),
+                'szabad' => self::getFreeStock($entity, null, $raktar->getId()),
                 'erkezik' => self::getIncomingStock($entity, null, $raktar->getId()),
             ];
         }
@@ -341,8 +340,27 @@ class KeszletService
     }
 
     /**
-     * A szabad készlet egyetlen implementációja:
-     * készlet − foglalt − minimum, $clamp esetén nullára vágva.
+     * Szabad készlet: készlet − foglalt. A min. bolti készletet szándékosan nem vonja le – az
+     * csak a webshopon eladható mennyiséget szűkíti (calcAvailableStock), a szabad készlet
+     * a raktárban ténylegesen rendelkezésre álló darabszám.
+     *
+     * Nincs nullára vágva: a hiány is látsszon.
+     *
+     * @param \Entities\Termek|\Entities\TermekValtozat $entity
+     * @param \Entities\Bizonylatfej|int|null $kivevebiz ezt a bizonylatot nem számítjuk a foglalásba
+     */
+    public static function getFreeStock($entity, $datum = null, $raktarid = null, $kivevebiz = null)
+    {
+        if (!$entity) {
+            return 0;
+        }
+        return self::getKeszlet($entity, $datum, $raktarid)
+            - self::getFoglaltMennyiseg($entity, $kivevebiz, $datum, $raktarid);
+    }
+
+    /**
+     * A webshopon eladható mennyiség: készlet − foglalt − min. bolti készlet, $clamp esetén
+     * nullára vágva. A szabad készlet ennél tágabb, lásd getFreeStock().
      *
      * @param bool $ignoreminkeszlet a nominkeszlet kapcsolóhoz – csak a BackorderService adja át
      * @param bool $ignorefoglalas a nyers raktárkészletet néző riportoknak
