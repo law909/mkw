@@ -132,6 +132,9 @@ class BackorderService extends AbstractBizonylatSzetbontasService
      * Tételenkénti szétbontási terv a szabad készlet alapján. Minden tételhez megadja,
      * hogy mennyi teljesíthető azonnal és mennyi kerül backorderre.
      *
+     * Ugyanannak a terméknek/változatnak a tételei közösen fogyasztják a szabad készletet: a
+     * későbbi tétel csak azt kapja, amit a korábbiak teljesíthetőként még nem foglaltak le.
+     *
      * A költségtételek (szállítási / utánvét / kezelési költség, vásárlási utalvány) kimaradnak
      * a tervből: nem készletezett termékek, ezért teljesíthetőnek látszanának, és önmagukban egy
      * üres, csak költséget tartalmazó "teljesíthető" bizonylatot eredményeznének. Az új
@@ -148,6 +151,8 @@ class BackorderService extends AbstractBizonylatSzetbontasService
         $terv = [];
         $teljdb = 0;
         $bodb = 0;
+        /** készletkulcs => a korábbi tételeken már teljesíthetőre tett mennyiség */
+        $felhasznalt = [];
         /** @var \Entities\Bizonylattetel $regitetel */
         foreach ($regibiz->getBizonylattetelek() as $regitetel) {
             if ($this->koltsegTetel($regitetel)) {
@@ -155,6 +160,10 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             }
             $menny = $regitetel->getMennyiseg();
             $keszlet = $this->szabadKeszlet($regitetel, $regibiz, $nominkeszlet, $nominkeszletkat, $stocktozero);
+            if ($keszlet !== false) {
+                $kulcs = $this->keszletKulcs($regitetel);
+                $keszlet = max(0, $keszlet - ($felhasznalt[$kulcs] ?? 0));
+            }
             if ($keszlet === false || $keszlet >= $menny) {
                 // készletet nem mozgató tétel, vagy a teljes mennyiség teljesíthető
                 $teljmenny = $menny;
@@ -170,6 +179,9 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             }
             if ($teljmenny > 0) {
                 $teljdb++;
+                if ($keszlet !== false) {
+                    $felhasznalt[$kulcs] = ($felhasznalt[$kulcs] ?? 0) + $teljmenny;
+                }
             }
             if ($bomenny > 0) {
                 $bodb++;
@@ -177,6 +189,13 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             $terv[] = [$regitetel, $teljmenny, $bomenny];
         }
         return [$terv, $teljdb, $bodb];
+    }
+
+    /** Amire a szabadKeszlet() számol: a változat, ha van, különben a termék. */
+    private function keszletKulcs(\Entities\Bizonylattetel $tetel): string
+    {
+        $v = $tetel->getTermekvaltozat();
+        return $v ? 'v' . $v->getId() : 't' . $tetel->getTermekId();
     }
 
     public function getTeljesithetoBackorderLista()
