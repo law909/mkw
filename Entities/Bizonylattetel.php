@@ -650,6 +650,12 @@ class Bizonylattetel
     public function setErkezik()
     {
         $this->erkezik = false;
+        // Másik bizonylatból képzett tétel nem érkeztet: a várt mennyiséget az előd bizonylat
+        // tartja nyilván, a belőle képzett már a megérkezés. A képzéskor az előd státusza is
+        // átöröklődik az űrlapon, enélkül a bevét is érkeztetne (lásd KeszletService::getIncomingStock()).
+        if ($this->getParbizonylattetel()) {
+            return;
+        }
         $bf = $this->bizonylatfej;
         $t = $this->termek;
         if ($bf && $t) {

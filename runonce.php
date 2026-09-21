@@ -2721,6 +2721,16 @@ if ($DBVersion < '0184') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0184');
 }
 
+if ($DBVersion < '0185') {
+    // A másik bizonylatból képzett tétel nem érkeztet (Bizonylattetel::setErkezik()). A meglévő
+    // bizonylatokon a jelölő csak a következő mentéskor képződne újra, addig kétszer látszana
+    // a várt mennyiség.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattetel SET erkezik = 0 WHERE erkezik = 1 AND parbizonylattetel_id IS NOT NULL'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0185');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
