@@ -1605,6 +1605,109 @@ class exportController extends \mkwhelpers\Controller
         \unlink($filepath);
     }
 
+    /**
+     * B2B készletlista angolul: a B2B kategóriákban látható termékek változatonként, az eladható
+     * mennyiséggel – készlet − foglalás − min. készlet, nullára vágva (getAvailableStock()).
+     */
+    public function stocklistExport()
+    {
+        $trsm = new ResultSetMapping();
+        $trsm->addScalarResult('id', 'id');
+        $trsm->addScalarResult('nev', 'nev');
+
+        $lathato = \mkw\store::getWebshopFieldName('lathato');
+        $excel = new Spreadsheet();
+        $sheet = $excel->getActiveSheet();
+        $sheet->fromArray(['SKU', 'EAN', 'Name', 'Color', 'Size', 'Stock'], null, 'A1');
+        $sor = 2;
+        $kiirt = [];
+        foreach ($this->getRepo(TermekFa::class)->getB2BArray() as $termekfa) {
+            $termekek = $this->getEm()->createNativeQuery(
+                "SELECT t.id, COALESCE(NULLIF(t.nev_l1, ''), t.nev) AS nev FROM termek t"
+                . ' WHERE (t.termekfa1karkod LIKE :karkod) AND (t.' . $lathato . ' = 1) AND (t.inaktiv = 0) AND (t.fuggoben = 0)'
+                . ' ORDER BY t.cikkszam',
+                $trsm
+            )->setParameter('karkod', $termekfa['karkod'] . '%')->getScalarResult();
+            // egy termék több B2B ágba is eshet, a listán egyszer szerepel
+            $termekek = array_filter($termekek, static fn($termek) => !isset($kiirt[$termek['id']]));
+            if (!$termekek) {
+                continue;
+            }
+            $termekids = array_column($termekek, 'id');
+            $lathatovaltozatok = $this->getLathatoValtozatIds($termekids, $lathato);
+            \Services\KeszletService::preloadStock($termekids, array_keys($lathatovaltozatok));
+
+            foreach ($termekek as $termekadat) {
+                $kiirt[$termekadat['id']] = true;
+                /** @var Termek $termek */
+                $termek = $this->getRepo(Termek::class)->find($termekadat['id']);
+                $valtozatok = $termek->getValtozatok() ?? [];
+                if (!count($valtozatok)) {
+                    $sheet->setCellValueExplicit('A' . $sor, (string)$termek->getCikkszam(), DataType::TYPE_STRING)
+                        ->setCellValueExplicit('B' . $sor, (string)$termek->getVonalkod(), DataType::TYPE_STRING)
+                        ->setCellValue('C' . $sor, $termekadat['nev'])
+                        ->setCellValue('F' . $sor, $termek->getAvailableStock());
+                    $sor++;
+                    continue;
+                }
+                /** @var TermekValtozat $valtozat */
+                foreach ($valtozatok as $valtozat) {
+                    if (!isset($lathatovaltozatok[$valtozat->getId()])) {
+                        continue;
+                    }
+                    $sheet->setCellValueExplicit('A' . $sor, (string)($valtozat->getCikkszam() ?: $termek->getCikkszam()), DataType::TYPE_STRING)
+                        ->setCellValueExplicit('B' . $sor, (string)$valtozat->getVonalkod(), DataType::TYPE_STRING)
+                        ->setCellValue('C' . $sor, $termekadat['nev'])
+                        ->setCellValue('D' . $sor, $valtozat->getErtek1())
+                        ->setCellValue('E' . $sor, $valtozat->getErtek2())
+                        ->setCellValue('F' . $sor, $valtozat->getAvailableStock());
+                    $sor++;
+                }
+            }
+            $this->getEm()->clear();
+        }
+        foreach (['A', 'B', 'C', 'D', 'E'] as $oszlop) {
+            $sheet->getColumnDimension($oszlop)->setAutoSize(true);
+        }
+
+        $writer = IOFactory::createWriter($excel, 'Xlsx');
+
+        $filename = uniqid('stocklist') . '.xlsx';
+        $filepath = \mkw\store::storagePath($filename);
+        $writer->save($filepath);
+
+        header('Cache-Control: private');
+        header('Content-Type: application/stream');
+        header('Content-Length: ' . filesize($filepath));
+        header('Content-Disposition: attachment; filename=' . $filename);
+
+        readfile($filepath);
+
+        \unlink($filepath);
+    }
+
+    /**
+     * @param int[] $termekids
+     * @param string $lathato a webshop látható mezője (lathato, lathato2, …)
+     *
+     * @return array<int, true> a webshopban látható, aktív változatok id-je
+     */
+    private function getLathatoValtozatIds(array $termekids, $lathato): array
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $sorok = $this->getEm()->createNativeQuery(
+            'SELECT v.id FROM termekvaltozat v'
+            . ' WHERE (v.termek_id IN (:termekids)) AND (v.' . $lathato . ' = 1) AND (v.inaktiv = 0)',
+            $rsm
+        )->setParameter('termekids', $termekids)->getScalarResult();
+        $ret = [];
+        foreach ($sorok as $sor) {
+            $ret[(int)$sor['id']] = true;
+        }
+        return $ret;
+    }
+
     public function eanstockExport()
     {
         $trsm = new ResultSetMapping();
