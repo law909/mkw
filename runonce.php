@@ -2775,6 +2775,17 @@ if ($DBVersion < '0188') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0188');
 }
 
+if ($DBVersion < '0189') {
+    // A WordPress oldal jelszavak menüpontja minden telepítésre bekerül, de csak epp = 1 mellett látszik
+    // (menuController::getMenu()), mert a route is csak ott létezik.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 3, "WordPress oldal jelszavak", "/admin/eppjelszo/viewlist", "/admin/eppjelszo", 40, 1, 480, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/eppjelszo/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0189');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

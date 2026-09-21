@@ -35,6 +35,16 @@ if (\mkw\store::isMediatar()) {
     }
 }
 
+if (\mkw\store::isEpp()) {
+    $router->map('GET', '/admin/eppjelszo/viewlist', 'eppjelszoController#viewlist', 'admineppjelszoviewlist');
+    $router->map('GET', '/admin/eppjelszo/getlistbody', 'eppjelszoController#getlistbody', 'admineppjelszogetlistbody');
+    $router->map('GET', '/admin/eppjelszo/getkarb', 'eppjelszoController#getkarb', 'admineppjelszogetkarb');
+    $router->map('GET', '/admin/eppjelszo/viewkarb', 'eppjelszoController#viewkarb', 'admineppjelszoviewkarb');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/eppjelszo/save', 'eppjelszoController#save', 'admineppjelszosave');
+    }
+}
+
 $router->map('GET', '/admin/afa/viewlist', 'afaController#viewlist', 'adminafaviewlist');
 $router->map('GET', '/admin/afa/getlistbody', 'afaController#getlistbody', 'adminafagetlistbody');
 $router->map('GET', '/admin/afa/getkarb', 'afaController#getkarb', 'adminafagetkarb');

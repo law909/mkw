@@ -177,11 +177,6 @@ class Eppjelszo
         $this->oldalid = (int)$oldalid;
     }
 
-    public function getJelszohash()
-    {
-        return $this->jelszohash;
-    }
-
     /**
      * @return \DateTime|null
      */

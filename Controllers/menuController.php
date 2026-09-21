@@ -119,6 +119,9 @@ class menuController extends \mkwhelpers\MattableController
             if ($rek->getClass() === 'js-mediatar' && !\mkw\store::isMediatar()) {
                 continue;
             }
+            if ($rek->getUrl() === '/admin/eppjelszo/viewlist' && !\mkw\store::isEpp()) {
+                continue;
+            }
             if ($rek->isLathato(\mkw\store::getJog())) {
                 $mcsid = $rek->getMenucsoportId();
                 $menu[] = [

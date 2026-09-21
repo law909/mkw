@@ -360,17 +360,6 @@ class Eppjelszo extends \Entities\Eppjelszo implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getJelszohash()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJelszohash', []);
-
-        return parent::getJelszohash();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getLejarat()
     {
 
