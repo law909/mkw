@@ -393,16 +393,16 @@ class KeszletService
     }
 
     /**
-     * A termékhez felkínálható egyedi azonosítók: ami készleten van, és ami szállítói
-     * megrendelésen szerepel, de még nem érkezett meg (a felvitelkor már ki kell tudni
-     * választani). A megérkezett darab a készletes ágon jön vissza, az eladott egyiken sem.
+     * A termékhez felkínálható egyedi azonosítók: ami készleten van, és ami érkezik (érkezik
+     * jelölésű tételen szerepel, de még nem jött meg). A megérkezett darab a készletes ágon jön
+     * vissza, az eladott egyiken sem.
      *
      * @param \Entities\Termek $termek
      * @param int|null $valtozatid csak az adott változat azonosítói
      * @param string $term LIKE szűrő az azonosítóra (autocomplete)
      * @param int|null $raktarid csak az adott raktár készlete
      *
-     * @return string[]
+     * @return array<int, array{azonosito: string, erkezik: bool}>
      */
     public static function getEgyediazonositoKeszlet($termek, $valtozatid = null, $term = '', $raktarid = null)
     {
@@ -432,23 +432,26 @@ class KeszletService
             . ' GROUP BY bt.termekegyediazonosito'
             . ' HAVING SUM(bt.mennyiseg * bt.irany) > 0';
 
-        // a szállítói megrendelés nem mozgat készletet, ezért a fenti lekérdezésbe soha nem
-        // fér bele; a NOT EXISTS azt zárja ki, ami időközben már megjött vagy el is fogyott
-        $uton = 'SELECT DISTINCT bt.termekegyediazonosito AS azonosito'
+        // az érkező tétel nem mozgat készletet, ezért a fenti lekérdezésbe soha nem fér bele;
+        // a NOT EXISTS azt zárja ki, ami időközben már megjött vagy el is fogyott
+        $erkezik = 'SELECT DISTINCT bt.termekegyediazonosito AS azonosito'
             . ' FROM bizonylattetel bt'
             . ' JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
             . $kozos
-            . ' AND bf.bizonylattipus_id = :szallmegr'
+            . ' AND bt.erkezik = 1'
             . ' AND NOT EXISTS (SELECT 1 FROM bizonylattetel m WHERE m.termek_id = bt.termek_id'
             . ' AND m.termekegyediazonosito = bt.termekegyediazonosito AND m.mozgat = 1'
             . ' AND ((m.rontott = 0) OR (m.rontott IS NULL)))';
 
-        $ret = array_unique(array_merge(
-            self::egyediazonositoSorok($keszleten, $params),
-            self::egyediazonositoSorok($uton, $params + ['szallmegr' => Bizonylattipus::SZALLITOIMEGRENDELES])
-        ));
-        usort($ret, 'strnatcasecmp');
-        return $ret;
+        $ret = [];
+        foreach (self::egyediazonositoSorok($keszleten, $params) as $azonosito) {
+            $ret[$azonosito] = ['azonosito' => $azonosito, 'erkezik' => false];
+        }
+        foreach (self::egyediazonositoSorok($erkezik, $params) as $azonosito) {
+            $ret[$azonosito] ??= ['azonosito' => $azonosito, 'erkezik' => true];
+        }
+        uksort($ret, 'strnatcasecmp');
+        return array_values($ret);
     }
 
     /** @return string[] */

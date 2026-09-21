@@ -1424,7 +1424,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     /**
      * A negatív irányú bizonylatok egyedi azonosító autocomplete-jének forrása: a termékhez (és
-     * választott változatához / raktárához) tartozó, készleten lévő egyedi azonosítók.
+     * választott változatához / raktárához) tartozó, készleten lévő vagy érkező egyedi
+     * azonosítók, a feliratban az állapotukkal.
      */
     public function egyediAzonositoKeszlet()
     {
@@ -1437,7 +1438,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             /** @var \Entities\Termek $termek */
             $termek = $this->getRepo(Termek::class)->find($termekid);
             if ($termek) {
-                $ret = KeszletService::getEgyediazonositoKeszlet($termek, $valtozatid, $term, $raktarid);
+                foreach (KeszletService::getEgyediazonositoKeszlet($termek, $valtozatid, $term, $raktarid) as $sor) {
+                    $ret[] = [
+                        'value' => $sor['azonosito'],
+                        'label' => $sor['azonosito'] . ' (' . ($sor['erkezik'] ? t('érkezik') : t('készleten')) . ')',
+                    ];
+                }
             }
         }
         echo json_encode($ret);
