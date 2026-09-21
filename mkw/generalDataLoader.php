@@ -63,6 +63,7 @@ class generalDataLoader
         $view->setVar('csinalhatujszamlat', \mkw\store::csinalhatUjSzamlat($bizcnt['null']));
         $view->setVar('arfolyamriasztas', false);
         $view->setVar('nominkeszlet', \mkw\store::getParameter(\mkw\consts::NoMinKeszlet));
+        $view->setVar('szabadkeszletfelirat', \Services\KeszletService::getSzabadKeszletFelirat());
         for ($c = 1; $c <= 15; $c++) {
             $view->setVar('webshop' . $c . 'name', \mkw\store::getParameter('webshop' . $c . 'name', $c));
         }

@@ -236,6 +236,8 @@ class consts
     const BizonylatStatuszTeljesitheto = 'bizonylatstatuszteljesitheto';
     const BizonylatStatuszBackorder = 'bizonylatstatuszbackorder';
     const BackorderStock = 'backorderstock';
+    /** a szabad készlet számítási módja, lásd \Services\KeszletService::SZABADKESZLET_* */
+    const SzabadKeszletModszer = 'szabadkeszletmodszer';
     const MegrendelesFilterStatuszCsoport = 'megrendelesfilterstatuszcsoport';
 
     const RLBUtolsoSzamlaszam = 'rlbutolsoszamlaszam';

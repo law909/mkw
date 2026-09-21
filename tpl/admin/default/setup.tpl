@@ -902,6 +902,13 @@
                             <span class="js-nominkeszlettermekkat">{$nominkeszlettermekkat.caption|default:'nincs megadva'}</span>
                             <input name="nominkeszlettermekkat" type="hidden" value="{$nominkeszlettermekkat.id}">
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="SzabadKeszletModszerEdit">{at('Szabad készlet')}:</label></span>
+                            <select id="SzabadKeszletModszerEdit" name="szabadkeszletmodszer">
+                                <option value="0"{if ($szabadkeszletmodszer=='0')} selected="selected"{/if}>{at('Készlet − foglalás')}</option>
+                                <option value="1"{if ($szabadkeszletmodszer=='1')} selected="selected"{/if}>{at('Készlet − min. készlet − foglalás')}</option>
+                            </select>
+                        </div>
                     </div>
                     <table>
                         <tbody>

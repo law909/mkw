@@ -14,8 +14,9 @@ use mkwhelpers\FilterDescriptor;
 
 /**
  * Készletszámítás: a bizonylattételekből összegzett raktárkészlet és foglalás, ebből a szabad
- * készlet (készlet − foglalás), valamint a polcon tartandó minimum ("min. bolti készlet")
- * feloldása, ami a webshopon eladható mennyiséget szűkíti.
+ * készlet (készlet − foglalás, a Beállítások szerint a min. készlettel is csökkentve), valamint a
+ * polcon tartandó minimum ("min. bolti készlet") feloldása, ami a webshopon eladható mennyiséget
+ * mindig szűkíti.
  *
  * A minimum feloldási létrája – a szűkebb beállítás nyer, raktáras érték üti a globálisat:
  *   1. termekvaltozatminkeszlet(változat, raktár)  – ha nem nulla
@@ -53,6 +54,29 @@ class KeszletService
 
     /** webshopnum => visible warehouse ids|null - per-request cache */
     private static $webshopRaktarCache = [];
+
+    /** A szabad készlet számítási módjai (Beállítások, \mkw\consts::SzabadKeszletModszer). */
+    public const SZABADKESZLET_FOGLALAS = 0;
+    public const SZABADKESZLET_MINKESZLET = 1;
+
+    /** a Beállítás kérésen belüli cache-e: a hiányzó paraméter sort az identity map nem jegyzi meg */
+    private static $szabadKeszletModszer;
+
+    /** A szabad készletből a min. készletet is levonjuk-e (a 2026-09-21 előtti számítás). */
+    public static function isSzabadKeszletMinkeszlettel(): bool
+    {
+        self::$szabadKeszletModszer ??= (int)\mkw\store::getParameter(
+            \mkw\consts::SzabadKeszletModszer,
+            self::SZABADKESZLET_FOGLALAS
+        );
+        return self::$szabadKeszletModszer === self::SZABADKESZLET_MINKESZLET;
+    }
+
+    /** A szabad készlet képlete a felületi feliratokhoz. */
+    public static function getSzabadKeszletFelirat(): string
+    {
+        return self::isSzabadKeszletMinkeszlettel() ? 'Készlet − min. készlet − foglalás' : 'Készlet − foglalás';
+    }
 
     /**
      * @param \Entities\Termek|null $termek
@@ -95,7 +119,7 @@ class KeszletService
      * @return array<int, array{raktarnev: string, keszlet: mixed, foglalt: mixed, erkezik: mixed}>
      */
     /**
-     * Raktáranként készlet, foglalás, szabad készlet (készlet − foglalás) és érkező mennyiség.
+     * Raktáranként készlet, foglalás, szabad készlet (getFreeStock()) és érkező mennyiség.
      * A szabad készlet nincs nullára vágva, hogy a hiány is látsszon.
      *
      * @param \Entities\Termek|\Entities\TermekValtozat $entity
@@ -340,11 +364,8 @@ class KeszletService
     }
 
     /**
-     * Szabad készlet: készlet − foglalt. A min. bolti készletet szándékosan nem vonja le – az
-     * csak a webshopon eladható mennyiséget szűkíti (calcAvailableStock), a szabad készlet
-     * a raktárban ténylegesen rendelkezésre álló darabszám.
-     *
-     * Nincs nullára vágva: a hiány is látsszon.
+     * Szabad készlet: készlet − foglalt, a Beállítások szerint (isSzabadKeszletMinkeszlettel())
+     * a min. készlettel is csökkentve. Nincs nullára vágva: a hiány is látsszon.
      *
      * @param \Entities\Termek|\Entities\TermekValtozat $entity
      * @param \Entities\Bizonylatfej|int|null $kivevebiz ezt a bizonylatot nem számítjuk a foglalásba
@@ -354,13 +375,18 @@ class KeszletService
         if (!$entity) {
             return 0;
         }
-        return self::getKeszlet($entity, $datum, $raktarid)
+        $ret = self::getKeszlet($entity, $datum, $raktarid)
             - self::getFoglaltMennyiseg($entity, $kivevebiz, $datum, $raktarid);
+        if (self::isSzabadKeszletMinkeszlettel()) {
+            $valtozat = $entity instanceof TermekValtozat ? $entity : null;
+            $ret -= self::getMinKeszlet($valtozat ? $valtozat->getTermek() : $entity, $valtozat, $raktarid);
+        }
+        return $ret;
     }
 
     /**
      * A webshopon eladható mennyiség: készlet − foglalt − min. bolti készlet, $clamp esetén
-     * nullára vágva. A szabad készlet ennél tágabb, lásd getFreeStock().
+     * nullára vágva. A szabad készlet beállítása erre nem hat, lásd getFreeStock().
      *
      * @param bool $ignoreminkeszlet a nominkeszlet kapcsolóhoz – csak a BackorderService adja át
      * @param bool $ignorefoglalas a nyers raktárkészletet néző riportoknak
@@ -681,8 +707,9 @@ class KeszletService
      * Azok a termékek, amelyeknek a termékszintű (az összes változatot összegző) készlete,
      * szabad készlete, foglalása vagy érkező mennyisége a feltételnek megfelel – a terméklista
      * készletszűrőjéhez. A szűrések a soronkénti számítás (getKeszlet(), getFoglaltMennyiseg(),
-     * getIncomingStock()) natív SQL párjai; mozgás nélküli termék nem jön vissza, a nulla
-     * feltételt ezért a hívó `<> 0`-val és NOT IN-nel kérdezi.
+     * getFreeStock(), getIncomingStock()) natív SQL párjai. A szabad készletből a beállítás szerint
+     * a termékszintű min. készlet is levonódik, ezért a mozgás nélküli termék is lehet nem nulla;
+     * a nulla feltételt a hívó `<> 0`-val és NOT IN-nel kérdezi.
      *
      * @param string $mezo a SZURO_MEZOK egyike
      * @param string $relacio `>`, `<` vagy `<>` (nullához képest)
@@ -715,13 +742,18 @@ class KeszletService
             'szabad' => ['(' . $mozgat . ' OR ' . $foglal . ')', $osszeg($mozgat) . ' + ' . $osszeg($foglal)],
             'erkezik' => ['(' . $rendelt . ' OR ' . $megjott . ')', $osszeg($rendelt) . ' - ' . $osszeg($megjott)],
         };
-        $sql = 'SELECT bt.termek_id AS id FROM bizonylattetel bt'
+        $raktarparam = $raktarid ? 'raktar' : '';
+        $levonas = ($mezo === 'szabad' && self::isSzabadKeszletMinkeszlettel())
+            ? ' - ' . self::getMinKeszletSql('t.id', 't.minkeszlet', '', '', $raktarparam)
+            : '';
+        $sql = 'SELECT t.id AS id FROM termek t'
+            . ' LEFT JOIN (SELECT bt.termek_id AS tid, ' . $ertek . ' AS ertek FROM bizonylattetel bt'
             . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
             . ' WHERE ((bt.rontott = 0) OR (bt.rontott IS NULL)) AND (bf.teljesites <= :most) AND ' . $szukites
-            . ($raktarid ? ' AND (bf.raktar_id = :raktar)' : '')
-            . ' GROUP BY bt.termek_id'
-            . ' HAVING (' . $ertek . ') ' . $relacio . ' 0';
-        if ($raktarid) {
+            . ($raktarparam ? ' AND (bf.raktar_id = :raktar)' : '')
+            . ' GROUP BY bt.termek_id) m ON (m.tid = t.id)'
+            . ' WHERE (COALESCE(m.ertek, 0)' . $levonas . ') ' . $relacio . ' 0';
+        if ($raktarparam) {
             $params['raktar'] = $raktarid;
         }
         $rsm = new ResultSetMapping();
@@ -833,6 +865,7 @@ class KeszletService
         self::$termekCache = [];
         self::$valtozatCache = [];
         self::$webshopRaktarCache = [];
+        self::$szabadKeszletModszer = null;
         self::clearKeszletCache();
     }
 

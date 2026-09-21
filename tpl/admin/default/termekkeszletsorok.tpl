@@ -1,5 +1,5 @@
 {* A termék készletsorai: változatonként (változat nélkül a termék maga) készlet, foglalás,
-   szabad készlet (készlet − foglalás) és a még beérkezésre váró mennyiség.
+   szabad készlet (a Beállítások szerinti képlettel) és a még beérkezésre váró mennyiség.
    A foglalt és az érkező mennyiség linkje a foglaló / érkeztető bizonylatok modalját nyitja
    (mkwcomp.keszletBizonylatok).
    A terméklista készlet oszlopa és a termék karbantartó Készlet füle ugyanezt mutatja. *}
@@ -12,7 +12,7 @@
         <th colspan="2">{at('Változat')}</th>
         <th class="keszletoszlop">{at('Készlet')}</th>
         <th class="keszletoszlop">{at('Foglalt')}</th>
-        <th class="keszletoszlop" title="{at('Készlet − foglalás')}">{at('Szabad')}</th>
+        <th class="keszletoszlop" title="{at($szabadkeszletfelirat)}">{at('Szabad')}</th>
         <th class="keszletoszlop">{at('Érkezik')}</th>
         {if ($setup.fifo)}
             <th class="keszletoszlop" title="{at('FIFO készletérték, minden raktár együtt')}">{at('FIFO érték')}</th>
@@ -32,7 +32,7 @@
                 <td class="keszletoszlop"><a href="#" data-id="{$vk.id}" class="js-valtozatkeszletreszletezobutton">{$vk.keszlet}</a></td>
                 <td class="keszletoszlop">{if ($vk.foglaltmennyiseg != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
                                               data-valtozatid="{$vk.id}" data-tipus="foglal">{$vk.foglaltmennyiseg}</a>{else}{$vk.foglaltmennyiseg}{/if}</td>
-                <td class="keszletoszlop" title="{at('Készlet − foglalás')}">{$vk.szabadkeszlet}</td>
+                <td class="keszletoszlop" title="{at($szabadkeszletfelirat)}">{$vk.szabadkeszlet}</td>
                 <td class="keszletoszlop">{if ($vk.erkezik != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
                                               data-valtozatid="{$vk.id}" data-tipus="erkezik">{$vk.erkezik}</a>{else}{$vk.erkezik}{/if}</td>
                 {if ($setup.fifo)}
@@ -55,7 +55,7 @@
             <td class="keszletoszlop"><a href="#" data-id="{$termek.id}" class="js-keszletreszletezobutton">{$termek.keszlet}</a></td>
             <td class="keszletoszlop">{if ($termek.foglaltmennyiseg != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
                                           data-tipus="foglal">{$termek.foglaltmennyiseg}</a>{else}{$termek.foglaltmennyiseg}{/if}</td>
-            <td class="keszletoszlop" title="{at('Készlet − foglalás')}">{$termek.szabadkeszlet}</td>
+            <td class="keszletoszlop" title="{at($szabadkeszletfelirat)}">{$termek.szabadkeszlet}</td>
             <td class="keszletoszlop">{if ($termek.erkezik != 0)}<a href="#" class="js-keszletbizonylatok" data-termekid="{$termek.id}"
                                           data-tipus="erkezik">{$termek.erkezik}</a>{else}{$termek.erkezik}{/if}</td>
             {if ($setup.fifo)}

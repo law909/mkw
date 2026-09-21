@@ -36,7 +36,7 @@
     {if ($termekfa)}
         <h5>Termékfa: {$termekfa}</h5>
     {/if}
-    <h5>Rendelendő = optimális készlet − szabad készlet − érkezik</h5>
+    <h5>Rendelendő = optimális készlet − szabad készlet − érkezik; szabad készlet = {$szabadkeszletfelirat}</h5>
     <table>
         <thead>
         <tr>

@@ -20,9 +20,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 /**
  * Gyártói rendelési javaslat: egy gyártó termékeiből mennyit kell rendelni.
  *
- * Rendelendő = optimális készlet − szabad készlet (készlet − foglalás) − érkező mennyiség;
- * csak a pozitív sorok kerülnek a listára. Optimális készlet nélküli termék kimarad: az nem
- * ehhez a listához tartozik, a hiányát a „Minimum készlet alatt" mutatja.
+ * Rendelendő = optimális készlet − szabad készlet − érkező mennyiség; csak a pozitív sorok
+ * kerülnek a listára. A szabad készlet készlet − foglalás, a Beállítások szerint a min. készlettel
+ * is csökkentve (\Services\KeszletService::isSzabadKeszletMinkeszlettel()). Optimális készlet
+ * nélküli termék kimarad: az nem ehhez a listához tartozik, a hiányát a „Minimum készlet alatt"
+ * mutatja.
  *
  * Három kimenet: képernyős riport, Excel export, és a sorokból képzett szállítói megrendelés.
  *
@@ -179,6 +181,7 @@ class gyartoirendelesController extends \mkwhelpers\Controller
             'foglalt',
             'erkezik',
             'optkeszlet',
+            'minkeszlet',
             'rendelendo',
         ];
         $rsm = new ResultSetMapping();
@@ -210,6 +213,13 @@ class gyartoirendelesController extends \mkwhelpers\Controller
             '',
             $raktarparam
         );
+        $minkeszlettel = \Services\KeszletService::isSzabadKeszletMinkeszlettel();
+        $valtozatmin = $minkeszlettel
+            ? \Services\KeszletService::getMinKeszletSql('_xx.termek_id', 't.minkeszlet', '_xx.id', '_xx.minkeszlet', $raktarparam)
+            : '0';
+        $termekmin = $minkeszlettel
+            ? \Services\KeszletService::getMinKeszletSql('t.id', 't.minkeszlet', '', '', $raktarparam)
+            : '0';
 
         $agak = [];
         foreach (
@@ -219,6 +229,7 @@ class gyartoirendelesController extends \mkwhelpers\Controller
                     'tetel' => 'bt.termekvaltozat_id = _xx.id',
                     'oszlop' => 'termekvaltozat_id',
                     'opt' => $valtozatopt,
+                    'min' => $valtozatmin,
                     'select' => '_xx.termek_id AS termek_id, _xx.id AS termekvaltozat_id,'
                         . " COALESCE(NULLIF(_xx.cikkszam, ''), t.cikkszam) AS cikkszam,"
                         . " COALESCE(NULLIF(_xx.vonalkod, ''), t.vonalkod) AS vonalkod,"
@@ -232,6 +243,7 @@ class gyartoirendelesController extends \mkwhelpers\Controller
                     'tetel' => 'bt.termek_id = t.id AND bt.termekvaltozat_id IS NULL',
                     'oszlop' => 'termek_id',
                     'opt' => $termekopt,
+                    'min' => $termekmin,
                     'select' => 't.id AS termek_id, NULL AS termekvaltozat_id,'
                         . ' t.cikkszam AS cikkszam, t.vonalkod AS vonalkod,'
                         . " t.nev AS termeknev, '' AS ertek1, '' AS ertek2",
@@ -249,13 +261,14 @@ class gyartoirendelesController extends \mkwhelpers\Controller
                     ? '-1 * ' . $this->getMozgasSql($ag['tetel'], 'bt.foglal = 1 AND ' . $foglalotipus)
                     : '0') . ' AS foglalt,'
                 . ' (' . $erkezik . ') AS erkezik,'
-                . ' ' . $ag['opt'] . ' AS optkeszlet'
+                . ' ' . $ag['opt'] . ' AS optkeszlet,'
+                . ' ' . $ag['min'] . ' AS minkeszlet'
                 . $ag['from'];
         }
 
         $q = $this->getEm()->createNativeQuery(
             'SELECT y.* FROM ('
-            . ' SELECT x.*, (x.optkeszlet - (x.keszlet - x.foglalt) - x.erkezik) AS rendelendo'
+            . ' SELECT x.*, (x.optkeszlet - (x.keszlet - x.foglalt - x.minkeszlet) - x.erkezik) AS rendelendo'
             . ' FROM (' . implode(' UNION ALL ', $agak) . ') x'
             . ') y'
             . ' WHERE (y.optkeszlet > 0) AND (y.rendelendo > 0)'
@@ -275,7 +288,7 @@ class gyartoirendelesController extends \mkwhelpers\Controller
 
         $ret = [];
         foreach ($q->getScalarResult() as $sor) {
-            $sor['szabadkeszlet'] = $sor['keszlet'] - $sor['foglalt'];
+            $sor['szabadkeszlet'] = $sor['keszlet'] - $sor['foglalt'] - $sor['minkeszlet'];
             $ret[] = $sor;
         }
         return $ret;
@@ -290,6 +303,7 @@ class gyartoirendelesController extends \mkwhelpers\Controller
         $report->setVar('raktar', $this->raktarnev);
         $report->setVar('gyarto', $this->gyartonev);
         $report->setVar('termekfa', $this->fanevek);
+        $report->setVar('szabadkeszletfelirat', \Services\KeszletService::getSzabadKeszletFelirat());
         $report->setVar('printdatum', date(\mkw\store::$DateTimeFormat));
         $report->printTemplateResult();
     }

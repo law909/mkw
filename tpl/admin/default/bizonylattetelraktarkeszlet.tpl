@@ -25,7 +25,7 @@
             {/foreach}
         </tr>
         <tr>
-            <td title="{at('Készlet − foglalás')}">{at('Szabad')}</td>
+            <td title="{at($szabadkeszletfelirat)}">{at('Szabad')}</td>
             {foreach $lista as $elem}
                 <td class="keszletoszlop">{$elem.szabad}</td>
             {/foreach}
