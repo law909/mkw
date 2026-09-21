@@ -520,6 +520,8 @@ class consts
     const IdopontfoglalasTermek = 'idopontfoglalastermek';
 
     const AdategyeztetoSablon = 'adategyeztetosablon';
+    const EppWordpressUrl = 'eppwordpressurl';
+    const EppSablonJelszo = 'eppjelszoemailsablon';
 
     const NAVOnlineME1_1Kesz = 'NAVOnlineME1_1Kesz';
     const NAVOnlineVersion = 'NAVOnlineVersion';

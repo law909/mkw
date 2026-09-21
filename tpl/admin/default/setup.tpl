@@ -715,6 +715,25 @@
                             </div>
                         </div>
                     {/if}
+                    {if ($setup.epp|default:0)}
+                        <input name="eppvan" type="hidden" value="1">
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="EppWordpressUrlEdit">{at('WordPress webcím')}:</label></span>
+                                <span><input id="EppWordpressUrlEdit" name="eppwordpressurl" type="url" size="50" value="{$eppwordpressurl}"
+                                             placeholder="https://"> {at('a WP jelszó levelében ebből lesz a védett oldal linkje')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="EppJelszoSablonEdit">{at('WP oldal jelszó levél sablon')}:</label></span>
+                                <select id="EppJelszoSablonEdit" name="eppjelszoemailsablon">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $eppjelszoemailsablonlist as $_belsouk}
+                                        <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    {/if}
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
                             <span class="setuplabel"><label for="MarkaCsEdit">{at('Márka csoport')}:</label></span>

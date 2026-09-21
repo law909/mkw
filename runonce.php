@@ -2786,6 +2786,33 @@ if ($DBVersion < '0189') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0189');
 }
 
+if ($DBVersion < '0190') {
+    // A jelentkezésből generált WP jelszó levele (idopontfoglalasController::generateEppjelszo()),
+    // alapszöveggel, hogy a gomb a beállítás nélkül is működjön; a szöveg a Levélsablonoknál szerkeszthető.
+    if (\mkw\store::isEpp()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $sablonid = \mkw\store::getParameter(\mkw\consts::EppSablonJelszo);
+        $letezik = $sablonid && $conn->fetchOne('SELECT COUNT(*) FROM emailtemplate WHERE id = ?', [$sablonid]);
+        if (!$letezik) {
+            $szoveg = 'Kedves {$foglalas.partnerkeresztnev}!<br><br>'
+                . 'Elkészült a jelszavad, amellyel {$honap} hónapig eléred a(z)'
+                . ' <strong>{if ($foglalas.idopontnev)}{$foglalas.idopontnev}{else}{$foglalas.temanev}{/if}</strong>'
+                . ' oldalát.<br><br>'
+                . 'Jelszó: <strong>{$jelszo}</strong><br>'
+                . 'Érvényes: {$lejarat}<br><br>'
+                . '{if ($oldalurl)}Az oldal: <a href="{$oldalurl}">{$oldalurl}</a><br><br>{/if}'
+                . 'A jelszót ne add tovább, személyesen neked szól.<br><br>'
+                . 'Üdvözlettel:<br>' . \mkw\store::getParameter(\mkw\consts::Tulajnev);
+            $conn->executeStatement(
+                'INSERT INTO emailtemplate (nev, targy, szoveg, aszfcsatolaskell) VALUES (?, ?, ?, 0)',
+                ['WP oldal jelszó', 'Jelszó - {if ($foglalas.idopontnev)}{$foglalas.idopontnev}{else}{$foglalas.temanev}{/if}', $szoveg]
+            );
+            \mkw\store::setParameter(\mkw\consts::EppSablonJelszo, $conn->lastInsertId());
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0190');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

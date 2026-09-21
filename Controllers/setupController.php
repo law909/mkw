@@ -243,6 +243,12 @@ class setupController extends \mkwhelpers\Controller
         $ifsablon = new emailtemplateController();
         $view->setVar('idopontfoglalaslemondasemailsablonlist', $ifsablon->getSelectList(($p ? $p->getErtek() : 0)));
 
+        $p = $repo->find(\mkw\consts::EppWordpressUrl);
+        $view->setVar('eppwordpressurl', ($p ? $p->getErtek() : ''));
+
+        $p = $repo->find(\mkw\consts::EppSablonJelszo);
+        $view->setVar('eppjelszoemailsablonlist', (new emailtemplateController())->getSelectList(($p ? $p->getErtek() : 0)));
+
         $p = $repo->find(\mkw\consts::AdategyeztetoSablon);
         $aesablon = new emailtemplateController();
         $view->setVar('adategyeztetosablonlist', $aesablon->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1223,6 +1229,10 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::SportkartyaFizmod,
             \mkw\consts::AYCMFizmod,
         ],
+        'eppvan' => [
+            \mkw\consts::EppWordpressUrl,
+            \mkw\consts::EppSablonJelszo,
+        ],
         'jogafulvan' => [
             \mkw\consts::JogaJutalek,
             \mkw\consts::JogaUresTeremJutalek,
@@ -2000,6 +2010,12 @@ class setupController extends \mkwhelpers\Controller
         } else {
             $this->setObj(\mkw\consts::AdategyeztetoSablon, '');
         }
+
+        $this->setObj(\mkw\consts::EppWordpressUrl, rtrim($this->params->getStringRequestParam(\mkw\consts::EppWordpressUrl), '/'));
+        $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
+            $this->params->getIntRequestParam(\mkw\consts::EppSablonJelszo, 0)
+        );
+        $this->setObj(\mkw\consts::EppSablonJelszo, $levelsablon ? $levelsablon->getId() : '');
 
         $levelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find(
             $this->params->getIntRequestParam(\mkw\consts::JogaBerletFelszolitoSablon, 0)
