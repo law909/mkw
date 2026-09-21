@@ -1339,10 +1339,10 @@ if ($DBVersion < '0114') {
 }
 
 if ($DBVersion < '0115') {
-    // Minimum készlet import az "Egyéb műveletek" (9) csoportba, a többi feltöltés mellé
+    // A min./opt. készlet import az "Egyéb műveletek" (9) csoportba, a többi feltöltés mellé
     \mkw\store::getEm()->getConnection()->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-        . ' SELECT 9, "Minimum készlet import", "/admin/minkeszletimport/view", "/admin/minkeszletimport", 90, 1, 550, ""'
+        . ' SELECT 9, "Min./opt. készlet import", "/admin/minkeszletimport/view", "/admin/minkeszletimport", 90, 1, 550, ""'
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/minkeszletimport/view") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0115');
@@ -2710,6 +2710,15 @@ if ($DBVersion < '0183') {
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/termekvaltozat/osszevonasview") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0183');
+}
+
+if ($DBVersion < '0184') {
+    // Az import már az optimum készletet is viszi, a menüpont neve ezt követi
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET nev = "Min./opt. készlet import"'
+        . ' WHERE url = "/admin/minkeszletimport/view" AND nev = "Minimum készlet import"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0184');
 }
 
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem

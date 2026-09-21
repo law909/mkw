@@ -5,14 +5,16 @@ namespace Services;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekMinkeszlet;
+use Entities\TermekOptkeszlet;
 use Entities\TermekValtozat;
 use Entities\TermekValtozatMinkeszlet;
+use Entities\TermekValtozatOptkeszlet;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /**
- * A minimum készletek tömeges karbantartásának két vége: Excel export és ugyanannak a
+ * A minimum és optimum készletek tömeges karbantartásának két vége: Excel export és ugyanannak a
  * fájlnak a visszatöltése. A két irány itt, egy helyen van, mert az oszlopkiosztásukat
  * kötelező szinkronban tartani.
  *
@@ -21,21 +23,48 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  * ilyen termék saját sora ki sem kerül az exportba – ha kézzel mégis betesznek egyet, az import
  * nullázza és figyelmeztet.
  *
- * Oszlopok: termék id, változat id, cikkszám, vonalkód, név, szín, méret, "Minden raktár",
- * majd a nem archivált raktárak egy-egy oszlopa. A raktároszlop fejléce `<id>_<név>` (pl.
- * `3_KISKER RAKTÁR`): az importáláskor az id azonosítja a raktárt, nem a pozíció és nem a név –
- * így a fájl oszlopai átrendezhetők, és a raktár két export között át is nevezhető. A régebbi,
- * csak nevet tartalmazó fejlécet is elfogadjuk, az archivált raktár nevével együtt.
+ * Oszlopok: termék id, változat id, cikkszám, vonalkód, név, szín, méret, majd értékoszlopok
+ * párban: előbb a "Minden raktár" minimum és optimum, utána raktáranként a minimum és az optimum.
+ * Az értékoszlop fejléce `<id>_<min|opt>_<név>` (pl. `3_min_KISKER RAKTÁR`), a globálisé
+ * `<min|opt>_<név>`: importáláskor ez a két jelölő azonosítja az oszlopot, nem a pozíció és nem a
+ * név – így a fájl oszlopai átrendezhetők, és a raktár két export között át is nevezhető.
+ *
+ * A 2026.09. előtti, csak minimumot tartalmazó fájlok is betölthetők: ott a `<id>_<név>` és a
+ * csak nevet tartalmazó fejléc is a minimum oszlopot jelenti, az archivált raktár nevével együtt.
+ * Amelyik szint nincs a fájlban, azt az import nem bántja.
  */
-class MinKeszletExcelService
+class KeszletszintExcelService
 {
 
-    /** az azonosító és leíró oszlopok a raktároszlopok előtt */
-    private const FEJLECEK = ['Termék ID', 'Változat ID', 'Cikkszám', 'Vonalkód', 'Név', 'Szín', 'Méret', 'Minden raktár'];
+    /** az azonosító és leíró oszlopok az értékoszlopok előtt */
+    private const FEJLECEK = ['Termék ID', 'Változat ID', 'Cikkszám', 'Vonalkód', 'Név', 'Szín', 'Méret'];
 
     private const OSZLOP_TERMEKID = 0;
     private const OSZLOP_VALTOZATID = 1;
-    private const OSZLOP_MINDENRAKTAR = 7;
+
+    /** a raktárankénti oszlopok előtt álló, minden raktárra érvényes oszlop fejléce */
+    private const MINDENRAKTAR = 'Minden raktár';
+
+    /**
+     * A két készletszint ugyanaz a rács, csak más entitáson és más metódusokon – a kettő között
+     * csak ez a tömb tesz különbséget (a termékszerkesztő KESZLETMATRIXOK leírójának a párja).
+     */
+    private const SZINTEK = [
+        'min' => [
+            'termekentity' => TermekMinkeszlet::class,
+            'valtozatentity' => TermekValtozatMinkeszlet::class,
+            'getter' => 'getMinkeszlet',
+            'setter' => 'setMinkeszlet',
+            'cimke' => 'minimum készlet',
+        ],
+        'opt' => [
+            'termekentity' => TermekOptkeszlet::class,
+            'valtozatentity' => TermekValtozatOptkeszlet::class,
+            'getter' => 'getOptkeszlet',
+            'setter' => 'setOptkeszlet',
+            'cimke' => 'optimum készlet',
+        ],
+    ];
 
     /** @var string[] az export oszlopai: a nem archivált raktárak neve id szerint – nem entitás, mert az export közben ürítjük az EM-et */
     private $raktarak = [];
@@ -62,8 +91,13 @@ class MinKeszletExcelService
         $sheet = $excel->setActiveSheetIndex(0);
 
         $fejlecek = array_map('t', self::FEJLECEK);
+        foreach (array_keys(self::SZINTEK) as $szint) {
+            $fejlecek[] = self::ertekFejlec(0, t(self::MINDENRAKTAR), $szint);
+        }
         foreach ($this->raktarak as $raktarid => $raktarnev) {
-            $fejlecek[] = self::raktarFejlec($raktarid, $raktarnev);
+            foreach (array_keys(self::SZINTEK) as $szint) {
+                $fejlecek[] = self::ertekFejlec($raktarid, $raktarnev, $szint);
+            }
         }
         foreach ($fejlecek as $i => $fejlec) {
             $sheet->setCellValue(\mkw\store::getExcelCoordinate($i) . '1', $fejlec);
@@ -78,7 +112,8 @@ class MinKeszletExcelService
 
     /**
      * A fájl visszatöltése. Csak azokat a termékeket/változatokat módosítja, amelyek szerepelnek
-     * benne; az üres vagy nulla raktárcella a raktáras felülírás törlését jelenti.
+     * benne, és csak azokat a szinteket, amelyekhez van oszlop; az üres vagy nulla raktárcella a
+     * raktáras felülírás törlését jelenti.
      *
      * @return array{sorok:int, termek:int, valtozat:int, hibak:string[]}
      */
@@ -88,7 +123,7 @@ class MinKeszletExcelService
         $reader->setReadDataOnly(true);
         $sheet = $reader->load($filepath)->getActiveSheet();
 
-        $raktaroszlopok = $this->getRaktarOszlopok($sheet, $hibak);
+        $oszlopok = $this->getErtekOszlopok($sheet, $hibak);
         $em = \mkw\store::getEm();
         $maxrow = (int)$sheet->getHighestRow();
         $termekdb = 0;
@@ -103,10 +138,17 @@ class MinKeszletExcelService
             }
             $sorok++;
 
-            $mindenraktar = $this->cellaErtek($sheet, self::OSZLOP_MINDENRAKTAR, $row);
-            $raktariertekek = [];
-            foreach ($raktaroszlopok as $oszlop => $raktarid) {
-                $raktariertekek[$raktarid] = $this->cellaErtek($sheet, $oszlop, $row);
+            $ertekek = [];
+            foreach ($oszlopok as $szint => $szintoszlopok) {
+                $ertekek[$szint] = [
+                    'globalis' => is_null($szintoszlopok['globalis'])
+                        ? null
+                        : $this->cellaErtek($sheet, $szintoszlopok['globalis'], $row),
+                    'raktari' => [],
+                ];
+                foreach ($szintoszlopok['raktari'] as $oszlop => $raktarid) {
+                    $ertekek[$szint]['raktari'][$raktarid] = $this->cellaErtek($sheet, $oszlop, $row);
+                }
             }
 
             if ($valtozatid) {
@@ -116,15 +158,21 @@ class MinKeszletExcelService
                     $hibak[] = sprintf(t('%d. sor: nincs %d azonosítójú változat'), $row, $valtozatid);
                     continue;
                 }
-                $valtozat->setMinkeszlet($mindenraktar);
-                $em->persist($valtozat);
-                $this->setRaktariErtekek(
-                    TermekValtozatMinkeszlet::class,
-                    'setTermekvaltozat',
-                    $valtozat,
-                    $em->getRepository(TermekValtozatMinkeszlet::class)->getRowsByTermekValtozatIds([$valtozatid])[$valtozatid] ?? [],
-                    $raktariertekek
-                );
+                foreach ($ertekek as $szint => $ertek) {
+                    $leiro = self::SZINTEK[$szint];
+                    if (!is_null($ertek['globalis'])) {
+                        $valtozat->{$leiro['setter']}($ertek['globalis']);
+                        $em->persist($valtozat);
+                    }
+                    $this->setRaktariErtekek(
+                        $leiro['valtozatentity'],
+                        'setTermekvaltozat',
+                        $leiro['setter'],
+                        $valtozat,
+                        $em->getRepository($leiro['valtozatentity'])->getRowsByTermekValtozatIds([$valtozatid])[$valtozatid] ?? [],
+                        $ertek['raktari']
+                    );
+                }
                 $valtozatdb++;
             } else {
                 /** @var Termek|null $termek */
@@ -133,30 +181,42 @@ class MinKeszletExcelService
                     $hibak[] = sprintf(t('%d. sor: nincs %d azonosítójú termék'), $row, $termekid);
                     continue;
                 }
-                if (\mkw\store::getSetupValue('termekvaltozat') && count($termek->getValtozatok() ?? [])) {
-                    // változatos terméken a termékszint kötelezően nulla: a fájlban lévő értéket eldobjuk,
-                    // és a korábbi raktáras sorokat is töröljük – ugyanaz a szabály, mint a rácson
-                    if (($mindenraktar * 1) || array_filter($raktariertekek)) {
-                        $hibak[] = sprintf(
-                            t('%d. sor: a(z) %d azonosítójú terméknek van változata, a termékszintű minimum nem állítható – nullázva'),
-                            $row,
-                            $termekid
-                        );
+                $vanvaltozat = \mkw\store::getSetupValue('termekvaltozat') && count($termek->getValtozatok() ?? []);
+                $zarolt = [];
+                foreach ($ertekek as $szint => $ertek) {
+                    $leiro = self::SZINTEK[$szint];
+                    if ($vanvaltozat) {
+                        // változatos terméken a termékszint kötelezően nulla: a fájlban lévő értéket eldobjuk,
+                        // és a korábbi raktáras sorokat is töröljük – ugyanaz a szabály, mint a rácson
+                        if (($ertek['globalis'] * 1) || array_filter($ertek['raktari'])) {
+                            $zarolt[] = t($leiro['cimke']);
+                        }
+                        $termek->{$leiro['setter']}(0);
+                        $em->persist($termek);
+                        foreach ($em->getRepository($leiro['termekentity'])->getRowsByTermek($termekid) as $sor) {
+                            $em->remove($sor);
+                        }
+                        continue;
                     }
-                    $termek->setMinkeszlet(0);
-                    $em->persist($termek);
-                    foreach ($em->getRepository(TermekMinkeszlet::class)->getRowsByTermek($termekid) as $sor) {
-                        $em->remove($sor);
+                    if (!is_null($ertek['globalis'])) {
+                        $termek->{$leiro['setter']}($ertek['globalis']);
+                        $em->persist($termek);
                     }
-                } else {
-                    $termek->setMinkeszlet($mindenraktar);
-                    $em->persist($termek);
                     $this->setRaktariErtekek(
-                        TermekMinkeszlet::class,
+                        $leiro['termekentity'],
                         'setTermek',
+                        $leiro['setter'],
                         $termek,
-                        $em->getRepository(TermekMinkeszlet::class)->getRowsByTermek($termekid),
-                        $raktariertekek
+                        $em->getRepository($leiro['termekentity'])->getRowsByTermek($termekid),
+                        $ertek['raktari']
+                    );
+                }
+                if ($zarolt) {
+                    $hibak[] = sprintf(
+                        t('%d. sor: a(z) %d azonosítójú terméknek van változata, a termékszintű érték nem állítható (%s) – nullázva'),
+                        $row,
+                        $termekid,
+                        implode(', ', $zarolt)
                     );
                 }
                 $termekdb++;
@@ -171,27 +231,32 @@ class MinKeszletExcelService
         return ['sorok' => $sorok, 'termek' => $termekdb, 'valtozat' => $valtozatdb, 'hibak' => $hibak];
     }
 
-    /** A raktároszlop fejléce: az id azonosít, a név csak az embernek szól. */
-    private static function raktarFejlec($raktarid, $raktarnev): string
+    /**
+     * Egy értékoszlop fejléce. Az id és a min/opt jelölő azonosít, a név csak az embernek szól;
+     * a globális oszlopnak nincs raktár id-ja.
+     */
+    private static function ertekFejlec($raktarid, $raktarnev, $szint): string
     {
-        return $raktarid . '_' . $raktarnev;
+        return ($raktarid ? $raktarid . '_' : '') . $szint . '_' . $raktarnev;
     }
 
     /**
-     * Az azonosító oszlopok utáni raktároszlopok a fejléc `<id>_<név>` előtagja alapján.
-     * A csak nevet tartalmazó (2026.08. előtti) fejlécet is elfogadjuk.
+     * Az azonosító oszlopok utáni értékoszlopok a fejlécük alapján, szintenként csoportosítva.
+     * A 2026.09. előtti fájlok fejlécét (`<id>_<név>`, csak név, `Minden raktár`) minimumként
+     * fogadjuk el.
      *
      * @param string[] $hibak kimenő: az ismeretlen fejlécű oszlopok
      *
-     * @return array [oszlopindex => raktar_id]
+     * @return array [ szint => ['globalis' => oszlopindex|null, 'raktari' => [oszlopindex => raktar_id]] ]
      */
-    private function getRaktarOszlopok($sheet, &$hibak): array
+    private function getErtekOszlopok($sheet, &$hibak): array
     {
         $hibak = [];
         $nevmap = [];
         foreach ($this->mindenraktar as $id => $raktarnev) {
             $nevmap[mb_strtolower(trim($raktarnev))] = $id;
         }
+        $globalisnevek = [mb_strtolower(t(self::MINDENRAKTAR)), mb_strtolower(self::MINDENRAKTAR)];
 
         $ret = [];
         $maxcol = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($sheet->getHighestColumn());
@@ -200,15 +265,32 @@ class MinKeszletExcelService
             if ($fejlec === '') {
                 continue;
             }
-            if (preg_match('/^(\d+)_/', $fejlec, $m) && isset($this->mindenraktar[(int)$m[1]])) {
-                $raktarid = (int)$m[1];
+
+            $szint = 'min';
+            $raktarid = null;
+            if (preg_match('/^(\d+)_(min|opt)_/', $fejlec, $m)) {
+                $szint = $m[2];
+                $raktarid = isset($this->mindenraktar[(int)$m[1]]) ? (int)$m[1] : null;
+            } elseif (preg_match('/^(min|opt)_/', $fejlec, $m)) {
+                $szint = $m[1];
+                $raktarid = 0;
+            } elseif (preg_match('/^(\d+)_/', $fejlec, $m)) {
+                $raktarid = isset($this->mindenraktar[(int)$m[1]]) ? (int)$m[1] : null;
+            } elseif (in_array(mb_strtolower($fejlec), $globalisnevek, true)) {
+                $raktarid = 0;
             } else {
-                $raktarid = $nevmap[mb_strtolower($fejlec)] ?? 0;
+                $raktarid = $nevmap[mb_strtolower($fejlec)] ?? null;
             }
+
+            if (is_null($raktarid)) {
+                $hibak[] = sprintf(t('A(z) "%s" fejlécű oszlop nem azonosítható, kimarad.'), $fejlec);
+                continue;
+            }
+            $ret[$szint] ??= ['globalis' => null, 'raktari' => []];
             if ($raktarid) {
-                $ret[$i] = $raktarid;
+                $ret[$szint]['raktari'][$i] = $raktarid;
             } else {
-                $hibak[] = sprintf(t('A(z) "%s" fejlécű oszlop nem azonosítható raktárként, kimarad.'), $fejlec);
+                $ret[$szint]['globalis'] = $i;
             }
         }
         return $ret;
@@ -219,12 +301,13 @@ class MinKeszletExcelService
      * ugyanaz a szabály, mint a termékszerkesztő rácsán.
      *
      * @param class-string $entitas
-     * @param string $setter a hordozót beállító metódus neve
+     * @param string $hordozoSetter a hordozót beállító metódus neve
+     * @param string $ertekSetter az értéket beállító metódus neve (SZINTEK)
      * @param object $hordozo Termek vagy TermekValtozat
      * @param array $meglevo [raktar_id => sor]
      * @param array $ertekek [raktar_id => érték]
      */
-    private function setRaktariErtekek($entitas, $setter, $hordozo, array $meglevo, array $ertekek): void
+    private function setRaktariErtekek($entitas, $hordozoSetter, $ertekSetter, $hordozo, array $meglevo, array $ertekek): void
     {
         $em = \mkw\store::getEm();
         foreach ($ertekek as $raktarid => $ertek) {
@@ -232,10 +315,10 @@ class MinKeszletExcelService
             if ($ertek * 1) {
                 if (!$sor) {
                     $sor = new $entitas();
-                    $sor->$setter($hordozo);
+                    $sor->$hordozoSetter($hordozo);
                     $sor->setRaktar($em->getRepository(Raktar::class)->find($raktarid));
                 }
-                $sor->setMinkeszlet($ertek);
+                $sor->$ertekSetter($ertek);
                 $em->persist($sor);
             } elseif ($sor) {
                 $em->remove($sor);
@@ -289,10 +372,14 @@ class MinKeszletExcelService
                 $valtozatids[] = $valtozat->getId();
             }
         }
-        $termekraktari = $em->getRepository(TermekMinkeszlet::class)->getByTermekIds($termekids);
-        $valtozatraktari = $valtozatids
-            ? $em->getRepository(TermekValtozatMinkeszlet::class)->getByTermekValtozatIds($valtozatids)
-            : [];
+        $termekraktari = [];
+        $valtozatraktari = [];
+        foreach (self::SZINTEK as $szint => $leiro) {
+            $termekraktari[$szint] = $em->getRepository($leiro['termekentity'])->getByTermekIds($termekids);
+            $valtozatraktari[$szint] = $valtozatids
+                ? $em->getRepository($leiro['valtozatentity'])->getByTermekValtozatIds($valtozatids)
+                : [];
+        }
 
         /** @var Termek $termek */
         foreach ($termekek as $termek) {
@@ -307,8 +394,8 @@ class MinKeszletExcelService
                     'nev' => $termek->getNev(),
                     'szin' => '',
                     'meret' => '',
-                    'mindenraktar' => $termek->getMinkeszlet(),
-                    'raktari' => $termekraktari[$termek->getId()] ?? [],
+                    'hordozo' => $termek,
+                    'raktari' => $this->szintenkentiErtekek($termekraktari, $termek->getId()),
                 ]);
             }
             /** @var TermekValtozat $valtozat */
@@ -321,13 +408,27 @@ class MinKeszletExcelService
                     'nev' => $termek->getNev(),
                     'szin' => $valtozat->getErtek1(),
                     'meret' => $valtozat->getErtek2(),
-                    'mindenraktar' => $valtozat->getMinkeszlet(),
-                    'raktari' => $valtozatraktari[$valtozat->getId()] ?? [],
+                    'hordozo' => $valtozat,
+                    'raktari' => $this->szintenkentiErtekek($valtozatraktari, $valtozat->getId()),
                 ]);
             }
         }
         $em->clear();
         return $sor;
+    }
+
+    /**
+     * @param array $szintmap [ szint => [ hordozo_id => [raktar_id => érték] ] ]
+     *
+     * @return array [ szint => [raktar_id => érték] ]
+     */
+    private function szintenkentiErtekek(array $szintmap, $id): array
+    {
+        $ret = [];
+        foreach ($szintmap as $szint => $ertekek) {
+            $ret[$szint] = $ertekek[$id] ?? [];
+        }
+        return $ret;
     }
 
     private function exportSor($sheet, $sor, array $adat): void
@@ -340,10 +441,14 @@ class MinKeszletExcelService
             $adat['nev'],
             $adat['szin'],
             $adat['meret'],
-            (float)$adat['mindenraktar'],
         ];
+        foreach (self::SZINTEK as $szint => $leiro) {
+            $ertekek[] = (float)$adat['hordozo']->{$leiro['getter']}();
+        }
         foreach ($this->raktarak as $raktarid => $raktarnev) {
-            $ertekek[] = (float)($adat['raktari'][$raktarid] ?? 0);
+            foreach (self::SZINTEK as $szint => $leiro) {
+                $ertekek[] = (float)($adat['raktari'][$szint][$raktarid] ?? 0);
+            }
         }
         foreach ($ertekek as $i => $ertek) {
             $sheet->setCellValue(\mkw\store::getExcelCoordinate($i) . $sor, $ertek);

@@ -25,7 +25,7 @@ use mkwhelpers\FilterDescriptor;
  * $raktarid nélkül a létra a 3-4. lépés (globális minimum) – ezt látja a backorder is, ami
  * szándékosan sosem ad raktárat. A 2. és 4. lépés csak a változat nélküli termékeknél él:
  * változatos terméken a termékszintű minimum kötelezően nulla (lásd termekController és
- * \Services\MinKeszletExcelService).
+ * \Services\KeszletszintExcelService).
  *
  * Ugyanennek a létrának a másik (SQL-be írt) implementációja a getMinKeszletSql().
  *

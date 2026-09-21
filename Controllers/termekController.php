@@ -2935,7 +2935,7 @@ class termekController extends \mkwhelpers\MattableController
     public function minKeszletExport()
     {
         $ids = array_filter(explode(',', $this->params->getStringRequestParam('ids')));
-        $excel = (new \Services\MinKeszletExcelService())->export($ids);
+        $excel = (new \Services\KeszletszintExcelService())->export($ids);
 
         $filename = uniqid('minkeszlet') . '.xlsx';
         $filepath = \mkw\store::storagePath($filename);

@@ -3,8 +3,8 @@
 namespace Controllers;
 
 /**
- * A minimum készletek visszatöltése a termékselect "Minimum készlet export" csoportos
- * műveletével készült Excelből. A tartalmi munka a \Services\MinKeszletExcelService-ben van.
+ * A minimum és optimum készletek visszatöltése a termékselect "Min./opt. készlet export" csoportos
+ * műveletével készült Excelből. A tartalmi munka a \Services\KeszletszintExcelService-ben van.
  */
 class minkeszletimportController extends \mkwhelpers\Controller
 {
@@ -12,7 +12,7 @@ class minkeszletimportController extends \mkwhelpers\Controller
     public function view()
     {
         $view = $this->createView('minkeszletimport.tpl');
-        $view->setVar('pagetitle', t('Minimum készlet import'));
+        $view->setVar('pagetitle', t('Min./opt. készlet import'));
         $view->printTemplateResult();
     }
 
@@ -27,7 +27,7 @@ class minkeszletimportController extends \mkwhelpers\Controller
         }
 
         try {
-            $eredmeny = (new \Services\MinKeszletExcelService())->import($filepath);
+            $eredmeny = (new \Services\KeszletszintExcelService())->import($filepath);
         } catch (\Exception $e) {
             \unlink($filepath);
             $this->jsonFail($e->getMessage());
@@ -38,7 +38,7 @@ class minkeszletimportController extends \mkwhelpers\Controller
         echo json_encode([
             'ok' => true,
             'msg' => sprintf(
-                t('%d sor feldolgozva: %d termék és %d változat minimum készlete frissült.'),
+                t('%d sor feldolgozva: %d termék és %d változat min./opt. készlete frissült.'),
                 $eredmeny['sorok'],
                 $eredmeny['termek'],
                 $eredmeny['valtozat']
