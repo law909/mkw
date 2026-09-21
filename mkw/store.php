@@ -1403,6 +1403,12 @@ class store
         return self::getSetupValue('mediatar');
     }
 
+    /** External Page Passwords: a WordPress plugin jelszóvalidáló API-ja (/epp/validate, /epp/status) */
+    public static function isEpp()
+    {
+        return (bool)self::getSetupValue('epp');
+    }
+
     public static function isEmailTemplateCKEditor()
     {
         return self::getSetupValue('emailtemplateckeditor');
