@@ -601,6 +601,8 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylattetel/importxlsx', 'bizonylattetelController#importXlsx', 'adminbizonylattetelimportxlsx');
     if (\mkw\store::isSuperzoneB2B()) {
         $router->map('POST', '/admin/bizonylattetel/importfcmoto', 'bizonylattetelController#importFcMoto', 'adminbizonylattetelimportfcmoto');
+    }
+    if (\mkw\store::isGalad()) {
         $router->map('POST', '/admin/bizonylattetel/importoxford', 'bizonylattetelController#importOxford', 'adminbizonylattetelimportoxford');
     }
 }
