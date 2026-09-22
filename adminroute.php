@@ -1746,6 +1746,10 @@ $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaCo
 $router->map('GET', '/admin/bizonylattetellista/export', 'bizonylattetellistaController#export', 'adminbizonylattetellistaexport');
 $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaController#doPrint', 'adminbizonylattetellistaprint');
 
+$router->map('GET', '/admin/arbevetellista/view', 'arbevetellistaController#view', 'adminarbevetellistaview');
+$router->map('GET', '/admin/arbevetellista/refresh', 'arbevetellistaController#refresh', 'adminarbevetellistarefresh');
+$router->map('GET', '/admin/arbevetellista/export', 'arbevetellistaController#export', 'adminarbevetellistaexport');
+
 $router->map('GET', '/admin/tanarelszamolas/view', 'tanarelszamolasController#view', 'admintanarelszamolasview');
 $router->map('GET', '/admin/tanarelszamolas/refresh', 'tanarelszamolasController#refresh', 'admintanarelszamolasrefresh');
 $router->map('GET', '/admin/tanarelszamolas/export', 'tanarelszamolasController#export', 'admintanarelszamolasexport');

@@ -738,6 +738,108 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $ret;
     }
 
+    public const ARBEVETEL_BIZONYLATTIPUSOK = ['elolegszamla', 'szamla', 'boltieladas'];
+
+    /**
+     * Revenue from the item lines of advance invoices, invoices and shop sales, in HUF. A storno
+     * document carries negative amounts, so it cancels its original; the offset line of a final
+     * invoice cancels the advance invoice the same way.
+     *
+     * @param array $csoport any of 'ev', 'honap', 'gyarto', 'webshop' ('ev' and 'honap' exclude each other)
+     */
+    public function getArbevetelLista(
+        $datumtipus,
+        $datumtol,
+        $datumig,
+        bool $brutto,
+        array $csoport,
+        $partnerid,
+        $partnertipusid,
+        $gyartoid,
+        array $fafilter,
+        $webshopnum
+    ): array {
+        $datummezo = in_array($datumtipus, ['kelt', 'teljesites', 'esedekesseg'], true) ? 'bf.' . $datumtipus : 'bf.teljesites';
+
+        $filter = new FilterDescriptor();
+        $filter->addFilter('bf.bizonylattipus_id', 'IN', self::ARBEVETEL_BIZONYLATTIPUSOK);
+        $filter->addFilter('bf.rontott', '=', false);
+        if ($datumtol) {
+            $filter->addFilter($datummezo, '>=', $datumtol);
+        }
+        if ($datumig) {
+            $filter->addFilter($datummezo, '<=', $datumig);
+        }
+        if ($partnerid) {
+            $filter->addFilter('bf.partner_id', '=', $partnerid);
+        }
+        if ($gyartoid) {
+            $filter->addFilter('t.gyarto_id', '=', $gyartoid);
+        }
+        if ($fafilter) {
+            $ff = new FilterDescriptor();
+            $ff->addFilter('id', 'IN', $fafilter);
+            $faszuro = [];
+            foreach (\mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []) as $sor) {
+                $faszuro[] = $sor->getKarkod() . '%';
+            }
+            if ($faszuro) {
+                $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
+            }
+        }
+        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
+        // an invoice made from a shop sale would count the same sale twice, and so would its storno
+        $filter->addSql(
+            "NOT (bf.bizonylattipus_id <> 'boltieladas' AND (COALESCE(elod.bizonylattipus_id, '') = 'boltieladas'"
+            . " OR (bf.storno = 1 AND COALESCE(elodelod.bizonylattipus_id, '') = 'boltieladas')))"
+        );
+
+        $mezok = [];
+        if (in_array('ev', $csoport, true)) {
+            $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y')";
+        } elseif (in_array('honap', $csoport, true)) {
+            $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y-%m')";
+        }
+        if (in_array('gyarto', $csoport, true)) {
+            $mezok['gyartoid'] = 't.gyarto_id';
+            $mezok['gyartonev'] = 'MAX(gy.nev)';
+        }
+        if (in_array('webshop', $csoport, true)) {
+            $mezok['webshopnum'] = 'bf.webshopnum';
+        }
+        $select = [];
+        $group = [];
+        foreach ($mezok as $alias => $kifejezes) {
+            $select[] = $kifejezes . ' AS ' . $alias;
+            if (!str_starts_with($kifejezes, 'MAX(')) {
+                $group[] = $alias;
+            }
+        }
+        $select[] = 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ') AS ertek';
+
+        $sql = 'SELECT ' . implode(',', $select)
+            . ' FROM bizonylattetel bt'
+            . ' INNER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . ' LEFT OUTER JOIN bizonylatfej elod ON (bf.parbizonylatfej_id=elod.id)'
+            . ' LEFT OUTER JOIN bizonylatfej elodelod ON (elod.parbizonylatfej_id=elodelod.id)'
+            . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+            . ' LEFT OUTER JOIN partner gy ON (t.gyarto_id=gy.id)'
+            . $this->getFilterString($filter)
+            . ($group ? ' GROUP BY ' . implode(',', $group) . ' ORDER BY ' . implode(',', $group) : '');
+
+        $rows = $this->_em->getConnection()->fetchAllAssociative($sql, $this->getQueryParameters($filter));
+        foreach ($rows as &$row) {
+            $row['ertek'] = round((float)$row['ertek'], 2);
+            if (array_key_exists('webshopnum', $row)) {
+                $row['webshopnev'] = \mkw\store::getWebshopNev($row['webshopnum']);
+            }
+            if (array_key_exists('gyartoid', $row) && !$row['gyartoid']) {
+                $row['gyartonev'] = 'nincs gyártó';
+            }
+        }
+        return $rows;
+    }
+
     public function getBizonylatTetelLista(
         $raktarid,
         $partnerid,

@@ -2813,6 +2813,17 @@ if ($DBVersion < '0190') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0190');
 }
 
+if ($DBVersion < '0191') {
+    // Árbevétel kimutatás, a Bizonylattétel lista után, annak láthatóságával
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 4, "Árbevétel kimutatás", "/admin/arbevetellista/view", "/admin/arbevetellista", 40,'
+        . ' IFNULL((SELECT lathato FROM (SELECT lathato FROM menu WHERE url = "/admin/bizonylattetellista/view" LIMIT 1) g), 1), 650, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/arbevetellista/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0191');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

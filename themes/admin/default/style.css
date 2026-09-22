@@ -474,3 +474,9 @@ select.tetelszamhiba,
     font-weight: bold;
     margin: 3px 0;
 }
+
+.arbevetel-chart {
+    position: relative;
+    height: 400px;
+    max-width: 1200px;
+}
