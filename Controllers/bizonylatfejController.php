@@ -1816,7 +1816,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $record = $this->prebuiltRecord ? $this->prebuiltRecord : $this->getRepo()->findWithJoins($id);
         $mehet = true;
         if ($oper === 'storno') {
-            if ($record->getNaveredmeny() != '' && $record->getNaveredmeny() !== 'DONE') {
+            // TESZT: teszt módban beküldött számla (NAVOnline::sendSzamla), a NAV-hoz nem ment ki
+            if ($record->getNaveredmeny() != '' && !in_array($record->getNaveredmeny(), ['DONE', 'TESZT'], true)) {
                 $mehet = false;
                 $view->setVar('nostorno', true);
             }
