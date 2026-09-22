@@ -118,6 +118,11 @@ $(document).ready(function () {
     function createMultiImageSelectable(n) {
         $(n).each(function () {
             var $list = $(this);
+            // új változat felvételekor újra meghívódik: egy második kezelővel a kattintás kétszer váltana, vagyis semmit
+            if ($list.data('multiselectable')) {
+                return;
+            }
+            $list.data('multiselectable', true);
             $list.on('click', 'li', function (e) {
                 if ($(e.target).hasClass('js-szinkepsorrend')) {
                     return;
