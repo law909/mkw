@@ -17,6 +17,9 @@
                 <label for="idfilter">{at('Id')}: </label>
                 <input id="idfilter" name="idfilter" type="text" size="15" maxlength="1000" placeholder="12, 34"
                        title="{at('Pontos egyezés, több termék vesszővel elválasztva')}">
+                <label for="egyediazonositofilter">{at('Egyedi azonosító')}: </label>
+                <input id="egyediazonositofilter" name="egyediazonositofilter" type="text" size="20" maxlength="255"
+                       title="{at('Azok a termékek, amelyek bizonylatán (tételben vagy munkalap fejben) szerepel')}">
                 <label for="nevfilter">{at('Név')} {at('(cikkszám, vonalkód)')}: </label>
                 <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
                 <label for="kepurlfilter">{at('Főkép url')}: </label>

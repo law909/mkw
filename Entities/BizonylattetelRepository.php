@@ -153,6 +153,25 @@ class BizonylattetelRepository extends \mkwhelpers\Repository
      *
      * @return \Entities\Bizonylattetel|null
      */
+    /** Termékek, amelyek egyedi azonosítója (tételen vagy munkalap fejen) illeszkedik a mintára. */
+    public function getTermekIdsByEgyediazonosito($term)
+    {
+        $params = ['term' => '%' . $term . '%'];
+        $q = $this->_em->createQuery(
+            'SELECT DISTINCT IDENTITY(bt.termek) AS termekid FROM Entities\Bizonylattetel bt'
+            . ' WHERE bt.termekegyediazonosito LIKE :term AND bt.termek IS NOT NULL'
+        );
+        $q->setParameters($params);
+        $ids = array_column($q->getScalarResult(), 'termekid');
+        $q = $this->_em->createQuery(
+            'SELECT DISTINCT IDENTITY(bf.munkalaptermek) AS termekid FROM Entities\Bizonylatfej bf'
+            . ' WHERE bf.munkalapegyediazonosito LIKE :term AND bf.munkalaptermek IS NOT NULL'
+        );
+        $q->setParameters($params);
+        $ids = array_merge($ids, array_column($q->getScalarResult(), 'termekid'));
+        return array_values(array_unique(array_map('intval', $ids)));
+    }
+
     public function findByEgyediazonosito($azonosito)
     {
         return $this->findOneBy(['termekegyediazonosito' => $azonosito]);

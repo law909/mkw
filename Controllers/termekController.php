@@ -9,6 +9,7 @@ use Entities\ME;
 use Entities\Meret;
 use Entities\Partner;
 use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
 use Entities\Raktar;
 use Entities\Szin;
 use Entities\Termek;
@@ -1291,6 +1292,11 @@ class termekController extends \mkwhelpers\MattableController
         if ($idfilter !== '') {
             $ids = array_filter(array_map('intval', preg_split('/[\s,;]+/', $idfilter)));
             // szám nélküli beírásra üres lista, nem a szűretlen
+            $filter->addFilter('id', 'IN', $ids ?: [0]);
+        }
+        $egyediazonosito = trim($this->params->getStringRequestParam('egyediazonositofilter'));
+        if ($egyediazonosito !== '') {
+            $ids = $this->getRepo(Bizonylattetel::class)->getTermekIdsByEgyediazonosito($egyediazonosito);
             $filter->addFilter('id', 'IN', $ids ?: [0]);
         }
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
