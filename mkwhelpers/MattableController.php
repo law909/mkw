@@ -230,6 +230,7 @@ class MattableController extends Controller
     public function save()
     {
         try {
+            $this->checkPostComplete();
             $ret = $this->saveData();
             switch ($ret['operation']) {
                 case $this->addOperation:
@@ -246,6 +247,26 @@ class MattableController extends Controller
         } catch (\Throwable $ex) {
             $error = \mkwhelpers\ErrorMessage::toUserMessage($ex);
             $this->jsonError($error['message'], $error['status'], $error['fields']);
+        }
+    }
+
+    /**
+     * A PHP a max_input_vars fölötti mezőket csendben eldobja. A csonka űrlapból mentett rekord
+     * adatot veszítene (a termék pl. a le nem érkezett színek kép-összerendeléseit törli), ezért
+     * ilyenkor nem mentünk.
+     */
+    protected function checkPostComplete()
+    {
+        $limit = (int)ini_get('max_input_vars');
+        $count = 0;
+        array_walk_recursive($_POST, function () use (&$count) {
+            $count++;
+        });
+        if ($limit > 0 && $count >= $limit) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(sprintf(
+                t('Az űrlap több mezőt küldött, mint amennyit a szerver fogad (max_input_vars = %d), ezért a mentés nem történt meg. A szerver PHP beállításában emelni kell ezt az értéket.'),
+                $limit
+            ));
         }
     }
 
