@@ -8,6 +8,8 @@
 {if ($uknev)}<h5>{$uknev}</h5>{/if}
 {if ($fizmodnev)}<h5>{$fizmodnev}</h5>{/if}
 {if ($cimkenevek)}<h5>{$cimkenevek}</h5>{/if}
+{if ($partnertipusnev)}<h5>{$partnertipusnev}</h5>{/if}
+{if ($webshopnev)}<h5>{$webshopnev}</h5>{/if}
 <table>
     <thead>
     <tr>

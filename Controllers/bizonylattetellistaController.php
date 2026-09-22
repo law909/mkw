@@ -7,6 +7,7 @@ use Entities\Bizonylatfej;
 use Entities\Fizmod;
 use Entities\Partner;
 use Entities\Partnercimketorzs;
+use Entities\Partnertipus;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekValtozat;
@@ -28,6 +29,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
     private $cimkenevek;
     private $fizmodnev;
     private $raktarnev;
+    private $partnertipusnev;
+    private $webshopnev;
 
     public function view()
     {
@@ -40,6 +43,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('gyartolist', $partner->getGyartoSelectList(0));
+        $view->setVar('partnertipuslist', (new partnertipusController())->getSelectList(0));
+        $view->setVar('webshopfilterlist', \mkw\store::getWebshopSelectList('', true));
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
 
@@ -88,6 +93,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         $keszletkell = $this->params->getBoolRequestParam('keszletkell');
         $uzletkotoid = $this->params->getIntRequestParam('uzletkoto');
         $csakfoglalas = $this->params->getBoolRequestParam('csakfoglalas');
+        $partnertipusid = $this->params->getIntRequestParam('partnertipus');
+        $webshopnum = $this->params->getStringRequestParam('webshopnum');
 
         $this->tolstr = $datumtolstr;
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
@@ -136,6 +143,13 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
             }
         }
 
+        if ($partnertipusid) {
+            $this->partnertipusnev = $this->getRepo(Partnertipus::class)->find($partnertipusid)?->getNev();
+        }
+        if ($webshopnum !== '') {
+            $this->webshopnev = \mkw\store::getWebshopNev((int)$webshopnum);
+        }
+
         if ($fizmodid) {
             $fizmod = $this->getRepo(Fizmod::class)->find($fizmodid);
             if ($fizmod) {
@@ -162,7 +176,9 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
             $partnercimkefilter,
             $csoportositas,
             $fizmodid,
-            $csakfoglalas
+            $csakfoglalas,
+            $partnertipusid,
+            $webshopnum
         );
 
         switch ($csoportositas) {
@@ -457,6 +473,8 @@ class bizonylattetellistaController extends \mkwhelpers\Controller
         $view->setVar('uknev', $this->uknev);
         $view->setVar('raktarnev', $this->raktarnev);
         $view->setVar('cimkenevek', $this->cimkenevek);
+        $view->setVar('partnertipusnev', $this->partnertipusnev);
+        $view->setVar('webshopnev', $this->webshopnev);
         $view->setVar('raktarlista', $res['raktarlista']);
         $view->setVar('ertektipus', $res['ertektipus']);
         $view->setVar('keszletkell', $keszletkell);

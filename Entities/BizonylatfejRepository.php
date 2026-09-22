@@ -757,7 +757,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $partnercimkefilter,
         $csoportositas,
         $fizmodid,
-        $csakfoglalas
+        $csakfoglalas,
+        $partnertipusid = null,
+        $webshopnum = ''
     ) {
         switch ($datumtipus) {
             case 'kelt':
@@ -906,6 +908,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($fizmodid) {
             $filter->addFilter('bf.fizmod_id', '=', $fizmodid);
         }
+        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
 
         $filter = $filter->merge($termekfilter);
 

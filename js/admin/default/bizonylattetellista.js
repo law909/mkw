@@ -81,6 +81,8 @@ $(document).ready(function () {
                                 gyarto: gyarto,
                                 uzletkoto: uzletkoto,
                                 partner: partner,
+                                partnertipus: $('select[name="partnertipus"]').val(),
+                                webshopnum: $('select[name="webshopnum"]').val(),
                                 fizmod: fizmod,
                                 forgalomfilter: forgalomfilter,
                                 ertektipus: ertektipus,
