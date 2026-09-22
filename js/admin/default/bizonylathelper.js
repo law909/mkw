@@ -2298,7 +2298,7 @@ let bizonylathelper = function ($) {
                 jelolDefaultTetelek();
 
                 $('.js-tetelnewbutton,.js-teteldelbutton,.js-inheritbizonylat,.js-quicktetelnewbutton,.js-backorder,.js-nav,.js-navstat,.js-email,' +
-                    '.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton,.js-tetelellenorzes').button();
+                    '.js-elolegbeszamitasbutton,.js-tetelimportbutton,.js-fcmotoimportbutton,.js-oxfordimportbutton,.js-tetelellenorzes').button();
 
                 $('.js-inheritbizonylat').each(function () {
                     let $this = $(this);
