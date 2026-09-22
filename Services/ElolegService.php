@@ -230,42 +230,6 @@ class ElolegService
     }
 
     /**
-     * The header-only inheritance from an order: one single advance line, NOT the order's goods.
-     * The amount is the order's gross total; the recorder overwrites it (typically with a
-     * percentage of it).
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    public static function buildInheritedLines(Bizonylatfej $rendeles): array
-    {
-        $termek = self::getElolegTermek($hiba);
-        if (!$termek) {
-            return [];
-        }
-        $tetelek = $rendeles->getBizonylattetelek();
-        if (!count($tetelek)) {
-            return [];
-        }
-        /** @var Bizonylattetel $elso */
-        $elso = $tetelek[0];
-        $sor = [
-            'afaid' => $elso->getAfaId(),
-            'afakulcs' => $elso->getAfakulcs(),
-            'afanev' => $elso->getAfanev(),
-            'netto' => $rendeles->getNetto(),
-            'afa' => $rendeles->getAfa(),
-            'brutto' => $rendeles->getBrutto(),
-        ];
-        $tetel = self::buildLine($rendeles, null, $termek, $elso->getAfaId(), $sor, 1);
-        $tetel['mennyiseg'] = 1;
-        $tetel['termeknev'] = t('Előleg') . ': ' . $rendeles->getId();
-        $tetel['netto'] = $sor['netto'];
-        $tetel['afa'] = $sor['afa'];
-        $tetel['brutto'] = $sor['brutto'];
-        return [$tetel];
-    }
-
-    /**
      * The offset advances of a document, for the printout: one row per advance invoice with the
      * offset net/VAT/gross. Empty on every document without an offset, so the summary block adds
      * nothing to the existing output.

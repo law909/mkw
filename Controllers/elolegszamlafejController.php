@@ -29,8 +29,16 @@ class elolegszamlafejController extends bizonylatfejController
             $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
             $egyed['reportfile'] = '';
             $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
-            // header-only inheritance: the order's goods are NOT carried over, one advance line is made
-            $egyed['tetelek'] = \Services\ElolegService::buildInheritedLines($record);
+            $ttk = [];
+            $cikl = 1;
+            foreach ($egyed['tetelek'] as $tetel) {
+                $tetel['parentid'] = $tetel['id'];
+                $tetel['id'] = \mkw\store::createUID($cikl);
+                $tetel['oper'] = 'inherit';
+                $ttk[] = $tetel;
+                $cikl++;
+            }
+            $egyed['tetelek'] = $ttk;
         }
         return $egyed;
     }
