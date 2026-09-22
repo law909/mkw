@@ -25,7 +25,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * E=Szín, F=Méret, G=Termék név, I=Mértékegység, J=Vonalkód,
  * P=Sorozatszámot kezel (kellegyediazonosito), Y=Küldés UNAS webshop-ba (feltoltheto2),
  * AB=TÍPUS, AC=Nettó eladási ár ("Kisker.ár" ársáv nettó ára), AD=Import típus.
- * Az akciós ár oszlopa nem fix: a fejléc alapján keressük ({@see findSalePriceColumn()}).
+ * Az akciós ár (bruttó) oszlopa nem fix: a fejléc alapján keressük ({@see findSalePriceColumn()}).
  * A termékfa az AD, ha az üres, akkor az AB oszlop szövegével azonosítódik.
  *
  * - B üres: sima termék változatok nélkül (cikkszám C, név G, vonalkód J).
@@ -54,7 +54,7 @@ class galadProductImportController extends \mkwhelpers\Controller
     private $handledValtozatCikkszam = [];
     private $skippedRows = 0;
 
-    /** @var array{column: string, header: string, gross: bool}|null */
+    /** @var array{column: string, header: string}|null */
     private $salePriceColumn = null;
 
     /**
@@ -65,7 +65,7 @@ class galadProductImportController extends \mkwhelpers\Controller
      * - A kategória (AD, hiányában AB) szövegével hasonló nevű termékfa csomópontot keres,
      *   ahhoz kapcsolja a terméket (termekfa1).
      * - A nettó árat (AC) a "Kisker.ár" ársávba tölti (létrehozza, ha még nincs).
-     * - Az akciós árat az "Akciós ár" ársávba tölti; ha az üres, oda is a kisker ár kerül.
+     * - A bruttó akciós árat az "Akciós ár" ársávba tölti; ha az üres, oda is a kisker ár kerül.
      */
     public function import()
     {
@@ -352,7 +352,7 @@ class galadProductImportController extends \mkwhelpers\Controller
             if (self::isEmptyValue($first['akcios'])) {
                 $this->setTermekAr($termek, $valutanem, $saleArsav, $first['netto']);
             } else {
-                $this->setTermekAr($termek, $valutanem, $saleArsav, $first['akcios'], $this->salePriceColumn['gross']);
+                $this->setTermekAr($termek, $valutanem, $saleArsav, $first['akcios'], true);
             }
         }
 
@@ -426,10 +426,9 @@ class galadProductImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Az akciós ár oszlopa: az első, amelynek fejlécében "akci" szerepel. Bruttónak akkor
-     * számít, ha a fejlécben "brutt" is van, egyébként nettó, mint az AC oszlop.
+     * Az akciós ár oszlopa: az első, amelynek fejlécében "akci" szerepel.
      *
-     * @return array{column: string, header: string, gross: bool}|null
+     * @return array{column: string, header: string}|null
      */
     private function findSalePriceColumn($sheet)
     {
@@ -437,9 +436,8 @@ class galadProductImportController extends \mkwhelpers\Controller
         for ($i = 1; $i <= $lastColumn; $i++) {
             $column = Coordinate::stringFromColumnIndex($i);
             $header = trim((string)$sheet->getCell($column . '1')->getValue());
-            $lower = mb_strtolower($header, 'UTF-8');
-            if (str_contains($lower, 'akci')) {
-                return ['column' => $column, 'header' => $header, 'gross' => str_contains($lower, 'brutt')];
+            if (str_contains(mb_strtolower($header, 'UTF-8'), 'akci')) {
+                return ['column' => $column, 'header' => $header];
             }
         }
         return null;
