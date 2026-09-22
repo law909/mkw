@@ -540,7 +540,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $trsm->addScalarResult('ertek2', 'ertek2');
 
         $q = $this->_em->createNativeQuery(
-            'SELECT t.id,t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
+            'SELECT t.id,COALESCE(NULLIF(tv.cikkszam, \'\'), t.cikkszam) AS cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.id AS tvid,tv.ertek1,tv.ertek2'
             . ' FROM termek t'
             . ' LEFT OUTER JOIN termekvaltozat tv ON (tv.termek_id=t.id)'
             . $this->getFilterString($termekfilter)
@@ -928,7 +928,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $q = $this->_em->createNativeQuery(
                     'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
-                    . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
+                    . ' COALESCE(NULLIF(tv.cikkszam, \'\'), t.cikkszam) AS cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
@@ -966,7 +966,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                     . ' MAX(bf.partnerhazszam) AS partnerhazszam,'
                     . ' bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany)*-1 AS mennyiseg '
                     . $ertekmezo1
-                    . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
+                    . ' COALESCE(NULLIF(tv.cikkszam, \'\'), t.cikkszam) AS cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
@@ -1031,7 +1031,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $q = $this->_em->createNativeQuery(
                     'SELECT bf.id,bf.kelt,bf.teljesites,bf.partner_id,bf.partnernev,bf.partnerirszam,'
                     . 'bf.partnervaros,bf.partnerutca,bf.partnerhazszam,bt.mennyiseg, '
-                    . ' t.cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev,tv.vonalkod '
+                    . ' COALESCE(NULLIF(tv.cikkszam, \'\'), t.cikkszam) AS cikkszam,' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS nev,tv.ertek1,tv.ertek2,bs.nev AS statusznev,tv.vonalkod '
                     . ' FROM bizonylattetel bt '
                     . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
                     . ' LEFT OUTER JOIN bizonylatstatusz bs ON (bf.bizonylatstatusz_id=bs.id)'
