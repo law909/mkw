@@ -14,6 +14,9 @@ var boltieladas = (function ($) {
     // nem vonalkódozunk).
     var productSelected = false;
 
+    // a deployment appinit-je állítja: a mentés utáni kérdés szövege, és kínáljon-e emailt
+    let settings = {printQuestion: null, email: true};
+
     function num(v) {
         if (v === null || v === undefined) {
             return 0;
@@ -252,9 +255,10 @@ var boltieladas = (function ($) {
         if (typeof bizonylathelper === 'undefined' || !res.nyomtatas) {
             return;
         }
-        bizonylathelper.nyomtatasKerdes('boltieladasfej', res.id, res.nyomtatas, function () {
+        const kapcsolok = settings.email ? res.nyomtatas : {...res.nyomtatas, sendemail: 0};
+        bizonylathelper.nyomtatasKerdes('boltieladasfej', res.id, kapcsolok, function () {
             $cont.find('.js-boltieladas-vonalkod').focus();
-        });
+        }, settings.printQuestion);
     }
 
     // "Számla" gomb: a kosarat mentés nélkül átadjuk a session-nek, és új ablakban megnyitjuk
@@ -408,7 +412,8 @@ var boltieladas = (function ($) {
         $cont.find('.js-boltieladas-vonalkod').focus();
     }
 
-    function init(containerSelector) {
+    function init(containerSelector, options) {
+        settings = {...settings, ...options};
         var $container = $(containerSelector);
         if (!$container.length) {
             return;

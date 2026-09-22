@@ -1750,8 +1750,8 @@ let bizonylathelper = function ($) {
     // vagy az emailes küldést; a kesz() zárja le a karbot (visszalépés a listára). A kérdés a
     // "Nyomtatási kérdés számla mentéskor" beállítás mögött van (consts::NyomtatasiKerdesMenteskor).
     // A kapcsolókat a hívó adja: a bizonylat karbon a form data attribútumaiból, a főoldali
-    // bolti eladásnál a mentés json válaszából.
-    function nyomtatasKerdes(entityName, egyedid, kapcsolok, kesz) {
+    // bolti eladásnál a mentés json válaszából. A kérdés szövegét a hívó felülírhatja.
+    function nyomtatasKerdes(entityName, egyedid, kapcsolok, kesz, question) {
         const kerdezni = kapcsolok.nyomtatasikerdes * 1 === 1,
             nyomtatni = kapcsolok.nyomtatni * 1 === 1,
             sendemail = kapcsolok.sendemail * 1 === 1,
@@ -1791,8 +1791,8 @@ let bizonylathelper = function ($) {
             $(this).dialog('close');
             kesz();
         };
-        $('#dialogcenter').html('A bizonylat elmentve (' + egyedid + ').<br>Nyomtatja, illetve elküldi emailben?').dialog({
-            title: 'Nyomtatás, küldés',
+        $('#dialogcenter').html(question || ('A bizonylat elmentve (' + egyedid + ').<br>Nyomtatja, illetve elküldi emailben?')).dialog({
+            title: sendemail ? 'Nyomtatás, küldés' : 'Nyomtatás',
             resizable: false,
             modal: true,
             buttons: gombok
