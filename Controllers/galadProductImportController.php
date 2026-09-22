@@ -6,6 +6,7 @@ use Entities\Afa;
 use Entities\Arsav;
 use Entities\ME;
 use Entities\Meret;
+use Entities\Partner;
 use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekAr;
@@ -27,6 +28,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * AB=TÍPUS, AC=Nettó eladási ár ("Kisker.ár" ársáv nettó ára), AD=Import típus.
  * Az akciós ár (bruttó) oszlopa nem fix: a fejléc alapján keressük ({@see findSalePriceColumn()}).
  * A termékfa az AD, ha az üres, akkor az AB oszlop szövegével azonosítódik.
+ * A gyártó az AA (MÁRKA) oszlopból: a {@see BRANDS} márkák egyikét tartalmazó sor termékének az
+ * import űrlapon a márkához választott partner lesz a gyártója.
  *
  * - B üres: sima termék változatok nélkül (cikkszám C, név G, vonalkód J).
  * - B kitöltött: változatos termék. A csoport minden sorából változat lesz – az "X"-szel
@@ -35,6 +38,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  */
 class galadProductImportController extends \mkwhelpers\Controller
 {
+
+    public const BRANDS = ['OXFORD', 'CGM', 'SUOMY', 'QUADLOCK'];
 
     /** a változat üresen maradt szín/méret jellemzőjének értéke, ha a párja ki van töltve */
     private const UNI = 'Uni';
@@ -56,6 +61,11 @@ class galadProductImportController extends \mkwhelpers\Controller
 
     /** @var array{column: string, header: string}|null */
     private $salePriceColumn = null;
+
+    /** @var array<string, int> márka => gyártó partner id */
+    private $gyartoByBrand = [];
+    private $gyartoNewCount = 0;
+    private $gyartoExistingCount = 0;
 
     /**
      * Termékimport futtatása a feltöltött XLSX alapján.
@@ -109,6 +119,7 @@ class galadProductImportController extends \mkwhelpers\Controller
         $kiskerArsav = $this->galadGetOrCreateArsav('Kisker.ár');
         $saleArsav = $this->galadGetOrCreateArsav('Akciós ár');
         $this->salePriceColumn = $this->findSalePriceColumn($sheet);
+        $this->gyartoByBrand = $this->readGyartoParams();
 
         // változat adattípusok fix színmódhoz (szín / méret): ha nincsenek, létrehozzuk,
         // és az ID-jukat a paraméterek közé is beírjuk
@@ -178,7 +189,9 @@ class galadProductImportController extends \mkwhelpers\Controller
             . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor kimaradt (hiányzó cikkszám, név vagy vonalkód).' : '')
             . ($this->salePriceColumn
                 ? ' Akciós ár: ' . $this->salePriceColumn['column'] . ' oszlop (' . $this->salePriceColumn['header'] . ').'
-                : ' Nincs akciós ár oszlop, az akciós ársávba a kisker ár került.');
+                : ' Nincs akciós ár oszlop, az akciós ársávba a kisker ár került.')
+            . ' Gyártó beállítva ' . $this->gyartoNewCount . ' új és ' . $this->gyartoExistingCount
+            . ' gyártó nélküli meglévő termékre.';
     }
 
     /**
@@ -201,6 +214,7 @@ class galadProductImportController extends \mkwhelpers\Controller
             $vonalkod = trim((string)$sheet->getCell('J' . $row)->getValue());
             $sorozatszam = trim((string)$sheet->getCell('P' . $row)->getValue());
             $unas = trim((string)$sheet->getCell('Y' . $row)->getValue());
+            $marka = trim((string)$sheet->getCell('AA' . $row)->getValue());
             $kategoria = trim((string)$sheet->getCell('AD' . $row)->getValue());
             if ($kategoria === '') {
                 $kategoria = trim((string)$sheet->getCell('AB' . $row)->getValue());
@@ -245,6 +259,7 @@ class galadProductImportController extends \mkwhelpers\Controller
                 'sorozatszam' => $sorozatszam,
                 'unas' => $unas,
                 'kategoria' => $kategoria,
+                'marka' => $marka,
                 'netto' => $nettoAr,
                 'akcios' => $akciosAr,
             ];
@@ -367,6 +382,17 @@ class galadProductImportController extends \mkwhelpers\Controller
             }
         }
 
+        // meglévő termék gyártóját csak akkor, ha még nincs
+        $gyartoId = $this->findGyartoId($first['marka']);
+        if ($gyartoId && ($newTermek || !$termek->getGyarto())) {
+            $termek->setGyarto(\mkw\store::getEm()->getReference(Partner::class, $gyartoId));
+            if ($newTermek) {
+                $this->gyartoNewCount++;
+            } else {
+                $this->gyartoExistingCount++;
+            }
+        }
+
         // sima terméknél a vonalkód magára a termékre kerül
         if ($termekVonalkod !== '') {
             $termek->setVonalkod($termekVonalkod);
@@ -423,6 +449,68 @@ class galadProductImportController extends \mkwhelpers\Controller
     private static function isEmptyValue($value)
     {
         return $value === null || trim((string)$value) === '';
+    }
+
+    /** A márka összehasonlítható alakja: nagybetűs, szóközök nélkül ("Quad Lock" = "QUADLOCK"). */
+    private static function normalizeBrand($value)
+    {
+        return preg_replace('/\s+/u', '', mb_strtoupper(trim((string)$value), 'UTF-8'));
+    }
+
+    /** A gyártó partner id-je az AA oszlop szövegéből: az első márka, amelyet tartalmaz. */
+    private function findGyartoId($marka)
+    {
+        $marka = self::normalizeBrand($marka);
+        if ($marka === '') {
+            return null;
+        }
+        foreach ($this->gyartoByBrand as $brand => $partnerId) {
+            if (str_contains($marka, $brand)) {
+                return $partnerId;
+            }
+        }
+        return null;
+    }
+
+    /** Az űrlapon márkánként választott gyártó partnerek; a nem létező partnert kihagyja. */
+    private function readGyartoParams()
+    {
+        $ret = [];
+        foreach (self::BRANDS as $brand) {
+            $partnerId = $this->params->getIntRequestParam('gyarto_' . strtolower($brand));
+            if ($partnerId && $this->getRepo(Partner::class)->find($partnerId)) {
+                $ret[$brand] = $partnerId;
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * Az import űrlap alapértelmezése: márkánként az a partner, amelynek neve szóközök nélkül
+     * megegyezik a márkával.
+     *
+     * @return array<int, array{marka: string, param: string, partnerid: int|null, partnernev: string}>
+     */
+    public static function getDefaultGyartok()
+    {
+        $partnerek = [];
+        $conn = \mkw\store::getEm()->getConnection();
+        foreach ($conn->fetchAllAssociative('SELECT id, nev FROM partner WHERE inaktiv = 0 ORDER BY id') as $sor) {
+            $kulcs = self::normalizeBrand($sor['nev']);
+            if (in_array($kulcs, self::BRANDS, true) && !isset($partnerek[$kulcs])) {
+                $partnerek[$kulcs] = $sor;
+            }
+        }
+        $ret = [];
+        foreach (self::BRANDS as $brand) {
+            $ret[] = [
+                'marka' => $brand,
+                'param' => 'gyarto_' . strtolower($brand),
+                'partnerid' => $partnerek[$brand]['id'] ?? null,
+                'partnernev' => $partnerek[$brand]['nev'] ?? '',
+            ];
+        }
+        return $ret;
     }
 
     /**

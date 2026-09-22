@@ -36,6 +36,14 @@
                         <input name="createuj" type="checkbox">
                     </div>
                     <div class="matt-hseparator"></div>
+                    {foreach $galadgyartok as $_gyarto}
+                        <div>
+                            <label for="Gyarto{$_gyarto.marka}Edit">{$_gyarto.marka} gyártó:</label>
+                            <input id="Gyarto{$_gyarto.marka}Edit" type="text" class="js-gyartoautocomplete" size="50"
+                                   value="{$_gyarto.partnernev|escape}">
+                            <input class="js-gyartoid" name="{$_gyarto.param}" type="hidden" value="{$_gyarto.partnerid}">
+                        </div>
+                    {/foreach}
                     <div>
                         <a href="/admin/import/galadproductimport" class="js-galadproductimport">Termék lista (product export)</a>
                     </div>
@@ -59,7 +67,9 @@
                         csoport) azonos száma köti össze egy termék változatait – a vezérsorból is változat
                         lesz. Termék neve: G, cikkszám: C, szín: E, méret: F, vonalkód: J, nettó ár: AC.
                         A termékfa az AD, ha az üres, akkor az AB oszlop szövege alapján, név szerint
-                        azonosítódik; ha nincs találat, a termék a főkategóriába kerül.</p>
+                        azonosítódik; ha nincs találat, a termék a főkategóriába kerül. A gyártó az AA (MÁRKA)
+                        oszlopból jön: ha az OXFORD, CGM, SUOMY vagy QUADLOCK szót tartalmazza, a fenti mezőben
+                        a márkához választott partner lesz a gyártó (a meglévő terméknél csak akkor, ha még nincs).</p>
                     <p>Az "Előző program készlete" a stock_detailed XLSX-et várja (Cikkszám, Termék, Vonalkód,
                         Raktár, Teljes mennyiség oszlopok). Raktáranként egy-egy "Induló készlet" megjegyzésű bevét
                         készül a tulaj partnerre; a raktárt a neve azonosítja, ha nincs ilyen, felveszi. A termék

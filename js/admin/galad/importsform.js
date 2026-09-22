@@ -21,6 +21,20 @@ $(document).ready(function () {
                 });
             }).button();
 
+            // márkánként a gyártó partner; a kézzel átírt, de nem választott név nem köt partnert
+            $('.js-gyartoautocomplete')
+                .autocomplete({
+                    minLength: 2,
+                    source: '/admin/bizonylatfej/getpartnerlist',
+                    select: (event, ui) => {
+                        $(event.target).siblings('.js-gyartoid').val(ui.item ? ui.item.id : '');
+                    }
+                })
+                .autocompleteRenderer(partnerAutocompleteRenderer)
+                .on('input', function () {
+                    $(this).siblings('.js-gyartoid').val('');
+                });
+
             $('.js-galadkeszletimport').on('click', function (e) {
                 e.preventDefault();
                 const eredmeny = $('#galadkeszlet-eredmeny');

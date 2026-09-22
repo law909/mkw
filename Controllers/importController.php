@@ -110,6 +110,9 @@ class importController extends \mkwhelpers\Controller
                 'caption' => t('Ebbe a kategóriába kerüljenek a termékek')
             ]);
         }
+        if (\mkw\store::isGalad()) {
+            $view->setVar('galadgyartok', galadProductImportController::getDefaultGyartok());
+        }
 
         $view->printTemplateResult(false);
     }
