@@ -55,7 +55,7 @@ class ElolegService
 
     /**
      * Advance invoices still offsettable against this final invoice: same partner, same currency,
-     * not voided, not reversed, and with a remaining amount.
+     * not voided, neither a reversal nor reversed, and with a remaining amount.
      *
      * @return array<int, array{id: string, keltstr: string, teljesitesstr: string, egyenleg: float,
      *                          netto: float, brutto: float}>
@@ -69,6 +69,7 @@ class ElolegService
         $filter->addFilter('bizonylattipus', '=', self::BIZTIPUS);
         $filter->addFilter('partner', '=', $szamla->getPartnerId());
         $filter->addFilter('rontott', '=', false);
+        $filter->addFilter('storno', '=', false);
         $filter->addFilter('stornozott', '=', false);
         // a differently denominated advance is not offered: at what rate would we convert it
         if ($szamla->getValutanemId()) {
@@ -275,8 +276,8 @@ class ElolegService
             $hiba = t('A hivatkozott bizonylat nem előlegszámla.');
             return false;
         }
-        if ($eloleg->getRontott() || $eloleg->getStornozott()) {
-            $hiba = t('A hivatkozott előlegszámla rontott vagy stornózott.');
+        if ($eloleg->getRontott() || $eloleg->getStorno() || $eloleg->getStornozott()) {
+            $hiba = t('A hivatkozott előlegszámla rontott, stornó vagy stornózott.');
             return false;
         }
         if ($eloleg->getPartnerId() != $szamla->getPartnerId()) {
