@@ -14,6 +14,7 @@ use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
 use Entities\Valutanem;
 use Entities\Vtsz;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
@@ -24,6 +25,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * E=Szín, F=Méret, G=Termék név, I=Mértékegység, J=Vonalkód,
  * P=Sorozatszámot kezel (kellegyediazonosito), Y=Küldés UNAS webshop-ba (feltoltheto2),
  * AB=TÍPUS, AC=Nettó eladási ár ("Kisker.ár" ársáv nettó ára), AD=Import típus.
+ * Az akciós ár oszlopa nem fix: a fejléc alapján keressük ({@see findSalePriceColumn()}).
  * A termékfa az AD, ha az üres, akkor az AB oszlop szövegével azonosítódik.
  *
  * - B üres: sima termék változatok nélkül (cikkszám C, név G, vonalkód J).
@@ -52,6 +54,9 @@ class galadProductImportController extends \mkwhelpers\Controller
     private $handledValtozatCikkszam = [];
     private $skippedRows = 0;
 
+    /** @var array{column: string, header: string, gross: bool}|null */
+    private $salePriceColumn = null;
+
     /**
      * Termékimport futtatása a feltöltött XLSX alapján.
      *
@@ -60,6 +65,7 @@ class galadProductImportController extends \mkwhelpers\Controller
      * - A kategória (AD, hiányában AB) szövegével hasonló nevű termékfa csomópontot keres,
      *   ahhoz kapcsolja a terméket (termekfa1).
      * - A nettó árat (AC) a "Kisker.ár" ársávba tölti (létrehozza, ha még nincs).
+     * - Az akciós árat az "Akciós ár" ársávba tölti; ha az üres, oda is a kisker ár kerül.
      */
     public function import()
     {
@@ -101,6 +107,8 @@ class galadProductImportController extends \mkwhelpers\Controller
 
         // ársáv létrehozása, ha még nincs
         $kiskerArsav = $this->galadGetOrCreateArsav('Kisker.ár');
+        $saleArsav = $this->galadGetOrCreateArsav('Akciós ár');
+        $this->salePriceColumn = $this->findSalePriceColumn($sheet);
 
         // változat adattípusok fix színmódhoz (szín / méret): ha nincsenek, létrehozzuk,
         // és az ID-jukat a paraméterek közé is beírjuk
@@ -139,12 +147,13 @@ class galadProductImportController extends \mkwhelpers\Controller
         $meId = $me ? $me->getId() : null;
         $valutanemId = $valutanem ? $valutanem->getId() : null;
         $kiskerArsavId = $kiskerArsav ? $kiskerArsav->getId() : null;
+        $saleArsavId = $saleArsav ? $saleArsav->getId() : null;
         $szinAdatTipusId = $szinAdatTipus ? $szinAdatTipus->getId() : null;
         $meretAdatTipusId = $meretAdatTipus ? $meretAdatTipus->getId() : null;
 
         $koteg = 0;
         foreach ($groups as $group) {
-            $res = $this->galadImportGroup($group, $afa, $vtsz, $me, $valutanem, $kiskerArsav, $szinAdatTipus, $meretAdatTipus);
+            $res = $this->galadImportGroup($group, $afa, $vtsz, $me, $valutanem, $kiskerArsav, $saleArsav, $szinAdatTipus, $meretAdatTipus);
             $termekdb += $res['termek'];
             $valtozatdb += $res['valtozat'];
             $existingCount += $res['existing'];
@@ -156,6 +165,7 @@ class galadProductImportController extends \mkwhelpers\Controller
                 $me = $meId ? $em->getReference(ME::class, $meId) : null;
                 $valutanem = $valutanemId ? $em->getReference(Valutanem::class, $valutanemId) : null;
                 $kiskerArsav = $kiskerArsavId ? $em->getReference(Arsav::class, $kiskerArsavId) : null;
+                $saleArsav = $saleArsavId ? $em->getReference(Arsav::class, $saleArsavId) : null;
                 $szinAdatTipus = $szinAdatTipusId ? $em->getReference(TermekValtozatAdatTipus::class, $szinAdatTipusId) : null;
                 $meretAdatTipus = $meretAdatTipusId ? $em->getReference(TermekValtozatAdatTipus::class, $meretAdatTipusId) : null;
                 $this->galadReattachCaches($em);
@@ -165,7 +175,10 @@ class galadProductImportController extends \mkwhelpers\Controller
 
         echo 'Kész. ' . $termekdb . ' új termék, ' . $valtozatdb . ' új változat létrehozva.'
             . ($existingCount ? ' ' . $existingCount . ' termék már létezett, változatlan maradt.' : '')
-            . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor kimaradt (hiányzó cikkszám, név vagy vonalkód).' : '');
+            . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor kimaradt (hiányzó cikkszám, név vagy vonalkód).' : '')
+            . ($this->salePriceColumn
+                ? ' Akciós ár: ' . $this->salePriceColumn['column'] . ' oszlop (' . $this->salePriceColumn['header'] . ').'
+                : ' Nincs akciós ár oszlop, az akciós ársávba a kisker ár került.');
     }
 
     /**
@@ -193,6 +206,9 @@ class galadProductImportController extends \mkwhelpers\Controller
                 $kategoria = trim((string)$sheet->getCell('AB' . $row)->getValue());
             }
             $nettoAr = $sheet->getCell('AC' . $row)->getValue();
+            $akciosAr = $this->salePriceColumn
+                ? $sheet->getCell($this->salePriceColumn['column'] . $row)->getValue()
+                : null;
 
             // üres sor: a fájl belsejében is van belőle, egyszerűen átlépjük
             if ($fotermek === '' && $csoport === '' && $cikkszam === '' && $szin === ''
@@ -230,6 +246,7 @@ class galadProductImportController extends \mkwhelpers\Controller
                 'unas' => $unas,
                 'kategoria' => $kategoria,
                 'netto' => $nettoAr,
+                'akcios' => $akciosAr,
             ];
         }
         return $groups;
@@ -272,7 +289,7 @@ class galadProductImportController extends \mkwhelpers\Controller
     /**
      * Egy termékhez tartozó (azonos kulcsú) sorok feldolgozása.
      */
-    private function galadImportGroup($group, $afa, $vtsz, $me, $valutanem, $kiskerArsav, $szinAdatTipus, $meretAdatTipus)
+    private function galadImportGroup($group, $afa, $vtsz, $me, $valutanem, $kiskerArsav, $saleArsav, $szinAdatTipus, $meretAdatTipus)
     {
         if (!$group) {
             return ['termek' => 0, 'valtozat' => 0, 'existing' => 0];
@@ -331,7 +348,12 @@ class galadProductImportController extends \mkwhelpers\Controller
             }
             \mkw\store::getEm()->persist($termek);
 
-            $this->galadSetArsavNetto($termek, $valutanem, $kiskerArsav, $first['netto']);
+            $this->setTermekAr($termek, $valutanem, $kiskerArsav, $first['netto']);
+            if (self::isEmptyValue($first['akcios'])) {
+                $this->setTermekAr($termek, $valutanem, $saleArsav, $first['netto']);
+            } else {
+                $this->setTermekAr($termek, $valutanem, $saleArsav, $first['akcios'], $this->salePriceColumn['gross']);
+            }
         }
 
         $valtozatdb = 0;
@@ -360,17 +382,17 @@ class galadProductImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Termék nettó ár beállítása adott ársávba és valutanembe. Megkeresi a meglévőt,
-     * vagy újat hoz létre. (A setNetto a termék ÁFА-ja alapján számolja a bruttót,
+     * Termék ára adott ársávba és valutanembe, nettóként vagy bruttóként. Megkeresi a meglévőt,
+     * vagy újat hoz létre. (A setNetto/setBrutto a termék ÁFА-ja alapján számolja a másikat,
      * ezért előbb a termeket kell beállítani, és a terméknek ÁFA-val kell rendelkeznie.)
      */
-    private function galadSetArsavNetto($termek, $valutanem, $arsav, $netto)
+    private function setTermekAr($termek, $valutanem, $arsav, $value, $gross = false)
     {
         if (!$arsav || !$termek->getAfa()) {
             return;
         }
         // ár nélküli termékhez nem hozunk létre árbejegyzést
-        if ($netto === null || trim((string)$netto) === '') {
+        if (self::isEmptyValue($value)) {
             return;
         }
         $termekarrepo = \mkw\store::getEm()->getRepository(TermekAr::class);
@@ -390,8 +412,37 @@ class galadProductImportController extends \mkwhelpers\Controller
             }
             $ar->setArsav($arsav);
         }
-        $ar->setNetto((float)$netto);
+        if ($gross) {
+            $ar->setBrutto((float)$value);
+        } else {
+            $ar->setNetto((float)$value);
+        }
         \mkw\store::getEm()->persist($ar);
+    }
+
+    private static function isEmptyValue($value)
+    {
+        return $value === null || trim((string)$value) === '';
+    }
+
+    /**
+     * Az akciós ár oszlopa: az első, amelynek fejlécében "akci" szerepel. Bruttónak akkor
+     * számít, ha a fejlécben "brutt" is van, egyébként nettó, mint az AC oszlop.
+     *
+     * @return array{column: string, header: string, gross: bool}|null
+     */
+    private function findSalePriceColumn($sheet)
+    {
+        $lastColumn = Coordinate::columnIndexFromString($sheet->getHighestDataColumn(1));
+        for ($i = 1; $i <= $lastColumn; $i++) {
+            $column = Coordinate::stringFromColumnIndex($i);
+            $header = trim((string)$sheet->getCell($column . '1')->getValue());
+            $lower = mb_strtolower($header, 'UTF-8');
+            if (str_contains($lower, 'akci')) {
+                return ['column' => $column, 'header' => $header, 'gross' => str_contains($lower, 'brutt')];
+            }
+        }
+        return null;
     }
 
     /**
