@@ -1188,9 +1188,10 @@ class termekController extends \mkwhelpers\MattableController
                 }
             }
             $szinidset = array_flip($szinids);
-            foreach ($szinkepmap as $szinid => $kepmap) {
+            // nem $kepmap: az a képek űrlapkulcs-térképe, lent az új összerendelések abból veszik a képet
+            foreach ($szinkepmap as $szinid => $szinkepek) {
                 if (!isset($szinidset[$szinid])) {
-                    foreach ($kepmap as $szinkep) {
+                    foreach ($szinkepek as $szinkep) {
                         $obj->removeTermekSzinKep($szinkep);
                         $this->getEm()->remove($szinkep);
                     }
