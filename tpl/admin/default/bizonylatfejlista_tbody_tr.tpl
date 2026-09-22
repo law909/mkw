@@ -199,6 +199,10 @@
                 </tr>
             {/if}
             <tr>
+                <td>{at('Webshop')}:</td>
+                <td>{$_egyed.webshopnev}</td>
+            </tr>
+            <tr>
                 <td colspan="5" class="referrer">
                     {at('IP')}: {$_egyed.ip} {at('Ref.')}: {$_egyed.referrer}
                 </td>

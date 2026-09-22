@@ -2382,6 +2382,14 @@
                                 </select>
                             </div>
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasWebshopnumEdit">{at('A rendelések webshopja')}:</label></span>
+                                <select id="UnasWebshopnumEdit" name="unaswebshopnum">
+                                    {foreach $unaswebshoplist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="UnasDefaultTermekEdit">{at('Beazonosíthatatlan cikkszám terméke')}:</label></span>
                                 <input id="UnasDefaultTermekEdit" type="text" class="js-setuptermekselect"
                                        data-target="unasdefaulttermek" value="{$unasdefaulttermeknev}" size="60" autocomplete="off">

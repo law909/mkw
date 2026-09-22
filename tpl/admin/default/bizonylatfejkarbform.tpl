@@ -443,6 +443,13 @@
                                 </select>
                             </td>
                         {/if}
+                        <td><label for="WebshopnumEdit">{at('Webshop')}:</label></td>
+                        <td><select id="WebshopnumEdit" name="webshopnum">
+                                {foreach $webshoplist as $_mk}
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
                         <td><label for="ReportfileEdit">{at('Nyomtatási forma')}:</label></td>
                         <td><select id="ReportfileEdit" name="reportfile">
                                 <option value="">{at('válasszon')}</option>

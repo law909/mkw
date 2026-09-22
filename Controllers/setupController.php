@@ -571,6 +571,7 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('unasraktarlist', (new raktarController())->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::UnasPartnertipus);
         $view->setVar('unaspartnertipuslist', (new partnertipusController())->getSelectList(($p ? $p->getErtek() : 0)));
+        $view->setVar('unaswebshoplist', \mkw\store::getWebshopSelectList(\mkw\store::getParameter(\mkw\consts::UnasWebshopnum, \mkw\store::getWebshopNum())));
         foreach ([
             \mkw\consts::UnasDefaultTermek,
             \mkw\consts::UnasSzallitasiKtgTermek,
@@ -1426,6 +1427,7 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::UnasFizetveStatusz,
             \mkw\consts::UnasRaktar,
             \mkw\consts::UnasPartnertipus,
+            \mkw\consts::UnasWebshopnum,
             \mkw\consts::UnasDefaultTermek,
             \mkw\consts::UnasSzallitasiKtgTermek,
             \mkw\consts::UnasKezelesiKtgTermek,
@@ -1483,6 +1485,7 @@ class setupController extends \mkwhelpers\Controller
         $partnertipus = \mkw\store::getEm()->getRepository(\Entities\Partnertipus::class)
             ->find($this->params->getIntRequestParam(\mkw\consts::UnasPartnertipus, 0));
         $this->setObj(\mkw\consts::UnasPartnertipus, $partnertipus ? $partnertipus->getId() : '');
+        $this->setObj(\mkw\consts::UnasWebshopnum, $this->params->getIntRequestParam(\mkw\consts::UnasWebshopnum) ?: '');
         foreach ([
             \mkw\consts::UnasDefaultTermek,
             \mkw\consts::UnasSzallitasiKtgTermek,

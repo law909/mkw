@@ -1844,6 +1844,51 @@ class store
         return self::getSetupValue('enabledwebshops', 1);
     }
 
+    /** @return array webshopnum => name, as set on the settings screen */
+    public static function getWebshopList(): array
+    {
+        $ret = [];
+        $utolso = self::isMultiShop() ? max((int)self::getEnabledWebshops(), 1) : 1;
+        for ($num = 1; $num <= $utolso; $num++) {
+            $ret[$num] = (string)self::getParameter('webshop' . $num . 'name', '') ?: 'Webshop ' . $num;
+        }
+        return $ret;
+    }
+
+    /** Empty webshopnum means an in-store document. */
+    public static function getWebshopNev($webshopnum): string
+    {
+        if (!$webshopnum) {
+            return 'Bolti';
+        }
+        return self::getWebshopList()[$webshopnum] ?? 'Webshop ' . $webshopnum;
+    }
+
+    /**
+     * In-store is "0", since the request handler reads an empty value as a missing one.
+     * $filter adds a leading "any" option for list filters.
+     */
+    public static function getWebshopSelectList($selected = null, bool $filter = false): array
+    {
+        $ret = [];
+        $selected = (string)$selected;
+        if ($filter) {
+            $ret[] = ['id' => '', 'caption' => 'Mind', 'selected' => $selected === ''];
+        } elseif ($selected === '') {
+            $selected = '0';
+        }
+        $ret[] = ['id' => '0', 'caption' => 'Bolti', 'selected' => $selected === '0'];
+        $list = self::getWebshopList();
+        // a document of a since-disabled webshop still shows its own value
+        if ($selected !== '' && $selected !== '0' && !isset($list[(int)$selected])) {
+            $list[(int)$selected] = 'Webshop ' . (int)$selected;
+        }
+        foreach ($list as $num => $nev) {
+            $ret[] = ['id' => (string)$num, 'caption' => $nev, 'selected' => $selected === (string)$num];
+        }
+        return $ret;
+    }
+
     public static function getAdminTemplatePath()
     {
         return self::getConfigValue('path.template');

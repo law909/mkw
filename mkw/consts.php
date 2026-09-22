@@ -473,6 +473,7 @@ class consts
     // UNAS megrendelés-import és visszaírás (lásd docs/unas-megrendeles-integracio.md)
     const UnasRaktar = 'unasraktar';
     const UnasPartnertipus = 'unaspartnertipus';
+    const UnasWebshopnum = 'unaswebshopnum';
     // leképezések JSON-ban, {UNAS azonosító: MKW azonosító} – az UNAS státuszai és módjai
     // boltonként szabadon konfigurálhatók, ezért nem lehet belőlük oszlop
     const UnasStatuszMap = 'unasstatuszmap';

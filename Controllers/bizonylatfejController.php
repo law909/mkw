@@ -579,6 +579,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['belsouzletkotoemail'] = $t->getBelsouzletkotoemail();
         $x['belsouzletkotojutalek'] = $t->getBelsouzletkotojutalek();
         $x['bizonylatnyelv'] = $t->getBizonylatnyelv();
+        $x['webshopnum'] = $t->getWebshopnum();
+        $x['webshopnev'] = \mkw\store::getWebshopNev($t->getWebshopnum());
         $x['reportfile'] = $t->getReportfile();
         $x['regmode'] = $t->getRegmode();
         $x['lastmodstr'] = $t->getLastmodStr();
@@ -1023,6 +1025,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         $obj->setBizonylatnyelv($this->params->getStringRequestParam('bizonylatnyelv', \mkw\store::getAdminDataLocale()));
         $obj->setReportfile($this->params->getStringRequestParam('reportfile'));
+        // forms without the select (e.g. quick add) leave it untouched
+        if (!is_null($this->params->getRequestParam('webshopnum', null))) {
+            $obj->setWebshopnum($this->params->getIntRequestParam('webshopnum') ?: null);
+        }
 
         if (!$obj->getAfaellenorzesnemkell() && $this->params->getBoolRequestParam('afaellenorzesnemkell', false)) {
             $obj->setAfaellenorzesnemkell(true);
@@ -1933,6 +1939,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $this->getRepo()->getReportfileSelectList($sajatforma, $this->biztipusid)
             );
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
+            $view->setVar('webshoplist', \mkw\store::getWebshopSelectList($record?->getWebshopnum()));
 
             $csomagctrl = new csomagterminalController();
             $szallitasimodobj = $this->getRepo(Szallitasimod::class)->find($szallmodid);

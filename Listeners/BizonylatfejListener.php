@@ -1277,7 +1277,8 @@ class BizonylatfejListener
                     // kapjanak sorokat; a $uow kell, mert flush közben keletkeznek az entitások
                     KapcsolodoKoltsegService::regenerateBizonylat($entity, $this->uow);
 
-                    if (!$entity->getWebshopnum()) {
+                    // in admin an empty webshop means an in-store document, the form decides
+                    if (!$entity->getWebshopnum() && !\mkw\store::isAdminMode() && $this->uow->isScheduledForInsert($entity)) {
                         $entity->setWebshopnum(\mkw\store::getWebshopNum());
                     }
 

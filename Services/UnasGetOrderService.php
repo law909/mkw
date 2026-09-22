@@ -356,6 +356,8 @@ class UnasGetOrderService
             $fej->unasSkipWriteback = true;
             $fej->setPersistentData();
             $fej->setBizonylattipus($biztipus);
+            // the import also runs from admin, where the listener leaves webshopnum empty
+            $fej->setWebshopnum(\mkw\store::getParameter(\mkw\consts::UnasWebshopnum, \mkw\store::getWebshopNum()) ?: null);
 
             $kelt = $this->orderDate($order);
             $fej->setKelt($kelt);
