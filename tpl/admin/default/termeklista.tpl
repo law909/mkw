@@ -14,6 +14,9 @@
         <div id="mattable-filterwrapper">
             <div class="matt-hseparator"></div>
             <div>
+                <label for="idfilter">{at('Id')}: </label>
+                <input id="idfilter" name="idfilter" type="text" size="15" maxlength="1000" placeholder="12, 34"
+                       title="{at('Pontos egyezés, több termék vesszővel elválasztva')}">
                 <label for="nevfilter">{at('Név')} {at('(cikkszám, vonalkód)')}: </label>
                 <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
                 <label for="kepurlfilter">{at('Főkép url')}: </label>

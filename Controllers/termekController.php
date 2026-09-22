@@ -1287,6 +1287,12 @@ class termekController extends \mkwhelpers\MattableController
         $view = $this->createView('termeklista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
+        $idfilter = trim($this->params->getStringRequestParam('idfilter'));
+        if ($idfilter !== '') {
+            $ids = array_filter(array_map('intval', preg_split('/[\s,;]+/', $idfilter)));
+            // szám nélküli beírásra üres lista, nem a szűretlen
+            $filter->addFilter('id', 'IN', $ids ?: [0]);
+        }
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
             $filter->addFilter('gyarto', '=', $this->params->getIntRequestParam('gyartofilter'));
         }
