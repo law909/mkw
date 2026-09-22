@@ -2,7 +2,7 @@
   "name": "MKW",
   "devDependencies": {
     "chart.js": "^4.5.1",
-    "grunt": "^1.6.1",
+    "grunt": "^1.6.3",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-less": "^1.4.1",
     "grunt-sass": "^3.1.0",
