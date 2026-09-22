@@ -647,11 +647,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['fakekifizetesdatumstr'] = $t->getFakekifizetesdatumStr();
         }
         $bsc = new bizonylatstatuszController();
+        // a képzett bizonylat nem örökli az előd státuszát, és a saját típusának státuszai közül választ
+        $inherit = ($oper === $this->inheritOperation);
         $x['bizonylatstatuszlist'] = $bsc->getSelectList(
-            $t->getBizonylatstatuszId(),
+            $inherit ? null : $t->getBizonylatstatuszId(),
             $t->getFizmodId(),
             $t->getSzallitasimodId(),
-            $t->getBizonylattipusId()
+            $inherit ? $this->getBiztipusId() : $t->getBizonylattipusId()
         );
         if ($forKarb) {
             foreach ($t->getBizonylatDokok() as $kepje) {
