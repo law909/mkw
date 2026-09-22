@@ -87,7 +87,7 @@
                         <input id="CsakfoglalasEdit" type="checkbox" name="csakfoglalas">
                     </div>
                 </div>
-                <div>
+                <div class="termekforgalmijobb">
                     {include "comp_bizonylattipus.tpl"}
                     <div class="matt-hseparator"></div>
                     {include "comp_bizonylatstatusz.tpl"}

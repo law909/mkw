@@ -1,4 +1,4 @@
-<div>
+<div class="bizonylattipuslist">
     {foreach $bizonylattipuslist as $bt}
         <div>
             <input id="bizonylattipuscb{$bt.id}" type="checkbox" name="bizonylattipus[]" value="{$bt.id}">

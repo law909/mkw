@@ -392,6 +392,15 @@ table.termekkarton td.kartonfejsor {
     min-height: 250px;
 }
 
+/* beside the float instead of wrapping under it when it is the taller one */
+.termekforgalmijobb {
+    overflow: hidden;
+}
+
+.bizonylattipuslist {
+    columns: 2;
+}
+
 .setuplabel {
     display: inline-block;
     min-width: 120px;
