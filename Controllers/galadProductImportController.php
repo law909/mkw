@@ -15,7 +15,6 @@ use Entities\TermekValtozat;
 use Entities\TermekValtozatAdatTipus;
 use Entities\Valutanem;
 use Entities\Vtsz;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
@@ -25,15 +24,14 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * számú sorok egy termék változatai), C=Cikkszám, D=Név (a soré, nem használt),
  * E=Szín, F=Méret, G=Termék név, I=Mértékegység, J=Vonalkód,
  * P=Sorozatszámot kezel (kellegyediazonosito), Y=Küldés UNAS webshop-ba (feltoltheto2),
- * AB=TÍPUS, AC=Nettó eladási ár ("Kisker.ár" ársáv nettó ára), AD=Import típus.
- * Az akciós ár (bruttó) oszlopa nem fix: a fejléc alapján keressük ({@see findSalePriceColumn()}).
- * A termékfa az AD, ha az üres, akkor az AB oszlop szövegével azonosítódik.
+ * AC=Nettó kisker ár ("Kisker.ár" ársáv), AE=Bruttó akciós ár ("Akciós ár" ársáv).
+ * Minden termék a termékfa gyökerébe kerül.
  * A gyártó az AA (MÁRKA) oszlopból: a {@see BRANDS} márkák egyikét tartalmazó sor termékének az
  * import űrlapon a márkához választott partner lesz a gyártója.
  *
  * - B üres: sima termék változatok nélkül (cikkszám C, név G, vonalkód J).
  * - B kitöltött: változatos termék. A csoport minden sorából változat lesz – az "X"-szel
- *   jelölt sorból is –, a termék adatai (cikkszám, név, kategória, ár) az "X" sorból jönnek.
+ *   jelölt sorból is –, a termék adatai (cikkszám, név, ár) az "X" sorból jönnek.
  * - Változatos sorban a szín és a méret párban jár: ha csak az egyik van kitöltve, a másik "Uni".
  */
 class galadProductImportController extends \mkwhelpers\Controller
@@ -46,8 +44,7 @@ class galadProductImportController extends \mkwhelpers\Controller
 
     private $galadSzinCache = [];
     private $galadMeretCache = [];
-    private $galadTermekfaCache = [];
-    private $galadRootTermekfa = false;
+    private $galadRootTermekfa = null;
 
     // a soronkénti findOneBy-ok kiváltására előtöltött, már létező kulcsok (érték => true)
     private $galadLetezoValtozatVonalkod = [];
@@ -59,9 +56,6 @@ class galadProductImportController extends \mkwhelpers\Controller
     private $handledValtozatCikkszam = [];
     private $skippedRows = 0;
 
-    /** @var array{column: string, header: string}|null */
-    private $salePriceColumn = null;
-
     /** @var array<string, int> márka => gyártó partner id */
     private $gyartoByBrand = [];
     private $gyartoNewCount = 0;
@@ -72,10 +66,9 @@ class galadProductImportController extends \mkwhelpers\Controller
      *
      * - Az ár nélküli (üres AC oszlop) sorokat is importálja, csak árat nem állít be hozzájuk.
      * - A Variáns csoport (B) köti össze egy termék sorait/változatait.
-     * - A kategória (AD, hiányában AB) szövegével hasonló nevű termékfa csomópontot keres,
-     *   ahhoz kapcsolja a terméket (termekfa1).
+     * - Minden új termék a termékfa gyökerébe kerül (termekfa1).
      * - A nettó árat (AC) a "Kisker.ár" ársávba tölti (létrehozza, ha még nincs).
-     * - A bruttó akciós árat az "Akciós ár" ársávba tölti; ha az üres, oda is a kisker ár kerül.
+     * - A bruttó akciós árat (AE) az "Akciós ár" ársávba tölti; ha az üres, oda is a kisker ár kerül.
      */
     public function import()
     {
@@ -118,7 +111,7 @@ class galadProductImportController extends \mkwhelpers\Controller
         // ársáv létrehozása, ha még nincs
         $kiskerArsav = $this->galadGetOrCreateArsav('Kisker.ár');
         $saleArsav = $this->galadGetOrCreateArsav('Akciós ár');
-        $this->salePriceColumn = $this->findSalePriceColumn($sheet);
+        $this->galadRootTermekfa = TermekFa::getRoot();
         $this->gyartoByBrand = $this->readGyartoParams();
 
         // változat adattípusok fix színmódhoz (szín / méret): ha nincsenek, létrehozzuk,
@@ -187,9 +180,6 @@ class galadProductImportController extends \mkwhelpers\Controller
         echo 'Kész. ' . $termekdb . ' új termék, ' . $valtozatdb . ' új változat létrehozva.'
             . ($existingCount ? ' ' . $existingCount . ' termék már létezett, változatlan maradt.' : '')
             . ($this->skippedRows ? ' ' . $this->skippedRows . ' sor kimaradt (hiányzó cikkszám, név vagy vonalkód).' : '')
-            . ($this->salePriceColumn
-                ? ' Akciós ár: ' . $this->salePriceColumn['column'] . ' oszlop (' . $this->salePriceColumn['header'] . ').'
-                : ' Nincs akciós ár oszlop, az akciós ársávba a kisker ár került.')
             . ' Gyártó beállítva ' . $this->gyartoNewCount . ' új és ' . $this->gyartoExistingCount
             . ' gyártó nélküli meglévő termékre.';
     }
@@ -215,18 +205,12 @@ class galadProductImportController extends \mkwhelpers\Controller
             $sorozatszam = trim((string)$sheet->getCell('P' . $row)->getValue());
             $unas = trim((string)$sheet->getCell('Y' . $row)->getValue());
             $marka = trim((string)$sheet->getCell('AA' . $row)->getValue());
-            $kategoria = trim((string)$sheet->getCell('AD' . $row)->getValue());
-            if ($kategoria === '') {
-                $kategoria = trim((string)$sheet->getCell('AB' . $row)->getValue());
-            }
             $nettoAr = $sheet->getCell('AC' . $row)->getValue();
-            $akciosAr = $this->salePriceColumn
-                ? $sheet->getCell($this->salePriceColumn['column'] . $row)->getValue()
-                : null;
+            $akciosAr = $sheet->getCell('AE' . $row)->getValue();
 
             // üres sor: a fájl belsejében is van belőle, egyszerűen átlépjük
             if ($fotermek === '' && $csoport === '' && $cikkszam === '' && $szin === ''
-                && $meret === '' && $nev === '' && $vonalkod === '' && $kategoria === ''
+                && $meret === '' && $nev === '' && $vonalkod === ''
                 && ($nettoAr === null || trim((string)$nettoAr) === '')) {
                 continue;
             }
@@ -258,7 +242,6 @@ class galadProductImportController extends \mkwhelpers\Controller
                 'vonalkod' => $vonalkod,
                 'sorozatszam' => $sorozatszam,
                 'unas' => $unas,
-                'kategoria' => $kategoria,
                 'marka' => $marka,
                 'netto' => $nettoAr,
                 'akcios' => $akciosAr,
@@ -350,16 +333,8 @@ class galadProductImportController extends \mkwhelpers\Controller
             if (!$termek->getAfa() && $afa) {
                 $termek->setAfa($afa);
             }
-            $kategoria = $this->galadFindTermekfaByNev($first['kategoria']);
-            if (!$kategoria) {
-                // ha nincs kategória-találat, a szülő nélküli főkategóriába kerül
-                if ($this->galadRootTermekfa === false) {
-                    $this->galadRootTermekfa = TermekFa::getRoot();
-                }
-                $kategoria = $this->galadRootTermekfa;
-            }
-            if ($kategoria) {
-                $termek->setTermekfa1($kategoria);
+            if ($this->galadRootTermekfa) {
+                $termek->setTermekfa1($this->galadRootTermekfa);
             }
             \mkw\store::getEm()->persist($termek);
 
@@ -511,24 +486,6 @@ class galadProductImportController extends \mkwhelpers\Controller
             ];
         }
         return $ret;
-    }
-
-    /**
-     * Az akciós ár oszlopa: az első, amelynek fejlécében "akci" szerepel.
-     *
-     * @return array{column: string, header: string}|null
-     */
-    private function findSalePriceColumn($sheet)
-    {
-        $lastColumn = Coordinate::columnIndexFromString($sheet->getHighestDataColumn(1));
-        for ($i = 1; $i <= $lastColumn; $i++) {
-            $column = Coordinate::stringFromColumnIndex($i);
-            $header = trim((string)$sheet->getCell($column . '1')->getValue());
-            if (str_contains(mb_strtolower($header, 'UTF-8'), 'akci')) {
-                return ['column' => $column, 'header' => $header];
-            }
-        }
-        return null;
     }
 
     /**
@@ -709,86 +666,6 @@ class galadProductImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * Termékfa csomópont keresése név (AD, hiányában AB oszlop) alapján: pontos egyezés,
-     * majd kezdet, majd tartalmazás (LIKE), majd a szövegben előforduló leghosszabb
-     * csomópontnév, végül leghasonlóbb név (fuzzy).
-     */
-    private function galadFindTermekfaByNev($nev)
-    {
-        $nev = trim((string)$nev);
-        if ($nev === '') {
-            return null;
-        }
-        if (array_key_exists($nev, $this->galadTermekfaCache)) {
-            return $this->galadTermekfaCache[$nev];
-        }
-        $repo = \mkw\store::getEm()->getRepository(TermekFa::class);
-
-        // 1) pontos egyezés (a kolláció kis/nagybetűt nem különböztet meg)
-        $found = $repo->findOneBy(['nev' => $nev]);
-
-        // 2) kezdet, majd tartalmazás, a legrövidebb névvel kezdve: az "ALKATRÉSZ" így az
-        //    "ALKATRÉSZEK"-be kerül, nem a "BUKÓSISAK ALKATRÉSZ"-be
-        foreach ([$nev . '%', '%' . $nev . '%'] as $minta) {
-            if ($found) {
-                break;
-            }
-            $res = \mkw\store::getEm()->createQueryBuilder()
-                ->select('tf')->from(TermekFa::class, 'tf')
-                ->where('tf.nev LIKE :p')
-                ->orderBy('LENGTH(tf.nev)', 'ASC')
-                ->setParameter('p', $minta)
-                ->setMaxResults(1)
-                ->getQuery()->getResult();
-            if ($res) {
-                $found = $res[0];
-            }
-        }
-
-        if (!$found) {
-            $needle = $this->galadNormalizeNev($nev);
-            $mind = $repo->findAll();
-
-            // 3) a leghosszabb csomópontnév, ami benne van a keresett szövegben: a "FÉRFI CSIZMA"
-            //    így a "CSIZMA" alá kerül, nem a hozzá hasonló nevű "FÉRFI KESZTYŰ" alá
-            $bestLen = 0;
-            foreach ($mind as $tf) {
-                $tfnev = $this->galadNormalizeNev($tf->getNev());
-                $hossz = mb_strlen($tfnev, 'UTF-8');
-                if ($hossz > 2 && $hossz > $bestLen && mb_strpos($needle, $tfnev, 0, 'UTF-8') !== false) {
-                    $bestLen = $hossz;
-                    $found = $tf;
-                }
-            }
-
-            // 4) leghasonlóbb név (fuzzy)
-            if (!$found) {
-                $best = null;
-                $bestScore = 0;
-                foreach ($mind as $tf) {
-                    $pct = 0;
-                    similar_text($needle, $this->galadNormalizeNev($tf->getNev()), $pct);
-                    if ($pct > $bestScore) {
-                        $bestScore = $pct;
-                        $best = $tf;
-                    }
-                }
-                if ($best && $bestScore >= 50) {
-                    $found = $best;
-                }
-            }
-        }
-
-        $this->galadTermekfaCache[$nev] = $found;
-        return $found;
-    }
-
-    private function galadNormalizeNev($nev)
-    {
-        return mb_strtolower(trim(preg_replace('/\s+/', ' ', (string)$nev)), 'UTF-8');
-    }
-
-    /**
      * Adott entitás egy mezőjének már létező értékei halmazként (érték => true), a megadott
      * lehetséges értékekre szűrve. Egyetlen (1000-esével darabolt) lekérdezéssorozattal
      * tölti be a fájlban előforduló kulcsokat, hogy ne kelljen soronként findOneBy-t futtatni.
@@ -814,7 +691,7 @@ class galadProductImportController extends \mkwhelpers\Controller
     }
 
     /**
-     * A kötegelt clear() után a memóriában tartott szín/méret/termékfa cache leváló
+     * A kötegelt clear() után a memóriában tartott szín/méret cache és a gyökér termékfa leváló
      * entitásait ID alapján újrareferálja (getReference nem indít lekérdezést), hogy a
      * cache-ek a következő kötegben is használhatók maradjanak.
      */
@@ -825,11 +702,6 @@ class galadProductImportController extends \mkwhelpers\Controller
         }
         foreach ($this->galadMeretCache as $k => $e) {
             $this->galadMeretCache[$k] = $em->getReference(Meret::class, $e->getId());
-        }
-        foreach ($this->galadTermekfaCache as $k => $e) {
-            if ($e) {
-                $this->galadTermekfaCache[$k] = $em->getReference(TermekFa::class, $e->getId());
-            }
         }
         if ($this->galadRootTermekfa) {
             $this->galadRootTermekfa = $em->getReference(TermekFa::class, $this->galadRootTermekfa->getId());

@@ -65,9 +65,9 @@
                     <p>A "Termék lista (product export)" a product export XLSX-et várja. Az üres sorokat
                         átlépi. Az A oszlop "X" jele a változatos termék vezérsora, a B oszlop (Variáns
                         csoport) azonos száma köti össze egy termék változatait – a vezérsorból is változat
-                        lesz. Termék neve: G, cikkszám: C, szín: E, méret: F, vonalkód: J, nettó ár: AC.
-                        A termékfa az AD, ha az üres, akkor az AB oszlop szövege alapján, név szerint
-                        azonosítódik; ha nincs találat, a termék a főkategóriába kerül. A gyártó az AA (MÁRKA)
+                        lesz. Termék neve: G, cikkszám: C, szín: E, méret: F, vonalkód: J, nettó kisker ár: AC,
+                        bruttó akciós ár: AE. Változatnál, ha csak a szín vagy csak a méret van kitöltve, a
+                        másik "Uni" lesz. Minden termék a termékfa gyökerébe kerül. A gyártó az AA (MÁRKA)
                         oszlopból jön: ha az OXFORD, CGM, SUOMY vagy QUADLOCK szót tartalmazza, a fenti mezőben
                         a márkához választott partner lesz a gyártó (a meglévő terméknél csak akkor, ha még nincs).</p>
                     <p>Az "Előző program készlete" a stock_detailed vagy a stock_value XLSX-et várja (Cikkszám,
