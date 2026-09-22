@@ -18,29 +18,48 @@ class elolegszamlafejController extends bizonylatfejController
         $this->setPluralPageTitle('Előlegszámlák');
     }
 
-    public function onGetKarb($view, $record, $egyed, $oper, $id)
+    public function onGetKarb($view, $record, $egyed, $oper, $id, $stornotip)
     {
-        if ($oper == 'inherit') {
-            $egyed['id'] = \mkw\store::createUID();
-            $egyed['parentid'] = $id;
-            $kelt = date(\mkw\store::$DateFormat);
-            $egyed['keltstr'] = $kelt;
-            $egyed['teljesitesstr'] = $kelt;
-            $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-            $egyed['reportfile'] = '';
-            $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
-            $ttk = [];
-            $cikl = 1;
-            foreach ($egyed['tetelek'] as $tetel) {
-                $tetel['parentid'] = $tetel['id'];
-                $tetel['id'] = \mkw\store::createUID($cikl);
-                $tetel['oper'] = 'inherit';
-                $ttk[] = $tetel;
-                $cikl++;
-            }
-            $egyed['tetelek'] = $ttk;
+        switch ($oper) {
+            case 'inherit':
+                $egyed['id'] = \mkw\store::createUID();
+                $egyed['parentid'] = $id;
+                $kelt = date(\mkw\store::$DateFormat);
+                $egyed['keltstr'] = $kelt;
+                $egyed['teljesitesstr'] = $kelt;
+                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+                $egyed['reportfile'] = '';
+                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
+                $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'], 'inherit');
+                break;
+            case 'storno':
+                // without new ids the save would overwrite the ORIGINAL advance's lines with the negated ones
+                $egyed['id'] = \mkw\store::createUID();
+                $egyed['parentid'] = $id;
+                $egyed['stornotip'] = $stornotip;
+                $egyed['keltstr'] = date(\mkw\store::$DateFormat);
+                $egyed['megjegyzes'] = $id . (\mkw\store::getTheme() === 'mkwcansas'
+                    ? ' stornó bizonylata. Stornózás oka:'
+                    : ' stornó bizonylata');
+                $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'], 'storno');
+                break;
         }
         return $egyed;
+    }
+
+    /** The lines as new lines of the new document, each pointing back at its original. */
+    private function copyTetelek(array $tetelek, $oper)
+    {
+        $ttk = [];
+        $cikl = 1;
+        foreach ($tetelek as $tetel) {
+            $tetel['parentid'] = $tetel['id'];
+            $tetel['id'] = \mkw\store::createUID($cikl);
+            $tetel['oper'] = $oper;
+            $ttk[] = $tetel;
+            $cikl++;
+        }
+        return $ttk;
     }
 
 }
