@@ -20,7 +20,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
  * Az előző program készletének betöltése a "stock_detailed" formájú XLSX-ből:
  * raktáranként egy bevét a tulaj partnerre, "Induló készlet" megjegyzéssel.
  *
- * Oszlopok fejléc szerint: Cikkszám, Termék, Vonalkód, Raktár, Teljes mennyiség.
+ * Oszlopok fejléc szerint: Cikkszám, Termék, Vonalkód, Raktár, Teljes mennyiség, és ha van,
+ * Egységár (a stock_value fájl forintos nettó beszerzési ára); nélküle a tétel ára eladási ár.
  * A raktárt a neve azonosítja, ha nincs ilyen, felveszi. A termék/termékváltozat
  * keresése előbb vonalkód, aztán cikkszám alapján megy, mindkettőn belül előbb a
  * változatot nézve. A kimaradó sorokról XLSX napló készül a storage/logs alá, azt a
@@ -40,6 +41,7 @@ class galadKeszletImportController extends \mkwhelpers\Controller
         'vonalkod' => ['vonalkód', 'vonalkod'],
         'raktar' => ['raktár', 'raktar'],
         'mennyiseg' => ['teljes mennyiség', 'teljes mennyiseg', 'mennyiség', 'mennyiseg'],
+        'egysegar' => ['egységár', 'egysegar'],
     ];
 
     private $valtozatVonalkod = [];
@@ -118,6 +120,7 @@ class galadKeszletImportController extends \mkwhelpers\Controller
                         continue;
                     }
                     $talalat[] = $sor['mennyiseg'];
+                    $talalat[] = $sor['egysegar'];
                     $talalatok[] = $talalat;
                     $mennyiseg += $sor['mennyiseg'];
                 }
@@ -127,14 +130,18 @@ class galadKeszletImportController extends \mkwhelpers\Controller
 
                 $raktar = $this->getOrCreateRaktar((string)$raktarnev, $ujraktarak);
                 $fej = $this->createBevet($raktar);
-                foreach ($talalatok as [$termek, $valtozat, $db]) {
+                foreach ($talalatok as [$termek, $valtozat, $db, $egysegar]) {
                     $tetel = new Bizonylattetel();
                     $tetel->setBizonylatfej($fej);
                     $tetel->setPersistentData();
                     $tetel->setTermek($termek);
                     $tetel->setTermekvaltozat($valtozat);
                     $tetel->setMennyiseg($db);
-                    $tetel->fillEgysar();
+                    if ($egysegar === null) {
+                        $tetel->fillEgysar();
+                    } else {
+                        $this->setBeszerzesiAr($tetel, $egysegar);
+                    }
                     $tetel->calc();
                     $em->persist($tetel);
                 }
@@ -220,6 +227,7 @@ class galadKeszletImportController extends \mkwhelpers\Controller
                 'vonalkod' => isset($oszlop['vonalkod']) ? $this->cellString($row[$oszlop['vonalkod']] ?? null) : '',
                 'raktar' => $this->cellString($row[$oszlop['raktar']] ?? null),
                 'mennyiseg' => $this->cellNumber($row[$oszlop['mennyiseg']] ?? null),
+                'egysegar' => isset($oszlop['egysegar']) ? $this->cellNumber($row[$oszlop['egysegar']] ?? null) : null,
             ];
             if (($sor['cikkszam'] === '') && ($sor['vonalkod'] === '') && ($sor['raktar'] === '')) {
                 continue;
@@ -236,6 +244,11 @@ class galadKeszletImportController extends \mkwhelpers\Controller
             }
             if ($sor['mennyiseg'] <= 0) {
                 $sor['ok'] = 'Nem pozitív mennyiség.';
+                $kimaradt[] = $sor;
+                continue;
+            }
+            if (($sor['egysegar'] !== null) && ($sor['egysegar'] < 0)) {
+                $sor['ok'] = 'Negatív egységár.';
                 $kimaradt[] = $sor;
                 continue;
             }
@@ -303,6 +316,19 @@ class galadKeszletImportController extends \mkwhelpers\Controller
         return null;
     }
 
+    /** A fájl ára forintos nettó ár; a tétel valutaneme a tulaj partneré, ezért árfolyammal osztjuk vissza. */
+    private function setBeszerzesiAr(Bizonylattetel $tetel, $huf)
+    {
+        $arfolyam = $tetel->getArfolyam() ?: 1;
+        $tetel->setNettoegysar($huf / $arfolyam);
+        $tetel->setNettoegysarhuf($huf);
+        $tetel->setKedvezmeny(0);
+        $tetel->setEnettoegysar($tetel->getNettoegysar());
+        $tetel->setEbruttoegysar($tetel->getBruttoegysar());
+        $tetel->setEnettoegysarhuf($tetel->getNettoegysarhuf());
+        $tetel->setEbruttoegysarhuf($tetel->getBruttoegysarhuf());
+    }
+
     private function getOrCreateRaktar($nev, array &$ujraktarak)
     {
         /** @var Raktar|null $raktar */
@@ -356,7 +382,7 @@ class galadKeszletImportController extends \mkwhelpers\Controller
         }
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->fromArray(['Sor', 'Cikkszám', 'Termék', 'Vonalkód', 'Raktár', 'Mennyiség', 'Kihagyás oka'], null, 'A1');
+        $sheet->fromArray(['Sor', 'Cikkszám', 'Termék', 'Vonalkód', 'Raktár', 'Mennyiség', 'Egységár', 'Kihagyás oka'], null, 'A1');
         $row = 2;
         foreach ($kimaradt as $sor) {
             $sheet->setCellValue('A' . $row, $sor['sor']);
@@ -366,7 +392,8 @@ class galadKeszletImportController extends \mkwhelpers\Controller
             $sheet->setCellValueExplicit('D' . $row, $sor['vonalkod'], DataType::TYPE_STRING);
             $sheet->setCellValue('E' . $row, $sor['raktar']);
             $sheet->setCellValue('F' . $row, $sor['mennyiseg']);
-            $sheet->setCellValue('G' . $row, $sor['ok']);
+            $sheet->setCellValue('G' . $row, $sor['egysegar']);
+            $sheet->setCellValue('H' . $row, $sor['ok']);
             $row++;
         }
 

@@ -70,8 +70,10 @@
                         azonosítódik; ha nincs találat, a termék a főkategóriába kerül. A gyártó az AA (MÁRKA)
                         oszlopból jön: ha az OXFORD, CGM, SUOMY vagy QUADLOCK szót tartalmazza, a fenti mezőben
                         a márkához választott partner lesz a gyártó (a meglévő terméknél csak akkor, ha még nincs).</p>
-                    <p>Az "Előző program készlete" a stock_detailed XLSX-et várja (Cikkszám, Termék, Vonalkód,
-                        Raktár, Teljes mennyiség oszlopok). Raktáranként egy-egy "Induló készlet" megjegyzésű bevét
+                    <p>Az "Előző program készlete" a stock_detailed vagy a stock_value XLSX-et várja (Cikkszám,
+                        Termék, Vonalkód, Raktár, Teljes mennyiség/Mennyiség, és ha van, Egységár oszlopok). Az
+                        Egységár forintos nettó beszerzési árként kerül a tételre, nélküle a tétel ára a termék
+                        eladási ára. Raktáranként egy-egy "Induló készlet" megjegyzésű bevét
                         készül a tulaj partnerre; a raktárt a neve azonosítja, ha nincs ilyen, felveszi. A termék
                         keresése előbb vonalkód, aztán cikkszám alapján megy. A kimaradó sorok XLSX naplóba kerülnek.</p>
                 </div>
