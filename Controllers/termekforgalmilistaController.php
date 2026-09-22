@@ -23,6 +23,8 @@ class termekforgalmilistaController extends \mkwhelpers\Controller
         $partner = new partnerController();
         $view->setVar('partnerlist', $partner->getSelectList());
         $view->setVar('gyartolist', $partner->getGyartoSelectList(0));
+        $view->setVar('partnertipuslist', (new partnertipusController())->getSelectList(0));
+        $view->setVar('webshopfilterlist', \mkw\store::getWebshopSelectList('', true));
 
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList());
@@ -51,6 +53,8 @@ class termekforgalmilistaController extends \mkwhelpers\Controller
         $gyartoid = $this->params->getIntRequestParam('gyarto');
         $nyelv = \mkw\store::translateToLongLocaleName($this->params->getStringRequestParam('nyelv', \mkw\store::getAdminDataLocale()));
         $partnercimkefilter = $this->params->getArrayRequestParam('partnercimkefilter');
+        $partnertipusid = $this->params->getIntRequestParam('partnertipus');
+        $webshopnum = $this->params->getStringRequestParam('webshopnum');
 
         $tetelek = $this->getRepo(Bizonylatfej::class)->getTermekForgalmiLista(
             $raktarid,
@@ -64,7 +68,9 @@ class termekforgalmilistaController extends \mkwhelpers\Controller
             $nevfilter,
             $gyartoid,
             $nyelv,
-            $partnercimkefilter
+            $partnercimkefilter,
+            $partnertipusid,
+            $webshopnum
         );
 
         switch ($keszletfilter) {

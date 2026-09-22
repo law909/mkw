@@ -56,6 +56,8 @@ $(document).ready(function () {
                             raktar: $('select[name="raktar"]').val(),
                             gyarto: $('select[name="gyarto"]').val(),
                             partner: partnerid,
+                            partnertipus: $('select[name="partnertipus"]').val(),
+                            webshopnum: $('select[name="webshopnum"]').val(),
                             keszletfilter: $('select[name="keszletfilter"]').val(),
                             forgalomfilter: $('select[name="forgalomfilter"]').val(),
                             ertektipus: $('select[name="ertektipus"]').val(),

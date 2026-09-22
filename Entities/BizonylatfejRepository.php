@@ -409,6 +409,19 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    /** $webshopnum: '' = any, '0' = in-store (NULL), otherwise that webshop */
+    public function addPartnertipusWebshopFilter(FilterDescriptor $filter, $partnertipusid, $webshopnum): void
+    {
+        if ($partnertipusid) {
+            $filter->addSql('bf.partner_id IN (SELECT ptp.id FROM partner ptp WHERE ptp.partnertipus_id=' . (int)$partnertipusid . ')');
+        }
+        if ((string)$webshopnum === '0') {
+            $filter->addSql('bf.webshopnum IS NULL');
+        } elseif ((int)$webshopnum > 0) {
+            $filter->addFilter('bf.webshopnum', '=', (int)$webshopnum);
+        }
+    }
+
     public function getTermekForgalmiLista(
         $raktarid,
         $partnerid,
@@ -421,7 +434,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $nevfilter,
         $gyartoid,
         $locale,
-        $partnercimkefilter
+        $partnercimkefilter,
+        $partnertipusid = null,
+        $webshopnum = ''
     ) {
         switch ($datumtipus) {
             case 'kelt':
@@ -569,6 +584,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
+        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
 
         $q = $this->_em->createNativeQuery(
             'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '
@@ -612,6 +628,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
+        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
 
         $q = $this->_em->createNativeQuery(
             'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
@@ -655,6 +672,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
+        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
 
         $q = $this->_em->createNativeQuery(
             'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg) AS mennyiseg '
@@ -694,6 +712,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($raktarid) {
             $filter->addFilter('bf.raktar_id', '=', $raktarid);
         }
+        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
 
         $q = $this->_em->createNativeQuery(
             'SELECT bt.termek_id,bt.termekvaltozat_id,SUM(bt.mennyiseg*bt.irany) AS mennyiseg '

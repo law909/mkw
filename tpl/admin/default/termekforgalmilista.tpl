@@ -19,6 +19,10 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>
+                {include "comp_partnertipusselect.tpl"}
+                <div class="matt-hseparator"></div>
+                {include "comp_webshopfilter.tpl"}
+                <div class="matt-hseparator"></div>
                 <div>
                     <label for="RaktarEdit">{at('Raktár')}:</label>
                     <select id="RaktarEdit" name="raktar">
