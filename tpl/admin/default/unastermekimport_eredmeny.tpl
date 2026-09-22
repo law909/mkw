@@ -82,7 +82,8 @@
         <tr>
             <td style="padding:2px 5px;">{at('Létrehozott kategóriaszint')}</td>
             <td class="textalignright" style="padding:2px 5px;">{$riport.fa_letrehozva|default:0}</td>
-            <td colspan="2" style="padding:2px 5px;"></td>
+            <td style="padding:2px 5px;">{at('Gyökérből termékfába sorolt termék')}</td>
+            <td class="textalignright" style="padding:2px 5px;">{$riport.gyokerbol_besorolva|default:0}</td>
         </tr>
         </tbody>
     </table>

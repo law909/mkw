@@ -661,6 +661,11 @@ class UnasTermekImportService
 
         $report['parositott_' . $match['szint'] . '_' . $match['mod']]++;
 
+        // a gyökérben álló termék besorolása az azonosító alapján kihagyottakra is vonatkozik
+        if (!$opts['szarazfutas']) {
+            $this->sortRootTermek($termek, $row, $columns, $report);
+        }
+
         // Amit az UNAS azonosító alapján megtaláltunk, azt egy korábbi menet már párosította:
         // a kapcsolóval együtt onnantól hozzá sem nyúlunk (mező, változat, kép semmi).
         if ($opts['unasidkihagy'] && $match['mod'] === 'unasid') {
@@ -1177,6 +1182,26 @@ class UnasTermekImportService
         // a setter a karkodot is átmásolja – ezért kell a friss csomópontnak már kész karkod
         $termek->{'set' . ucfirst($mezo)}($node);
         return true;
+    }
+
+    /**
+     * A termékfa gyökerében (vagy termékfa nélkül) álló termék a „Kategória" oszlop útvonalán
+     * felépített `termekfa1` levélbe kerül. Az `editrelaciok` kapcsolótól független.
+     */
+    private function sortRootTermek(Termek $termek, array $row, array $columns, array &$report)
+    {
+        $ertek = $this->cell($row, $columns, 'kategoriafa');
+        if ($ertek === '') {
+            return;
+        }
+        $fa = $termek->getTermekfa1();
+        if ($fa && $fa->getId() !== $this->getFaRoot(TermekFa::class)->getId()) {
+            return;
+        }
+        $definicio = ['mezo' => 'termekfa1'] + self::COLUMNS['kategoriafa'];
+        if ($this->writeFa($termek, $ertek, $definicio, $report)) {
+            $report['gyokerbol_besorolva']++;
+        }
     }
 
     /** A gyökér az egyetlen szülő nélküli sor. Nem hozzuk létre: az a törzs alapja, nem importadat. */
@@ -2010,6 +2035,8 @@ class UnasTermekImportService
             'cimke_letrehozva' => 0,
             'cimkekat_letrehozva' => 0,
             'kategoria_irva' => 0,
+            // a termékfa gyökeréből az UNAS kategóriába áttett termékek
+            'gyokerbol_besorolva' => 0,
             'fa_letrehozva' => 0,
             'kep_letoltve' => 0,
             'kep_kihagyva' => 0,
