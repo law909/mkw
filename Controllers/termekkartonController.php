@@ -71,22 +71,29 @@ class termekkartonController extends \mkwhelpers\Controller
 
         $nyitofilter = new FilterDescriptor();
         $filter = new FilterDescriptor();
+        // a fejükben (munkalap jármű) hivatkozó bizonylatok; készletet nem mozgatnak, ezért a mozgat szűrő rájuk nem vonatkozik
+        $fejfilter = new FilterDescriptor();
         $nyitofilter->addFilter('bt.termek', '=', $termekid);
         $filter->addFilter('bt.termek', '=', $termekid);
+        $fejfilter->addFilter('bf.munkalaptermek', '=', $termekid);
         if ($valtozatid) {
             $nyitofilter->addFilter('bt.termekvaltozat', '=', $valtozatid);
             $filter->addFilter('bt.termekvaltozat', '=', $valtozatid);
+            $fejfilter->addFilter('bf.munkalaptermekvaltozat', '=', $valtozatid);
         }
         if ($egyediazonosito !== '') {
             $nyitofilter->addFilter('bt.termekegyediazonosito', '=', $egyediazonosito);
             $filter->addFilter('bt.termekegyediazonosito', '=', $egyediazonosito);
+            $fejfilter->addFilter('bf.munkalapegyediazonosito', '=', $egyediazonosito);
         }
         if ($datumtolstr) {
             $nyitofilter->addFilter($datumtipus, '<', $datumtolstr);
             $filter->addFilter($datumtipus, '>=', $datumtolstr);
+            $fejfilter->addFilter($datumtipus, '>=', $datumtolstr);
         }
         if ($datumigstr) {
             $filter->addFilter($datumtipus, '<=', $datumigstr);
+            $fejfilter->addFilter($datumtipus, '<=', $datumigstr);
         }
         switch ($mozgat) {
             case 1:
@@ -104,20 +111,24 @@ class termekkartonController extends \mkwhelpers\Controller
             case 2:
                 $nyitofilter->addFilter('bf.rontott', '<>', true);
                 $filter->addFilter('bf.rontott', '<>', true);
+                $fejfilter->addFilter('bf.rontott', '<>', true);
                 break;
         }
         if ($raktarid) {
             $nyitofilter->addFilter('bf.raktar', '=', $raktarid);
             $filter->addFilter('bf.raktar', '=', $raktarid);
+            $fejfilter->addFilter('bf.raktar', '=', $raktarid);
         }
 
         $partnerkodok = $this->getRepo(Partner::class)->getByCimkek($partnercimkefilter);
         if ($partnerid) {
             $nyitofilter->addFilter('bf.partner', '=', $partnerid);
             $filter->addFilter('bf.partner', '=', $partnerid);
+            $fejfilter->addFilter('bf.partner', '=', $partnerid);
         } elseif ($partnerkodok) {
             $nyitofilter->addFilter('bf.partner', 'IN', $partnerkodok);
             $filter->addFilter('bf.partner', 'IN', $partnerkodok);
+            $fejfilter->addFilter('bf.partner', 'IN', $partnerkodok);
         }
 
         if ($datumtolstr) {
@@ -127,14 +138,29 @@ class termekkartonController extends \mkwhelpers\Controller
             $nyito = ['mennyiseg' => 0, 'nettohuf' => 0, 'bruttohuf' => 0];
         }
         $tetelek = $this->getRepo(Termek::class)->getKarton($filter, [$datumtipus => 'ASC']);
+        $fejek = $this->getRepo(Termek::class)->getKartonBizonylatfejList($fejfilter, [$datumtipus => 'ASC']);
+        $datumgetter = 'get' . ucfirst(substr($datumtipus, 3));
         $kartontetelek = [];
+        $fejids = [];
         foreach ($tetelek as $tetel) {
-            $r = [
+            $fej = $tetel->getBizonylatfej();
+            $fejids[$fej->getId()] = true;
+            $kartontetelek[] = [
+                'datum' => $fej->$datumgetter(),
                 'tetel' => $tetel->toLista(),
-                'fej' => $tetel->getBizonylatfej()->toLista()
+                'fej' => $fej->toLista()
             ];
-            $kartontetelek[] = $r;
         }
+        foreach ($fejek as $fej) {
+            if (!isset($fejids[$fej->getId()])) {
+                $kartontetelek[] = [
+                    'datum' => $fej->$datumgetter(),
+                    'tetel' => null,
+                    'fej' => $fej->toLista()
+                ];
+            }
+        }
+        usort($kartontetelek, fn($a, $b) => $a['datum'] <=> $b['datum']);
 
         $view = $this->createView('termekkartontetel.tpl');
         $view->setVar('maintheme', \mkw\store::getTheme());

@@ -1310,6 +1310,18 @@ class TermekRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    public function getKartonBizonylatfejList($filter, $order)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT bf '
+            . 'FROM Entities\Bizonylatfej bf '
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order)
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getResult();
+    }
+
     public function clearNepszeruseg()
     {
         $q = $this->_em->createQuery('UPDATE Entities\Termek x SET x.nepszeruseg = 0');

@@ -379,6 +379,10 @@ table.termekkarton tr:nth-child(even) {
     background: #ddd;
 }
 
+table.termekkarton td.kartonfejsor {
+    font-style: italic;
+}
+
 .whitebackground {
     background: white;
 }

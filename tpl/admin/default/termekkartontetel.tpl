@@ -27,7 +27,7 @@
     {$besum = 0}
     {$kisum = 0}
     {foreach $kartontetelek as $tetel}
-        {if (!$tetel.fej.rontott)}
+        {if ($tetel.tetel && !$tetel.fej.rontott)}
             {$smenny = $smenny + ($tetel.tetel.mennyiseg * $tetel.tetel.irany)}
             {$gmenny = $gmenny + ($tetel.tetel.mennyiseg * $tetel.tetel.irany)}
             {$snetto = $snetto + ($tetel.tetel.netto * $tetel.tetel.irany)}
@@ -60,6 +60,7 @@
             <td class="datacell">{$tetel.fej.keltstr}</td>
             <td class="datacell">{$tetel.fej.teljesitesstr}</td>
             <td class="datacell">{$tetel.fej.szamlanev}</td>
+            {if ($tetel.tetel)}
             <td class="datacell textalignright">{bizformat($tetel.tetel.nettoegysar)}</td>
             <td class="datacell textalignright">{bizformat($tetel.tetel.bruttoegysar)}</td>
             <td class="datacell textalignright">{bizformat($tetel.tetel.mennyiseg*$tetel.tetel.irany)}</td>
@@ -67,6 +68,10 @@
             <td class="datacell textalignright">{bizformat($tetel.tetel.brutto)}</td>
             <td class="datacell textalignright">{bizformat($gmenny)}</td>
             <td>{$tetel.tetel.valtozatnev}</td>
+            {else}
+            <td class="datacell kartonfejsor" colspan="6">{at('A bizonylat fejében szerepel')}{if ($tetel.fej.munkalapegyediazonosito)} ({at('egyedi azonosító')}: {$tetel.fej.munkalapegyediazonosito}){/if}</td>
+            <td>{$tetel.fej.munkalaptermekvaltozatnev}</td>
+            {/if}
         </tr>
     {/foreach}
     </tbody>
