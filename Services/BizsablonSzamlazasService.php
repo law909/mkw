@@ -10,9 +10,9 @@ use Entities\Bizonylattipus;
  * Számlák képzése bizonylat sablonokból (bizsablon típus) — a bizonylat lista "Számlázás"
  * csoportos művelete.
  *
- * A sablon fej- és tételadatai másolódnak, a fej típusa számla lesz, kelte a mai nap, és a
- * sablonra hivatkozik (parbizonylatfej). A tételek nevéhez fűzhető szöveg (pl. az elszámolt
- * hónap), a mennyiségük pedig felülírható — mindkettő a csoportos művelet modaljáról jön.
+ * A sablon fej- és tételadatai másolódnak (a státusza nem), a fej típusa számla lesz, kelte a
+ * mai nap, és a sablonra hivatkozik (parbizonylatfej). A tételek nevéhez fűzhető szöveg (pl. az
+ * elszámolt hónap), a mennyiségük pedig felülírható — mindkettő a csoportos művelet modaljáról jön.
  *
  * Az összegeket, a NAV-beküldendő jelölőt és a költségtételeket a BizonylatfejListener képzi
  * a mentéskor, ez a szolgáltatás azokhoz nem nyúl.
@@ -90,6 +90,7 @@ class BizsablonSzamlazasService
         $szamla->clearLastmod();
         $szamla->setBizonylattipus($szamlatipus);
         $szamla->setParbizonylatfej($sablon);
+        $szamla->removeBizonylatstatusz();
         $szamla->setRendszeres(false);
         $szamla->setNyomtatva(false);
         $szamla->setNaveredmeny(null);
