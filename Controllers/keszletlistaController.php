@@ -210,7 +210,9 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         $q = $this->getEm()->createNativeQuery(
             $this->getKeszletCte($filter)
-            . ' SELECT t.id AS termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+            . ' SELECT t.id AS termek_id, _xx.id, ' . \mkw\store::getLocalizedFieldName('t.nev', $locale) . ' AS termeknev, _xx.ertek1, _xx.ertek2,'
+            // változatos sorban a változat cikkszáma, ha az üres, a termékéé
+            . " COALESCE(NULLIF(_xx.cikkszam, ''), t.cikkszam) AS cikkszam,"
             . $keszletsql
             . ' FROM termek t'
             . ' LEFT JOIN termekvaltozat _xx ON (_xx.termek_id=t.id)'
