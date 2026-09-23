@@ -11,12 +11,20 @@
             <tr><td>{at('Frissítve')}:</td><td>{$riport.frissitve}</td></tr>
         {/if}
         <tr><td>{at('Változatlan')}:</td><td>{$riport.valtozatlan}</td></tr>
+        <tr><td>{if ($riport.szarazfutas)}{at('Képet kapna')}{else}{at('Kép beállítva')}{/if}:</td><td>{$riport.kep_beallitva}</td></tr>
+        {if (!$riport.szarazfutas)}
+            <tr><td>{at('Letöltött kép')}:</td><td>{$riport.kep_letoltve}</td></tr>
+        {/if}
         <tr><td>{at('Nyers válasz')}:</td><td>{$riport.dumpfajl|default:'-'|escape}</td></tr>
         </tbody>
     </table>
     {if ($riport.masszulo)}
         <div class="ui-state-error-text">{at('Az MKW-ban más szülő alatt vannak, nem helyeztük át')}:</div>
         <div>{foreach $riport.masszulo as $_sor}{$_sor|escape}{if (!$_sor@last)}, {/if}{/foreach}</div>
+    {/if}
+    {if ($riport.kep_hibak)}
+        <div class="ui-state-error-text">{at('Kép letöltési hibák')}:</div>
+        <div>{foreach $riport.kep_hibak as $_sor}{$_sor|escape}{if (!$_sor@last)}<br>{/if}{/foreach}</div>
     {/if}
     {if ($riport.hibas)}
         <div class="ui-state-error-text">{at('Azonosító vagy név nélküli UNAS kategória, kimaradt')}:</div>

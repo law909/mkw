@@ -232,6 +232,33 @@ class UnasKepService
         return $this->absFolder . $name;
     }
 
+    /**
+     * Egy kép letöltése az UNAS képmappába, a termékképekkel azonos névszűréssel és
+     * származékokkal; a már meglévő fájlt nem tölti újra.
+     *
+     * @return array{url: string, letoltve: bool, hiba: string} a tárolandó URL, vagy hiba
+     */
+    public function downloadKep($forrasUrl)
+    {
+        $name = $this->sourceFilename($forrasUrl);
+        if ($name === '') {
+            return ['url' => '', 'letoltve' => false, 'hiba' => t('a kép fájlneve nem használható') . ': ' . $forrasUrl];
+        }
+        if (!$this->ensureFolder()) {
+            return ['url' => '', 'letoltve' => false, 'hiba' => t('A képmappa nem hozható létre') . ': ' . $this->absFolder];
+        }
+        $abs = $this->absFolder . $name;
+        if (is_file($abs) && filesize($abs) > 0) {
+            return ['url' => $this->urlPrefix . $name, 'letoltve' => false, 'hiba' => ''];
+        }
+        $error = $this->download($forrasUrl, $abs);
+        if ($error) {
+            return ['url' => '', 'letoltve' => false, 'hiba' => $error];
+        }
+        $this->createDerivatives($abs, strtolower(\mkw\store::getExtension($name)));
+        return ['url' => $this->urlPrefix . $name, 'letoltve' => true, 'hiba' => ''];
+    }
+
     private function ensureFolder()
     {
         if (is_dir($this->absFolder)) {

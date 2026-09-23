@@ -71,7 +71,7 @@
                             <span id="unaskategoriavalasz"></span>
                         </div>
                         <div>
-                            <span>{at('A kategóriát az UNAS azonosítója, annak híján a szülő alatti azonos név köti a termékfához, egyébként új kategória jön létre. Frissítés nélkül csak az újakat veszi fel; frissítéssel a nevet, a sorrendet, az oldalcímet, a SEO leírást, a leírást és a láthatóságot is átírja, de csak a kitöltött UNAS mezőkből. Meglévő kategóriát nem helyez át másik szülő alá, csak jelzi. Szárazfutásban mindent végigszámol, de semmit nem ment.')}</span>
+                            <span>{at('A kategóriát az UNAS azonosítója, annak híján a szülő alatti azonos név köti a termékfához, egyébként új kategória jön létre. Frissítés nélkül csak az újakat veszi fel; frissítéssel a nevet, a sorrendet, az oldalcímet, a SEO leírást, a leírást és a láthatóságot is átírja, de csak a kitöltött UNAS mezőkből. A kategória képét a termékképek mappájába tölti le; meglévő kategóriánál csak akkor, ha még nincs képe, vagy be van kapcsolva a frissítés. Meglévő kategóriát nem helyez át másik szülő alá, csak jelzi. Szárazfutásban mindent végigszámol, de semmit nem ment és nem tölt le.')}</span>
                         </div>
                     </form>
                     <div id="unaskategoriaeredmeny"></div>

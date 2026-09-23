@@ -21,6 +21,9 @@ class UnasKategoriaImportService
 
     private $unas;
 
+    /** @var UnasKepService|null lustán, csak ha van mit letölteni */
+    private $kepService;
+
     private $root;
 
     /** @var array<string, TermekFa> UNAS id → csomópont, az ebben a futásban feldolgozottak */
@@ -62,6 +65,9 @@ class UnasKategoriaImportService
             'valtozatlan' => 0,
             'masszulo' => [],
             'hibas' => [],
+            'kep_letoltve' => 0,
+            'kep_beallitva' => 0,
+            'kep_hibak' => [],
             'dumpfajl' => $dump,
             'szarazfutas' => $dryRun,
             'frissit' => $update,
@@ -108,6 +114,7 @@ class UnasKategoriaImportService
                 'oldalcim' => $this->first($cat, ['Meta/Title', 'PageData/Title', 'Title']),
                 'seodescription' => $this->first($cat, ['Meta/Description', 'PageData/Description']),
                 'leiras' => $this->first($cat, ['Texts/Top', 'Text/Top', 'Texts/Text', 'Description']),
+                'kep' => $this->first($cat, ['Image/Url/Big', 'Image/Url/Medium', 'Image/Url', 'Image/Big', 'Image/Src', 'Image', 'Picture/Url', 'ImageUrl']),
             ];
         }
         return $ret;
@@ -184,17 +191,52 @@ class UnasKategoriaImportService
             $em->flush();
             $node->setKarkod($parent->getKarkod() . sprintf('%05d', $node->getId()));
             $report['uj']++;
+            $this->importImage($node, $cat, $report);
         } else {
             if ($node->getParent() !== $parent) {
                 $report['masszulo'][] = $nev . ' (UNAS ' . $cat['id'] . ')';
             }
-            if ($update && $this->applyData($node, $cat, $nev)) {
+            $imageChanged = ($update || !$node->getKepurl()) && $this->importImage($node, $cat, $report);
+            if (($update && $this->applyData($node, $cat, $nev)) || $imageChanged) {
                 $report['frissitve']++;
             } else {
                 $report['valtozatlan']++;
             }
         }
         $this->byUnasid[$cat['id']] = $node;
+    }
+
+    /**
+     * Szárazfutásban nem tölt le, csak megszámolja, mi történne: a fájl a visszagörgetés után
+     * is a lemezen maradna.
+     *
+     * @return bool változott-e a kategória képe
+     */
+    private function importImage(TermekFa $node, array $cat, array &$report): bool
+    {
+        if ($cat['kep'] === '') {
+            return false;
+        }
+        if ($report['szarazfutas']) {
+            $report['kep_beallitva']++;
+            return true;
+        }
+        $this->kepService ??= new UnasKepService();
+        $result = $this->kepService->downloadKep($cat['kep']);
+        if ($result['hiba'] !== '') {
+            $report['kep_hibak'][] = $cat['nev'] . ': ' . $result['hiba'];
+            return false;
+        }
+        if ($result['letoltve']) {
+            $report['kep_letoltve']++;
+        }
+        if (ltrim((string)$node->getKepurl(), '/') === ltrim($result['url'], '/')) {
+            return false;
+        }
+        $node->setKepurl($result['url']);
+        $node->setKepleiras($node->getNev());
+        $report['kep_beallitva']++;
+        return true;
     }
 
     /** Csak a kitöltött UNAS mezőket írja: a hiányzó elem nem törölheti az MKW-ban megadott szöveget. */
