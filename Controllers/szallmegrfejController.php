@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Services\BizonylatConcatService;
 
 class szallmegrfejController extends bizonylatfejController
 {
@@ -13,6 +14,7 @@ class szallmegrfejController extends bizonylatfejController
         $this->setBiztipus('szallmegr');
         $this->setPageTitle('Szállítói megrendelés');
         $this->setPluralPageTitle('Szállítói megrendelések');
+        $this->getRepo()->addToBatches(['rendelesconcat' => 'Megrendelések összevonása']);
     }
 
     public function onGetKarb($view, $record, $egyed, $oper, $id)
@@ -63,6 +65,15 @@ class szallmegrfejController extends bizonylatfejController
         header('Content-Disposition: attachment; filename=' . $this->getMirFilename($fej));
         readfile($filepath);
         unlink($filepath);
+    }
+
+    public function concat()
+    {
+        $concatSvc = new BizonylatConcatService();
+        $concatSvc->concat(
+            $this->params->getArrayRequestParam('ids'),
+            $this->params->getBoolRequestParam('ront')
+        );
     }
 
     private function getMirFilename($fej): string
