@@ -16,6 +16,7 @@ use Entities\Valutanem;
 use mkwhelpers\FilterDescriptor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Services\KeszletService;
 
 class leltarfejController extends \mkwhelpers\MattableController
 {
@@ -427,6 +428,42 @@ class leltarfejController extends \mkwhelpers\MattableController
         }
     }
 
+    /**
+     * Every product / variant with stock in the warehouse that is not in the inventory yet gets a
+     * line: the machine quantity is the stock on the closing date, the counted one is 0 ($nullaz)
+     * or the same as the machine one, which leaves it unchanged. Zero stock would change nothing.
+     */
+    private function addMissingTetelek(Leltarfej $leltar, $zarasstr, bool $nullaz): void
+    {
+        $meglevo = [];
+        foreach ($this->getEm()->getConnection()->fetchAllAssociative(
+            'SELECT termek_id, termekvaltozat_id FROM leltartetel WHERE leltarfej_id=?',
+            [$leltar->getId()]
+        ) as $sor) {
+            $meglevo[$sor['termek_id'] . '-' . $sor['termekvaltozat_id']] = true;
+        }
+
+        $db = 0;
+        foreach (KeszletService::getNonZeroStockList($zarasstr, $leltar->getRaktarId()) as $sor) {
+            if (isset($meglevo[$sor['termekid'] . '-' . $sor['valtozatid']])) {
+                continue;
+            }
+            $tetel = new Leltartetel();
+            $tetel->setLeltarfej($leltar);
+            $tetel->setTermek($this->getEm()->getReference(Termek::class, $sor['termekid']));
+            if ($sor['valtozatid']) {
+                $tetel->setTermekvaltozat($this->getEm()->getReference(TermekValtozat::class, $sor['valtozatid']));
+            }
+            $tetel->setGepimennyiseg($sor['keszlet']);
+            $tetel->setTenymennyiseg($nullaz ? 0 : $sor['keszlet']);
+            $this->getEm()->persist($tetel);
+            if (++$db % 500 === 0) {
+                $this->getEm()->flush();
+            }
+        }
+        $this->getEm()->flush();
+    }
+
     public function zar()
     {
         $hianybt = $this->getRepo(Bizonylattipus::class)->find('leltarhiany');
@@ -444,9 +481,22 @@ class leltarfejController extends \mkwhelpers\MattableController
             if ($leltar) {
                 $partner = $this->getRepo(Partner::class)->find(\mkw\store::getParameter(\mkw\consts::Tulajpartner));
                 $raktarid = $leltar->getRaktarId();
+                $this->addMissingTetelek($leltar, $zarasstr, $this->params->getStringRequestParam('kimaradt') !== 'marad');
+
                 $filter = new FilterDescriptor();
                 $filter->addFilter('leltarfej', '=', $leltarid);
                 $leltartetelek = $this->getRepo(Leltartetel::class)->getWithJoins($filter);
+                // one grouped query per kind instead of a stock query per line
+                $termekids = [];
+                $valtozatids = [];
+                foreach ($leltartetelek as $tetel) {
+                    if ($tetel->getTermekvaltozat()) {
+                        $valtozatids[] = $tetel->getTermekvaltozat()->getId();
+                    } elseif ($tetel->getTermek()) {
+                        $termekids[] = $tetel->getTermek()->getId();
+                    }
+                }
+                KeszletService::preloadStock($termekids, $valtozatids, $zarasstr, $raktarid);
                 /** @var \Entities\Leltartetel $tetel */
                 foreach ($leltartetelek as $tetel) {
                     $termek = $tetel->getTermek();

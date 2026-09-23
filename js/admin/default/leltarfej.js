@@ -30,9 +30,11 @@ $(document).ready(function () {
         $('#mattable-body').on('click', '.js-zar', function (e) {
             var $this = $(this);
             e.preventDefault();
+            $('#zarasdatumform input[name="kimaradt"][value="nullaz"]').prop('checked', true);
             $('#zarasdatumform').dialog({
                 resizable: false,
-                height: 140,
+                height: 'auto',
+                width: 380,
                 modal: true,
                 buttons: {
                     'OK': function () {
@@ -44,7 +46,8 @@ $(document).ready(function () {
                             type: 'POST',
                             data: {
                                 datum: tol,
-                                leltarid: $this.data('leltarfejid')
+                                leltarid: $this.data('leltarfejid'),
+                                kimaradt: $('#zarasdatumform input[name="kimaradt"]:checked').val()
                             },
                             success: function () {
                                 $('.mattable-tablerefresh').click();

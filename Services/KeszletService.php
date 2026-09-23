@@ -276,6 +276,49 @@ class KeszletService
         ];
     }
 
+    /**
+     * Every product / variant with a non-zero stock in the warehouse on the date, on the same
+     * conditions as getKeszlet(). A product with variants comes as its variants; its lines without
+     * a variant are left out, the same way the inventory sheet lists only the variants.
+     *
+     * @return array<int, array{termekid: int, valtozatid: int|null, keszlet: float}>
+     */
+    public static function getNonZeroStockList($datum, $raktarid): array
+    {
+        $filter = new FilterDescriptor();
+        self::addKeszletFilter($filter, $datum, $raktarid);
+        $filter->addSql('bt.termek_id IS NOT NULL');
+        $filter->addSql(
+            '((bt.termekvaltozat_id IS NOT NULL)'
+            . ' OR NOT EXISTS (SELECT 1 FROM termekvaltozat tvx WHERE tvx.termek_id=bt.termek_id))'
+        );
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termekid', 'termekid');
+        $rsm->addScalarResult('valtozatid', 'valtozatid');
+        $rsm->addScalarResult('mennyiseg', 'mennyiseg');
+        $q = \mkw\store::getEm()->createNativeQuery(
+            'SELECT bt.termek_id AS termekid, bt.termekvaltozat_id AS valtozatid, SUM(bt.mennyiseg * bt.irany) AS mennyiseg'
+            . ' FROM bizonylattetel bt'
+            . ' LEFT OUTER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+            . $filter->getFilterString()
+            . ' GROUP BY bt.termek_id, bt.termekvaltozat_id'
+            . ' HAVING SUM(bt.mennyiseg * bt.irany) <> 0',
+            $rsm
+        );
+        $q->setParameters($filter->getQueryParameters());
+
+        $ret = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $ret[] = [
+                'termekid' => (int)$sor['termekid'],
+                'valtozatid' => $sor['valtozatid'] ? (int)$sor['valtozatid'] : null,
+                'keszlet' => (float)$sor['mennyiseg'],
+            ];
+        }
+        return $ret;
+    }
+
     private static function entityFilter($entity): FilterDescriptor
     {
         $filter = new FilterDescriptor();

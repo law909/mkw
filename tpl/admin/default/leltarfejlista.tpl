@@ -71,5 +71,9 @@
     </div>
     <div id="zarasdatumform" class="hidden">
         {include 'comp_datum.tpl'}
+        <div class="matt-hseparator"></div>
+        <div>{at('A leltárból kimaradt, készleten lévő termékek')}:</div>
+        <label><input type="radio" name="kimaradt" value="nullaz" checked="checked"> {at('nullázza a leltár')}</label><br>
+        <label><input type="radio" name="kimaradt" value="marad"> {at('ne módosítsa')}</label>
     </div>
 {/block}
