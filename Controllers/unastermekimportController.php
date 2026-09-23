@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Services\UnasKategoriaImportService;
 use Services\UnasService;
 use Services\UnasTermekImportService;
 
@@ -91,6 +92,22 @@ class unastermekimportController extends \mkwhelpers\Controller
         $view->setVar('dumpfajl', $result['dumpfajl']);
         $view->setVar('tobbtermekes', $result['tobbtermekes']);
         $view->setVar('keret', $result['keret']);
+        $this->json(['ok' => true, 'html' => $view->getTemplateResult()]);
+    }
+
+    public function importCategories()
+    {
+        try {
+            $report = (new UnasKategoriaImportService())->import(
+                $this->params->getBoolRequestParam('szarazfutas'),
+                $this->params->getBoolRequestParam('frissit')
+            );
+        } catch (\Exception $e) {
+            $this->json(['ok' => false, 'hiba' => $e->getMessage()]);
+            return;
+        }
+        $view = $this->createView('unastermekimport_kategoria.tpl');
+        $view->setVar('riport', $report);
         $this->json(['ok' => true, 'html' => $view->getTemplateResult()]);
     }
 

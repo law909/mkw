@@ -14,7 +14,8 @@ use Traits\GetsFieldValue;
  * indexes={
  *      @ORM\index(name="termekfaslug_idx",columns={"slug"}),
  *      @ORM\index(name="termekfanevparent_idx",columns={"nev","parent_id"}),
- *      @ORM\index(name="termekfaidegenkod_idx",columns={"idegenkod"})
+ *      @ORM\index(name="termekfaidegenkod_idx",columns={"idegenkod"}),
+ *      @ORM\index(name="termekfaunasid_idx",columns={"unasid"})
  * })
  */
 class TermekFa
@@ -139,6 +140,9 @@ class TermekFa
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $idegenkod = '';
+
+    /** The UNAS category id, set by the UNAS category import. @ORM\Column(type="string",length=50,nullable=true) */
+    private $unasid;
 
     /** @ORM\Column(type="boolean",nullable=false) */
     private $lathato = 1;
@@ -775,6 +779,17 @@ class TermekFa
     public function setInaktiv($i)
     {
         $this->inaktiv = $i;
+    }
+
+    public function getUnasid()
+    {
+        return $this->unasid;
+    }
+
+    public function setUnasid($unasid)
+    {
+        $unasid = trim((string)$unasid);
+        $this->unasid = $unasid === '' ? null : $unasid;
     }
 
     public function getIdegenkod()

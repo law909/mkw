@@ -81,6 +81,30 @@ $(document).ready(function () {
             });
     });
 
+    $('#unaskategoriaimport').on('submit', function (event) {
+        event.preventDefault();
+        const urlap = $(this),
+            gomb = urlap.find('button[type=submit]'),
+            valasz = $('#unaskategoriavalasz').text('...'),
+            eredmenyDoboz = $('#unaskategoriaeredmeny').empty();
+        gomb.prop('disabled', true);
+        $.ajax({url: urlap.attr('action'), type: 'POST', data: urlap.serialize(), dataType: 'json'})
+            .done(function (data) {
+                if (!data.ok) {
+                    valasz.html($('<span>').addClass('ui-state-error-text').text(data.hiba));
+                    return;
+                }
+                valasz.empty();
+                eredmenyDoboz.html(data.html);
+            })
+            .fail(function () {
+                valasz.html($('<span>').addClass('ui-state-error-text').text('A kategóriaimport nem futott le.'));
+            })
+            .always(function () {
+                gomb.prop('disabled', false);
+            });
+    });
+
     $('#unasriporttorles').on('click', function () {
         var gomb = $(this),
             valasz = $('#unasriporttorlesvalasz'),

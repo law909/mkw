@@ -62,6 +62,23 @@
                 <div class="matt-hseparator"></div>
 
                 <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                    <form id="unaskategoriaimport" method="post" action="/admin/unastermekimport/kategoriak">
+                        <div>
+                            <label>{at('Kategóriák importja (getCategory → termékfa)')}:</label>
+                            <label><input name="szarazfutas" type="checkbox" checked="checked"> {at('Szárazfutás')}</label>
+                            <label><input name="frissit" type="checkbox"> {at('Meglévő kategóriák frissítése')}</label>
+                            <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all">{at('Kategóriák importja')}</button>
+                            <span id="unaskategoriavalasz"></span>
+                        </div>
+                        <div>
+                            <span>{at('A kategóriát az UNAS azonosítója, annak híján a szülő alatti azonos név köti a termékfához, egyébként új kategória jön létre. Frissítés nélkül csak az újakat veszi fel; frissítéssel a nevet, a sorrendet, az oldalcímet, a SEO leírást, a leírást és a láthatóságot is átírja, de csak a kitöltött UNAS mezőkből. Meglévő kategóriát nem helyez át másik szülő alá, csak jelzi. Szárazfutásban mindent végigszámol, de semmit nem ment.')}</span>
+                        </div>
+                    </form>
+                    <div id="unaskategoriaeredmeny"></div>
+                </div>
+                <div class="matt-hseparator"></div>
+
+                <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                     <form id="unastermekimport" method="post" action="/admin/unastermekimport/letoltes"
                           data-kotegurl="/admin/unastermekimport/koteg"
                           data-riporturl="/admin/unastermekimport/riport"
