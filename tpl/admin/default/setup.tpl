@@ -979,6 +979,18 @@
                                    type="checkbox"{if ($nyomtatasikerdesmenteskor)} checked="checked"{/if}>
                         </div>
                     </div>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow"><b>{at('Vonalkód olvasás')}</b></div>
+                        {* no name on the file input: the file goes up by AJAX, not with the settings form *}
+                        <div class="setuprow js-vonalkodhibahang">
+                            <span class="setuplabel"><label for="VonalkodHibaHangEdit">{at('Hang, ha nincs találat')} (m4a):</label></span>
+                            <input id="VonalkodHibaHangEdit" type="file" accept=".m4a,audio/mp4,audio/x-m4a">
+                            <a href="#" class="js-vonalkodhibahangupload">{at('Feltöltés')}</a>
+                            <a href="#" class="js-vonalkodhibahangplay"{if (!$vonalkodhibahangfeltoltve)} style="display:none;"{/if}>{at('Meghallgat')}</a>
+                            <a href="#" class="js-vonalkodhibahangdelete"{if (!$vonalkodhibahangfeltoltve)} style="display:none;"{/if}>{at('Törlés')}</a>
+                            <span class="js-vonalkodhibahanguzenet">{if ($vonalkodhibahangfeltoltve)}{at('Feltöltve.')}{else}{at('Nincs feltöltve, a beépített hangjelzés szól.')}{/if}</span>
+                        </div>
+                    </div>
                 </div>
                 <div id="TulajTab" class="mattkarb-page" data-visible="visible">
                     <table>

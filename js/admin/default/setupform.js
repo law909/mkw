@@ -1,8 +1,70 @@
 $(document).ready(function () {
     const dialogcenter = $('#dialogcenter');
 
+    function initBarcodeSound() {
+        const $sor = $('.js-vonalkodhibahang');
+        const $uzenet = $sor.find('.js-vonalkodhibahanguzenet');
+        const $play = $sor.find('.js-vonalkodhibahangplay');
+        const $del = $sor.find('.js-vonalkodhibahangdelete');
+
+        function setUrl(url) {
+            $('body').attr('data-vonalkodhibahang', url);
+            $play.toggle(!!url);
+            $del.toggle(!!url);
+            $uzenet.text(url ? 'Feltöltve.' : 'Nincs feltöltve, a beépített hangjelzés szól.');
+        }
+
+        $sor.find('.js-vonalkodhibahangupload').on('click', function (e) {
+            e.preventDefault();
+            const file = $('#VonalkodHibaHangEdit')[0].files[0];
+            if (!file) {
+                $uzenet.text('Válasszon ki egy m4a fájlt!');
+                return;
+            }
+            const fd = new FormData();
+            fd.append('hang', file);
+            $.ajax({
+                url: '/admin/setup/vonalkodhibahangupload',
+                type: 'POST',
+                data: fd,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (res) {
+                    if (res && res.ok) {
+                        $('#VonalkodHibaHangEdit').val('');
+                        setUrl(res.url);
+                    } else {
+                        $uzenet.text((res && res.error) || 'A feltöltés nem sikerült.');
+                    }
+                },
+                error: function () {
+                    $uzenet.text('A feltöltés nem sikerült.');
+                }
+            });
+        }).button();
+
+        $play.on('click', function (e) {
+            e.preventDefault();
+            mkwcomp.notFound.playSound();
+        }).button();
+
+        $del.on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/setup/vonalkodhibahangdelete',
+                type: 'POST',
+                dataType: 'json',
+                success: function () {
+                    setUrl('');
+                }
+            });
+        }).button();
+    }
+
     $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
+            initBarcodeSound();
             $('#TulajirszamEdit').autocomplete({
                 minLength: 2,
                 source: function (req, resp) {

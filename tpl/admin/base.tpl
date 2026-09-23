@@ -27,7 +27,7 @@
     <script type="text/javascript" src="/js/admin/default/appinit.js"></script>
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
-<body>
+<body data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
 {if ($arfolyamriasztas)}
     <h1 id="arfolyamriasztas">Túl régi az utolsó árfolyam. CSINÁLJ EGY ÁRFOLYAMLETÖLTÉST!</h1>
 {/if}

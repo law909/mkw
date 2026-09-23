@@ -724,6 +724,7 @@ class setupController extends \mkwhelpers\Controller
 
         $p = $repo->find(\mkw\consts::NyomtatasiKerdesMenteskor);
         $view->setVar(\mkw\consts::NyomtatasiKerdesMenteskor, ($p ? $p->getErtek() : 0));
+        $view->setVar('vonalkodhibahangfeltoltve', self::getBarcodeSoundUrl() !== '');
 
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
@@ -1154,6 +1155,75 @@ class setupController extends \mkwhelpers\Controller
     }
 
     // Termék autocomplete mezőhöz: a rejtett input id-je + a szövegmező prefill-neve.
+    private const BARCODESOUNDFILE = 'vonalkodhibahang.m4a';
+    private const BARCODESOUNDMAX = 2097152;
+
+    /** Empty when nothing is uploaded, or the parameter is set (shared DB) but this install has no file. */
+    public static function getBarcodeSoundUrl(): string
+    {
+        $verzio = \mkw\store::getParameter(\mkw\consts::VonalkodHibaHang, '');
+        if (!$verzio || !is_file(\mkw\store::storagePath(self::BARCODESOUNDFILE))) {
+            return '';
+        }
+        return '/admin/setup/vonalkodhibahang?v=' . urlencode($verzio);
+    }
+
+    public function uploadBarcodeSound()
+    {
+        header('Content-Type: application/json');
+        $file = $_FILES['hang'] ?? null;
+        if (!$file || $file['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'])) {
+            $this->jsonFail(t('A feltöltés nem sikerült.'));
+            return;
+        }
+        if (strtolower(pathinfo($file['name'], PATHINFO_EXTENSION)) !== 'm4a') {
+            $this->jsonFail(t('Csak m4a fájl tölthető fel.'));
+            return;
+        }
+        if ($file['size'] > self::BARCODESOUNDMAX) {
+            $this->jsonFail(t('A fájl legfeljebb 2 MB lehet.'));
+            return;
+        }
+        // an m4a is an MPEG-4 container, finfo names it audio/x-m4a, audio/mp4 or video/mp4
+        $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
+        if (!in_array($mime, ['audio/x-m4a', 'audio/mp4', 'audio/m4a', 'video/mp4', 'application/octet-stream'], true)
+            || substr((string)file_get_contents($file['tmp_name'], false, null, 4, 4), 0, 4) !== 'ftyp') {
+            $this->jsonFail(t('A fájl nem m4a hang.'));
+            return;
+        }
+        if (!move_uploaded_file($file['tmp_name'], \mkw\store::storagePath(self::BARCODESOUNDFILE))) {
+            $this->jsonFail(t('A fájl mentése nem sikerült.'));
+            return;
+        }
+        \mkw\store::setParameter(\mkw\consts::VonalkodHibaHang, (string)time());
+        echo json_encode(['ok' => true, 'url' => self::getBarcodeSoundUrl()]);
+    }
+
+    public function deleteBarcodeSound()
+    {
+        $path = \mkw\store::storagePath(self::BARCODESOUNDFILE);
+        if (is_file($path)) {
+            unlink($path);
+        }
+        \mkw\store::setParameter(\mkw\consts::VonalkodHibaHang, '');
+        header('Content-Type: application/json');
+        echo json_encode(['ok' => true]);
+    }
+
+    public function getBarcodeSound()
+    {
+        $path = \mkw\store::storagePath(self::BARCODESOUNDFILE);
+        if (!is_file($path)) {
+            http_response_code(404);
+            return;
+        }
+        header('Content-Type: audio/mp4');
+        header('Content-Length: ' . filesize($path));
+        // the URL carries the upload's timestamp, so a new file gets a new URL
+        header('Cache-Control: private, max-age=31536000');
+        readfile($path);
+    }
+
     private function setTermekAutocompleteVars($view, $namebase, $termekid)
     {
         $view->setVar($namebase . 'id', $termekid ?: '');

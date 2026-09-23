@@ -596,8 +596,11 @@ $router->map('GET', '/admin/seteditstyle', 'adminController#setEditStyle', 'admi
 $router->map('GET', '/admin/setvonalkodfromvaltozat', 'adminController#setVonalkodFromValtozat', 'adminsetvonalkodfromvaltozat');
 
 $router->map('GET', '/admin/setup/view', 'setupController#view', 'adminsetupview');
+$router->map('GET', '/admin/setup/vonalkodhibahang', 'setupController#getBarcodeSound', 'adminsetupvonalkodhibahang');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/setup/save', 'setupController#save', 'adminsetupsave');
+    $router->map('POST', '/admin/setup/vonalkodhibahangupload', 'setupController#uploadBarcodeSound', 'adminsetupvonalkodhibahangupload');
+    $router->map('POST', '/admin/setup/vonalkodhibahangdelete', 'setupController#deleteBarcodeSound', 'adminsetupvonalkodhibahangdelete');
 }
 
 $router->map('GET', '/admin/navadatexport/view', 'navadatexportController#view', 'adminnavadatexportview');

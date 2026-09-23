@@ -585,46 +585,86 @@ var mkwcomp = (function ($) {
 
     function notFound() {
         let audioCtx = null;
+        let $open = null;
 
-        function beep() {
+        // two alternating tones, like a siren, loud enough over shop noise
+        function siren() {
             try {
                 audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
+                const t0 = audioCtx.currentTime;
+                const lepes = 0.12;
                 osc.type = 'square';
-                osc.frequency.value = 440;
-                gain.gain.value = 0.2;
+                for (let i = 0; i < 8; i++) {
+                    osc.frequency.setValueAtTime(i % 2 ? 740 : 1175, t0 + i * lepes);
+                }
+                gain.gain.setValueAtTime(0.35, t0);
+                gain.gain.setValueAtTime(0.35, t0 + 8 * lepes - 0.02);
+                gain.gain.linearRampToValueAtTime(0, t0 + 8 * lepes);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
+                osc.start(t0);
+                osc.stop(t0 + 8 * lepes);
             } catch (e) {
                 // no audio support: the dialog still shows
             }
         }
 
-        // OK is briefly disabled so the next scan's Enter cannot dismiss the dialog unseen
+        // the sound uploaded in the settings, the siren when there is none or it cannot be played
+        function playSound() {
+            const url = $('body').attr('data-vonalkodhibahang');
+            if (!url) {
+                siren();
+                return;
+            }
+            try {
+                const audio = new Audio(url);
+                audio.addEventListener('error', siren);
+                const p = audio.play();
+                if (p && p.catch) {
+                    p.catch(siren);
+                }
+            } catch (e) {
+                siren();
+            }
+        }
+
+        // a scanner ends every code with Enter, so only ESC closes the dialog; handled on the
+        // document, because with no button in the dialog the focus may stay outside it
+        function keyHandler(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                e.stopPropagation();
+            } else if ((e.key === 'Escape' || e.keyCode === 27) && $open) {
+                e.preventDefault();
+                e.stopPropagation();
+                $open.dialog('close');
+            }
+        }
+
         function show(message, $focusAfter) {
-            beep();
-            const $dialog = $('<div></div>').text(message || 'Nincs találat.');
-            $dialog.dialog({
+            playSound();
+            if ($open) {
+                return;
+            }
+            document.addEventListener('keydown', keyHandler, true);
+            $open = $('<div></div>')
+                .append($('<p></p>').text(message || 'Nincs találat.'))
+                .append($('<p class="notfound-hint"></p>').text('Bezárás: ESC'));
+            $open.dialog({
                 resizable: false,
                 modal: true,
+                closeOnEscape: false,
                 title: 'Vonalkód',
-                buttons: {
-                    'OK': function () {
-                        $(this).dialog('close');
-                    }
-                },
                 open: function () {
-                    const $ok = $(this).parent().find('.ui-dialog-buttonpane button').first();
-                    $ok.prop('disabled', true);
-                    setTimeout(function () {
-                        $ok.prop('disabled', false).trigger('focus');
-                    }, 300);
+                    $(this).parent().find('.ui-dialog-titlebar-close').hide();
+                    $(this).parent().trigger('focus');
                 },
                 close: function () {
+                    document.removeEventListener('keydown', keyHandler, true);
                     $(this).dialog('destroy').remove();
+                    $open = null;
                     if ($focusAfter && $focusAfter.length) {
                         $focusAfter.val('').trigger('focus');
                     }
@@ -633,7 +673,8 @@ var mkwcomp = (function ($) {
         }
 
         return {
-            show: show
+            show: show,
+            playSound: playSound
         };
     }
 

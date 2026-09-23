@@ -566,6 +566,8 @@ class consts
     const Napijelentes2DefaultRaktar = 'napijelentes2defaultraktar';
 
     const NyomtatasiKerdesMenteskor = 'nyomtatasikerdesmenteskor';
+    // the upload's timestamp, empty when there is none; the file itself is in storage/
+    const VonalkodHibaHang = 'vonalkodhibahang';
 
     const FCMoto = 'fcmoto';
     const MaximoMoto = 'maximomoto';
