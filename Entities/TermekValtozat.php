@@ -199,6 +199,9 @@ class TermekValtozat
     /** @ORM\Column(type="boolean",nullable=false) */
     private $elorendelheto = false;
 
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $videolink = '';
+
     /**
      * Benne van-e a cikkszámban a szín és a méret kódja (composeCikkszam). A változatgenerátor kapcsolja be, és a
      * cikkszám átíró képernyő csak azokkal foglalkozik, amelyeken hamis.
@@ -688,6 +691,16 @@ class TermekValtozat
     public function setUnasalaptipus($unasalaptipus)
     {
         $this->unasalaptipus = $unasalaptipus;
+    }
+
+    public function getVideolink()
+    {
+        return $this->videolink;
+    }
+
+    public function setVideolink($adat)
+    {
+        $this->videolink = trim((string)$adat);
     }
 
     public function getBeerkezesdatum()

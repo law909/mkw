@@ -690,6 +690,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getValtozatLeiras($valtozat): string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getValtozatLeiras', [$valtozat]);
+
+        return parent::getValtozatLeiras($valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getLeirasL1()
     {
 

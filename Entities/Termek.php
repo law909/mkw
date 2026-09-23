@@ -1368,6 +1368,25 @@ class Termek
         $this->leiras = $leiras;
     }
 
+    /**
+     * The description with the variant's video link appended; unchanged when the variant has no
+     * link or belongs to another product.
+     *
+     * @param TermekValtozat|int|null $valtozat
+     */
+    public function getValtozatLeiras($valtozat): string
+    {
+        $leiras = (string)$this->getLeiras();
+        if (!$valtozat instanceof TermekValtozat) {
+            $valtozat = $valtozat ? \mkw\store::getEm()->getRepository(TermekValtozat::class)->find($valtozat) : null;
+        }
+        if (!$valtozat || $valtozat->getTermek()?->getId() != $this->getId() || !$valtozat->getVideolink()) {
+            return $leiras;
+        }
+        $url = htmlspecialchars($valtozat->getVideolink(), ENT_QUOTES);
+        return $leiras . '<p><a href="' . $url . '" target="_blank" rel="noopener">' . $url . '</a></p>';
+    }
+
     public function getLeirasL1()
     {
         return $this->leiras_l1;

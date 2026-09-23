@@ -968,6 +968,7 @@ class termekController extends \mkwhelpers\MattableController
                     $valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
                     $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                     $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
+                    $valtozat->setVideolink($this->params->getStringRequestParam('valtozatvideolink_' . $valtozatid));
                     $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
                     // az UNAS azonosító mező csak `unas` kapcsolóval van a formon – hiányában
                     // ne nullázzuk a meglévő párosítást
@@ -1079,6 +1080,7 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
                         $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
                         $valtozat->setIdegencikkszam($this->params->getStringRequestParam('valtozatidegencikkszam_' . $valtozatid));
+                        $valtozat->setVideolink($this->params->getStringRequestParam('valtozatvideolink_' . $valtozatid));
                         $valtozat->setVonalkod($this->params->getStringRequestParam('valtozatvonalkod_' . $valtozatid));
                         // az UNAS azonosító mező csak `unas` kapcsolóval van a formon – hiányában
                         // ne nullázzuk a meglévő párosítást

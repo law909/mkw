@@ -135,6 +135,14 @@
             <input id="IdegenCikkszamEdit_{$valtozat.id}" name="valtozatidegencikkszam_{$valtozat.id}" type="text" value="{$valtozat.idegencikkszam}">
         </td>
     </tr>
+    <tr>
+        <td class="mattable-cell">
+            <label for="VideolinkEdit_{$valtozat.id}">{at('Videó link')}:</label>
+        </td>
+        <td class="mattable-cell" colspan="3">
+            <input id="VideolinkEdit_{$valtozat.id}" name="valtozatvideolink_{$valtozat.id}" type="url" size="60" maxlength="255" value="{$valtozat.videolink|escape}">
+        </td>
+    </tr>
     {if ($setup.vonalkod)}
         <tr>
             <td class="mattable-cell">
