@@ -49,6 +49,10 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
+                        <a href="/admin/import/szimport" class="js-szimport">Termék adatok</a>
+                    </div>
+                    <div class="matt-hseparator"></div>
+                    <div>
                         <a href="/admin/import/szin" class="js-szinimport">Színek</a>
                         <a href="/admin/import/meret" class="js-meretimport">Méretek</a>
                         <a href="/admin/import/orszag" class="js-orszagimport">Országok</a>
@@ -70,6 +74,10 @@
                         másik "Uni" lesz. Minden termék a termékfa gyökerébe kerül. A gyártó az AA (MÁRKA)
                         oszlopból jön: ha az OXFORD, CGM, SUOMY vagy QUADLOCK szót tartalmazza, a fenti mezőben
                         a márkához választott partner lesz a gyártó (a meglévő terméknél csak akkor, ha még nincs).</p>
+                    <p>A "Termék adatok" XLSX első sora a fejléc. A terméket a kod (termék ID), a vonalkod
+                        vagy a cikkszam oszlop azonosítja, ebben a sorrendben. Frissíthető: nev (nev_EN stb. más
+                        nyelvre), cikkszam, vonalkod, vtsz, és az árak netto_HUF_&lt;ársáv neve&gt; /
+                        brutto_HUF_&lt;ársáv neve&gt; alakú oszlopokból. A nem talált sor kimarad.</p>
                     <p>Az "Előző program készlete" a stock_detailed vagy a stock_value XLSX-et várja (Cikkszám,
                         Termék, Vonalkód, Raktár, Teljes mennyiség/Mennyiség, és ha van, Egységár oszlopok). Az
                         Egységár forintos nettó beszerzési árként kerül a tételre, nélküle a tétel ára a termék
