@@ -482,11 +482,6 @@ class consts
     const UnasStatuszMap = 'unasstatuszmap';
     const UnasFizmodMap = 'unasfizmodmap';
     const UnasSzallmodMap = 'unasszallmodmap';
-    // amit a leképezés nem fed le: az UNAS StatusType-ja szerinti négy tartalék
-    const UnasStatuszOpenNormal = 'unasstatuszopennormal';
-    const UnasStatuszOpenPrepare = 'unasstatuszopenprepare';
-    const UnasStatuszCloseOk = 'unasstatuszcloseok';
-    const UnasStatuszCloseFault = 'unasstatuszclosefault';
     // kifizetett rendelés (Payment.Status = paid) státusza, ez erősebb a fentieknél
     const UnasFizetveStatusz = 'unasfizetvestatusz';
     // fel nem oldott cikkszám, szállítási / kezelési költség és kedvezmény tételek terméke

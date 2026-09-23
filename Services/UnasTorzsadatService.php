@@ -292,9 +292,8 @@ class UnasTorzsadatService
     }
 
     /**
-     * `StatusID` → leképezés → kifizetett rendelés státusza → `StatusType` szerinti négy tartalék
-     * → „függőben". A kifizetettség erősebb a `StatusType`-nál, de a leképezésnél nem: ha a bolt
-     * kezelője összerendelte a státuszokat, az a szándéka.
+     * `StatusID` → leképezés → kifizetett rendelés státusza → „függőben". A kifizetettség a
+     * leképezésnél gyengébb: ha a bolt kezelője összerendelte a státuszokat, az a szándéka.
      *
      * @param array $order a feldolgozott rendelés
      *
@@ -320,20 +319,7 @@ class UnasTorzsadatService
             }
         }
 
-        $fallbacks = [
-            'open_normal' => \mkw\consts::UnasStatuszOpenNormal,
-            'open_prepare' => \mkw\consts::UnasStatuszOpenPrepare,
-            'close_ok' => \mkw\consts::UnasStatuszCloseOk,
-            'close_fault' => \mkw\consts::UnasStatuszCloseFault,
-        ];
         $type = trim((string)($status['type'] ?? ''));
-        if (isset($fallbacks[$type])) {
-            $statusz = $repo->find(\mkw\store::getParameter($fallbacks[$type]));
-            if ($statusz) {
-                return $statusz;
-            }
-        }
-
         $statusz = $repo->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
         $this->warn(
             sprintf(

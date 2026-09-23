@@ -557,16 +557,8 @@ class setupController extends \mkwhelpers\Controller
         // a megrendelés-import beállításai; a státusz- és módleképezés az UNAS rendelések
         // képernyőn van, mert azt a getOrderStatus / getMethod válaszából generáljuk
         $bizstatusz = new bizonylatstatuszController();
-        foreach ([
-            \mkw\consts::UnasStatuszOpenNormal,
-            \mkw\consts::UnasStatuszOpenPrepare,
-            \mkw\consts::UnasStatuszCloseOk,
-            \mkw\consts::UnasStatuszCloseFault,
-            \mkw\consts::UnasFizetveStatusz,
-        ] as $par) {
-            $p = $repo->find($par);
-            $view->setVar($par . 'list', $bizstatusz->getSelectList(($p ? $p->getErtek() : 0)));
-        }
+        $p = $repo->find(\mkw\consts::UnasFizetveStatusz);
+        $view->setVar(\mkw\consts::UnasFizetveStatusz . 'list', $bizstatusz->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::UnasRaktar);
         $view->setVar('unasraktarlist', (new raktarController())->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::UnasPartnertipus);
@@ -1496,10 +1488,6 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::UnasKepUrlPrefix,
             \mkw\consts::UnasNyelv,
             \mkw\consts::UnasNyelvL1,
-            \mkw\consts::UnasStatuszOpenNormal,
-            \mkw\consts::UnasStatuszOpenPrepare,
-            \mkw\consts::UnasStatuszCloseOk,
-            \mkw\consts::UnasStatuszCloseFault,
             \mkw\consts::UnasFizetveStatusz,
             \mkw\consts::UnasRaktar,
             \mkw\consts::UnasPartnertipus,
@@ -1544,17 +1532,9 @@ class setupController extends \mkwhelpers\Controller
         if (!$this->params->existsRequestParam('unasfulvan')) {
             return;
         }
-        foreach ([
-            \mkw\consts::UnasStatuszOpenNormal,
-            \mkw\consts::UnasStatuszOpenPrepare,
-            \mkw\consts::UnasStatuszCloseOk,
-            \mkw\consts::UnasStatuszCloseFault,
-            \mkw\consts::UnasFizetveStatusz,
-        ] as $par) {
-            $statusz = \mkw\store::getEm()->getRepository(\Entities\Bizonylatstatusz::class)
-                ->find($this->params->getIntRequestParam($par, 0));
-            $this->setObj($par, $statusz ? $statusz->getId() : '');
-        }
+        $statusz = \mkw\store::getEm()->getRepository(\Entities\Bizonylatstatusz::class)
+            ->find($this->params->getIntRequestParam(\mkw\consts::UnasFizetveStatusz, 0));
+        $this->setObj(\mkw\consts::UnasFizetveStatusz, $statusz ? $statusz->getId() : '');
         $raktar = \mkw\store::getEm()->getRepository(\Entities\Raktar::class)
             ->find($this->params->getIntRequestParam(\mkw\consts::UnasRaktar, 0));
         $this->setObj(\mkw\consts::UnasRaktar, $raktar ? $raktar->getId() : '');

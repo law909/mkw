@@ -2452,43 +2452,6 @@
                                 <span>{at('A kedvezmény terméke ne mozgassa a készletet.')}</span>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="UnasStatuszOpenNormalEdit">{at('Státusz: nyitott (open_normal)')}:</label></span>
-                                <select id="UnasStatuszOpenNormalEdit" name="unasstatuszopennormal">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $unasstatuszopennormallist as $_r}
-                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="setuprow">
-                                <span class="setuplabel"><label
-                                        for="UnasStatuszOpenPrepareEdit">{at('Státusz: előkészítés alatt (open_prepare)')}:</label></span>
-                                <select id="UnasStatuszOpenPrepareEdit" name="unasstatuszopenprepare">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $unasstatuszopenpreparelist as $_r}
-                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="UnasStatuszCloseOkEdit">{at('Státusz: teljesített (close_ok)')}:</label></span>
-                                <select id="UnasStatuszCloseOkEdit" name="unasstatuszcloseok">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $unasstatuszcloseoklist as $_r}
-                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="setuprow">
-                                <span class="setuplabel"><label for="UnasStatuszCloseFaultEdit">{at('Státusz: meghiúsult (close_fault)')}:</label></span>
-                                <select id="UnasStatuszCloseFaultEdit" name="unasstatuszclosefault">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $unasstatuszclosefaultlist as $_r}
-                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="setuprow">
                                 <span class="setuplabel"><label for="UnasFizetveStatuszEdit">{at('Kifizetett rendelés státusza')}:</label></span>
                                 <select id="UnasFizetveStatuszEdit" name="unasfizetvestatusz">
                                     <option value="">{at('válasszon')}</option>

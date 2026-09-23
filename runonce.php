@@ -1277,7 +1277,8 @@ if ($DBVersion < '0111') {
     \mkw\store::getEm()->getConnection()->executeStatement(
         'INSERT IGNORE INTO parameterek (id, ertek, specialchars)'
         . ' SELECT ?, ertek, 0 FROM parameterek WHERE id = ?',
-        [\mkw\consts::UnasStatuszOpenNormal, \mkw\consts::BizonylatStatuszFuggoben]
+        // a konstans azóta megszűnt (2026-09-23), a 0193 törli is a paramétert
+        ['unasstatuszopennormal', \mkw\consts::BizonylatStatuszFuggoben]
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0111');
 }
@@ -2833,6 +2834,14 @@ if ($DBVersion < '0192') {
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/forgalmilista/view") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0192');
+}
+
+if ($DBVersion < '0193') {
+    // az UNAS StatusType szerinti négy státusz-tartalék megszűnt: a leképezés és a „függőben" marad
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'DELETE FROM parameterek WHERE id IN ("unasstatuszopennormal", "unasstatuszopenprepare", "unasstatuszcloseok", "unasstatuszclosefault")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0193');
 }
 
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
