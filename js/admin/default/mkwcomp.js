@@ -583,6 +583,60 @@ var mkwcomp = (function ($) {
         }
     }
 
+    function notFound() {
+        let audioCtx = null;
+
+        function beep() {
+            try {
+                audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.value = 440;
+                gain.gain.value = 0.2;
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch (e) {
+                // no audio support: the dialog still shows
+            }
+        }
+
+        // OK is briefly disabled so the next scan's Enter cannot dismiss the dialog unseen
+        function show(message, $focusAfter) {
+            beep();
+            const $dialog = $('<div></div>').text(message || 'Nincs találat.');
+            $dialog.dialog({
+                resizable: false,
+                modal: true,
+                title: 'Vonalkód',
+                buttons: {
+                    'OK': function () {
+                        $(this).dialog('close');
+                    }
+                },
+                open: function () {
+                    const $ok = $(this).parent().find('.ui-dialog-buttonpane button').first();
+                    $ok.prop('disabled', true);
+                    setTimeout(function () {
+                        $ok.prop('disabled', false).trigger('focus');
+                    }, 300);
+                },
+                close: function () {
+                    $(this).dialog('destroy').remove();
+                    if ($focusAfter && $focusAfter.length) {
+                        $focusAfter.val('').trigger('focus');
+                    }
+                }
+            });
+        }
+
+        return {
+            show: show
+        };
+    }
+
     return {
         termekfaFilter: jstreeFilter('/admin/termekfa/jsonlist'),
         termekmenuFilter: jstreeFilter('/admin/termekmenu/jsonlist'),
@@ -591,7 +645,8 @@ var mkwcomp = (function ($) {
         bizonylatstatuszFilter: bizonylatstatuszFilter(),
         partnercimkeFilter: partnercimkeFilter(),
         keszletBizonylatok: keszletBizonylatok(),
-        kerdoivSzerkeszto: kerdoivSzerkeszto()
+        kerdoivSzerkeszto: kerdoivSzerkeszto(),
+        notFound: notFound()
     }
 
 })(jQuery);

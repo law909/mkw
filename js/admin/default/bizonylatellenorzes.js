@@ -127,7 +127,7 @@ $(document).ready(function () {
             function handleResult(res) {
                 if (!res || !res.mode || res.mode === 'none') {
                     $hiba.text('Nincs találat.');
-                    $kereso.trigger('focus');
+                    mkwcomp.notFound.show('Nincs találat.', $kereso);
                     return;
                 }
                 $hiba.text('');

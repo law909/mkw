@@ -52,6 +52,7 @@ var leltarfelvetel = (function ($) {
     function handleResult($cont, res) {
         if (!res || !res.mode || res.mode === 'none') {
             hiba($cont, 'Nincs találat.');
+            mkwcomp.notFound.show('Nincs találat.', $cont.find('.js-leltarkereso'));
             return;
         }
         if (res.mode === 'hiba') {

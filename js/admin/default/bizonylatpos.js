@@ -82,6 +82,7 @@ var bizonylatpos = (function ($) {
         var $hiba = $cont.find('.js-poskereshiba');
         if (!res || !res.mode || res.mode === 'none') {
             $hiba.text('Nincs találat.');
+            mkwcomp.notFound.show('Nincs találat.', $cont.find('.js-poskereso'));
             return;
         }
         $hiba.text('');

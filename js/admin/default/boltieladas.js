@@ -99,6 +99,7 @@ var boltieladas = (function ($) {
         var $hiba = $cont.find('.js-boltieladas-kereshiba');
         if (!res || !res.mode || res.mode === 'none') {
             $hiba.text('Nincs találat.');
+            mkwcomp.notFound.show('Nincs találat.', $cont.find('.js-boltieladas-vonalkod'));
             return;
         }
         $hiba.text('');
