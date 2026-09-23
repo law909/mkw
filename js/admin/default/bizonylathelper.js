@@ -2315,6 +2315,7 @@ let bizonylathelper = function ($) {
                     getArfolyam();
                 });
                 mkwcomp.datumEdit.init('#EsedekessegEdit');
+                mkwcomp.datumEdit.init('#BeerkezesEdit');
                 mkwcomp.datumEdit.init('#HataridoEdit');
                 mkwcomp.datumEdit.init('#ShipDateEdit');
                 mkwcomp.datumEdit.init('#FakeKifizetesdatumEdit');

@@ -43,6 +43,8 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showhatarido = false;
     /** @ORM\Column(type="boolean",nullable=false) */
+    private $showbeerkezes = false;
+    /** @ORM\Column(type="boolean",nullable=false) */
     private $showbizonylatstatuszeditor = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showszamlabutton = false;
@@ -166,6 +168,7 @@ class Bizonylattipus
             'showteljesites' => $this->getShowteljesites(),
             'showesedekesseg' => $this->getShowesedekesseg(),
             'showhatarido' => $this->getShowhatarido(),
+            'showbeerkezes' => $this->getShowbeerkezes(),
             'showvalutanem' => \mkw\store::isMultiValuta(),
             'showbizonylatstatuszeditor' => $this->getShowbizonylatstatuszeditor(),
             'showszamlabutton' => $this->getShowszamlabutton(),
@@ -353,6 +356,16 @@ class Bizonylattipus
     public function setShowhatarido($show)
     {
         $this->showhatarido = $show;
+    }
+
+    public function getShowbeerkezes()
+    {
+        return $this->showbeerkezes;
+    }
+
+    public function setShowbeerkezes($show)
+    {
+        $this->showbeerkezes = $show;
     }
 
     public function getShowvalutanem()

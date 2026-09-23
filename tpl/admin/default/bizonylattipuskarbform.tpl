@@ -133,6 +133,8 @@
                     <tr>
                         <td><label for="ShowmunkalapadatokEdit">Munkalap adatok:</label></td>
                         <td><input id="ShowmunkalapadatokEdit" name="showmunkalapadatok" type="checkbox"{if ($egyed.showmunkalapadatok)} checked="checked"{/if}></td>
+                        <td><label for="ShowbeerkezesEdit">Beérkezés dátuma:</label></td>
+                        <td><input id="ShowbeerkezesEdit" name="showbeerkezes" type="checkbox"{if ($egyed.showbeerkezes)} checked="checked"{/if}></td>
                     </tr>
                 </tbody>
             </table>

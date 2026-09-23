@@ -382,6 +382,12 @@
                     <td>{$_egyed.esedekessegstr}</td>
                 </tr>
             {/if}
+            {if ($showbeerkezes)}
+                <tr class="mattable-important">
+                    <td>{at('Beérkezés')}:</td>
+                    <td>{$_egyed.beerkezesstr}</td>
+                </tr>
+            {/if}
             {if ($showhatarido)}
                 <tr class="mattable-important">
                     <td>{at('Határidő')}:</td>

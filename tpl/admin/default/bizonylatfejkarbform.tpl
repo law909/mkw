@@ -399,6 +399,11 @@
                             <td><input id="EsedekessegEdit" name="esedekesseg" type="text" size="12" data-datum="{$egyed.esedekessegstr}"
                                        class="mattable-important" required="required"></td>
                         {/if}
+                        {if ($showbeerkezes)}
+                            <td class="mattable-important"><label for="BeerkezesEdit">{at('Beérkezés')}:</label></td>
+                            <td><input id="BeerkezesEdit" name="beerkezes" type="text" size="12" data-datum="{$egyed.beerkezesstr}"
+                                       class="mattable-important"></td>
+                        {/if}
                     </tr>
                     <tr>
                         {if ($showhatarido)}

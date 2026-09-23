@@ -547,6 +547,9 @@ class Bizonylatfej
     /** @ORM\Column(type="date",nullable=true) */
     private $hatarido;
 
+    /** @ORM\Column(type="date",nullable=true) */
+    private $beerkezes;
+
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $szallnev = '';
 
@@ -1886,6 +1889,7 @@ class Bizonylatfej
         $ret['teljesitesstr'] = $this->getTeljesitesStr();
         $ret['esedekessegstr'] = $this->getEsedekessegStr();
         $ret['hataridostr'] = $this->getHataridoStr();
+        $ret['beerkezesstr'] = $this->getBeerkezesStr();
         $ret['esedekesseg1str'] = $this->getEsedekesseg1Str();
         $ret['fizetendo1'] = $this->getFizetendo1();
         $ret['esedekesseg2str'] = $this->getEsedekesseg2Str();
@@ -6492,6 +6496,30 @@ class Bizonylatfej
     public function setFedexservicetype($fedexservicetype)
     {
         $this->fedexservicetype = $fedexservicetype;
+    }
+
+    public function getBeerkezes(): \DateTime|null
+    {
+        return $this->beerkezes;
+    }
+
+    public function getBeerkezesStr(): string
+    {
+        if ($this->beerkezes) {
+            return $this->beerkezes->format(\mkw\store::$DateFormat);
+        }
+        return '';
+    }
+
+    public function setBeerkezes($adat = null)
+    {
+        if (is_a($adat, 'DateTime')) {
+            $this->beerkezes = $adat;
+        } elseif ($adat) {
+            $this->beerkezes = new \DateTime(\mkw\store::convDate($adat));
+        } else {
+            $this->beerkezes = null;
+        }
     }
 
     public function getShipdate(): \DateTime|null

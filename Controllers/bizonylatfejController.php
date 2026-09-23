@@ -507,6 +507,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['esedekesseg5str'] = $t->getEsedekesseg5Str();
         $x['fizetendo5'] = $t->getFizetendo5();
         $x['hataridostr'] = $t->getHataridoStr();
+        $x['beerkezesstr'] = $t->getBeerkezesStr();
         $x['partner'] = $t->getPartnerId();
         $x['partnernev'] = $t->getPartnernev();
         $x['partnervezeteknev'] = $t->getPartnervezeteknev();
@@ -989,6 +990,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setEsedekesseg($this->params->getStringRequestParam('esedekesseg'));
         $obj->setHatarido($this->params->getStringRequestParam('hatarido'));
         $obj->setShipdate($this->params->getStringRequestParam('shipdate'));
+        // only on the form when the type shows it, otherwise it would be nulled
+        if ($obj->getBizonylattipus()?->getShowbeerkezes()) {
+            $obj->setBeerkezes($this->params->getStringRequestParam('beerkezes'));
+        }
 
         $obj->setErbizonylatszam($this->params->getStringRequestParam('erbizonylatszam'));
         $obj->setFuvarlevelszam($this->params->getStringRequestParam('fuvarlevelszam'));
