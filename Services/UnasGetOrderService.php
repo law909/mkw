@@ -992,6 +992,10 @@ class UnasGetOrderService
             $tetel->setAfa($item['afa']);
             return;
         }
+        // termék nélküli tételre (be nem állított költség- vagy alapértelmezett termék) a setTermek() nem tett kulcsot
+        if (!$tetel->getAfa()) {
+            $tetel->setAfa($override);
+        }
         if ((float)$override->getErtek() !== (float)$item['afa']->getErtek()) {
             $this->torzsadat->warn(
                 sprintf(

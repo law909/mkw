@@ -192,11 +192,7 @@ class BizonylatfejListener
             }
             if ($k) {
                 $k->setMennyiseg(1);
-                if ($afaoverride) {
-                    $k->setAfa($afaoverride);
-                } else {
-                    $k->setAfa($termek->getAfa());
-                }
+                $k->setAfa($this->costAfa($afaoverride, $termek));
                 $k->setBruttoegysar($ktg);
                 $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                 $k->calc();
@@ -214,11 +210,7 @@ class BizonylatfejListener
                 $k->setFoglal();
                 $k->setErkezik();
                 $k->setMennyiseg(1);
-                if ($afaoverride) {
-                    $k->setAfa($afaoverride);
-                } else {
-                    $k->setAfa($termek->getAfa());
-                }
+                $k->setAfa($this->costAfa($afaoverride, $termek));
                 $k->setBruttoegysar($ktg);
                 $k->setBruttoegysarhuf($ktg * $k->getArfolyam());
                 $k->calc();
@@ -390,6 +382,21 @@ class BizonylatfejListener
     /**
      * @param \Entities\Bizonylatfej $bizfej
      */
+    /**
+     * A költségtétel ÁFA-ja: a vevő szerinti felülbírálás, egyébként a költségtermék kulcsa. Kulcs
+     * nélkül az új tétel `afakulcs`-a NULL maradna, és a mentés SQL hibával állna meg.
+     */
+    private function costAfa($afaoverride, ?Termek $termek)
+    {
+        $afa = $afaoverride ?: $termek?->getAfa();
+        if (!$afa) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(
+                sprintf(t('A(z) "%s" költségtermékhez nincs ÁFA kulcs beállítva.'), $termek ? $termek->getNev() : '?')
+            );
+        }
+        return $afa;
+    }
+
     private function createKezelesiKoltseg($bizfej)
     {
         $szallmod = $bizfej->getSzallitasimod();
@@ -429,11 +436,7 @@ class BizonylatfejListener
                 $k->setFoglal();
                 $k->setErkezik();
                 $k->setMennyiseg(1);
-                if ($afaoverride) {
-                    $k->setAfa($afaoverride);
-                } else {
-                    $k->setAfa($kezktg->getAfa());
-                }
+                $k->setAfa($this->costAfa($afaoverride, $kezktg));
                 $k->setBruttoegysar($kezktg->getBruttoAr());
                 $k->setBruttoegysarhuf($kezktg->getBruttoAr() * $k->getArfolyam());
                 $k->calc();
@@ -1000,11 +1003,7 @@ class BizonylatfejListener
             }
             if ($k) {
                 $k->setMennyiseg(1);
-                if ($afaoverride) {
-                    $k->setAfa($afaoverride);
-                } else {
-                    $k->setAfa($termek->getAfa());
-                }
+                $k->setAfa($this->costAfa($afaoverride, $termek));
                 $k->setBruttoegysar($bruttoegysar);
                 $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
                 $k->calc();
@@ -1022,11 +1021,7 @@ class BizonylatfejListener
                 $k->setFoglal();
                 $k->setErkezik();
                 $k->setMennyiseg(1);
-                if ($afaoverride) {
-                    $k->setAfa($afaoverride);
-                } else {
-                    $k->setAfa($termek->getAfa());
-                }
+                $k->setAfa($this->costAfa($afaoverride, $termek));
                 $k->setBruttoegysar($bruttoegysar);
                 $k->setBruttoegysarhuf($bruttoegysar * $k->getArfolyam());
                 $k->calc();
