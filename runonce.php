@@ -2835,6 +2835,21 @@ if ($DBVersion < '0192') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0192');
 }
 
+if ($DBVersion < '0193') {
+    // bizonylattetel.cikkszam = a termék cikkszáma, valtozatcikkszam = a változaté. Ahol a cikkszam mezőben a
+    // változat cikkszáma áll (a felület eddig oda írta), az átkerül a valtozatcikkszam-ba. Egy UPDATE-en belül
+    // a SET-ek sorrendje nem garantált, ezért a változat cikkszáma a termekvaltozat-ból jön, nem a bt.cikkszam-ból.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bizonylattetel bt'
+        . ' INNER JOIN termek t ON (bt.termek_id=t.id)'
+        . ' INNER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)'
+        . ' SET bt.valtozatcikkszam=tv.cikkszam, bt.cikkszam=t.cikkszam'
+        . ' WHERE COALESCE(bt.cikkszam, "")<>"" AND bt.cikkszam=tv.cikkszam AND bt.cikkszam<>COALESCE(t.cikkszam, "")'
+        . ' AND COALESCE(bt.valtozatcikkszam, "") IN ("", bt.cikkszam)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0193');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

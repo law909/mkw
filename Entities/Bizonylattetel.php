@@ -388,7 +388,7 @@ class Bizonylattetel
         } else {
             $item->Description = $this->getFullTermeknev();
         }
-        $item->SKU = $this->getCikkszam();
+        $item->SKU = $this->getDisplayCikkszam();
         $item->Quantity = $this->getMennyiseg();
         $item->Unit = $this->getME();
         $item->UnitPrice = number_format($this->getBruttoegysar(), 2, '.', '');
@@ -448,11 +448,7 @@ class Bizonylattetel
         }
         $ret['valtozatok'] = $v;
         $ret['valtozatcikkszam'] = $this->getValtozatcikkszam();
-        // a bizonylat tételsorába a változat cikkszáma megy, ha van: az mondja meg pontosan,
-        // melyik színt/méretet adtuk el, a termék cikkszáma csak a terméket azonosítja
-        if ($ret['valtozatcikkszam']) {
-            $ret['cikkszam'] = $ret['valtozatcikkszam'];
-        }
+        $ret['cikkszam'] = $this->getDisplayCikkszam();
         return $ret;
     }
 
@@ -910,6 +906,15 @@ class Bizonylattetel
     public function setCikkszam($val)
     {
         $this->cikkszam = $val;
+    }
+
+    /**
+     * cikkszam always holds the product's code and valtozatcikkszam the variant's; wherever a
+     * code is shown, the variant's wins when there is one.
+     */
+    public function getDisplayCikkszam()
+    {
+        return $this->getValtozatcikkszam() ?: $this->getCikkszam();
     }
 
     public function getValtozatcikkszam()

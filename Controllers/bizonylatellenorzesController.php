@@ -33,7 +33,7 @@ class bizonylatellenorzesController extends \mkwhelpers\Controller
                 'id' => $tetel->getId(),
                 'termekid' => $termek ? $termek->getId() : 0,
                 'valtozatid' => $valtozat ? $valtozat->getId() : 0,
-                'cikkszam' => $tetel->getCikkszam(),
+                'cikkszam' => $tetel->getDisplayCikkszam(),
                 'nev' => $tetel->getTermeknev(),
                 'valtozatnev' => $valtozat ? trim($valtozat->getNev(), ' -') : '',
                 'vonalkod' => ($valtozat && $valtozat->getVonalkod()) ? $valtozat->getVonalkod() : ($termek ? $termek->getVonalkod() : ''),

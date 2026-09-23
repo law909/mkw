@@ -994,6 +994,7 @@ let bizonylathelper = function ($) {
         valtozatplace.empty();
         $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
         $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
+        $('.js-valtozatcikkszam_' + sorid).text('');
         $('select[name="tetelme_' + sorid + '"]').val(termek.me);
         if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {
             $('input[name="tetelmennyiseg_' + sorid + '"]').val(termek.defaultmennyiseg);
@@ -2212,9 +2213,8 @@ let bizonylathelper = function ($) {
                         let $this = $(this),
                             sorid = $this.attr('name').split('_')[1],
                             valtozatcikkszam = $('option:selected', $this).attr('data-cikkszam');
-                        if (valtozatcikkszam) {
-                            $('input[name="tetelcikkszam_' + sorid + '"]').val(valtozatcikkszam);
-                        }
+                        // the line field keeps the product's code, the variant's is only shown
+                        $('.js-valtozatcikkszam_' + sorid).text(valtozatcikkszam ? `Változat: ${valtozatcikkszam}` : '');
                         setTermekAr(sorid);
                         frissitRaktarKeszlet(sorid);
                     })

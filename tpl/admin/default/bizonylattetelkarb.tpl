@@ -89,7 +89,8 @@
         </tr>
         <tr>
             <td><label for="CikkszamEdit{$tetel.id}">{at('Cikkszám')}:</label></td>
-            <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}"></td>
+            <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}">
+                <span class="js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span></td>
             <td><label for="VtszSelect{$tetel.id}">{at('VTSZ')}:</label></td>
             <td><select id="VtszSelect{$tetel.id}" name="tetelvtsz_{$tetel.id}" class="js-vtszselect" required="required">
                     <option value="">{at('válasszon')}</option>

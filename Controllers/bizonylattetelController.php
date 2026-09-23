@@ -44,10 +44,6 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         }
         $x['termek'] = $t->getTermekId();
         $x['termekvaltozat'] = $t->getTermekvaltozatId();
-        // like toLista(): documents made server side (e.g. inventory close) stored the product's code
-        if ($t->getValtozatcikkszam()) {
-            $x['cikkszam'] = $t->getValtozatcikkszam();
-        }
         $x['termeknev_locale'] = $t->getLocalizedFieldValue('termeknev');
         $x['vasarlasdatumstr'] = $t->getVasarlasdatumStr();
         $x['elolegbizonylatszam'] = $t->getElolegbizonylatszam();

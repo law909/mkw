@@ -2210,7 +2210,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                         ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getAfahuf())
                         ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getBruttohuf())
                         ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $fej->getFuvarlevelszam())
-                        ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $tetel->getCikkszam())
+                        ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $tetel->getDisplayCikkszam())
                         ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $tetel->getTermeknev())
                         ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $tetel->getValtozatertek1())
                         ->setCellValue(\mkw\store::getExcelCoordinate($o++, $sor), $tetel->getValtozatertek2())

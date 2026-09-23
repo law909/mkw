@@ -357,7 +357,7 @@ class MirOrderExcelService
             }
             $valtozat = $tetel->getTermekvaltozat();
             $termek = $tetel->getTermek();
-            $kulcs = $tetel->getCikkszam() . '|' . $tetel->getValtozatertek1() . '|' . $tetel->getValtozatertek2();
+            $kulcs = $tetel->getDisplayCikkszam() . '|' . $tetel->getValtozatertek1() . '|' . $tetel->getValtozatertek2();
             if (isset($latott[$kulcs])) {
                 continue;
             }
@@ -365,7 +365,7 @@ class MirOrderExcelService
 
             $sheet->setCellValueExplicit(
                 'A' . $sor,
-                (string)$tetel->getCikkszam(),
+                (string)$tetel->getDisplayCikkszam(),
                 \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
             );
             $sheet->setCellValue('B' . $sor, $this->getTermekNev($tetel, $termek, $nyelv));
@@ -570,6 +570,7 @@ class MirOrderExcelService
             if ($tetel->getStorno() || $tetel->getStornozott()) {
                 continue;
             }
+            // one row per product and colour, the sizes go into columns: the product's code, not the variant's
             $cikkszam = $tetel->getCikkszam();
             $szin = (string)$tetel->getValtozatertek1();
             $meret = (string)$tetel->getValtozatertek2();
