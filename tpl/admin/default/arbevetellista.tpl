@@ -4,6 +4,7 @@
     {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/chartjs/chart.umd.min.js"></script>
+    <script type="text/javascript" src="/js/admin/default/chartvaluelabels.js"></script>
     <script type="text/javascript" src="/js/admin/default/arbevetellista.js"></script>
 {/block}
 

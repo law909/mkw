@@ -23,14 +23,17 @@ $(document).ready(function () {
         chart = new Chart(document.getElementById('arbevetelchart'), {
             type: 'bar',
             data: {labels: data.labels, datasets: data.datasets},
+            plugins: [chartValueLabels],
             options: {
                 maintainAspectRatio: false,
+                layout: {padding: {top: 18}},
                 scales: {
                     x: {stacked: data.stacked},
                     y: {stacked: data.stacked, ticks: {callback: (value) => huf.format(value)}}
                 },
                 plugins: {
                     legend: {display: data.legend},
+                    valueLabels: {format: (value) => huf.format(value)},
                     tooltip: {callbacks: {label: (ctx) => `${ctx.dataset.label}: ${huf.format(ctx.parsed.y)} Ft`}}
                 }
             }
