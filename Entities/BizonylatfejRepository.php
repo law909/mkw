@@ -740,27 +740,29 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
 
     public const ARBEVETEL_BIZONYLATTIPUSOK = ['elolegszamla', 'szamla', 'boltieladas'];
 
-    /**
-     * Revenue from the item lines of advance invoices, invoices and shop sales, in HUF. A storno
-     * document carries negative amounts, so it cancels its original; the offset line of a final
-     * invoice cancels the advance invoice the same way.
-     *
-     * @param array $csoport any of 'ev', 'honap', 'gyarto', 'webshop' ('ev' and 'honap' exclude each other)
-     */
-    public function getArbevetelLista(
-        $datumtipus,
+    private const ARBEVETEL_FROM = ' FROM bizonylattetel bt'
+        . ' INNER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
+        . ' LEFT OUTER JOIN bizonylatfej elod ON (bf.parbizonylatfej_id=elod.id)'
+        . ' LEFT OUTER JOIN bizonylatfej elodelod ON (elod.parbizonylatfej_id=elodelod.id)'
+        . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
+        . ' LEFT OUTER JOIN partner gy ON (t.gyarto_id=gy.id)';
+
+    private function getArbevetelDatummezo($datumtipus): string
+    {
+        return in_array($datumtipus, ['kelt', 'teljesites', 'esedekesseg'], true) ? 'bf.' . $datumtipus : 'bf.teljesites';
+    }
+
+    /** The document and item filter shared by the revenue and the sales reports. */
+    private function getArbevetelFilter(
+        $datummezo,
         $datumtol,
         $datumig,
-        bool $brutto,
-        array $csoport,
         $partnerid,
         $partnertipusid,
         $gyartoid,
         array $fafilter,
         $webshopnum
-    ): array {
-        $datummezo = in_array($datumtipus, ['kelt', 'teljesites', 'esedekesseg'], true) ? 'bf.' . $datumtipus : 'bf.teljesites';
-
+    ): FilterDescriptor {
         $filter = new FilterDescriptor();
         $filter->addFilter('bf.bizonylattipus_id', 'IN', self::ARBEVETEL_BIZONYLATTIPUSOK);
         $filter->addFilter('bf.rontott', '=', false);
@@ -793,7 +795,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             "NOT (bf.bizonylattipus_id <> 'boltieladas' AND (COALESCE(elod.bizonylattipus_id, '') = 'boltieladas'"
             . " OR (bf.storno = 1 AND COALESCE(elodelod.bizonylattipus_id, '') = 'boltieladas')))"
         );
+        return $filter;
+    }
 
+    /** SELECT expressions by alias for the 'ev'/'honap'/'gyarto'/'webshop' grouping. */
+    private function getArbevetelCsoportMezok($datummezo, array $csoport): array
+    {
         $mezok = [];
         if (in_array('ev', $csoport, true)) {
             $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y')";
@@ -807,6 +814,11 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if (in_array('webshop', $csoport, true)) {
             $mezok['webshopnum'] = 'bf.webshopnum';
         }
+        return $mezok;
+    }
+
+    private function fetchArbevetelRows(array $mezok, array $ertekek, FilterDescriptor $filter, string $from, array $order = []): array
+    {
         $select = [];
         $group = [];
         foreach ($mezok as $alias => $kifejezes) {
@@ -815,21 +827,22 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $group[] = $alias;
             }
         }
-        $select[] = 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ') AS ertek';
+        foreach ($ertekek as $alias => $kifejezes) {
+            $select[] = $kifejezes . ' AS ' . $alias;
+        }
+        $order = $order ?: $group;
 
         $sql = 'SELECT ' . implode(',', $select)
-            . ' FROM bizonylattetel bt'
-            . ' INNER JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
-            . ' LEFT OUTER JOIN bizonylatfej elod ON (bf.parbizonylatfej_id=elod.id)'
-            . ' LEFT OUTER JOIN bizonylatfej elodelod ON (elod.parbizonylatfej_id=elodelod.id)'
-            . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
-            . ' LEFT OUTER JOIN partner gy ON (t.gyarto_id=gy.id)'
+            . $from
             . $this->getFilterString($filter)
-            . ($group ? ' GROUP BY ' . implode(',', $group) . ' ORDER BY ' . implode(',', $group) : '');
+            . ($group ? ' GROUP BY ' . implode(',', $group) : '')
+            . ($order ? ' ORDER BY ' . implode(',', $order) : '');
 
         $rows = $this->_em->getConnection()->fetchAllAssociative($sql, $this->getQueryParameters($filter));
         foreach ($rows as &$row) {
-            $row['ertek'] = round((float)$row['ertek'], 2);
+            foreach (array_keys($ertekek) as $alias) {
+                $row[$alias] = round((float)$row[$alias], 2);
+            }
             if (array_key_exists('webshopnum', $row)) {
                 $row['webshopnev'] = \mkw\store::getWebshopNev($row['webshopnum']);
             }
@@ -838,6 +851,79 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             }
         }
         return $rows;
+    }
+
+    /**
+     * Revenue from the item lines of advance invoices, invoices and shop sales, in HUF. A storno
+     * document carries negative amounts, so it cancels its original; the offset line of a final
+     * invoice cancels the advance invoice the same way.
+     *
+     * @param array $csoport any of 'ev', 'honap', 'gyarto', 'webshop' ('ev' and 'honap' exclude each other)
+     */
+    public function getArbevetelLista(
+        $datumtipus,
+        $datumtol,
+        $datumig,
+        bool $brutto,
+        array $csoport,
+        $partnerid,
+        $partnertipusid,
+        $gyartoid,
+        array $fafilter,
+        $webshopnum
+    ): array {
+        $datummezo = $this->getArbevetelDatummezo($datumtipus);
+        $filter = $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $partnerid, $partnertipusid, $gyartoid, $fafilter, $webshopnum);
+        return $this->fetchArbevetelRows(
+            $this->getArbevetelCsoportMezok($datummezo, $csoport),
+            ['ertek' => 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ')'],
+            $filter,
+            self::ARBEVETEL_FROM
+        );
+    }
+
+    /**
+     * Sold quantity and value per product / product variant, on the same documents and filters as
+     * getArbevetelLista(). A storno negates either the quantity or the price depending on its type,
+     * so the quantity takes the sign of the line value; a zero-value line keeps its own sign.
+     */
+    public function getForgalmiLista(
+        $datumtipus,
+        $datumtol,
+        $datumig,
+        bool $brutto,
+        array $csoport,
+        $partnerid,
+        $partnertipusid,
+        $gyartoid,
+        array $fafilter,
+        $webshopnum
+    ): array {
+        $datummezo = $this->getArbevetelDatummezo($datumtipus);
+        $filter = $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $partnerid, $partnertipusid, $gyartoid, $fafilter, $webshopnum);
+        $filter->addSql('bt.termek_id IS NOT NULL');
+
+        $mezok = $this->getArbevetelCsoportMezok($datummezo, $csoport) + [
+                'termekid' => 'bt.termek_id',
+                'termekvaltozatid' => 'bt.termekvaltozat_id',
+                'cikkszam' => "MAX(COALESCE(NULLIF(tv.cikkszam, ''), t.cikkszam))",
+                'nev' => 'MAX(t.nev)',
+                'ertek1' => 'MAX(tv.ertek1)',
+                'ertek2' => 'MAX(tv.ertek2)',
+                'me' => 'MAX(bt.me)',
+            ];
+        $idoszakrend = array_key_exists('idoszak', $mezok) ? ['idoszak'] : [];
+        $csoportrend = array_values(array_intersect(['gyartonev', 'webshopnum'], array_keys($mezok)));
+        return $this->fetchArbevetelRows(
+            $mezok,
+            [
+                'mennyiseg' => 'SUM(CASE WHEN bt.nettohuf <> 0 THEN SIGN(bt.nettohuf) * ABS(bt.mennyiseg) ELSE bt.mennyiseg END)',
+                'ertek' => 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ')',
+            ],
+            $filter,
+            self::ARBEVETEL_FROM . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)',
+            array_merge($idoszakrend, $csoportrend, ['cikkszam', 'nev', 'ertek1', 'ertek2'])
+        );
     }
 
     public function getBizonylatTetelLista(

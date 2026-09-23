@@ -10,12 +10,12 @@
 
 {block "kozep"}
     <div id="mattkarb">
-        <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-baseurl="/admin/arbevetellista" data-unit="Ft">
-            <h3>{at('Árbevétel kimutatás')}</h3>
+        <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-baseurl="/admin/forgalmilista" data-decimals="2">
+            <h3>{at('Forgalmi lista')}</h3>
         </div>
         <form id="arbevetel" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                <p>{at('Előlegszámlák, számlák és bolti eladások tételei forintban; a stornó levonódik, a bolti eladásból képzett számla nem számít még egyszer.')}</p>
+                <p>{at('Eladott mennyiség és érték termékenként / termékváltozatonként, az árbevétel kimutatással azonos bizonylatokból; a stornó levonódik.')}</p>
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="szamla"}
                 <div class="matt-hseparator"></div>
@@ -51,7 +51,7 @@
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
-                <a href="/admin/arbevetellista/export" class="js-exportbutton">{at('Export')}</a>
+                <a href="/admin/forgalmilista/export" class="js-exportbutton">{at('Export')}</a>
                 <div class="matt-hseparator"></div>
                 <div class="arbevetel-chart"><canvas id="arbevetelchart"></canvas></div>
                 <div id="eredmeny"></div>

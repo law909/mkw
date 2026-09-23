@@ -10,7 +10,11 @@ $(document).ready(function () {
         return isPartnerAutocomplete() ? $('.js-partnerid').val() : $('#PartnerEdit option:selected').val();
     }
 
-    const huf = new Intl.NumberFormat('hu-HU', {maximumFractionDigits: 0});
+    // shared by the revenue and the sales report, the header tells them apart
+    const $header = $('#mattkarb-header');
+    const baseUrl = $header.data('baseurl');
+    const unit = $header.data('unit') || '';
+    const numFormat = new Intl.NumberFormat('hu-HU', {maximumFractionDigits: Number($header.data('decimals')) || 0});
 
     function drawChart(data) {
         if (chart) {
@@ -29,12 +33,12 @@ $(document).ready(function () {
                 layout: {padding: {top: 18}},
                 scales: {
                     x: {stacked: data.stacked},
-                    y: {stacked: data.stacked, ticks: {callback: (value) => huf.format(value)}}
+                    y: {stacked: data.stacked, ticks: {callback: (value) => numFormat.format(value)}}
                 },
                 plugins: {
                     legend: {display: data.legend},
-                    valueLabels: {format: (value) => huf.format(value)},
-                    tooltip: {callbacks: {label: (ctx) => `${ctx.dataset.label}: ${huf.format(ctx.parsed.y)} Ft`}}
+                    valueLabels: {format: (value) => numFormat.format(value)},
+                    tooltip: {callbacks: {label: (ctx) => `${ctx.dataset.label}: ${numFormat.format(ctx.parsed.y)} ${unit}`.trim()}}
                 }
             }
         });
@@ -61,7 +65,7 @@ $(document).ready(function () {
                 e.preventDefault();
                 const fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                 $.ajax({
-                    url: '/admin/arbevetellista/refresh',
+                    url: `${baseUrl}/refresh`,
                     type: 'GET',
                     dataType: 'json',
                     data: {

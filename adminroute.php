@@ -1751,6 +1751,10 @@ $router->map('GET', '/admin/arbevetellista/view', 'arbevetellistaController#view
 $router->map('GET', '/admin/arbevetellista/refresh', 'arbevetellistaController#refresh', 'adminarbevetellistarefresh');
 $router->map('GET', '/admin/arbevetellista/export', 'arbevetellistaController#export', 'adminarbevetellistaexport');
 
+$router->map('GET', '/admin/forgalmilista/view', 'forgalmilistaController#view', 'adminforgalmilistaview');
+$router->map('GET', '/admin/forgalmilista/refresh', 'forgalmilistaController#refresh', 'adminforgalmilistarefresh');
+$router->map('GET', '/admin/forgalmilista/export', 'forgalmilistaController#export', 'adminforgalmilistaexport');
+
 $router->map('GET', '/admin/tanarelszamolas/view', 'tanarelszamolasController#view', 'admintanarelszamolasview');
 $router->map('GET', '/admin/tanarelszamolas/refresh', 'tanarelszamolasController#refresh', 'admintanarelszamolasrefresh');
 $router->map('GET', '/admin/tanarelszamolas/export', 'tanarelszamolasController#export', 'admintanarelszamolasexport');

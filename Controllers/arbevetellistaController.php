@@ -10,13 +10,18 @@ class arbevetellistaController extends \mkwhelpers\Controller
 {
 
     // a stacked bar with more series than this is unreadable, the rest goes into one
-    private const MAXSERIES = 10;
+    protected const MAXSERIES = 10;
 
     public function view()
     {
-        $view = $this->createView('arbevetellista.tpl');
+        $this->showView('arbevetellista.tpl', t('Árbevétel kimutatás'));
+    }
 
-        $view->setVar('pagetitle', t('Árbevétel kimutatás'));
+    protected function showView(string $tplname, string $pagetitle)
+    {
+        $view = $this->createView($tplname);
+
+        $view->setVar('pagetitle', $pagetitle);
         $view->setVar('datumtipus', 'teljesites');
         $view->setVar('toldatum', date('Y.01.01'));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
@@ -29,7 +34,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         $view->printTemplateResult(false);
     }
 
-    private function getData(): array
+    protected function getData(string $repoMethod = 'getArbevetelLista'): array
     {
         $csoport = [];
         $idoszakcsoport = $this->params->getStringRequestParam('idoszakcsoport');
@@ -44,7 +49,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         }
         $brutto = $this->params->getStringRequestParam('ertektipus') === 'brutto';
 
-        $rows = $this->getRepo(Bizonylatfej::class)->getArbevetelLista(
+        $rows = $this->getRepo(Bizonylatfej::class)->$repoMethod(
             $this->params->getStringRequestParam('datumtipus'),
             $this->params->getStringRequestParam('tol'),
             $this->params->getStringRequestParam('ig'),
@@ -66,7 +71,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         ];
     }
 
-    private function seriesLabel(array $row, array $data): string
+    protected function seriesLabel(array $row, array $data): string
     {
         $parts = [];
         if ($data['gyarto']) {
