@@ -181,6 +181,11 @@ class UnasTorzsadatService
         // az UNAS "27" és "27%" alakban is adhatja
         $vat = str_replace([',', ' ', '%'], ['.', '', ''], $vat);
         if (!is_numeric($vat)) {
+            // adómentességi kód (AAM, TAM, …): az ÁFA törzsben névvel szerepel
+            $afa = $this->repo(Afa::class)->findOneBy(['nev' => $vat]);
+            if ($afa) {
+                return $afa;
+            }
             $this->warn(sprintf(t('Értelmezhetetlen ÁFA kulcs az UNAS rendelésben: %s'), $vat));
             return null;
         }

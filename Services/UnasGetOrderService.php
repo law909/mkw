@@ -729,6 +729,18 @@ class UnasGetOrderService
             }
             $items[] = $resolved;
         }
+        // a nulla áras, ÁFA nélküli tétel kulcsa (lásd ensureAfa()): a rendelés első ismert kulcsa
+        $orderAfa = null;
+        foreach ($items as $item) {
+            $orderAfa = $item['afa'] ?: ($item['termek'] ? $item['termek']->getAfa() : null);
+            if ($orderAfa) {
+                break;
+            }
+        }
+        foreach ($items as &$item) {
+            $item['orderafa'] = $orderAfa;
+        }
+        unset($item);
         return $items;
     }
 
@@ -920,6 +932,7 @@ class UnasGetOrderService
             $tetel->setTermekvaltozat($item['valtozat']);
         }
         $this->applyAfa($tetel, $fej, $item);
+        $this->ensureAfa($tetel, $item);
 
         $netto = (float)$item['pricenet'];
         $brutto = (float)$item['pricegross'];
@@ -992,6 +1005,40 @@ class UnasGetOrderService
                 )
             );
         }
+    }
+
+    /**
+     * Ha sem az UNAS nem adott használható `Vat`-ot, sem a tételre került termékünknek nincs
+     * ÁFA-ja, a kulcs az UNAS nettó és bruttó egységárából jön; nulla árnál a rendelés többi
+     * tételének kulcsa, végső esetben 27%. ÁFA nélkül az `afakulcs` NULL marad (a removeAfa() csak
+     * a korábban beállítottat nullázza), és a beszúrás az egész rendelést elbuktatná.
+     *
+     * @param Bizonylattetel $tetel
+     */
+    private function ensureAfa($tetel, array $item)
+    {
+        if ($tetel->getAfa()) {
+            return;
+        }
+        $netto = (float)$item['pricenet'];
+        $brutto = (float)$item['pricegross'];
+        $afa = null;
+        if (abs($netto) >= 0.01) {
+            $kulcs = round(($brutto / $netto - 1) * 100);
+            if ($kulcs >= 0 && $kulcs <= 100) {
+                $afa = $this->torzsadat->resolveAfa((string)$kulcs);
+            }
+        }
+        $afa = $afa ?: ($item['orderafa'] ?? null) ?: $this->torzsadat->resolveAfa('27');
+        $tetel->setAfa($afa);
+        $this->torzsadat->warn(
+            sprintf(
+                t('A(z) "%s" tételnek nem volt ÁFA kulcsa (UNAS: "%s"), ezért %s%%-ot kapott; érdemes ellenőrizni a termék ÁFA beállítását.'),
+                $item['name'] !== '' ? $item['name'] : $item['id'],
+                $item['vat'],
+                $afa->getErtek()
+            )
+        );
     }
 
     // ------------------------------------------------------------------
