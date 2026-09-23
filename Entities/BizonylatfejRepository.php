@@ -900,7 +900,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
 
     /**
      * Sold quantity and value per product / product variant, on the same documents and filters as
-     * getArbevetelLista(). A storno negates either the quantity or the price depending on its type,
+     * getArbevetelLista() except advances. A storno negates either the quantity or the price depending on its type,
      * so the quantity takes the sign of the line value; a zero-value line keeps its own sign.
      */
     public function getForgalmiLista(
@@ -929,6 +929,13 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $nevfilter
         );
         $filter->addSql('bt.termek_id IS NOT NULL');
+        // advances are not sales: neither the advance invoice nor its offset line on the final invoice
+        $filter->addFilter('bf.bizonylattipus_id', '<>', \Services\ElolegService::BIZTIPUS);
+        $filter->addSql('bt.elolegbizonylat_id IS NULL');
+        $elolegtermek = \mkw\store::getIntParameter(\mkw\consts::ElolegTermek);
+        if ($elolegtermek) {
+            $filter->addFilter('bt.termek_id', '<>', $elolegtermek);
+        }
 
         $mezok = $this->getArbevetelCsoportMezok($datummezo, $csoport) + [
                 'termekid' => 'bt.termek_id',
