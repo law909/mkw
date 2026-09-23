@@ -496,6 +496,9 @@ class leltarfejController extends \mkwhelpers\MattableController
                         $t->setPersistentData();
                         $t->setTermek($hiany['termek']);
                         $t->setTermekvaltozat($hiany['valtozat']);
+                        if ($hiany['valtozat'] && $hiany['valtozat']->getCikkszam()) {
+                            $t->setCikkszam($hiany['valtozat']->getCikkszam());
+                        }
                         $t->setMennyiseg(abs($hiany['keszlet'] - $hiany['teny']));
                         $t->fillEgysar();
                         $t->calc();
@@ -527,6 +530,9 @@ class leltarfejController extends \mkwhelpers\MattableController
                         $t->setPersistentData();
                         $t->setTermek($tobblet['termek']);
                         $t->setTermekvaltozat($tobblet['valtozat']);
+                        if ($tobblet['valtozat'] && $tobblet['valtozat']->getCikkszam()) {
+                            $t->setCikkszam($tobblet['valtozat']->getCikkszam());
+                        }
                         $t->setMennyiseg(abs($tobblet['keszlet'] - $tobblet['teny']));
                         $t->fillEgysar();
                         $t->calc();
