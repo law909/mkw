@@ -244,7 +244,8 @@ class leltarfejController extends \mkwhelpers\MattableController
         $termekfilter = $this->createTermekFilter();
 
         $q = $this->getEm()->createNativeQuery(
-            'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2, t.cikkszam,'
+            'SELECT _xx.termek_id, _xx.id, ' . $termeknevmezo . ' AS termeknev, _xx.ertek1, _xx.ertek2,'
+            . " COALESCE(NULLIF(_xx.cikkszam, ''), t.cikkszam) AS cikkszam,"
             . ' (SELECT SUM(bt.mennyiseg * bt.irany)'
             . ' FROM bizonylattetel bt'
             . ' LEFT JOIN bizonylatfej bf ON (bt.bizonylatfej_id=bf.id)'
