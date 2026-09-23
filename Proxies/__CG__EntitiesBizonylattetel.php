@@ -800,6 +800,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getDisplayCikkszam()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDisplayCikkszam', []);
+
+        return parent::getDisplayCikkszam();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getValtozatcikkszam()
     {
 
