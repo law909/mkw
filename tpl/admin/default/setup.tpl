@@ -314,6 +314,24 @@
                                 </select>
                             </div>
                             <div class="setuprow">
+                                <span class="setuplabel"><label for="AkciosArsavEdit">{at('Akciós ársáv')}:</label></span>
+                                <select id="AkciosArsavEdit" name="akciosarsav">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $akciosarsavlist as $_arsav}
+                                        <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="NagyonAkciosArsavEdit">{at('Nagyon akciós ársáv')}:</label></span>
+                                <select id="NagyonAkciosArsavEdit" name="nagyonakciosarsav">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $nagyonakciosarsavlist as $_arsav}
+                                        <option value="{$_arsav.id}"{if ($_arsav.selected)} selected="selected"{/if}>{$_arsav.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
                                 <span class="setuplabel"><label for="ShowTermekArsavEdit">{at('Terméklista ársáv')}:</label></span>
                                 <select id="ShowTermekArsavEdit" name="showtermekarsav">
                                     <option value="">{at('válasszon')}</option>

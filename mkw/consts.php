@@ -57,6 +57,9 @@ class consts
     const LastBankiFormatum = 'lastbankiformatum';
     const Szallitasimod = 'szallitasimod';
     const Arsav = 'arsav';
+    // without an explicit or partner price band these are tried before Arsav, see TermekArRepository
+    const NagyonAkciosArsav = 'nagyonakciosarsav';
+    const AkciosArsav = 'akciosarsav';
     const ShowTermekArsav = 'showtermekarsav';
     const ShowTermekArsavValutanem = 'showtermekarsavvalutanem';
     const Esedekessegalap = 'esedekessegalap';

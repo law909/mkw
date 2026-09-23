@@ -43,10 +43,44 @@ class TermekArRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    /**
+     * The default price bands in priority order: very discounted, discounted, then the plain
+     * default band. The last one is always the Arsav setting (may be 0 when it is not set).
+     *
+     * @return int[]
+     */
+    public static function getDefaultArsavIds(): array
+    {
+        $alap = (int)\mkw\store::getParameter(\mkw\consts::Arsav);
+        $ids = [];
+        foreach ([\mkw\consts::NagyonAkciosArsav, \mkw\consts::AkciosArsav] as $par) {
+            $id = (int)\mkw\store::getParameter($par);
+            if ($id && $id !== $alap && !in_array($id, $ids, true)) {
+                $ids[] = $id;
+            }
+        }
+        $ids[] = $alap;
+        return $ids;
+    }
+
+    private static function hasPrice($termekar): bool
+    {
+        return $termekar && ((float)$termekar->getNetto() != 0 || (float)$termekar->getBrutto() != 0);
+    }
+
     public function getArsavAr($termek, $valutanem = null, $arsav = null)
     {
         if (!$arsav) {
-            $arsav = \mkw\store::getParameter(\mkw\consts::Arsav);
+            // the discounted bands count only when the product has a price in them
+            $defaults = self::getDefaultArsavIds();
+            $alap = array_pop($defaults);
+            foreach ($defaults as $id) {
+                $ar = $this->getArsavAr($termek, $valutanem, $id);
+                if (self::hasPrice($ar)) {
+                    return $ar;
+                }
+            }
+            $arsav = $alap;
         }
         if (!is_a($arsav, Arsav::class)) {
             $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($arsav);
@@ -88,7 +122,19 @@ class TermekArRepository extends \mkwhelpers\Repository
         $result = [];
 
         if (!$arsav) {
-            $arsav = \mkw\store::getParameter(\mkw\consts::Arsav);
+            // same priority as getArsavAr(): a product takes the first discounted band it has a price in
+            $defaults = self::getDefaultArsavIds();
+            $alap = array_pop($defaults);
+            foreach ($defaults as $id) {
+                $hianyzo = array_diff(array_map('intval', array_filter($termekids)), array_keys($result));
+                foreach ($this->getArsavArByTermek($hianyzo, $valutanem, $id) as $tid => $ar) {
+                    if (self::hasPrice($ar)) {
+                        $result[$tid] = $ar;
+                    }
+                }
+            }
+            $hianyzo = array_diff(array_map('intval', array_filter($termekids)), array_keys($result));
+            return $alap ? $result + $this->getArsavArByTermek($hianyzo, $valutanem, $alap) : $result;
         }
         if (!is_a($arsav, Arsav::class)) {
             $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($arsav);

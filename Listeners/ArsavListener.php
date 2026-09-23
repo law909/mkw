@@ -24,6 +24,8 @@ class ArsavListener
         foreach ($torlendok as $entity) {
             if ($entity instanceof Arsav) {
                 \mkw\store::clearParameterIf(\mkw\consts::Arsav, $entity->getId());
+                \mkw\store::clearParameterIf(\mkw\consts::AkciosArsav, $entity->getId());
+                \mkw\store::clearParameterIf(\mkw\consts::NagyonAkciosArsav, $entity->getId());
                 \mkw\store::clearParameterIf(\mkw\consts::ShowTermekArsav, $entity->getId());
 
                 \mkw\store::clearParameterIf(\mkw\consts::Webshop2Price, $entity->getId());

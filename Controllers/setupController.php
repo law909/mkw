@@ -729,6 +729,10 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::Arsav);
         $arsav = new arsavController();
         $view->setVar('arsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::AkciosArsav);
+        $view->setVar('akciosarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::NagyonAkciosArsav);
+        $view->setVar('nagyonakciosarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::ShowTermekArsav);
         $view->setVar('showtermekarsavlist', $arsav->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::FCMotoRetailArsav);
@@ -1287,6 +1291,8 @@ class setupController extends \mkwhelpers\Controller
     private const CONDITIONAL_BLOCKS = [
         'arsavokvan' => [
             \mkw\consts::Arsav,
+            \mkw\consts::AkciosArsav,
+            \mkw\consts::NagyonAkciosArsav,
             \mkw\consts::ShowTermekArsav,
             \mkw\consts::ShowTermekArsavValutanem,
             \mkw\consts::FCMotoRetailArsav,
@@ -2437,6 +2443,10 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::Arsav, $this->params->getIntRequestParam('arsav'));
         } else {
             $this->setObj(\mkw\consts::Arsav, null);
+        }
+        foreach (['akciosarsav' => \mkw\consts::AkciosArsav, 'nagyonakciosarsav' => \mkw\consts::NagyonAkciosArsav] as $mezo => $par) {
+            $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam($mezo));
+            $this->setObj($par, $arsav ? $arsav->getId() : null);
         }
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('showtermekarsav'));
         if ($arsav) {
