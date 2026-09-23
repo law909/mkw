@@ -2433,7 +2433,7 @@
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel">&nbsp;</span>
-                                <span>{at('Üresen hagyva a Bizonylat fülön beállított szállítási költség termék marad. Ha mást választasz, ügyelj rá, hogy a bizonylat kézi mentésekor a "Szállítási költséget számoljon" pipa a globális termékre vinne fel egy MÁSODIK sort.')}</span>
+                                <span>{at('Üresen hagyva a Szállítási költség fülön beállított termék marad. Ha itt mást választasz: az UNAS-ból jött bizonylaton a "Szállítási költséget kell számolni" pipa ki van kapcsolva; ha kézi mentéskor bekapcsolják, a program a Szállítási költség fülön beállított termékre egy MÁSODIK szállítási sort vesz fel.')}</span>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="UnasKezelesiKtgTermekEdit">{at('Kezelési költség terméke')}:</label></span>
