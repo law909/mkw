@@ -254,6 +254,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 case 3:
                     $mezo = 'esedekesseg';
                     break;
+                case 4:
+                    $mezo = 'beerkezes';
+                    break;
                 case 1:
                 default:
                     $mezo = 'kelt';

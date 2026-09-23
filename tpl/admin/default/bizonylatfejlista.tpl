@@ -47,6 +47,9 @@
                     {if ($showesedekesseg)}
                         <option value="3">{at('esedékesség')}</option>
                     {/if}
+                    {if ($showbeerkezes)}
+                        <option value="4">{at('beérkezés')}</option>
+                    {/if}
                 </select>
                 <input id="datumtolfilter" name="datumtolfilter" type="text" size="12"
                        data-datum="{$datumtolfilter|default}"{if (!haveJog(20))} disabled="disabled"{/if}>
