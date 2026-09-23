@@ -33,6 +33,11 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_gyartoselect.tpl"}
                 <div class="matt-hseparator"></div>
+                <div>
+                    <label for="NevEdit">{at('Név')}:</label>
+                    <input id="NevEdit" name="nev" type="text" size="30" title="{at('Termék névben és cikkszámban keres')}">
+                </div>
+                <div class="matt-hseparator"></div>
                 {include "comp_webshopfilter.tpl"}
                 <div class="matt-hseparator"></div>
                 <div>

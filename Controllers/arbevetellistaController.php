@@ -59,7 +59,8 @@ class arbevetellistaController extends \mkwhelpers\Controller
             $this->params->getIntRequestParam('partnertipus'),
             $this->params->getIntRequestParam('gyarto'),
             $this->params->getArrayRequestParam('fafilter'),
-            $this->params->getStringRequestParam('webshopnum')
+            $this->params->getStringRequestParam('webshopnum'),
+            $this->params->getStringRequestParam('nev')
         );
 
         return [

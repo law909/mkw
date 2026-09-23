@@ -745,7 +745,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         . ' LEFT OUTER JOIN bizonylatfej elod ON (bf.parbizonylatfej_id=elod.id)'
         . ' LEFT OUTER JOIN bizonylatfej elodelod ON (elod.parbizonylatfej_id=elodelod.id)'
         . ' LEFT OUTER JOIN termek t ON (bt.termek_id=t.id)'
-        . ' LEFT OUTER JOIN partner gy ON (t.gyarto_id=gy.id)';
+        . ' LEFT OUTER JOIN partner gy ON (t.gyarto_id=gy.id)'
+        . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)';
 
     private function getArbevetelDatummezo($datumtipus): string
     {
@@ -761,7 +762,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $partnertipusid,
         $gyartoid,
         array $fafilter,
-        $webshopnum
+        $webshopnum,
+        $nevfilter
     ): FilterDescriptor {
         $filter = new FilterDescriptor();
         $filter->addFilter('bf.bizonylattipus_id', 'IN', self::ARBEVETEL_BIZONYLATTIPUSOK);
@@ -788,6 +790,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             if ($faszuro) {
                 $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
+        }
+        if ($nevfilter !== null && $nevfilter !== '') {
+            $filter->addFilter(['t.nev', 't.cikkszam', 'tv.cikkszam'], 'LIKE', '%' . $nevfilter . '%');
         }
         $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
         // an invoice made from a shop sale would count the same sale twice, and so would its storno
@@ -870,10 +875,21 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $partnertipusid,
         $gyartoid,
         array $fafilter,
-        $webshopnum
+        $webshopnum,
+        $nevfilter = null
     ): array {
         $datummezo = $this->getArbevetelDatummezo($datumtipus);
-        $filter = $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $partnerid, $partnertipusid, $gyartoid, $fafilter, $webshopnum);
+        $filter = $this->getArbevetelFilter(
+            $datummezo,
+            $datumtol,
+            $datumig,
+            $partnerid,
+            $partnertipusid,
+            $gyartoid,
+            $fafilter,
+            $webshopnum,
+            $nevfilter
+        );
         return $this->fetchArbevetelRows(
             $this->getArbevetelCsoportMezok($datummezo, $csoport),
             ['ertek' => 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ')'],
@@ -897,10 +913,21 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $partnertipusid,
         $gyartoid,
         array $fafilter,
-        $webshopnum
+        $webshopnum,
+        $nevfilter = null
     ): array {
         $datummezo = $this->getArbevetelDatummezo($datumtipus);
-        $filter = $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $partnerid, $partnertipusid, $gyartoid, $fafilter, $webshopnum);
+        $filter = $this->getArbevetelFilter(
+            $datummezo,
+            $datumtol,
+            $datumig,
+            $partnerid,
+            $partnertipusid,
+            $gyartoid,
+            $fafilter,
+            $webshopnum,
+            $nevfilter
+        );
         $filter->addSql('bt.termek_id IS NOT NULL');
 
         $mezok = $this->getArbevetelCsoportMezok($datummezo, $csoport) + [
@@ -921,7 +948,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 'ertek' => 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ')',
             ],
             $filter,
-            self::ARBEVETEL_FROM . ' LEFT OUTER JOIN termekvaltozat tv ON (bt.termekvaltozat_id=tv.id)',
+            self::ARBEVETEL_FROM,
             array_merge($idoszakrend, $csoportrend, ['cikkszam', 'nev', 'ertek1', 'ertek2'])
         );
     }
