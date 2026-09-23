@@ -588,7 +588,7 @@ var mkwcomp = (function ($) {
         let $open = null;
 
         // two alternating tones, like a siren, loud enough over shop noise
-        function siren() {
+        function siren(onEnded) {
             try {
                 audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
@@ -604,30 +604,42 @@ var mkwcomp = (function ($) {
                 gain.gain.linearRampToValueAtTime(0, t0 + 8 * lepes);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
+                if (onEnded) {
+                    osc.onended = onEnded;
+                }
                 osc.start(t0);
                 osc.stop(t0 + 8 * lepes);
             } catch (e) {
                 // no audio support: the dialog still shows
+                if (onEnded) {
+                    onEnded();
+                }
             }
         }
 
-        // the sound uploaded in the settings, the siren when there is none or it cannot be played
+        // the siren, then the sound uploaded in the settings when there is one
         function playSound() {
             const url = $('body').attr('data-vonalkodhibahang');
             if (!url) {
                 siren();
                 return;
             }
+            let audio = null;
             try {
-                const audio = new Audio(url);
-                audio.addEventListener('error', siren);
+                audio = new Audio(url);
+                audio.preload = 'auto';
+            } catch (e) {
+                audio = null;
+            }
+            siren(function () {
+                if (!audio) {
+                    return;
+                }
                 const p = audio.play();
                 if (p && p.catch) {
-                    p.catch(siren);
+                    p.catch(function () {});
                 }
-            } catch (e) {
-                siren();
-            }
+            });
         }
 
         // a scanner ends every code with Enter, so only ESC closes the dialog; handled on the
