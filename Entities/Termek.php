@@ -1383,6 +1383,10 @@ class Termek
         if (!$valtozat || $valtozat->getTermek()?->getId() != $this->getId() || !$valtozat->getVideolink()) {
             return $leiras;
         }
+        // escaping alone would let a javascript: link through
+        if (!preg_match('~^https?://~i', $valtozat->getVideolink())) {
+            return $leiras;
+        }
         $url = htmlspecialchars($valtozat->getVideolink(), ENT_QUOTES);
         return $leiras . '<p><a href="' . $url . '" target="_blank" rel="noopener">' . $url . '</a></p>';
     }
