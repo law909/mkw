@@ -80,6 +80,14 @@
                         <option value="mennyiseg">{at('mennyiség')}</option>
                         <option value="ertek">{at('érték')}</option>
                     </select>
+                    <div class="arbevetel-nezet">
+                        <label for="NezetEdit">{at('Mentett nézet')}:</label>
+                        <select id="NezetEdit">
+                            <option value="">{at('válasszon')}</option>
+                        </select>
+                        <a href="#" class="js-nezetsave">{at('Mentés…')}</a>
+                        <a href="#" class="js-nezetdelete">{at('Törlés')}</a>
+                    </div>
                 </div>
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>

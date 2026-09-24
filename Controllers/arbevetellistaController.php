@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Bizonylatfej;
 use Entities\BizonylatfejRepository;
+use Entities\Kimutatasnezet;
 use Entities\Valutanem;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -14,6 +15,9 @@ class arbevetellistaController extends \mkwhelpers\Controller
     use \Traits\GroupedReport;
 
     private const MAXSZINT = 4;
+
+    // saved views are kept per report under its route base
+    protected const KIMUTATAS = 'arbevetellista';
 
     public function view()
     {
@@ -167,6 +171,58 @@ class arbevetellistaController extends \mkwhelpers\Controller
             $levels[] = ['id' => $id, 'label' => $label, 'caption' => $captions[$szint]];
         }
         return $levels;
+    }
+
+    private function echoNezetek(?int $selected = null): void
+    {
+        $nezetek = [];
+        foreach ($this->getRepo(Kimutatasnezet::class)->getByKimutatas(static::KIMUTATAS) as $nezet) {
+            $nezetek[] = [
+                'id' => $nezet->getId(),
+                'nev' => $nezet->getNev(),
+                'beallitas' => $nezet->getBeallitas(),
+                'createdby' => $nezet->getCreatedbyNev(),
+            ];
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['nezetek' => $nezetek, 'selected' => $selected]);
+    }
+
+    public function nezetlista()
+    {
+        $this->echoNezetek();
+    }
+
+    /** Saves the current levels and display under a name; an existing name of the report is overwritten. */
+    public function nezetsave()
+    {
+        $nev = trim($this->params->getStringRequestParam('nev'));
+        if ($nev === '' || mb_strlen($nev) > 100) {
+            $this->jsonError(t('A nézet neve 1–100 karakter lehet.'), 400);
+            return;
+        }
+        $repo = $this->getRepo(Kimutatasnezet::class);
+        $nezet = $repo->findOneBy(['kimutatas' => static::KIMUTATAS, 'nev' => $nev]) ?? new Kimutatasnezet();
+        $nezet->setKimutatas(static::KIMUTATAS);
+        $nezet->setNev($nev);
+        $nezet->setBeallitas([
+            'szint' => $this->getSzintek(),
+            'megjelenites' => $this->isPivot() ? 'kereszttabla' : 'lista',
+            'pivotertek' => $this->params->getStringRequestParam('pivotertek') === 'ertek' ? 'ertek' : 'mennyiseg',
+        ]);
+        $this->getEm()->persist($nezet);
+        $this->getEm()->flush();
+        $this->echoNezetek($nezet->getId());
+    }
+
+    public function nezetdelete()
+    {
+        $nezet = $this->getRepo(Kimutatasnezet::class)->findOneBy(['id' => $this->params->getIntRequestParam('id'), 'kimutatas' => static::KIMUTATAS]);
+        if ($nezet) {
+            $this->getEm()->remove($nezet);
+            $this->getEm()->flush();
+        }
+        $this->echoNezetek();
     }
 
     public function refresh()

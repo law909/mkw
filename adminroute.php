@@ -1773,10 +1773,20 @@ $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaCont
 $router->map('GET', '/admin/arbevetellista/view', 'arbevetellistaController#view', 'adminarbevetellistaview');
 $router->map('GET', '/admin/arbevetellista/refresh', 'arbevetellistaController#refresh', 'adminarbevetellistarefresh');
 $router->map('GET', '/admin/arbevetellista/export', 'arbevetellistaController#export', 'adminarbevetellistaexport');
+$router->map('GET', '/admin/arbevetellista/nezetlista', 'arbevetellistaController#nezetlista', 'adminarbevetellistanezetlista');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/arbevetellista/nezetsave', 'arbevetellistaController#nezetsave', 'adminarbevetellistanezetsave');
+    $router->map('POST', '/admin/arbevetellista/nezetdelete', 'arbevetellistaController#nezetdelete', 'adminarbevetellistanezetdelete');
+}
 
 $router->map('GET', '/admin/forgalmilista/view', 'forgalmilistaController#view', 'adminforgalmilistaview');
 $router->map('GET', '/admin/forgalmilista/refresh', 'forgalmilistaController#refresh', 'adminforgalmilistarefresh');
 $router->map('GET', '/admin/forgalmilista/export', 'forgalmilistaController#export', 'adminforgalmilistaexport');
+$router->map('GET', '/admin/forgalmilista/nezetlista', 'forgalmilistaController#nezetlista', 'adminforgalmilistanezetlista');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/forgalmilista/nezetsave', 'forgalmilistaController#nezetsave', 'adminforgalmilistanezetsave');
+    $router->map('POST', '/admin/forgalmilista/nezetdelete', 'forgalmilistaController#nezetdelete', 'adminforgalmilistanezetdelete');
+}
 
 $router->map('GET', '/admin/tanarelszamolas/view', 'tanarelszamolasController#view', 'admintanarelszamolasview');
 $router->map('GET', '/admin/tanarelszamolas/refresh', 'tanarelszamolasController#refresh', 'admintanarelszamolasrefresh');

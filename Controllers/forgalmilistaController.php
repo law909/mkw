@@ -12,6 +12,8 @@ class forgalmilistaController extends arbevetellistaController
 
     private const MAXTERMEK = 20;
 
+    protected const KIMUTATAS = 'forgalmilista';
+
     public function view()
     {
         $this->showView(
