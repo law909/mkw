@@ -1,7 +1,5 @@
 $(document).ready(function () {
 
-    let chart = null;
-
     function isPartnerAutocomplete() {
         return $('#mattkarb-header').data('partnerautocomplete') == '1';
     }
@@ -13,37 +11,7 @@ $(document).ready(function () {
     // shared by the revenue and the sales report, the header tells them apart
     const $header = $('#mattkarb-header');
     const baseUrl = $header.data('baseurl');
-    const numFormat = new Intl.NumberFormat('hu-HU', {maximumFractionDigits: Number($header.data('decimals')) || 0});
-
-    function drawChart(data) {
-        const unit = data.unit || '';
-        $('#arbevetelchartnote').text(data.note || '').toggle(!!data.note);
-        if (chart) {
-            chart.destroy();
-            chart = null;
-        }
-        if (typeof Chart === 'undefined' || !data.labels.length) {
-            return;
-        }
-        chart = new Chart(document.getElementById('arbevetelchart'), {
-            type: 'bar',
-            data: {labels: data.labels, datasets: data.datasets},
-            plugins: [chartValueLabels],
-            options: {
-                maintainAspectRatio: false,
-                layout: {padding: {top: 18}},
-                scales: {
-                    x: {stacked: data.stacked},
-                    y: {stacked: data.stacked, ticks: {callback: (value) => numFormat.format(value)}}
-                },
-                plugins: {
-                    legend: {display: data.legend},
-                    valueLabels: {format: (value) => numFormat.format(value)},
-                    tooltip: {callbacks: {label: (ctx) => `${ctx.dataset.label}: ${numFormat.format(ctx.parsed.y)} ${unit}`.trim()}}
-                }
-            }
-        });
-    }
+    const drawChart = createReportChart('arbevetelchart', '#arbevetelchartnote', Number($header.data('decimals')) || 0);
 
     $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
