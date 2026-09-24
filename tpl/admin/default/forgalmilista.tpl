@@ -16,7 +16,6 @@
         </div>
         <form id="arbevetel" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                <p>{at('Eladott mennyiség és érték termékenként / termékváltozatonként, számlákból és bolti eladásokból; az előlegszámla és a számlán az előleg beszámítása nem számít, a stornó levonódik.')}</p>
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="szamla"}
                 <div class="matt-hseparator"></div>

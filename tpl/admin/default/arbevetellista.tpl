@@ -16,7 +16,6 @@
         </div>
         <form id="arbevetel" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                <p>{at('Előlegszámlák, számlák és bolti eladások tételei forintban, vagy választott valutanemnél az abban kiállított bizonylatok a saját pénznemükben; a stornó levonódik, a bolti eladásból képzett számla nem számít még egyszer.')}</p>
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="szamla"}
                 <div class="matt-hseparator"></div>
