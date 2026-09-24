@@ -880,7 +880,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         foreach ($ertekek as $alias => $kifejezes) {
             $select[] = $kifejezes . ' AS ' . $alias;
         }
-        $order = $order ?: $group;
+        // a manufacturer group is listed by name, the id only keeps namesakes apart
+        $order = $order ?: array_merge(...array_map(fn($alias) => $alias === 'gyartoid' ? ['gyartonev', 'gyartoid'] : [$alias], $group));
 
         $sql = 'SELECT ' . implode(',', $select)
             . $from
@@ -954,7 +955,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 'me' => 'MAX(bt.me)',
             ];
         $idoszakrend = array_key_exists('idoszak', $mezok) ? ['idoszak'] : [];
-        $csoportrend = array_values(array_intersect(['kategoriakarkod', 'gyartonev', 'webshopnum'], array_keys($mezok)));
+        $csoportrend = array_values(array_intersect(['kategoriakarkod', 'gyartonev', 'gyartoid', 'webshopnum'], array_keys($mezok)));
         return $this->fetchArbevetelRows(
             $mezok,
             [

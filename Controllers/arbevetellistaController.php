@@ -160,13 +160,104 @@ class arbevetellistaController extends \mkwhelpers\Controller
         ];
     }
 
+    /** The active grouping columns in list order: id decides where a group ends, label is what is shown. */
+    protected function getGroupLevels(array $data): array
+    {
+        $levels = [];
+        if ($data['idoszak']) {
+            $levels[] = ['id' => 'idoszak', 'label' => 'idoszak', 'caption' => t('Időszak')];
+        }
+        if ($data['kategoria']) {
+            $levels[] = ['id' => 'kategoriakarkod', 'label' => 'kategorianev', 'caption' => t('Kategória')];
+        }
+        if ($data['gyarto']) {
+            $levels[] = ['id' => 'gyartoid', 'label' => 'gyartonev', 'caption' => t('Gyártó')];
+        }
+        if ($data['webshop']) {
+            $levels[] = ['id' => 'webshopnum', 'label' => 'webshopnev', 'caption' => t('Webshop')];
+        }
+        return $levels;
+    }
+
+    /**
+     * The rows (sorted by the levels) as a flat render list of 'header', 'row' and 'subtotal' items. A group of a
+     * single row gets no subtotal. 'share' is the item's part of its enclosing group, the top level's of the total.
+     */
+    protected function buildTableItems(array $rows, array $levels, array $sumKeys): array
+    {
+        $items = [];
+        $open = [];
+        $topChildren = [];
+        $setShares = function (array $children, float $total) use (&$items) {
+            foreach ($children as $index) {
+                $items[$index]['share'] = $total ? $items[$index]['ertek'] / $total * 100 : null;
+            }
+        };
+        $close = function (int $from) use (&$open, &$items, &$topChildren, $setShares) {
+            for ($level = count($open) - 1; $level >= $from; $level--) {
+                $group = array_pop($open);
+                if ($group['count'] > 1) {
+                    $setShares($group['children'], $group['sums']['ertek']);
+                    $items[] = ['type' => 'subtotal', 'level' => $level, 'label' => $group['label']] + $group['sums'];
+                    $children = [array_key_last($items)];
+                } else {
+                    // no subtotal line: its only row takes the group's share in the enclosing group
+                    $children = $group['children'];
+                }
+                if ($level > 0) {
+                    array_push($open[$level - 1]['children'], ...$children);
+                } else {
+                    array_push($topChildren, ...$children);
+                }
+            }
+        };
+        foreach ($rows as $row) {
+            $changed = null;
+            foreach ($levels as $level => $def) {
+                if (!isset($open[$level]) || $open[$level]['key'] !== (string)$row[$def['id']]) {
+                    $changed = $level;
+                    break;
+                }
+            }
+            if ($changed !== null) {
+                $close($changed);
+                for ($level = $changed; $level < count($levels); $level++) {
+                    $label = $row[$levels[$level]['label']];
+                    $open[$level] = ['key' => (string)$row[$levels[$level]['id']], 'label' => $label, 'sums' => array_fill_keys($sumKeys, 0), 'count' => 0, 'children' => []];
+                    $items[] = ['type' => 'header', 'level' => $level, 'label' => $label];
+                }
+            }
+            foreach ($open as &$group) {
+                foreach ($sumKeys as $key) {
+                    $group['sums'][$key] += $row[$key];
+                }
+                $group['count']++;
+            }
+            unset($group);
+            $items[] = ['type' => 'row', 'level' => count($levels), 'row' => $row, 'ertek' => $row['ertek']];
+            if ($open) {
+                $open[count($open) - 1]['children'][] = array_key_last($items);
+            } else {
+                $topChildren[] = array_key_last($items);
+            }
+        }
+        $close(0);
+        $setShares($topChildren, array_sum(array_column($rows, 'ertek')));
+        return $items;
+    }
+
     public function refresh()
     {
         $data = $this->getData();
+        $levels = $this->getGroupLevels($data);
+        // the last grouping column is the row label, the ones above it become group headers
+        $rowLevel = array_pop($levels);
         $view = $this->createView('arbevetellistatetel.tpl');
-        foreach ($data as $key => $value) {
-            $view->setVar($key, $value);
-        }
+        $view->setVar('items', $this->buildTableItems($data['rows'], $levels, ['ertek']));
+        $view->setVar('rowlevel', $rowLevel);
+        $view->setVar('levelcount', count($levels));
+        $view->setVar('valueheader', $data['valueheader']);
+        $view->setVar('decimals', $data['currency'] === 'HUF' ? 0 : 2);
         $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
         header('Content-Type: application/json');
         echo json_encode([

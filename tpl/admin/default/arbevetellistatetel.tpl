@@ -1,31 +1,40 @@
-<table>
+{$colspan = ($rowlevel) ? 3 : 1}
+<table class="arbevetel-table">
     <thead>
     <tr>
-        {if ($idoszak)}<th class="headercell">{at('Időszak')}</th>{/if}
-        {if ($kategoria)}<th class="headercell">{at('Kategória')}</th>{/if}
-        {if ($gyarto)}<th class="headercell">{at('Gyártó')}</th>{/if}
-        {if ($webshop)}<th class="headercell">{at('Webshop')}</th>{/if}
+        {if ($rowlevel)}<th class="headercell">{$rowlevel.caption}</th>{/if}
         <th class="headercell textalignright">{$valueheader|escape}</th>
+        {if ($rowlevel)}<th class="headercell textalignright">{at('Arány')}</th>{/if}
     </tr>
     </thead>
+    {if ($rowlevel)}
     <tbody>
-    {foreach $rows as $row}
-        <tr>
-            {if ($idoszak)}<td class="datacell">{$row.idoszak}</td>{/if}
-            {if ($kategoria)}<td class="datacell">{$row.kategorianev|escape}</td>{/if}
-            {if ($gyarto)}<td class="datacell">{$row.gyartonev|escape}</td>{/if}
-            {if ($webshop)}<td class="datacell">{$row.webshopnev|escape}</td>{/if}
-            <td class="datacell textalignright">{bizformat($row.ertek)}</td>
-        </tr>
+    {foreach $items as $item}
+        {if ($item.type == 'header')}
+            <tr class="arbevetel-header arbevetel-header-{$item.level}">
+                <td class="datacell arbevetel-level-{$item.level}" colspan="{$colspan}">{$item.label|escape}</td>
+            </tr>
+        {elseif ($item.type == 'subtotal')}
+            <tr class="arbevetel-subtotal">
+                <td class="datacell arbevetel-level-{$item.level}">{$item.label|escape} {at('összesen')}</td>
+                <td class="datacell textalignright">{bizformat($item.ertek, $decimals)}</td>
+                <td class="datacell textalignright">{if (isset($item.share))}{bizformat($item.share, 1)} %{/if}</td>
+            </tr>
+        {else}
+            <tr class="arbevetel-row">
+                <td class="datacell arbevetel-level-{$item.level}">{$item.row[$rowlevel.label]|escape}</td>
+                <td class="datacell textalignright">{bizformat($item.ertek, $decimals)}</td>
+                <td class="datacell textalignright">{if (isset($item.share))}{bizformat($item.share, 1)} %{/if}</td>
+            </tr>
+        {/if}
     {/foreach}
     </tbody>
+    {/if}
     <tfoot>
     <tr>
-        {if ($idoszak)}<td class="datacell"></td>{/if}
-        {if ($kategoria)}<td class="datacell"></td>{/if}
-        {if ($gyarto)}<td class="datacell"></td>{/if}
-        {if ($webshop)}<td class="datacell"></td>{/if}
-        <td class="datacell textalignright">{at('Összesen')}: {bizformat($osszesen)}</td>
+        {if ($rowlevel)}<td class="datacell">{if ($levelcount)}{at('Mindösszesen')}{else}{at('Összesen')}{/if}</td>{/if}
+        <td class="datacell textalignright">{if (!$rowlevel)}{at('Összesen')}: {/if}{bizformat($osszesen, $decimals)}</td>
+        {if ($rowlevel)}<td class="datacell"></td>{/if}
     </tr>
     </tfoot>
 </table>

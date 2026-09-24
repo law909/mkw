@@ -1,10 +1,6 @@
-<table>
+<table class="arbevetel-table">
     <thead>
     <tr>
-        {if ($idoszak)}<th class="headercell">{at('Időszak')}</th>{/if}
-        {if ($kategoria)}<th class="headercell">{at('Kategória')}</th>{/if}
-        {if ($gyarto)}<th class="headercell">{at('Gyártó')}</th>{/if}
-        {if ($webshop)}<th class="headercell">{at('Webshop')}</th>{/if}
         <th class="headercell">{at('Cikkszám')}</th>
         <th class="headercell">{at('Név')}</th>
         <th class="headercell">{at('Változat')}</th>
@@ -14,31 +10,36 @@
     </tr>
     </thead>
     <tbody>
-    {foreach $rows as $row}
-        <tr>
-            {if ($idoszak)}<td class="datacell">{$row.idoszak}</td>{/if}
-            {if ($kategoria)}<td class="datacell">{$row.kategorianev|escape}</td>{/if}
-            {if ($gyarto)}<td class="datacell">{$row.gyartonev|escape}</td>{/if}
-            {if ($webshop)}<td class="datacell">{$row.webshopnev|escape}</td>{/if}
-            <td class="datacell">{$row.cikkszam|escape}</td>
-            <td class="datacell">{$row.nev|escape}</td>
-            <td class="datacell">{$row.ertek1|escape} {$row.ertek2|escape}</td>
-            <td class="datacell textalignright">{$row.mennyiseg}</td>
-            <td class="datacell">{$row.me|escape}</td>
-            <td class="datacell textalignright">{bizformat($row.ertek)}</td>
-        </tr>
+    {foreach $items as $item}
+        {if ($item.type == 'header')}
+            <tr class="arbevetel-header arbevetel-header-{$item.level}">
+                <td class="datacell arbevetel-level-{$item.level}" colspan="6">{$item.label|escape}</td>
+            </tr>
+        {elseif ($item.type == 'subtotal')}
+            <tr class="arbevetel-subtotal">
+                <td class="datacell arbevetel-level-{$item.level}" colspan="3">{$item.label|escape} {at('összesen')}</td>
+                <td class="datacell textalignright">{bizformat($item.mennyiseg, $mennyisegdecimals)}</td>
+                <td class="datacell"></td>
+                <td class="datacell textalignright">{bizformat($item.ertek, $decimals)}</td>
+            </tr>
+        {else}
+            <tr class="arbevetel-row">
+                <td class="datacell arbevetel-level-{$item.level}">{$item.row.cikkszam|escape}</td>
+                <td class="datacell">{$item.row.nev|escape}</td>
+                <td class="datacell">{$item.row.ertek1|escape} {$item.row.ertek2|escape}</td>
+                <td class="datacell textalignright">{bizformat($item.row.mennyiseg, $mennyisegdecimals)}</td>
+                <td class="datacell">{$item.row.me|escape}</td>
+                <td class="datacell textalignright">{bizformat($item.row.ertek, $decimals)}</td>
+            </tr>
+        {/if}
     {/foreach}
     </tbody>
     <tfoot>
     <tr>
-        {if ($idoszak)}<td class="datacell"></td>{/if}
-        {if ($kategoria)}<td class="datacell"></td>{/if}
-        {if ($gyarto)}<td class="datacell"></td>{/if}
-        {if ($webshop)}<td class="datacell"></td>{/if}
-        <td class="datacell" colspan="3">{at('Összesen')}:</td>
-        <td class="datacell textalignright">{$osszesenmennyiseg}</td>
+        <td class="datacell" colspan="3">{if ($levelcount)}{at('Mindösszesen')}{else}{at('Összesen')}{/if}</td>
+        <td class="datacell textalignright">{bizformat($osszesenmennyiseg, $mennyisegdecimals)}</td>
         <td class="datacell"></td>
-        <td class="datacell textalignright">{bizformat($osszesen)}</td>
+        <td class="datacell textalignright">{bizformat($osszesen, $decimals)}</td>
     </tr>
     </tfoot>
 </table>

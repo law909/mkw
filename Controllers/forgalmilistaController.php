@@ -79,11 +79,15 @@ class forgalmilistaController extends arbevetellistaController
     public function refresh()
     {
         $data = $this->getData('getForgalmiLista');
+        $levels = $this->getGroupLevels($data);
         $view = $this->createView('forgalmilistatetel.tpl');
-        foreach ($data as $key => $value) {
-            $view->setVar($key, $value);
-        }
-        $view->setVar('osszesenmennyiseg', round(array_sum(array_column($data['rows'], 'mennyiseg')), 2));
+        $view->setVar('items', $this->buildTableItems($data['rows'], $levels, ['mennyiseg', 'ertek']));
+        $view->setVar('levelcount', count($levels));
+        $view->setVar('valueheader', $data['valueheader']);
+        $view->setVar('decimals', $data['currency'] === 'HUF' ? 0 : 2);
+        $mennyisegek = array_column($data['rows'], 'mennyiseg');
+        $view->setVar('mennyisegdecimals', array_filter($mennyisegek, fn($m) => floor($m) != $m) ? 2 : 0);
+        $view->setVar('osszesenmennyiseg', round(array_sum($mennyisegek), 2));
         $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
         header('Content-Type: application/json');
         echo json_encode([

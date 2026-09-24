@@ -480,6 +480,75 @@ select.tetelszamhiba,
     padding: 6px 10px;
 }
 
+.arbevetel-table {
+    border-collapse: collapse;
+    margin-top: 10px;
+    min-width: 480px;
+}
+
+.arbevetel-table thead th {
+    border-bottom: 2px solid #8a7f6a;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.arbevetel-table thead th.textalignright,
+.arbevetel-table td.textalignright {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.arbevetel-table td {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.arbevetel-table tr.arbevetel-row:nth-child(even) {
+    background: rgba(0, 0, 0, 0.035);
+}
+
+.arbevetel-table tr.arbevetel-row:hover {
+    background: rgba(0, 0, 0, 0.09);
+}
+
+.arbevetel-table tr.arbevetel-header td {
+    font-weight: bold;
+    padding-top: 10px;
+    border-bottom: 1px solid #b5ab96;
+}
+
+.arbevetel-table tr.arbevetel-header-0 td {
+    background: rgba(0, 0, 0, 0.09);
+    padding-top: 6px;
+}
+
+.arbevetel-table tr.arbevetel-subtotal td {
+    font-weight: bold;
+    border-top: 1px solid #b5ab96;
+    padding-bottom: 8px;
+}
+
+.arbevetel-table tfoot td {
+    border-top: 3px double #8a7f6a;
+    padding-top: 5px;
+}
+
+.arbevetel-table td.arbevetel-level-1 {
+    padding-left: 20px;
+}
+
+.arbevetel-table td.arbevetel-level-2 {
+    padding-left: 35px;
+}
+
+.arbevetel-table td.arbevetel-level-3 {
+    padding-left: 50px;
+}
+
+.arbevetel-table td.arbevetel-level-4 {
+    padding-left: 65px;
+}
+
 .arbevetel-chart {
     position: relative;
     height: 400px;
