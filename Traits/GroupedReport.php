@@ -2,7 +2,7 @@
 
 namespace Traits;
 
-/** The grouped table and the chart series shared by the revenue, sales and pay reports. */
+/** The grouped table and the chart series shared by the revenue, sales, pay and commission reports. */
 trait GroupedReport
 {
 
@@ -222,5 +222,23 @@ trait GroupedReport
             'coltotals' => $totals,
             'total' => array_sum($totals),
         ];
+    }
+
+    /** The cross table of pivotRows(); $termeksor: the rows are products under all the levels. */
+    protected function renderPivot(array $pivot, bool $termeksor, string $valueheader, int $decimals): string
+    {
+        $levels = $pivot['levels'];
+        $rowLevel = $termeksor ? null : array_pop($levels);
+        $view = $this->createView('arbevetelpivot.tpl');
+        $view->setVar('items', $this->buildTableItems($pivot['rows'], $levels, $pivot['sumkeys']));
+        $view->setVar('rowlevel', $rowLevel);
+        $view->setVar('levelcount', count($levels));
+        $view->setVar('termeksor', $termeksor);
+        $view->setVar('periods', $pivot['periods']);
+        $view->setVar('coltotals', $pivot['coltotals']);
+        $view->setVar('total', $pivot['total']);
+        $view->setVar('valueheader', $valueheader);
+        $view->setVar('decimals', $decimals);
+        return $view->getTemplateResult();
     }
 }

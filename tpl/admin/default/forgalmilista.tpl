@@ -7,6 +7,7 @@
     <script type="text/javascript" src="/js/chartjs/chart.umd.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/chartvaluelabels.js"></script>
     <script type="text/javascript" src="/js/admin/default/reportchart.js"></script>
+    <script type="text/javascript" src="/js/admin/default/reportgrouping.js"></script>
     <script type="text/javascript" src="/js/admin/default/arbevetellista.js"></script>
 {/block}
 
