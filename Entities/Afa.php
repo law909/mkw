@@ -34,6 +34,17 @@ class Afa
      */
     private $magyar = false;
 
+    /**
+     * NAV cases of a supply outside the scope of the Hungarian VAT act (vatOutOfScope), the rest are exemptions
+     * (vatExemption). EUE is the OSS distance sale: the foreign VAT stays on the invoice, NAV gets it as 0.
+     */
+    public const NAV_OUT_OF_SCOPE_CASES = ['ATK', 'EUFAD37', 'EUFADE', 'EUE', 'HO'];
+
+    public static function isNavOutOfScope(?string $navcase): bool
+    {
+        return in_array($navcase, self::NAV_OUT_OF_SCOPE_CASES, true);
+    }
+
     public function getId()
     {
         return $this->id;

@@ -337,6 +337,13 @@ class adminController extends mkwhelpers\Controller
         if ($hibasdb) {
             $nohibasbeallitas[] = 'Nincs minden 0%-os ÁFA kulcsnak NAV case kiválasztva.';
         }
+        $filter->clear();
+        $filter->addFilter('ertek', '>', 0);
+        $filter->addFilter('magyar', '=', false);
+        $filter->addSql('(_xx.navcase=\'\') OR (_xx.navcase IS NULL)');
+        if ($this->getRepo(Entities\Afa::class)->getCount($filter)) {
+            $nohibasbeallitas[] = 'Van külföldi ÁFA kulcs NAV case nélkül; az OSS-kulcsnál EUE kell, különben a NAV visszadobja a számlát.';
+        }
         $abortedcnt = (int)$view->getVar('abortedszamlacnt'); // a loadData() mar kiszamolta
         if ($abortedcnt > 0) {
             $nohibasbeallitas[] = $abortedcnt . ' db ABORTED számla van!';

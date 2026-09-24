@@ -68,6 +68,30 @@ class AfaRepository extends \mkwhelpers\Repository
                 'selected' => ($sel == 'ATK'),
                 'reason' => 'Áfa tv. 2-3. §'
             ],
+            [
+                'id' => 'EUFAD37',
+                'caption' => 'Áfa tv. 37. §-a alapján másik tagállamban teljesített, fordítottan adózó ügylet',
+                'selected' => ($sel == 'EUFAD37'),
+                'reason' => 'Áfa tv. 37. §'
+            ],
+            [
+                'id' => 'EUFADE',
+                'caption' => 'Másik tagállamban teljesített, nem az Áfa tv. 37. §-a alá tartozó, fordítottan adózó ügylet',
+                'selected' => ($sel == 'EUFADE'),
+                'reason' => 'Másik tagállamban teljesített, fordítottan adózó ügylet'
+            ],
+            [
+                'id' => 'EUE',
+                'caption' => 'Másik tagállamban teljesített, nem fordítottan adózó ügylet (OSS)',
+                'selected' => ($sel == 'EUE'),
+                'reason' => 'Másik tagállamban teljesített, nem fordítottan adózó ügylet'
+            ],
+            [
+                'id' => 'HO',
+                'caption' => 'Harmadik országban teljesített ügylet',
+                'selected' => ($sel == 'HO'),
+                'reason' => 'Harmadik országban teljesített ügylet'
+            ],
         ];
     }
 

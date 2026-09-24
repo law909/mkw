@@ -2332,32 +2332,19 @@ class Bizonylatfej
             $result = $result . '<lineNetAmountHUF>' . \mkw\store::NAVNum($bt->getNettohuf()) . '</lineNetAmountHUF>';
             $result = $result . '</lineNetAmountData>';
 
-            $result = $result . '<lineVatRate>';
-            if ($this->isForditottadozas()) {
-                $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
-            } else {
-                $afak = $bt->getAfa();
-                if ($afak->getErtek() == 0) {
-                    $result = $result . '<vatExemption>';
-                    $result = $result . '<case>' . $afak->getNavcase() . '</case>';
-                    $result = $result . '<reason>' . \mkw\store::CData(
-                            \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($afak->getNavcase())
-                        ) . '</reason>';
-                    $result = $result . '</vatExemption>';
-                } else {
-                    $result = $result . '<vatPercentage>' . \mkw\store::NAVVATPercentage($bt->getAfakulcs() / 100) . '</vatPercentage>';
-                }
-            }
-            $result = $result . '</lineVatRate>';
+            $afak = $bt->getAfa();
+            $kivul = !$this->isForditottadozas() && Afa::isNavOutOfScope($afak?->getNavcase());
+            $result = $result . '<lineVatRate>' . $this->toNAVVatRate($afak ? (float)$afak->getErtek() : 0.0, $bt->getAfakulcs(), $afak?->getNavcase()) . '</lineVatRate>';
 
+            // outside the Hungarian VAT act NAV takes no VAT, and the gross is the net without the foreign VAT
             $result = $result . '<lineVatData>';
-            $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($bt->getAfaertek()) . '</lineVatAmount>';
-            $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
+            $result = $result . '<lineVatAmount>' . \mkw\store::NAVNum($kivul ? 0 : $bt->getAfaertek()) . '</lineVatAmount>';
+            $result = $result . '<lineVatAmountHUF>' . \mkw\store::NAVNum($kivul ? 0 : $bt->getAfaertekhuf()) . '</lineVatAmountHUF>';
             $result = $result . '</lineVatData>';
 
             $result = $result . '<lineGrossAmountData>';
-            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($bt->getBrutto()) . '</lineGrossAmountNormal>';
-            $result = $result . '<lineGrossAmountNormalHUF>' . \mkw\store::NAVNum($bt->getBruttohuf()) . '</lineGrossAmountNormalHUF>';
+            $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($kivul ? $bt->getNetto() : $bt->getBrutto()) . '</lineGrossAmountNormal>';
+            $result = $result . '<lineGrossAmountNormalHUF>' . \mkw\store::NAVNum($kivul ? $bt->getNettohuf() : $bt->getBruttohuf()) . '</lineGrossAmountNormalHUF>';
             $result = $result . '</lineGrossAmountData>';
 
             $result = $result . '</lineAmountsNormal>';
@@ -2391,25 +2378,10 @@ class Bizonylatfej
 
         $result = $result . '<invoiceSummary>';
         $result = $result . '<summaryNormal>';
-        $afasum = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->getAFAOsszesito($this);
-        foreach ($afasum as $as) {
+        $navsum = $this->getNAVVatSummary();
+        foreach ($navsum['rates'] as $as) {
             $result = $result . '<summaryByVatRate>';
-            $result = $result . '<vatRate>';
-            if ($this->isForditottadozas()) {
-                $result = $result . '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
-            } else {
-                if ($as['afakulcs'] == 0) {
-                    $result = $result . '<vatExemption>';
-                    $result = $result . '<case>' . $as['navcase'] . '</case>';
-                    $result = $result . '<reason>' . \mkw\store::CData(
-                            \mkw\store::getEm()->getRepository(Afa::class)->getNavReason($as['navcase'])
-                        ) . '</reason>';
-                    $result = $result . '</vatExemption>';
-                } else {
-                    $result = $result . '<vatPercentage>' . \mkw\store::NAVVATPercentage($as['afakulcs'] / 100) . '</vatPercentage>';
-                }
-            }
-            $result = $result . '</vatRate>';
+            $result = $result . '<vatRate>' . $this->toNAVVatRate($as['afakulcs'], $as['afakulcs'], $as['navcase']) . '</vatRate>';
 
             $result = $result . '<vatRateNetData>';
             $result = $result . '<vatRateNetAmount>' . \mkw\store::NAVNum($as['netto']) . '</vatRateNetAmount>';
@@ -2430,12 +2402,12 @@ class Bizonylatfej
         }
         $result = $result . '<invoiceNetAmount>' . \mkw\store::NAVNum($this->getNetto()) . '</invoiceNetAmount>';
         $result = $result . '<invoiceNetAmountHUF>' . \mkw\store::NAVNum($this->getNettohuf()) . '</invoiceNetAmountHUF>';
-        $result = $result . '<invoiceVatAmount>' . \mkw\store::NAVNum($this->getAfa()) . '</invoiceVatAmount>';
-        $result = $result . '<invoiceVatAmountHUF>' . \mkw\store::NAVNum($this->getAfahuf()) . '</invoiceVatAmountHUF>';
+        $result = $result . '<invoiceVatAmount>' . \mkw\store::NAVNum($this->getAfa() - $navsum['kulfoldiafa']) . '</invoiceVatAmount>';
+        $result = $result . '<invoiceVatAmountHUF>' . \mkw\store::NAVNum($this->getAfahuf() - $navsum['kulfoldiafahuf']) . '</invoiceVatAmountHUF>';
         $result = $result . '</summaryNormal>';
         $result = $result . '<summaryGrossData>';
-        $result = $result . '<invoiceGrossAmount>' . \mkw\store::NAVNum($this->getBrutto()) . '</invoiceGrossAmount>';
-        $result = $result . '<invoiceGrossAmountHUF>' . \mkw\store::NAVNum($this->getBruttohuf()) . '</invoiceGrossAmountHUF>';
+        $result = $result . '<invoiceGrossAmount>' . \mkw\store::NAVNum($this->getBrutto() - $navsum['kulfoldiafa']) . '</invoiceGrossAmount>';
+        $result = $result . '<invoiceGrossAmountHUF>' . \mkw\store::NAVNum($this->getBruttohuf() - $navsum['kulfoldiafahuf']) . '</invoiceGrossAmountHUF>';
         $result = $result . '</summaryGrossData>';
         $result = $result . '</invoiceSummary>';
         $result = $result . '</invoice>';
@@ -2454,6 +2426,49 @@ class Bizonylatfej
             $result = 'CREATE' . $b64;
         }
         return $result;
+    }
+
+    /**
+     * The inside of a NAV 3.0 vatRate node. $ertek decides exemption (the VAT record's rate on a line, as before),
+     * $afakulcs is the reported percentage; a case outside the Hungarian VAT act wins over both (e.g. OSS: EUE).
+     */
+    private function toNAVVatRate(float $ertek, float $afakulcs, ?string $navcase): string
+    {
+        if ($this->isForditottadozas()) {
+            return '<vatDomesticReverseCharge>true</vatDomesticReverseCharge>';
+        }
+        $reason = fn() => '<reason>' . \mkw\store::CData(\mkw\store::getEm()->getRepository(Afa::class)->getNavReason($navcase)) . '</reason>';
+        if (Afa::isNavOutOfScope($navcase)) {
+            return '<vatOutOfScope><case>' . $navcase . '</case>' . $reason() . '</vatOutOfScope>';
+        }
+        if ($ertek == 0) {
+            return '<vatExemption><case>' . $navcase . '</case>' . $reason() . '</vatExemption>';
+        }
+        return '<vatPercentage>' . \mkw\store::NAVVATPercentage($afakulcs / 100) . '</vatPercentage>';
+    }
+
+    /**
+     * The VAT summary as NAV takes it: a case outside the Hungarian VAT act is one summary with 0 VAT and the net as
+     * gross, whatever foreign rates it covers. 'kulfoldiafa' is the VAT left out that way, to take off the totals.
+     */
+    private function getNAVVatSummary(): array
+    {
+        $ret = ['rates' => [], 'kulfoldiafa' => 0, 'kulfoldiafahuf' => 0];
+        foreach (\mkw\store::getEm()->getRepository(Bizonylatfej::class)->getAFAOsszesito($this) as $afaid => $as) {
+            if ($this->isForditottadozas() || !Afa::isNavOutOfScope($as['navcase'])) {
+                $ret['rates'][$afaid] = $as;
+                continue;
+            }
+            $ret['kulfoldiafa'] += $as['afa'];
+            $ret['kulfoldiafahuf'] += $as['afahuf'];
+            $key = 'case:' . $as['navcase'];
+            $ret['rates'][$key] ??= ['afakulcs' => 0, 'navcase' => $as['navcase'], 'netto' => 0, 'nettohuf' => 0, 'afa' => 0, 'afahuf' => 0, 'brutto' => 0, 'bruttohuf' => 0];
+            $ret['rates'][$key]['netto'] += $as['netto'];
+            $ret['rates'][$key]['nettohuf'] += $as['nettohuf'];
+            $ret['rates'][$key]['brutto'] += $as['netto'];
+            $ret['rates'][$key]['bruttohuf'] += $as['nettohuf'];
+        }
+        return $ret;
     }
 
     /**

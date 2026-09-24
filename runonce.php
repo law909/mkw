@@ -2898,6 +2898,14 @@ if ($DBVersion < '0198') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0198');
 }
 
+if ($DBVersion < '0199') {
+    // a külföldi (OSS) kulcs a NAV-nak nem vatPercentage, hanem EUE: a magyartól eltérő mértéket INVALID_VAT_DATA-val dobja
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE afa SET navcase = "EUE" WHERE magyar = 0 AND ertek > 0 AND COALESCE(navcase, "") = ""'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0199');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
