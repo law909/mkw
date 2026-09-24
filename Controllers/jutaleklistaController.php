@@ -3,6 +3,7 @@
 namespace Controllers;
 
 
+use Entities\Bankbizonylattetel;
 use Entities\Bizonylatfej;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -28,7 +29,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     private $tolstr;
     private $igstr;
-    private $partnerkodok;
+    private $cimkek = [];
     private $ukid;
     private $belso;
 
@@ -69,10 +70,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController
             ->addFilter($datummezo, '<=', $this->igstr)
             ->addFilter('irany', '=', 1);
 
-        $partnerkodok = $this->getRepo('Entities\Partner')->getByCimkek($this->params->getArrayRequestParam('cimkefilter'));
-        $this->partnerkodok = $partnerkodok;
-        if ($partnerkodok) {
-            $filter->addFilter('partner_id', 'IN', $partnerkodok);
+        $this->cimkek = $this->params->getArrayRequestParam('cimkefilter');
+        $cimkeSubquery = $this->getRepo('Entities\Partner')->getCimkeSubquery($this->cimkek);
+        if ($cimkeSubquery) {
+            $filter->addSql('_xx.partner_id IN (' . $cimkeSubquery . ')');
         }
 
         $uk = $this->getRepo('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
@@ -91,41 +92,34 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     public function addNegativSzallktg($mihez)
     {
-        /** @var \Entities\BizonylatfejRepository $bfrepo */
-        $bfrepo = $this->getRepo('Entities\Bizonylatfej');
-        /** @var \Entities\BankbizonylattetelRepository $bbtrepo */
-        $bbtrepo = $this->getRepo('Entities\Bankbizonylattetel');
+        $bizonylatok = array_column($mihez, 'hivatkozottbizonylat');
+        $szallktg = $this->getRepo(Bizonylatfej::class)->getSzallitasiKtgBruttok($bizonylatok);
+        $elsoBefizetes = $this->getRepo(Bankbizonylattetel::class)->getFirstDatumByHivatkozottBizonylat($bizonylatok);
         $ret = [];
         foreach ($mihez as $sor) {
             $sor['jutalekosszeg'] = \mkw\store::kerekit($sor['brutto'] * $sor['uzletkotojutalek'] / 100, 0.01);
             $sor['type'] = 'Item';
             $ret[] = $sor;
-            $bf = $bfrepo->find($sor['hivatkozottbizonylat']);
-            if ($bf && $bfrepo->haveSzallitasiKtg($bf)
-                && ($bbtrepo->isFirstByHivatkozottBizonylat(
-                    $sor['id'],
-                    $sor['hivatkozottbizonylat'],
-                    $sor['datum']
-                ))) {
-                $bt = $bfrepo->getSzallitasiKtgTetel($bf);
-                if ($bt) {
-                    $ret[] = [
-                        'id' => 0,
-                        'bankbizonylatfej_id' => $sor['bankbizonylatfej_id'],
-                        'valutanem_id' => $sor['valutanem_id'],
-                        'valutanemnev' => $sor['valutanemnev'],
-                        'datum' => $sor['datum'],
-                        'hivatkozottdatum' => $sor['hivatkozottdatum'],
-                        'hivatkozottbizonylat' => $sor['hivatkozottbizonylat'],
-                        'uzletkoto_id' => $sor['uzletkoto_id'],
-                        'uzletkotonev' => $sor['uzletkotonev'],
-                        'uzletkotojutalek' => $sor['uzletkotojutalek'],
-                        'partnernev' => $sor['partnernev'],
-                        'brutto' => $bt->getBrutto() * -1,
-                        'jutalekosszeg' => \mkw\store::kerekit($bt->getBrutto() * $sor['uzletkotojutalek'] / 100 * -1, 0.01),
-                        'type' => 'Transport cost'
-                    ];
-                }
+            $brutto = $szallktg[$sor['hivatkozottbizonylat']] ?? null;
+            // only the first payment of an invoice gives back its shipping cost
+            $elso = $elsoBefizetes[$sor['hivatkozottbizonylat']] ?? null;
+            if ($brutto !== null && ($elso === null || $elso >= $sor['datum'])) {
+                $ret[] = [
+                    'id' => 0,
+                    'bankbizonylatfej_id' => $sor['bankbizonylatfej_id'],
+                    'valutanem_id' => $sor['valutanem_id'],
+                    'valutanemnev' => $sor['valutanemnev'],
+                    'datum' => $sor['datum'],
+                    'hivatkozottdatum' => $sor['hivatkozottdatum'],
+                    'hivatkozottbizonylat' => $sor['hivatkozottbizonylat'],
+                    'uzletkoto_id' => $sor['uzletkoto_id'],
+                    'uzletkotonev' => $sor['uzletkotonev'],
+                    'uzletkotojutalek' => $sor['uzletkotojutalek'],
+                    'partnernev' => $sor['partnernev'],
+                    'brutto' => $brutto * -1,
+                    'jutalekosszeg' => \mkw\store::kerekit($brutto * $sor['uzletkotojutalek'] / 100 * -1, 0.01),
+                    'type' => 'Transport cost'
+                ];
             }
         }
         return $ret;
@@ -134,7 +128,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController
     public function addFakeKifizetes($mihez)
     {
         if (\mkw\store::isFakeKintlevoseg()) {
-            $f = $this->getRepo('Entities\Bizonylatfej')->getAllFakeKifizetes($this->tolstr, $this->igstr, $this->partnerkodok, $this->ukid, $this->belso);
+            $f = $this->getRepo('Entities\Bizonylatfej')->getAllFakeKifizetes($this->tolstr, $this->igstr, $this->cimkek, $this->ukid, $this->belso);
             /** @var \Entities\Bizonylatfej $k */
             foreach ($f as $k) {
                 $x = [
@@ -168,42 +162,26 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     public function addKeszpenzes($mihez)
     {
-        $f = $this->getRepo(Bizonylatfej::class)->getAllKeszpenzes($this->tolstr, $this->igstr, $this->partnerkodok, $this->ukid, $this->belso);
-        /** @var \Entities\Bizonylatfej $k */
-        foreach ($f as $k) {
-            if (!$k->getFakekintlevoseg()) {
-                $mehet = true;
-                if ($k->getParbizonylatfej()) {
-                    $mehet = !$k->getParbizonylatfej()->getFakekintlevoseg();
-                }
-                if ($mehet) {
-                    $x = [
-                        'id' => 0,
-                        'bankbizonylatfej_id' => 0,
-                        'valutanem_id' => $k->getValutanemId(),
-                        'valutanemnev' => $k->getValutanemnev(),
-                        'datum' => $k->getFakekifizetesdatumStr(),
-                        'hivatkozottdatum' => $k->getEsedekessegStr(),
-                        'hivatkozottbizonylat' => $k->getId(),
-                        'partnernev' => $k->getPartnernev(),
-                        'brutto' => $k->getBrutto(),
-                        'type' => 'KP',
-                        'kelt' => $k->getKeltStr()
-                    ];
-                    if ($this->belso) {
-                        $x['uzletkoto_id'] = $k->getBelsouzletkotoId();
-                        $x['uzletkotonev'] = $k->getBelsouzletkotonev();
-                        $x['uzletkotojutalek'] = $k->getBelsouzletkotojutalek();
-                        $x['jutalekosszeg'] = \mkw\store::kerekit($k->getBrutto() * $k->getBelsouzletkotojutalek() / 100, 0.01);
-                    } else {
-                        $x['uzletkoto_id'] = $k->getUzletkotoId();
-                        $x['uzletkotonev'] = $k->getUzletkotonev();
-                        $x['uzletkotojutalek'] = $k->getUzletkotojutalek();
-                        $x['jutalekosszeg'] = \mkw\store::kerekit($k->getBrutto() * $k->getUzletkotojutalek() / 100, 0.01);
-                    }
-                    $mihez[] = $x;
-                }
-            }
+        $datum = fn($d) => $d ? date(\mkw\store::$DateFormat, strtotime($d)) : '';
+        $rows = $this->getRepo(Bizonylatfej::class)->getKeszpenzesJutalekRows($this->tolstr, $this->igstr, $this->cimkek, $this->ukid, $this->belso);
+        foreach ($rows as $k) {
+            $mihez[] = [
+                'id' => 0,
+                'bankbizonylatfej_id' => 0,
+                'valutanem_id' => $k['valutanem_id'] ?? '',
+                'valutanemnev' => $k['valutanemnev'],
+                'datum' => $datum($k['fakekifizetesdatum']),
+                'hivatkozottdatum' => $datum($k['esedekesseg']),
+                'hivatkozottbizonylat' => $k['id'],
+                'partnernev' => $k['partnernev'],
+                'brutto' => $k['brutto'],
+                'type' => 'KP',
+                'kelt' => $datum($k['kelt']),
+                'uzletkoto_id' => $k['uzletkoto_id'] ?? '',
+                'uzletkotonev' => $k['uzletkotonev'],
+                'uzletkotojutalek' => $k['uzletkotojutalek'],
+                'jutalekosszeg' => \mkw\store::kerekit($k['brutto'] * $k['uzletkotojutalek'] / 100, 0.01),
+            ];
         }
         return $mihez;
     }

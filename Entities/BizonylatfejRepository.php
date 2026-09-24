@@ -1743,7 +1743,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         ];
     }
 
-    public function getAllFakeKifizetes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
+    /** @param array $cimkek partner label ids */
+    public function getAllFakeKifizetes($tol, $ig, array $cimkek = [], $ukid = null, $belso = false)
     {
         $filter = new FilterDescriptor();
         $filter
@@ -1754,8 +1755,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             ->addFilter('fakekifizetve', '=', true)
             ->addFilter('fakekifizetesdatum', '>=', $tol)
             ->addFilter('fakekifizetesdatum', '<=', $ig);
-        if ($pkodok) {
-            $filter->addFilter('partner', 'IN', $pkodok);
+        $cimkeSubquery = $this->getRepo(Partner::class)->getCimkeSubquery($cimkek, true);
+        if ($cimkeSubquery) {
+            $filter->addSql('IDENTITY(_xx.partner) IN (' . $cimkeSubquery . ')');
         }
         if ($ukid) {
             if ($belso) {
@@ -1774,13 +1776,15 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
-    public function getAllKeszpenzes($tol, $ig, $pkodok = null, $ukid = null, $belso = false)
+    /**
+     * The cash invoices of the commission report as plain rows (entities would take gigabytes over years); invoices
+     * with a fake receivable, themselves or through their parent document, are left out.
+     *
+     * @param array $cimkek partner label ids
+     */
+    public function getKeszpenzesJutalekRows($tol, $ig, array $cimkek = [], $ukid = null, $belso = false): array
     {
-        $fizmodok = $this->getRepo(Fizmod::class)->getAllKeszpenzes();
-        $fmids = [];
-        foreach ($fizmodok as $fm) {
-            $fmids[] = $fm->getId();
-        }
+        $fmids = array_map(fn($fm) => $fm->getId(), $this->getRepo(Fizmod::class)->getAllKeszpenzes());
 
         $filter = new FilterDescriptor();
         $filter
@@ -1789,28 +1793,53 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             ->addFilter('storno', '=', false)
             ->addFilter('stornozott', '=', false)
             ->addFilter('kelt', '>=', $tol)
-            ->addFilter('kelt', '<=', $ig);
-        if ($pkodok) {
-            $filter->addFilter('partner', 'IN', $pkodok);
+            ->addFilter('kelt', '<=', $ig)
+            ->addSql('_xx.fakekintlevoseg IS NULL OR _xx.fakekintlevoseg = false')
+            ->addSql('par.id IS NULL OR par.fakekintlevoseg IS NULL OR par.fakekintlevoseg = false');
+        $cimkeSubquery = $this->getRepo(Partner::class)->getCimkeSubquery($cimkek, true);
+        if ($cimkeSubquery) {
+            $filter->addSql('IDENTITY(_xx.partner) IN (' . $cimkeSubquery . ')');
         }
         if ($ukid) {
-            if ($belso) {
-                $filter->addFilter('belsouzletkoto', '=', $ukid);
-            } else {
-                $filter->addFilter('uzletkoto', '=', $ukid);
-            }
+            $filter->addFilter($belso ? 'belsouzletkoto' : 'uzletkoto', '=', $ukid);
         }
         if ($fmids) {
             $filter->addFilter('fizmod', 'IN', $fmids);
         }
 
+        $uk = $belso ? 'belsouzletkoto' : 'uzletkoto';
         $q = $this->_em->createQuery(
-            'SELECT _xx'
+            'SELECT _xx.id, IDENTITY(_xx.valutanem) AS valutanem_id, _xx.valutanemnev, _xx.fakekifizetesdatum, _xx.esedekesseg,'
+            . ' _xx.kelt, _xx.partnernev, _xx.brutto,'
+            . " IDENTITY(_xx.$uk) AS uzletkoto_id, _xx.{$uk}nev AS uzletkotonev, _xx.{$uk}jutalek AS uzletkotojutalek"
             . ' FROM Entities\Bizonylatfej _xx'
+            . ' LEFT JOIN _xx.parbizonylatfej par'
             . $this->getFilterString($filter)
+            . ' ORDER BY _xx.id'
         );
         $q->setParameters($this->getQueryParameters($filter));
-        return $q->getResult();
+        return $q->getScalarResult();
+    }
+
+    /** Bizonylatfej id => gross of its first shipping cost line, for the documents that have one. */
+    public function getSzallitasiKtgBruttok(array $ids): array
+    {
+        $termekid = \mkw\store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
+        $ret = [];
+        if (!$termekid) {
+            return $ret;
+        }
+        foreach (array_chunk(array_values(array_unique($ids)), 1000) as $chunk) {
+            $rows = $this->_em->getConnection()->fetchAllAssociative(
+                'SELECT bizonylatfej_id, brutto FROM bizonylattetel WHERE termek_id = ? AND bizonylatfej_id IN (?) ORDER BY id',
+                [$termekid, $chunk],
+                [\Doctrine\DBAL\ParameterType::INTEGER, \Doctrine\DBAL\ArrayParameterType::STRING]
+            );
+            foreach ($rows as $row) {
+                $ret[$row['bizonylatfej_id']] ??= $row['brutto'];
+            }
+        }
+        return $ret;
     }
 
     public function getNAVEredmenyFeldolgozando()

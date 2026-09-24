@@ -163,6 +163,22 @@ class PartnerRepository extends \mkwhelpers\Repository
         return $partnerkodok;
     }
 
+    /**
+     * The partners with any of the labels as a subquery for an IN condition, null without labels. Faster than an IN
+     * list of getByCimkek(): a label can be on almost every partner. $dql: for a DQL query instead of native SQL.
+     */
+    public function getCimkeSubquery(array $cimkek, bool $dql = false): ?string
+    {
+        $cimkek = array_filter(array_map('intval', $cimkek));
+        if (!$cimkek) {
+            return null;
+        }
+        if ($dql) {
+            return 'SELECT pcp.id FROM Entities\Partner pcp JOIN pcp.cimkek pcc WHERE pcc.id IN (' . implode(',', $cimkek) . ')';
+        }
+        return 'SELECT pc.partner_id FROM partner_cimkek pc WHERE pc.cimketorzs_id IN (' . implode(',', $cimkek) . ')';
+    }
+
     public function countByEmail($email)
     {
         $filter = new \mkwhelpers\FilterDescriptor();

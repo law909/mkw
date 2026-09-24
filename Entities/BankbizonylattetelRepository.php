@@ -37,6 +37,22 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository
         return $q->getSingleScalarResult() * 1 === 0;
     }
 
+    /** Referenced document => date of its earliest incoming, not voided payment; see isFirstByHivatkozottBizonylat(). */
+    public function getFirstDatumByHivatkozottBizonylat(array $bizszamok): array
+    {
+        $ret = [];
+        foreach (array_chunk(array_values(array_unique($bizszamok)), 1000) as $chunk) {
+            $rows = $this->_em->getConnection()->fetchAllAssociative(
+                'SELECT hivatkozottbizonylat, MIN(datum) AS datum FROM bankbizonylattetel'
+                . ' WHERE hivatkozottbizonylat IN (?) AND irany >= 1 AND rontott = 0 GROUP BY hivatkozottbizonylat',
+                [$chunk],
+                [\Doctrine\DBAL\ArrayParameterType::STRING]
+            );
+            $ret += array_column($rows, 'datum', 'hivatkozottbizonylat');
+        }
+        return $ret;
+    }
+
     public function getAllHivatkozottJoin($filter = [], $order = [], $belso = false)
     {
         $rsm = new ResultSetMapping();
