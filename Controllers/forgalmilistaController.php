@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Entities\BizonylatfejRepository;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -13,7 +14,11 @@ class forgalmilistaController extends arbevetellistaController
 
     public function view()
     {
-        $this->showView('forgalmilista.tpl', t('Forgalmi lista'));
+        $this->showView(
+            'forgalmilista.tpl',
+            t('Forgalmi lista'),
+            array_values(array_diff(BizonylatfejRepository::ARBEVETEL_BIZONYLATTIPUSOK, [\Services\ElolegService::BIZTIPUS]))
+        );
     }
 
     private function termekLabel(array $row): string

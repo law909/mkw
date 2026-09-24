@@ -51,7 +51,7 @@
                 {include "comp_webshopfilter.tpl"}
                 <div class="matt-hseparator"></div>
                 {if ($bizonylattipusfilter)}
-                    <div>{at('Bizonylattípus')} ({at('ha egy sincs bejelölve: előlegszámla, számla, bolti eladás')}):</div>
+                    <div>{at('Bizonylattípus')} ({at('ha egy sincs bejelölve: számla, bolti eladás; előlegszámla itt nem számít')}):</div>
                     {include "comp_bizonylattipus.tpl"}
                     <div class="matt-hseparator"></div>
                 {/if}

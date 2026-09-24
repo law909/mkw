@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylatfej;
+use Entities\BizonylatfejRepository;
 use Entities\Valutanem;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -15,10 +16,11 @@ class arbevetellistaController extends \mkwhelpers\Controller
 
     public function view()
     {
-        $this->showView('arbevetellista.tpl', t('Árbevétel kimutatás'));
+        $this->showView('arbevetellista.tpl', t('Árbevétel kimutatás'), BizonylatfejRepository::ARBEVETEL_BIZONYLATTIPUSOK);
     }
 
-    protected function showView(string $tplname, string $pagetitle)
+    /** @param array $bizonylattipusok ticked by default in the document type filter (superzoneb2b only) */
+    protected function showView(string $tplname, string $pagetitle, array $bizonylattipusok)
     {
         $view = $this->createView($tplname);
 
@@ -35,6 +37,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         $view->setVar('valutanemlist', (new valutanemController())->getSelectList());
         $view->setVar('cimkekat', (new partnercimkekatController())->getWithCimkek());
         $view->setVar('bizonylattipusfilter', \mkw\store::isSuperzoneB2B());
+        $view->setVar('bizonylattipuschecked', array_fill_keys($bizonylattipusok, true));
 
         $view->printTemplateResult(false);
     }
