@@ -361,6 +361,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController
      */
     private function groupItems(array $items, array $szintek, bool $periodLast): array
     {
+        // some names are stored HTML-encoded ("&amp;"), the templates escape them again
+        $decode = fn($nev) => html_entity_decode((string)$nev, ENT_QUOTES | ENT_HTML5);
         $groups = [];
         foreach ($items as $item) {
             // cash invoices have no payment date, they are counted on their issue date
@@ -375,10 +377,10 @@ class jutaleklistaController extends \mkwhelpers\MattableController
                         break;
                     case 'uzletkoto':
                         $row['uzletkoto_id'] = (int)$item['uzletkoto_id'];
-                        $row['uzletkotonev'] = $item['uzletkoto_id'] ? (string)$item['uzletkotonev'] : t('nincs üzletkötő');
+                        $row['uzletkotonev'] = $item['uzletkoto_id'] ? $decode($item['uzletkotonev']) : t('nincs üzletkötő');
                         break;
                     case 'partner':
-                        $row['partnernev'] = (string)$item['partnernev'];
+                        $row['partnernev'] = $decode($item['partnernev']);
                         break;
                     case 'valutanem':
                         $row['valutanem_id'] = (int)$item['valutanem_id'];
