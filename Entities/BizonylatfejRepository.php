@@ -1007,8 +1007,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
      * Sold quantity and value per product / product variant, on the same documents and filters as
      * getArbevetelLista() except advances. A storno negates either the quantity or the price depending on its type,
      * so the quantity takes the sign of the line value; a zero-value line keeps its own sign.
+     *
+     * @param bool $idoszakUtolso sort by the period after the products (for a cross table), not as a level
      */
-    public function getForgalmiLista($datumtipus, $datumtol, $datumig, bool $brutto, array $csoport, array $szurok): array
+    public function getForgalmiLista($datumtipus, $datumtol, $datumig, bool $brutto, array $csoport, array $szurok, bool $idoszakUtolso = false): array
     {
         $datummezo = $this->getArbevetelDatummezo($datumtipus);
         $filter = $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $szurok);
@@ -1039,7 +1041,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             ],
             $filter,
             self::ARBEVETEL_FROM . $szintek['join'],
-            array_merge($szintek['order'], ['cikkszam', 'nev', 'ertek1', 'ertek2'])
+            $idoszakUtolso
+                ? array_merge(array_values(array_diff($szintek['order'], ['idoszak'])), ['cikkszam', 'nev', 'ertek1', 'ertek2', 'idoszak'])
+                : array_merge($szintek['order'], ['cikkszam', 'nev', 'ertek1', 'ertek2'])
         );
     }
 

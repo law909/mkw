@@ -33,6 +33,13 @@ $(document).ready(function () {
                 $(this).prop('disabled', dim !== sajat && hasznalt.includes(dim));
             });
         });
+        // the cross table puts the periods into the columns, so it needs a period level
+        const $megjelenites = $('select[name="megjelenites"]');
+        if (!hasznalt.includes('idoszak')) {
+            $megjelenites.val('lista');
+        }
+        $megjelenites.prop('disabled', !hasznalt.includes('idoszak'));
+        $('select[name="pivotertek"]').toggle($megjelenites.val() === 'kereszttabla');
     }
 
     function getSzintek() {
@@ -47,7 +54,7 @@ $(document).ready(function () {
             mkwcomp.datumEdit.init('#IgEdit');
             mkwcomp.termekfaFilter.init('#termekfa');
 
-            $('.js-szint').on('change', syncSzintek);
+            $('.js-szint, select[name="megjelenites"]').on('change', syncSzintek);
             syncSzintek();
 
             $('#cimkefiltercontainer').mattaccord({
@@ -95,6 +102,8 @@ $(document).ready(function () {
                         webshopnum: $('select[name="webshopnum"]').val(),
                         nev: $('input[name="nev"]').val(),
                         szint: getSzintek(),
+                        megjelenites: $('select[name="megjelenites"]').val(),
+                        pivotertek: $('select[name="pivotertek"]').val(),
                         fafilter: fak.length > 0 ? fak : undefined
                     },
                     success: (d) => {

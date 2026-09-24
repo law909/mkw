@@ -173,4 +173,51 @@ trait GroupedReport
             'note' => $notes ? implode(' ', $notes) : null,
         ];
     }
+
+    /**
+     * Turns the rows around the period level for a cross table: the period leaves the levels, and each remaining
+     * row gets $valueKey per period as 'p0', 'p1', … and their total as 'ertek' (what buildTableItems() shares on).
+     * The rows must come sorted by the remaining levels, the period last. Null when there is no period level.
+     *
+     * @param array $rowKeys what else tells two rows apart besides the levels (e.g. the product)
+     */
+    protected function pivotRows(array $rows, array $levels, string $valueKey, array $rowKeys = []): ?array
+    {
+        $rest = array_values(array_filter($levels, fn($level) => $level['id'] !== 'idoszak'));
+        if (count($rest) === count($levels)) {
+            return null;
+        }
+        $periods = array_values(array_unique(array_map('strval', array_column($rows, 'idoszak'))));
+        sort($periods);
+        $index = array_flip($periods);
+        $keys = array_merge(array_column($rest, 'id'), $rowKeys);
+
+        $pivot = [];
+        foreach ($rows as $row) {
+            $key = implode("\x1f", array_map(fn($k) => (string)$row[$k], $keys));
+            if (!isset($pivot[$key])) {
+                $pivot[$key] = $row;
+                unset($pivot[$key]['idoszak']);
+                foreach (array_keys($periods) as $i) {
+                    $pivot[$key]['p' . $i] = 0;
+                }
+                $pivot[$key]['ertek'] = 0;
+            }
+            $pivot[$key]['p' . $index[(string)$row['idoszak']]] += $row[$valueKey];
+            $pivot[$key]['ertek'] += $row[$valueKey];
+        }
+        $pivot = array_values($pivot);
+        $totals = [];
+        foreach (array_keys($periods) as $i) {
+            $totals[$i] = array_sum(array_column($pivot, 'p' . $i));
+        }
+        return [
+            'rows' => $pivot,
+            'levels' => $rest,
+            'periods' => $periods,
+            'sumkeys' => array_merge(['ertek'], array_map(fn($i) => 'p' . $i, array_keys($periods))),
+            'coltotals' => $totals,
+            'total' => array_sum($totals),
+        ];
+    }
 }

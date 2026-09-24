@@ -40,20 +40,31 @@ class forgalmilistaController extends arbevetellistaController
 
     public function refresh()
     {
-        $data = $this->getData('getForgalmiLista');
+        $pivotErtek = $this->params->getStringRequestParam('pivotertek') === 'ertek' ? 'ertek' : 'mennyiseg';
+        $data = $this->getData('getForgalmiLista', [$this->isPivot()]);
         $levels = $this->getGroupLevels($data);
-        $view = $this->createView('forgalmilistatetel.tpl');
-        $view->setVar('items', $this->buildTableItems($data['rows'], $levels, ['mennyiseg', 'ertek']));
-        $view->setVar('levelcount', count($levels));
-        $view->setVar('valueheader', $data['valueheader']);
-        $view->setVar('decimals', $data['currency'] === 'HUF' ? 0 : 2);
+        $decimals = $data['currency'] === 'HUF' ? 0 : 2;
         $mennyisegek = array_column($data['rows'], 'mennyiseg');
-        $view->setVar('mennyisegdecimals', array_filter($mennyisegek, fn($m) => floor($m) != $m) ? 2 : 0);
-        $view->setVar('osszesenmennyiseg', round(array_sum($mennyisegek), 2));
-        $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
+        $mennyisegDecimals = array_filter($mennyisegek, fn($m) => floor($m) != $m) ? 2 : 0;
+        $pivot = $this->isPivot() ? $this->pivotRows($data['rows'], $levels, $pivotErtek, ['termekid', 'termekvaltozatid']) : null;
+        if ($pivot && $pivotErtek === 'ertek') {
+            $html = $this->renderPivot($pivot, true, $data['valueheader'], $decimals);
+        } elseif ($pivot) {
+            $html = $this->renderPivot($pivot, true, t('Mennyiség'), $mennyisegDecimals);
+        } else {
+            $view = $this->createView('forgalmilistatetel.tpl');
+            $view->setVar('items', $this->buildTableItems($data['rows'], $levels, ['mennyiseg', 'ertek']));
+            $view->setVar('levelcount', count($levels));
+            $view->setVar('valueheader', $data['valueheader']);
+            $view->setVar('decimals', $decimals);
+            $view->setVar('mennyisegdecimals', $mennyisegDecimals);
+            $view->setVar('osszesenmennyiseg', round(array_sum($mennyisegek), 2));
+            $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
+            $html = $view->getTemplateResult();
+        }
         header('Content-Type: application/json');
         echo json_encode([
-            'html' => $view->getTemplateResult(),
+            'html' => $html,
             'chart' => $this->buildChart($data),
         ]);
     }

@@ -45,9 +45,14 @@ class arbevetellistaController extends \mkwhelpers\Controller
         $view->printTemplateResult(false);
     }
 
-    protected function getData(string $repoMethod = 'getArbevetelLista'): array
+    protected function getData(string $repoMethod = 'getArbevetelLista', array $repoArgs = []): array
     {
         $csoport = $this->getSzintek();
+        if ($this->isPivot()) {
+            // pivotRows() needs the rows sorted by the other levels, the period last
+            $idoszak = array_intersect($csoport, ['ev', 'honap']);
+            $csoport = array_merge(array_values(array_diff($csoport, $idoszak)), array_values($idoszak));
+        }
         $brutto = $this->params->getStringRequestParam('ertektipus') === 'brutto';
         $valutanemid = $this->params->getIntRequestParam('valutanem');
         $valutanem = $valutanemid ? $this->getRepo(Valutanem::class)->find($valutanemid) : null;
@@ -69,7 +74,8 @@ class arbevetellistaController extends \mkwhelpers\Controller
                 'fafilter' => $this->params->getArrayRequestParam('fafilter'),
                 'webshopnum' => $this->params->getStringRequestParam('webshopnum'),
                 'nev' => $this->params->getStringRequestParam('nev'),
-            ]
+            ],
+            ...$repoArgs
         );
 
         $currency = $valutanem ? $valutanem->getNev() : 'HUF';
@@ -80,6 +86,29 @@ class arbevetellistaController extends \mkwhelpers\Controller
             'valueheader' => ($brutto ? t('Bruttó') : t('Nettó')) . ' ' . $currency,
             'szintek' => $csoport,
         ];
+    }
+
+    protected function isPivot(): bool
+    {
+        return $this->params->getStringRequestParam('megjelenites') === 'kereszttabla';
+    }
+
+    /** The cross table of pivotRows(); $termeksor: the rows are products under all the levels. */
+    protected function renderPivot(array $pivot, bool $termeksor, string $valueheader, int $decimals): string
+    {
+        $levels = $pivot['levels'];
+        $rowLevel = $termeksor ? null : array_pop($levels);
+        $view = $this->createView('arbevetelpivot.tpl');
+        $view->setVar('items', $this->buildTableItems($pivot['rows'], $levels, $pivot['sumkeys']));
+        $view->setVar('rowlevel', $rowLevel);
+        $view->setVar('levelcount', count($levels));
+        $view->setVar('termeksor', $termeksor);
+        $view->setVar('periods', $pivot['periods']);
+        $view->setVar('coltotals', $pivot['coltotals']);
+        $view->setVar('total', $pivot['total']);
+        $view->setVar('valueheader', $valueheader);
+        $view->setVar('decimals', $decimals);
+        return $view->getTemplateResult();
     }
 
     /** The grouping levels of the request in order: known dimensions only, each once, at most MAXSZINT. */
@@ -144,18 +173,26 @@ class arbevetellistaController extends \mkwhelpers\Controller
     {
         $data = $this->getData();
         $levels = $this->getGroupLevels($data);
-        // the last grouping column is the row label, the ones above it become group headers
-        $rowLevel = array_pop($levels);
-        $view = $this->createView('arbevetellistatetel.tpl');
-        $view->setVar('items', $this->buildTableItems($data['rows'], $levels, ['ertek']));
-        $view->setVar('rowlevel', $rowLevel);
-        $view->setVar('levelcount', count($levels));
-        $view->setVar('valueheader', $data['valueheader']);
-        $view->setVar('decimals', $data['currency'] === 'HUF' ? 0 : 2);
-        $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
+        $decimals = $data['currency'] === 'HUF' ? 0 : 2;
+        $pivot = $this->isPivot() ? $this->pivotRows($data['rows'], $levels, 'ertek') : null;
+        if ($pivot) {
+            $html = $this->renderPivot($pivot, false, $data['valueheader'], $decimals);
+        } else {
+            // the last grouping column is the row label, the ones above it become group headers
+            $tableLevels = $levels;
+            $rowLevel = array_pop($tableLevels);
+            $view = $this->createView('arbevetellistatetel.tpl');
+            $view->setVar('items', $this->buildTableItems($data['rows'], $tableLevels, ['ertek']));
+            $view->setVar('rowlevel', $rowLevel);
+            $view->setVar('levelcount', count($tableLevels));
+            $view->setVar('valueheader', $data['valueheader']);
+            $view->setVar('decimals', $decimals);
+            $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
+            $html = $view->getTemplateResult();
+        }
         header('Content-Type: application/json');
         echo json_encode([
-            'html' => $view->getTemplateResult(),
+            'html' => $html,
             'chart' => $this->buildLevelChart($data['rows'], $this->getGroupLevels($data), 'ertek', t('Árbevétel'), $data['currency']),
         ]);
     }

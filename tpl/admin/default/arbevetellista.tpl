@@ -71,6 +71,11 @@
                             {/foreach}
                         </select>
                     {/for}
+                    <label for="MegjelenitesEdit" class="arbevetel-megjelenites">{at('Megjelenítés')}:</label>
+                    <select id="MegjelenitesEdit" name="megjelenites" title="{at('A kereszttáblához időszak-szint kell: az időszakok lesznek az oszlopok.')}">
+                        <option value="lista">{at('lista')}</option>
+                        <option value="kereszttabla">{at('kereszttábla')}</option>
+                    </select>
                 </div>
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>

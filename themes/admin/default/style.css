@@ -554,6 +554,25 @@ select.tetelszamhiba,
     color: #8a7f6a;
 }
 
+.arbevetel-megjelenites {
+    margin-left: 12px;
+}
+
+.arbevetel-pivotwrap {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.arbevetel-pivot caption {
+    text-align: left;
+    font-weight: bold;
+    padding: 4px 5px;
+}
+
+.arbevetel-pivot td.arbevetel-pivot-total {
+    font-weight: bold;
+}
+
 .arbevetel-chartnote {
     display: none;
     margin: 4px 0 6px;
