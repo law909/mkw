@@ -10,6 +10,22 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class jutaleklistaController extends \mkwhelpers\MattableController
 {
 
+    use \Traits\GroupedReport;
+    use \Traits\SavedReportViews;
+
+    private const MAXSZINT = 4;
+
+    protected const KIMUTATAS = 'jutaleklista';
+
+    /** Grouping level => [id key, label key] of the grouped rows; the two periods are one dimension. */
+    private const DIMENZIOK = [
+        'ev' => ['idoszak', 'idoszak'],
+        'honap' => ['idoszak', 'idoszak'],
+        'uzletkoto' => ['uzletkoto_id', 'uzletkotonev'],
+        'partner' => ['partnernev', 'partnernev'],
+        'valutanem' => ['valutanem_id', 'valutanemnev'],
+    ];
+
     private $tolstr;
     private $igstr;
     private $partnerkodok;
@@ -28,6 +44,9 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
         $fmc = new uzletkotoController();
         $view->setVar('uklist', $fmc->getSelectList(false));
+
+        $view->setVar('szintlist', $this->getSzintSelectList());
+        $view->setVar('maxszint', self::MAXSZINT);
 
         $view->printTemplateResult();
     }
@@ -168,7 +187,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController
                         'hivatkozottbizonylat' => $k->getId(),
                         'partnernev' => $k->getPartnernev(),
                         'brutto' => $k->getBrutto(),
-                        'type' => 'KP'
+                        'type' => 'KP',
+                        'kelt' => $k->getKeltStr()
                     ];
                     if ($this->belso) {
                         $x['uzletkoto_id'] = $k->getBelsouzletkotoId();
@@ -207,13 +227,11 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         }
     }
 
-    public function createLista()
+    private function getItems(): array
     {
         $this->updateDB();
 
         $filter = $this->createFilter();
-
-        $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
 
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
         $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
@@ -221,7 +239,14 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         $mind = $btrepo->getAllHivatkozottJoin($filter, ['datum' => 'ASC'], $this->belso);
         $mind = $this->addNegativSzallktg($mind);
         $mind = $this->addKeszpenzes($mind);
-        $mind = $this->addFakeKifizetes($mind);
+        return $this->addFakeKifizetes($mind);
+    }
+
+    public function createLista()
+    {
+        $mind = $this->getItems();
+
+        $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
 
         $report = $this->createView('rep_jutalek.tpl');
         $report->setVar('lista', $mind);
@@ -241,8 +266,6 @@ class jutaleklistaController extends \mkwhelpers\MattableController
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $this->updateDB();
-
         $excel = new Spreadsheet();
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'Payment Due')
@@ -255,16 +278,7 @@ class jutaleklistaController extends \mkwhelpers\MattableController
             ->setCellValue('H1', 'Comission %')
             ->setCellValue('I1', 'Comission value');
 
-        $filter = $this->createFilter();
-
-        /** @var \Entities\BankbizonylattetelRepository $btrepo */
-        $btrepo = $this->getRepo('Entities\Bankbizonylattetel');
-
-        $mind = $btrepo->getAllHivatkozottJoin($filter, ['datum' => 'ASC'], $this->belso);
-
-        $mind = $this->addNegativSzallktg($mind);
-        $mind = $this->addKeszpenzes($mind);
-        $mind = $this->addFakeKifizetes($mind);
+        $mind = $this->getItems();
 
         $sor = 2;
         foreach ($mind as $item) {
@@ -298,5 +312,164 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         readfile($filepath);
 
         \unlink($filepath);
+    }
+
+    protected function isPivot(): bool
+    {
+        return $this->params->getStringRequestParam('megjelenites') === 'kereszttabla';
+    }
+
+    /** The grouping levels of the request in order: known dimensions only, each once, at most MAXSZINT. */
+    private function getSzintek(): array
+    {
+        $szintek = [];
+        $dimenziok = [];
+        foreach ($this->params->getArrayRequestParam('szint') as $szint) {
+            $dimenzio = self::DIMENZIOK[$szint][0] ?? null;
+            if (!$dimenzio || isset($dimenziok[$dimenzio])) {
+                continue;
+            }
+            $dimenziok[$dimenzio] = true;
+            $szintek[] = $szint;
+            if (count($szintek) === self::MAXSZINT) {
+                break;
+            }
+        }
+        return $szintek;
+    }
+
+    private static function getSzintCaptions(): array
+    {
+        return [
+            'ev' => t('Év'),
+            'honap' => t('Hónap'),
+            'uzletkoto' => t('Üzletkötő'),
+            'partner' => t('Partner'),
+            'valutanem' => t('Valutanem'),
+        ];
+    }
+
+    private function getSzintSelectList(): array
+    {
+        $res = [];
+        foreach (self::getSzintCaptions() as $szint => $caption) {
+            $res[] = ['id' => $szint, 'caption' => mb_strtolower($caption), 'dim' => self::DIMENZIOK[$szint][0]];
+        }
+        return $res;
+    }
+
+    private function getGroupLevels(array $szintek): array
+    {
+        $captions = self::getSzintCaptions();
+        $levels = [];
+        foreach ($szintek as $szint) {
+            [$id, $label] = self::DIMENZIOK[$szint];
+            $levels[] = ['id' => $id, 'label' => $label, 'caption' => $captions[$szint]];
+        }
+        return $levels;
+    }
+
+    protected function getNezetBeallitas(): array
+    {
+        return [
+            'szint' => $this->getSzintek(),
+            'megjelenites' => $this->isPivot() ? 'kereszttabla' : 'lista',
+        ];
+    }
+
+    /**
+     * The commission items summed by the levels ('ertek' is the commission), sorted by them: the periods in time
+     * order, the rest by name. With $periodLast the period is sorted after the other levels (for a cross table).
+     */
+    private function groupItems(array $items, array $szintek, bool $periodLast): array
+    {
+        $groups = [];
+        foreach ($items as $item) {
+            // cash invoices have no payment date, they are counted on their issue date
+            $datum = $item['datum'] ?: ($item['kelt'] ?? '') ?: $item['hivatkozottdatum'];
+            $time = $datum ? strtotime(\mkw\store::convDate($datum)) : false;
+            $row = [];
+            foreach ($szintek as $szint) {
+                switch ($szint) {
+                    case 'ev':
+                    case 'honap':
+                        $row['idoszak'] = $time ? date($szint === 'ev' ? 'Y' : 'Y-m', $time) : '';
+                        break;
+                    case 'uzletkoto':
+                        $row['uzletkoto_id'] = (int)$item['uzletkoto_id'];
+                        $row['uzletkotonev'] = $item['uzletkoto_id'] ? (string)$item['uzletkotonev'] : t('nincs üzletkötő');
+                        break;
+                    case 'partner':
+                        $row['partnernev'] = (string)$item['partnernev'];
+                        break;
+                    case 'valutanem':
+                        $row['valutanem_id'] = (int)$item['valutanem_id'];
+                        $row['valutanemnev'] = (string)$item['valutanemnev'];
+                        break;
+                }
+            }
+            $key = implode("\x1f", $row);
+            $groups[$key] ??= $row + ['brutto' => 0, 'ertek' => 0];
+            $groups[$key]['brutto'] += $item['brutto'];
+            $groups[$key]['ertek'] += $item['jutalekosszeg'];
+        }
+
+        $order = $this->getGroupLevels($szintek);
+        if ($periodLast) {
+            usort($order, fn($a, $b) => ($a['id'] === 'idoszak') <=> ($b['id'] === 'idoszak'));
+        }
+        $collator = class_exists(\Collator::class) ? new \Collator('hu_HU') : null;
+        $compare = fn($a, $b) => $collator ? $collator->compare($a, $b) : strcasecmp($a, $b);
+        $groups = array_values($groups);
+        usort($groups, function ($a, $b) use ($order, $compare) {
+            foreach ($order as $level) {
+                $cmp = $level['id'] === 'idoszak'
+                    ? strcmp($a['idoszak'], $b['idoszak'])
+                    : ($compare((string)$a[$level['label']], (string)$b[$level['label']]) ?: $a[$level['id']] <=> $b[$level['id']]);
+                if ($cmp) {
+                    return $cmp;
+                }
+            }
+            return 0;
+        });
+        return $groups;
+    }
+
+    public function refresh()
+    {
+        // payments without commission (mostly of partners without an agent) would bury the groups
+        $items = array_filter($this->getItems(), fn($item) => (float)$item['jutalekosszeg'] != 0);
+        $szintek = $this->getSzintek();
+        $levels = $this->getGroupLevels($szintek);
+        $rows = $this->groupItems($items, $szintek, $this->isPivot());
+
+        $valutanemek = array_values(array_unique(array_filter(array_column($items, 'valutanemnev'))));
+        $currency = count($valutanemek) === 1 ? reset($valutanemek) : '';
+        $valueheader = trim(t('Jutalék') . ' ' . $currency);
+        $pivot = $this->isPivot() ? $this->pivotRows($rows, $levels, 'ertek') : null;
+        if ($pivot) {
+            $html = $this->renderPivot($pivot, false, $valueheader, 2);
+        } else {
+            $tableLevels = $levels;
+            $rowLevel = array_pop($tableLevels);
+            $view = $this->createView('arbevetellistatetel.tpl');
+            $view->setVar('items', $this->buildTableItems($rows, $tableLevels, ['ertek']));
+            $view->setVar('rowlevel', $rowLevel);
+            $view->setVar('levelcount', count($tableLevels));
+            $view->setVar('valueheader', $valueheader);
+            $view->setVar('decimals', 2);
+            $view->setVar('osszesen', array_sum(array_column($rows, 'ertek')));
+            $html = $view->getTemplateResult();
+        }
+
+        $chart = $this->buildLevelChart($rows, $levels, 'ertek', t('Jutalék'), $currency);
+        if (count($valutanemek) > 1 && !in_array('valutanem', $szintek)) {
+            $chart['note'] = trim(sprintf(
+                t('A jutalék több valutanemben (%s) van, az összegek átszámítás nélkül adódnak össze; csoportosítson valutanemre is.'),
+                implode(', ', $valutanemek)
+            ) . ' ' . $chart['note']);
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['html' => $html, 'chart' => $chart]);
     }
 }

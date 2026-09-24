@@ -567,6 +567,12 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jutaleklista/view', 'jutaleklistaController#view', 'adminjutaleklistaview');
     $router->map('GET', '/admin/jutaleklista/get', 'jutaleklistaController#createLista', 'adminjutaleklistaget');
     $router->map('GET', '/admin/jutaleklista/export', 'jutaleklistaController#exportLista', 'adminjutaleklistaexport');
+    $router->map('GET', '/admin/jutaleklista/refresh', 'jutaleklistaController#refresh', 'adminjutaleklistarefresh');
+    $router->map('GET', '/admin/jutaleklista/nezetlista', 'jutaleklistaController#nezetlista', 'adminjutaleklistanezetlista');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/jutaleklista/nezetsave', 'jutaleklistaController#nezetsave', 'adminjutaleklistanezetsave');
+        $router->map('POST', '/admin/jutaleklista/nezetdelete', 'jutaleklistaController#nezetdelete', 'adminjutaleklistanezetdelete');
+    }
 
     $router->map('GET', '/admin/idoszakipenztarjelenteslista/view', 'idoszakipenztarjelenteslistaController#view', 'adminidoszakipenztarjelenteslistaview');
     $router->map(
