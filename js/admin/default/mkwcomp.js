@@ -125,7 +125,7 @@ var mkwcomp = (function ($) {
 
         function getState(sel) {
             if (!state[sel]) {
-                state[sel] = {pending: [], $switch: null, csakEz: false};
+                state[sel] = {pending: [], $switch: null, $label: null, csakEz: false};
             }
             return state[sel];
         }
@@ -207,6 +207,11 @@ var mkwcomp = (function ($) {
 
         function build(sel) {
             const $tree = $(sel);
+            const st = getState(sel);
+            // a jstree init a konténer teljes tartalmát lecseréli: a kapcsolót addig félretesszük
+            if (st.$label) {
+                st.$label.detach();
+            }
             if ($tree.data('jstree_instance_id') !== undefined) {
                 $tree.jstree('destroy');
             }
@@ -226,6 +231,11 @@ var mkwcomp = (function ($) {
                     }
                 }
             })
+                .on('init.jstree', function () {
+                    if (st.$label) {
+                        $tree.prepend(st.$label);
+                    }
+                })
                 .on('loaded.jstree', function () {
                     applyPending(sel);
                 })
@@ -243,11 +253,11 @@ var mkwcomp = (function ($) {
             const st = getState(sel);
             if (withSubtreeSwitch && !st.$switch) {
                 st.$switch = $('<input type="checkbox">').prop('checked', !st.csakEz);
-                $('<label class="jstreefilter-switch">')
+                // az osztálynév nem kezdődhet "jstree"-vel: a jstree destroy-a azokat leszedi
+                st.$label = $('<label class="fafilter-switch">')
                     .attr('title', 'Kikapcsolva a kipipált kategória csak a közvetlenül benne lévő termékeket jelenti, '
                         + 'a főkategória pedig azokat, amelyeknek nincs más kategóriája.')
-                    .append(st.$switch, ' alkategóriákkal együtt')
-                    .insertBefore($(sel));
+                    .append(st.$switch, ' alkategóriákkal együtt');
                 // a kijelölés átváltáskor megmarad: a pipált kategóriák a másik módban is pipáltak lesznek
                 st.$switch.on('change', function () {
                     st.pending = getCheckedIds(sel);

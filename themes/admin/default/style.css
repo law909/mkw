@@ -595,8 +595,8 @@ select.tetelszamhiba,
     max-width: 1200px;
 }
 
-.jstreefilter-switch {
+.fafilter-switch {
     display: block;
-    margin: 2px 0 4px;
+    margin: 2px 4px 4px;
     cursor: pointer;
 }
