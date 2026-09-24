@@ -113,7 +113,11 @@ function termekAutocompleteRenderer(ul, item) {
 var mkwcomp = (function ($) {
 
     // jstree alapú fa szűrő (termékfa, termékmenü) – a listaurl adja a fa tartalmát
-    function jstreeFilter(listaurl) {
+    /**
+     * Pipálható fa szűrőnek. withSubtreeSwitch: a fa fölött „alkategóriákkal együtt” kapcsoló. Bekapcsolva egy
+     * pipa az egész ágat jelenti (kaszkád), kikapcsolva csak magát a kategóriát – ilyenkor a getFilter() '=id'-ket ad.
+     */
+    function jstreeFilter(listaurl, withSubtreeSwitch) {
 
         // szelektoronkénti állapot: a fa aszinkron tölt, ezért az URL-ből érkező kijelölést
         // addig függőben tartjuk, amíg a fa be nem töltött
@@ -121,9 +125,14 @@ var mkwcomp = (function ($) {
 
         function getState(sel) {
             if (!state[sel]) {
-                state[sel] = {pending: []};
+                state[sel] = {pending: [], $switch: null, csakEz: false};
             }
             return state[sel];
+        }
+
+        function isSubtree(sel) {
+            const st = getState(sel);
+            return st.$switch ? st.$switch.prop('checked') : !(withSubtreeSwitch && st.csakEz);
         }
 
         function applyChecks(sel, ids) {
@@ -152,7 +161,19 @@ var mkwcomp = (function ($) {
         // kijelölés visszaállítása id-lista alapján (pl. az URL-ből);
         // ha a fa még tölt, a betöltés végén állítjuk be
         function setChecks(sel, ids) {
-            getState(sel).pending = ids || [];
+            ids = (ids || []).map(String);
+            const st = getState(sel);
+            const csakEz = ids.some((id) => id.startsWith('='));
+            st.pending = ids.map((id) => id.replace(/^=/, ''));
+            // a kapcsoló még nem létezhet (az URL-t az init előtt alkalmazzák), az init ebből indul
+            if (ids.length) {
+                st.csakEz = csakEz;
+            }
+            if (ids.length && st.$switch && st.$switch.prop('checked') === csakEz) {
+                st.$switch.prop('checked', !csakEz);
+                build(sel);
+                return;
+            }
             if ($('li', $(sel)).length) {
                 applyPending(sel);
             }
@@ -164,7 +185,7 @@ var mkwcomp = (function ($) {
             st.pending = [];
         }
 
-        function getFilter(sel) {
+        function getCheckedIds(sel) {
             var fak = [];
             $(sel).jstree('get_checked').each(function () {
                 var x = $('a', this).attr('id');
@@ -179,14 +200,24 @@ var mkwcomp = (function ($) {
             return fak;
         }
 
-        function init(sel) {
-            $(sel).jstree({
+        function getFilter(sel) {
+            const fak = getCheckedIds(sel);
+            return isSubtree(sel) ? fak : fak.map((id) => '=' + id);
+        }
+
+        function build(sel) {
+            const $tree = $(sel);
+            if ($tree.data('jstree_instance_id') !== undefined) {
+                $tree.jstree('destroy');
+            }
+            $tree.off('.jstree').jstree({
                 core: {animation: 100},
                 plugins: ['themeroller', 'json_data', 'contextmenu', 'ui', 'checkbox'],
                 themeroller: {item: ''},
                 json_data: {
                     ajax: {url: listaurl}
                 },
+                checkbox: {two_state: !isSubtree(sel)},
                 ui: {select_limit: 1},
                 contextmenu: {
                     select_node: true,
@@ -206,6 +237,24 @@ var mkwcomp = (function ($) {
                     $('li.jstree-checked > a > ins.jstree-checkbox', $tree).addClass('ui-icon ui-icon-circle-check');
                     $('li.jstree-undetermined > a > ins.jstree-checkbox', $tree).addClass('ui-icon ui-icon-check');
                 });
+        }
+
+        function init(sel) {
+            const st = getState(sel);
+            if (withSubtreeSwitch && !st.$switch) {
+                st.$switch = $('<input type="checkbox">').prop('checked', !st.csakEz);
+                $('<label class="jstreefilter-switch">')
+                    .attr('title', 'Kikapcsolva a kipipált kategória csak a közvetlenül benne lévő termékeket jelenti, '
+                        + 'a főkategória pedig azokat, amelyeknek nincs más kategóriája.')
+                    .append(st.$switch, ' alkategóriákkal együtt')
+                    .insertBefore($(sel));
+                // a kijelölés átváltáskor megmarad: a pipált kategóriák a másik módban is pipáltak lesznek
+                st.$switch.on('change', function () {
+                    st.pending = getCheckedIds(sel);
+                    build(sel);
+                });
+            }
+            build(sel);
         }
 
         return {
@@ -691,7 +740,7 @@ var mkwcomp = (function ($) {
     }
 
     return {
-        termekfaFilter: jstreeFilter('/admin/termekfa/jsonlist'),
+        termekfaFilter: jstreeFilter('/admin/termekfa/jsonlist', true),
         termekmenuFilter: jstreeFilter('/admin/termekmenu/jsonlist'),
         datumEdit: datumEdit(),
         bizonylattipusFilter: bizonylattipusFilter(),

@@ -239,8 +239,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         if ($cimkek) {
             $szurok[] = [t('Partnercímke'), implode(', ', $this->getRepo(\Entities\Partnercimketorzs::class)->getCimkeNevek($cimkek))];
         }
-        $kategoriak = array_map(fn($id) => $nev(\Entities\TermekFa::class, $id), array_filter(array_map('intval', $this->params->getArrayRequestParam('fafilter'))));
-        $szurok[] = [t('Kategória'), implode(', ', array_filter($kategoriak)) ?: null];
+        $szurok[] = [t('Kategória'), $this->getRepo(\Entities\TermekFa::class)->getSzuroNevek($this->params->getArrayRequestParam('fafilter'))];
         $szurok[] = $this->getGroupingSzuro($this->getGroupLevels(['szintek' => $this->getSzintek()]));
         return array_values(array_filter($szurok, fn($szuro) => $szuro[1] !== null && $szuro[1] !== ''));
     }

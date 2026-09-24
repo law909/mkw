@@ -33,8 +33,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     private $masikraktarnev;
     private $gyarto;
     private $gyartonev;
-    /** @var string[] a kijelölt termékfák karkod-előtagjai */
-    private $faszuro = [];
+    /** @var string|null a kijelölt termékfák SQL-feltétele (TermekFaRepository::getTermekFeltetel) */
+    private $faFeltetel = null;
     private $fanevek = '';
     /** a minimum készlet helyett figyelt, kézzel megadott küszöb */
     private $limit;
@@ -100,27 +100,14 @@ class minkeszletlistaController extends \mkwhelpers\Controller
     }
 
     /**
-     * A kijelölt termékfák karkod-előtagjai – a termék a három fa-mezője bármelyikével
+     * A kijelölt termékfák feltétele – a termék a három fa-mezője bármelyikével
      * beleeshet a kijelölt ágba, ugyanúgy, mint a készlet kimutatásban.
      */
     private function readFaFilter()
     {
-        $this->faszuro = [];
-        $this->fanevek = '';
-        $fak = $this->params->getArrayRequestParam('fafilter');
-        $fak = array_filter(array_map('intval', (array)$fak));
-        if (!$fak) {
-            return;
-        }
-        $ff = new FilterDescriptor();
-        $ff->addFilter('id', 'IN', $fak);
-        $nevek = [];
-        /** @var TermekFa $sor */
-        foreach ($this->getRepo(TermekFa::class)->getAll($ff, []) as $sor) {
-            $this->faszuro[] = $sor->getKarkod() . '%';
-            $nevek[] = $sor->getNev();
-        }
-        $this->fanevek = implode(', ', $nevek);
+        $fafilter = $this->params->getArrayRequestParam('fafilter');
+        $this->faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel($fafilter, 't.');
+        $this->fanevek = $this->getRepo(TermekFa::class)->getSzuroNevek($fafilter);
     }
 
     /**
@@ -134,14 +121,8 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         if ($this->gyarto) {
             $feltetelek[] = 't.gyarto_id = :gyarto';
         }
-        if ($this->faszuro) {
-            $agak = [];
-            foreach (array_keys($this->faszuro) as $i) {
-                foreach (['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'] as $mezo) {
-                    $agak[] = 't.' . $mezo . ' LIKE :fa' . $i;
-                }
-            }
-            $feltetelek[] = '(' . implode(' OR ', $agak) . ')';
+        if ($this->faFeltetel) {
+            $feltetelek[] = $this->faFeltetel;
         }
         return $feltetelek;
     }
@@ -280,9 +261,6 @@ class minkeszletlistaController extends \mkwhelpers\Controller
         }
         if ($this->gyarto) {
             $parameterek['gyarto'] = $this->gyarto;
-        }
-        foreach ($this->faszuro as $i => $karkod) {
-            $parameterek['fa' . $i] = $karkod;
         }
         if ($this->uselimit) {
             $parameterek['limit'] = $this->limit;

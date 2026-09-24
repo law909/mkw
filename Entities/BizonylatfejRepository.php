@@ -512,17 +512,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         $ret = [];
 
         $termekfilter = new FilterDescriptor();
-        if (!empty($fafilter)) {
-            $ff = new FilterDescriptor();
-            $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
-            $faszuro = [];
-            foreach ($res as $sor) {
-                $faszuro[] = $sor->getKarkod() . '%';
-            }
-            if ($faszuro) {
-                $termekfilter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
-            }
+        $faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel((array)$fafilter, 't.');
+        if ($faFeltetel) {
+            $termekfilter->addSql($faFeltetel);
         }
         if (!is_null($nevfilter)) {
             $termekfilter->addFilter(['t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'], 'LIKE', '%' . $nevfilter . '%');
@@ -786,16 +778,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($szurok['gyarto'] ?? null) {
             $filter->addFilter('t.gyarto_id', '=', $szurok['gyarto']);
         }
-        if ($szurok['fafilter'] ?? []) {
-            $ff = new FilterDescriptor();
-            $ff->addFilter('id', 'IN', $szurok['fafilter']);
-            $faszuro = [];
-            foreach (\mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []) as $sor) {
-                $faszuro[] = $sor->getKarkod() . '%';
-            }
-            if ($faszuro) {
-                $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
-            }
+        $faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel($szurok['fafilter'] ?? [], 't.');
+        if ($faFeltetel) {
+            $filter->addSql($faFeltetel);
         }
         $nevfilter = $szurok['nev'] ?? null;
         if ($nevfilter !== null && $nevfilter !== '') {
@@ -1157,17 +1142,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         }
 
         $termekfilter = new FilterDescriptor();
-        if (!empty($fafilter)) {
-            $ff = new FilterDescriptor();
-            $ff->addFilter('id', 'IN', $fafilter);
-            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
-            $faszuro = [];
-            foreach ($res as $sor) {
-                $faszuro[] = $sor->getKarkod() . '%';
-            }
-            if ($faszuro) {
-                $termekfilter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
-            }
+        $faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel((array)$fafilter, 't.');
+        if ($faFeltetel) {
+            $termekfilter->addSql($faFeltetel);
         }
         if ($nevfilter) {
             $termekfilter->addFilter(['t.nev', 't.rovidleiras', 't.cikkszam', 't.vonalkod'], 'LIKE', '%' . $nevfilter . '%');

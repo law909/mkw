@@ -1373,15 +1373,9 @@ class termekController extends \mkwhelpers\MattableController
         }
 
         $fv = $this->params->getArrayRequestParam('fafilter');
-        if (!empty($fv)) {
-            $ff = new \mkwhelpers\FilterDescriptor();
-            $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
-            $faszuro = [];
-            foreach ($res as $sor) {
-                $faszuro[] = $sor->getKarkod() . '%';
-            }
-            $filter->addFilter(['_xx.termekfa1karkod', '_xx.termekfa2karkod', '_xx.termekfa3karkod'], 'LIKE', $faszuro);
+        $faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel((array)$fv, '_xx.');
+        if ($faFeltetel) {
+            $filter->addSql($faFeltetel);
         }
 
         $fv = $this->params->getArrayRequestParam('menufilter');

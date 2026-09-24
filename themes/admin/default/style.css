@@ -594,3 +594,9 @@ select.tetelszamhiba,
     height: 400px;
     max-width: 1200px;
 }
+
+.jstreefilter-switch {
+    display: block;
+    margin: 2px 0 4px;
+    cursor: pointer;
+}

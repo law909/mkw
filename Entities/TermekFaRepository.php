@@ -19,6 +19,66 @@ class TermekFaRepository extends \mkwhelpers\Repository
         ]);
     }
 
+    /**
+     * The category tree filter of the admin lists ('fafilter') as one condition on {$prefix}termekfa1..3karkod, for
+     * SQL and DQL alike; null without a known category. An id means the category with its subcategories, '=id' only
+     * the products put straight into it. '=' on the root means the products with no other category: a second or third
+     * category pointing at the root is only a placeholder.
+     */
+    public function getTermekFeltetel(array $fafilter, string $prefix): ?string
+    {
+        $mezok = array_map(fn($n) => $prefix . 'termekfa' . $n . 'karkod', [1, 2, 3]);
+        $agak = [];
+        foreach ($this->getFaSzuro($fafilter) as [$fa, $csakEz]) {
+            $karkod = (string)$fa->getKarkod();
+            // generated as digits only, so it can go into the query as a literal
+            if (!ctype_digit($karkod)) {
+                continue;
+            }
+            if (!$csakEz) {
+                $agak[] = '(' . implode(' OR ', array_map(fn($mezo) => "$mezo LIKE '$karkod%'", $mezok)) . ')';
+            } elseif ($fa->getParent()) {
+                $agak[] = '(' . implode(' OR ', array_map(fn($mezo) => "$mezo = '$karkod'", $mezok)) . ')';
+            } else {
+                $agak[] = '(' . implode(' AND ', array_map(fn($mezo) => "COALESCE($mezo, '') IN ('', '$karkod')", $mezok)) . ')';
+            }
+        }
+        return $agak ? '(' . implode(' OR ', $agak) . ')' : null;
+    }
+
+    /** The chosen categories' names for a report head. */
+    public function getSzuroNevek(array $fafilter): string
+    {
+        $nevek = [];
+        foreach ($this->getFaSzuro($fafilter) as [$fa, $csakEz]) {
+            // some names are stored HTML-encoded ("&amp;")
+            $nevek[] = html_entity_decode((string)$fa->getNev(), ENT_QUOTES | ENT_HTML5) . ($csakEz ? ' (' . t('alkategóriák nélkül') . ')' : '');
+        }
+        return implode(', ', $nevek);
+    }
+
+    /** [TermekFa, only the category itself] pairs of the filter values, unknown ids left out. */
+    private function getFaSzuro(array $fafilter): array
+    {
+        $csakEz = [];
+        foreach ($fafilter as $ertek) {
+            $ertek = trim((string)$ertek);
+            $id = (int)ltrim($ertek, '=');
+            if ($id) {
+                // chosen both ways: the subtree covers the category itself
+                $csakEz[$id] = ($csakEz[$id] ?? true) && str_starts_with($ertek, '=');
+            }
+        }
+        if (!$csakEz) {
+            return [];
+        }
+        $ret = [];
+        foreach ($this->findBy(['id' => array_keys($csakEz)], ['karkod' => 'ASC']) as $fa) {
+            $ret[] = [$fa, $csakEz[$fa->getId()]];
+        }
+        return $ret;
+    }
+
     public function regenerateKarKod()
     {
         $rsm = new ResultSetMapping();

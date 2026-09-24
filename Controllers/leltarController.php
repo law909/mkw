@@ -56,17 +56,9 @@ class leltarController extends \mkwhelpers\Controller
     {
         $filter = new FilterDescriptor();
         $fv = $this->params->getArrayRequestParam('fafilter');
-        if (!empty($fv)) {
-            $ff = new FilterDescriptor();
-            $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []);
-            $faszuro = [];
-            foreach ($res as $sor) {
-                $faszuro[] = $sor->getKarkod() . '%';
-            }
-            if ($faszuro) {
-                $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
-            }
+        $faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel((array)$fv, 't.');
+        if ($faFeltetel) {
+            $filter->addSql($faFeltetel);
         }
 
         return $filter;

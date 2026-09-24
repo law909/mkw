@@ -36,8 +36,8 @@ class keszletertekController extends \mkwhelpers\Controller
     private $keszlettipus;
     private $csakbecsult = false;
     private $nevfilter;
-    /** @var string[] a kijelölt termékfák karkod-előtagjai */
-    private $faszuro = [];
+    /** @var string|null a kijelölt termékfák SQL-feltétele (TermekFaRepository::getTermekFeltetel) */
+    private $faFeltetel = null;
     private $fanevek = '';
     /** múltbeli dátumnál igaz: az érték nem a tárolt, hanem menet közben számolt */
     private $menetkozben = false;
@@ -188,24 +188,12 @@ class keszletertekController extends \mkwhelpers\Controller
         $this->readFaFilter();
     }
 
-    /** A kijelölt termékfák karkod-előtagjai – a készlet kimutatáséval azonos szűrő. */
+    /** A kijelölt termékfák feltétele – a készlet kimutatáséval azonos szűrő. */
     private function readFaFilter()
     {
-        $this->faszuro = [];
-        $this->fanevek = '';
-        $fak = array_filter(array_map('intval', (array)$this->params->getArrayRequestParam('fafilter')));
-        if (!$fak) {
-            return;
-        }
-        $ff = new FilterDescriptor();
-        $ff->addFilter('id', 'IN', $fak);
-        $nevek = [];
-        /** @var TermekFa $sor */
-        foreach ($this->getRepo(TermekFa::class)->getAll($ff, []) as $sor) {
-            $this->faszuro[] = $sor->getKarkod() . '%';
-            $nevek[] = $sor->getNev();
-        }
-        $this->fanevek = implode(', ', $nevek);
+        $fafilter = $this->params->getArrayRequestParam('fafilter');
+        $this->faFeltetel = $this->getRepo(TermekFa::class)->getTermekFeltetel($fafilter, 't.');
+        $this->fanevek = $this->getRepo(TermekFa::class)->getSzuroNevek($fafilter);
     }
 
     /**
@@ -407,15 +395,8 @@ class keszletertekController extends \mkwhelpers\Controller
     private function getTermekFeltetelek(array &$params)
     {
         $feltetelek = [];
-        if ($this->faszuro) {
-            $agak = [];
-            foreach ($this->faszuro as $i => $ertek) {
-                foreach (['termekfa1karkod', 'termekfa2karkod', 'termekfa3karkod'] as $mezo) {
-                    $agak[] = 't.' . $mezo . ' LIKE :fa' . $i;
-                }
-                $params['fa' . $i] = $ertek;
-            }
-            $feltetelek[] = '(' . implode(' OR ', $agak) . ')';
+        if ($this->faFeltetel) {
+            $feltetelek[] = $this->faFeltetel;
         }
         return $feltetelek;
     }
