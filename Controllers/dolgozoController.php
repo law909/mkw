@@ -103,6 +103,15 @@ class dolgozoController extends \mkwhelpers\MattableController
         return $fields;
     }
 
+    protected function beforeRemove($o)
+    {
+        $filter = new FilterDescriptor();
+        $filter->addFilter('dolgozo', '=', $o);
+        if ($this->getRepo(\Entities\Dolgozober::class)->getCount($filter)) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(t('A dolgozónak van rögzített bére, ezért nem törölhető.'));
+        }
+    }
+
     public function getlistbody()
     {
         $view = $this->createView('dolgozolista_tbody.tpl');

@@ -127,6 +127,13 @@ $router->map('GET', '/admin/jelenlettipus/viewkarb', 'jelenlettipusController#vi
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/jelenlettipus/save', 'jelenlettipusController#save', 'adminjelenlettipussave');
 }
+$router->map('GET', '/admin/berjogcim/viewlist', 'berjogcimController#viewlist', 'adminberjogcimviewlist');
+$router->map('GET', '/admin/berjogcim/getlistbody', 'berjogcimController#getlistbody', 'adminberjogcimgetlistbody');
+$router->map('GET', '/admin/berjogcim/getkarb', 'berjogcimController#getkarb', 'adminberjogcimgetkarb');
+$router->map('GET', '/admin/berjogcim/viewkarb', 'berjogcimController#viewkarb', 'adminberjogcimviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/berjogcim/save', 'berjogcimController#save', 'adminberjogcimsave');
+}
 $router->map('GET', '/admin/kapcsolatfelveteltema/viewlist', 'kapcsolatfelveteltemaController#viewlist', 'adminkapcsolatfelveteltemaviewlist');
 $router->map('GET', '/admin/kapcsolatfelveteltema/getlistbody', 'kapcsolatfelveteltemaController#getlistbody', 'adminkapcsolatfelveteltemagetlistbody');
 $router->map('GET', '/admin/kapcsolatfelveteltema/getkarb', 'kapcsolatfelveteltemaController#getkarb', 'adminkapcsolatfelveteltemagetkarb');
@@ -1368,6 +1375,15 @@ $router->map('GET', '/admin/dolgozoszabadsag/getkarb', 'dolgozoszabadsagControll
 $router->map('GET', '/admin/dolgozoszabadsag/viewkarb', 'dolgozoszabadsagController#viewkarb', 'admindolgozoszabadsagviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/dolgozoszabadsag/save', 'dolgozoszabadsagController#save', 'admindolgozoszabadsagsave');
+}
+
+$router->map('GET', '/admin/dolgozober/viewlist', 'dolgozoberController#viewlist', 'admindolgozoberviewlist');
+$router->map('GET', '/admin/dolgozober/getlistbody', 'dolgozoberController#getlistbody', 'admindolgozobergetlistbody');
+$router->map('GET', '/admin/dolgozober/getkarb', 'dolgozoberController#getkarb', 'admindolgozobergetkarb');
+$router->map('GET', '/admin/dolgozober/viewkarb', 'dolgozoberController#viewkarb', 'admindolgozoberviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/dolgozober/save', 'dolgozoberController#save', 'admindolgozobersave');
+    $router->map('POST', '/admin/dolgozober/ront', 'dolgozoberController#ront', 'admindolgozoberront');
 }
 
 $router->map('GET', '/admin/jelenletiiv/viewlist', 'jelenletiivController#viewlist', 'adminjelenletiivviewlist');

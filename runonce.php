@@ -2852,6 +2852,22 @@ if ($DBVersion < '0194') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0194');
 }
 
+if ($DBVersion < '0195') {
+    // Bérek a HR menübe a Szabadságok után, a bér jogcímek az Egyebek közé a Jelenlét típusok után; a bér jog 40, mint a Dolgozók
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 5, "Bérek", "/admin/dolgozober/viewlist", "/admin/dolgozober", 40, 1, 450, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/dolgozober/viewlist") m)'
+    );
+    $conn->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 7, "Bér jogcímek", "/admin/berjogcim/viewlist", "/admin/berjogcim", 40, 1, 1450, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/berjogcim/viewlist") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0195');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
