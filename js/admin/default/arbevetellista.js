@@ -17,6 +17,7 @@ $(document).ready(function () {
 
     function drawChart(data) {
         const unit = data.unit || '';
+        $('#arbevetelchartnote').text(data.note || '').toggle(!!data.note);
         if (chart) {
             chart.destroy();
             chart = null;

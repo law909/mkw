@@ -80,6 +80,7 @@
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
                 <a href="/admin/arbevetellista/export" class="js-exportbutton">{at('Export')}</a>
                 <div class="matt-hseparator"></div>
+                <div id="arbevetelchartnote" class="arbevetel-chartnote"></div>
                 <div class="arbevetel-chart"><canvas id="arbevetelchart"></canvas></div>
                 <div id="eredmeny"></div>
             </div>

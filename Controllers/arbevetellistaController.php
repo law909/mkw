@@ -134,16 +134,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
             $series[$nev][$row['idoszak']] = ($series[$nev][$row['idoszak']] ?? 0) + $row['ertek'];
         }
         $labels = array_keys($labels);
-        uasort($series, fn($a, $b) => array_sum($b) <=> array_sum($a));
-        if (count($series) > self::MAXSERIES) {
-            $egyeb = [];
-            foreach (array_slice($series, self::MAXSERIES - 1, null, true) as $ertekek) {
-                foreach ($ertekek as $idoszak => $ertek) {
-                    $egyeb[$idoszak] = ($egyeb[$idoszak] ?? 0) + $ertek;
-                }
-            }
-            $series = array_slice($series, 0, self::MAXSERIES - 1, true) + [t('Egyéb') => $egyeb];
-        }
+        [$series, $note] = $this->mergeSmallSeries($series);
         $datasets = [];
         foreach ($series as $nev => $ertekek) {
             $datasets[] = [
@@ -157,7 +148,43 @@ class arbevetellistaController extends \mkwhelpers\Controller
             'labels' => $labels,
             'datasets' => $datasets,
             'unit' => $data['currency'],
+            'note' => $note,
         ];
+    }
+
+    /**
+     * Series (label => values by period) sorted by total, the smallest merged into one when there are too many.
+     * Returns the series and the explanation to show above the chart, null when nothing was merged.
+     */
+    protected function mergeSmallSeries(array $series): array
+    {
+        uasort($series, fn($a, $b) => array_sum($b) <=> array_sum($a));
+        if (count($series) <= self::MAXSERIES) {
+            return [$series, null];
+        }
+        $shown = array_slice($series, 0, self::MAXSERIES - 1, true);
+        $merged = array_slice($series, self::MAXSERIES - 1, null, true);
+        $egyeb = [];
+        foreach ($merged as $ertekek) {
+            foreach ($ertekek as $idoszak => $ertek) {
+                $egyeb[$idoszak] = ($egyeb[$idoszak] ?? 0) + $ertek;
+            }
+        }
+        $names = array_map('strval', array_keys($merged));
+        $note = sprintf(
+            t('Egyéb: a %d legnagyobb csoport után következő további %d csoport együtt (pl. %s).'),
+            count($shown),
+            count($merged),
+            implode(', ', array_slice($names, 0, 3)) . (count($names) > 3 ? ', …' : '')
+        );
+        // a real group can also be called "Egyéb", e.g. a category
+        $isEgyeb = fn($name) => mb_strtolower(trim((string)$name)) === mb_strtolower(t('Egyéb'));
+        if ($own = array_filter(array_map('strval', array_keys($shown)), $isEgyeb)) {
+            $note .= ' ' . sprintf(t('Az „%s” nevű csoport ettől független, külön sávként látszik.'), reset($own));
+        } elseif ($own = array_filter($names, $isEgyeb)) {
+            $note .= ' ' . sprintf(t('Az „%s” nevű csoport is ebben az összevonásban van.'), reset($own));
+        }
+        return [$shown + [sprintf(t('Egyéb (további %d)'), count($merged)) => $egyeb], $note];
     }
 
     /** The active grouping columns in list order: id decides where a group ends, label is what is shown. */

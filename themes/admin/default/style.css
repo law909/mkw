@@ -549,6 +549,14 @@ select.tetelszamhiba,
     padding-left: 65px;
 }
 
+.arbevetel-chartnote {
+    display: none;
+    margin: 4px 0 6px;
+    padding: 4px 8px;
+    border-left: 3px solid #b5ab96;
+    background: rgba(0, 0, 0, 0.04);
+}
+
 .arbevetel-chart {
     position: relative;
     height: 400px;

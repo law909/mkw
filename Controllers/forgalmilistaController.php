@@ -38,13 +38,18 @@ class forgalmilistaController extends arbevetellistaController
                 $oszlopok[$nev] = ($oszlopok[$nev] ?? 0) + $row['mennyiseg'];
             }
             arsort($oszlopok);
+            $note = null;
             // without grouping there is one bar per product: only the best sellers fit
-            $oszlopok = array_slice($oszlopok, 0, $csoportos ? null : self::MAXTERMEK, true);
+            if (!$csoportos && count($oszlopok) > self::MAXTERMEK) {
+                $note = sprintf(t('A diagramon a %d legtöbbet eladott termék látszik a %d közül; a táblázat mindet tartalmazza.'), self::MAXTERMEK, count($oszlopok));
+                $oszlopok = array_slice($oszlopok, 0, self::MAXTERMEK, true);
+            }
             return [
                 'stacked' => false,
                 'legend' => false,
                 'labels' => array_map('strval', array_keys($oszlopok)),
                 'datasets' => [['label' => t('Mennyiség'), 'data' => array_map(fn($m) => round($m, 2), array_values($oszlopok))]],
+                'note' => $note,
             ];
         }
 
@@ -56,16 +61,7 @@ class forgalmilistaController extends arbevetellistaController
             $series[$nev][$row['idoszak']] = ($series[$nev][$row['idoszak']] ?? 0) + $row['mennyiseg'];
         }
         $labels = array_keys($labels);
-        uasort($series, fn($a, $b) => array_sum($b) <=> array_sum($a));
-        if (count($series) > self::MAXSERIES) {
-            $egyeb = [];
-            foreach (array_slice($series, self::MAXSERIES - 1, null, true) as $ertekek) {
-                foreach ($ertekek as $idoszak => $ertek) {
-                    $egyeb[$idoszak] = ($egyeb[$idoszak] ?? 0) + $ertek;
-                }
-            }
-            $series = array_slice($series, 0, self::MAXSERIES - 1, true) + [t('Egyéb') => $egyeb];
-        }
+        [$series, $note] = $this->mergeSmallSeries($series);
         $datasets = [];
         foreach ($series as $nev => $ertekek) {
             $datasets[] = [
@@ -73,7 +69,7 @@ class forgalmilistaController extends arbevetellistaController
                 'data' => array_map(fn($idoszak) => round($ertekek[$idoszak] ?? 0, 2), $labels),
             ];
         }
-        return ['stacked' => true, 'legend' => $csoportos, 'labels' => $labels, 'datasets' => $datasets];
+        return ['stacked' => true, 'legend' => $csoportos, 'labels' => $labels, 'datasets' => $datasets, 'note' => $note];
     }
 
     public function refresh()
