@@ -64,6 +64,7 @@
                         <a href="#" class="js-refresh">{at('Frissít')}</a>
                         <a href="/admin/jutaleklista/get" class="js-okbutton">{at('Részletes lista')}</a>
                         <a href="/admin/jutaleklista/export" class="js-exportbutton">{at('Export')}</a>
+                        <a href="#" class="js-pdfbutton">{at('PDF')}</a>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div id="jutalekchartnote" class="arbevetel-chartnote"></div>

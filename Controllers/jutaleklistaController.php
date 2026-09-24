@@ -415,7 +415,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         return $groups;
     }
 
-    public function refresh()
+    /** The table and the chart payload of the request, for refresh() and pdf(). */
+    private function buildReport(): array
     {
         // payments without commission (mostly of partners without an agent) would bury the groups
         $items = array_filter($this->getItems(), fn($item) => (float)$item['jutalekosszeg'] != 0);
@@ -449,7 +450,30 @@ class jutaleklistaController extends \mkwhelpers\MattableController
                 implode(', ', $valutanemek)
             ) . ' ' . $chart['note']);
         }
+        return ['html' => $html, 'chart' => $chart];
+    }
+
+    public function refresh()
+    {
         header('Content-Type: application/json');
-        echo json_encode(['html' => $html, 'chart' => $chart]);
+        echo json_encode($this->buildReport());
+    }
+
+    public function pdf()
+    {
+        $report = $this->buildReport();
+        $szurok = [[t('Időszak'), $this->tolstr . ' – ' . $this->igstr]];
+        if ($this->ukid) {
+            $szurok[] = [t('Üzletkötő'), $this->getRepo(\Entities\Uzletkoto::class)->find($this->ukid)->getNev()];
+        }
+        if ($this->belso) {
+            $szurok[] = [t('Elszámolás'), t('belső üzletkötő')];
+        }
+        $cimkek = array_filter(array_map('intval', $this->cimkek));
+        if ($cimkek) {
+            $szurok[] = [t('Partnercímke'), implode(', ', $this->getRepo(\Entities\Partnercimketorzs::class)->getCimkeNevek($cimkek))];
+        }
+        $szurok[] = $this->getGroupingSzuro($this->getGroupLevels($this->getSzintek()));
+        $this->outputReportPdf(t('Jutalék elszámolás'), $szurok, $report, 'jutalek.pdf');
     }
 }

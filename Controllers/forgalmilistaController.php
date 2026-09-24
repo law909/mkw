@@ -40,7 +40,12 @@ class forgalmilistaController extends arbevetellistaController
         return $this->buildLevelChart($rows, [['id' => 'termekkulcs', 'label' => 'termekcimke']], 'mennyiseg', t('Mennyiség'), '', self::MAXTERMEK);
     }
 
-    public function refresh()
+    protected function getPdfTitle(): string
+    {
+        return t('Forgalmi kimutatás');
+    }
+
+    protected function buildReport(): array
     {
         $pivotErtek = $this->params->getStringRequestParam('pivotertek') === 'ertek' ? 'ertek' : 'mennyiseg';
         $data = $this->getData('getForgalmiLista', [$this->isPivot()]);
@@ -64,11 +69,10 @@ class forgalmilistaController extends arbevetellistaController
             $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
             $html = $view->getTemplateResult();
         }
-        header('Content-Type: application/json');
-        echo json_encode([
+        return [
             'html' => $html,
             'chart' => $this->buildChart($data),
-        ]);
+        ];
     }
 
     public function export()

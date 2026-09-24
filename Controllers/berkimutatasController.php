@@ -129,12 +129,9 @@ class berkimutatasController extends \mkwhelpers\Controller
         );
     }
 
-    public function refresh()
+    /** The table and the chart payload of the request, for refresh() and pdf(). */
+    private function buildReport(): array
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
-            $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
-            return;
-        }
         $szintek = $this->getSzintek();
         $levels = $this->getGroupLevels($szintek);
         $rows = $this->getRows($szintek, $this->isPivot());
@@ -155,11 +152,34 @@ class berkimutatasController extends \mkwhelpers\Controller
             $view->setVar('osszesen', array_sum(array_column($rows, 'ertek')));
             $html = $view->getTemplateResult();
         }
-        header('Content-Type: application/json');
-        echo json_encode([
+        return [
             'html' => $html,
             'chart' => $this->buildLevelChart($rows, $levels, 'ertek', t('Bér'), 'Ft'),
-        ]);
+        ];
+    }
+
+    public function refresh()
+    {
+        if (!\mkw\store::haveJog(self::BERJOG)) {
+            $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode($this->buildReport());
+    }
+
+    public function pdf()
+    {
+        if (!\mkw\store::haveJog(self::BERJOG)) {
+            return;
+        }
+        $szurok = [[t('Időszak'), $this->params->getStringRequestParam('tol') . ' – ' . $this->params->getStringRequestParam('ig')]];
+        $dolgozo = $this->getRepo(\Entities\Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo'));
+        if ($dolgozo) {
+            $szurok[] = [t('Dolgozó'), $dolgozo->getNev()];
+        }
+        $szurok[] = $this->getGroupingSzuro($this->getGroupLevels($this->getSzintek()));
+        $this->outputReportPdf(t('Bér kimutatás'), $szurok, $this->buildReport(), 'berkimutatas.pdf');
     }
 
     public function export()

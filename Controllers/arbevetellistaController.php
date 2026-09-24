@@ -164,7 +164,13 @@ class arbevetellistaController extends \mkwhelpers\Controller
         ];
     }
 
-    public function refresh()
+    protected function getPdfTitle(): string
+    {
+        return t('Árbevétel kimutatás');
+    }
+
+    /** The table and the chart payload of the request, for refresh() and pdf(). */
+    protected function buildReport(): array
     {
         $data = $this->getData();
         $levels = $this->getGroupLevels($data);
@@ -185,11 +191,58 @@ class arbevetellistaController extends \mkwhelpers\Controller
             $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
             $html = $view->getTemplateResult();
         }
-        header('Content-Type: application/json');
-        echo json_encode([
+        return [
             'html' => $html,
             'chart' => $this->buildLevelChart($data['rows'], $this->getGroupLevels($data), 'ertek', t('Árbevétel'), $data['currency']),
-        ]);
+        ];
+    }
+
+    public function refresh()
+    {
+        header('Content-Type: application/json');
+        echo json_encode($this->buildReport());
+    }
+
+    public function pdf()
+    {
+        $this->outputReportPdf($this->getPdfTitle(), $this->getPdfSzurok(), $this->buildReport(), static::KIMUTATAS . '.pdf');
+    }
+
+    /** The filters of the request in words, for the head of the PDF. */
+    private function getPdfSzurok(): array
+    {
+        $nev = function (string $entity, $id) {
+            $entitas = $id ? $this->getRepo($entity)->find($id) : null;
+            return $entitas ? html_entity_decode((string)$entitas->getNev(), ENT_QUOTES | ENT_HTML5) : null;
+        };
+        $datumtipusok = ['kelt' => t('kelt'), 'teljesites' => t('teljesítés'), 'esedekesseg' => t('esedékesség')];
+        $datumtipus = $datumtipusok[$this->params->getStringRequestParam('datumtipus')] ?? $datumtipusok['teljesites'];
+        $szurok = [
+            [t('Időszak'), $datumtipus . ': ' . $this->params->getStringRequestParam('tol') . ' – ' . $this->params->getStringRequestParam('ig')],
+            [t('Érték'), $this->params->getStringRequestParam('ertektipus') === 'brutto' ? t('bruttó') : t('nettó')],
+            [t('Valutanem'), $nev(Valutanem::class, $this->params->getIntRequestParam('valutanem')) ?? t('mindegy, forintra átszámolva')],
+            [t('Partner'), $nev(\Entities\Partner::class, $this->params->getIntRequestParam('partner'))],
+            [t('Partnertípus'), $nev(\Entities\Partnertipus::class, $this->params->getIntRequestParam('partnertipus'))],
+            [t('Üzletkötő'), $nev(\Entities\Uzletkoto::class, $this->params->getIntRequestParam('uzletkoto'))],
+            [t('Gyártó'), $nev(\Entities\Partner::class, $this->params->getIntRequestParam('gyarto'))],
+            [t('Név'), $this->params->getStringRequestParam('nev') ?: null],
+        ];
+        $webshopnum = $this->params->getStringRequestParam('webshopnum');
+        if ($webshopnum !== '') {
+            $szurok[] = [t('Webshop'), \mkw\store::getWebshopNev($webshopnum)];
+        }
+        if (\mkw\store::isSuperzoneB2B()) {
+            $tipusok = array_map(fn($id) => $nev(\Entities\Bizonylattipus::class, $id), $this->params->getArrayRequestParam('bizonylattipus'));
+            $szurok[] = [t('Bizonylattípus'), implode(', ', array_filter($tipusok)) ?: null];
+        }
+        $cimkek = array_filter(array_map('intval', $this->params->getArrayRequestParam('partnercimkefilter')));
+        if ($cimkek) {
+            $szurok[] = [t('Partnercímke'), implode(', ', $this->getRepo(\Entities\Partnercimketorzs::class)->getCimkeNevek($cimkek))];
+        }
+        $kategoriak = array_map(fn($id) => $nev(\Entities\TermekFa::class, $id), array_filter(array_map('intval', $this->params->getArrayRequestParam('fafilter'))));
+        $szurok[] = [t('Kategória'), implode(', ', array_filter($kategoriak)) ?: null];
+        $szurok[] = $this->getGroupingSzuro($this->getGroupLevels(['szintek' => $this->getSzintek()]));
+        return array_values(array_filter($szurok, fn($szuro) => $szuro[1] !== null && $szuro[1] !== ''));
     }
 
     public function export()

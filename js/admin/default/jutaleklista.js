@@ -41,28 +41,35 @@ $(document).ready(function () {
                 $(this).toggleClass('ui-state-hover');
             });
 
+            const getParams = () => {
+                const cimkek = getCimkek();
+                return {
+                    tol: $('input[name="tol"]').val(),
+                    ig: $('input[name="ig"]').val(),
+                    uzletkoto: $('select[name="uzletkoto"]').val(),
+                    belso: $('input[name="belso"]').prop('checked') ? 1 : undefined,
+                    cimkefilter: cimkek.length > 0 ? cimkek : undefined,
+                    szint: grouping.getSzintek(),
+                    megjelenites: $('select[name="megjelenites"]').val()
+                };
+            };
+
+            const refresh = () => $.ajax({
+                url: `${baseUrl}/refresh`,
+                type: 'GET',
+                dataType: 'json',
+                data: getParams()
+            }).then((d) => {
+                $('#eredmeny').html(d.html);
+                drawChart(d.chart);
+            });
+
             $('.js-refresh').on('click', function (e) {
                 e.preventDefault();
-                const cimkek = getCimkek();
-                $.ajax({
-                    url: `${baseUrl}/refresh`,
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        tol: $('input[name="tol"]').val(),
-                        ig: $('input[name="ig"]').val(),
-                        uzletkoto: $('select[name="uzletkoto"]').val(),
-                        belso: $('input[name="belso"]').prop('checked') ? 1 : undefined,
-                        cimkefilter: cimkek.length > 0 ? cimkek : undefined,
-                        szint: grouping.getSzintek(),
-                        megjelenites: $('select[name="megjelenites"]').val()
-                    },
-                    success: (d) => {
-                        $('#eredmeny').html(d.html);
-                        drawChart(d.chart);
-                    }
-                });
+                refresh();
             }).button();
+
+            initReportPdfButton(`${baseUrl}/pdf`, refresh, getParams, drawChart);
 
             $('.js-okbutton, .js-exportbutton').on('click', function (e) {
                 e.preventDefault();

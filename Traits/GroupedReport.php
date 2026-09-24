@@ -241,4 +241,53 @@ trait GroupedReport
         $view->setVar('decimals', $decimals);
         return $view->getTemplateResult();
     }
+
+    /**
+     * The report as an inline PDF: the filters, the chart the page posted as a PNG (it is drawn in the browser) and
+     * the table of refresh(). A cross table gets a landscape page.
+     *
+     * @param array $szurok [caption, value] lines under the title
+     * @param array $report ['html' => the table, 'chart' => the chart payload]
+     */
+    protected function outputReportPdf(string $title, array $szurok, array $report, string $filename): void
+    {
+        $view = $this->createView('kimutataspdf.tpl');
+        $view->setVar('title', $title);
+        $view->setVar('szurok', $szurok);
+        $view->setVar('chart', $this->getChartImage());
+        $view->setVar('chartnote', $report['chart']['note'] ?? null);
+        $view->setVar('table', $report['html']);
+        $view->setVar('landscape', $this->params->getStringRequestParam('megjelenites') === 'kereszttabla');
+        $view->setVar('generated', date(\mkw\store::$DateFormat . ' H:i'));
+        $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
+        $pdf->getEngine()->SetTitle($title);
+        $pdf->inline($filename);
+    }
+
+    /** The posted chart as a PNG data URI, null unless it really is a PNG. */
+    private function getChartImage(): ?string
+    {
+        $prefix = 'data:image/png;base64,';
+        $data = $this->params->getOriginalStringRequestParam('chart');
+        if (!str_starts_with($data, $prefix)) {
+            return null;
+        }
+        $png = base64_decode(substr($data, strlen($prefix)), true);
+        $info = $png === false ? false : @getimagesizefromstring($png);
+        if (!$info || $info[2] !== IMAGETYPE_PNG) {
+            return null;
+        }
+        return $prefix . base64_encode($png);
+    }
+
+    /** The PDF's line of the grouping levels, e.g. "hónap › partner (kereszttábla)". */
+    protected function getGroupingSzuro(array $levels): array
+    {
+        $captions = array_map(fn($level) => mb_strtolower($level['caption']), $levels);
+        $value = $captions ? implode(' › ', $captions) : t('nincs');
+        if ($this->params->getStringRequestParam('megjelenites') === 'kereszttabla') {
+            $value .= ' (' . t('kereszttábla') . ')';
+        }
+        return [t('Csoportosítás'), $value];
+    }
 }

@@ -93,6 +93,7 @@
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
                 <a href="/admin/forgalmilista/export" class="js-exportbutton">{at('Export')}</a>
+                <a href="#" class="js-pdfbutton">{at('PDF')}</a>
                 <div class="matt-hseparator"></div>
                 <div id="arbevetelchartnote" class="arbevetel-chartnote"></div>
                 <div class="arbevetel-chart"><canvas id="arbevetelchart"></canvas></div>

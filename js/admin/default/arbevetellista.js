@@ -42,40 +42,47 @@ $(document).ready(function () {
                 }
             }).autocompleteRenderer(partnerAutocompleteRenderer);
 
-            $('.js-refresh').on('click', function (e) {
-                e.preventDefault();
+            const getParams = () => {
                 const fak = mkwcomp.termekfaFilter.getFilter('#termekfa');
                 const cimkek = mkwcomp.partnercimkeFilter.getFilter('.js-cimkefilter');
                 const biztipusok = mkwcomp.bizonylattipusFilter.getFilter('input[name="bizonylattipus[]"]');
-                $.ajax({
-                    url: `${baseUrl}/refresh`,
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        datumtipus: $('select[name="datumtipus"]').val(),
-                        tol: $('input[name="tol"]').val(),
-                        ig: $('input[name="ig"]').val(),
-                        ertektipus: $('select[name="ertektipus"]').val(),
-                        partner: getPartnerId(),
-                        partnertipus: $('select[name="partnertipus"]').val(),
-                        partnercimkefilter: cimkek.length > 0 ? cimkek : undefined,
-                        uzletkoto: $('select[name="uzletkoto"]').val(),
-                        valutanem: $('select[name="valutanem"]').val(),
-                        bizonylattipus: biztipusok.length > 0 ? biztipusok : undefined,
-                        gyarto: $('select[name="gyarto"]').val(),
-                        webshopnum: $('select[name="webshopnum"]').val(),
-                        nev: $('input[name="nev"]').val(),
-                        szint: grouping.getSzintek(),
-                        megjelenites: $('select[name="megjelenites"]').val(),
-                        pivotertek: $('select[name="pivotertek"]').val(),
-                        fafilter: fak.length > 0 ? fak : undefined
-                    },
-                    success: (d) => {
-                        $('#eredmeny').html(d.html);
-                        drawChart(d.chart);
-                    }
-                });
+                return {
+                    datumtipus: $('select[name="datumtipus"]').val(),
+                    tol: $('input[name="tol"]').val(),
+                    ig: $('input[name="ig"]').val(),
+                    ertektipus: $('select[name="ertektipus"]').val(),
+                    partner: getPartnerId(),
+                    partnertipus: $('select[name="partnertipus"]').val(),
+                    partnercimkefilter: cimkek.length > 0 ? cimkek : undefined,
+                    uzletkoto: $('select[name="uzletkoto"]').val(),
+                    valutanem: $('select[name="valutanem"]').val(),
+                    bizonylattipus: biztipusok.length > 0 ? biztipusok : undefined,
+                    gyarto: $('select[name="gyarto"]').val(),
+                    webshopnum: $('select[name="webshopnum"]').val(),
+                    nev: $('input[name="nev"]').val(),
+                    szint: grouping.getSzintek(),
+                    megjelenites: $('select[name="megjelenites"]').val(),
+                    pivotertek: $('select[name="pivotertek"]').val(),
+                    fafilter: fak.length > 0 ? fak : undefined
+                };
+            };
+
+            const refresh = () => $.ajax({
+                url: `${baseUrl}/refresh`,
+                type: 'GET',
+                dataType: 'json',
+                data: getParams()
+            }).then((d) => {
+                $('#eredmeny').html(d.html);
+                drawChart(d.chart);
+            });
+
+            $('.js-refresh').on('click', function (e) {
+                e.preventDefault();
+                refresh();
             }).button();
+
+            initReportPdfButton(`${baseUrl}/pdf`, refresh, getParams, drawChart);
 
             // the form targets a new window for the export, Enter must not submit it
             $('input[name="nev"]').on('keydown', function (e) {

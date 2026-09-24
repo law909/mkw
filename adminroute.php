@@ -568,6 +568,7 @@ if (\mkw\store::isBankpenztar()) {
     $router->map('GET', '/admin/jutaleklista/get', 'jutaleklistaController#createLista', 'adminjutaleklistaget');
     $router->map('GET', '/admin/jutaleklista/export', 'jutaleklistaController#exportLista', 'adminjutaleklistaexport');
     $router->map('GET', '/admin/jutaleklista/refresh', 'jutaleklistaController#refresh', 'adminjutaleklistarefresh');
+    $router->map('POST', '/admin/jutaleklista/pdf', 'jutaleklistaController#pdf', 'adminjutaleklistapdf');
     $router->map('GET', '/admin/jutaleklista/nezetlista', 'jutaleklistaController#nezetlista', 'adminjutaleklistanezetlista');
     if (!\mkw\store::isClosed()) {
         $router->map('POST', '/admin/jutaleklista/nezetsave', 'jutaleklistaController#nezetsave', 'adminjutaleklistanezetsave');
@@ -1393,6 +1394,7 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/berkimutatas/view', 'berkimutatasController#view', 'adminberkimutatasview');
 $router->map('GET', '/admin/berkimutatas/refresh', 'berkimutatasController#refresh', 'adminberkimutatasrefresh');
+$router->map('POST', '/admin/berkimutatas/pdf', 'berkimutatasController#pdf', 'adminberkimutataspdf');
 $router->map('GET', '/admin/berkimutatas/export', 'berkimutatasController#export', 'adminberkimutatasexport');
 $router->map('GET', '/admin/berkimutatas/nezetlista', 'berkimutatasController#nezetlista', 'adminberkimutatasnezetlista');
 if (!\mkw\store::isClosed()) {
@@ -1783,6 +1785,7 @@ $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaCont
 
 $router->map('GET', '/admin/arbevetellista/view', 'arbevetellistaController#view', 'adminarbevetellistaview');
 $router->map('GET', '/admin/arbevetellista/refresh', 'arbevetellistaController#refresh', 'adminarbevetellistarefresh');
+$router->map('POST', '/admin/arbevetellista/pdf', 'arbevetellistaController#pdf', 'adminarbevetellistapdf');
 $router->map('GET', '/admin/arbevetellista/export', 'arbevetellistaController#export', 'adminarbevetellistaexport');
 $router->map('GET', '/admin/arbevetellista/nezetlista', 'arbevetellistaController#nezetlista', 'adminarbevetellistanezetlista');
 if (!\mkw\store::isClosed()) {
@@ -1792,6 +1795,7 @@ if (!\mkw\store::isClosed()) {
 
 $router->map('GET', '/admin/forgalmilista/view', 'forgalmilistaController#view', 'adminforgalmilistaview');
 $router->map('GET', '/admin/forgalmilista/refresh', 'forgalmilistaController#refresh', 'adminforgalmilistarefresh');
+$router->map('POST', '/admin/forgalmilista/pdf', 'forgalmilistaController#pdf', 'adminforgalmilistapdf');
 $router->map('GET', '/admin/forgalmilista/export', 'forgalmilistaController#export', 'adminforgalmilistaexport');
 $router->map('GET', '/admin/forgalmilista/nezetlista', 'forgalmilistaController#nezetlista', 'adminforgalmilistanezetlista');
 if (!\mkw\store::isClosed()) {
