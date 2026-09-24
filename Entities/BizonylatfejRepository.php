@@ -819,7 +819,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $brutto ? 'bt.bruttohuf' : 'bt.nettohuf';
     }
 
-    /** SELECT expressions by alias for the 'ev'/'honap'/'gyarto'/'webshop' grouping. */
+    /** SELECT expressions by alias for the 'ev'/'honap'/'fokategoria'/'kategoria'/'gyarto'/'webshop' grouping. */
     private function getArbevetelCsoportMezok($datummezo, array $csoport): array
     {
         $mezok = [];
@@ -827,6 +827,12 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y')";
         } elseif (in_array('honap', $csoport, true)) {
             $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y-%m')";
+        }
+        // the tree code grows by a fixed length per level under the single root
+        if (in_array('fokategoria', $csoport, true)) {
+            $mezok['kategoriakarkod'] = 'LEFT(t.termekfa1karkod, ' . self::KARKOD_TOP_LENGTH . ')';
+        } elseif (in_array('kategoria', $csoport, true)) {
+            $mezok['kategoriakarkod'] = 't.termekfa1karkod';
         }
         if (in_array('gyarto', $csoport, true)) {
             $mezok['gyartoid'] = 't.gyarto_id';
@@ -836,6 +842,29 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $mezok['webshopnum'] = 'bf.webshopnum';
         }
         return $mezok;
+    }
+
+    private const KARKOD_LEVEL_LENGTH = 5;
+    private const KARKOD_TOP_LENGTH = 2 * self::KARKOD_LEVEL_LENGTH;
+
+    /** The category path below the root, e.g. 'MUGENRACE / KESZTYŰ', by tree code. */
+    private function getTermekFaPaths(array $karkodok): array
+    {
+        $paths = [];
+        $karkodok = array_filter(array_unique($karkodok));
+        if (!$karkodok) {
+            return $paths;
+        }
+        $names = $this->_em->getConnection()->fetchAllKeyValue('SELECT karkod, nev FROM termekfa WHERE karkod IS NOT NULL');
+        foreach ($karkodok as $karkod) {
+            $parts = [];
+            for ($length = self::KARKOD_TOP_LENGTH; $length <= strlen($karkod); $length += self::KARKOD_LEVEL_LENGTH) {
+                $parts[] = $names[substr($karkod, 0, $length)] ?? '?';
+            }
+            // a product hanging on the root itself has no path below it
+            $paths[$karkod] = html_entity_decode(implode(' / ', $parts ?: [$names[$karkod] ?? '?']), ENT_QUOTES | ENT_HTML5);
+        }
+        return $paths;
     }
 
     private function fetchArbevetelRows(array $mezok, array $ertekek, FilterDescriptor $filter, string $from, array $order = []): array
@@ -860,6 +889,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             . ($order ? ' ORDER BY ' . implode(',', $order) : '');
 
         $rows = $this->_em->getConnection()->fetchAllAssociative($sql, $this->getQueryParameters($filter));
+        $termekFaPaths = array_key_exists('kategoriakarkod', $mezok) ? $this->getTermekFaPaths(array_column($rows, 'kategoriakarkod')) : [];
         foreach ($rows as &$row) {
             foreach (array_keys($ertekek) as $alias) {
                 $row[$alias] = round((float)$row[$alias], 2);
@@ -869,6 +899,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             }
             if (array_key_exists('gyartoid', $row) && !$row['gyartoid']) {
                 $row['gyartonev'] = 'nincs gyártó';
+            }
+            if (array_key_exists('kategoriakarkod', $row)) {
+                $row['kategorianev'] = $termekFaPaths[$row['kategoriakarkod']] ?? 'nincs kategória';
             }
         }
         return $rows;
@@ -921,7 +954,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 'me' => 'MAX(bt.me)',
             ];
         $idoszakrend = array_key_exists('idoszak', $mezok) ? ['idoszak'] : [];
-        $csoportrend = array_values(array_intersect(['gyartonev', 'webshopnum'], array_keys($mezok)));
+        $csoportrend = array_values(array_intersect(['kategoriakarkod', 'gyartonev', 'webshopnum'], array_keys($mezok)));
         return $this->fetchArbevetelRows(
             $mezok,
             [

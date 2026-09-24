@@ -66,6 +66,11 @@
                         <option value="ev">{at('évente')}</option>
                         <option value="honap" selected="selected">{at('havonta')}</option>
                     </select>
+                    <select id="KategoriacsoportEdit" name="kategoriacsoport">
+                        <option value="">{at('kategória nélkül')}</option>
+                        <option value="fokategoria">{at('főkategóriánként')}</option>
+                        <option value="kategoria">{at('termék kategóriánként')}</option>
+                    </select>
                     <input id="GyartocsoportEdit" type="checkbox" name="gyartocsoport">
                     <label for="GyartocsoportEdit">{at('gyártónként')}</label>
                     <input id="WebshopcsoportEdit" type="checkbox" name="webshopcsoport">

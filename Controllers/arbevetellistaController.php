@@ -49,6 +49,10 @@ class arbevetellistaController extends \mkwhelpers\Controller
         if (in_array($idoszakcsoport, ['ev', 'honap'], true)) {
             $csoport[] = $idoszakcsoport;
         }
+        $kategoriacsoport = $this->params->getStringRequestParam('kategoriacsoport');
+        if (in_array($kategoriacsoport, ['fokategoria', 'kategoria'], true)) {
+            $csoport[] = $kategoriacsoport;
+        }
         if ($this->params->getBoolRequestParam('gyartocsoport')) {
             $csoport[] = 'gyarto';
         }
@@ -86,6 +90,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
             'currency' => $currency,
             'valueheader' => ($brutto ? t('Bruttó') : t('Nettó')) . ' ' . $currency,
             'idoszak' => (bool)array_intersect(['ev', 'honap'], $csoport),
+            'kategoria' => (bool)array_intersect(['fokategoria', 'kategoria'], $csoport),
             'gyarto' => in_array('gyarto', $csoport, true),
             'webshop' => in_array('webshop', $csoport, true),
         ];
@@ -94,6 +99,9 @@ class arbevetellistaController extends \mkwhelpers\Controller
     protected function seriesLabel(array $row, array $data): string
     {
         $parts = [];
+        if ($data['kategoria']) {
+            $parts[] = $row['kategorianev'];
+        }
         if ($data['gyarto']) {
             $parts[] = $row['gyartonev'];
         }
@@ -145,7 +153,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         }
         return [
             'stacked' => true,
-            'legend' => $data['gyarto'] || $data['webshop'],
+            'legend' => $data['kategoria'] || $data['gyarto'] || $data['webshop'],
             'labels' => $labels,
             'datasets' => $datasets,
             'unit' => $data['currency'],
@@ -174,6 +182,9 @@ class arbevetellistaController extends \mkwhelpers\Controller
         $fejlec = [];
         if ($data['idoszak']) {
             $fejlec['idoszak'] = t('Időszak');
+        }
+        if ($data['kategoria']) {
+            $fejlec['kategorianev'] = t('Kategória');
         }
         if ($data['gyarto']) {
             $fejlec['gyartonev'] = t('Gyártó');

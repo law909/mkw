@@ -30,7 +30,7 @@ class forgalmilistaController extends arbevetellistaController
     /** Chart.js labels + datasets of the quantity: periods on the x axis like the revenue chart. */
     private function buildChart(array $data): array
     {
-        $csoportos = $data['gyarto'] || $data['webshop'];
+        $csoportos = $data['kategoria'] || $data['gyarto'] || $data['webshop'];
         if (!$data['idoszak']) {
             $oszlopok = [];
             foreach ($data['rows'] as $row) {
@@ -99,6 +99,9 @@ class forgalmilistaController extends arbevetellistaController
         $fejlec = [];
         if ($data['idoszak']) {
             $fejlec['idoszak'] = t('Időszak');
+        }
+        if ($data['kategoria']) {
+            $fejlec['kategorianev'] = t('Kategória');
         }
         if ($data['gyarto']) {
             $fejlec['gyartonev'] = t('Gyártó');

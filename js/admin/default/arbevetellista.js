@@ -95,6 +95,7 @@ $(document).ready(function () {
                         webshopnum: $('select[name="webshopnum"]').val(),
                         nev: $('input[name="nev"]').val(),
                         idoszakcsoport: $('select[name="idoszakcsoport"]').val(),
+                        kategoriacsoport: $('select[name="kategoriacsoport"]').val(),
                         gyartocsoport: $('input[name="gyartocsoport"]').prop('checked') ? 1 : 0,
                         webshopcsoport: $('input[name="webshopcsoport"]').prop('checked') ? 1 : 0,
                         fafilter: fak.length > 0 ? fak : undefined
