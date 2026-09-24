@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project overview
 
 MKW is a custom PHP 8.1 webshop + back-office platform. The same codebase ships to many distinct deployments ("owners" / "themes"): `galad`, `darshan`,
-`mkwcansas` (mindentkapni), `mugenrace`, `mugenrace2026`, `mpt`, `mptngy`, `superzoneb2b`, `ujdivat`, `b2bhungary`, `lb`, `kisszamlazo`. The
+`mkwcansas` (mindentkapni), `mugenrace`, `mugenrace2026`, `mpt`, `mptngy`, `superzoneb2b`, `ujdivat`, `b2bhungary`, `lb`, `kisszamlazo`, `lampion`. The
 active deployment is selected by swapping `config.ini` and `setup.ini` — feature flags in those files drive large branches of behavior throughout the code. The
 codebase is Hungarian-language (entity, controller, and route names are in Hungarian — e.g. `Termek` = product, `Partner` = customer, `Bizonylatfej`/
 `Bizonylattetel` = document header/line, `Raktar` = warehouse, `Valutanem` = currency, `Szallitasimod` = shipping, `Fizmod` = payment). Most existing *method*
@@ -27,7 +27,7 @@ composer install                 # PHP deps (platform pinned to php 8.1)
 ./updatesql.sh                   # dump pending schema SQL to update.sql (no DB change)
 php vendor/bin/doctrine <cmd>    # any Doctrine ORM CLI command (cli-config.php wires the EM)
 php cron.php --list              # scheduled tasks + whether they are on for this deployment
-php cron.php <task> --quiet      # run one scheduled task (this is what crontab calls) — docs/cron.md
+php cron.php <task> --quiet      # run one scheduled task (this is what crontab calls) — docs/done/cron.md
 npx grunt                        # bundle JS (concat) + CSS (less/sass) per theme
 docker compose up                # local apache + php-fpm 8.3 stack, exposes mkw.test via Traefik
 vendor/bin/phpunit               # PHPUnit 10 tests in tests/ (in-memory SQLite, never the shared MySQL)
@@ -54,7 +54,7 @@ Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored 
       `Controllers/mediatarController.php`,
       `js/admin/default/mediatar.js`). Missing/`0` keeps CKFinder — the switch is deliberately opt-in per deployment, and flipping it takes effect on the next
       request (clear `tpl/template_c/` so `base.tpl` recompiles). `mediatarstrictorigin = 1` turns the media library's Origin/Referer check from log-only into
-      enforcing. See `docs/mediatar.md`.
+      enforcing. See `docs/done/mediatar.md`.
 
 `developer = 1` enables: always-regenerate proxy classes, error display, SQL logging (when `sqllog = 1`). Production should run with `developer = 0` and a real
 cache (`apc` recommended).
@@ -92,25 +92,9 @@ Reach for `store::` rather than re-resolving dependencies; large swaths of the c
 Two base classes in `mkwhelpers/`:
 
 - **`Controller`** — base; exposes `getEm()`, `getRepo()`, view factories (`createView`, `createMainView`, `createPubAdminView`).
-- **`MattableController`** — admin CRUD scaffold extending `Controller`. A subclass **must** provide these; the base calls them
-  but does not declare them:
-    - `loadVars($t, $forKarb = false)` — entity → template array (`getEntityFieldsArray($t)` plus relation/date extras)
-    - `setFields($obj)` — request → entity. `setEntityFieldsFromRequest($obj)` maps every scalar field automatically, **including booleans** (an unchecked
-      checkbox is absent from the POST and correctly becomes `false`). What it does *not* do: associations. `date`/`datetime`/`time` fields get the raw string,
-      so the setter has to convert to `\DateTime`.
-    - `getlistbody()` — the list `<tbody>` + pager JSON; this is where list filtering is written inline
-    - `viewlist()` — the list page
-    - `_getkarb($tplname)` — assemble the edit form (**lowercase `k`**; called by the base `getkarb()`/`viewkarb()`)
-
-  Optional hooks that already exist (empty) in the base: `setVars($view)`, `beforeRemove($o)`, `afterSave($o, $parancs = null)`.
-  Sorting comes from `getOrderArray()`, which reads the `order` request param against the repository's `setOrders()` — there is
-  no `loadFilters()` hook (the only method by that name is a private helper in `bizonylatfejController`).
-
-Per-entity template set in `tpl/admin/{theme}/`: `<entity>lista.tpl`, `<entity>lista_tbody.tpl`, `<entity>lista_tbody_tr.tpl`, `<entity>karb.tpl`,
-`<entity>karbform.tpl`, plus `js/admin/default/<entity>.js` (copy `afa.js`, swap the three URLs) and 5–6 routes in `adminroute.php`
-(`viewlist`, `getlistbody`, `getkarb`, `viewkarb`, optional `htmllist`, and `save` inside `if (!\mkw\store::isClosed())`).
-The list's sort dropdown comes from `setOrders()` in the entity's repository — forgetting it leaves the dropdown empty. **`MattableController` is the only admin
-list scaffold**; the former jqGrid-based `JQGridController` was removed in 2026-08 (see `docs/egyebtorzs-mattable-migracio.md`).
+- **`MattableController`** — the only admin CRUD list scaffold, extending `Controller`. A subclass must provide five hooks the base calls
+  but does not declare, and each entity needs a fixed set of templates, a JS file, and 5–6 routes. Follow the `admin-crud-screen` skill
+  before adding or changing an admin list/edit screen.
 
 ## Templates and assets
 
@@ -180,6 +164,6 @@ Write plan files in hungarian, put them into docs folder.
   controller method often branches on three or four flags.
 - **Sessions are split**: `main`, `admin`, and `pubadmin` are independent `session_namespace` instances — don't cross-read them.
 - **Scheduled work is CLI-only**: `cron.php` + `Services\CronService` + one `Services\Cron\*Task` class per job. There is no HTTP cron endpoint (the old
-  unauthenticated `GET /admin/cron` was removed in 2026-08) — adding one back would expose the job to anyone. See `docs/cron.md`.
+  unauthenticated `GET /admin/cron` was removed in 2026-08) — adding one back would expose the job to anyone. See `docs/done/cron.md`.
 - **Proxies + cache**: stale proxy or metadata cache after entity changes is a common confusing failure in non-developer mode — regenerate proxies and clear the
   configured cache.
