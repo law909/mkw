@@ -1385,6 +1385,9 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/dolgozober/save', 'dolgozoberController#save', 'admindolgozobersave');
     $router->map('POST', '/admin/dolgozober/ront', 'dolgozoberController#ront', 'admindolgozoberront');
 }
+$router->map('GET', '/admin/berkimutatas/view', 'berkimutatasController#view', 'adminberkimutatasview');
+$router->map('GET', '/admin/berkimutatas/refresh', 'berkimutatasController#refresh', 'adminberkimutatasrefresh');
+$router->map('GET', '/admin/berkimutatas/export', 'berkimutatasController#export', 'adminberkimutatasexport');
 
 $router->map('GET', '/admin/jelenletiiv/viewlist', 'jelenletiivController#viewlist', 'adminjelenletiivviewlist');
 $router->map('GET', '/admin/jelenletiiv/getlistbody', 'jelenletiivController#getlistbody', 'adminjelenletiivgetlistbody');

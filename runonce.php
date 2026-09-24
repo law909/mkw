@@ -2868,6 +2868,16 @@ if ($DBVersion < '0195') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0195');
 }
 
+if ($DBVersion < '0196') {
+    // Bér kimutatás a HR menübe a Szabadság kimutatás után, a bérek jogával
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT 5, "Bér kimutatás", "/admin/berkimutatas/view", "/admin/berkimutatas", 40, 1, 650, ""'
+        . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/berkimutatas/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0196');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
