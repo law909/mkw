@@ -2853,7 +2853,7 @@ if ($DBVersion < '0194') {
 }
 
 if ($DBVersion < '0195') {
-    // Bérek a HR menübe a Szabadságok után, a bér jogcímek az Egyebek közé a Jelenlét típusok után; a bér jog 40, mint a Dolgozók
+    // Bérek a HR menübe a Szabadságok után, a bér jogcímek az Egyebek közé ábécérendben; a bér jog 40, mint a Dolgozók
     $conn = \mkw\store::getEm()->getConnection();
     $conn->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
@@ -2862,7 +2862,7 @@ if ($DBVersion < '0195') {
     );
     $conn->executeStatement(
         'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
-        . ' SELECT 7, "Bér jogcímek", "/admin/berjogcim/viewlist", "/admin/berjogcim", 40, 1, 1450, ""'
+        . ' SELECT 7, "Bér jogcímek", "/admin/berjogcim/viewlist", "/admin/berjogcim", 40, 1, 550, ""'
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/berjogcim/viewlist") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0195');
@@ -2876,6 +2876,14 @@ if ($DBVersion < '0196') {
         . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/berkimutatas/view") m)'
     );
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0196');
+}
+
+if ($DBVersion < '0197') {
+    // a 0195 első változata a Jelenlét típusok mögé (1450) tette, az ábécérend szerinti hely a Bankszámlák után van
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET sorrend = 550 WHERE url = "/admin/berjogcim/viewlist" AND sorrend = 1450'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0197');
 }
 
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
