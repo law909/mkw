@@ -61,21 +61,16 @@
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
                 <div class="arbevetel-grouping ui-widget ui-widget-content ui-corner-all">
-                    <label for="IdoszakcsoportEdit">{at('Csoportosítás')}:</label>
-                    <select id="IdoszakcsoportEdit" name="idoszakcsoport">
-                        <option value="">{at('időszak nélkül')}</option>
-                        <option value="ev">{at('évente')}</option>
-                        <option value="honap" selected="selected">{at('havonta')}</option>
-                    </select>
-                    <select id="KategoriacsoportEdit" name="kategoriacsoport">
-                        <option value="">{at('kategória nélkül')}</option>
-                        <option value="fokategoria">{at('főkategóriánként')}</option>
-                        <option value="kategoria">{at('termék kategóriánként')}</option>
-                    </select>
-                    <input id="GyartocsoportEdit" type="checkbox" name="gyartocsoport">
-                    <label for="GyartocsoportEdit">{at('gyártónként')}</label>
-                    <input id="WebshopcsoportEdit" type="checkbox" name="webshopcsoport">
-                    <label for="WebshopcsoportEdit">{at('webshoponként')}</label>
+                    <label for="Szint1Edit">{at('Csoportosítás')}:</label>
+                    {for $_i = 1 to $maxszint}
+                        {if ($_i > 1)}<span class="arbevetel-szintnyil">›</span>{/if}
+                        <select id="Szint{$_i}Edit" class="js-szint" name="szint[]" title="{$_i}. {at('szint')}">
+                            <option value="">{if ($_i == 1)}{at('nincs')}{else}–{/if}</option>
+                            {foreach $szintlist as $_szint}
+                                <option value="{$_szint.id}" data-dim="{$_szint.dim}"{if ($_i == 1 && $_szint.id == 'honap')} selected="selected"{/if}>{$_szint.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/for}
                 </div>
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>

@@ -549,6 +549,11 @@ select.tetelszamhiba,
     padding-left: 65px;
 }
 
+.arbevetel-szintnyil {
+    margin: 0 4px;
+    color: #8a7f6a;
+}
+
 .arbevetel-chartnote {
     display: none;
     margin: 4px 0 6px;

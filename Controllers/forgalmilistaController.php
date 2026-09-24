@@ -27,49 +27,15 @@ class forgalmilistaController extends arbevetellistaController
         return trim(implode(' ', array_filter([$row['cikkszam'], $row['nev'], $valtozat])));
     }
 
-    /** Chart.js labels + datasets of the quantity: periods on the x axis like the revenue chart. */
+    /** The quantity chart like the revenue one; without grouping one bar per product, the best sellers only. */
     private function buildChart(array $data): array
     {
-        $csoportos = $data['kategoria'] || $data['gyarto'] || $data['webshop'];
-        if (!$data['idoszak']) {
-            $oszlopok = [];
-            foreach ($data['rows'] as $row) {
-                $nev = $csoportos ? $this->seriesLabel($row, $data) : $this->termekLabel($row);
-                $oszlopok[$nev] = ($oszlopok[$nev] ?? 0) + $row['mennyiseg'];
-            }
-            arsort($oszlopok);
-            $note = null;
-            // without grouping there is one bar per product: only the best sellers fit
-            if (!$csoportos && count($oszlopok) > self::MAXTERMEK) {
-                $note = sprintf(t('A diagramon a %d legtöbbet eladott termék látszik a %d közül; a táblázat mindet tartalmazza.'), self::MAXTERMEK, count($oszlopok));
-                $oszlopok = array_slice($oszlopok, 0, self::MAXTERMEK, true);
-            }
-            return [
-                'stacked' => false,
-                'legend' => false,
-                'labels' => array_map('strval', array_keys($oszlopok)),
-                'datasets' => [['label' => t('Mennyiség'), 'data' => array_map(fn($m) => round($m, 2), array_values($oszlopok))]],
-                'note' => $note,
-            ];
+        $levels = $this->getGroupLevels($data);
+        if ($levels) {
+            return $this->buildLevelChart($data['rows'], $levels, 'mennyiseg', t('Mennyiség'));
         }
-
-        $labels = [];
-        $series = [];
-        foreach ($data['rows'] as $row) {
-            $labels[$row['idoszak']] = true;
-            $nev = $csoportos ? $this->seriesLabel($row, $data) : t('Mennyiség');
-            $series[$nev][$row['idoszak']] = ($series[$nev][$row['idoszak']] ?? 0) + $row['mennyiseg'];
-        }
-        $labels = array_keys($labels);
-        [$series, $note] = $this->mergeSmallSeries($series);
-        $datasets = [];
-        foreach ($series as $nev => $ertekek) {
-            $datasets[] = [
-                'label' => (string)$nev,
-                'data' => array_map(fn($idoszak) => round($ertekek[$idoszak] ?? 0, 2), $labels),
-            ];
-        }
-        return ['stacked' => true, 'legend' => $csoportos, 'labels' => $labels, 'datasets' => $datasets, 'note' => $note];
+        $rows = array_map(fn($row) => $row + ['termekkulcs' => $row['termekid'] . '-' . $row['termekvaltozatid'], 'termekcimke' => $this->termekLabel($row)], $data['rows']);
+        return $this->buildLevelChart($rows, [['id' => 'termekkulcs', 'label' => 'termekcimke']], 'mennyiseg', t('Mennyiség'), '', self::MAXTERMEK);
     }
 
     public function refresh()
@@ -96,19 +62,7 @@ class forgalmilistaController extends arbevetellistaController
     {
         $data = $this->getData('getForgalmiLista');
 
-        $fejlec = [];
-        if ($data['idoszak']) {
-            $fejlec['idoszak'] = t('Időszak');
-        }
-        if ($data['kategoria']) {
-            $fejlec['kategorianev'] = t('Kategória');
-        }
-        if ($data['gyarto']) {
-            $fejlec['gyartonev'] = t('Gyártó');
-        }
-        if ($data['webshop']) {
-            $fejlec['webshopnev'] = t('Webshop');
-        }
+        $fejlec = array_column($this->getGroupLevels($data), 'caption', 'label');
         $fejlec['cikkszam'] = t('Cikkszám');
         $fejlec['nev'] = t('Név');
         $fejlec['ertek1'] = t('Változat 1');

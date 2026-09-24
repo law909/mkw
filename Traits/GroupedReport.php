@@ -108,4 +108,69 @@ trait GroupedReport
         }
         return [$shown + [sprintf(t('Egyéb (további %d)'), count($merged)) => $egyeb], $note];
     }
+
+    /**
+     * Chart.js payload of grouped rows: the period level (else the first level) on the x axis, the other levels
+     * together as stacked series. A non-period axis is sorted by total and cut at $maxBars.
+     *
+     * @param array $levels as for buildTableItems(), period levels have 'idoszak' as their id
+     */
+    protected function buildLevelChart(array $rows, array $levels, string $valueKey, string $caption, string $unit = '', int $maxBars = 30): array
+    {
+        $xLevel = null;
+        foreach ($levels as $level) {
+            if ($level['id'] === 'idoszak') {
+                $xLevel = $level;
+            }
+        }
+        $timeAxis = (bool)$xLevel;
+        $xLevel = $xLevel ?? ($levels[0] ?? null);
+        $seriesLevels = array_values(array_filter($levels, fn($level) => $level !== $xLevel));
+
+        $labels = [];
+        $series = [];
+        foreach ($rows as $row) {
+            $x = $xLevel ? (string)$row[$xLevel['id']] : '';
+            $labels[$x] = $xLevel ? (string)$row[$xLevel['label']] : $caption;
+            $nev = $seriesLevels ? implode(' / ', array_map(fn($level) => (string)$row[$level['label']], $seriesLevels)) : $caption;
+            $series[$nev][$x] = ($series[$nev][$x] ?? 0) + $row[$valueKey];
+        }
+
+        $notes = [];
+        if (!$timeAxis) {
+            $totals = [];
+            foreach ($series as $values) {
+                foreach ($values as $x => $value) {
+                    $totals[$x] = ($totals[$x] ?? 0) + $value;
+                }
+            }
+            arsort($totals);
+            if (count($totals) > $maxBars) {
+                $notes[] = sprintf(t('A diagramon a %d legnagyobb oszlop látszik a %d közül; a táblázat mindet tartalmazza.'), $maxBars, count($totals));
+                $totals = array_slice($totals, 0, $maxBars, true);
+            }
+            $labels = array_intersect_key(array_replace($totals, $labels), $totals);
+        }
+        [$series, $note] = $this->mergeSmallSeries($series);
+        if ($note) {
+            $notes[] = $note;
+        }
+
+        $xs = array_keys($labels);
+        $datasets = [];
+        foreach ($series as $nev => $values) {
+            $datasets[] = [
+                'label' => (string)$nev,
+                'data' => array_map(fn($x) => round($values[$x] ?? 0, 2), $xs),
+            ];
+        }
+        return [
+            'stacked' => (bool)$seriesLevels,
+            'legend' => (bool)$seriesLevels,
+            'labels' => array_map('strval', array_values($labels)),
+            'datasets' => $datasets,
+            'unit' => $unit,
+            'note' => $notes ? implode(' ', $notes) : null,
+        ];
+    }
 }

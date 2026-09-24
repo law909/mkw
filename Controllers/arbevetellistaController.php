@@ -13,6 +13,8 @@ class arbevetellistaController extends \mkwhelpers\Controller
 
     use \Traits\GroupedReport;
 
+    private const MAXSZINT = 4;
+
     public function view()
     {
         $this->showView('arbevetellista.tpl', t('Árbevétel kimutatás'), BizonylatfejRepository::ARBEVETEL_BIZONYLATTIPUSOK);
@@ -37,27 +39,15 @@ class arbevetellistaController extends \mkwhelpers\Controller
         $view->setVar('cimkekat', (new partnercimkekatController())->getWithCimkek());
         $view->setVar('bizonylattipusfilter', \mkw\store::isSuperzoneB2B());
         $view->setVar('bizonylattipuschecked', array_fill_keys($bizonylattipusok, true));
+        $view->setVar('szintlist', $this->getSzintSelectList());
+        $view->setVar('maxszint', self::MAXSZINT);
 
         $view->printTemplateResult(false);
     }
 
     protected function getData(string $repoMethod = 'getArbevetelLista'): array
     {
-        $csoport = [];
-        $idoszakcsoport = $this->params->getStringRequestParam('idoszakcsoport');
-        if (in_array($idoszakcsoport, ['ev', 'honap'], true)) {
-            $csoport[] = $idoszakcsoport;
-        }
-        $kategoriacsoport = $this->params->getStringRequestParam('kategoriacsoport');
-        if (in_array($kategoriacsoport, ['fokategoria', 'kategoria'], true)) {
-            $csoport[] = $kategoriacsoport;
-        }
-        if ($this->params->getBoolRequestParam('gyartocsoport')) {
-            $csoport[] = 'gyarto';
-        }
-        if ($this->params->getBoolRequestParam('webshopcsoport')) {
-            $csoport[] = 'webshop';
-        }
+        $csoport = $this->getSzintek();
         $brutto = $this->params->getStringRequestParam('ertektipus') === 'brutto';
         $valutanemid = $this->params->getIntRequestParam('valutanem');
         $valutanem = $valutanemid ? $this->getRepo(Valutanem::class)->find($valutanemid) : null;
@@ -88,84 +78,64 @@ class arbevetellistaController extends \mkwhelpers\Controller
             'brutto' => $brutto,
             'currency' => $currency,
             'valueheader' => ($brutto ? t('Bruttó') : t('Nettó')) . ' ' . $currency,
-            'idoszak' => (bool)array_intersect(['ev', 'honap'], $csoport),
-            'kategoria' => (bool)array_intersect(['fokategoria', 'kategoria'], $csoport),
-            'gyarto' => in_array('gyarto', $csoport, true),
-            'webshop' => in_array('webshop', $csoport, true),
+            'szintek' => $csoport,
         ];
     }
 
-    protected function seriesLabel(array $row, array $data): string
+    /** The grouping levels of the request in order: known dimensions only, each once, at most MAXSZINT. */
+    private function getSzintek(): array
     {
-        $parts = [];
-        if ($data['kategoria']) {
-            $parts[] = $row['kategorianev'];
+        $szintek = [];
+        $dimenziok = [];
+        foreach ($this->params->getArrayRequestParam('szint') as $szint) {
+            $dimenzio = BizonylatfejRepository::ARBEVETEL_DIMENZIOK[$szint][0] ?? null;
+            if (!$dimenzio || isset($dimenziok[$dimenzio])) {
+                continue;
+            }
+            $dimenziok[$dimenzio] = true;
+            $szintek[] = $szint;
+            if (count($szintek) === self::MAXSZINT) {
+                break;
+            }
         }
-        if ($data['gyarto']) {
-            $parts[] = $row['gyartonev'];
-        }
-        if ($data['webshop']) {
-            $parts[] = $row['webshopnev'];
-        }
-        return $parts ? implode(' / ', $parts) : t('Árbevétel');
+        return $szintek;
     }
 
-    /** Chart.js labels + datasets: periods on the x axis, one stacked series per manufacturer/webshop. */
-    private function buildChart(array $data): array
+    private static function getSzintCaptions(): array
     {
-        if (!$data['idoszak']) {
-            $rows = $data['rows'];
-            usort($rows, fn($a, $b) => $b['ertek'] <=> $a['ertek']);
-            return [
-                'stacked' => false,
-                'legend' => false,
-                'labels' => array_map(fn($row) => $this->seriesLabel($row, $data), $rows),
-                'datasets' => [['label' => t('Árbevétel'), 'data' => array_column($rows, 'ertek')]],
-                'unit' => $data['currency'],
-            ];
-        }
-
-        $labels = [];
-        $series = [];
-        foreach ($data['rows'] as $row) {
-            $labels[$row['idoszak']] = true;
-            $nev = $this->seriesLabel($row, $data);
-            $series[$nev][$row['idoszak']] = ($series[$nev][$row['idoszak']] ?? 0) + $row['ertek'];
-        }
-        $labels = array_keys($labels);
-        [$series, $note] = $this->mergeSmallSeries($series);
-        $datasets = [];
-        foreach ($series as $nev => $ertekek) {
-            $datasets[] = [
-                'label' => (string)$nev,
-                'data' => array_map(fn($idoszak) => round($ertekek[$idoszak] ?? 0, 2), $labels),
-            ];
-        }
         return [
-            'stacked' => true,
-            'legend' => $data['kategoria'] || $data['gyarto'] || $data['webshop'],
-            'labels' => $labels,
-            'datasets' => $datasets,
-            'unit' => $data['currency'],
-            'note' => $note,
+            'ev' => t('Év'),
+            'honap' => t('Hónap'),
+            'fokategoria' => t('Főkategória'),
+            'kategoria' => t('Kategória'),
+            'gyarto' => t('Gyártó'),
+            'webshop' => t('Webshop'),
+            'partner' => t('Partner'),
+            'partnertipus' => t('Partnertípus'),
+            'uzletkoto' => t('Üzletkötő'),
+            'bizonylattipus' => t('Bizonylattípus'),
+            'valutanem' => t('Valutanem'),
         ];
     }
 
-    /** The active grouping columns in list order: id decides where a group ends, label is what is shown. */
+    /** The level dropdowns' options; 'dim' is what makes two of them the same dimension. */
+    private function getSzintSelectList(): array
+    {
+        $res = [];
+        foreach (self::getSzintCaptions() as $szint => $caption) {
+            $res[] = ['id' => $szint, 'caption' => mb_strtolower($caption), 'dim' => BizonylatfejRepository::ARBEVETEL_DIMENZIOK[$szint][0]];
+        }
+        return $res;
+    }
+
+    /** The chosen grouping columns in order: id decides where a group ends, label is what is shown. */
     protected function getGroupLevels(array $data): array
     {
+        $captions = self::getSzintCaptions();
         $levels = [];
-        if ($data['idoszak']) {
-            $levels[] = ['id' => 'idoszak', 'label' => 'idoszak', 'caption' => t('Időszak')];
-        }
-        if ($data['kategoria']) {
-            $levels[] = ['id' => 'kategoriakarkod', 'label' => 'kategorianev', 'caption' => t('Kategória')];
-        }
-        if ($data['gyarto']) {
-            $levels[] = ['id' => 'gyartoid', 'label' => 'gyartonev', 'caption' => t('Gyártó')];
-        }
-        if ($data['webshop']) {
-            $levels[] = ['id' => 'webshopnum', 'label' => 'webshopnev', 'caption' => t('Webshop')];
+        foreach ($data['szintek'] as $szint) {
+            [$id, $label] = BizonylatfejRepository::ARBEVETEL_DIMENZIOK[$szint];
+            $levels[] = ['id' => $id, 'label' => $label, 'caption' => $captions[$szint]];
         }
         return $levels;
     }
@@ -186,7 +156,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         header('Content-Type: application/json');
         echo json_encode([
             'html' => $view->getTemplateResult(),
-            'chart' => $this->buildChart($data),
+            'chart' => $this->buildLevelChart($data['rows'], $this->getGroupLevels($data), 'ertek', t('Árbevétel'), $data['currency']),
         ]);
     }
 
@@ -194,19 +164,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
     {
         $data = $this->getData();
 
-        $fejlec = [];
-        if ($data['idoszak']) {
-            $fejlec['idoszak'] = t('Időszak');
-        }
-        if ($data['kategoria']) {
-            $fejlec['kategorianev'] = t('Kategória');
-        }
-        if ($data['gyarto']) {
-            $fejlec['gyartonev'] = t('Gyártó');
-        }
-        if ($data['webshop']) {
-            $fejlec['webshopnev'] = t('Webshop');
-        }
+        $fejlec = array_column($this->getGroupLevels($data), 'caption', 'label');
         $fejlec['ertek'] = $data['valueheader'];
 
         $excel = new Spreadsheet();

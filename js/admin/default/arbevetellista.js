@@ -13,11 +13,42 @@ $(document).ready(function () {
     const baseUrl = $header.data('baseurl');
     const drawChart = createReportChart('arbevetelchart', '#arbevetelchartnote', Number($header.data('decimals')) || 0);
 
+    // the levels count up to the first empty one; a dimension can be chosen once
+    function syncSzintek() {
+        const $szintek = $('.js-szint');
+        let ures = false;
+        $szintek.each(function () {
+            $(this).prop('disabled', ures);
+            if (!$(this).val()) {
+                ures = true;
+            }
+        });
+        const hasznalt = $szintek.filter(':enabled').map(function () {
+            return $(this).find('option:selected').data('dim');
+        }).get();
+        $szintek.each(function () {
+            const sajat = $(this).find('option:selected').data('dim');
+            $(this).find('option[data-dim]').each(function () {
+                const dim = $(this).data('dim');
+                $(this).prop('disabled', dim !== sajat && hasznalt.includes(dim));
+            });
+        });
+    }
+
+    function getSzintek() {
+        return $('.js-szint:enabled').map(function () {
+            return $(this).val();
+        }).get().filter((szint) => szint);
+    }
+
     $('#mattkarb').mattkarb(new MattkarbConfig({
         beforeShow: function () {
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
             mkwcomp.termekfaFilter.init('#termekfa');
+
+            $('.js-szint').on('change', syncSzintek);
+            syncSzintek();
 
             $('#cimkefiltercontainer').mattaccord({
                 header: '',
@@ -63,10 +94,7 @@ $(document).ready(function () {
                         gyarto: $('select[name="gyarto"]').val(),
                         webshopnum: $('select[name="webshopnum"]').val(),
                         nev: $('input[name="nev"]').val(),
-                        idoszakcsoport: $('select[name="idoszakcsoport"]').val(),
-                        kategoriacsoport: $('select[name="kategoriacsoport"]').val(),
-                        gyartocsoport: $('input[name="gyartocsoport"]').prop('checked') ? 1 : 0,
-                        webshopcsoport: $('input[name="webshopcsoport"]').prop('checked') ? 1 : 0,
+                        szint: getSzintek(),
                         fafilter: fak.length > 0 ? fak : undefined
                     },
                     success: (d) => {

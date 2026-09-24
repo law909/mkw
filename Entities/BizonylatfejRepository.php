@@ -819,29 +819,97 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $brutto ? 'bt.bruttohuf' : 'bt.nettohuf';
     }
 
-    /** SELECT expressions by alias for the 'ev'/'honap'/'fokategoria'/'kategoria'/'gyarto'/'webshop' grouping. */
-    private function getArbevetelCsoportMezok($datummezo, array $csoport): array
+    /**
+     * The grouping dimensions of the revenue and sales reports: the row keys of a group's id and of its name.
+     * 'ev' and 'honap' are the same dimension, and so are the two categories.
+     */
+    public const ARBEVETEL_DIMENZIOK = [
+        'ev' => ['idoszak', 'idoszak'],
+        'honap' => ['idoszak', 'idoszak'],
+        'fokategoria' => ['kategoriakarkod', 'kategorianev'],
+        'kategoria' => ['kategoriakarkod', 'kategorianev'],
+        'gyarto' => ['gyartoid', 'gyartonev'],
+        'webshop' => ['webshopnum', 'webshopnev'],
+        'partner' => ['partnerid', 'partnernev'],
+        'partnertipus' => ['partnertipusid', 'partnertipusnev'],
+        'uzletkoto' => ['uzletkotoid', 'uzletkotonev'],
+        'bizonylattipus' => ['bizonylattipusid', 'bizonylattipusnev'],
+        'valutanem' => ['valutanemid', 'valutanemnev'],
+    ];
+
+    /** A group without its id gets this name. */
+    private const ARBEVETEL_URES_NEV = [
+        'gyartoid' => ['gyartonev', 'nincs gyártó'],
+        'partnerid' => ['partnernev', 'nincs partner'],
+        'partnertipusid' => ['partnertipusnev', 'nincs partnertípus'],
+        'uzletkotoid' => ['uzletkotonev', 'nincs üzletkötő'],
+        'valutanemid' => ['valutanemnev', 'nincs valutanem'],
+    ];
+
+    /**
+     * SELECT expressions by alias, the ORDER BY and the extra joins of the grouping, in the order of $szintek.
+     *
+     * @param array $szintek keys of ARBEVETEL_DIMENZIOK, the first is the outermost group
+     */
+    private function getArbevetelSzintek($datummezo, array $szintek): array
     {
         $mezok = [];
-        if (in_array('ev', $csoport, true)) {
-            $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y')";
-        } elseif (in_array('honap', $csoport, true)) {
-            $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '%Y-%m')";
+        $order = [];
+        $join = '';
+        foreach ($szintek as $szint) {
+            switch ($szint) {
+                case 'ev':
+                case 'honap':
+                    $mezok['idoszak'] = 'DATE_FORMAT(' . $datummezo . ", '" . ($szint === 'ev' ? '%Y' : '%Y-%m') . "')";
+                    $order[] = 'idoszak';
+                    break;
+                case 'fokategoria':
+                case 'kategoria':
+                    // the tree code grows by a fixed length per level under the single root
+                    $mezok['kategoriakarkod'] = $szint === 'fokategoria' ? 'LEFT(t.termekfa1karkod, ' . self::KARKOD_TOP_LENGTH . ')' : 't.termekfa1karkod';
+                    $order[] = 'kategoriakarkod';
+                    break;
+                case 'gyarto':
+                    $mezok['gyartoid'] = 't.gyarto_id';
+                    $mezok['gyartonev'] = 'MAX(gy.nev)';
+                    array_push($order, 'gyartonev', 'gyartoid');
+                    break;
+                case 'webshop':
+                    $mezok['webshopnum'] = 'bf.webshopnum';
+                    $order[] = 'webshopnum';
+                    break;
+                case 'partner':
+                    // the documents keep the partner's name of their day, MAX() picks one of them
+                    $mezok['partnerid'] = 'bf.partner_id';
+                    $mezok['partnernev'] = 'MAX(bf.partnernev)';
+                    array_push($order, 'partnernev', 'partnerid');
+                    break;
+                case 'partnertipus':
+                    $join .= ' LEFT OUTER JOIN partner pp ON (bf.partner_id=pp.id)'
+                        . ' LEFT OUTER JOIN partnertipus ptt ON (pp.partnertipus_id=ptt.id)';
+                    $mezok['partnertipusid'] = 'pp.partnertipus_id';
+                    $mezok['partnertipusnev'] = 'MAX(ptt.nev)';
+                    array_push($order, 'partnertipusnev', 'partnertipusid');
+                    break;
+                case 'uzletkoto':
+                    $mezok['uzletkotoid'] = 'bf.uzletkoto_id';
+                    $mezok['uzletkotonev'] = 'MAX(bf.uzletkotonev)';
+                    array_push($order, 'uzletkotonev', 'uzletkotoid');
+                    break;
+                case 'bizonylattipus':
+                    $join .= ' LEFT OUTER JOIN bizonylattipus bti ON (bf.bizonylattipus_id=bti.id)';
+                    $mezok['bizonylattipusid'] = 'bf.bizonylattipus_id';
+                    $mezok['bizonylattipusnev'] = 'MAX(bti.nev)';
+                    array_push($order, 'bizonylattipusnev', 'bizonylattipusid');
+                    break;
+                case 'valutanem':
+                    $mezok['valutanemid'] = 'bf.valutanem_id';
+                    $mezok['valutanemnev'] = 'MAX(bf.valutanemnev)';
+                    array_push($order, 'valutanemnev', 'valutanemid');
+                    break;
+            }
         }
-        // the tree code grows by a fixed length per level under the single root
-        if (in_array('fokategoria', $csoport, true)) {
-            $mezok['kategoriakarkod'] = 'LEFT(t.termekfa1karkod, ' . self::KARKOD_TOP_LENGTH . ')';
-        } elseif (in_array('kategoria', $csoport, true)) {
-            $mezok['kategoriakarkod'] = 't.termekfa1karkod';
-        }
-        if (in_array('gyarto', $csoport, true)) {
-            $mezok['gyartoid'] = 't.gyarto_id';
-            $mezok['gyartonev'] = 'MAX(gy.nev)';
-        }
-        if (in_array('webshop', $csoport, true)) {
-            $mezok['webshopnum'] = 'bf.webshopnum';
-        }
-        return $mezok;
+        return ['mezok' => $mezok, 'order' => $order, 'join' => $join];
     }
 
     private const KARKOD_LEVEL_LENGTH = 5;
@@ -867,7 +935,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $paths;
     }
 
-    private function fetchArbevetelRows(array $mezok, array $ertekek, FilterDescriptor $filter, string $from, array $order = []): array
+    private function fetchArbevetelRows(array $mezok, array $ertekek, FilterDescriptor $filter, string $from, array $order): array
     {
         $select = [];
         $group = [];
@@ -880,8 +948,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         foreach ($ertekek as $alias => $kifejezes) {
             $select[] = $kifejezes . ' AS ' . $alias;
         }
-        // a manufacturer group is listed by name, the id only keeps namesakes apart
-        $order = $order ?: array_merge(...array_map(fn($alias) => $alias === 'gyartoid' ? ['gyartonev', 'gyartoid'] : [$alias], $group));
 
         $sql = 'SELECT ' . implode(',', $select)
             . $from
@@ -898,8 +964,16 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             if (array_key_exists('webshopnum', $row)) {
                 $row['webshopnev'] = \mkw\store::getWebshopNev($row['webshopnum']);
             }
-            if (array_key_exists('gyartoid', $row) && !$row['gyartoid']) {
-                $row['gyartonev'] = 'nincs gyártó';
+            // some names are stored HTML-encoded ("&amp;"), the templates escape them again
+            foreach (['gyartonev', 'partnernev', 'partnertipusnev', 'uzletkotonev', 'bizonylattipusnev', 'valutanemnev'] as $nev) {
+                if (isset($row[$nev])) {
+                    $row[$nev] = html_entity_decode($row[$nev], ENT_QUOTES | ENT_HTML5);
+                }
+            }
+            foreach (self::ARBEVETEL_URES_NEV as $id => [$nev, $ures]) {
+                if (array_key_exists($id, $row) && !$row[$id]) {
+                    $row[$nev] = $ures;
+                }
             }
             if (array_key_exists('kategoriakarkod', $row)) {
                 $row['kategorianev'] = $termekFaPaths[$row['kategoriakarkod']] ?? 'nincs kategória';
@@ -913,17 +987,19 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
      * currency, in that currency. A storno document carries negative amounts, so it cancels its original;
      * the offset line of a final invoice cancels the advance invoice the same way.
      *
-     * @param array $csoport any of 'ev', 'honap', 'gyarto', 'webshop' ('ev' and 'honap' exclude each other)
+     * @param array $csoport grouping levels, keys of ARBEVETEL_DIMENZIOK from the outermost, each dimension once
      * @param array $szurok see getArbevetelFilter()
      */
     public function getArbevetelLista($datumtipus, $datumtol, $datumig, bool $brutto, array $csoport, array $szurok): array
     {
         $datummezo = $this->getArbevetelDatummezo($datumtipus);
+        $szintek = $this->getArbevetelSzintek($datummezo, $csoport);
         return $this->fetchArbevetelRows(
-            $this->getArbevetelCsoportMezok($datummezo, $csoport),
+            $szintek['mezok'],
             ['ertek' => 'SUM(' . $this->getArbevetelErtekmezo($brutto, $szurok) . ')'],
             $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $szurok),
-            self::ARBEVETEL_FROM
+            self::ARBEVETEL_FROM . $szintek['join'],
+            $szintek['order']
         );
     }
 
@@ -945,7 +1021,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $filter->addFilter('bt.termek_id', '<>', $elolegtermek);
         }
 
-        $mezok = $this->getArbevetelCsoportMezok($datummezo, $csoport) + [
+        $szintek = $this->getArbevetelSzintek($datummezo, $csoport);
+        $mezok = $szintek['mezok'] + [
                 'termekid' => 'bt.termek_id',
                 'termekvaltozatid' => 'bt.termekvaltozat_id',
                 'cikkszam' => "MAX(COALESCE(NULLIF(tv.cikkszam, ''), t.cikkszam))",
@@ -954,8 +1031,6 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 'ertek2' => 'MAX(tv.ertek2)',
                 'me' => 'MAX(bt.me)',
             ];
-        $idoszakrend = array_key_exists('idoszak', $mezok) ? ['idoszak'] : [];
-        $csoportrend = array_values(array_intersect(['kategoriakarkod', 'gyartonev', 'gyartoid', 'webshopnum'], array_keys($mezok)));
         return $this->fetchArbevetelRows(
             $mezok,
             [
@@ -963,8 +1038,8 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 'ertek' => 'SUM(' . $this->getArbevetelErtekmezo($brutto, $szurok) . ')',
             ],
             $filter,
-            self::ARBEVETEL_FROM,
-            array_merge($idoszakrend, $csoportrend, ['cikkszam', 'nev', 'ertek1', 'ertek2'])
+            self::ARBEVETEL_FROM . $szintek['join'],
+            array_merge($szintek['order'], ['cikkszam', 'nev', 'ertek1', 'ertek2'])
         );
     }
 
