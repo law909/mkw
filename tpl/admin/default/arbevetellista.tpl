@@ -27,12 +27,13 @@
                         <option value="brutto">{at('bruttó')}</option>
                     </select>
                     <label for="ValutanemEdit">{at('Valutanem')}:</label>
-                    <select id="ValutanemEdit" name="valutanem" title="{at('Mindegy: minden bizonylat forintban; valutanemmel csak az abban kiállítottak, a saját pénznemükben')}">
+                    <select id="ValutanemEdit" name="valutanem">
                         <option value="">{at('Mindegy')}</option>
                         {foreach $valutanemlist as $_valutanem}
                             <option value="{$_valutanem.id}">{$_valutanem.caption}</option>
                         {/foreach}
                     </select>
+                    <span class="mattkarb-hint">{at('Mindegy: minden bizonylat, forintra átszámolt értékkel. Választott valutanemnél csak az abban kiállított bizonylatok számítanak, a saját pénznemükben (pl. EUR-ban), átszámítás nélkül.')}</span>
                 </div>
                 <div class="matt-hseparator"></div>
                 {include "comp_partnerselect.tpl"}
