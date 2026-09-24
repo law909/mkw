@@ -2844,6 +2844,14 @@ if ($DBVersion < '0193') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0193');
 }
 
+if ($DBVersion < '0194') {
+    // a kézzel átnevezett menüpontot nem írja felül
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET nev = "Forgalmi kimutatás" WHERE url = "/admin/forgalmilista/view" AND nev = "Forgalmi lista"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0194');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

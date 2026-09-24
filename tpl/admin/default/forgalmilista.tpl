@@ -12,7 +12,7 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-baseurl="/admin/forgalmilista" data-decimals="2">
-            <h3>{at('Forgalmi lista')}</h3>
+            <h3>{at('Forgalmi kimutatás')}</h3>
         </div>
         <form id="arbevetel" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">

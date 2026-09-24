@@ -16,7 +16,7 @@ class forgalmilistaController extends arbevetellistaController
     {
         $this->showView(
             'forgalmilista.tpl',
-            t('Forgalmi lista'),
+            t('Forgalmi kimutatás'),
             array_values(array_diff(BizonylatfejRepository::ARBEVETEL_BIZONYLATTIPUSOK, [\Services\ElolegService::BIZTIPUS]))
         );
     }
