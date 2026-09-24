@@ -39,6 +39,10 @@ class mkwmpdf
     public function __construct($html, $marginHeader = self::MARGIN_HEADER)
     {
         $this->raiseLimits();
+        // az mPDF a teljes HTML-en futtat regexet, és a limit fölött kivétellel megáll (pl. egy év forgalmi kimutatása ~3 MB)
+        if (strlen($html) * 2 > (int)ini_get('pcre.backtrack_limit')) {
+            ini_set('pcre.backtrack_limit', (string)(strlen($html) * 2));
+        }
         $this->html = $html;
         [$headerheight, $footerheight] = $this->measureRunningBlocks($html);
         $this->engine = new shortdashmpdf($this->getConfig([
@@ -182,7 +186,8 @@ class mkwmpdf
             return [(float)self::FALLBACK_HEADER, (float)self::FALLBACK_FOOTER];
         }
         return [
-            $headerheight > 0 ? $headerheight : (float)self::FALLBACK_HEADER,
+            // csak lábléces dokumentumnál a 0 nem sikertelen mérés
+            $headerheight > 0 || $header === '' ? $headerheight : (float)self::FALLBACK_HEADER,
             $footerheight > 0 ? $footerheight : (float)self::FALLBACK_FOOTER,
         ];
     }
