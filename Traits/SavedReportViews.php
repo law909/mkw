@@ -13,6 +13,12 @@ trait SavedReportViews
 
     abstract protected function getNezetBeallitas(): array;
 
+    /** A report behind a right overrides this; it answers the refused request itself. */
+    protected function checkNezetJog(): bool
+    {
+        return true;
+    }
+
     private function echoNezetek(?int $selected = null): void
     {
         $nezetek = [];
@@ -30,12 +36,18 @@ trait SavedReportViews
 
     public function nezetlista()
     {
+        if (!$this->checkNezetJog()) {
+            return;
+        }
         $this->echoNezetek();
     }
 
     /** Saves the current settings under a name; an existing name of the report is overwritten. */
     public function nezetsave()
     {
+        if (!$this->checkNezetJog()) {
+            return;
+        }
         $nev = trim($this->params->getStringRequestParam('nev'));
         if ($nev === '' || mb_strlen($nev) > 100) {
             $this->jsonError(t('A nézet neve 1–100 karakter lehet.'), 400);
@@ -53,6 +65,9 @@ trait SavedReportViews
 
     public function nezetdelete()
     {
+        if (!$this->checkNezetJog()) {
+            return;
+        }
         $nezet = $this->getRepo(Kimutatasnezet::class)->findOneBy(['id' => $this->params->getIntRequestParam('id'), 'kimutatas' => static::KIMUTATAS]);
         if ($nezet) {
             $this->getEm()->remove($nezet);

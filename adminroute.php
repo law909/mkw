@@ -1394,6 +1394,11 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/berkimutatas/view', 'berkimutatasController#view', 'adminberkimutatasview');
 $router->map('GET', '/admin/berkimutatas/refresh', 'berkimutatasController#refresh', 'adminberkimutatasrefresh');
 $router->map('GET', '/admin/berkimutatas/export', 'berkimutatasController#export', 'adminberkimutatasexport');
+$router->map('GET', '/admin/berkimutatas/nezetlista', 'berkimutatasController#nezetlista', 'adminberkimutatasnezetlista');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/berkimutatas/nezetsave', 'berkimutatasController#nezetsave', 'adminberkimutatasnezetsave');
+    $router->map('POST', '/admin/berkimutatas/nezetdelete', 'berkimutatasController#nezetdelete', 'adminberkimutatasnezetdelete');
+}
 
 $router->map('GET', '/admin/jelenletiiv/viewlist', 'jelenletiivController#viewlist', 'adminjelenletiivviewlist');
 $router->map('GET', '/admin/jelenletiiv/getlistbody', 'jelenletiivController#getlistbody', 'adminjelenletiivgetlistbody');

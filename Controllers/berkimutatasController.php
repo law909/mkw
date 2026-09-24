@@ -11,9 +11,22 @@ class berkimutatasController extends \mkwhelpers\Controller
 {
 
     use \Traits\GroupedReport;
+    use \Traits\SavedReportViews;
 
     // the same right as the pay lines themselves
     private const BERJOG = 40;
+
+    private const MAXSZINT = 3;
+
+    protected const KIMUTATAS = 'berkimutatas';
+
+    /** Grouping level => [id key, label key] of the repository rows; the two periods are one dimension. */
+    private const DIMENZIOK = [
+        'ev' => ['idoszak', 'idoszak'],
+        'honap' => ['idoszak', 'idoszak'],
+        'dolgozo' => ['dolgozoid', 'dolgozonev'],
+        'berjogcim' => ['berjogcimid', 'berjogcimnev'],
+    ];
 
     public function view()
     {
@@ -26,102 +39,94 @@ class berkimutatasController extends \mkwhelpers\Controller
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
         // a former employee's pay is still reported
         $view->setVar('dolgozolist', (new dolgozoController())->getSelectList(0, false));
+        $view->setVar('szintlist', $this->getSzintSelectList());
+        $view->setVar('maxszint', self::MAXSZINT);
         $view->printTemplateResult(false);
     }
 
-    private function getData(): array
+    protected function checkNezetJog(): bool
     {
-        $csoport = [];
-        $idoszakcsoport = $this->params->getStringRequestParam('idoszakcsoport');
-        if (in_array($idoszakcsoport, ['ev', 'honap'], true)) {
-            $csoport[] = $idoszakcsoport;
+        if (!\mkw\store::haveJog(self::BERJOG)) {
+            $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
+            return false;
         }
-        if ($this->params->getBoolRequestParam('dolgozocsoport')) {
-            $csoport[] = 'dolgozo';
-        }
-        if ($this->params->getBoolRequestParam('berjogcimcsoport')) {
-            $csoport[] = 'berjogcim';
-        }
+        return true;
+    }
+
+    protected function getNezetBeallitas(): array
+    {
         return [
-            'rows' => $this->getRepo(Dolgozober::class)->getKimutatas(
-                $this->params->getStringRequestParam('tol'),
-                $this->params->getStringRequestParam('ig'),
-                $csoport,
-                $this->params->getIntRequestParam('dolgozo')
-            ),
-            'idoszak' => (bool)array_intersect(['ev', 'honap'], $csoport),
-            'dolgozo' => in_array('dolgozo', $csoport, true),
-            'berjogcim' => in_array('berjogcim', $csoport, true),
+            'szint' => $this->getSzintek(),
+            'megjelenites' => $this->isPivot() ? 'kereszttabla' : 'lista',
         ];
     }
 
-    private function getGroupLevels(array $data): array
+    private function isPivot(): bool
     {
+        return $this->params->getStringRequestParam('megjelenites') === 'kereszttabla';
+    }
+
+    /** The grouping levels of the request in order: known dimensions only, each once, at most MAXSZINT. */
+    private function getSzintek(): array
+    {
+        $szintek = [];
+        $dimenziok = [];
+        foreach ($this->params->getArrayRequestParam('szint') as $szint) {
+            $dimenzio = self::DIMENZIOK[$szint][0] ?? null;
+            if (!$dimenzio || isset($dimenziok[$dimenzio])) {
+                continue;
+            }
+            $dimenziok[$dimenzio] = true;
+            $szintek[] = $szint;
+            if (count($szintek) === self::MAXSZINT) {
+                break;
+            }
+        }
+        return $szintek;
+    }
+
+    private static function getSzintCaptions(): array
+    {
+        return [
+            'ev' => t('Év'),
+            'honap' => t('Hónap'),
+            'dolgozo' => t('Dolgozó'),
+            'berjogcim' => t('Jogcím'),
+        ];
+    }
+
+    private function getSzintSelectList(): array
+    {
+        $res = [];
+        foreach (self::getSzintCaptions() as $szint => $caption) {
+            $res[] = ['id' => $szint, 'caption' => mb_strtolower($caption), 'dim' => self::DIMENZIOK[$szint][0]];
+        }
+        return $res;
+    }
+
+    private function getGroupLevels(array $szintek): array
+    {
+        $captions = self::getSzintCaptions();
         $levels = [];
-        if ($data['idoszak']) {
-            $levels[] = ['id' => 'idoszak', 'label' => 'idoszak', 'caption' => t('Időszak')];
-        }
-        if ($data['dolgozo']) {
-            $levels[] = ['id' => 'dolgozoid', 'label' => 'dolgozonev', 'caption' => t('Dolgozó')];
-        }
-        if ($data['berjogcim']) {
-            $levels[] = ['id' => 'berjogcimid', 'label' => 'berjogcimnev', 'caption' => t('Jogcím')];
+        foreach ($szintek as $szint) {
+            [$id, $label] = self::DIMENZIOK[$szint];
+            $levels[] = ['id' => $id, 'label' => $label, 'caption' => $captions[$szint]];
         }
         return $levels;
     }
 
-    private function seriesLabel(array $row, array $data): string
+    /** $periodLast: the period sorted after the other levels, as pivotRows() needs it. */
+    private function getRows(array $szintek, bool $periodLast = false): array
     {
-        $parts = [];
-        if ($data['dolgozo']) {
-            $parts[] = $row['dolgozonev'];
+        if ($periodLast) {
+            usort($szintek, fn($a, $b) => (self::DIMENZIOK[$a][0] === 'idoszak') <=> (self::DIMENZIOK[$b][0] === 'idoszak'));
         }
-        if ($data['berjogcim']) {
-            $parts[] = $row['berjogcimnev'];
-        }
-        return $parts ? implode(' / ', $parts) : t('Bér');
-    }
-
-    /** Periods on the x axis with one stacked series per employee/title, like the revenue chart. */
-    private function buildChart(array $data): array
-    {
-        $csoportos = $data['dolgozo'] || $data['berjogcim'];
-        if (!$data['idoszak']) {
-            $rows = $data['rows'];
-            usort($rows, fn($a, $b) => $b['ertek'] <=> $a['ertek']);
-            return [
-                'stacked' => false,
-                'legend' => false,
-                'labels' => array_map(fn($row) => $this->seriesLabel($row, $data), $rows),
-                'datasets' => [['label' => t('Bér'), 'data' => array_column($rows, 'ertek')]],
-                'unit' => 'Ft',
-            ];
-        }
-
-        $labels = [];
-        $series = [];
-        foreach ($data['rows'] as $row) {
-            $labels[$row['idoszak']] = true;
-            $nev = $this->seriesLabel($row, $data);
-            $series[$nev][$row['idoszak']] = ($series[$nev][$row['idoszak']] ?? 0) + $row['ertek'];
-        }
-        $labels = array_keys($labels);
-        [$series, $note] = $this->mergeSmallSeries($series);
-        $datasets = [];
-        foreach ($series as $nev => $ertekek) {
-            $datasets[] = [
-                'label' => (string)$nev,
-                'data' => array_map(fn($idoszak) => round($ertekek[$idoszak] ?? 0, 2), $labels),
-            ];
-        }
-        return [
-            'stacked' => true,
-            'legend' => $csoportos,
-            'labels' => $labels,
-            'datasets' => $datasets,
-            'unit' => 'Ft',
-            'note' => $note,
-        ];
+        return $this->getRepo(Dolgozober::class)->getKimutatas(
+            $this->params->getStringRequestParam('tol'),
+            $this->params->getStringRequestParam('ig'),
+            $szintek,
+            $this->params->getIntRequestParam('dolgozo')
+        );
     }
 
     public function refresh()
@@ -130,22 +135,30 @@ class berkimutatasController extends \mkwhelpers\Controller
             $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
             return;
         }
-        $data = $this->getData();
-        $levels = $this->getGroupLevels($data);
-        // the last grouping column is the row label, the ones above it become group headers
-        $rowLevel = array_pop($levels);
-        // the revenue report's grouped table, only the value header differs
-        $view = $this->createView('arbevetellistatetel.tpl');
-        $view->setVar('items', $this->buildTableItems($data['rows'], $levels, ['ertek']));
-        $view->setVar('rowlevel', $rowLevel);
-        $view->setVar('levelcount', count($levels));
-        $view->setVar('valueheader', t('Összeg HUF'));
-        $view->setVar('decimals', 0);
-        $view->setVar('osszesen', array_sum(array_column($data['rows'], 'ertek')));
+        $szintek = $this->getSzintek();
+        $levels = $this->getGroupLevels($szintek);
+        $rows = $this->getRows($szintek, $this->isPivot());
+        $valueheader = t('Összeg HUF');
+        $pivot = $this->isPivot() ? $this->pivotRows($rows, $levels, 'ertek') : null;
+        if ($pivot) {
+            $html = $this->renderPivot($pivot, false, $valueheader, 0);
+        } else {
+            // the last grouping column is the row label, the ones above it become group headers
+            $tableLevels = $levels;
+            $rowLevel = array_pop($tableLevels);
+            $view = $this->createView('arbevetellistatetel.tpl');
+            $view->setVar('items', $this->buildTableItems($rows, $tableLevels, ['ertek']));
+            $view->setVar('rowlevel', $rowLevel);
+            $view->setVar('levelcount', count($tableLevels));
+            $view->setVar('valueheader', $valueheader);
+            $view->setVar('decimals', 0);
+            $view->setVar('osszesen', array_sum(array_column($rows, 'ertek')));
+            $html = $view->getTemplateResult();
+        }
         header('Content-Type: application/json');
         echo json_encode([
-            'html' => $view->getTemplateResult(),
-            'chart' => $this->buildChart($data),
+            'html' => $html,
+            'chart' => $this->buildLevelChart($rows, $levels, 'ertek', t('Bér'), 'Ft'),
         ]);
     }
 
@@ -154,19 +167,17 @@ class berkimutatasController extends \mkwhelpers\Controller
         if (!\mkw\store::haveJog(self::BERJOG)) {
             return;
         }
-        $data = $this->getData();
+        $szintek = $this->getSzintek();
+        $rows = $this->getRows($szintek);
 
-        $fejlec = [];
-        foreach ($this->getGroupLevels($data) as $level) {
-            $fejlec[$level['label']] = $level['caption'];
-        }
+        $fejlec = array_column($this->getGroupLevels($szintek), 'caption', 'label');
         $fejlec['ertek'] = t('Összeg HUF');
 
         $excel = new Spreadsheet();
         $sheet = $excel->getActiveSheet();
         $sheet->fromArray(array_values($fejlec), null, 'A1');
         $sor = 2;
-        foreach ($data['rows'] as $row) {
+        foreach ($rows as $row) {
             $sheet->fromArray(array_map(fn($key) => $row[$key], array_keys($fejlec)), null, 'A' . $sor);
             $sor++;
         }

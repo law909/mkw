@@ -1,6 +1,6 @@
 /**
  * The grouping levels (.js-szint), the display (megjelenites, pivotertek) and the saved views (#NezetEdit) of the
- * revenue, sales and commission reports. A chosen view clicks .js-refresh. Returns {getSzintek}.
+ * revenue, sales, commission and pay reports. A chosen view clicks .js-refresh. Returns {getSzintek}.
  */
 function initReportGrouping(baseUrl) {
 

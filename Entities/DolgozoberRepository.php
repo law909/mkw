@@ -68,29 +68,35 @@ class DolgozoberRepository extends \mkwhelpers\Repository
     /**
      * Paid amounts summed by the grouping, voided lines left out.
      *
-     * @param array $csoport any of 'ev', 'honap' (exclusive), 'dolgozo', 'berjogcim'
+     * @param array $csoport grouping levels from the outermost, any of 'ev', 'honap' (exclusive), 'dolgozo', 'berjogcim';
+     *                       the rows are sorted in this order
      */
     public function getKimutatas($datumtol, $datumig, array $csoport, $dolgozoid = null): array
     {
         $select = [];
         $group = [];
         $order = [];
-        if (in_array('ev', $csoport, true) || in_array('honap', $csoport, true)) {
-            $select[] = "DATE_FORMAT(b.datum, '" . (in_array('ev', $csoport, true) ? '%Y' : '%Y-%m') . "') AS idoszak";
-            $group[] = 'idoszak';
-            $order[] = 'idoszak';
-        }
-        if (in_array('dolgozo', $csoport, true)) {
-            $select[] = 'b.dolgozo_id AS dolgozoid';
-            $select[] = 'MAX(d.nev) AS dolgozonev';
-            $group[] = 'dolgozoid';
-            $order = array_merge($order, ['dolgozonev', 'dolgozoid']);
-        }
-        if (in_array('berjogcim', $csoport, true)) {
-            $select[] = 'b.berjogcim_id AS berjogcimid';
-            $select[] = 'MAX(j.nev) AS berjogcimnev';
-            $group[] = 'berjogcimid';
-            $order = array_merge($order, ['berjogcimnev', 'berjogcimid']);
+        foreach ($csoport as $szint) {
+            switch ($szint) {
+                case 'ev':
+                case 'honap':
+                    $select[] = "DATE_FORMAT(b.datum, '" . ($szint === 'ev' ? '%Y' : '%Y-%m') . "') AS idoszak";
+                    $group[] = 'idoszak';
+                    $order[] = 'idoszak';
+                    break;
+                case 'dolgozo':
+                    $select[] = 'b.dolgozo_id AS dolgozoid';
+                    $select[] = 'MAX(d.nev) AS dolgozonev';
+                    $group[] = 'dolgozoid';
+                    $order = array_merge($order, ['dolgozonev', 'dolgozoid']);
+                    break;
+                case 'berjogcim':
+                    $select[] = 'b.berjogcim_id AS berjogcimid';
+                    $select[] = 'MAX(j.nev) AS berjogcimnev';
+                    $group[] = 'berjogcimid';
+                    $order = array_merge($order, ['berjogcimnev', 'berjogcimid']);
+                    break;
+            }
         }
         $select[] = 'SUM(b.osszeg) AS ertek';
 

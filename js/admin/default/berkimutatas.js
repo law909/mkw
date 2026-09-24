@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    const baseUrl = $('#mattkarb-header').data('baseurl');
     const drawChart = createReportChart('berkimutataschart', '#berkimutatasnote', 0);
 
     $('#mattkarb').mattkarb(new MattkarbConfig({
@@ -7,19 +8,20 @@ $(document).ready(function () {
             mkwcomp.datumEdit.init('#TolEdit');
             mkwcomp.datumEdit.init('#IgEdit');
 
+            const grouping = initReportGrouping(baseUrl);
+
             $('.js-refresh').on('click', function (e) {
                 e.preventDefault();
                 $.ajax({
-                    url: '/admin/berkimutatas/refresh',
+                    url: `${baseUrl}/refresh`,
                     type: 'GET',
                     dataType: 'json',
                     data: {
                         tol: $('input[name="tol"]').val(),
                         ig: $('input[name="ig"]').val(),
                         dolgozo: $('select[name="dolgozo"]').val(),
-                        idoszakcsoport: $('select[name="idoszakcsoport"]').val(),
-                        dolgozocsoport: $('input[name="dolgozocsoport"]').prop('checked') ? 1 : 0,
-                        berjogcimcsoport: $('input[name="berjogcimcsoport"]').prop('checked') ? 1 : 0
+                        szint: grouping.getSzintek(),
+                        megjelenites: $('select[name="megjelenites"]').val()
                     },
                     success: (d) => {
                         $('#eredmeny').html(d.html);
