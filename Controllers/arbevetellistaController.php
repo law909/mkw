@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Bizonylatfej;
+use Entities\Valutanem;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -30,6 +31,10 @@ class arbevetellistaController extends \mkwhelpers\Controller
         $view->setVar('gyartolist', $partner->getGyartoSelectList(0));
         $view->setVar('partnertipuslist', (new partnertipusController())->getSelectList(0));
         $view->setVar('webshopfilterlist', \mkw\store::getWebshopSelectList('', true));
+        $view->setVar('uklist', (new uzletkotoController())->getSelectList());
+        $view->setVar('valutanemlist', (new valutanemController())->getSelectList());
+        $view->setVar('cimkekat', (new partnercimkekatController())->getWithCimkek());
+        $view->setVar('bizonylattipusfilter', \mkw\store::isSuperzoneB2B());
 
         $view->printTemplateResult(false);
     }
@@ -48,6 +53,8 @@ class arbevetellistaController extends \mkwhelpers\Controller
             $csoport[] = 'webshop';
         }
         $brutto = $this->params->getStringRequestParam('ertektipus') === 'brutto';
+        $valutanemid = $this->params->getIntRequestParam('valutanem');
+        $valutanem = $valutanemid ? $this->getRepo(Valutanem::class)->find($valutanemid) : null;
 
         $rows = $this->getRepo(Bizonylatfej::class)->$repoMethod(
             $this->params->getStringRequestParam('datumtipus'),
@@ -55,17 +62,26 @@ class arbevetellistaController extends \mkwhelpers\Controller
             $this->params->getStringRequestParam('ig'),
             $brutto,
             $csoport,
-            $this->params->getIntRequestParam('partner'),
-            $this->params->getIntRequestParam('partnertipus'),
-            $this->params->getIntRequestParam('gyarto'),
-            $this->params->getArrayRequestParam('fafilter'),
-            $this->params->getStringRequestParam('webshopnum'),
-            $this->params->getStringRequestParam('nev')
+            [
+                'partner' => $this->params->getIntRequestParam('partner'),
+                'partnertipus' => $this->params->getIntRequestParam('partnertipus'),
+                'partnercimke' => $this->params->getArrayRequestParam('partnercimkefilter'),
+                'uzletkoto' => $this->params->getIntRequestParam('uzletkoto'),
+                'valutanem' => $valutanem?->getId(),
+                'bizonylattipus' => \mkw\store::isSuperzoneB2B() ? $this->params->getArrayRequestParam('bizonylattipus') : [],
+                'gyarto' => $this->params->getIntRequestParam('gyarto'),
+                'fafilter' => $this->params->getArrayRequestParam('fafilter'),
+                'webshopnum' => $this->params->getStringRequestParam('webshopnum'),
+                'nev' => $this->params->getStringRequestParam('nev'),
+            ]
         );
 
+        $currency = $valutanem ? $valutanem->getNev() : 'HUF';
         return [
             'rows' => $rows,
             'brutto' => $brutto,
+            'currency' => $currency,
+            'valueheader' => ($brutto ? t('Bruttó') : t('Nettó')) . ' ' . $currency,
             'idoszak' => (bool)array_intersect(['ev', 'honap'], $csoport),
             'gyarto' => in_array('gyarto', $csoport, true),
             'webshop' => in_array('webshop', $csoport, true),
@@ -95,6 +111,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
                 'legend' => false,
                 'labels' => array_map(fn($row) => $this->seriesLabel($row, $data), $rows),
                 'datasets' => [['label' => t('Árbevétel'), 'data' => array_column($rows, 'ertek')]],
+                'unit' => $data['currency'],
             ];
         }
 
@@ -123,7 +140,13 @@ class arbevetellistaController extends \mkwhelpers\Controller
                 'data' => array_map(fn($idoszak) => round($ertekek[$idoszak] ?? 0, 2), $labels),
             ];
         }
-        return ['stacked' => true, 'legend' => $data['gyarto'] || $data['webshop'], 'labels' => $labels, 'datasets' => $datasets];
+        return [
+            'stacked' => true,
+            'legend' => $data['gyarto'] || $data['webshop'],
+            'labels' => $labels,
+            'datasets' => $datasets,
+            'unit' => $data['currency'],
+        ];
     }
 
     public function refresh()
@@ -155,7 +178,7 @@ class arbevetellistaController extends \mkwhelpers\Controller
         if ($data['webshop']) {
             $fejlec['webshopnev'] = t('Webshop');
         }
-        $fejlec['ertek'] = $data['brutto'] ? t('Bruttó HUF') : t('Nettó HUF');
+        $fejlec['ertek'] = $data['valueheader'];
 
         $excel = new Spreadsheet();
         $sheet = $excel->getActiveSheet();

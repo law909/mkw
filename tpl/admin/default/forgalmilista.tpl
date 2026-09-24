@@ -3,6 +3,7 @@
 {block "inhead"}
     {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
+    <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
     <script type="text/javascript" src="/js/chartjs/chart.umd.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/chartvaluelabels.js"></script>
     <script type="text/javascript" src="/js/admin/default/arbevetellista.js"></script>
@@ -22,14 +23,23 @@
                 <div>
                     <label for="ErtekEdit">{at('Érték')}:</label>
                     <select id="ErtekEdit" name="ertektipus">
-                        <option value="netto">{at('nettó HUF')}</option>
-                        <option value="brutto">{at('bruttó HUF')}</option>
+                        <option value="netto">{at('nettó')}</option>
+                        <option value="brutto">{at('bruttó')}</option>
+                    </select>
+                    <label for="ValutanemEdit">{at('Valutanem')}:</label>
+                    <select id="ValutanemEdit" name="valutanem" title="{at('Mindegy: minden bizonylat forintban; valutanemmel csak az abban kiállítottak, a saját pénznemükben')}">
+                        <option value="">{at('Mindegy')}</option>
+                        {foreach $valutanemlist as $_valutanem}
+                            <option value="{$_valutanem.id}">{$_valutanem.caption}</option>
+                        {/foreach}
                     </select>
                 </div>
                 <div class="matt-hseparator"></div>
                 {include "comp_partnerselect.tpl"}
                 <div class="matt-hseparator"></div>
                 {include "comp_partnertipusselect.tpl"}
+                <div class="matt-hseparator"></div>
+                {include "comp_uzletkotoselect.tpl"}
                 <div class="matt-hseparator"></div>
                 {include "comp_gyartoselect.tpl"}
                 <div class="matt-hseparator"></div>
@@ -52,6 +62,13 @@
                     <input id="WebshopcsoportEdit" type="checkbox" name="webshopcsoport">
                     <label for="WebshopcsoportEdit">{at('webshoponként')}</label>
                 </div>
+                <div class="matt-hseparator"></div>
+                {if ($bizonylattipusfilter)}
+                    <div>{at('Bizonylattípus')} ({at('ha egy sincs bejelölve: előlegszámla, számla, bolti eladás')}):</div>
+                    {include "comp_bizonylattipus.tpl"}
+                    <div class="matt-hseparator"></div>
+                {/if}
+                {include "comp_partnercimkefilter.tpl"}
                 <div class="matt-hseparator"></div>
                 {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>

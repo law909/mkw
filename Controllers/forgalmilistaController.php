@@ -107,7 +107,7 @@ class forgalmilistaController extends arbevetellistaController
         $fejlec['ertek2'] = t('Változat 2');
         $fejlec['mennyiseg'] = t('Mennyiség');
         $fejlec['me'] = t('ME');
-        $fejlec['ertek'] = $data['brutto'] ? t('Bruttó HUF') : t('Nettó HUF');
+        $fejlec['ertek'] = $data['valueheader'];
 
         $excel = new Spreadsheet();
         $sheet = $excel->getActiveSheet();

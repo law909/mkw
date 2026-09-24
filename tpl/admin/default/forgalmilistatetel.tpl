@@ -9,7 +9,7 @@
         <th class="headercell">{at('Változat')}</th>
         <th class="headercell textalignright">{at('Mennyiség')}</th>
         <th class="headercell">{at('ME')}</th>
-        <th class="headercell textalignright">{if ($brutto)}{at('Bruttó HUF')}{else}{at('Nettó HUF')}{/if}</th>
+        <th class="headercell textalignright">{$valueheader|escape}</th>
     </tr>
     </thead>
     <tbody>

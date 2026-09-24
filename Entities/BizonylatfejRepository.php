@@ -753,20 +753,16 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return in_array($datumtipus, ['kelt', 'teljesites', 'esedekesseg'], true) ? 'bf.' . $datumtipus : 'bf.teljesites';
     }
 
-    /** The document and item filter shared by the revenue and the sales reports. */
-    private function getArbevetelFilter(
-        $datummezo,
-        $datumtol,
-        $datumig,
-        $partnerid,
-        $partnertipusid,
-        $gyartoid,
-        array $fafilter,
-        $webshopnum,
-        $nevfilter
-    ): FilterDescriptor {
+    /**
+     * The document and item filter shared by the revenue and the sales reports.
+     *
+     * @param array $szurok keys: partner, partnertipus, gyarto, fafilter, webshopnum, nev, partnercimke,
+     *                      uzletkoto, valutanem, bizonylattipus (empty = ARBEVETEL_BIZONYLATTIPUSOK)
+     */
+    private function getArbevetelFilter($datummezo, $datumtol, $datumig, array $szurok): FilterDescriptor
+    {
         $filter = new FilterDescriptor();
-        $filter->addFilter('bf.bizonylattipus_id', 'IN', self::ARBEVETEL_BIZONYLATTIPUSOK);
+        $filter->addFilter('bf.bizonylattipus_id', 'IN', ($szurok['bizonylattipus'] ?? []) ?: self::ARBEVETEL_BIZONYLATTIPUSOK);
         $filter->addFilter('bf.rontott', '=', false);
         if ($datumtol) {
             $filter->addFilter($datummezo, '>=', $datumtol);
@@ -774,15 +770,25 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($datumig) {
             $filter->addFilter($datummezo, '<=', $datumig);
         }
-        if ($partnerid) {
-            $filter->addFilter('bf.partner_id', '=', $partnerid);
+        if ($szurok['partner'] ?? null) {
+            $filter->addFilter('bf.partner_id', '=', $szurok['partner']);
         }
-        if ($gyartoid) {
-            $filter->addFilter('t.gyarto_id', '=', $gyartoid);
+        $cimkek = array_filter(array_map('intval', $szurok['partnercimke'] ?? []));
+        if ($cimkek) {
+            $filter->addSql('bf.partner_id IN (SELECT pc.partner_id FROM partner_cimkek pc WHERE pc.cimketorzs_id IN (' . implode(',', $cimkek) . '))');
         }
-        if ($fafilter) {
+        if ($szurok['uzletkoto'] ?? null) {
+            $filter->addFilter('bf.uzletkoto_id', '=', $szurok['uzletkoto']);
+        }
+        if ($szurok['valutanem'] ?? null) {
+            $filter->addFilter('bf.valutanem_id', '=', $szurok['valutanem']);
+        }
+        if ($szurok['gyarto'] ?? null) {
+            $filter->addFilter('t.gyarto_id', '=', $szurok['gyarto']);
+        }
+        if ($szurok['fafilter'] ?? []) {
             $ff = new FilterDescriptor();
-            $ff->addFilter('id', 'IN', $fafilter);
+            $ff->addFilter('id', 'IN', $szurok['fafilter']);
             $faszuro = [];
             foreach (\mkw\store::getEm()->getRepository(TermekFa::class)->getAll($ff, []) as $sor) {
                 $faszuro[] = $sor->getKarkod() . '%';
@@ -791,16 +797,26 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $filter->addFilter(['t.termekfa1karkod', 't.termekfa2karkod', 't.termekfa3karkod'], 'LIKE', $faszuro);
             }
         }
+        $nevfilter = $szurok['nev'] ?? null;
         if ($nevfilter !== null && $nevfilter !== '') {
             $filter->addFilter(['t.nev', 't.cikkszam', 'tv.cikkszam'], 'LIKE', '%' . $nevfilter . '%');
         }
-        $this->addPartnertipusWebshopFilter($filter, $partnertipusid, $webshopnum);
+        $this->addPartnertipusWebshopFilter($filter, $szurok['partnertipus'] ?? null, $szurok['webshopnum'] ?? '');
         // an invoice made from a shop sale would count the same sale twice, and so would its storno
         $filter->addSql(
             "NOT (bf.bizonylattipus_id <> 'boltieladas' AND (COALESCE(elod.bizonylattipus_id, '') = 'boltieladas'"
             . " OR (bf.storno = 1 AND COALESCE(elodelod.bizonylattipus_id, '') = 'boltieladas')))"
         );
         return $filter;
+    }
+
+    /** Without a currency filter the documents are summed in HUF, with one in their own currency. */
+    private function getArbevetelErtekmezo(bool $brutto, array $szurok): string
+    {
+        if ($szurok['valutanem'] ?? null) {
+            return $brutto ? 'bt.brutto' : 'bt.netto';
+        }
+        return $brutto ? 'bt.bruttohuf' : 'bt.nettohuf';
     }
 
     /** SELECT expressions by alias for the 'ev'/'honap'/'gyarto'/'webshop' grouping. */
@@ -859,41 +875,20 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * Revenue from the item lines of advance invoices, invoices and shop sales, in HUF. A storno
-     * document carries negative amounts, so it cancels its original; the offset line of a final
-     * invoice cancels the advance invoice the same way.
+     * Revenue from the item lines of advance invoices, invoices and shop sales, in HUF or, filtered to one
+     * currency, in that currency. A storno document carries negative amounts, so it cancels its original;
+     * the offset line of a final invoice cancels the advance invoice the same way.
      *
      * @param array $csoport any of 'ev', 'honap', 'gyarto', 'webshop' ('ev' and 'honap' exclude each other)
+     * @param array $szurok see getArbevetelFilter()
      */
-    public function getArbevetelLista(
-        $datumtipus,
-        $datumtol,
-        $datumig,
-        bool $brutto,
-        array $csoport,
-        $partnerid,
-        $partnertipusid,
-        $gyartoid,
-        array $fafilter,
-        $webshopnum,
-        $nevfilter = null
-    ): array {
+    public function getArbevetelLista($datumtipus, $datumtol, $datumig, bool $brutto, array $csoport, array $szurok): array
+    {
         $datummezo = $this->getArbevetelDatummezo($datumtipus);
-        $filter = $this->getArbevetelFilter(
-            $datummezo,
-            $datumtol,
-            $datumig,
-            $partnerid,
-            $partnertipusid,
-            $gyartoid,
-            $fafilter,
-            $webshopnum,
-            $nevfilter
-        );
         return $this->fetchArbevetelRows(
             $this->getArbevetelCsoportMezok($datummezo, $csoport),
-            ['ertek' => 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ')'],
-            $filter,
+            ['ertek' => 'SUM(' . $this->getArbevetelErtekmezo($brutto, $szurok) . ')'],
+            $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $szurok),
             self::ARBEVETEL_FROM
         );
     }
@@ -903,31 +898,10 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
      * getArbevetelLista() except advances. A storno negates either the quantity or the price depending on its type,
      * so the quantity takes the sign of the line value; a zero-value line keeps its own sign.
      */
-    public function getForgalmiLista(
-        $datumtipus,
-        $datumtol,
-        $datumig,
-        bool $brutto,
-        array $csoport,
-        $partnerid,
-        $partnertipusid,
-        $gyartoid,
-        array $fafilter,
-        $webshopnum,
-        $nevfilter = null
-    ): array {
+    public function getForgalmiLista($datumtipus, $datumtol, $datumig, bool $brutto, array $csoport, array $szurok): array
+    {
         $datummezo = $this->getArbevetelDatummezo($datumtipus);
-        $filter = $this->getArbevetelFilter(
-            $datummezo,
-            $datumtol,
-            $datumig,
-            $partnerid,
-            $partnertipusid,
-            $gyartoid,
-            $fafilter,
-            $webshopnum,
-            $nevfilter
-        );
+        $filter = $this->getArbevetelFilter($datummezo, $datumtol, $datumig, $szurok);
         $filter->addSql('bt.termek_id IS NOT NULL');
         // advances are not sales: neither the advance invoice nor its offset line on the final invoice
         $filter->addFilter('bf.bizonylattipus_id', '<>', \Services\ElolegService::BIZTIPUS);
@@ -952,7 +926,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
             $mezok,
             [
                 'mennyiseg' => 'SUM(CASE WHEN bt.nettohuf <> 0 THEN SIGN(bt.nettohuf) * ABS(bt.mennyiseg) ELSE bt.mennyiseg END)',
-                'ertek' => 'SUM(' . ($brutto ? 'bt.bruttohuf' : 'bt.nettohuf') . ')',
+                'ertek' => 'SUM(' . $this->getArbevetelErtekmezo($brutto, $szurok) . ')',
             ],
             $filter,
             self::ARBEVETEL_FROM,

@@ -4,7 +4,7 @@
         {if ($idoszak)}<th class="headercell">{at('Időszak')}</th>{/if}
         {if ($gyarto)}<th class="headercell">{at('Gyártó')}</th>{/if}
         {if ($webshop)}<th class="headercell">{at('Webshop')}</th>{/if}
-        <th class="headercell textalignright">{if ($brutto)}{at('Bruttó HUF')}{else}{at('Nettó HUF')}{/if}</th>
+        <th class="headercell textalignright">{$valueheader|escape}</th>
     </tr>
     </thead>
     <tbody>
