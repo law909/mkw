@@ -137,7 +137,10 @@ trait GroupedReport
         }
 
         $notes = [];
-        if (!$timeAxis) {
+        if ($timeAxis) {
+            // the rows come sorted by the levels, a period that is not the first one is not in order ('2025-01' or '2025')
+            ksort($labels, SORT_STRING);
+        } else {
             $totals = [];
             foreach ($series as $values) {
                 foreach ($values as $x => $value) {
