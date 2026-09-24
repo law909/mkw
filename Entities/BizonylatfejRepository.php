@@ -1753,6 +1753,45 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    /** The invoice types of the OSS return: the advance invoice too, its VAT is due on the advance. */
+    public const OSS_BIZONYLATTIPUSOK = ['szamla', 'keziszamla', 'elolegszamla'];
+
+    /**
+     * Invoice lines to private buyers in another EU member state (the delivery country, else the buyer's country, no
+     * EU VAT number), summed by document and VAT rate. A document belongs to the period of its fulfilment date, a
+     * storno to that of its issue date: it corrects its original's period ('eredetiteljesites') in a later return.
+     */
+    public function getOssTetelek(string $tol, string $ig): array
+    {
+        $rows = $this->_em->getConnection()->fetchAllAssociative(
+            'SELECT bf.id, bf.kelt, bf.teljesites, bf.storno, par.teljesites AS eredetiteljesites, bf.valutanemnev,'
+            . ' bf.partnernev, o.iso3166, o.nev AS orszagnev, COALESCE(a.magyar, 0) AS magyar, bt.afakulcs,'
+            . ' SUM(bt.netto) AS netto, SUM(bt.afaertek) AS afaertek'
+            . ' FROM bizonylattetel bt'
+            . ' INNER JOIN bizonylatfej bf ON (bt.bizonylatfej_id = bf.id)'
+            . ' INNER JOIN orszag o ON (o.id = COALESCE(bf.partnerszallorszag_id, bf.partnerorszag_id))'
+            . ' LEFT OUTER JOIN afa a ON (bt.afa_id = a.id)'
+            . ' LEFT OUTER JOIN bizonylatfej par ON (bf.storno = 1 AND par.id = bf.parbizonylatfej_id)'
+            . ' WHERE bf.bizonylattipus_id IN (?) AND bf.rontott = 0 AND (bt.rontott = 0 OR bt.rontott IS NULL)'
+            . " AND o.eu = 1 AND o.iso3166 <> 'HU' AND COALESCE(bf.partnereuadoszam, '') = ''"
+            . ' AND ((bf.storno = 0 AND bf.teljesites BETWEEN ? AND ?) OR (bf.storno = 1 AND bf.kelt BETWEEN ? AND ?))'
+            . ' GROUP BY bf.id, bt.afakulcs, a.magyar, o.id, par.id'
+            . ' ORDER BY o.iso3166, bt.afakulcs, bf.teljesites, bf.id',
+            [self::OSS_BIZONYLATTIPUSOK, $tol, $ig, $tol, $ig],
+            [\Doctrine\DBAL\ArrayParameterType::STRING]
+        );
+        foreach ($rows as &$row) {
+            foreach (['netto', 'afaertek', 'afakulcs'] as $mezo) {
+                $row[$mezo] = (float)$row[$mezo];
+            }
+            $row['storno'] = (bool)$row['storno'];
+            $row['magyar'] = (bool)$row['magyar'];
+            // some names are stored HTML-encoded ("&amp;")
+            $row['partnernev'] = html_entity_decode((string)$row['partnernev'], ENT_QUOTES | ENT_HTML5);
+        }
+        return $rows;
+    }
+
     /**
      * The cash invoices of the commission report as plain rows (entities would take gigabytes over years); invoices
      * with a fake receivable, themselves or through their parent document, are left out.

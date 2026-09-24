@@ -1783,6 +1783,10 @@ $router->map('GET', '/admin/bizonylattetellista/refresh', 'bizonylattetellistaCo
 $router->map('GET', '/admin/bizonylattetellista/export', 'bizonylattetellistaController#export', 'adminbizonylattetellistaexport');
 $router->map('GET', '/admin/bizonylattetellista/print', 'bizonylattetellistaController#doPrint', 'adminbizonylattetellistaprint');
 
+$router->map('GET', '/admin/osslista/view', 'osslistaController#view', 'adminosslistaview');
+$router->map('GET', '/admin/osslista/get', 'osslistaController#report', 'adminosslistaget');
+$router->map('GET', '/admin/osslista/export', 'osslistaController#export', 'adminosslistaexport');
+
 $router->map('GET', '/admin/arbevetellista/view', 'arbevetellistaController#view', 'adminarbevetellistaview');
 $router->map('GET', '/admin/arbevetellista/refresh', 'arbevetellistaController#refresh', 'adminarbevetellistarefresh');
 $router->map('POST', '/admin/arbevetellista/pdf', 'arbevetellistaController#pdf', 'adminarbevetellistapdf');
