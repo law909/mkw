@@ -475,6 +475,11 @@ select.tetelszamhiba,
     margin: 3px 0;
 }
 
+.arbevetel-grouping {
+    display: inline-block;
+    padding: 6px 10px;
+}
+
 .arbevetel-chart {
     position: relative;
     height: 400px;

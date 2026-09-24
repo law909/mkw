@@ -50,7 +50,16 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_webshopfilter.tpl"}
                 <div class="matt-hseparator"></div>
-                <div>
+                {if ($bizonylattipusfilter)}
+                    <div>{at('Bizonylattípus')} ({at('ha egy sincs bejelölve: előlegszámla, számla, bolti eladás')}):</div>
+                    {include "comp_bizonylattipus.tpl"}
+                    <div class="matt-hseparator"></div>
+                {/if}
+                {include "comp_partnercimkefilter.tpl"}
+                <div class="matt-hseparator"></div>
+                {include "comp_termekfa.tpl"}
+                <div class="matt-hseparator"></div>
+                <div class="arbevetel-grouping ui-widget ui-widget-content ui-corner-all">
                     <label for="IdoszakcsoportEdit">{at('Csoportosítás')}:</label>
                     <select id="IdoszakcsoportEdit" name="idoszakcsoport">
                         <option value="">{at('időszak nélkül')}</option>
@@ -62,15 +71,6 @@
                     <input id="WebshopcsoportEdit" type="checkbox" name="webshopcsoport">
                     <label for="WebshopcsoportEdit">{at('webshoponként')}</label>
                 </div>
-                <div class="matt-hseparator"></div>
-                {if ($bizonylattipusfilter)}
-                    <div>{at('Bizonylattípus')} ({at('ha egy sincs bejelölve: előlegszámla, számla, bolti eladás')}):</div>
-                    {include "comp_bizonylattipus.tpl"}
-                    <div class="matt-hseparator"></div>
-                {/if}
-                {include "comp_partnercimkefilter.tpl"}
-                <div class="matt-hseparator"></div>
-                {include "comp_termekfa.tpl"}
                 <div class="matt-hseparator"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
                 <a href="/admin/forgalmilista/export" class="js-exportbutton">{at('Export')}</a>
