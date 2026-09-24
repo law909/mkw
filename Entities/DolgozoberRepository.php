@@ -70,7 +70,7 @@ class DolgozoberRepository extends \mkwhelpers\Repository
      *
      * @param array $csoport any of 'ev', 'honap' (exclusive), 'dolgozo', 'berjogcim'
      */
-    public function getKimutatas($datumtol, $datumig, array $csoport): array
+    public function getKimutatas($datumtol, $datumig, array $csoport, $dolgozoid = null): array
     {
         $select = [];
         $group = [];
@@ -103,6 +103,10 @@ class DolgozoberRepository extends \mkwhelpers\Repository
         if ($datumig) {
             $where[] = 'b.datum <= ?';
             $params[] = \mkw\store::convDate($datumig);
+        }
+        if ($dolgozoid) {
+            $where[] = 'b.dolgozo_id = ?';
+            $params[] = (int)$dolgozoid;
         }
 
         $rows = $this->_em->getConnection()->fetchAllAssociative(

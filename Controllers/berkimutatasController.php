@@ -24,6 +24,8 @@ class berkimutatasController extends \mkwhelpers\Controller
         $view->setVar('pagetitle', t('Bér kimutatás'));
         $view->setVar('toldatum', date('Y.01.01'));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat));
+        // a former employee's pay is still reported
+        $view->setVar('dolgozolist', (new dolgozoController())->getSelectList(0, false));
         $view->printTemplateResult(false);
     }
 
@@ -44,7 +46,8 @@ class berkimutatasController extends \mkwhelpers\Controller
             'rows' => $this->getRepo(Dolgozober::class)->getKimutatas(
                 $this->params->getStringRequestParam('tol'),
                 $this->params->getStringRequestParam('ig'),
-                $csoport
+                $csoport,
+                $this->params->getIntRequestParam('dolgozo')
             ),
             'idoszak' => (bool)array_intersect(['ev', 'honap'], $csoport),
             'dolgozo' => in_array('dolgozo', $csoport, true),

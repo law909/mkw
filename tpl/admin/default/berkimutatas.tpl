@@ -18,6 +18,8 @@
                 <div class="matt-hseparator"></div>
                 {include "comp_idoszak.tpl" comptype="datum"}
                 <div class="matt-hseparator"></div>
+                {include "comp_dolgozoselect.tpl"}
+                <div class="matt-hseparator"></div>
                 <div class="arbevetel-grouping ui-widget ui-widget-content ui-corner-all">
                     <label for="IdoszakcsoportEdit">{at('Csoportosítás')}:</label>
                     <select id="IdoszakcsoportEdit" name="idoszakcsoport">

@@ -146,7 +146,8 @@ class dolgozoberController extends \mkwhelpers\MattableController
 
         $view->setVar('pagetitle', t('Bérek'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
-        $view->setVar('dolgozolist', (new dolgozoController())->getSelectList(0));
+        // the filter also finds a former employee's pay
+        $view->setVar('dolgozolist', (new dolgozoController())->getSelectList(0, false));
         $view->setVar('berjogcimlist', (new berjogcimController())->getFilterSelectList());
         $view->printTemplateResult(false);
     }

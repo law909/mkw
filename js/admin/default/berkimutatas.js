@@ -16,6 +16,7 @@ $(document).ready(function () {
                     data: {
                         tol: $('input[name="tol"]').val(),
                         ig: $('input[name="ig"]').val(),
+                        dolgozo: $('select[name="dolgozo"]').val(),
                         idoszakcsoport: $('select[name="idoszakcsoport"]').val(),
                         dolgozocsoport: $('input[name="dolgozocsoport"]').prop('checked') ? 1 : 0,
                         berjogcimcsoport: $('input[name="berjogcimcsoport"]').prop('checked') ? 1 : 0
