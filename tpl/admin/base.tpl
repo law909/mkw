@@ -29,6 +29,9 @@
     {block "inhead"}
     {/block}
     <script type="text/javascript" src="/js/admin/default/appinit.js"></script>
+    {if ($modernui|default:false)}
+        <script type="text/javascript" src="/js/admin/default/menukereso.js"></script>
+    {/if}
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
 <body{if ($modernui|default:false)} class="modernui{if ($oldalsavrejtve|default:false)} oldalsav-rejtve{/if}"{/if} data-vonalkodhibahang="{$vonalkodhibahangurl|default}">

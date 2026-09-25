@@ -193,6 +193,97 @@ body.modernui {
     white-space: nowrap;
 }
 
+/* Menükereső (menukereso.js)
+----------------------------------*/
+.menukereso {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12vh;
+    background: var(--mkw-overlay);
+}
+
+.menukereso[hidden] {
+    display: none;
+}
+
+.menukereso-panel {
+    width: min(560px, calc(100vw - 32px));
+    overflow: hidden;
+    border: 1px solid var(--mkw-border);
+    border-radius: 10px;
+    background: var(--mkw-surface);
+    box-shadow: var(--mkw-shadow);
+}
+
+.modernui .menukereso-input,
+.modernui .menukereso-input:focus {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    border: 0;
+    border-bottom: 1px solid var(--mkw-border);
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 1.15em;
+}
+
+.menukereso-lista {
+    max-height: 50vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+}
+
+.menukereso-talalat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: var(--mkw-radius);
+    cursor: pointer;
+}
+
+.menukereso-aktiv {
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-accent);
+}
+
+.menukereso-csoport {
+    color: var(--mkw-muted);
+    font-size: .85em;
+    white-space: nowrap;
+}
+
+.menukereso-cim,
+.menukereso-ures {
+    padding: 8px 10px;
+    color: var(--mkw-muted);
+    font-size: .85em;
+}
+
+.menukereso-cim {
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.menukereso-sugo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-top: 1px solid var(--mkw-border);
+    background: var(--mkw-surface-2);
+    color: var(--mkw-muted);
+    font-size: .85em;
+}
+
 /* Oldalsáv menü
 ----------------------------------*/
 .modernui .menu-container {
