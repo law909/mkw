@@ -610,6 +610,69 @@ body.modernui {
     color: var(--mkw-accent-hover);
 }
 
+/* Aktív szűrők chipként és üres lista (jquery.mattable.js)
+----------------------------------*/
+.modernui .mattable-szurochipek {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: .5em .8em;
+    border-bottom: 1px solid var(--mkw-border);
+}
+
+.modernui .mattable-szurochip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px 2px 10px;
+    border: 1px solid var(--mkw-accent-border);
+    border-radius: 999px;
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-text);
+}
+
+.modernui .mattable-szurochip-cimke {
+    color: var(--mkw-muted);
+}
+
+.modernui .mattable-szurochip-torol {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--mkw-muted);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modernui .mattable-szurochip-torol:hover {
+    background: var(--mkw-accent-border);
+    color: var(--mkw-text);
+}
+
+.modernui .mattable-szurochip-mind {
+    padding: 2px 6px;
+    border: 0;
+    background: transparent;
+    color: var(--mkw-accent);
+    font: inherit;
+    cursor: pointer;
+}
+
+.modernui .mattable-szurochip-mind:hover {
+    text-decoration: underline;
+}
+
+.modernui .mattable-ures td {
+    padding: 2.5em 1em;
+    color: var(--mkw-muted);
+    text-align: center;
+}
+
 /* Listatáblázat
 ----------------------------------*/
 .modernui .mattable-table th.mattable-thcolumn {

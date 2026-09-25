@@ -448,6 +448,76 @@
             }
         };
 
+        // a clearFilterElement() szerinti alapértéken áll-e a szűrőmező
+        var isFilterDefault = function (elem) {
+            var t = elem.type,
+                tag = elem.tagName.toLowerCase();
+            if (t === 'checkbox' || t === 'radio') {
+                return !elem.checked;
+            }
+            if (tag === 'select') {
+                var def = elem.querySelector('option[selected]') || elem.options[0];
+                return !def || def.selected;
+            }
+            return elem.value === '' || elem.value === null;
+        };
+
+        var filterLabel = function (elem) {
+            var $label = elem.id ? $('label[for="' + elem.id + '"]') : $();
+            if (!$label.length) {
+                $label = $(elem).prevAll('label').first();
+            }
+            return ($label.text() || elem.placeholder || '').trim().replace(/:$/, '');
+        };
+
+        // Modern témában az aktív szűrők chipként a lista fölött; a × az adott szűrőt állítja alapra.
+        let $chips = null;
+        var renderFilterChips = function () {
+            if (!document.body.classList.contains('modernui') || !Array.isArray(setup.filter.fields)) {
+                return;
+            }
+            if (!$chips) {
+                $chips = $('<div class="mattable-szurochipek">').insertAfter(filterwrapper.length ? filterwrapper : header);
+            }
+            $chips.empty();
+            var aktivak = setup.filter.fields.map(function (f) {
+                return $(f)[0];
+            }).filter(function (elem) {
+                return elem && !isFilterDefault(elem);
+            });
+            aktivak.forEach(function (elem) {
+                var ertek = elem.tagName.toLowerCase() === 'select' ? $(elem).find('option:selected').text()
+                    : (elem.type === 'checkbox' || elem.type === 'radio') ? '✓' : elem.value;
+                var cimke = filterLabel(elem);
+                $('<span class="mattable-szurochip">')
+                    .append(cimke ? $('<span class="mattable-szurochip-cimke">').text(cimke + ':') : null)
+                    .append($('<span>').text(ertek))
+                    .append($('<button type="button" class="mattable-szurochip-torol" title="Szűrő törlése">×</button>')
+                        .on('click', function () {
+                            clearFilterElement(elem);
+                            reloadTbody();
+                        }))
+                    .appendTo($chips);
+            });
+            if (aktivak.length > 1) {
+                $('<button type="button" class="mattable-szurochip-mind">Összes szűrő törlése</button>')
+                    .on('click', function () {
+                        $(setup.filter.clearButton).trigger('click');
+                    })
+                    .appendTo($chips);
+            }
+            $chips.toggle(aktivak.length > 0);
+        };
+
+        var showEmptyState = function (tbody) {
+            if (!document.body.classList.contains('modernui') || tbody.children('tr').length) {
+                return;
+            }
+            var colspan = Math.max($('th', table).length, 1);
+            $('<tr class="mattable-ures"><td></td></tr>').children('td').attr('colspan', colspan)
+                .text('Nincs a szűrésnek megfelelő tétel.').end().appendTo(tbody);
+        };
+
         // URL → vezérlők: a szűrőmezőket, rendezést és lapozást az URL-hez igazítja.
         // Az URL-ben NEM szereplő szűrőt törli, a rendezést alapértékre állítja – így
         // a Vissza/Előre gomb (popstate) korrektül vissza tudja állítani a korábbi nézetet.
@@ -526,6 +596,8 @@
                         tbody.empty().append(resp.html);
                     }
                     styleTbody();
+                    showEmptyState(tbody);
+                    renderFilterChips();
                     doEditLink(tbody);
                     if (typeof setup.onGetTBody === 'function') {
                         setup.onGetTBody.call(this, resp);
