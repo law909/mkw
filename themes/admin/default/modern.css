@@ -47,7 +47,7 @@ body.modernui {
 .modernui select,
 .modernui textarea {
     box-sizing: border-box;
-    padding: 3px 6px;
+    padding: 4px 8px;
     border: 1px solid var(--mkw-border-strong);
     border-radius: var(--mkw-radius-sm);
     background-color: var(--mkw-surface);
@@ -57,7 +57,7 @@ body.modernui {
 }
 
 .modernui select {
-    padding-right: 2px;
+    padding-right: 4px;
 }
 
 .modernui input:focus,
@@ -354,7 +354,19 @@ body.modernui {
 }
 
 .modernui .mattkarb-page td {
-    padding: 2px 6px 2px 0;
+    padding: 5px 14px 5px 0;
+}
+
+.modernui .mattkarb-page input[type="checkbox"],
+.modernui .mattkarb-page input[type="radio"] {
+    margin: 0 4px 0 0;
+    vertical-align: -2px;
+}
+
+/* a pipák címkéje sokszor puszta szöveg, ezért a következő pipa kapja a térközt */
+.modernui .mattkarb-page input[type="checkbox"] ~ input[type="checkbox"],
+.modernui .mattkarb-page input[type="radio"] ~ input[type="radio"] {
+    margin-left: 14px;
 }
 
 .modernui .mattkarb-page td > label,
