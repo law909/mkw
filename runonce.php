@@ -3033,6 +3033,19 @@ if ($DBVersion < '0201') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0201');
 }
 
+if ($DBVersion < '0202') {
+    // mkwcansas: a 0201 után a partner telefonja megvan, abból pótoljuk a hiba óta (2026-07-11) rögzített megrendelések üres
+    // telefonszámát; a számlához és a többi bizonylathoz nem nyúlunk
+    if (\mkw\store::isMindentkapni()) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE bizonylatfej bf JOIN partner p ON p.id = bf.partner_id SET bf.partnertelefon = p.telefon'
+            . ' WHERE bf.bizonylattipus_id = "megrendeles" AND bf.kelt >= "2026-07-11"'
+            . ' AND COALESCE(bf.partnertelefon, "") = "" AND COALESCE(p.telefon, "") <> ""'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0202');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
