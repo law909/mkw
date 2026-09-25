@@ -1,0 +1,36 @@
+/* MKW "modern-dark": a modern téma sötét tokenekkel. */
+@import url("../modern/jquery-ui.css");
+
+:root {
+	--mkw-bg: #09090b;
+	--mkw-surface: #18181b;
+	--mkw-surface-2: #1f1f23;
+	--mkw-hover: #27272a;
+	--mkw-border: #2e2e33;
+	--mkw-border-strong: #3f3f46;
+	--mkw-text: #f4f4f5;
+	--mkw-muted: #a1a1aa;
+
+	--mkw-accent: #60a5fa;
+	--mkw-accent-hover: #93c5fd;
+	--mkw-accent-soft: rgba(96, 165, 250, .14);
+	--mkw-accent-border: rgba(96, 165, 250, .4);
+	--mkw-accent-text: #0b1220;
+	--mkw-focus: rgba(96, 165, 250, .35);
+
+	--mkw-highlight: rgba(251, 191, 36, .12);
+	--mkw-highlight-border: rgba(251, 191, 36, .45);
+	--mkw-highlight-text: #fcd34d;
+	--mkw-danger: #f87171;
+	--mkw-danger-soft: rgba(248, 113, 113, .12);
+	--mkw-danger-border: rgba(248, 113, 113, .4);
+	--mkw-danger-text: #fca5a5;
+	--mkw-success: #4ade80;
+
+	--mkw-overlay: rgba(0, 0, 0, .6);
+	--mkw-shadow-sm: none;
+	--mkw-shadow: 0 12px 32px rgba(0, 0, 0, .5);
+	--mkw-icon-filter: invert(.85);
+
+	color-scheme: dark;
+}

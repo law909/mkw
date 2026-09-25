@@ -432,9 +432,15 @@ class adminController extends mkwhelpers\Controller
         if (!is_array($lu) || !array_key_exists('id', $lu)) {
             return;
         }
+        $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
+        // a sysadmin nem dolgozó: nála csak a session-ben él a választás, a következő belépésig
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            $lu['uitheme'] = $theme;
+            \mkw\store::getAdminSession()->loggedinuser = $lu;
+            return;
+        }
         $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find($lu['id']);
         if ($dolgozo) {
-            $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
             $dolgozo->setUitheme($theme);
             $this->getEm()->persist($dolgozo);
             $this->getEm()->flush();

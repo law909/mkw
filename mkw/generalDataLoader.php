@@ -33,6 +33,7 @@ class generalDataLoader
             $uitheme = 'sunny';
         }
         $view->setVar('uitheme', $uitheme);
+        $view->setVar('modernui', str_starts_with($uitheme, 'modern'));
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
         $view->setVar('sysadmin', \mkw\store::getAdminSession()->pk == -1);
@@ -70,6 +71,8 @@ class generalDataLoader
         }
         $view->setVar('enabledwebshops', \mkw\store::getEnabledWebshops());
         $view->setVar('uithemes', [
+            'modern',
+            'modern-dark',
             'black-tie',
             'blitzer',
             'cupertino',
