@@ -697,12 +697,16 @@ body.modernui {
 }
 
 .modernui .mattkarb-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
     display: flex;
     align-items: center;
     gap: .5em;
     padding: .7em 1.2em;
     border-top: 1px solid var(--mkw-border);
     background: var(--mkw-surface-2);
+    box-shadow: 0 -6px 12px -10px rgba(0, 0, 0, .35);
 }
 
 .modernui #mattkarb-okbutton,
