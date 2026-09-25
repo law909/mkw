@@ -35,6 +35,15 @@ class consts
     const Termekmenutipus4 = 'termekmenutipus4';
     const Termekmenutipus5 = 'termekmenutipus5';
 
+    /** A webshop menüje (TermekMenuFa id), webshoponként: \mkw\store::getTermekMenuFa(); üres = nincs menü. */
+    const TermekMenuFa = 'termekmenufa';
+    const TermekMenuFa2 = 'termekmenufa2';
+    const TermekMenuFa3 = 'termekmenufa3';
+    const TermekMenuFa4 = 'termekmenufa4';
+    const TermekMenuFa5 = 'termekmenufa5';
+    /** a 0200-as runonce naplója: amíg nincs meg, a régi menüoszlopok nem dobhatók el */
+    const TermekMenuFaMigracio = 'termekmenufamigracio';
+
     /** a két termékmenü-fa beállítható neve; az alapértelmezés a \mkw\store olvasóiban van */
     const TermekmenuNev = 'termekmenunev';
     const Termekmenu2Nev = 'termekmenu2nev';

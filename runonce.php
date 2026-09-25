@@ -2906,6 +2906,121 @@ if ($DBVersion < '0199') {
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0199');
 }
 
+if ($DBVersion < '0200') {
+    // A két másolt menüfa (termekmenu, termekmenu2) helyett egy általános: a menü a termekmenufa sora, a csomópontok
+    // mind a termekmenu táblában, a termék helye a termekmenutermek-ben (menünként egy). A régi oszlopok maradnak, a
+    // következő kiadás dobja el őket (docs/terv-termekmenu-webshoponkent-20260925.md). Hiányzó sémánál kihagy: a
+    // fejlesztői gépen a runonce megelőzheti az updateschema-t.
+    $conn = \mkw\store::getEm()->getConnection();
+    $sema = (int)$conn->fetchOne(
+        'SELECT (SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE()'
+        . ' AND TABLE_NAME IN ("termekmenufa", "termekmenutermek"))'
+        . ' + (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE()'
+        . ' AND TABLE_NAME = "termekmenu" AND COLUMN_NAME IN ("termekmenufa_id", "termekmenu2id"))'
+    );
+    if ($sema === 4) {
+        $sfx = fn($n) => $n == 1 ? '' : (string)$n;
+        $menu2kell = (int)$conn->fetchOne('SELECT COUNT(*) FROM termekmenu2') > 1
+            || (int)$conn->fetchOne('SELECT COUNT(*) FROM termek WHERE termekmenu2_id IS NOT NULL') > 0;
+        for ($n = 1; $n <= 5; $n++) {
+            $menu2kell = $menu2kell || \mkw\store::getParameter('termekmenutipus' . $sfx($n)) === 'termekmenu2';
+        }
+        $naplo = [];
+        $conn->transactional(function ($conn) use ($menu2kell, &$naplo) {
+            $conn->executeStatement(
+                'INSERT INTO termekmenufa (id, nev, sorrend, created, lastmod) SELECT 1, ?, 1, NOW(), NOW()'
+                . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM termekmenufa WHERE id = 1)',
+                [\mkw\store::getParameter('termekmenunev') ?: 'Termék menü']
+            );
+            $conn->executeStatement('UPDATE termekmenu SET termekmenufa_id = 1 WHERE termekmenufa_id IS NULL AND termekmenu2id IS NULL');
+
+            if ($menu2kell) {
+                $conn->executeStatement(
+                    'INSERT INTO termekmenufa (id, nev, sorrend, created, lastmod) SELECT 2, ?, 2, NOW(), NOW()'
+                    . ' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM termekmenufa WHERE id = 2)',
+                    [\mkw\store::getParameter('termekmenu2nev') ?: 'Termék menü 2']
+                );
+                if (!(int)$conn->fetchOne('SELECT COUNT(*) FROM termekmenu WHERE termekmenu2id IS NOT NULL')) {
+                    $mezok = 'nev, nev_l1, sorrend, slug, rovidleiras, rovidleiras_l1, leiras, leiras_l1,'
+                        . ' leiras2, leiras2_l1, leiras3, leiras3_l1, menu1lathato, menu2lathato, menu3lathato,'
+                        . ' menu4lathato, oldalcim, seodescription, kepurl, kepleiras, inaktiv, idegenkod, arukeresoid,'
+                        . ' lathato, lathato2, lathato3, lathato4, lathato5, lathato6, lathato7, lathato8,'
+                        . ' lathato9, lathato10, lathato11, lathato12, lathato13, lathato14, lathato15, created, lastmod';
+                    // régi id sorrendben: a kirakat menüje ma id szerint rendez
+                    $conn->executeStatement(
+                        'INSERT INTO termekmenu (' . $mezok . ', termekmenufa_id, termekmenu2id, parent_id)'
+                        . ' SELECT ' . $mezok . ', 2, o.id, NULL FROM termekmenu2 o ORDER BY o.id'
+                    );
+                    $conn->executeStatement(
+                        'UPDATE termekmenu n JOIN termekmenu2 o ON o.id = n.termekmenu2id'
+                        . ' JOIN termekmenu p ON p.termekmenu2id = o.parent_id'
+                        . ' SET n.parent_id = p.id WHERE n.termekmenufa_id = 2'
+                    );
+                }
+            }
+
+            // ma csak a webshop 1 lathato jelzőjét nézi a kirakat, minden webshopban: ebből lesz az inaktiv
+            $naplo['inaktivva'] = $conn->executeStatement('UPDATE termekmenu SET inaktiv = 1 WHERE lathato = 0 AND COALESCE(inaktiv, 0) = 0');
+
+            // a gyökérre mutató hivatkozás ma is "nincs besorolva", nem lesz belőle elhelyezés
+            $naplo['elhelyezes1'] = $conn->executeStatement(
+                'INSERT INTO termekmenutermek (termek_id, termekmenu_id, termekmenufa_id, created, lastmod)'
+                . ' SELECT t.id, n.id, 1, NOW(), NOW() FROM termek t'
+                . ' JOIN termekmenu n ON n.id = t.termekmenu1_id AND n.termekmenufa_id = 1 AND n.parent_id IS NOT NULL'
+                . ' WHERE NOT EXISTS (SELECT 1 FROM termekmenutermek x WHERE x.termek_id = t.id AND x.termekmenufa_id = 1)'
+            );
+            $naplo['elhelyezes2'] = $conn->executeStatement(
+                'INSERT INTO termekmenutermek (termek_id, termekmenu_id, termekmenufa_id, created, lastmod)'
+                . ' SELECT t.id, n.id, 2, NOW(), NOW() FROM termek t'
+                . ' JOIN termekmenu n ON n.termekmenu2id = t.termekmenu2_id AND n.termekmenufa_id = 2 AND n.parent_id IS NOT NULL'
+                . ' WHERE NOT EXISTS (SELECT 1 FROM termekmenutermek x WHERE x.termek_id = t.id AND x.termekmenufa_id = 2)'
+            );
+            $naplo['gyokerben1'] = (int)$conn->fetchOne(
+                'SELECT COUNT(*) FROM termek t JOIN termekmenu n ON n.id = t.termekmenu1_id AND n.parent_id IS NULL'
+            );
+            $naplo['gyokerben2'] = (int)$conn->fetchOne(
+                'SELECT COUNT(*) FROM termek t JOIN termekmenu2 o ON o.id = t.termekmenu2_id AND o.parent_id IS NULL'
+            );
+
+            // a slug ezután menün belül egyedi; ami ma is ütközik (a régi 0133-as betöltésből), utótagot kap
+            $utkozo = $conn->fetchAllAssociative(
+                'SELECT termekmenufa_id, slug, GROUP_CONCAT(id ORDER BY id) AS idk FROM termekmenu'
+                . ' WHERE slug IS NOT NULL AND termekmenufa_id IS NOT NULL'
+                . ' GROUP BY termekmenufa_id, slug HAVING COUNT(*) > 1'
+            );
+            $naplo['slugutkozes'] = [];
+            foreach ($utkozo as $sor) {
+                foreach (array_slice(explode(',', $sor['idk']), 1) as $id) {
+                    $conn->executeStatement('UPDATE termekmenu SET slug = CONCAT(slug, "-", id) WHERE id = ?', [(int)$id]);
+                    $naplo['slugutkozes'][] = $sor['slug'] . ' → ' . $sor['slug'] . '-' . $id;
+                }
+            }
+
+            // egy „Termékmenük" menüpont marad, a karkód-rendezés megszűnt
+            $conn->executeStatement('UPDATE menu SET nev = "Termékmenük" WHERE url = "/admin/termekmenu/viewlist"');
+            $conn->executeStatement(
+                'DELETE FROM menu WHERE url = "/admin/termekmenu2/viewlist"'
+                . ' OR class IN ("js-regeneratemenukarkod", "js-regeneratemenu2karkod")'
+            );
+            $naplo['blogposzt_termekmenu1'] = (int)$conn->fetchOne('SELECT COUNT(*) FROM blogposzt WHERE termekmenu1_id IS NOT NULL');
+        });
+
+        // a webshopok menüválasztása: 'termekmenu2' → 2-es menü, minden más → 1-es (ma is az üres az 1-es fát jelenti)
+        $van2 = (int)$conn->fetchOne('SELECT COUNT(*) FROM termekmenufa WHERE id = 2');
+        for ($n = 1; $n <= 5; $n++) {
+            if ((string)\mkw\store::getParameter(\mkw\consts::TermekMenuFa . $sfx($n)) === '') {
+                $regi = \mkw\store::getParameter('termekmenutipus' . $sfx($n));
+                \mkw\store::setParameter(\mkw\consts::TermekMenuFa . $sfx($n), ($regi === 'termekmenu2' && $van2) ? '2' : '1');
+            }
+        }
+        $naplo['menuk'] = $conn->fetchAllKeyValue('SELECT termekmenufa_id, COUNT(*) FROM termekmenu GROUP BY termekmenufa_id');
+        \mkw\store::writelog('0200: ' . json_encode($naplo, JSON_UNESCAPED_UNICODE), 'termekmenufa_migracio.txt');
+        \mkw\store::setParameter(\mkw\consts::TermekMenuFaMigracio, json_encode($naplo, JSON_UNESCAPED_UNICODE));
+        \mkw\pagecache::bumpVersion();
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0200');
+    }
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

@@ -14,7 +14,9 @@ use Traits\GetsFieldValue;
  * indexes={
  *      @ORM\index(name="termekmenuslug_idx",columns={"slug"}),
  *      @ORM\index(name="termekmenunevparent_idx",columns={"nev","parent_id"}),
- *      @ORM\index(name="termekmenuidegenkod_idx",columns={"idegenkod"})
+ *      @ORM\index(name="termekmenuidegenkod_idx",columns={"idegenkod"}),
+ *      @ORM\index(name="termekmenufaslug_idx",columns={"termekmenufa_id","slug"}),
+ *      @ORM\index(name="termekmenu2id_idx",columns={"termekmenu2id"})
  * })
  */
 class TermekMenu
@@ -54,6 +56,21 @@ class TermekMenu
      */
     private $parent;
 
+    /**
+     * The menu of the node: a root gets it once, the rest inherit it from their parent.
+     *
+     * @ORM\ManyToOne(targetEntity="TermekMenuFa")
+     * @ORM\JoinColumn(name="termekmenufa_id", referencedColumnName="id",nullable=true,onDelete="restrict")
+     */
+    private $termekmenufa;
+
+    /**
+     * The TermekMenu2 row the node was copied from (runonce 0200), only for that migration.
+     *
+     * @ORM\Column(type="integer",nullable=true)
+     */
+    private $termekmenu2id;
+
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev;
 
@@ -64,7 +81,7 @@ class TermekMenu
     private $sorrend;
 
     /**
-     * @Gedmo\Slug(fields={"nev"})
+     * @Gedmo\Slug(fields={"nev"}, unique_base="termekmenufa")
      * @ORM\Column(type="string",length=255,nullable=true)
      */
     private $slug;
@@ -316,7 +333,7 @@ class TermekMenu
         if ($this->parent !== $parent) {
             $this->parent = $parent;
             $parent->addChild($this);
-            $this->setKarkod($parent->getKarkod() . $this->getId());
+            $this->termekmenufa = $parent->getTermekmenufa();
         }
     }
 
@@ -326,8 +343,26 @@ class TermekMenu
             $parent = $this->parent;
             $this->parent = null;
             $parent->removeChild($this);
-            $this->setKarkod(null);
         }
+    }
+
+    public function getTermekmenufa(): ?TermekMenuFa
+    {
+        return $this->termekmenufa;
+    }
+
+    public function getTermekmenufaId()
+    {
+        return $this->termekmenufa?->getId();
+    }
+
+    /** Only a root is given its menu; a node below one takes it from setParent(). */
+    public function setTermekmenufa(TermekMenuFa $termekmenufa)
+    {
+        if ($this->parent) {
+            throw new \LogicException('A menü csak a gyökérnél állítható, a többi csomópont a szülőjétől örökli.');
+        }
+        $this->termekmenufa = $termekmenufa;
     }
 
     private function gtn($level, $elval)
@@ -643,7 +678,8 @@ class TermekMenu
 
     public function isDeletable()
     {
-        return ($this->children->isEmpty()) && ($this->termekek1->isEmpty());
+        return $this->children->isEmpty()
+            && !store::getEm()->getRepository(TermekMenuTermek::class)->count(['termekmenu' => $this]);
     }
 
     public function getLastmod()

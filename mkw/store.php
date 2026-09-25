@@ -47,6 +47,8 @@ class store
      */
     private static $pubadminsession;
     private static $templateFactory;
+    /** getTermekMenuFa(): false until read */
+    private static $termekMenuFa = false;
     private static $router;
     private static $gdl;
     private static $sanitizer;
@@ -1818,6 +1820,16 @@ class store
     {
         $id = self::getParameter(\mkw\consts::NewPartnerCimke . self::getWebshopNum());
         return $id ? self::getEm()->getRepository(\Entities\Partnercimketorzs::class)->find($id) : null;
+    }
+
+    /** The menu of the current webshop (setup: "Menü forrása"), null when it has none. */
+    public static function getTermekMenuFa(): ?\Entities\TermekMenuFa
+    {
+        if (self::$termekMenuFa === false) {
+            $id = (int)self::getParameter(self::getWebshopFieldName(\mkw\consts::TermekMenuFa));
+            self::$termekMenuFa = $id ? self::getEm()->getRepository(\Entities\TermekMenuFa::class)->find($id) : null;
+        }
+        return self::$termekMenuFa;
     }
 
     public static function getTermekmenuName()

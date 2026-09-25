@@ -315,6 +315,13 @@ class Termek
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekmenu2karkod = '';
 
+    /**
+     * The product's node in each menu (TermekMenuFa), at most one per menu.
+     *
+     * @ORM\OneToMany(targetEntity="TermekMenuTermek", mappedBy="termek", cascade={"persist","remove"}, orphanRemoval=true)
+     */
+    private $termekmenuk;
+
     /** @ORM\Column(type="text",nullable=true) */
     private $kepurl = '';
 
@@ -523,6 +530,7 @@ class Termek
     public function __construct()
     {
         $this->cimkek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->termekmenuk = new \Doctrine\Common\Collections\ArrayCollection();
         $this->kapcsolodokoltsegek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekkepek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termekszinkepek = new \Doctrine\Common\Collections\ArrayCollection();
@@ -1493,14 +1501,62 @@ class Termek
         );
     }
 
-    /** Az elsődleges kategória neve a webshop nyelvén; a téma dönti el, melyik fa az elsődleges. */
+    /** Az elsődleges kategória neve a webshop nyelvén; a téma dönti el, hogy a webshop menüje vagy a termékfa az elsődleges. */
     public function getKategoriaNev()
     {
-        $kat = (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) ? $this->termekmenu1 : $this->termekfa1;
-        if ($kat && $kat->getId() > 1) {
+        if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
+            $fa = \mkw\store::getTermekMenuFa();
+            $kat = $fa ? $this->getTermekMenu($fa) : null;
+        } else {
+            $kat = $this->termekfa1;
+        }
+        if ($kat && $kat->getParent()) {
             return $kat->getLocalizedFieldValueOrDefault('nev');
         }
         return '';
+    }
+
+    public function getTermekmenuk()
+    {
+        return $this->termekmenuk;
+    }
+
+    /** The product's node in the menu, null when it is not in it. */
+    public function getTermekMenu(TermekMenuFa $fa): ?TermekMenu
+    {
+        foreach ($this->termekmenuk as $elhelyezes) {
+            if ($elhelyezes->getTermekmenufa() === $fa) {
+                return $elhelyezes->getTermekmenu();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Places the product in the menu, or takes it out with null. The existing row is changed in place: removing it and
+     * adding a new one would break the unique key, Doctrine inserts before it deletes.
+     */
+    public function setTermekMenu(TermekMenuFa $fa, ?TermekMenu $node)
+    {
+        if ($node && ($node->getTermekmenufa() !== $fa || !$node->getParent())) {
+            throw new \InvalidArgumentException('A csomópont nem ebből a menüből való, vagy a menü gyökere.');
+        }
+        foreach ($this->termekmenuk as $elhelyezes) {
+            if ($elhelyezes->getTermekmenufa() === $fa) {
+                if ($node) {
+                    $elhelyezes->setTermekmenu($node);
+                } else {
+                    $this->termekmenuk->removeElement($elhelyezes);
+                }
+                return;
+            }
+        }
+        if ($node) {
+            $elhelyezes = new TermekMenuTermek();
+            $elhelyezes->setTermek($this);
+            $elhelyezes->setTermekmenu($node);
+            $this->termekmenuk->add($elhelyezes);
+        }
     }
 
     public function setSeodescription($seodescription)
