@@ -712,12 +712,13 @@ body.modernui {
     text-align: left;
 }
 
-/* a kijelölő pipa oszlopa csak akkora, amekkora a pipa */
+/* a kijelölő pipa oszlopa keskeny, fix szélességű */
 .modernui .mattable-table th.mattable-thcolumn:first-child:has(> input[type="checkbox"]),
 .modernui .mattable-table > tbody > tr > td:first-child:has(> input[type="checkbox"]) {
-    width: 1px;
-    padding-right: 4px;
-    padding-left: 10px;
+    box-sizing: border-box;
+    width: 68px;
+    padding-right: 0;
+    padding-left: 0;
     text-align: center;
 }
 
