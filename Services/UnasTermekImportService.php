@@ -6,7 +6,6 @@ use Entities\Termek;
 use Entities\Termekcimkekat;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
-use Entities\TermekMenu;
 use Entities\TermekValtozat;
 
 /**
@@ -77,7 +76,7 @@ class UnasTermekImportService
      *
      * | kulcs              | kötelező | jelentés                                                            |
      * |--------------------|----------|---------------------------------------------------------------------|
-     * | `mezo`             | igen     | `termekfa1` \| `termekfa2` \| `termekfa3` \| `termekmenu1` – ez dönti el az entitást is |
+     * | `mezo`             | igen     | `termekfa1` \| `termekfa2` \| `termekfa3` – melyik `Termek` mezőbe kerül a levél |
      * | `szintelvalaszto`  | nem      | az útvonal szintjeinek elválasztója, alapból `|`                     |
      */
     private const COLUMNS = [
@@ -110,7 +109,7 @@ class UnasTermekImportService
             // „Elektronika|Televíziók|LCD" – a `|` a kategória SZINTJEIT választja el
             'fejlec' => ['Kategória'],
             'cel' => 'termekfa',
-            'mezo' => 'termekmenu1',
+            'mezo' => 'termekfa1',
         ],
     ];
 
@@ -122,7 +121,6 @@ class UnasTermekImportService
         'termekfa1' => TermekFa::class,
         'termekfa2' => TermekFa::class,
         'termekfa3' => TermekFa::class,
-        'termekmenu1' => TermekMenu::class,
     ];
 
     /** ha legalább egy Get* be van kapcsolva, csak a jelölt oszlopok jönnek */

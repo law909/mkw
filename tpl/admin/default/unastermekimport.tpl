@@ -136,7 +136,7 @@
                         <div>
                             <label for="EditrelaciokEdit">{at('Címkék és kategóriák írása')}:</label>
                             <input id="EditrelaciokEdit" name="editrelaciok" type="checkbox">
-                            <span>{at('A gyártó címkeként, a kategória a termékmenübe kerül – a hiányzó címke, címkekategória és menüszint létrejön. Az UNAS kategória-útvonala teljes egészében felépül, a legfelső szint a gyökér alá. Üres UNAS érték itt sem töröl.')}</span>
+                            <span>{at('A gyártó címkeként, a kategória a termékfába (1. kategória) kerül – a hiányzó címke, címkekategória és kategóriaszint létrejön. Az UNAS kategória-útvonala teljes egészében felépül, a legfelső szint a gyökér alá. Üres UNAS érték itt sem töröl.')}</span>
                         </div>
                         <p>{at('A termékfa gyökerében (vagy termékfa nélkül) álló termék ettől a kapcsolótól függetlenül az UNAS kategóriájába kerül a termékfában; a hiányzó szintek létrejönnek.')}</p>
                         <div class="matt-hseparator"></div>
