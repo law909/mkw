@@ -448,18 +448,40 @@
             }
         };
 
-        // a clearFilterElement() szerinti alapértéken áll-e a szűrőmező
-        var isFilterDefault = function (elem) {
+        // „nem szűr" jelentésű opciók: üres érték vagy válasszon / mindegy / mind kezdetű felirat
+        // (az érték lehet '', 0, 9 is; a felirat folytatódhat, pl. „Mindegy B2B")
+        var isNeutralOption = function (opt) {
+            return opt.value === '' || /^(válasszon|mindegy|mind|összes)(\s|$)/i.test(opt.text.trim());
+        };
+
+        // Ténylegesen szűr-e a mező. A szerver által beállított alapérték is szűrés (pl. a dolgozó
+        // választóban a bejelentkezett dolgozó), ezért nem az alapértékhez mérünk, hanem a semlegeshez.
+        // A semleges opció nélküli legördülő üzemmód-választó (pl. „Készlet szűrő"), az nem szűrés.
+        var isFilterActive = function (elem) {
             var t = elem.type,
                 tag = elem.tagName.toLowerCase();
             if (t === 'checkbox' || t === 'radio') {
-                return !elem.checked;
+                return elem.checked;
             }
             if (tag === 'select') {
-                var def = elem.querySelector('option[selected]') || elem.options[0];
-                return !def || def.selected;
+                var sel = elem.options[elem.selectedIndex];
+                return !!sel && !isNeutralOption(sel) && Array.prototype.some.call(elem.options, isNeutralOption);
             }
-            return elem.value === '' || elem.value === null;
+            return elem.value !== '' && elem.value !== null;
+        };
+
+        var neutralizeFilterElement = function (elem) {
+            var t = elem.type,
+                tag = elem.tagName.toLowerCase();
+            if (t === 'checkbox' || t === 'radio') {
+                elem.checked = false;
+                return;
+            }
+            if (tag === 'select') {
+                Array.prototype.find.call(elem.options, isNeutralOption).selected = true;
+                return;
+            }
+            elem.value = '';
         };
 
         var filterLabel = function (elem) {
@@ -483,7 +505,7 @@
             var aktivak = setup.filter.fields.map(function (f) {
                 return $(f)[0];
             }).filter(function (elem) {
-                return elem && !isFilterDefault(elem);
+                return elem && isFilterActive(elem);
             });
             aktivak.forEach(function (elem) {
                 var ertek = elem.tagName.toLowerCase() === 'select' ? $(elem).find('option:selected').text()
@@ -494,7 +516,7 @@
                     .append($('<span>').text(ertek))
                     .append($('<button type="button" class="mattable-szurochip-torol" title="Szűrő törlése">×</button>')
                         .on('click', function () {
-                            clearFilterElement(elem);
+                            neutralizeFilterElement(elem);
                             reloadTbody();
                         }))
                     .appendTo($chips);
@@ -502,7 +524,8 @@
             if (aktivak.length > 1) {
                 $('<button type="button" class="mattable-szurochip-mind">Összes szűrő törlése</button>')
                     .on('click', function () {
-                        $(setup.filter.clearButton).trigger('click');
+                        aktivak.forEach(neutralizeFilterElement);
+                        reloadTbody();
                     })
                     .appendTo($chips);
             }
