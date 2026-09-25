@@ -4,9 +4,14 @@ namespace Controllers;
 
 use Entities\Dolgozo;
 use Entities\Dolgozoszabadsag;
+use Traits\Munkanap;
 
 class dolgozoszabadsagController extends \mkwhelpers\MattableController
 {
+    use Munkanap;
+
+    /** the holidays of the listed page, loaded once; null = look them up per row */
+    private $unnepnapok = null;
 
     public function __construct()
     {
@@ -30,6 +35,7 @@ class dolgozoszabadsagController extends \mkwhelpers\MattableController
         $x['dolgozo'] = $t->getDolgozoId();
         $x['dolgozonev'] = $t->getDolgozoNev();
         $x['tipusnev'] = $t->getTipusNev();
+        $x['napok'] = $this->countNapok($t);
         return $x;
     }
 
@@ -81,7 +87,28 @@ class dolgozoszabadsagController extends \mkwhelpers\MattableController
             $this->getPager()->getElemPerPage()
         );
 
+        $this->unnepnapok = $this->getUnnepnapokFor($egyedek);
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
+    }
+
+    /** Munkanapok száma, ahogy a szabadság kimutatás és a jelenléti ív is számolja. */
+    private function countNapok(Dolgozoszabadsag $t)
+    {
+        $dolgozo = $t->getDolgozo();
+        $tol = $t->getDatumtol();
+        $ig = $t->getDatumig();
+        if (!$dolgozo || !$tol || !$ig) {
+            return '';
+        }
+        return $this->countMunkanapok($dolgozo, $tol, $ig, $this->unnepnapok ?? $this->getUnnepnapok($tol, $ig));
+    }
+
+    /** @param Dolgozoszabadsag[] $egyedek */
+    private function getUnnepnapokFor(array $egyedek)
+    {
+        $tolok = array_filter(array_map(fn($e) => $e->getDatumtol(), $egyedek));
+        $igek = array_filter(array_map(fn($e) => $e->getDatumig(), $egyedek));
+        return ($tolok && $igek) ? $this->getUnnepnapok(min($tolok), max($igek)) : [];
     }
 
     public function viewlist()

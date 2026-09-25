@@ -45,10 +45,17 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th colspan="3">Az időszakban összesen</th>
-                    <th class="textalignright">{$_sor.idoszakiosszes}</th>
+                    <th colspan="3">Az időszakban kivett szabadság</th>
+                    <th class="textalignright">{$_sor.idoszakiszabadsag}</th>
                     <th></th>
                 </tr>
+                {foreach $_sor.idoszakiegyeb as $_e}
+                    <tr>
+                        <td colspan="3">{$_e.tipusnev} (a keretből nem vonódik le)</td>
+                        <td class="textalignright">{$_e.napok}</td>
+                        <td></td>
+                    </tr>
+                {/foreach}
                 </tfoot>
             </table>
             <table class="szabadsag-egyenleg">

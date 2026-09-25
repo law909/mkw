@@ -101,11 +101,24 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
             'munkakornev' => $dolgozo->getMunkakorNev(),
             'tavolletek' => $tavolletek,
             'idoszaki' => $idoszaki,
-            'idoszakiosszes' => array_sum($idoszaki),
+            'idoszakiszabadsag' => $idoszaki[Dolgozoszabadsag::TIPUS_SZABADSAG],
+            'idoszakiegyeb' => $this->getEgyebTavolletek($idoszaki),
             'evesmax' => $evesmax,
             'evbenkivett' => $evbenkivett,
             'marad' => $evesmax - $evbenkivett,
         ];
+    }
+
+    /** The other absence types of the period, only listed: they do not use up the yearly allowance. */
+    private function getEgyebTavolletek(array $idoszaki)
+    {
+        $res = [];
+        foreach (Dolgozoszabadsag::getTipusok() as $tipus => $nev) {
+            if ($tipus !== Dolgozoszabadsag::TIPUS_SZABADSAG && $idoszaki[$tipus]) {
+                $res[] = ['tipusnev' => t($nev), 'napok' => $idoszaki[$tipus]];
+            }
+        }
+        return $res;
     }
 
     /** Az éves keretet fogyasztó (szabadság típusú) munkanapok száma az évben. */
