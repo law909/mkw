@@ -180,6 +180,7 @@ body.modernui {
 
 .modernui .menu-temavalaszto {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
     margin-top: 16px;
     padding-top: 10px;
@@ -188,6 +189,29 @@ body.modernui {
 
 .modernui .menu-temavalaszto select {
     flex: 1;
+}
+
+.modernui .menu-szinvalaszto {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    gap: 5px;
+    order: 1;
+}
+
+.modernui .menu-szinminta {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+
+.modernui .menu-szinminta:hover {
+    transform: scale(1.15);
+}
+
+.modernui .menu-szinminta-aktiv {
+    box-shadow: 0 0 0 2px var(--mkw-surface), 0 0 0 4px var(--mkw-accent);
 }
 
 /* Oldalszintű riasztások (base.tpl)

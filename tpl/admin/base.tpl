@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html{if ($modernui|default:false)} style="--mkw-accent-base: {$uiaccents[$uiaccent]['color']};"{/if}>
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css"/>
@@ -133,6 +133,15 @@
                         <option value="{$_uitheme}"{if ($uitheme==$_uitheme)} selected="selected"{/if}>{$_uitheme}</option>
                     {/foreach}
                 </select>
+                {if ($modernui|default:false)}
+                    <div class="menu-szinvalaszto">
+                        {foreach $uiaccents as $_key => $_accent}
+                            <a href="#" class="js-uiaccent menu-szinminta{if ($_key == $uiaccent)} menu-szinminta-aktiv{/if}"
+                               data-accent="{$_key}" data-color="{$_accent.color}" style="background:{$_accent.color};"
+                               title="{t($_accent.nev)}"></a>
+                        {/foreach}
+                    </div>
+                {/if}
                 {if ($sysadmin|default:false)}
                     <a class="js-szuletesnapteszt ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                        href="#" title="{at('Születésnapi tűzijáték')}"><span class="ui-button-text">🎆</span></a>

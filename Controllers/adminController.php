@@ -475,6 +475,11 @@ class adminController extends mkwhelpers\Controller
      * A bal oldali menü egy menücsoportjának nyitott/zárt állapota, a bejelentkezett
      * dolgozóhoz mentve. A menü kirajzolásakor a menuController::getMenu() olvassa vissza.
      */
+    public function setUIAccent()
+    {
+        \Services\UiAccentService::setCurrent($this->params->getStringRequestParam('uiaccent'));
+    }
+
     public function setMenucsoportNyitva()
     {
         $mcsid = $this->params->getIntRequestParam('mcsid', 0);

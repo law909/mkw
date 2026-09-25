@@ -174,6 +174,20 @@ $(document).ready(
             });
         });
         markActiveMenupont();
+        // a téma az egy alapszínből számolja az árnyalatokat, ezért újratöltés nélkül is átszíneződik
+        $('.js-uiaccent').on('click', function (e) {
+            e.preventDefault();
+            const $minta = $(this);
+            document.documentElement.style.setProperty('--mkw-accent-base', $minta.data('color'));
+            $('.js-uiaccent').removeClass('menu-szinminta-aktiv');
+            $minta.addClass('menu-szinminta-aktiv');
+            $.ajax({
+                url: '/admin/setuiaccent',
+                type: 'POST',
+                global: false,
+                data: {uiaccent: $minta.data('accent')}
+            });
+        });
         $('#ThemeSelect').change(function (e) {
             $.ajax({
                 url: '/admin/setuitheme',

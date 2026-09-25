@@ -11,15 +11,15 @@
 	--mkw-text: #f4f4f5;
 	--mkw-muted: #a1a1aa;
 	--mkw-row-alt: #1e1e22;
-	--mkw-row-hover: #1c2433;
+	--mkw-row-hover: color-mix(in srgb, var(--mkw-accent) 8%, var(--mkw-surface));
 	--mkw-row-separator: #45454d;
 
-	--mkw-accent: #60a5fa;
-	--mkw-accent-hover: #93c5fd;
-	--mkw-accent-soft: rgba(96, 165, 250, .14);
-	--mkw-accent-border: rgba(96, 165, 250, .4);
-	--mkw-accent-text: #0b1220;
-	--mkw-focus: rgba(96, 165, 250, .35);
+	--mkw-accent: color-mix(in srgb, var(--mkw-accent-base) 70%, white);
+	--mkw-accent-hover: color-mix(in srgb, var(--mkw-accent) 80%, white);
+	--mkw-accent-soft: color-mix(in srgb, var(--mkw-accent) 15%, var(--mkw-surface));
+	--mkw-accent-border: color-mix(in srgb, var(--mkw-accent) 45%, var(--mkw-surface));
+	--mkw-accent-text: #0b0b0f;
+	--mkw-focus: color-mix(in srgb, var(--mkw-accent) 35%, transparent);
 
 	--mkw-highlight: rgba(251, 191, 36, .12);
 	--mkw-highlight-border: rgba(251, 191, 36, .45);

@@ -34,6 +34,8 @@ class generalDataLoader
         }
         $view->setVar('uitheme', $uitheme);
         $view->setVar('modernui', str_starts_with($uitheme, 'modern'));
+        $view->setVar('uiaccent', \Services\UiAccentService::getCurrent());
+        $view->setVar('uiaccents', \Services\UiAccentService::COLORS);
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
         $view->setVar('sysadmin', \mkw\store::getAdminSession()->pk == -1);
