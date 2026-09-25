@@ -30,7 +30,7 @@ class generalDataLoader
             $uitheme = $lu['uitheme'];
         }
         if (\mkw\store::getAdminSession()->pk == -1) {
-            $uitheme = \mkw\store::getParameter(\mkw\consts::SysadminUitheme, '');
+            $uitheme = \mkw\store::getParameter(\mkw\consts::SysadminUitheme, '') ?: \Services\UiAppearanceService::SYSADMIN_DEFAULT_THEME;
         }
         // az érték egy href útvonalába kerül, ezért csak a listában szereplő téma mehet át
         if (!\Services\UiAppearanceService::isValidTheme($uitheme)) {

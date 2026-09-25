@@ -17,6 +17,11 @@ class UiAppearanceService
 
     const DEFAULT_ACCENT = '#2563eb';
 
+    /** A sysadmin alapértelmezése, amíg az oldalsáv alján mást nem választ (parameterek) */
+    const SYSADMIN_DEFAULT_THEME = 'modern-dark';
+
+    const SYSADMIN_DEFAULT_ACCENT = '#ff70e0';
+
     const THEMES = [
         'modern',
         'modern-dark',
@@ -99,7 +104,7 @@ class UiAppearanceService
     public static function getCurrentAccent(): string
     {
         if (\mkw\store::getAdminSession()->pk == -1) {
-            return self::normalizeAccent(\mkw\store::getParameter(\mkw\consts::SysadminUiaccent)) ?? self::DEFAULT_ACCENT;
+            return self::normalizeAccent(\mkw\store::getParameter(\mkw\consts::SysadminUiaccent)) ?? self::SYSADMIN_DEFAULT_ACCENT;
         }
         $dolgozoid = DolgozoParameterService::getDolgozoId();
         return $dolgozoid ? self::getAccentFor($dolgozoid) : self::DEFAULT_ACCENT;
