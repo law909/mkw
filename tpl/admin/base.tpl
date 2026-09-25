@@ -149,10 +149,13 @@
                 {/if}
                 <div class="menu-csoport js-menucsoport" data-mcsid="{$mcs}"{if (!$mcsnyitva)} style="display:none;"{/if}>
                     {while ($cscikl < $mdb) && ($menu[$cscikl]['mcsid'] == $mcs)}
-                        <div><a
-                                class="menupont ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only {$menu[$cscikl]['class']}"
-                                href="{$menu[$cscikl]['url']}"><span class="ui-button-text">{t($menu[$cscikl]['nev'])}</span></a>
-                        </div>
+                        {* modern témában a kijelentkezés a felső sávban van, a régiekben ez az egyetlen *}
+                        {if (!(($modernui|default:false) && $menu[$cscikl]['url'] == '/admin/logout'))}
+                            <div><a
+                                    class="menupont ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only {$menu[$cscikl]['class']}"
+                                    href="{$menu[$cscikl]['url']}"><span class="ui-button-text">{t($menu[$cscikl]['nev'])}</span></a>
+                            </div>
+                        {/if}
                         {$cscikl = $cscikl + 1}
                     {/while}
                 </div>
