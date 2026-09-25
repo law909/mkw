@@ -614,3 +614,12 @@ select.tetelszamhiba,
 .termekmenufa-sav .ui-button {
     padding: 2px 8px;
 }
+
+.teszt-uzemmod {
+    color: #fff;
+    background: #c0392b;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 3px;
+    margin-bottom: 3px;
+}

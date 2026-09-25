@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/matt.css"/>
+    {if ($modernui|default:false)}
+        <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/modern.css"/>
+    {/if}
     <script type="text/javascript" src="/js/admin/default/jquery-3.7.1.min.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery-ui-1.14.2.min.js"></script>
     {* datepicker magyar honosítás – kötelezően a jquery-ui után *}
@@ -27,7 +31,7 @@
     <script type="text/javascript" src="/js/admin/default/appinit.js"></script>
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
-<body data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
+<body{if ($modernui|default:false)} class="modernui"{/if} data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
 {if ($arfolyamriasztas)}
     <h1 id="arfolyamriasztas">Túl régi az utolsó árfolyam. CSINÁLJ EGY ÁRFOLYAMLETÖLTÉST!</h1>
 {/if}
@@ -94,13 +98,10 @@
     {if ($userloggedin)}
         <div class="menu-container ui-widget ui-widget-content ui-corner-all">
             {if ($teszt)}
-                <div class="textaligncenter teszt-uzemmod"
-                     style="color:#fff;background:#c0392b;font-weight:bold;padding:3px;border-radius:3px;margin-bottom:3px;">
-                    TESZT ÜZEMMÓD
-                </div>
+                <div class="textaligncenter teszt-uzemmod">TESZT ÜZEMMÓD</div>
             {/if}
-            <div class="textaligncenter">{$tulajnev}</div>
-            <div class="textaligncenter">{$loggedinuser.name}</div>
+            <div class="textaligncenter menu-tulajnev">{$tulajnev}</div>
+            <div class="textaligncenter menu-felhasznalo">{$loggedinuser.name}</div>
             {* A menücsoportok fejlécére kattintva nyílnak/záródnak; a nyitott állapot
                dolgozónként mentődik (lásd appinit.js + adminController::setMenucsoportNyitva).
                Csoport nélküli menüpont nem kap fejlécet, és mindig látszik. *}
@@ -126,7 +127,7 @@
                     {/while}
                 </div>
             {/while}
-            <div>
+            <div class="menu-temavalaszto">
                 <select id="ThemeSelect">
                     {foreach $uithemes as $_uitheme}
                         <option value="{$_uitheme}"{if ($uitheme==$_uitheme)} selected="selected"{/if}>{$_uitheme}</option>

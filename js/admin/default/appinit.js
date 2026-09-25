@@ -51,6 +51,18 @@ function mkwUzenet(uzenet) {
         .slideToggle('slow');
 }
 
+/** Kiemeli az aktuális képernyő menüpontját; a karb oldal a listájához az /admin/<entitás>/ előtag alapján tartozik. */
+function markActiveMenupont() {
+    const dir = (path) => path.replace(/[^/]*$/, '');
+    const here = window.location.pathname;
+    const items = $('.menupont').toArray().filter((a) => /^\/admin\/./.test(a.getAttribute('href') || ''));
+    const active = items.find((a) => a.pathname === here)
+        || items.find((a) => dir(a.pathname) !== '/admin/' && dir(a.pathname) === dir(here));
+    if (active) {
+        $(active).addClass('menupont-aktiv');
+    }
+}
+
 /** A szerver JSON válasza a hibás kérésből, vagy null. */
 function mkwAjaxValasz(xhr) {
     if (xhr.responseJSON) {
@@ -161,6 +173,7 @@ $(document).ready(
                 data: {mcsid: mcsid, value: nyitva ? 1 : 0}
             });
         });
+        markActiveMenupont();
         $('#ThemeSelect').change(function (e) {
             $.ajax({
                 url: '/admin/setuitheme',

@@ -1,0 +1,478 @@
+/* A "modern" / "modern-dark" jQuery UI téma admin rétege: csak velük töltődik be (base.tpl),
+   a színek a themes/ui/modern/jquery-ui.css --mkw-* tokenjeiből jönnek. */
+
+/* Alap
+----------------------------------*/
+body.modernui {
+    margin: 0;
+    font-family: var(--mkw-font);
+    font-size: var(--mkw-font-size);
+    line-height: 1.45;
+    color: var(--mkw-text);
+    background: var(--mkw-bg);
+}
+
+.modernui a {
+    color: var(--mkw-accent);
+}
+
+.modernui h3 {
+    font-size: 1.1em;
+}
+
+.modernui .screen {
+    grid-template-columns: minmax(220px, 250px) 1fr;
+    min-height: 100vh;
+}
+
+.modernui .content-container {
+    gap: 12px;
+    padding: 12px 16px 24px 12px;
+    min-width: 0;
+}
+
+/* Űrlapelemek
+----------------------------------*/
+.modernui input[type="text"],
+.modernui input[type="number"],
+.modernui input[type="email"],
+.modernui input[type="password"],
+.modernui input[type="search"],
+.modernui input[type="tel"],
+.modernui input[type="url"],
+.modernui input[type="date"],
+.modernui input[type="time"],
+.modernui input[type="datetime-local"],
+.modernui input:not([type]),
+.modernui select,
+.modernui textarea {
+    box-sizing: border-box;
+    padding: 3px 6px;
+    border: 1px solid var(--mkw-border-strong);
+    border-radius: var(--mkw-radius-sm);
+    background-color: var(--mkw-surface);
+    color: var(--mkw-text);
+    font: inherit;
+    line-height: 1.35;
+}
+
+.modernui select {
+    padding-right: 2px;
+}
+
+.modernui input:focus,
+.modernui select:focus,
+.modernui textarea:focus {
+    outline: none;
+    border-color: var(--mkw-accent);
+    box-shadow: 0 0 0 3px var(--mkw-focus);
+}
+
+.modernui input[readonly],
+.modernui input:disabled,
+.modernui select:disabled,
+.modernui textarea:disabled {
+    background-color: var(--mkw-surface-2);
+    color: var(--mkw-muted);
+}
+
+.modernui input[type="checkbox"],
+.modernui input[type="radio"] {
+    accent-color: var(--mkw-accent);
+}
+
+.modernui .ui-button {
+    padding: .35em .9em;
+}
+
+/* Oldalsáv menü
+----------------------------------*/
+.modernui .menu-container {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    box-sizing: border-box;
+    max-height: 100vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 12px 10px;
+    border: 0;
+    border-right: 1px solid var(--mkw-border);
+    border-radius: 0;
+    background: var(--mkw-surface);
+}
+
+.modernui .teszt-uzemmod {
+    background: var(--mkw-danger);
+    border-radius: var(--mkw-radius-sm);
+    padding: 4px;
+    margin-bottom: 8px;
+    font-size: .85em;
+    letter-spacing: .05em;
+}
+
+.modernui .menu-tulajnev {
+    font-weight: 600;
+}
+
+.modernui .menu-felhasznalo {
+    margin-bottom: 10px;
+    color: var(--mkw-muted);
+    font-size: .92em;
+}
+
+.modernui .menu-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 4px 6px;
+    border: 0;
+    background: transparent;
+    color: var(--mkw-muted);
+    font-size: .8em;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.modernui .menu-titlebar:hover {
+    color: var(--mkw-text);
+}
+
+.modernui .menu-titlebar-icon {
+    float: none;
+    order: 2;
+    margin: 0 0 0 auto;
+}
+
+.modernui .menupont.ui-button {
+    display: block;
+    margin: 1px 0;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: var(--mkw-radius-sm);
+    background: transparent;
+    box-shadow: none;
+    color: var(--mkw-text);
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modernui .menupont.ui-button .ui-button-text {
+    padding: 0;
+}
+
+.modernui .menupont.ui-button:hover,
+.modernui .menupont.ui-button:focus {
+    background: var(--mkw-hover);
+}
+
+.modernui .menupont.menupont-aktiv,
+.modernui .menupont.menupont-aktiv:hover {
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-accent);
+    font-weight: 600;
+}
+
+.modernui .menu-temavalaszto {
+    display: flex;
+    gap: 6px;
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid var(--mkw-border);
+}
+
+.modernui .menu-temavalaszto select {
+    flex: 1;
+}
+
+/* Oldalszintű riasztások (base.tpl)
+----------------------------------*/
+.modernui #arfolyamriasztas,
+.modernui #naveredmenyriasztas,
+.modernui #nominkeszletriasztas {
+    margin: 0;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--mkw-danger-border);
+    background: var(--mkw-danger-soft);
+    color: var(--mkw-danger-text);
+    font-size: 1.05em;
+}
+
+.modernui .matt-messagecenter {
+    margin: 0;
+    padding: .7em 1em;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+/* Panelek: lista (mattable), karbantartó (mattkarb)
+----------------------------------*/
+.modernui .mattable,
+.modernui .mattkarb {
+    margin-bottom: 0;
+    border-radius: 8px;
+    box-shadow: var(--mkw-shadow-sm);
+    overflow: clip;
+}
+
+.modernui .mattable-titlebar {
+    padding: .6em 1em;
+    border-bottom: 1px solid var(--mkw-border);
+    border-radius: 0;
+}
+
+.modernui .mattable-titlebar h3 {
+    display: inline-block;
+    margin: 0;
+    font-size: 1.15em;
+}
+
+.modernui .mattable-titlebar h3 a,
+.modernui .mattable-titlebar a {
+    color: var(--mkw-text);
+    text-decoration: none;
+}
+
+.modernui .mattable-titlebar a.js-mattablefiltercloseup {
+    margin-left: 1em;
+    color: var(--mkw-accent);
+    font-weight: 500;
+}
+
+.modernui .mattedit-titlebar {
+    padding: .5em 1em;
+    border-bottom: 1px solid var(--mkw-border);
+}
+
+.modernui .mattedit-titlebar-close {
+    right: .6em;
+}
+
+.modernui .mattable-filterwrapper {
+    padding: 1em;
+    border-bottom: 1px solid var(--mkw-border);
+    background: var(--mkw-surface-2);
+}
+
+.modernui .mattable-filterrefresh,
+.modernui .mattable-filterclear {
+    margin-right: .4em;
+}
+
+.modernui .mattable-footerbar {
+    padding: .5em .8em;
+    border: 0;
+    border-top: 1px solid var(--mkw-border);
+    font-weight: 400;
+}
+
+.modernui .mattable-pager table {
+    border-spacing: 2px 0;
+}
+
+.modernui .mattable-pager td[class*="ui-corner-all"] {
+    padding: 3px;
+    border: 1px solid transparent;
+}
+
+.modernui .mattable-pager td.ui-state-hover {
+    border-color: var(--mkw-border-strong);
+}
+
+.modernui .mattable-addlink,
+.modernui .mattable-quickaddlink,
+.modernui .mattable-posaddlink {
+    margin-right: .5em;
+    padding: 2px 4px;
+    border-radius: var(--mkw-radius-sm);
+    color: var(--mkw-accent);
+}
+
+.modernui .mattable-addlink:hover,
+.modernui .mattable-quickaddlink:hover,
+.modernui .mattable-posaddlink:hover {
+    background: var(--mkw-accent-soft);
+}
+
+/* Kapcsoló linkek (termék jellemzők, címkeszűrők): a bekapcsolt állapot jele a ui-state-hover osztály */
+.modernui a.ui-state-hover:not(.ui-button):not(.ui-state-default) {
+    display: inline-block;
+    padding: 0 5px;
+    border: 1px solid var(--mkw-accent-border);
+    border-radius: var(--mkw-radius-sm);
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Listatáblázat
+----------------------------------*/
+.modernui .mattable-table th.mattable-thcolumn {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: .55em .6em;
+    border: 0;
+    border-bottom: 1px solid var(--mkw-border);
+    background: var(--mkw-surface-2);
+    box-shadow: none;
+    color: var(--mkw-muted);
+    font-weight: 600;
+}
+
+.modernui .mattable-table > tbody > tr.ui-widget-content {
+    border: 0;
+    background: var(--mkw-surface);
+}
+
+.modernui .mattable-table > tbody > tr.ui-widget-content:hover {
+    background: var(--mkw-hover);
+}
+
+.modernui .mattable-cell {
+    padding: .6em;
+    vertical-align: top;
+}
+
+.modernui .mattable-tborder {
+    border-top-color: var(--mkw-border);
+}
+
+.modernui .mattable-rborder {
+    border-right-width: 0;
+}
+
+/* Karbantartó
+----------------------------------*/
+.modernui .mattedit-page {
+    padding: 1em 1.2em;
+}
+
+.modernui .mattkarb-page td {
+    padding: 2px 6px 2px 0;
+}
+
+.modernui .mattkarb-page td > label,
+.modernui .mattkarb-page label {
+    color: var(--mkw-muted);
+}
+
+.modernui .mattkarb-footer {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    padding: .7em 1.2em;
+    border-top: 1px solid var(--mkw-border);
+    background: var(--mkw-surface-2);
+}
+
+.modernui #mattkarb-okbutton,
+.modernui #mattkarb-okbutton:hover,
+.modernui #mattkarb-okbutton:focus {
+    border-color: var(--mkw-accent);
+    background: var(--mkw-accent);
+    color: var(--mkw-accent-text);
+    font-weight: 600;
+}
+
+.modernui #mattkarb-okbutton:hover {
+    border-color: var(--mkw-accent-hover);
+    background: var(--mkw-accent-hover);
+}
+
+.modernui .mattkarb-doboz {
+    border-color: var(--mkw-border);
+    border-radius: var(--mkw-radius);
+    background: var(--mkw-surface-2);
+}
+
+.modernui .mattkarb-doboz > legend {
+    color: var(--mkw-muted);
+    font-size: .85em;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.modernui .mattkarb-hibasmezo {
+    border-color: var(--mkw-danger);
+    background-color: var(--mkw-danger-soft);
+}
+
+.modernui .mattkarb-mezohiba {
+    color: var(--mkw-danger);
+}
+
+/* Kimutatások (style.css .arbevetel-*)
+----------------------------------*/
+.modernui .arbevetel-table thead th {
+    border-bottom-color: var(--mkw-border-strong);
+    color: var(--mkw-muted);
+}
+
+.modernui .arbevetel-table tr.arbevetel-header td,
+.modernui .arbevetel-table tr.arbevetel-subtotal td {
+    border-color: var(--mkw-border);
+}
+
+.modernui .arbevetel-table tfoot td {
+    border-top-color: var(--mkw-border-strong);
+}
+
+.modernui .arbevetel-szintnyil {
+    color: var(--mkw-muted);
+}
+
+.modernui .arbevetel-chartnote {
+    border-left-color: var(--mkw-accent);
+    background: var(--mkw-accent-soft);
+}
+
+/* A style.css beégetett színei, amelyek az új felületeken rosszul olvashatók
+----------------------------------*/
+.modernui .hufprice {
+    color: var(--mkw-muted);
+}
+
+.modernui .redtext,
+.modernui .guestpartner,
+.modernui .barionstatus,
+.modernui .kupon,
+.modernui .eloiras,
+.modernui .lejartkiegyenlitetlen,
+.modernui .nemelerhetovaltozat {
+    color: var(--mkw-danger) !important;
+}
+
+.modernui .greentext,
+.modernui .befizetes,
+.modernui .kiegyenlitetlen {
+    color: var(--mkw-success);
+}
+
+.modernui .tulfizetett {
+    color: var(--mkw-accent);
+}
+
+.modernui table.termekkarton tr:nth-child(even) {
+    background: var(--mkw-hover);
+}
+
+.modernui .whitebackground {
+    background: var(--mkw-surface);
+}
+
+.modernui .leltarfelvetel-frissitve td {
+    background: var(--mkw-highlight);
+}
+
+.modernui .tetelszamhiba,
+.modernui .defaulttermektetel {
+    border-color: var(--mkw-danger);
+    background: var(--mkw-danger-soft);
+}
