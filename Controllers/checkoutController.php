@@ -176,7 +176,7 @@ class checkoutController extends \mkwhelpers\MattableController
         $oc = new orszagController();
         $view->setVar('orszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('orszag'), $user['orszag'])));
         $view->setVar('szallorszaglist', $oc->getSelectList($this->vv($p->getIntRequestParam('szallorszag'), $user['szallorszag'])));
-        // b2b-n a szállítási cím a partner telephelyeiből választható; telephely híján marad a kézi cím
+        // b2b-n a telephellyel rendelkező partner kötelezően választ közülük (superzoneb2bCheckoutController::getTelephely)
         $view->setVar(
             'telephelylist',
             (\mkw\store::isB2B() && $u)

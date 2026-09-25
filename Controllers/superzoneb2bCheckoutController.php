@@ -51,15 +51,8 @@ class superzoneb2bCheckoutController extends checkoutController
             $szallutca = $szamlautca;
         }
 
-        // akinek van telephelye, annak választania kell közülük; telephely híján marad a kézi cím
+        // akinek van telephelye, annak választania kell közülük; a szállítási címtől független
         $telephely = $this->getTelephely();
-        if ($telephely) {
-            // a szállítási cím a telephelyé, akármit is küldött be az űrlap
-            $szallnev = $telephely->getNev() ?: $telephely->getPartnerNev();
-            $szallirszam = $telephely->getIrszam();
-            $szallvaros = $telephely->getVaros();
-            $szallutca = $telephely->getUtca();
-        }
 
         $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&
             $szamlanev && $szamlairszam && $szamlavaros && $szamlautca && $hatarido);
@@ -115,6 +108,9 @@ class superzoneb2bCheckoutController extends checkoutController
             $megrendfej->setSzallirszam($szallirszam);
             $megrendfej->setSzallvaros($szallvaros);
             $megrendfej->setSzallutca($szallutca);
+            if ($telephely) {
+                $megrendfej->setTelephely($telephely);
+            }
 
             $megrendfej->setFizmod($partner->getFizmod());
             $megrendfej->setSzallitasimod($partner->getSzallitasimod());

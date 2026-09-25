@@ -1197,6 +1197,7 @@ $router->map(
     'partnertelephelyController#getemptyrow',
     'adminpartnertelephelygetemptyrow'
 );
+$router->map('GET', '/admin/partnertelephely/getselectlist', 'partnertelephelyController#getSelectListJSON', 'adminpartnertelephelygetselectlist');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partnertelephely/save', 'partnertelephelyController#save', 'adminpartnertelephelysave');
 }

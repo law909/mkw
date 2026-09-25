@@ -2013,6 +2013,24 @@ let bizonylathelper = function ($) {
                         }
                     });
                 });
+                $('.js-partnerid').on('change', function () {
+                    const sel = $('#TelephelyEdit');
+                    $.ajax({
+                        url: '/admin/partnertelephely/getselectlist',
+                        type: 'GET',
+                        data: {
+                            partnerid: $(this).val(),
+                            telephely: sel.val()
+                        },
+                        success: function (data) {
+                            const list = JSON.parse(data);
+                            sel.find('option:not(:first)').remove();
+                            list.forEach((item) => {
+                                sel.append($('<option>', { value: item.id, text: item.caption, selected: item.selected }));
+                            });
+                        }
+                    });
+                });
                 $('#ValutanemEdit').change(function () {
                     valutanemChange();
                 });

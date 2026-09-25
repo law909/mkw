@@ -565,6 +565,28 @@ class Bizonylatfej
     /** @ORM\Column(type="string",length=40,nullable=true) */
     private $szallhazszam = '';
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Partnertelephely")
+     * @ORM\JoinColumn(name="telephely_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     * @var \Entities\Partnertelephely
+     */
+    private $telephely;
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $telephelynev = '';
+
+    /** @ORM\Column(type="string",length=10,nullable=true) */
+    private $telephelyirszam = '';
+
+    /** @ORM\Column(type="string",length=40,nullable=true) */
+    private $telephelyvaros = '';
+
+    /** @ORM\Column(type="string",length=60,nullable=true) */
+    private $telephelyutca = '';
+
+    /** @ORM\Column(type="string",length=255,nullable=true) */
+    private $telephelyorszagnev = '';
+
     /** @ORM\Column(type="string",length=32,nullable=true) */
     private $ip;
 
@@ -1951,6 +1973,11 @@ class Bizonylatfej
         $ret['szallvaros'] = $this->getSzallvaros();
         $ret['szallutca'] = $this->getSzallutca();
         $ret['szallhazszam'] = $this->getSzallhazszam();
+        $ret['telephelynev'] = $this->getTelephelynev();
+        $ret['telephelyirszam'] = $this->getTelephelyirszam();
+        $ret['telephelyvaros'] = $this->getTelephelyvaros();
+        $ret['telephelyutca'] = $this->getTelephelyutca();
+        $ret['telephelyorszag'] = $this->getTelephelyorszagnev();
         $ret['szallitasiido'] = $this->getSzallitasiido();
         $ret['szallitasiidodatum'] = $this->getSzallitasiidoDatumStr();
         $ret['adoszam'] = $this->getPartneradoszam();
@@ -3774,6 +3801,9 @@ class Bizonylatfej
             $this->partner = $val;
             if (!$this->duplication) {
                 $this->setPartnerLeiroadat($val);
+                if ($this->telephely && $this->telephely->getPartner() !== $val) {
+                    $this->removeTelephely();
+                }
 
                 $uk = $val->getUzletkoto();
                 if ($uk) {
@@ -3841,6 +3871,7 @@ class Bizonylatfej
                 $this->removeValutanem();
                 $this->removePartnerorszag();
                 $this->removePartnerszallorszag();
+                $this->removeTelephely();
             }
         }
     }
@@ -6014,6 +6045,104 @@ class Bizonylatfej
     public function setSzallhazszam($szallhazszam)
     {
         $this->szallhazszam = $szallhazszam;
+    }
+
+    /**
+     * @return \Entities\Partnertelephely|null
+     */
+    public function getTelephely()
+    {
+        return $this->telephely;
+    }
+
+    public function getTelephelyId()
+    {
+        return $this->telephely?->getId();
+    }
+
+    /**
+     * @param \Entities\Partnertelephely|null $val
+     */
+    public function setTelephely($val)
+    {
+        if ($this->telephely !== $val) {
+            if (!$val) {
+                $this->removeTelephely();
+            } else {
+                $this->telephely = $val;
+                if (!$this->duplication) {
+                    $this->telephelynev = $val->getNev() ?: $val->getPartnerNev();
+                    $this->telephelyirszam = $val->getIrszam();
+                    $this->telephelyvaros = $val->getVaros();
+                    $this->telephelyutca = $val->getUtca();
+                    $this->telephelyorszagnev = $val->getOrszagNev();
+                }
+            }
+        }
+    }
+
+    public function removeTelephely()
+    {
+        if ($this->telephely !== null) {
+            $this->telephely = null;
+            if (!$this->duplication) {
+                $this->telephelynev = '';
+                $this->telephelyirszam = '';
+                $this->telephelyvaros = '';
+                $this->telephelyutca = '';
+                $this->telephelyorszagnev = '';
+            }
+        }
+    }
+
+    public function getTelephelynev()
+    {
+        return $this->telephelynev;
+    }
+
+    public function setTelephelynev($telephelynev)
+    {
+        $this->telephelynev = $telephelynev;
+    }
+
+    public function getTelephelyirszam()
+    {
+        return $this->telephelyirszam;
+    }
+
+    public function setTelephelyirszam($telephelyirszam)
+    {
+        $this->telephelyirszam = $telephelyirszam;
+    }
+
+    public function getTelephelyvaros()
+    {
+        return $this->telephelyvaros;
+    }
+
+    public function setTelephelyvaros($telephelyvaros)
+    {
+        $this->telephelyvaros = $telephelyvaros;
+    }
+
+    public function getTelephelyutca()
+    {
+        return $this->telephelyutca;
+    }
+
+    public function setTelephelyutca($telephelyutca)
+    {
+        $this->telephelyutca = $telephelyutca;
+    }
+
+    public function getTelephelyorszagnev()
+    {
+        return $this->telephelyorszagnev;
+    }
+
+    public function setTelephelyorszagnev($telephelyorszagnev)
+    {
+        $this->telephelyorszagnev = $telephelyorszagnev;
     }
 
     /**

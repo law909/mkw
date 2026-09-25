@@ -59,7 +59,7 @@ class partnertelephelyController extends \mkwhelpers\MattableController
     }
 
     /**
-     * A partner telephelyei a webshop választójához.
+     * A partner telephelyei a webshop és a bizonylat karbantartó választójához.
      *
      * @return array
      */
@@ -72,14 +72,16 @@ class partnertelephelyController extends \mkwhelpers\MattableController
                 'id' => $telephely->getId(),
                 'caption' => $telephely->getNevCim(),
                 'selected' => ($telephely->getId() == $selid),
-                // a szállítási cím mezőit a webshop ezekből tölti ki
-                'nev' => $telephely->getNev() ?: $telephely->getPartnerNev(),
-                'irszam' => $telephely->getIrszam(),
-                'varos' => $telephely->getVaros(),
-                'utca' => $telephely->getUtca(),
             ];
         }
         return $res;
+    }
+
+    /** The bizonylat karbantartó refills its telephely select from this when the partner changes. */
+    public function getSelectListJSON()
+    {
+        $partner = $this->getRepo(\Entities\Partner::class)->find($this->params->getIntRequestParam('partnerid'));
+        echo json_encode($partner ? $this->getSelectList($partner, $this->params->getIntRequestParam('telephely')) : []);
     }
 
 }

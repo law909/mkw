@@ -20,6 +20,7 @@ use Entities\Jogcim;
 use Entities\Orszag;
 use Entities\Partner;
 use Entities\Partnercimketorzs;
+use Entities\Partnertelephely;
 use Entities\Penztar;
 use Entities\Penztarbizonylatfej;
 use Entities\Raktar;
@@ -566,6 +567,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['szallvaros'] = $t->getSzallvaros();
         $x['szallutca'] = $t->getSzallutca();
         $x['szallhazszam'] = $t->getSzallhazszam();
+        $x['telephely'] = $t->getTelephelyId();
+        $x['telephelynev'] = $t->getTelephelynev();
         $x['webshopmessage'] = $t->getWebshopmessage();
         $x['couriermessage'] = $t->getCouriermessage();
         $x['sysmegjegyzes'] = $t->getSysmegjegyzes();
@@ -1025,6 +1028,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setSzallvaros($this->params->getStringRequestParam('szallvaros'));
         $obj->setSzallutca($this->params->getStringRequestParam('szallutca'));
         $obj->setSzallhazszam($this->params->getStringRequestParam('szallhazszam'));
+
+        // forms without the select leave it untouched; only a site of the document's own partner is accepted
+        if (!is_null($this->params->getRequestParam('telephely', null))) {
+            $ck = \mkw\store::getEm()->getRepository(Partnertelephely::class)->find($this->params->getIntRequestParam('telephely'));
+            if ($ck && $obj->getPartner() && $ck->getPartner() === $obj->getPartner()) {
+                $obj->setTelephely($ck);
+            } else {
+                $obj->removeTelephely();
+            }
+        }
 
         $obj->setSzepkartyaszam($this->params->getStringRequestParam('szepkartyaszam'));
         $obj->setSzepkartyanev($this->params->getStringRequestParam('szepkartyanev'));
@@ -1970,6 +1983,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar(
                 'vatstatuslist',
                 $this->getRepo(Partner::class)->getVatstatusList(($record ? $record->getPartnervatstatus() : ($partner ? $partner->getVatstatus() : 0)))
+            );
+            $view->setVar(
+                'telephelylist',
+                ($partner ?? null) ? (new partnertelephelyController())->getSelectList($partner, $record?->getTelephelyId()) : []
             );
             // a kliensoldali ÁFA ellenőrzéshez (bizonylathelper.js checkTetelOsszegek)
             $view->setVar('tulajalanyiafamentes', \mkw\store::isTulajAlanyiAfamentes());

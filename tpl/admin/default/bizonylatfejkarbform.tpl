@@ -224,6 +224,17 @@
                             <input id="ThirdAdoszamEdit" name="partnerthirdadoszam" value="{$egyed.partnerthirdadoszam|escape}">
                         </td>
                     </tr>
+                    <tr>
+                        <td><label for="TelephelyEdit">{at('Telephely')}:</label></td>
+                        <td colspan="7"><select id="TelephelyEdit" name="telephely">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $telephelylist as $_mk}
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
+                                {/foreach}
+                            </select>
+                            {if ($egyed.telephelynev && !$egyed.telephely)}<span class="mattable-important">{at('Mentett telephely')}: {$egyed.telephelynev|escape}</span>{/if}
+                        </td>
+                    </tr>
                     {if ($showszallitasicim)}
                         <tr>
                             <td><label for="SzallnevEdit">{at('Szállítási név')}:</label></td>
