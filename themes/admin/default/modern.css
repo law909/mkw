@@ -709,6 +709,12 @@ body.modernui {
     box-shadow: none;
     color: var(--mkw-muted);
     font-weight: 600;
+    text-align: left;
+}
+
+/* a számoszlopok fejléce a sablonban kifejezetten jobbra igazított, az marad */
+.modernui .mattable-table th.mattable-thcolumn.textalignright {
+    text-align: right;
 }
 
 .modernui .mattable-table > tbody > tr.ui-widget-content {
