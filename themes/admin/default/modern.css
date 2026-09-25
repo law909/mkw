@@ -542,10 +542,33 @@ body.modernui {
 }
 
 .modernui .mattable-footerbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
     padding: .5em .8em;
     border: 0;
     border-top: 1px solid var(--mkw-border);
     font-weight: 400;
+}
+
+/* a ui-helper-clearfix üres ::before/::after-je flexben plusz térközt adna */
+.modernui .mattable-footerbar::before,
+.modernui .mattable-footerbar::after {
+    display: none;
+}
+
+.modernui .mattable-footerbar > .mattable-order {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+.modernui .mattable-footerbar > .mattable-pager {
+    margin-left: auto;
+    padding: 0;
 }
 
 .modernui .mattable-pager table {
@@ -564,7 +587,7 @@ body.modernui {
 .modernui .mattable-addlink,
 .modernui .mattable-quickaddlink,
 .modernui .mattable-posaddlink {
-    margin-right: .4em;
+    margin: 0;
 }
 
 /* Kapcsoló linkek (termék jellemzők, címkeszűrők): a bekapcsolt állapot jele a ui-state-hover osztály */
