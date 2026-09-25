@@ -879,9 +879,8 @@ body .ui-tooltip {
 	--mkw-row-hover: color-mix(in srgb, var(--mkw-accent) 6%, var(--mkw-surface));
 	--mkw-row-separator: #c4c4cc;
 
-	/* a dolgozó választott színe (base.tpl a <html> style-ban írja felül); a többi árnyalat ebből számolódik */
-	--mkw-accent-base: #2563eb;
-	--mkw-accent: var(--mkw-accent-base);
+	/* a dolgozó színe: a szerver a <html> style-ban adja --mkw-accent-l / -d néven (UiAppearanceService), a többi árnyalat ebből keveredik */
+	--mkw-accent: var(--mkw-accent-l, #2563eb);
 	--mkw-accent-hover: color-mix(in srgb, var(--mkw-accent) 82%, black);
 	--mkw-accent-soft: color-mix(in srgb, var(--mkw-accent) 9%, var(--mkw-surface));
 	--mkw-accent-border: color-mix(in srgb, var(--mkw-accent) 35%, var(--mkw-surface));

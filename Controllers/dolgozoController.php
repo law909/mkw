@@ -43,6 +43,10 @@ class dolgozoController extends \mkwhelpers\MattableController
         $x['munkakornev'] = $t->getMunkakorNev();
         $x['alapertelmezettraktarnev'] = $t->getAlapertelmezettRaktarNev();
         $x['fizmodnev'] = $t->getFizmodNev();
+        $x['uitheme'] = $t->getUitheme() ?: \Services\UiAppearanceService::DEFAULT_THEME;
+        $x['uiaccent'] = $t->getId()
+            ? \Services\UiAppearanceService::getAccentFor($t->getId())
+            : \Services\UiAppearanceService::DEFAULT_ACCENT;
         $x['mptngytemakorlist'] = $t->getMPTNGYTemakorok();
         $x['mptngykiosztottdb'] = $t->getMptngyszakmaianyagok1()->count()
             + $t->getMptngyszakmaianyagok2()->count()
@@ -59,7 +63,12 @@ class dolgozoController extends \mkwhelpers\MattableController
     protected function setFields($obj, $oper)
     {
         // a munkarend csak az adminnak látszik a formon, a hiányzó checkboxok különben kinullaznák
-        $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => $this->isAdminUser() ? [] : $this->getMunkarendFields()]);
+        $skip = array_merge(['uitheme'], $this->isAdminUser() ? [] : $this->getMunkarendFields());
+        $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => $skip]);
+        $uitheme = $this->params->getStringRequestParam('uitheme');
+        if (\Services\UiAppearanceService::isValidTheme($uitheme)) {
+            $obj->setUitheme($uitheme);
+        }
         $pass1 = $this->params->getStringRequestParam('jelszo1');
         $pass2 = $this->params->getStringRequestParam('jelszo2');
         if ($oper == $this->addOperation) {
@@ -86,6 +95,19 @@ class dolgozoController extends \mkwhelpers\MattableController
             $obj->removeAlapertelmezettRaktar();
         }
         return $obj;
+    }
+
+    protected function afterSave($o, $parancs = null)
+    {
+        if ($this->params->existsRequestParam('uiaccent')) {
+            \Services\UiAppearanceService::setAccentFor($o->getId(), $this->params->getStringRequestParam('uiaccent'));
+        }
+        // a saját rekordnál a téma a session-ből olvasódik, különben csak a következő belépéskor váltana
+        $lu = \mkw\store::getAdminSession()->loggedinuser;
+        if (is_array($lu) && ($lu['id'] ?? null) == $o->getId() && $o->getUitheme()) {
+            $lu['uitheme'] = $o->getUitheme();
+            \mkw\store::getAdminSession()->loggedinuser = $lu;
+        }
     }
 
     private function isAdminUser()

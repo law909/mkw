@@ -14,7 +14,7 @@
 	--mkw-row-hover: color-mix(in srgb, var(--mkw-accent) 8%, var(--mkw-surface));
 	--mkw-row-separator: #45454d;
 
-	--mkw-accent: color-mix(in srgb, var(--mkw-accent-base) 70%, white);
+	--mkw-accent: var(--mkw-accent-d, #6692f1);
 	--mkw-accent-hover: color-mix(in srgb, var(--mkw-accent) 80%, white);
 	--mkw-accent-soft: color-mix(in srgb, var(--mkw-accent) 15%, var(--mkw-surface));
 	--mkw-accent-border: color-mix(in srgb, var(--mkw-accent) 45%, var(--mkw-surface));

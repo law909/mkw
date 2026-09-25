@@ -433,6 +433,9 @@ class adminController extends mkwhelpers\Controller
             return;
         }
         $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
+        if (!\Services\UiAppearanceService::isValidTheme($theme)) {
+            return;
+        }
         // a sysadmin nem dolgozó: nála csak a session-ben él a választás, a következő belépésig
         if (\mkw\store::getAdminSession()->pk == -1) {
             $lu['uitheme'] = $theme;
@@ -475,9 +478,12 @@ class adminController extends mkwhelpers\Controller
      * A bal oldali menü egy menücsoportjának nyitott/zárt állapota, a bejelentkezett
      * dolgozóhoz mentve. A menü kirajzolásakor a menuController::getMenu() olvassa vissza.
      */
+    /** Menti a színt, és visszaadja a hozzá számolt CSS változókat, hogy a lap újratöltés nélkül átszíneződjön. */
     public function setUIAccent()
     {
-        \Services\UiAccentService::setCurrent($this->params->getStringRequestParam('uiaccent'));
+        \Services\UiAppearanceService::setCurrentAccent($this->params->getStringRequestParam('uiaccent'));
+        header('Content-Type: application/json');
+        echo json_encode(['css' => \Services\UiAppearanceService::getAccentCssVars(\Services\UiAppearanceService::getCurrentAccent())]);
     }
 
     public function setMenucsoportNyitva()

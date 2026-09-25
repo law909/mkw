@@ -29,13 +29,16 @@ class generalDataLoader
         if (is_array($lu) && array_key_exists('uitheme', $lu)) {
             $uitheme = $lu['uitheme'];
         }
-        if (!$uitheme) {
-            $uitheme = 'sunny';
+        // az érték egy href útvonalába kerül, ezért csak a listában szereplő téma mehet át
+        if (!\Services\UiAppearanceService::isValidTheme($uitheme)) {
+            $uitheme = \Services\UiAppearanceService::DEFAULT_THEME;
         }
         $view->setVar('uitheme', $uitheme);
         $view->setVar('modernui', str_starts_with($uitheme, 'modern'));
-        $view->setVar('uiaccent', \Services\UiAccentService::getCurrent());
-        $view->setVar('uiaccents', \Services\UiAccentService::COLORS);
+        $uiaccent = \Services\UiAppearanceService::getCurrentAccent();
+        $view->setVar('uiaccent', $uiaccent);
+        $view->setVar('uiaccentcss', \Services\UiAppearanceService::getAccentCssVars($uiaccent));
+        $view->setVar('uiaccentpresets', \Services\UiAppearanceService::ACCENT_PRESETS);
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
         $view->setVar('sysadmin', \mkw\store::getAdminSession()->pk == -1);
@@ -72,34 +75,7 @@ class generalDataLoader
             $view->setVar('webshop' . $c . 'name', \mkw\store::getParameter('webshop' . $c . 'name', $c));
         }
         $view->setVar('enabledwebshops', \mkw\store::getEnabledWebshops());
-        $view->setVar('uithemes', [
-            'modern',
-            'modern-dark',
-            'black-tie',
-            'blitzer',
-            'cupertino',
-            'dark-hive',
-            'dot-luv',
-            'eggplant',
-            'excite-bike',
-            'flick',
-            'hot-sneaks',
-            'humanity',
-            'le-frog',
-            'mint-choc',
-            'overcast',
-            'pepper-grinder',
-            'redmond',
-            'smoothness',
-            'south-street',
-            'start',
-            'sunny',
-            'swanky-purse',
-            'trontastic',
-            'ui-darkness',
-            'ui-lightness',
-            'vader'
-        ]);
+        $view->setVar('uithemes', \Services\UiAppearanceService::THEMES);
     }
 
     public function loadPubadminData($view)

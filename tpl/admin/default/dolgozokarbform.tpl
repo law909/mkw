@@ -5,6 +5,7 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            <li><a href="#MegjelenesTab">{at('Megjelenés')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -130,6 +131,28 @@
                         <td><input id="MPTNGYMaxvallaltdbEdit" name="mptngymaxdb" type="number" step="any" value="{$egyed.mptngymaxdb}"></td>
                     </tr>
                 {/if}
+                </tbody>
+            </table>
+        </div>
+        <div id="MegjelenesTab" class="mattkarb-page" data-visible="visible">
+            <table>
+                <tbody>
+                <tr>
+                    <td><label for="UithemeEdit">{at('Téma')}:</label></td>
+                    <td><select id="UithemeEdit" name="uitheme">
+                            {foreach $uithemes as $_uitheme}
+                                <option value="{$_uitheme}"{if ($_uitheme == $egyed.uitheme)} selected="selected"{/if}>{$_uitheme}</option>
+                            {/foreach}
+                        </select></td>
+                </tr>
+                <tr>
+                    <td><label>{at('Kiemelő szín')}:</label></td>
+                    <td>{include "../partials/uiaccentpicker.tpl" accentname="uiaccent" accentvalue=$egyed.uiaccent}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="mattkarb-megjegyzes">{at('A kiemelő szín a modern és a modern-dark témában látszik. Bármilyen szín keverhető: a túl világos vagy túl sötét színből a téma olvasható árnyalatot számol.')}</td>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -174,18 +174,30 @@ $(document).ready(
             });
         });
         markActiveMenupont();
-        // a téma az egy alapszínből számolja az árnyalatokat, ezért újratöltés nélkül is átszíneződik
-        $('.js-uiaccent').on('click', function (e) {
+        // Kiemelő szín választó (partials/uiaccentpicker.tpl): a minta a keverő mezőt állítja be.
+        // Delegált, mert a dolgozó karbantartóba ajaxszal töltődik be.
+        $(document).on('click', '.js-uiaccentpreset', function (e) {
             e.preventDefault();
-            const $minta = $(this);
-            document.documentElement.style.setProperty('--mkw-accent-base', $minta.data('color'));
-            $('.js-uiaccent').removeClass('menu-szinminta-aktiv');
-            $minta.addClass('menu-szinminta-aktiv');
+            $(this).siblings('.js-uiaccentinput').val($(this).data('color')).trigger('change');
+        });
+        $(document).on('change', '.js-uiaccentinput', function () {
+            const $picker = $(this).closest('.uiaccentpicker');
+            const color = this.value.toLowerCase();
+            $picker.find('.js-uiaccentpreset').each(function () {
+                $(this).toggleClass('uiaccentpicker-minta-aktiv', String($(this).data('color')).toLowerCase() === color);
+            });
+            if (!$picker.hasClass('js-uiaccentlive')) {
+                return;
+            }
+            // a szerver számolja a világos/sötét árnyalatot, azzal színeződik át a lap újratöltés nélkül
             $.ajax({
                 url: '/admin/setuiaccent',
                 type: 'POST',
                 global: false,
-                data: {uiaccent: $minta.data('accent')}
+                data: {uiaccent: color},
+                success: function (data) {
+                    document.documentElement.setAttribute('style', data.css);
+                }
             });
         });
         $('#ThemeSelect').change(function (e) {

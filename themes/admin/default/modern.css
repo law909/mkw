@@ -191,27 +191,18 @@ body.modernui {
     flex: 1;
 }
 
-.modernui .menu-szinvalaszto {
-    display: flex;
-    flex-wrap: wrap;
-    flex-basis: 100%;
-    gap: 5px;
-    order: 1;
-}
-
-.modernui .menu-szinminta {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
-}
-
-.modernui .menu-szinminta:hover {
-    transform: scale(1.15);
-}
-
-.modernui .menu-szinminta-aktiv {
+.modernui .uiaccentpicker-minta-aktiv {
     box-shadow: 0 0 0 2px var(--mkw-surface), 0 0 0 4px var(--mkw-accent);
+}
+
+.modernui .mattkarb-megjegyzes {
+    max-width: 40em;
+    color: var(--mkw-muted);
+}
+
+.modernui .menu-temavalaszto .uiaccentpicker {
+    flex-basis: 100%;
+    order: 1;
 }
 
 /* Oldalszintű riasztások (base.tpl)
