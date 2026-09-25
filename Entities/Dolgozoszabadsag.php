@@ -17,6 +17,7 @@ class Dolgozoszabadsag
     const TIPUS_SZABADSAG = 'szabadsag';
     const TIPUS_BETEGSZABADSAG = 'betegszabadsag';
     const TIPUS_FIZETETLEN = 'fizetetlen';
+    const TIPUS_SZABADNAP = 'szabadnap';
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -51,6 +52,7 @@ class Dolgozoszabadsag
             self::TIPUS_SZABADSAG => 'szabadság',
             self::TIPUS_BETEGSZABADSAG => 'betegszabadság',
             self::TIPUS_FIZETETLEN => 'fizetetlen szabadság',
+            self::TIPUS_SZABADNAP => 'szabadnap',
         ];
     }
 

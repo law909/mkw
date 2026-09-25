@@ -13,7 +13,7 @@ use Traits\Munkanap;
  *
  * A nap ugyanúgy számít, mint a jelenléti íven ({@see jelenletiivgenController}): csak a dolgozó
  * munkanapja, ünnepnap nélkül. Az éves keretet ({@see Dolgozo::getEvesmaxszabi()}) csak a
- * „szabadság” típus fogyasztja, a betegszabadság és a fizetetlen nem.
+ * „szabadság” típus fogyasztja, a betegszabadság, a fizetetlen és a szabadnap nem.
  */
 class szabadsagkimutatasController extends \mkwhelpers\Controller
 {
