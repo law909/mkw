@@ -22,7 +22,15 @@ body.modernui {
 
 .modernui .screen {
     grid-template-columns: minmax(220px, 250px) 1fr;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--mkw-topbar-height));
+}
+
+.modernui.oldalsav-rejtve .screen {
+    grid-template-columns: 1fr;
+}
+
+.modernui.oldalsav-rejtve .menu-container {
+    display: none;
 }
 
 .modernui .content-container {
@@ -85,14 +93,114 @@ body.modernui {
     padding: .35em .9em;
 }
 
+/* Felső sáv
+----------------------------------*/
+.modernui {
+    --mkw-topbar-height: 48px;
+}
+
+.modernui .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    height: var(--mkw-topbar-height);
+    padding: 0 12px;
+    border-bottom: 1px solid var(--mkw-border);
+    background: var(--mkw-surface);
+}
+
+.modernui .topbar svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.modernui .topbar-gomb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--mkw-radius);
+    background: transparent;
+    color: var(--mkw-muted);
+    cursor: pointer;
+}
+
+.modernui .topbar-gomb:hover {
+    background: var(--mkw-hover);
+    color: var(--mkw-text);
+}
+
+.modernui .topbar-ceg {
+    color: var(--mkw-text);
+    font-size: 1.05em;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.modernui .topbar .teszt-uzemmod {
+    margin: 0;
+    padding: 2px 8px;
+}
+
+.modernui .topbar-kereso {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 1 360px;
+    margin: 0 auto;
+    padding: 6px 10px;
+    border: 1px solid var(--mkw-border-strong);
+    border-radius: var(--mkw-radius);
+    background: var(--mkw-surface-2);
+    color: var(--mkw-muted);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.modernui .topbar-kereso:hover {
+    border-color: var(--mkw-accent-border);
+}
+
+.modernui .topbar-kereso-szoveg {
+    flex: 1;
+}
+
+.modernui kbd {
+    padding: 1px 5px;
+    border: 1px solid var(--mkw-border-strong);
+    border-radius: var(--mkw-radius-sm);
+    background: var(--mkw-surface);
+    color: var(--mkw-muted);
+    font: .85em var(--mkw-font);
+}
+
+.modernui .topbar-felhasznalo {
+    color: var(--mkw-muted);
+    white-space: nowrap;
+}
+
 /* Oldalsáv menü
 ----------------------------------*/
 .modernui .menu-container {
     position: sticky;
-    top: 0;
+    top: var(--mkw-topbar-height);
     align-self: start;
     box-sizing: border-box;
-    max-height: 100vh;
+    max-height: calc(100vh - var(--mkw-topbar-height));
     overflow-y: auto;
     margin: 0;
     padding: 12px 10px;
@@ -340,7 +448,7 @@ body.modernui {
 ----------------------------------*/
 .modernui .mattable-table th.mattable-thcolumn {
     position: sticky;
-    top: 0;
+    top: var(--mkw-topbar-height);
     z-index: 1;
     padding: .55em .6em;
     border: 0;

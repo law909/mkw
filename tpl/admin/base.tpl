@@ -32,6 +32,26 @@
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
 <body{if ($modernui|default:false)} class="modernui"{/if} data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
+{if ($modernui|default:false) && ($userloggedin)}
+    <header class="topbar">
+        <button type="button" class="topbar-gomb js-oldalsavkapcsolo" title="{at('Menü megjelenítése/elrejtése')}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <a class="topbar-ceg" href="/admin/">{$tulajnev}</a>
+        {if ($teszt)}
+            <span class="teszt-uzemmod">{at('TESZT')}</span>
+        {/if}
+        <button type="button" class="topbar-kereso js-menukereso-nyit" title="{at('Keresés a menüben')}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+            <span class="topbar-kereso-szoveg">{at('Keresés a menüben…')}</span>
+            <kbd class="js-menukereso-billentyu">Ctrl K</kbd>
+        </button>
+        <span class="topbar-felhasznalo">{$loggedinuser.name}</span>
+        <a class="topbar-gomb" href="/admin/logout" title="{at('Kijelentkezés')}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        </a>
+    </header>
+{/if}
 {if ($arfolyamriasztas)}
     <h1 id="arfolyamriasztas">Túl régi az utolsó árfolyam. CSINÁLJ EGY ÁRFOLYAMLETÖLTÉST!</h1>
 {/if}
@@ -97,11 +117,13 @@
 <div class="screen">
     {if ($userloggedin)}
         <div class="menu-container ui-widget ui-widget-content ui-corner-all">
-            {if ($teszt)}
-                <div class="textaligncenter teszt-uzemmod">TESZT ÜZEMMÓD</div>
+            {if (!($modernui|default:false))}
+                {if ($teszt)}
+                    <div class="textaligncenter teszt-uzemmod">TESZT ÜZEMMÓD</div>
+                {/if}
+                <div class="textaligncenter menu-tulajnev">{$tulajnev}</div>
+                <div class="textaligncenter menu-felhasznalo">{$loggedinuser.name}</div>
             {/if}
-            <div class="textaligncenter menu-tulajnev">{$tulajnev}</div>
-            <div class="textaligncenter menu-felhasznalo">{$loggedinuser.name}</div>
             {* A menücsoportok fejlécére kattintva nyílnak/záródnak; a nyitott állapot
                dolgozónként mentődik (lásd appinit.js + adminController::setMenucsoportNyitva).
                Csoport nélküli menüpont nem kap fejlécet, és mindig látszik. *}

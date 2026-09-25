@@ -174,6 +174,9 @@ $(document).ready(
             });
         });
         markActiveMenupont();
+        $('.js-oldalsavkapcsolo').on('click', function () {
+            $('body').toggleClass('oldalsav-rejtve');
+        });
         // Kiemelő szín választó (partials/uiaccentpicker.tpl): a minta a keverő mezőt állítja be.
         // Delegált, mert a dolgozó karbantartóba ajaxszal töltődik be.
         $(document).on('click', '.js-uiaccentpreset', function (e) {
