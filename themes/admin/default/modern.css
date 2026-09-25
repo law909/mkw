@@ -750,9 +750,11 @@ body.modernui {
 .modernui {
     --mkw-cimkeoszlop: 13em;
     --mkw-mezooszlop: 26em;
+    --mkw-racsszelesseg: calc(2 * (var(--mkw-cimkeoszlop) + var(--mkw-mezooszlop)) + 42px);
 }
 
 .modernui .mattkarb-szakaszcim {
+    max-width: var(--mkw-racsszelesseg);
     margin: 1.4em 0 .5em;
     padding: 0 0 4px;
     border-bottom: 1px solid var(--mkw-border);
@@ -761,6 +763,10 @@ body.modernui {
     font-weight: 600;
     letter-spacing: .05em;
     text-transform: uppercase;
+}
+
+.modernui table.mattkarb-racs > tbody > tr.mattkarb-szakaszsor > td {
+    padding: 0;
 }
 
 .modernui .mattkarb-page > .mattkarb-szakaszcim:first-child {
@@ -824,6 +830,10 @@ body.modernui {
 }
 
 @media (max-width: 1200px) {
+    .modernui {
+        --mkw-racsszelesseg: calc(var(--mkw-cimkeoszlop) + var(--mkw-mezooszlop) + 14px);
+    }
+
     .modernui table.mattkarb-racs > tbody > tr {
         grid-template-columns: var(--mkw-cimkeoszlop) minmax(0, var(--mkw-mezooszlop));
     }

@@ -38,7 +38,8 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($partner.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Alapadatok')}</div>
+            <table class="mattkarb-racs">
                 <tbody>
                 {if ($setup.mptngy)}
                     <tr>
@@ -101,6 +102,9 @@
                             {/for}
                         {/if}
                     </td>
+                </tr>
+                <tr class="mattkarb-szakaszsor">
+                    <td colspan="4"><div class="mattkarb-szakaszcim">{at('Cím és adózás')}</div></td>
                 </tr>
                 <tr>
                     <td><label for="IrszamEdit">{at('Cím')}:</label></td>
@@ -166,6 +170,9 @@
                     <td><label for="SzamlaegyebEdit">{at('Egyéb adat számlán')}:</label></td>
                     <td><input id="SzamlaegyebEdit" name="szamlaegyeb" type="text" maxlength="255" value="{$partner.szamlaegyeb}"></td>
                 </tr>
+                <tr class="mattkarb-szakaszsor">
+                    <td colspan="4"><div class="mattkarb-szakaszcim">{at('Értékesítés')}</div></td>
+                </tr>
                 <tr>
                     <td><label for="PartnertipusEdit">{at('Partner típus')}:</label></td>
                     <td><select id="PartnertipusEdit" name="partnertipus">
@@ -228,6 +235,9 @@
                             {/foreach}
                         </select></td>
                 </tr>
+                <tr class="mattkarb-szakaszsor">
+                    <td colspan="4"><div class="mattkarb-szakaszcim">{at('Egyéb')}</div></td>
+                </tr>
                 <tr>
                     <td><label for="AkcioshirlevelkellEdit">{at('Kér akciós hírlevelet')}:</label></td>
                     <td><input id="AkcioshirlevelkellEdit" name="akcioshirlevelkell"
@@ -252,6 +262,7 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="mattkarb-szakaszcim">{at('Címkék')}</div>
             <div id="cimkekarbcontainer">
                 {foreach $cimkekat as $_cimkekat}
                     <div class="mattedit-titlebar ui-widget-header ui-helper-clearfix js-cimkekarbcloseupbutton" data-refcontrol="#partnerkarb{$_cimkekat.id}">
@@ -271,7 +282,7 @@
         </div>
         {if ($setup.mpt)}
             <div id="MPTTab" class="mattkarb-page" data-visible="visible">
-                <table>
+                <table class="mattkarb-racs">
                     <tbody>
                     <tr>
                         <td>{at('Felhasználónév')}:</td>
@@ -463,7 +474,7 @@
         {/if}
         {if ($setup.mptngy)}
             <div id="MPTNGYTab" class="mattkarb-page" data-visible="visible">
-                <table>
+                <table class="mattkarb-racs">
                     <tbody>
                     <tr>
                         <td><label for="mptngyszlanevedit">{at('Számlázási név')}:</label></td>
@@ -568,7 +579,8 @@
             </div>
         {/if}
         <div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Elérhetőségek')}</div>
+            <table class="mattkarb-racs">
                 <tbody>
                 {if ($maintheme === 'mkwcansas' && $partner.telefon && (!$partner.telkorzet || !$partner.telszam))}
                     <tr>
@@ -610,7 +622,8 @@
                 </tr>
                 </tbody>
             </table>
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Szállítási cím')}</div>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="SzallNevEdit">{at('Szállítási név')}:</label></td>
@@ -684,7 +697,7 @@
             {include 'partnerarlistakarb.tpl'}
         {/if}
         <div id="LoginTab" class="mattkarb-page" data-visible="visible">
-            <table>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label>{at('Email')}:</label></td>
@@ -701,7 +714,7 @@
         </div>
         {if (!$setup.mptngy && !$setup.mpt)}
             <div id="BankTab" class="mattkarb-page" data-visible="visible">
-                <table>
+                <table class="mattkarb-racs">
                     <tbody>
                     <tr>
                         <td><label for="BanknevEdit">{at('Bank neve')}:</label></td>
@@ -723,7 +736,7 @@
                 </table>
             </div>
             <div id="EgyebAzonositoTab" class="mattkarb-page" data-visible="visible">
-                <table>
+                <table class="mattkarb-racs">
                     <tbody>
                     <tr>
                         <td><label for="NemEdit">{at('Neme')}</label></td>
