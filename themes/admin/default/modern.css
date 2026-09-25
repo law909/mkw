@@ -712,6 +712,15 @@ body.modernui {
     text-align: left;
 }
 
+/* a kijelölő pipa oszlopa csak akkora, amekkora a pipa */
+.modernui .mattable-table th.mattable-thcolumn:first-child:has(> input[type="checkbox"]),
+.modernui .mattable-table > tbody > tr > td:first-child:has(> input[type="checkbox"]) {
+    width: 1px;
+    padding-right: 4px;
+    padding-left: 10px;
+    text-align: center;
+}
+
 /* a számoszlopok fejléce a sablonban kifejezetten jobbra igazított, az marad */
 .modernui .mattable-table th.mattable-thcolumn.textalignright {
     text-align: right;
