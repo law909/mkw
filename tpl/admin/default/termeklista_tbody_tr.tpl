@@ -134,15 +134,12 @@
             {/if}
             <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="ajanlott"
-                       class="js-flagcheckbox{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a></td>
-            </tr>
-            <tr>
-                <td><a href="#" data-id="{$_termek.id}" data-flag="kiemelt"
-                       class="js-flagcheckbox{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a></td>
-            </tr>
-            <tr>
-                <td><a href="#" data-id="{$_termek.id}" data-flag="uj"
-                       class="js-flagcheckbox{if ($_termek.uj)} ui-state-hover{/if}">{at('Új')}</a></td>
+                       class="js-flagcheckbox{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a>
+                    <a href="#" data-id="{$_termek.id}" data-flag="kiemelt"
+                       class="js-flagcheckbox{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a>
+                    <a href="#" data-id="{$_termek.id}" data-flag="uj"
+                       class="js-flagcheckbox{if ($_termek.uj)} ui-state-hover{/if}">{at('Új')}</a>
+                </td>
             </tr>
             <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="hozzaszolas"
@@ -154,15 +151,12 @@
             </tr>
             <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="nemkaphato"
-                       class="js-flagcheckbox{if ($_termek.nemkaphato)} ui-state-hover{/if}">{at('Nem kapható')}</a></td>
-            </tr>
-            <tr>
-                <td><a href="#" data-id="{$_termek.id}" data-flag="fuggoben"
-                       class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{at('Függőben')}</a></td>
-            </tr>
-            <tr>
-                <td><a href="#" data-id="{$_termek.id}" data-flag="kifuto"
-                       class="js-flagcheckbox{if ($_termek.kifuto)} ui-state-hover{/if}">{at('Kifutó')}</a></td>
+                       class="js-flagcheckbox{if ($_termek.nemkaphato)} ui-state-hover{/if}">{at('Nem kapható')}</a>
+                    <a href="#" data-id="{$_termek.id}" data-flag="fuggoben"
+                       class="js-flagcheckbox{if ($_termek.fuggoben)} ui-state-hover{/if}">{at('Függőben')}</a>
+                    <a href="#" data-id="{$_termek.id}" data-flag="kifuto"
+                       class="js-flagcheckbox{if ($_termek.kifuto)} ui-state-hover{/if}">{at('Kifutó')}</a>
+                </td>
             </tr>
             <tr>
                 <td><a href="#" data-id="{$_termek.id}" data-flag="termekexportbanszerepel"
