@@ -32,29 +32,18 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         }
     }
 
-    public function getForParentCount($parentid, $menunum = 0)
+    /** The number of active child nodes. */
+    public function getForParentCount($parentid): int
     {
-        $filterstr = '';
-        if ($menunum > 0) {
-            $filterstr = ' AND menu' . $menunum . 'lathato=1';
-        }
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('darab', 'darab');
-        $q = $this->_em->createNativeQuery(
-            'SELECT COUNT(*) AS darab '
-            . 'FROM termekmenu f '
-            . 'WHERE parent_id=' . $parentid . $filterstr,
-            $rsm
+        return (int)$this->_em->getConnection()->fetchOne(
+            'SELECT COUNT(*) FROM termekmenu WHERE parent_id = ? AND COALESCE(inaktiv, 0) = 0',
+            [(int)$parentid]
         );
-        return $q->getScalarResult();
     }
 
-    public function getForParent($parentid, $menunum = 0)
+    /** The active child nodes, as the category tiles of the storefront. */
+    public function getForParent($parentid)
     {
-        $filterstr = '';
-        if ($menunum > 0) {
-            $filterstr = ' AND menu' . $menunum . 'lathato=1';
-        }
         $nevfieldname = \mkw\store::getLocalizedFieldName('nev');
         $leirasfieldname = \mkw\store::getLocalizedFieldName('leiras');
         $rsm = new ResultSetMapping();
@@ -70,7 +59,7 @@ class TermekMenuRepository extends \mkwhelpers\Repository
             'SELECT id,' . $nevfieldname . ',slug,karkod,' . $leirasfieldname . ',kepurl,kepleiras,'
             . 'sorrend '
             . 'FROM termekmenu f '
-            . 'WHERE parent_id=' . $parentid . $filterstr . ' '
+            . 'WHERE parent_id=' . (int)$parentid . ' AND COALESCE(inaktiv, 0) = 0 '
             . 'ORDER BY sorrend,nev',
             $rsm
         );

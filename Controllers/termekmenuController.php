@@ -318,14 +318,12 @@ class termekmenuController extends \mkwhelpers\MattableController
     public function getkatlista(TermekMenu $parent)
     {
         $repo = $this->getRepo();
-        $children = $repo->getForParent($parent->getId(), 4);
+        $children = $repo->getForParent($parent->getId());
         $t = [];
         foreach ($children as $child) {
             $child['kozepeskepurl'] = \mkw\store::createMediumImageUrl($child['kepurl']);
             $child['kiskepurl'] = \mkw\store::createSmallImageUrl($child['kepurl']);
             $child['kepurl'] = \mkw\store::createBigImageUrl($child['kepurl']);
-//			$chchildren=$repo->getForParent($child['id']);
-//			$child['childcount']=count($chchildren);
             $child['childcount'] = $repo->getForParentCount($child['id']);
             $t[] = $child;
         }
