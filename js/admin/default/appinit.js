@@ -175,7 +175,13 @@ $(document).ready(
         });
         markActiveMenupont();
         $('.js-oldalsavkapcsolo').on('click', function () {
-            $('body').toggleClass('oldalsav-rejtve');
+            const rejtve = $('body').toggleClass('oldalsav-rejtve').hasClass('oldalsav-rejtve');
+            $.ajax({
+                url: '/admin/setuipref',
+                type: 'POST',
+                global: false,
+                data: {name: 'oldalsavrejtve', value: rejtve ? 1 : 0}
+            });
         });
         // Kiemelő szín választó (partials/uiaccentpicker.tpl): a minta a keverő mezőt állítja be.
         // Delegált, mert a dolgozó karbantartóba ajaxszal töltődik be.

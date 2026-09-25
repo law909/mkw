@@ -42,6 +42,7 @@ class generalDataLoader
         $view->setVar('uiaccent', $uiaccent);
         $view->setVar('uiaccentcss', \Services\UiAppearanceService::getAccentCssVars($uiaccent));
         $view->setVar('uiaccentpresets', \Services\UiAppearanceService::ACCENT_PRESETS);
+        $view->setVar('oldalsavrejtve', (bool)\Services\UiAppearanceService::getPref('oldalsavrejtve', false));
         $view->setVar('mainurl', \mkw\store::getConfigValue('mainurl'));
         $view->setVar('userloggedin', \mkw\store::getAdminSession()->pk);
         $view->setVar('sysadmin', \mkw\store::getAdminSession()->pk == -1);

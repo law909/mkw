@@ -451,6 +451,14 @@ class adminController extends mkwhelpers\Controller
         );
     }
 
+    public function setUIPref()
+    {
+        \Services\UiAppearanceService::setPref(
+            $this->params->getStringRequestParam('name'),
+            $this->params->getStringRequestParam('value')
+        );
+    }
+
     public function setMenucsoportNyitva()
     {
         $mcsid = $this->params->getIntRequestParam('mcsid', 0);

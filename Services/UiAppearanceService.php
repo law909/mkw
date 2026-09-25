@@ -105,6 +105,30 @@ class UiAppearanceService
         return $dolgozoid ? self::getAccentFor($dolgozoid) : self::DEFAULT_ACCENT;
     }
 
+    /** Felületi beállítások, amelyeket a kliens menthet (setuipref); más név nem írható. */
+    const PREFS = ['oldalsavrejtve'];
+
+    /** Dolgozónként a dolgozoparameterek-ben, a sysadminnál 'sysadmin' előtaggal a parameterek-ben. */
+    public static function getPref(string $name, $default = null)
+    {
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            return \mkw\store::getParameter('sysadmin' . $name, $default);
+        }
+        return DolgozoParameterService::getParameter($name, $default);
+    }
+
+    public static function setPref(string $name, string $value): void
+    {
+        if (!in_array($name, self::PREFS, true)) {
+            return;
+        }
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            \mkw\store::setParameter('sysadmin' . $name, $value);
+            return;
+        }
+        DolgozoParameterService::setParameter($name, $value);
+    }
+
     /** Csak a sysadmin belépésnek; az érvénytelen értéket figyelmen kívül hagyja. */
     public static function setSysadmin($theme, $accent): void
     {
