@@ -602,8 +602,12 @@ select.tetelszamhiba,
 }
 
 .termekmenufa-sav {
-    padding: 6px;
-    margin-bottom: 6px;
+    padding: .5em 1em;
+    border-bottom: 1px solid #c5c5c5;
+}
+
+#termekmenu {
+    padding: .5em 1em;
 }
 
 .termekmenufa-sav .ui-button {

@@ -43,8 +43,8 @@ $(document).ready(function () {
             success: function (data) {
                 scrollPosition = $(document).scrollTop();
                 $(document).scrollTop(0);
-                $('#termekmenu').hide();
-                $('#termekmenukarb').append(data);
+                $('#termekmenupanel').hide();
+                $('#termekmenukarb').append(data).show();
                 var karbsetup = new MattkarbConfig({
                     name: '',
                     independent: false,
@@ -127,12 +127,12 @@ $(document).ready(function () {
                     onSubmit: function (data) {
                         $('#termekmenukarb').empty().hide();
                         $('#termekmenu').jstree('refresh');
-                        $('#termekmenu').show();
+                        $('#termekmenupanel').show();
                         $(document).scrollTop(scrollPosition);
                     },
                     onCancel: function () {
                         $('#termekmenukarb').empty().hide();
-                        $('#termekmenu').show();
+                        $('#termekmenupanel').show();
                         $(document).scrollTop(scrollPosition);
                     }
                 });
