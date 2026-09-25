@@ -464,7 +464,8 @@ class TermekRepository extends \mkwhelpers\Repository
                         . ' LEFT JOIN _xx.termekfa2 fa2'
                         . ' LEFT JOIN _xx.termekfa3 fa3'
                         . ' WHERE (1=1) '
-                        . str_replace('WHERE', 'AND', $this->getFilterString($filter))
+                        // only the leading WHERE: a subquery in the filter has its own
+                        . preg_replace('/^(\s*)WHERE\b/', '$1AND', $this->getFilterString($filter))
                         . ' AND (' . \mkw\store::getWebshopFieldName('v.lathato') . '=1) '
                         . ' AND (' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1) '
                     );

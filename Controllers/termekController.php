@@ -2079,12 +2079,9 @@ class termekController extends \mkwhelpers\MattableController
         $ret = [];
 
         if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
-            $tf = new termekmenuController();
-            if ($termek->getTermekmenu1()) {
-                $ret['navigator'] = $tf->getNavigator($termek->getTermekmenu1(), true);
-            } else {
-                $ret['navigator'] = [];
-            }
+            $tf = \mkw\store::getTermekmenuController();
+            $menuag = $tf ? $termek->getTermekMenu($tf->getTermekMenuFa()) : null;
+            $ret['navigator'] = $menuag ? $tf->getNavigator($menuag, true) : [];
         } else {
             $tfc = new termekfaController();
             if ($termek->getTermekfa1()) {

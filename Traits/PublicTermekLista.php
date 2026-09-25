@@ -222,30 +222,23 @@ trait PublicTermekLista
         return $filter;
     }
 
-    /**
-     * A termék melyik mezője hivatkozik a menüfára. A termekmenuController állítja be
-     * (`termekmenu1`), a második menüfa vezérlője pedig `termekmenu2`-re írja át.
-     */
-    private function getTermekmenuMezo(): string
-    {
-        return $this->termekMezo ?? 'termekmenu1';
-    }
-
+    /** Products placed into the menu node (its own ones, not the subtree), as the DQL query of the list. */
     private function buildTermekmenuFilter(TermekMenu|TermekMenu2|array|null $termekmenu): FilterDescriptor
     {
         $filter = new FilterDescriptor();
         if ($termekmenu) {
-            $id = is_array($termekmenu) ? $termekmenu['id'] : $termekmenu->getId();
-            $filter->addFilter('_xx.' . $this->getTermekmenuMezo(), '=', $id);
+            $id = (int)(is_array($termekmenu) ? $termekmenu['id'] : $termekmenu->getId());
+            $filter->addSql('EXISTS (SELECT tmt.id FROM Entities\\TermekMenuTermek tmt WHERE IDENTITY(tmt.termek) = _xx.id AND IDENTITY(tmt.termekmenu) = ' . $id . ')');
         }
         return $filter;
     }
 
+    /** The same for the native SQL list query. */
     private function buildNativTermekmenuFilter(TermekMenu|TermekMenu2|null $termekmenu): FilterDescriptor
     {
         $filter = new FilterDescriptor();
         if ($termekmenu) {
-            $filter->addFilter('_xx.' . $this->getTermekmenuMezo() . '_id', '=', $termekmenu->getId());
+            $filter->addSql('EXISTS (SELECT 1 FROM termekmenutermek tmt WHERE tmt.termek_id = _xx.id AND tmt.termekmenu_id = ' . (int)$termekmenu->getId() . ')');
         }
         return $filter;
     }

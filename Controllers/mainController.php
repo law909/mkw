@@ -214,7 +214,8 @@ class mainController extends \mkwhelpers\Controller
         if (!\mkw\store::isMugenrace2026() && !\mkw\store::isSuperzoneHu()) {
             return;
         }
-        $menuag = \mkw\store::getTermekmenuController()->getRepo()->findOneBySlug($slug);
+        $fa = \mkw\store::getTermekMenuFa();
+        $menuag = $fa ? $this->getRepo(\Entities\TermekMenu::class)->findOneBySlugInFa($fa, (string)$slug) : null;
         if ($menuag) {
             $this->setCanonical($this->view, '/categories/' . $menuag->getSlug());
         } else {
@@ -226,10 +227,10 @@ class mainController extends \mkwhelpers\Controller
     public function termekmenu()
     {
         $com = $this->params->getStringParam('slug');
-        // a slug abban a menüfában keresendő, amelyikből a webshop menüje épül
+        // a slug a webshop menüjében keresendő; menü nélküli webshopon nincs kategórialap
         $tf = \mkw\store::getTermekmenuController();
-        $ag = $tf->getRepo()->findOneBySlug($com);
-        if ($ag && !$ag->getInaktiv() && $ag->getLathato()) {
+        $ag = $tf ? $tf->getRepo()->findOneBySlugInFa($tf->getTermekMenuFa(), (string)$com) : null;
+        if ($ag && !$ag->getInaktiv()) {
             if (count($ag->getChildren()) > 0) {
                 $this->view = $this->getTemplateFactory()->createMainView('katlista.tpl');
                 $t = $tf->getkatlista($ag);
@@ -339,7 +340,7 @@ class mainController extends \mkwhelpers\Controller
                 \mkw\store::getEm()->flush();
 
                 if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
-                    $tf = new termekmenuController();
+                    $tf = \mkw\store::getTermekmenuController() ?? new termekmenuController();
                     $t = $tf->gettermeklistaforparent(null, 'search');
                 } else {
                     $tf = new termekfaController();
@@ -417,9 +418,12 @@ class mainController extends \mkwhelpers\Controller
                     }
                     // a linkelt kategóriafa témánként más: a mugenrace2026 a /categories/ menüfát
                     // járja, a többi telepítés a /termekfa/ ágat
-                    $morzsa = (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu())
-                        ? \mkw\store::getTermekmenuController()->getMorzsa($termek->getTermekmenu1())
-                        : (new termekfaController())->getMorzsa($termek->getTermekfa1());
+                    if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
+                        $tmc = \mkw\store::getTermekmenuController();
+                        $morzsa = $tmc ? $tmc->getMorzsa($termek->getTermekMenu($tmc->getTermekMenuFa())) : [];
+                    } else {
+                        $morzsa = (new termekfaController())->getMorzsa($termek->getTermekfa1());
+                    }
                     $kategoriaut = [];
                     foreach ($morzsa as $elem) {
                         $kategoriaut[] = \Services\SeoService::plainText($elem['caption'], 0);

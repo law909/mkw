@@ -169,10 +169,13 @@ class sitemapController extends \mkwhelpers\Controller
         $urls = [];
         $router = \mkw\store::getRouter();
         $menufa = \mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu();
-        $repo = $menufa
-            ? \mkw\store::getTermekmenuController()->getRepo()
-            : $this->getRepo(\Entities\TermekFa::class);
-        foreach ($repo->getForSitemapXml() as $sor) {
+        if ($menufa) {
+            $fa = \mkw\store::getTermekMenuFa();
+            $sorok = $fa ? $this->getRepo(\Entities\TermekMenu::class)->getForSitemapXml($fa) : [];
+        } else {
+            $sorok = $this->getRepo(\Entities\TermekFa::class)->getForSitemapXml();
+        }
+        foreach ($sorok as $sor) {
             $this->addUrl(
                 $urls,
                 $router->generate($menufa ? 'showtermekmenu' : 'showtermekfa', false, ['slug' => $sor['slug']]),

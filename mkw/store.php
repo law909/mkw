@@ -7,7 +7,6 @@ use Controllers\kosarController;
 use Controllers\orszagController;
 use Controllers\popupController;
 use Controllers\termekfaController;
-use Controllers\termekmenu2Controller;
 use Controllers\termekmenuController;
 use Entities\Dolgozo;
 use Entities\Fizmod;
@@ -655,8 +654,7 @@ class store
             switch (true) {
                 case self::isMugenrace2026():
                 case self::isSuperzoneHu():
-                    $tmc = self::getTermekmenuController();
-                    $v->setVar('menu1', $tmc->getTreeAsArray());
+                    $v->setVar('menu1', self::getTermekmenuController()?->getTreeAsArray() ?? []);
                     break;
                 default:
                     $tf = new termekfaController();
@@ -1842,13 +1840,16 @@ class store
         return self::getParameter(\mkw\consts::Termekmenu2Nev) ?: 'Termék menü 2';
     }
 
-    public static function getTermekmenuController()
+    /** The menu controller bound to the current webshop's menu, null when the webshop has none. */
+    public static function getTermekmenuController(): ?termekmenuController
     {
-        $tipus = (string)self::getParameter(self::getWebshopFieldName(\mkw\consts::Termekmenutipus), '');
-        return match ($tipus) {
-            'termekmenu2' => new termekmenu2Controller(),
-            default => new termekmenuController(),
-        };
+        $fa = self::getTermekMenuFa();
+        if (!$fa) {
+            return null;
+        }
+        $controller = new termekmenuController();
+        $controller->setTermekMenuFa($fa);
+        return $controller;
     }
 
     public static function getEnabledWebshops()

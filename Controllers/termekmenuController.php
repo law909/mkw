@@ -8,6 +8,7 @@ use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekMenu;
 use Entities\TermekMenu2;
+use Entities\TermekMenuFa;
 use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -29,6 +30,19 @@ class termekmenuController extends \mkwhelpers\MattableController
     protected $termekMezo = 'termekmenu1';
 
     private $fatomb;
+
+    /** the menu the storefront methods work on: \mkw\store::getTermekmenuController() sets the webshop's one */
+    private ?TermekMenuFa $termekMenuFa = null;
+
+    public function setTermekMenuFa(TermekMenuFa $fa): void
+    {
+        $this->termekMenuFa = $fa;
+    }
+
+    public function getTermekMenuFa(): ?TermekMenuFa
+    {
+        return $this->termekMenuFa;
+    }
 
     public function __construct()
     {
@@ -251,27 +265,16 @@ class termekmenuController extends \mkwhelpers\MattableController
         return $ret;
     }
 
-    public function getTreeAsArray($parentId = null)
+    /** The menu as nested arrays from its root, in id order like before; inactive branches are left out. */
+    public function getTreeAsArray()
     {
-        $filter = new FilterDescriptor();
-        if (!$parentId) {
-            $filter->addSql('(_xx.parent IS NULL)');
-        } else {
-            $filter->addFilter('parent', '=', $parentId);
+        $root = $this->termekMenuFa ? $this->getRepo()->getRoot($this->termekMenuFa) : null;
+        if (!$root || $root->getInaktiv()) {
+            return [];
         }
-
-        $categories = $this->getRepo()->getAll($filter);
-        $tree = [];
-
-        foreach ($categories as $category) {
-            if ($category->getLathato() && !$category->getInaktiv()) {
-                $categoryData = $this->loadVars($category);
-                $categoryData['children'] = $this->buildTreeBranch($category->getId());
-                $tree[] = $categoryData;
-            }
-        }
-
-        return $tree;
+        $categoryData = $this->loadVars($root);
+        $categoryData['children'] = $this->buildTreeBranch($root->getId());
+        return [$categoryData];
     }
 
     private function buildTreeBranch($parentId)
@@ -283,7 +286,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         $branch = [];
 
         foreach ($children as $child) {
-            if ($child->getLathato() && !$child->getInaktiv()) {
+            if (!$child->getInaktiv()) {
                 $childData = $this->loadVars($child);
                 $childData['children'] = $this->buildTreeBranch($child->getId());
                 $branch[] = $childData;

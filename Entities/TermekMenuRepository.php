@@ -179,7 +179,19 @@ class TermekMenuRepository extends \mkwhelpers\Repository
      * A láthatóság feltétele ugyanaz, mint a mainController::termekmenu()-ben (inaktiv + lathato):
      * a menuNlathato csak azt mondja meg, melyik menüben jelenik meg az ág, nem azt, hogy elérhető-e.
      */
-    public function getForSitemapXml()
+    /** The root node of the menu (one per menu: the node without parent). */
+    public function getRoot(TermekMenuFa $fa): ?TermekMenu
+    {
+        return $this->findOneBy(['termekmenufa' => $fa, 'parent' => null], ['id' => 'ASC']);
+    }
+
+    public function findOneBySlugInFa(TermekMenuFa $fa, string $slug): ?TermekMenu
+    {
+        return $this->findOneBy(['termekmenufa' => $fa, 'slug' => $slug]);
+    }
+
+    /** Active category pages of the menu: a node with an active child or a visible product placed into it. */
+    public function getForSitemapXml(TermekMenuFa $fa)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
@@ -191,13 +203,13 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         $q = $this->_em->createNativeQuery(
             'SELECT m.id,m.slug,m.lastmod,m.kepurl,m.kepleiras'
             . ' FROM termekmenu m'
-            . ' WHERE ((m.inaktiv=0) OR (m.inaktiv IS NULL)) AND (m.lathato=1)'
+            . ' WHERE (m.termekmenufa_id = ' . (int)$fa->getId() . ') AND ((m.inaktiv=0) OR (m.inaktiv IS NULL))'
             . ' AND (m.parent_id IS NOT NULL)'
             . ' AND (m.slug IS NOT NULL) AND (m.slug <> "")'
             . ' AND ('
-            . '   EXISTS (SELECT 1 FROM termekmenu c WHERE c.parent_id=m.id AND ((c.inaktiv=0) OR (c.inaktiv IS NULL)) AND c.lathato=1)'
-            . '   OR EXISTS (SELECT 1 FROM termek t WHERE t.inaktiv=0 AND t.fuggoben=0 AND ' . $lathato . '=1'
-            . '     AND t.termekmenu1_id=m.id)'
+            . '   EXISTS (SELECT 1 FROM termekmenu c WHERE c.parent_id=m.id AND ((c.inaktiv=0) OR (c.inaktiv IS NULL)))'
+            . '   OR EXISTS (SELECT 1 FROM termekmenutermek tmt JOIN termek t ON t.id=tmt.termek_id'
+            . '     WHERE tmt.termekmenu_id=m.id AND t.inaktiv=0 AND t.fuggoben=0 AND ' . $lathato . '=1)'
             . ' )'
             . ' ORDER BY m.id',
             $rsm
