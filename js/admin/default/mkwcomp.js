@@ -220,7 +220,8 @@ var mkwcomp = (function ($) {
                 plugins: ['themeroller', 'json_data', 'contextmenu', 'ui', 'checkbox'],
                 themeroller: {item: ''},
                 json_data: {
-                    ajax: {url: listaurl}
+                    // a konténer data-url-je felülírja (pl. a terméklista menüválasztója)
+                    ajax: {url: $tree.attr('data-url') || listaurl}
                 },
                 checkbox: {two_state: !isSubtree(sel)},
                 ui: {select_limit: 1},
@@ -267,11 +268,18 @@ var mkwcomp = (function ($) {
             build(sel);
         }
 
+        // újratöltés más forrásból (data-url): a kijelölés elvész
+        function reload(sel) {
+            getState(sel).pending = [];
+            build(sel);
+        }
+
         return {
             init: init,
             clearChecks: clearChecks,
             setChecks: setChecks,
-            getFilter: getFilter
+            getFilter: getFilter,
+            reload: reload
         }
     }
 

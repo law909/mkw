@@ -121,7 +121,18 @@
             <div class="matt-hseparator"></div>
             <div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
             <div class="matt-hseparator"></div>
-            <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"></div>
+            {if (count($termekmenufalist) > 1)}
+                <div>
+                    <label for="TermekMenuFaFilterEdit">{at('Menü')}:</label>
+                    <select id="TermekMenuFaFilterEdit" class="js-termekmenufafilter">
+                        {foreach $termekmenufalist as $_fa}
+                            <option value="{$_fa.id}">{$_fa.caption|escape}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            {/if}
+            <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"
+                 data-url="/admin/termekmenu/jsonlist?fa={$termekmenufalist[0].id|default:''}"></div>
             <div class="matt-hseparator"></div>
             <div>
                 <label for="cimkefilternincs">{at('Címkeszűrő')}: </label>

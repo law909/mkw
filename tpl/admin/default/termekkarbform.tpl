@@ -67,24 +67,17 @@
             </table>
             <table>
                 <tbody>
+                {foreach $egyed.termekmenuk as $_menu}
                 <tr>
-                    <td><label>{$termekmenunev}:</label></td>
+                    <td><label>{$_menu.fanev|escape}:</label></td>
                     <td>
-                        <span id="TermekMenu1" class="js-termekmenubutton" data-text="{at('válasszon')}"
-                              data-name="termekmenu1" data-url="/admin/termekmenu/jsonlist"
-                              data-value="{$egyed.termekmenu1}">{if ($egyed.termekmenu1nev)}{$egyed.termekmenu1nev}{else}{at('válasszon')}{/if}</span>
-                        <span>{$egyed.termekmenu1path}</span>
+                        <span class="js-termekmenubutton" data-text="{at('válasszon')}"
+                              data-name="termekmenu[{$_menu.fa}]" data-url="/admin/termekmenu/jsonlist?fa={$_menu.fa}"
+                              data-value="{$_menu.id}">{if ($_menu.nev)}{$_menu.nev|escape}{else}{at('válasszon')}{/if}</span>
+                        <span>{$_menu.path|escape}</span>
                     </td>
                 </tr>
-                <tr>
-                    <td><label>{$termekmenu2nev}:</label></td>
-                    <td>
-                        <span id="TermekMenu2" class="js-termekmenubutton" data-text="{at('válasszon')}"
-                              data-name="termekmenu2" data-url="/admin/termekmenu2/jsonlist"
-                              data-value="{$egyed.termekmenu2}">{if ($egyed.termekmenu2nev)}{$egyed.termekmenu2nev}{else}{at('válasszon')}{/if}</span>
-                        <span>{$egyed.termekmenu2path}</span>
-                    </td>
-                </tr>
+                {/foreach}
                 </tbody>
             </table>
             <table>

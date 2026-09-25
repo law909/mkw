@@ -21,7 +21,7 @@ use Entities\TermekFa;
 use Entities\TermekKapcsolodo;
 use Entities\TermekKep;
 use Entities\TermekMenu;
-use Entities\TermekMenu2;
+use Entities\TermekMenuFa;
 use Entities\TermekMinkeszlet;
 use Entities\TermekOptkeszlet;
 use Entities\TermekValtozat;
@@ -113,12 +113,18 @@ class termekController extends \mkwhelpers\MattableController
         $x['termekfa1'] = $t->getTermekfa1Id();
         $x['termekfa2'] = $t->getTermekfa2Id();
         $x['termekfa3'] = $t->getTermekfa3Id();
-        $x['termekmenu1nev'] = $t->getTermekmenu1Nev();
-        $x['termekmenu1'] = $t->getTermekmenu1Id();
-        $x['termekmenu1path'] = implode(' / ', $t->getTermekmenu1Path());
-        $x['termekmenu2nev'] = $t->getTermekmenu2Nev();
-        $x['termekmenu2'] = $t->getTermekmenu2Id();
-        $x['termekmenu2path'] = implode(' / ', $t->getTermekmenu2Path());
+        // one picker per menu: the product's node in it, if any
+        $x['termekmenuk'] = [];
+        foreach ($this->getRepo(TermekMenuFa::class)->getAllSorted() as $fa) {
+            $node = $t->getTermekMenu($fa);
+            $x['termekmenuk'][] = [
+                'fa' => $fa->getId(),
+                'fanev' => $fa->getNev(),
+                'id' => $node?->getId(),
+                'nev' => $node?->getNev(),
+                'path' => $node ? implode(' / ', $node->getPath($node)) : '',
+            ];
+        }
 
         $x['kepurlsmall'] = $t->getKepurlSmall();
         $x['kepurlmedium'] = $t->getKepurlMedium();
@@ -759,16 +765,18 @@ class termekController extends \mkwhelpers\MattableController
         } else {
             $obj->setTermekfa3(null);
         }
-        $menurepo = \mkw\store::getEm()->getRepository(TermekMenu::class);
-        $menu = $menurepo->find($this->params->getIntRequestParam('termekmenu1'));
-        if ($menu) {
-            $obj->setTermekmenu1($menu);
-        } else {
-            $obj->setTermekmenu1(null);
+        // only the menus the form sent: a menu created meanwhile is left alone
+        foreach ($this->params->getArrayRequestParam('termekmenu') as $faid => $nodeid) {
+            $fa = $this->getRepo(TermekMenuFa::class)->find((int)$faid);
+            if (!$fa) {
+                continue;
+            }
+            $node = $this->getRepo(TermekMenu::class)->find((int)$nodeid);
+            if ($node && ($node->getTermekmenufa() !== $fa || !$node->getParent())) {
+                throw new \mkwhelpers\Exceptions\UserMessageException(sprintf(t('A(z) %s menüben érvénytelen a választott kategória.'), $fa->getNev()));
+            }
+            $obj->setTermekMenu($fa, $node);
         }
-        $menu2repo = \mkw\store::getEm()->getRepository(TermekMenu2::class);
-        $menu2 = $menu2repo->find($this->params->getIntRequestParam('termekmenu2'));
-        $obj->setTermekmenu2($menu2 ?: null);
         $obj->removeAllCimke();
         $cimkekpar = $this->params->getArrayRequestParam('cimkek');
         foreach ($cimkekpar as $cimkekod) {
@@ -1378,16 +1386,9 @@ class termekController extends \mkwhelpers\MattableController
             $filter->addSql($faFeltetel);
         }
 
-        $fv = $this->params->getArrayRequestParam('menufilter');
-        if (!empty($fv)) {
-            $ff = new \mkwhelpers\FilterDescriptor();
-            $ff->addFilter('id', 'IN', $fv);
-            $res = \mkw\store::getEm()->getRepository(TermekMenu::class)->getAll($ff, []);
-            $faszuro = [];
-            foreach ($res as $sor) {
-                $faszuro[] = $sor->getKarkod() . '%';
-            }
-            $filter->addFilter(['_xx.termekmenu1karkod'], 'LIKE', $faszuro);
+        $menuFeltetel = $this->getRepo(TermekMenu::class)->getTermekFeltetel($this->params->getArrayRequestParam('menufilter'));
+        if ($menuFeltetel) {
+            $filter->addSql($menuFeltetel);
         }
 
         $this->vanshowarsav = false;
@@ -1839,6 +1840,7 @@ class termekController extends \mkwhelpers\MattableController
     {
         $view = $this->createView('termeklista.tpl');
         $view->setVar('pagetitle', t('Termékek'));
+        $view->setVar('termekmenufalist', $this->getRepo(TermekMenuFa::class)->getSelectList());
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
         $tcc = new termekcimkekatController();

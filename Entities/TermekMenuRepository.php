@@ -77,6 +77,61 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    /** The node and every node below it. */
+    public function getSubtreeIds(TermekMenu $node): array
+    {
+        $gyerekek = [];
+        foreach ($this->_em->getConnection()->fetchAllAssociative(
+            'SELECT id, parent_id FROM termekmenu WHERE termekmenufa_id = ?',
+            [$node->getTermekmenufaId()]
+        ) as $sor) {
+            $gyerekek[(int)$sor['parent_id']][] = (int)$sor['id'];
+        }
+        $ret = [];
+        $sor = [(int)$node->getId()];
+        while ($sor) {
+            $id = array_shift($sor);
+            $ret[] = $id;
+            array_push($sor, ...($gyerekek[$id] ?? []));
+        }
+        return $ret;
+    }
+
+    /**
+     * The admin product list's menu filter ('menufilter') as one DQL condition on _xx (Termek), null without a known
+     * node. An id means the node with its subtree, '=id' the node alone; '=' on a menu's root means the products that
+     * are not in that menu. Several nodes, even of several menus, are OR-ed.
+     */
+    public function getTermekFeltetel(array $menufilter): ?string
+    {
+        $csakEz = [];
+        foreach ($menufilter as $ertek) {
+            $ertek = trim((string)$ertek);
+            $id = (int)ltrim($ertek, '=');
+            if ($id) {
+                // chosen both ways: the subtree covers the node itself
+                $csakEz[$id] = ($csakEz[$id] ?? true) && str_starts_with($ertek, '=');
+            }
+        }
+        $idk = [];
+        $agak = [];
+        foreach ($csakEz ? $this->findBy(['id' => array_keys($csakEz)]) : [] as $node) {
+            if (!$csakEz[$node->getId()]) {
+                array_push($idk, ...$this->getSubtreeIds($node));
+            } elseif ($node->getParent()) {
+                $idk[] = (int)$node->getId();
+            } else {
+                $agak[] = 'NOT EXISTS (SELECT tmtn.id FROM Entities\TermekMenuTermek tmtn'
+                    . ' WHERE IDENTITY(tmtn.termek) = _xx.id AND IDENTITY(tmtn.termekmenufa) = ' . (int)$node->getTermekmenufaId() . ')';
+            }
+        }
+        if ($idk) {
+            $agak[] = 'EXISTS (SELECT tmtm.id FROM Entities\TermekMenuTermek tmtm'
+                . ' WHERE IDENTITY(tmtm.termek) = _xx.id AND IDENTITY(tmtm.termekmenu) IN (' . implode(',', array_unique($idk)) . '))';
+        }
+        return $agak ? '(' . implode(' OR ', $agak) . ')' : null;
+    }
+
     /** The root node of the menu (one per menu: the node without parent). */
     public function getRoot(TermekMenuFa $fa): ?TermekMenu
     {

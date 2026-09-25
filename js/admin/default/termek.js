@@ -885,7 +885,7 @@ $(document).ready(function () {
                     ui: {select_limit: 1}
                 })
                     .on('loaded.jstree', function (event, data) {
-                        dialogcenter.jstree('open_node', $('#termekfa_1', dialogcenter).parent());
+                        dialogcenter.jstree('open_node', $('li:first', dialogcenter));
                     });
                 dialogcenter.dialog({
                     resizable: true,
@@ -920,8 +920,8 @@ $(document).ready(function () {
                     plugins: ['themeroller', 'json_data', 'ui'],
                     themeroller: {item: ''},
                     json_data: {
-                        // melyik menüfa: a gomb data-url-je dönti el (menü 1 / menü 2)
-                        ajax: {url: edit.attr('data-url') || '/admin/termekmenu/jsonlist'}
+                        // melyik menü: a gomb data-url-je dönti el
+                        ajax: {url: edit.attr('data-url')}
                     },
                     ui: {select_limit: 1}
                 })
@@ -1058,7 +1058,7 @@ $(document).ready(function () {
             },
             filter: {
                 fields: lfilternames,
-                extraFields: ['cimkefilter', 'fafilter', 'menufilter'],
+                extraFields: ['cimkefilter', 'fafilter', 'menufilter', 'menufa'],
                 onClear: function () {
                     $('.js-cimkefilter').removeClass('ui-state-hover');
                     mkwcomp.termekfaFilter.clearChecks('#termekfa');
@@ -1073,6 +1073,12 @@ $(document).ready(function () {
                         '#termekfa',
                         urlParams.has('fafilter') ? urlParams.get('fafilter').split(',') : []
                     );
+                    // the tree shows one menu: the one the filtered nodes belong to
+                    if (urlParams.has('menufa') && $('.js-termekmenufafilter').val() !== urlParams.get('menufa')) {
+                        $('.js-termekmenufafilter').val(urlParams.get('menufa'));
+                        $('#termekmenu').attr('data-url', `/admin/termekmenu/jsonlist?fa=${urlParams.get('menufa')}`);
+                        mkwcomp.termekmenuFilter.reload('#termekmenu');
+                    }
                     mkwcomp.termekmenuFilter.setChecks(
                         '#termekmenu',
                         urlParams.has('menufilter') ? urlParams.get('menufilter').split(',') : []
@@ -1093,6 +1099,9 @@ $(document).ready(function () {
                     menuk = mkwcomp.termekmenuFilter.getFilter('#termekmenu');
                     if (menuk.length > 0) {
                         obj['menufilter'] = menuk;
+                        if ($('.js-termekmenufafilter').length) {
+                            obj['menufa'] = $('.js-termekmenufafilter').val();
+                        }
                     }
                 }
             },
@@ -1455,6 +1464,10 @@ $(document).ready(function () {
         });
         mkwcomp.termekfaFilter.init('#termekfa');
         mkwcomp.termekmenuFilter.init('#termekmenu');
+        $('.js-termekmenufafilter').on('change', function () {
+            $('#termekmenu').attr('data-url', `/admin/termekmenu/jsonlist?fa=${$(this).val()}`);
+            mkwcomp.termekmenuFilter.reload('#termekmenu');
+        });
     } else {
         if ($.fn.mattkarb) {
             $('#mattkarb').mattkarb(termek);
