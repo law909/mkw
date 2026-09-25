@@ -302,6 +302,37 @@ body.modernui {
     text-decoration: none;
 }
 
+/* Színes gombok: új (+), Szűr, OK (lásd lent) teli kék; a lista szerkesztő gombja halvány kék */
+.modernui .ui-button:has(> .ui-icon-circle-plus),
+.modernui .mattable-filterrefresh.ui-button {
+    border-color: var(--mkw-accent);
+    background: var(--mkw-accent);
+    color: var(--mkw-accent-text);
+}
+
+.modernui .ui-button:has(> .ui-icon-circle-plus):hover,
+.modernui .ui-button:has(> .ui-icon-circle-plus):focus,
+.modernui .mattable-filterrefresh.ui-button:hover,
+.modernui .mattable-filterrefresh.ui-button:focus {
+    border-color: var(--mkw-accent-hover);
+    background: var(--mkw-accent-hover);
+    color: var(--mkw-accent-text);
+}
+
+.modernui .mattable-editlink.ui-button {
+    border-color: var(--mkw-accent-border);
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-accent);
+    font-weight: 600;
+}
+
+.modernui .mattable-editlink.ui-button:hover,
+.modernui .mattable-editlink.ui-button:focus {
+    border-color: var(--mkw-accent);
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-accent-hover);
+}
+
 /* Listatáblázat
 ----------------------------------*/
 .modernui .mattable-table th.mattable-thcolumn {
