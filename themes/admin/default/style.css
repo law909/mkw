@@ -600,3 +600,12 @@ select.tetelszamhiba,
     margin: 2px 4px 4px;
     cursor: pointer;
 }
+
+.termekmenufa-sav {
+    padding: 6px;
+    margin-bottom: 6px;
+}
+
+.termekmenufa-sav .ui-button {
+    padding: 2px 8px;
+}

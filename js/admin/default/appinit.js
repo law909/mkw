@@ -176,18 +176,6 @@ $(document).ready(
                 url: '/admin/regeneratekarkod'
             });
         });
-        $('.js-regeneratemenukarkod').on('click', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '/admin/regeneratemenukarkod'
-            });
-        });
-        $('.js-regeneratemenu2karkod').on('click', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '/admin/regeneratemenu2karkod'
-            });
-        });
         // a menüpont a választót nyitja, de fájlkezelőként: nincs hívó, akinek választani kellene
         $('.js-mediatar').on('click', function (e) {
             e.preventDefault();

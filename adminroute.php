@@ -595,8 +595,6 @@ if (\mkw\store::isBankpenztar()) {
 
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');
-$router->map('GET', '/admin/regeneratemenukarkod', 'adminController#regeneratemenukarkod', 'adminregeneratemenukarkod');
-$router->map('GET', '/admin/regeneratemenu2karkod', 'adminController#regeneratemenu2karkod', 'adminregeneratemenu2karkod');
 $router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
 $router->map('POST', '/admin/setlistparam', 'adminController#setListParam', 'adminsetlistparam');
 $router->map(
@@ -1572,19 +1570,13 @@ $router->map('GET', '/admin/termekmenu/isdeletable', 'termekmenuController#isdel
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekmenu/save', 'termekmenuController#save', 'admintermekmenusave');
     $router->map('POST', '/admin/termekmenu/move', 'termekmenuController#move', 'admintermekmenumove');
+    $router->map('POST', '/admin/termekmenufa/save', 'termekmenuController#faSave', 'admintermekmenufasave');
+    $router->map('POST', '/admin/termekmenufa/copy', 'termekmenuController#faCopy', 'admintermekmenufacopy');
+    $router->map('POST', '/admin/termekmenufa/delete', 'termekmenuController#faDelete', 'admintermekmenufadelete');
 }
 $router->map('GET', '/admin/termekmenu/viewlist', 'termekmenuController#viewlist', 'admintermekmenuviewlist');
 $router->map('GET', '/admin/termekmenu/regenerateslug', 'termekmenuController#regenerateSlug', 'admintermekmenuregenerateslug');
 
-$router->map('GET', '/admin/termekmenu2/getkarb', 'termekmenu2Controller#getkarb', 'admintermekmenu2getkarb');
-$router->map('GET', '/admin/termekmenu2/jsonlist', 'termekmenu2Controller#jsonlist', 'admintermekmenu2jsonlist');
-$router->map('GET', '/admin/termekmenu2/isdeletable', 'termekmenu2Controller#isdeletable', 'admintermekmenu2isdeletable');
-if (!\mkw\store::isClosed()) {
-    $router->map('POST', '/admin/termekmenu2/save', 'termekmenu2Controller#save', 'admintermekmenu2save');
-    $router->map('POST', '/admin/termekmenu2/move', 'termekmenu2Controller#move', 'admintermekmenu2move');
-}
-$router->map('GET', '/admin/termekmenu2/viewlist', 'termekmenu2Controller#viewlist', 'admintermekmenu2viewlist');
-$router->map('GET', '/admin/termekmenu2/regenerateslug', 'termekmenu2Controller#regenerateSlug', 'admintermekmenu2regenerateslug');
 
 $router->map('GET', '/admin/kosar/viewlist', 'kosarController#viewlist', 'adminkosarviewlist');
 $router->map('GET', '/admin/kosar/getlistbody', 'kosarController#getlistbody', 'adminkosargetlistbody');

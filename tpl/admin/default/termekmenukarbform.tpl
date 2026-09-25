@@ -59,10 +59,6 @@
             <table>
                 <tbody>
                 <tr>
-                    <input id="LathatoCheck" name="lathato" type="checkbox"
-                           {if ($egyed.lathato)}checked="checked"{/if}>{at('Látható')}
-                </tr>
-                <tr>
                     <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
                     <td><input id="OldalCimEdit" name="oldalcim" type="text" size="100" maxlength="255" value="{$egyed.oldalcim}"></td>
                 </tr>

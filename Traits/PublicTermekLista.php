@@ -8,7 +8,6 @@ use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
 use Entities\TermekMenu;
-use Entities\TermekMenu2;
 use Entities\TermekValtozat;
 use mkw\store;
 use mkwhelpers\FilterDescriptor;
@@ -223,7 +222,7 @@ trait PublicTermekLista
     }
 
     /** Products placed into the menu node (its own ones, not the subtree), as the DQL query of the list. */
-    private function buildTermekmenuFilter(TermekMenu|TermekMenu2|array|null $termekmenu): FilterDescriptor
+    private function buildTermekmenuFilter(TermekMenu|array|null $termekmenu): FilterDescriptor
     {
         $filter = new FilterDescriptor();
         if ($termekmenu) {
@@ -234,7 +233,7 @@ trait PublicTermekLista
     }
 
     /** The same for the native SQL list query. */
-    private function buildNativTermekmenuFilter(TermekMenu|TermekMenu2|null $termekmenu): FilterDescriptor
+    private function buildNativTermekmenuFilter(?TermekMenu $termekmenu): FilterDescriptor
     {
         $filter = new FilterDescriptor();
         if ($termekmenu) {

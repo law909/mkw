@@ -18,40 +18,6 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         ]);
     }
 
-    public function regenerateKarKod()
-    {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('parent_id', 'parent_id');
-        $q = $this->_em->createNativeQuery('SELECT id,parent_id FROM termekmenu ORDER BY parent_id,id', $rsm);
-        $this->fatomb = $q->getScalarResult();
-        $this->_regenerateKarKod(0, '');
-    }
-
-    private function _regenerateKarKod($szuloid, $szulokarkod)
-    {
-        foreach ($this->fatomb as $key => $val) {
-            if ($val['parent_id'] == $szuloid) {
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\TermekMenu x SET x.karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.id=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Termek x SET x.termekmenu1karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekmenu1=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Blogposzt x SET x.termekmenu1karkod=\'' . $szulokarkod . sprintf(
-                        '%05d',
-                        $val['id']
-                    ) . '\' WHERE x.termekmenu1=' . $val['id']
-                );
-                $q->Execute();
-                $this->_regenerateKarKod($val['id'], $szulokarkod . sprintf('%05d', $val['id']));
-            }
-        }
-    }
-
     public function regenerateSlug()
     {
         $res = $this->getAll([], []);
@@ -64,66 +30,6 @@ class TermekMenuRepository extends \mkwhelpers\Repository
             $this->_em->Persist($a);
             $this->_em->Flush();
         }
-    }
-
-    public function getForMenu($menunum, $webshopnum = null)
-    {
-        $webshopfilter = '';
-        if ($webshopnum) {
-            if ($webshopnum == 1) {
-                $webshopfilter = ' AND (f.lathato=1) ';
-            } else {
-                $webshopfilter = ' AND (f.lathato' . $webshopnum . '=1) ';
-            }
-        }
-        $q = $this->_em->createQuery('SELECT f FROM Entities\TermekMenu f WHERE f.menu' . $menunum . 'lathato=1 ' . $webshopfilter . ' ORDER BY f.sorrend');
-        $res = $q->getResult();
-        $ret = [];
-        /** @var TermekMenu $r */
-        foreach ($res as $r) {
-            $ret[] = [
-                'id' => $r->getId(),
-                'caption' => $r->getLocalizedFieldValue('nev'),
-                'slug' => $r->getSlug(),
-                'leiras' => $r->getLocalizedFieldValue('leiras'),
-                'rovidleiras' => $r->getLocalizedFieldValue('rovidleiras'),
-                'kepurl' => $r->getKepurl(),
-                'kepleiras' => $r->getKepleiras(),
-                'sorrend' => $r->getSorrend(),
-                'karkod' => $r->getKarkod()
-            ];
-        }
-        return $ret;
-    }
-
-    public function getForFilter($webshopnum = null)
-    {
-        $webshopfilter = '';
-        if ($webshopnum) {
-            if ($webshopnum == 1) {
-                $webshopfilter = ' (f.lathato=1) ';
-            } else {
-                $webshopfilter = ' (f.lathato' . $webshopnum . '=1) ';
-            }
-        }
-        $q = $this->_em->createQuery('SELECT f FROM Entities\TermekMenu f WHERE ' . $webshopfilter . ' ORDER BY f.sorrend,f.nev');
-        $res = $q->getResult();
-        $ret = [];
-        /** @var TermekMenu $r */
-        foreach ($res as $r) {
-            $ret[] = [
-                'id' => $r->getId(),
-                'caption' => $r->getLocalizedFieldValue('nev'),
-                'slug' => $r->getSlug(),
-                'leiras' => $r->getLocalizedFieldValue('leiras'),
-                'rovidleiras' => $r->getLocalizedFieldValue('rovidleiras'),
-                'kepurl' => $r->getKepurl(),
-                'kepleiras' => $r->getKepleiras(),
-                'sorrend' => $r->getSorrend(),
-                'karkod' => $r->getKarkod()
-            ];
-        }
-        return $ret;
     }
 
     public function getForParentCount($parentid, $menunum = 0)
@@ -171,14 +77,6 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
-    /**
-     * Csak olyan menüág kerül a sitemapba, aminek van megjeleníthető tartalma: vagy látható
-     * alkategóriája (csempés lap), vagy saját, publikus terméke. Az üres kategórialap vékony
-     * tartalom, amit a storefront amúgy is noindex-szel ad ki.
-     *
-     * A láthatóság feltétele ugyanaz, mint a mainController::termekmenu()-ben (inaktiv + lathato):
-     * a menuNlathato csak azt mondja meg, melyik menüben jelenik meg az ág, nem azt, hogy elérhető-e.
-     */
     /** The root node of the menu (one per menu: the node without parent). */
     public function getRoot(TermekMenuFa $fa): ?TermekMenu
     {
@@ -190,7 +88,10 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         return $this->findOneBy(['termekmenufa' => $fa, 'slug' => $slug]);
     }
 
-    /** Active category pages of the menu: a node with an active child or a visible product placed into it. */
+    /**
+     * Only a node with something to show goes to the sitemap: an active child (tile page) or a visible product of its
+     * own; an empty category page is thin content the storefront serves noindex anyway.
+     */
     public function getForSitemapXml(TermekMenuFa $fa)
     {
         $rsm = new ResultSetMapping();

@@ -1,5 +1,7 @@
 $(document).ready(function () {
     const dialogcenter = $('#dialogcenter');
+    const fa = $('#termekmenu').data('fa') || '';
+    const jsonUrl = `/admin/termekmenu/jsonlist?fa=${fa}`;
 
     function _new_edit(uj) {
         let valasztottid = $('#termekmenu').jstree('get_selected').children('a').attr('id'),
@@ -127,7 +129,6 @@ $(document).ready(function () {
                         $('#termekmenu').jstree('refresh');
                         $('#termekmenu').show();
                         $(document).scrollTop(scrollPosition);
-                        alert('Ne felejtse el a termék kategóriák rendezését!');
                     },
                     onCancel: function () {
                         $('#termekmenukarb').empty().hide();
@@ -149,7 +150,7 @@ $(document).ready(function () {
             plugins: ['themeroller', 'json_data', 'contextmenu', 'ui', 'checkbox'],
             themeroller: {item: ''},
             json_data: {
-                ajax: {url: '/admin/termekmenu/jsonlist'}
+                ajax: {url: jsonUrl}
             },
             ui: {select_limit: 1},
             contextmenu: {
@@ -203,7 +204,6 @@ $(document).ready(function () {
                                                         },
                                                         success: function (data) {
                                                             $('#termekmenu').jstree('refresh');
-                                                            alert('Ne felejtse el a termék kategóriák rendezését!');
                                                         }
                                                     });
                                                 },
@@ -244,12 +244,12 @@ $(document).ready(function () {
                                 plugins: ['themeroller', 'json_data', 'ui'],
                                 themeroller: {item: ''},
                                 json_data: {
-                                    ajax: {url: '/admin/termekmenu/jsonlist'}
+                                    ajax: {url: jsonUrl}
                                 },
                                 ui: {select_limit: 1}
                             })
                                 .on('loaded.jstree', function (event, data) {
-                                    dialogcenter.jstree('open_node', $('#termekmenu_1', dialogcenter).parent());
+                                    dialogcenter.jstree('open_node', $('li:first', dialogcenter));
                                 });
                             dialogcenter.dialog({
                                 resizable: true,
@@ -269,7 +269,6 @@ $(document).ready(function () {
                                             success: function (data) {
                                                 $('#termekmenu').jstree('refresh');
                                                 $thisdialog.dialog('close');
-                                                alert('Ne felejtse el a termék kategóriák rendezését!');
                                             }
                                         });
                                     },
@@ -296,4 +295,86 @@ $(document).ready(function () {
                 }
             });
         });
+
+    // --- menus: the dialogs are jQuery UI, no browser prompt()/confirm() that blocks the page
+    const openFa = (id) => {
+        window.location.href = `/admin/termekmenu/viewlist${id ? `?fa=${id}` : ''}`;
+    };
+    const faNev = () => $('#TermekMenuFaEdit option:selected').text();
+
+    function nevDialog(title, nev, url, data, withCopyOption) {
+        const $input = $('<input type="text" size="40" maxlength="255">').val(nev);
+        const $termekekkel = $('<input type="checkbox" checked>');
+        dialogcenter.empty().append($('<p>').append($('<label>').text('Név: '), $input));
+        if (withCopyOption) {
+            dialogcenter.append($('<p>').append($('<label>').append($termekekkel, ' a termékek elhelyezésével együtt')));
+        }
+        dialogcenter.dialog({
+            title,
+            modal: true,
+            resizable: false,
+            width: 420,
+            buttons: {
+                'OK': function () {
+                    const $dialog = $(this);
+                    $.ajax({
+                        url,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {...data, nev: $input.val(), termekekkel: $termekekkel.prop('checked') ? 1 : 0},
+                        success: (d) => {
+                            $dialog.dialog('close');
+                            openFa(d.id);
+                        }
+                    });
+                },
+                'Mégsem': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+        $input.focus();
+    }
+
+    $('#TermekMenuFaEdit').on('change', function () {
+        openFa($(this).val());
+    });
+    $('.js-termekmenufanew').on('click', (e) => {
+        e.preventDefault();
+        nevDialog('Új menü', '', '/admin/termekmenufa/save', {}, false);
+    }).button();
+    $('.js-termekmenufarename').on('click', (e) => {
+        e.preventDefault();
+        nevDialog('Menü átnevezése', faNev(), '/admin/termekmenufa/save', {id: fa}, false);
+    }).button();
+    $('.js-termekmenufacopy').on('click', (e) => {
+        e.preventDefault();
+        nevDialog('Menü másolása', `${faNev()} (másolat)`, '/admin/termekmenufa/copy', {id: fa}, true);
+    }).button();
+    $('.js-termekmenufadelete').on('click', (e) => {
+        e.preventDefault();
+        dialogcenter.text(`A(z) „${faNev()}” menü minden kategóriájával és termékelhelyezésével együtt törlődik.`).dialog({
+            title: 'Menü törlése',
+            modal: true,
+            resizable: false,
+            buttons: {
+                'Törlés': function () {
+                    const $dialog = $(this);
+                    $.ajax({
+                        url: '/admin/termekmenufa/delete',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: fa},
+                        success: () => {
+                            $dialog.dialog('close');
+                            openFa('');
+                        }
+                    });
+                },
+                'Mégsem': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    }).button();
 });

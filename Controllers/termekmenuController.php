@@ -7,7 +7,6 @@ use Entities\Szin;
 use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekMenu;
-use Entities\TermekMenu2;
 use Entities\TermekMenuFa;
 use Entities\TermekValtozat;
 use mkw\store;
@@ -17,17 +16,6 @@ use Traits\PublicTermekLista;
 class termekmenuController extends \mkwhelpers\MattableController
 {
     use PublicTermekLista;
-
-    /**
-     * A második menüfa (termekmenu2Controller) ugyanezt a kódot használja, csak más entitással,
-     * táblával és sablonokkal – ezt a négy dolgot írja felül.
-     */
-    protected $entityClass = TermekMenu::class;
-    protected $tablaNev = 'termekmenu';
-    protected $listaTplName = 'termekmenulista.tpl';
-
-    /** a termék melyik mezője hivatkozik erre a fára (Termek.termekmenu1 / .termekmenu2) */
-    protected $termekMezo = 'termekmenu1';
 
     private $fatomb;
 
@@ -46,10 +34,17 @@ class termekmenuController extends \mkwhelpers\MattableController
 
     public function __construct()
     {
-        $this->setEntityName($this->entityClass);
-        $this->setKarbFormTplName(str_replace('lista.tpl', 'karbform.tpl', $this->listaTplName));
-        $this->setKarbTplName(str_replace('lista.tpl', 'karb.tpl', $this->listaTplName));
+        $this->setEntityName(TermekMenu::class);
+        $this->setKarbFormTplName('termekmenukarbform.tpl');
+        $this->setKarbTplName('termekmenukarb.tpl');
         parent::__construct();
+    }
+
+    /** The menu of an admin request ('fa'), else the first one. */
+    private function getRequestFa(): ?TermekMenuFa
+    {
+        $repo = $this->getRepo(TermekMenuFa::class);
+        return $repo->find($this->params->getIntRequestParam('fa')) ?? ($repo->getAllSorted()[0] ?? null);
     }
 
     /**
@@ -62,8 +57,7 @@ class termekmenuController extends \mkwhelpers\MattableController
     {
         $x = [];
         if (!$t) {
-            $cl = $this->entityClass;
-            $t = new $cl();
+            $t = new TermekMenu();
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
@@ -97,55 +91,60 @@ class termekmenuController extends \mkwhelpers\MattableController
 
         $parent = $this->getRepo()->find($this->params->getIntRequestParam('parentid'));
         if ($parent) {
+            if ($obj->getTermekmenufa() && $obj->getTermekmenufa() !== $parent->getTermekmenufa()) {
+                throw new \mkwhelpers\Exceptions\UserMessageException(t('A csomópont nem kerülhet át másik menübe.'));
+            }
             $obj->setParent($parent);
         }
         return $obj;
     }
 
-    /** a fa beállított neve; a második fa a sajátjára írja felül */
-    protected function getMenuName(): string
+    protected function beforeRemove($obj)
     {
-        return \mkw\store::getTermekmenuName();
+        if (!$obj->getParent() || !$obj->isDeletable()) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(t('A kategória nem törölhető: a menü gyökere, vagy van alkategóriája vagy terméke.'));
+        }
+        // the old per-product column (restrict) still points here until the next release drops it
+        $this->getEm()->getConnection()->executeStatement('UPDATE termek SET termekmenu1_id = NULL WHERE termekmenu1_id = ?', [$obj->getId()]);
     }
 
     public function viewlist()
     {
-        $view = $this->createView($this->listaTplName);
-        $view->setVar('pagetitle', $this->getMenuName());
+        $fa = $this->getRequestFa();
+        $view = $this->createView('termekmenulista.tpl');
+        $view->setVar('pagetitle', t('Termékmenük'));
+        $view->setVar('termekmenufalist', $this->getRepo(TermekMenuFa::class)->getSelectList($fa?->getId()));
+        $view->setVar('termekmenufa', $fa?->getId());
         $view->printTemplateResult();
     }
 
+    /** The jstree JSON of one menu ('fa'): its root with the nodes below. */
     public function jsonlist()
     {
-        $elotag = $this->params->getStringRequestParam('pre');
-        if (!$elotag) {
-            $elotag = $this->tablaNev . '_';
+        $elotag = $this->params->getStringRequestParam('pre') ?: 'termekmenu_';
+        $fa = $this->getRequestFa();
+        $sorok = $fa ? $this->getEm()->getConnection()->fetchAllAssociative(
+            'SELECT id, parent_id, nev, sorrend FROM termekmenu WHERE termekmenufa_id = ? ORDER BY parent_id, sorrend, nev',
+            [$fa->getId()]
+        ) : [];
+        $this->fatomb = [];
+        $gyoker = null;
+        foreach ($sorok as $sor) {
+            if ($sor['parent_id'] === null) {
+                $gyoker = $gyoker ?? $sor;
+            } else {
+                // szülő szerinti index: enélkül a rekurzió minden szinten végigmegy az egész fán
+                $this->fatomb[(int)$sor['parent_id']][] = $sor;
+            }
         }
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('parent_id', 'parent_id');
-        $rsm->addScalarResult('nev', 'nev');
-        $rsm->addScalarResult('sorrend', 'sorrend');
-        $q = $this->getEm()->createNativeQuery(
-            'SELECT id,parent_id,nev,sorrend FROM ' . $this->tablaNev . ' tf ORDER BY parent_id,sorrend,nev',
-            $rsm
-        );
-        $sorok = $q->getScalarResult();
-        if (!$sorok) {
+        if (!$gyoker) {
             echo json_encode([]);
             return;
         }
-        // szülő szerinti index: enélkül a rekurzió minden szinten végigmegy az egész fán
-        $this->fatomb = [];
-        foreach ($sorok as $sor) {
-            $this->fatomb[(int)$sor['parent_id']][] = $sor;
-        }
-        $gyoker = $sorok[0];
-        $retomb = [
+        echo json_encode([
             'data' => ['title' => $gyoker['nev'], 'attr' => ['id' => $elotag . $gyoker['id']]],
             'children' => $this->bejar($gyoker['id'], $elotag)
-        ];
-        echo json_encode($retomb);
+        ]);
     }
 
     private function bejar($szuloid, $elotag)
@@ -162,7 +161,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
-        $view->setVar('pagetitle', $this->getMenuName());
+        $view->setVar('pagetitle', t('Termékmenük'));
         $view->setVar('oper', $oper);
         $fa = $this->getRepo()->find($id);
         $fatomb = $this->loadVars($fa, true);
@@ -175,9 +174,12 @@ class termekmenuController extends \mkwhelpers\MattableController
 
     public function save()
     {
-        $ret = $this->saveData();
-        // TODO ettol faszom lassu a mentes
-//		$this->getRepo()->regenerateKarKod();
+        try {
+            $ret = $this->saveData();
+        } catch (\mkwhelpers\Exceptions\UserMessageException $e) {
+            $this->jsonError($e->getMessage(), 409);
+            return;
+        }
         switch ($ret['operation']) {
             case $this->addOperation:
             case $this->editOperation:
@@ -189,17 +191,86 @@ class termekmenuController extends \mkwhelpers\MattableController
         }
     }
 
+    /** Moves a node under another one of the same menu, not below itself. */
     public function move()
     {
         $fa = $this->getRepo()->find($this->params->getIntRequestParam('eztid'));
         $ide = $this->getRepo()->find($this->params->getIntRequestParam('ideid'));
-        if (($fa) && ($ide)) {
-            $fa->removeParent();
-            $fa->setParent($ide);
-            $this->getEm()->persist($fa);
-            $this->getEm()->flush();
-//			$this->getRepo()->regenerateKarKod();
+        if (!$fa || !$ide || !$fa->getParent()) {
+            $this->jsonError(t('Válasszon áthelyezendő kategóriát és új helyet.'), 400);
+            return;
         }
+        if ($fa->getTermekmenufa() !== $ide->getTermekmenufa()) {
+            $this->jsonError(t('Kategória csak a saját menüjén belül helyezhető át.'), 409);
+            return;
+        }
+        for ($szulo = $ide; $szulo; $szulo = $szulo->getParent()) {
+            if ($szulo === $fa) {
+                $this->jsonError(t('Kategória nem helyezhető a saját ága alá.'), 409);
+                return;
+            }
+        }
+        $fa->removeParent();
+        $fa->setParent($ide);
+        $this->getEm()->persist($fa);
+        $this->getEm()->flush();
+    }
+
+    /** New menu (no 'id') or a new name for one. */
+    public function faSave()
+    {
+        $service = new \Services\TermekMenuFaService();
+        try {
+            $fa = $this->getRepo(TermekMenuFa::class)->find($this->params->getIntRequestParam('id'));
+            if ($fa) {
+                $service->rename($fa, $this->params->getStringRequestParam('nev'));
+            } else {
+                $fa = $service->create($this->params->getStringRequestParam('nev'));
+            }
+        } catch (\mkwhelpers\Exceptions\UserMessageException $e) {
+            $this->jsonError($e->getMessage(), 400);
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['id' => $fa->getId()]);
+    }
+
+    public function faCopy()
+    {
+        $forras = $this->getRepo(TermekMenuFa::class)->find($this->params->getIntRequestParam('id'));
+        if (!$forras) {
+            $this->jsonError(t('A menü nem található.'), 404);
+            return;
+        }
+        try {
+            $fa = (new \Services\TermekMenuFaService())->copy(
+                $forras,
+                $this->params->getStringRequestParam('nev'),
+                $this->params->getBoolRequestParam('termekekkel')
+            );
+        } catch (\mkwhelpers\Exceptions\UserMessageException $e) {
+            $this->jsonError($e->getMessage(), 400);
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['id' => $fa->getId()]);
+    }
+
+    public function faDelete()
+    {
+        $fa = $this->getRepo(TermekMenuFa::class)->find($this->params->getIntRequestParam('id'));
+        if (!$fa) {
+            $this->jsonError(t('A menü nem található.'), 404);
+            return;
+        }
+        try {
+            (new \Services\TermekMenuFaService())->delete($fa);
+        } catch (\mkwhelpers\Exceptions\UserMessageException $e) {
+            $this->jsonError($e->getMessage(), 409);
+            return;
+        }
+        header('Content-Type: application/json');
+        echo json_encode(['ok' => true]);
     }
 
     public function regenerateSlug()
@@ -221,14 +292,14 @@ class termekmenuController extends \mkwhelpers\MattableController
     /**
      * Morzsa a menüfában, a /categories/ kategórialapokra hivatkozva.
      *
-     * @param TermekMenu|TermekMenu2|null $kategoria
+     * @param ?TermekMenu $kategoria
      */
     public function getMorzsa($kategoria)
     {
         return $this->buildTreeMorzsa($kategoria, 'showtermekmenu');
     }
 
-    public function getNavigator(TermekMenu|TermekMenu2 $parent, $elsourlkell = true)
+    public function getNavigator(TermekMenu $parent, $elsourlkell = true)
     {
         $navi = [];
         if ($elsourlkell) {
@@ -244,7 +315,7 @@ class termekmenuController extends \mkwhelpers\MattableController
         return array_reverse($navi);
     }
 
-    public function getkatlista(TermekMenu|TermekMenu2 $parent)
+    public function getkatlista(TermekMenu $parent)
     {
         $repo = $this->getRepo();
         $children = $repo->getForParent($parent->getId(), 4);
@@ -309,7 +380,7 @@ class termekmenuController extends \mkwhelpers\MattableController
     /**
      * Mugenrace2026 terméklista a kategória / keresés / szűrő / márka nézetekhez.
      */
-    private function termeklistaMugenrace2026(TermekMenu|TermekMenu2|null $parent, string|null $caller): array
+    private function termeklistaMugenrace2026(?TermekMenu $parent, string|null $caller): array
     {
         $ret = [];
         $listVariations = true;

@@ -65,7 +65,7 @@ abstract class Controller
      *
      * A fa és az útvonal témánként más (`/termekfa/` vagy `/categories/`), a bejárás ugyanaz.
      *
-     * @param object|null $kategoria a fa egy ága (TermekFa | TermekMenu | TermekMenu2)
+     * @param object|null $kategoria a fa egy ága (TermekFa | TermekMenu)
      * @param string $routeName a kategórialap útvonalneve
      *
      * @return array [['caption' => ..., 'link' => ...], …]
