@@ -42,7 +42,8 @@
                    {if ($egyed.kozvetitett)}checked="checked"{/if}>{at('Közvetített szolgáltatás')}
             <input id="KellegyediazonositoCheck" name="kellegyediazonosito" type="checkbox"
                    {if ($egyed.kellegyediazonosito)}checked="checked"{/if}>{at('Van egyedi azonosítója')}
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Kategorizálás')}</div>
+            <table class="mattkarb-sor">
                 <tbody>
                 <tr>
                     <td><label>{at('Kategóriák')}:</label></td>
@@ -65,7 +66,7 @@
                 </tr>
                 </tbody>
             </table>
-            <table>
+            <table class="mattkarb-sor">
                 <tbody>
                 {foreach $egyed.termekmenuk as $_menu}
                 <tr>
@@ -80,7 +81,8 @@
                 {/foreach}
                 </tbody>
             </table>
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Alapadatok')}</div>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="TermekcsoportEdit">{at('Termékcsoport')}:</label></td>
@@ -165,7 +167,8 @@
                 </tr>
                 </tbody>
             </table>
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Értékesítés')}</div>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="HparanyEdit">{at('Hűségpont arány')}:</label></td>
@@ -226,7 +229,7 @@
         </div>
         {if ($setup.darshan)}
             <div id="JogaTab" class="mattkarb-page" data-visible="visible">
-                <table>
+                <table class="mattkarb-racs">
                     <tbody>
                     <tr>
                         <td><label for="JogaalkalomEdit">{at('Bérlet alkalom')}:</label></td>
@@ -709,7 +712,7 @@
                    {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}
             <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
                    {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}
-            <table>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
@@ -778,7 +781,7 @@
             </div>
         {/if}
         <div id="CsomagolasTab" class="mattkarb-page">
-            <table>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td colspan="2"><input id="OsszehajthatoEdit" type="checkbox"

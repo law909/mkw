@@ -33,7 +33,8 @@
                    {if ($egyed.eladhato)}checked="checked"{/if}>{at('Eladható')}
             <input id="KozvetitettCheck" name="kozvetitett" type="checkbox"
                    {if ($egyed.kozvetitett)}checked="checked"{/if}>{at('Közvetített szolgáltatás')}
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Kategorizálás')}</div>
+            <table class="mattkarb-sor">
                 <tbody>
                 <tr>
                     <td><label>{at('Kategóriák')}:</label></td>
@@ -52,7 +53,8 @@
                 </tr>
                 </tbody>
             </table>
-            <table>
+            <div class="mattkarb-szakaszcim">{at('Alapadatok')}</div>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="TermekcsoportEdit">{at('Termékcsoport')}:</label></td>
@@ -152,7 +154,7 @@
             {/if}
         </div>
         <div id="JogaTab" class="mattkarb-page" data-visible="visible">
-            <table>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="JogaalkalomEdit">{at('Bérlet alkalom')}:</label></td>
@@ -353,7 +355,7 @@
                    {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}
             <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
                    {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}
-            <table>
+            <table class="mattkarb-racs">
                 <tbody>
                 <tr>
                     <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
