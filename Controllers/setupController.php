@@ -686,15 +686,11 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::KezdoTermekKategoria5);
         $this->setKezdoKategoriaVars($view, 'kezdotermekkategoria5', ($p ? $p->getErtek() : ''));
 
-        foreach ([\mkw\consts::Termekmenutipus, \mkw\consts::Termekmenutipus2, \mkw\consts::Termekmenutipus3,
-                     \mkw\consts::Termekmenutipus4, \mkw\consts::Termekmenutipus5] as $kulcs) {
+        $termekmenufarepo = $this->getRepo(\Entities\TermekMenuFa::class);
+        foreach ([\mkw\consts::TermekMenuFa, \mkw\consts::TermekMenuFa2, \mkw\consts::TermekMenuFa3,
+                     \mkw\consts::TermekMenuFa4, \mkw\consts::TermekMenuFa5] as $kulcs) {
             $p = $repo->find($kulcs);
-            $view->setVar($kulcs . 'list', $this->getTermekmenutipusList($p ? $p->getErtek() : ''));
-        }
-
-        foreach ([\mkw\consts::TermekmenuNev, \mkw\consts::Termekmenu2Nev] as $kulcs) {
-            $p = $repo->find($kulcs);
-            $view->setVar($kulcs, ($p ? $p->getErtek() : ''));
+            $view->setVar($kulcs . 'list', $termekmenufarepo->getSelectList($p ? $p->getErtek() : null, true));
         }
 
         // Partner beállítások: új partner felvitelekor előre kitöltött értékek
@@ -1237,30 +1233,6 @@ class setupController extends \mkwhelpers\Controller
     }
 
     // Kezdő termék kategória gombhoz: a rejtett input id-je + a gomb felirata (kategórianév).
-    /**
-     * A webshop menüjének forrása: melyik menüfából épüljön. Üres érték = mindegy, ilyenkor
-     * mindkét fa bekerül a menübe.
-     */
-    private function getTermekmenutipusList($sel): array
-    {
-        $ret = [];
-        foreach ([
-            '' => t('mindegy'),
-            'termekmenu' => \mkw\store::getTermekmenuName(),
-            'termekmenu2' => \mkw\store::getTermekmenu2Name(),
-        ] as $id => $caption) {
-            $ret[] = ['id' => $id, 'caption' => $caption, 'selected' => ((string)$sel === (string)$id)];
-        }
-        return $ret;
-    }
-
-    /**
-     * A fa gyökérsorának átnevezése DQL UPDATE-tel, nem entitás-setterrel: a nev-en Gedmo slug
-     * ül, ami átnevezéskor újragenerálná a slugot és elrontaná a /categories/ útvonalat.
-     *
-     * Üres név esetén nem nyúlunk hozzá – különben a setup mentése visszaírná azt a gyökeret,
-     * amit valaki a fa-szerkesztőben nevezett át.
-     */
     private function setKezdoKategoriaVars($view, $namebase, $katid)
     {
         $view->setVar($namebase . 'id', $katid ?: '');
@@ -1367,10 +1339,10 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::KezdoTermekKategoria3,
             \mkw\consts::KezdoTermekKategoria4,
             \mkw\consts::KezdoTermekKategoria5,
-            \mkw\consts::Termekmenutipus2,
-            \mkw\consts::Termekmenutipus3,
-            \mkw\consts::Termekmenutipus4,
-            \mkw\consts::Termekmenutipus5,
+            \mkw\consts::TermekMenuFa2,
+            \mkw\consts::TermekMenuFa3,
+            \mkw\consts::TermekMenuFa4,
+            \mkw\consts::TermekMenuFa5,
             \mkw\consts::Webshop2Price,
             \mkw\consts::Webshop2Discount,
             \mkw\consts::Webshop3Price,
@@ -2397,14 +2369,11 @@ class setupController extends \mkwhelpers\Controller
         $this->setObj(\mkw\consts::KezdoTermekKategoria4, $this->params->getStringRequestParam('kezdotermekkategoria4'));
         $this->setObj(\mkw\consts::KezdoTermekKategoria5, $this->params->getStringRequestParam('kezdotermekkategoria5'));
 
-        foreach ([\mkw\consts::Termekmenutipus, \mkw\consts::Termekmenutipus2, \mkw\consts::Termekmenutipus3,
-                     \mkw\consts::Termekmenutipus4, \mkw\consts::Termekmenutipus5] as $kulcs) {
-            $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
-        }
-
-        // a fa megjelenített neve beállítás, nem törzsadat: a gyökér elem nevéhez nem nyúlunk
-        foreach ([\mkw\consts::TermekmenuNev, \mkw\consts::Termekmenu2Nev] as $kulcs) {
-            $this->setObj($kulcs, $this->params->getStringRequestParam($kulcs));
+        // üres = a webshopnak nincs menüje
+        foreach ([\mkw\consts::TermekMenuFa, \mkw\consts::TermekMenuFa2, \mkw\consts::TermekMenuFa3,
+                     \mkw\consts::TermekMenuFa4, \mkw\consts::TermekMenuFa5] as $kulcs) {
+            $id = $this->params->getIntRequestParam($kulcs);
+            $this->setObj($kulcs, $id ? (string)$id : '');
         }
 
         // üresen hagyva („válasszon") a beállítás törlődik

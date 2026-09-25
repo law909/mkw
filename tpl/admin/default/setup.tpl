@@ -58,14 +58,6 @@
                 <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow">
-                            <span class="setuplabel"><label for="TermekmenunevEdit">{at('Termékmenü neve')}:</label></span>
-                            <input id="TermekmenunevEdit" name="termekmenunev" type="text" value="{$termekmenunev}" placeholder="Termék menü">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="Termekmenu2nevEdit">{at('Termékmenü 2 neve')}:</label></span>
-                            <input id="Termekmenu2nevEdit" name="termekmenu2nev" type="text" value="{$termekmenu2nev}" placeholder="Termék menü 2">
-                        </div>
-                        <div class="setuprow">
                             <span class="setuplabel"><label for="OrszagEdit">{at('Ország')}:</label></span>
                             <select id="OrszagEdit" name="orszag">
                                 <option value="">{at('válasszon')}</option>
@@ -1158,9 +1150,9 @@
                             <input name="kezdotermekkategoria" type="hidden" value="{$kezdotermekkategoriaid}">
                         </div>
                         <div class="setuprow">
-                            <span class="setuplabel"><label for="TermekmenutipusEdit">{at('Menü forrása')}:</label></span>
-                            <select id="TermekmenutipusEdit" name="termekmenutipus">
-                                {foreach $termekmenutipuslist as $_tm}
+                            <span class="setuplabel"><label for="TermekMenuFaEdit">{at('Menü forrása')}:</label></span>
+                            <select id="TermekMenuFaEdit" name="termekmenufa">
+                                {foreach $termekmenufalist as $_tm}
                                     <option value="{$_tm.id}"{if ($_tm.selected)} selected="selected"{/if}>{$_tm.caption}</option>
                                 {/foreach}
                             </select>
@@ -1584,9 +1576,9 @@
                                 <input name="kezdotermekkategoria2" type="hidden" value="{$kezdotermekkategoria2id}">
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="Termekmenutipus2Edit">{at('Menü forrása')}:</label></span>
-                                <select id="Termekmenutipus2Edit" name="termekmenutipus2">
-                                    {foreach $termekmenutipus2list as $_tm}
+                                <span class="setuplabel"><label for="TermekMenuFa2Edit">{at('Menü forrása')}:</label></span>
+                                <select id="TermekMenuFa2Edit" name="termekmenufa2">
+                                    {foreach $termekmenufa2list as $_tm}
                                         <option value="{$_tm.id}"{if ($_tm.selected)} selected="selected"{/if}>{$_tm.caption}</option>
                                     {/foreach}
                                 </select>
@@ -1666,9 +1658,9 @@
                                 <input name="kezdotermekkategoria3" type="hidden" value="{$kezdotermekkategoria3id}">
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="Termekmenutipus3Edit">{at('Menü forrása')}:</label></span>
-                                <select id="Termekmenutipus3Edit" name="termekmenutipus3">
-                                    {foreach $termekmenutipus3list as $_tm}
+                                <span class="setuplabel"><label for="TermekMenuFa3Edit">{at('Menü forrása')}:</label></span>
+                                <select id="TermekMenuFa3Edit" name="termekmenufa3">
+                                    {foreach $termekmenufa3list as $_tm}
                                         <option value="{$_tm.id}"{if ($_tm.selected)} selected="selected"{/if}>{$_tm.caption}</option>
                                     {/foreach}
                                 </select>
@@ -1748,9 +1740,9 @@
                                 <input name="kezdotermekkategoria4" type="hidden" value="{$kezdotermekkategoria4id}">
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="Termekmenutipus4Edit">{at('Menü forrása')}:</label></span>
-                                <select id="Termekmenutipus4Edit" name="termekmenutipus4">
-                                    {foreach $termekmenutipus4list as $_tm}
+                                <span class="setuplabel"><label for="TermekMenuFa4Edit">{at('Menü forrása')}:</label></span>
+                                <select id="TermekMenuFa4Edit" name="termekmenufa4">
+                                    {foreach $termekmenufa4list as $_tm}
                                         <option value="{$_tm.id}"{if ($_tm.selected)} selected="selected"{/if}>{$_tm.caption}</option>
                                     {/foreach}
                                 </select>
@@ -1836,9 +1828,9 @@
                                 <input name="kezdotermekkategoria5" type="hidden" value="{$kezdotermekkategoria5id}">
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="Termekmenutipus5Edit">{at('Menü forrása')}:</label></span>
-                                <select id="Termekmenutipus5Edit" name="termekmenutipus5">
-                                    {foreach $termekmenutipus5list as $_tm}
+                                <span class="setuplabel"><label for="TermekMenuFa5Edit">{at('Menü forrása')}:</label></span>
+                                <select id="TermekMenuFa5Edit" name="termekmenufa5">
+                                    {foreach $termekmenufa5list as $_tm}
                                         <option value="{$_tm.id}"{if ($_tm.selected)} selected="selected"{/if}>{$_tm.caption}</option>
                                     {/foreach}
                                 </select>

@@ -25,16 +25,6 @@ class consts
     const KezdoTermekKategoria4 = 'kezdotermekkategoria4';
     const KezdoTermekKategoria5 = 'kezdotermekkategoria5';
 
-    /**
-     * Melyik menüfából épül a webshop menüje: '' = mindegy (mindkettő), 'termekmenu' vagy
-     * 'termekmenu2' (lásd \mkw\store::getTermekmenuControllers()).
-     */
-    const Termekmenutipus = 'termekmenutipus';
-    const Termekmenutipus2 = 'termekmenutipus2';
-    const Termekmenutipus3 = 'termekmenutipus3';
-    const Termekmenutipus4 = 'termekmenutipus4';
-    const Termekmenutipus5 = 'termekmenutipus5';
-
     /** A webshop menüje (TermekMenuFa id), webshoponként: \mkw\store::getTermekMenuFa(); üres = nincs menü. */
     const TermekMenuFa = 'termekmenufa';
     const TermekMenuFa2 = 'termekmenufa2';
@@ -44,9 +34,6 @@ class consts
     /** a 0200-as runonce naplója: amíg nincs meg, a régi menüoszlopok nem dobhatók el */
     const TermekMenuFaMigracio = 'termekmenufamigracio';
 
-    /** a két termékmenü-fa beállítható neve; az alapértelmezés a \mkw\store olvasóiban van */
-    const TermekmenuNev = 'termekmenunev';
-    const Termekmenu2Nev = 'termekmenu2nev';
     const Raktar = 'raktar';
     const Fizmod = 'fizmod';
     const UtanvetFizmod = 'utanvetfizmod';

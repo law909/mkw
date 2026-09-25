@@ -1830,16 +1830,6 @@ class store
         return self::$termekMenuFa;
     }
 
-    public static function getTermekmenuName()
-    {
-        return self::getParameter(\mkw\consts::TermekmenuNev) ?: 'Termék menü';
-    }
-
-    public static function getTermekmenu2Name()
-    {
-        return self::getParameter(\mkw\consts::Termekmenu2Nev) ?: 'Termék menü 2';
-    }
-
     /** The menu controller bound to the current webshop's menu, null when the webshop has none. */
     public static function getTermekmenuController(): ?termekmenuController
     {
