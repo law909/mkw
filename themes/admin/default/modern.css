@@ -287,16 +287,7 @@ body.modernui {
 .modernui .mattable-addlink,
 .modernui .mattable-quickaddlink,
 .modernui .mattable-posaddlink {
-    margin-right: .5em;
-    padding: 2px 4px;
-    border-radius: var(--mkw-radius-sm);
-    color: var(--mkw-accent);
-}
-
-.modernui .mattable-addlink:hover,
-.modernui .mattable-quickaddlink:hover,
-.modernui .mattable-posaddlink:hover {
-    background: var(--mkw-accent-soft);
+    margin-right: .4em;
 }
 
 /* Kapcsoló linkek (termék jellemzők, címkeszűrők): a bekapcsolt állapot jele a ui-state-hover osztály */
