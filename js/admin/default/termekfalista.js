@@ -41,8 +41,8 @@ $(document).ready(function () {
             success: function (data) {
                 scrollPosition = $(document).scrollTop();
                 $(document).scrollTop(0);
-                $('#termekfa').hide();
-                $('#termekfakarb').append(data);
+                $('#termekfapanel').hide();
+                $('#termekfakarb').append(data).show();
                 var karbsetup = new MattkarbConfig({
                     name: '',
                     independent: false,
@@ -123,13 +123,13 @@ $(document).ready(function () {
                     onSubmit: function (data) {
                         $('#termekfakarb').empty().hide();
                         $('#termekfa').jstree('refresh');
-                        $('#termekfa').show();
+                        $('#termekfapanel').show();
                         $(document).scrollTop(scrollPosition);
                         alert('Ne felejtse el a termék kategóriák rendezését!');
                     },
                     onCancel: function () {
                         $('#termekfakarb').empty().hide();
-                        $('#termekfa').show();
+                        $('#termekfapanel').show();
                         $(document).scrollTop(scrollPosition);
                     }
                 });

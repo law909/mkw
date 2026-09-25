@@ -27,7 +27,7 @@
             <a href="#" class="js-termekmenufadelete">{at('Töröl')}</a>
             <span class="mattkarb-hint">{at('Hogy melyik webshop melyik menüt mutatja, a Beállításokban, a webshop „Menü forrása” mezőjében állítható.')}</span>
         </div>
-        <div id="termekmenu" data-fa="{$termekmenufa}"></div>
+        <div id="termekmenu" class="treepanel-body" data-fa="{$termekmenufa}"></div>
     </div>
     <div id="termekmenukarb"></div>
 {/block}

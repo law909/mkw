@@ -606,7 +606,8 @@ select.tetelszamhiba,
     border-bottom: 1px solid #c5c5c5;
 }
 
-#termekmenu {
+/* a Termékmenük és a Termék kategóriák oldal fája a keretben */
+.treepanel-body {
     padding: .5em 1em;
 }
 

@@ -10,6 +10,11 @@
 {/block}
 
 {block "kozep"}
-    <div id="termekfa" class="ui-widget-content"></div>
+    <div id="termekfapanel" class="ui-widget ui-widget-content ui-corner-all mattkarb">
+        <div class="mattable-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <h3>{at('Termék kategóriák')}</h3>
+        </div>
+        <div id="termekfa" class="treepanel-body"></div>
+    </div>
     <div id="termekfakarb"></div>
 {/block}
