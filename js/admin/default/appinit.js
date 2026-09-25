@@ -181,32 +181,9 @@ $(document).ready(
             $(this).siblings('.js-uiaccentinput').val($(this).data('color')).trigger('change');
         });
         $(document).on('change', '.js-uiaccentinput', function () {
-            const $picker = $(this).closest('.uiaccentpicker');
             const color = this.value.toLowerCase();
-            $picker.find('.js-uiaccentpreset').each(function () {
+            $(this).siblings('.js-uiaccentpreset').each(function () {
                 $(this).toggleClass('uiaccentpicker-minta-aktiv', String($(this).data('color')).toLowerCase() === color);
-            });
-            if (!$picker.hasClass('js-uiaccentlive')) {
-                return;
-            }
-            // a szerver számolja a világos/sötét árnyalatot, azzal színeződik át a lap újratöltés nélkül
-            $.ajax({
-                url: '/admin/setuiaccent',
-                type: 'POST',
-                global: false,
-                data: {uiaccent: color},
-                success: function (data) {
-                    document.documentElement.setAttribute('style', data.css);
-                }
-            });
-        });
-        $('#ThemeSelect').change(function (e) {
-            $.ajax({
-                url: '/admin/setuitheme',
-                data: {uitheme: this.options[this.selectedIndex].value},
-                success: function (data) {
-                    window.location.reload();
-                }
             });
         });
         $('.js-regeneratekarkod').on('click', function (e) {

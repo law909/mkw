@@ -418,41 +418,6 @@ class adminController extends mkwhelpers\Controller
     }
 
     /**
-     * A jQuery UI téma váltása. A választott téma a dolgozóhoz mentődik, de a felület
-     * a session `loggedinuser` tömbjéből olvassa (generalDataLoader), ezért ott is
-     * frissíteni kell – különben a váltás csak a következő belépéskor látszana.
-     *
-     * A session_namespace `__get`-je tömbnél MÁSOLATOT ad vissza, így a
-     * `…->loggedinuser['uitheme'] = $theme` alakú írás némán elveszne: ki kell olvasni,
-     * módosítani, majd egészben visszaírni.
-     */
-    public function setUITheme()
-    {
-        $lu = \mkw\store::getAdminSession()->loggedinuser;
-        if (!is_array($lu) || !array_key_exists('id', $lu)) {
-            return;
-        }
-        $theme = $this->params->getStringRequestParam('uitheme', 'sunny');
-        if (!\Services\UiAppearanceService::isValidTheme($theme)) {
-            return;
-        }
-        // a sysadmin nem dolgozó: nála csak a session-ben él a választás, a következő belépésig
-        if (\mkw\store::getAdminSession()->pk == -1) {
-            $lu['uitheme'] = $theme;
-            \mkw\store::getAdminSession()->loggedinuser = $lu;
-            return;
-        }
-        $dolgozo = $this->getRepo(Entities\Dolgozo::class)->find($lu['id']);
-        if ($dolgozo) {
-            $dolgozo->setUitheme($theme);
-            $this->getEm()->persist($dolgozo);
-            $this->getEm()->flush();
-            $lu['uitheme'] = $theme;
-            \mkw\store::getAdminSession()->loggedinuser = $lu;
-        }
-    }
-
-    /**
      * Lista-szintű felhasználói beállítás mentése a bejelentkezett dolgozóhoz
      * (dolgozoparameterek tábla, \Services\DolgozoParameterService).
      * A `key` a lista URL-jének (? előtti) elérési útja, a domain nélkül (pl. /admin/orszag/viewlist),
@@ -478,14 +443,6 @@ class adminController extends mkwhelpers\Controller
      * A bal oldali menü egy menücsoportjának nyitott/zárt állapota, a bejelentkezett
      * dolgozóhoz mentve. A menü kirajzolásakor a menuController::getMenu() olvassa vissza.
      */
-    /** Menti a színt, és visszaadja a hozzá számolt CSS változókat, hogy a lap újratöltés nélkül átszíneződjön. */
-    public function setUIAccent()
-    {
-        \Services\UiAppearanceService::setCurrentAccent($this->params->getStringRequestParam('uiaccent'));
-        header('Content-Type: application/json');
-        echo json_encode(['css' => \Services\UiAppearanceService::getAccentCssVars(\Services\UiAppearanceService::getCurrentAccent())]);
-    }
-
     public function setMenucsoportNyitva()
     {
         $mcsid = $this->params->getIntRequestParam('mcsid', 0);

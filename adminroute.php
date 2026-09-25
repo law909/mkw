@@ -595,8 +595,6 @@ if (\mkw\store::isBankpenztar()) {
 
 $router->map('GET', '/admin/getsmallurl', 'adminController#getSmallUrl', 'admingetsmallurl');
 $router->map('GET', '/admin/regeneratekarkod', 'adminController#regeneratekarkod', 'adminregeneratekarkod');
-$router->map('GET', '/admin/setuitheme', 'adminController#setUITheme', 'adminsetuitheme');
-$router->map('POST', '/admin/setuiaccent', 'adminController#setUIAccent', 'adminsetuiaccent');
 $router->map('POST', '/admin/setlistparam', 'adminController#setListParam', 'adminsetlistparam');
 $router->map(
     'POST',

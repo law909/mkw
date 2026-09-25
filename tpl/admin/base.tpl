@@ -127,20 +127,12 @@
                     {/while}
                 </div>
             {/while}
-            <div class="menu-temavalaszto">
-                <select id="ThemeSelect">
-                    {foreach $uithemes as $_uitheme}
-                        <option value="{$_uitheme}"{if ($uitheme==$_uitheme)} selected="selected"{/if}>{$_uitheme}</option>
-                    {/foreach}
-                </select>
-                {if ($modernui|default:false)}
-                    {include "./partials/uiaccentpicker.tpl" accentname="" accentvalue=$uiaccent}
-                {/if}
-                {if ($sysadmin|default:false)}
+            {if ($sysadmin|default:false)}
+                <div class="menu-lablec">
                     <a class="js-szuletesnapteszt ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                        href="#" title="{at('Születésnapi tűzijáték')}"><span class="ui-button-text">🎆</span></a>
-                {/if}
-            </div>
+                </div>
+            {/if}
         </div>
     {/if}
     <div class="content-container">

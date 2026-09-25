@@ -178,17 +178,10 @@ body.modernui {
     font-weight: 600;
 }
 
-.modernui .menu-temavalaszto {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+.modernui .menu-lablec {
     margin-top: 16px;
     padding-top: 10px;
     border-top: 1px solid var(--mkw-border);
-}
-
-.modernui .menu-temavalaszto select {
-    flex: 1;
 }
 
 .modernui .uiaccentpicker-minta-aktiv {
@@ -198,11 +191,6 @@ body.modernui {
 .modernui .mattkarb-megjegyzes {
     max-width: 40em;
     color: var(--mkw-muted);
-}
-
-.modernui .menu-temavalaszto .uiaccentpicker {
-    flex-basis: 100%;
-    order: 1;
 }
 
 /* Oldalszintű riasztások (base.tpl)

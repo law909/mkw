@@ -95,31 +95,11 @@ class UiAppearanceService
         }
     }
 
-    /** A bejelentkezett dolgozó színe; a sysadmin nem dolgozó, nála a session tárolja, mint a témát. */
+    /** A bejelentkezett dolgozó színe; a sysadminnak nincs dolgozó rekordja, ő az alapszínt kapja. */
     public static function getCurrentAccent(): string
     {
-        if (\mkw\store::getAdminSession()->pk == -1) {
-            $lu = \mkw\store::getAdminSession()->loggedinuser;
-            return self::normalizeAccent(is_array($lu) ? ($lu[self::ACCENT_PARAM] ?? null) : null) ?? self::DEFAULT_ACCENT;
-        }
-        return self::getAccentFor(DolgozoParameterService::getDolgozoId());
-    }
-
-    public static function setCurrentAccent($accent): void
-    {
-        $accent = self::normalizeAccent($accent);
-        if (!$accent) {
-            return;
-        }
-        if (\mkw\store::getAdminSession()->pk == -1) {
-            $lu = \mkw\store::getAdminSession()->loggedinuser;
-            if (is_array($lu)) {
-                $lu[self::ACCENT_PARAM] = $accent;
-                \mkw\store::getAdminSession()->loggedinuser = $lu;
-            }
-            return;
-        }
-        self::setAccentFor(DolgozoParameterService::getDolgozoId(), $accent);
+        $dolgozoid = DolgozoParameterService::getDolgozoId();
+        return $dolgozoid ? self::getAccentFor($dolgozoid) : self::DEFAULT_ACCENT;
     }
 
     /**
