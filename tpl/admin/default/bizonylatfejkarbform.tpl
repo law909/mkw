@@ -36,7 +36,7 @@
                        járművet, mert az konkrét példányt jelöl, és a partner is arról a bizonylatról jön. *}
                     <fieldset class="mattkarb-doboz">
                         <legend>{at('Munkalap adatok')}</legend>
-                        <table>
+                        <table class="mattkarb-racs">
                             <tbody>
                             <tr>
                                 <td class="mattable-important"><label for="MunkalapTermekEdit">{at('Jármű')}:</label></td>
@@ -89,7 +89,7 @@
                         </table>
                     </fieldset>
                 {/if}
-                <table>
+                <table class="mattkarb-racs mattkarb-racs-4">
                     <tbody>
                     {if ($showforditottadozas)}
                         <tr>
@@ -139,6 +139,9 @@
                             </td>
                         </tr>
                     {/if}
+                    <tr class="mattkarb-szakaszsor">
+                        <td colspan="8"><div class="mattkarb-szakaszcim">{at('Partner')}</div></td>
+                    </tr>
                     <tr>
                         <td class="mattable-important"><label for="PartnerEdit">{at('Partner')}:</label></td>
                         {if ($setup.partnerautocomplete)}
@@ -235,6 +238,9 @@
                             {if ($egyed.telephelynev && !$egyed.telephely)}<span class="mattable-important">{at('Mentett telephely')}: {$egyed.telephelynev|escape}</span>{/if}
                         </td>
                     </tr>
+                    <tr class="mattkarb-szakaszsor">
+                        <td colspan="8"><div class="mattkarb-szakaszcim">{at('Szállítás')}</div></td>
+                    </tr>
                     {if ($showszallitasicim)}
                         <tr>
                             <td><label for="SzallnevEdit">{at('Szállítási név')}:</label></td>
@@ -293,6 +299,9 @@
                                 {/foreach}
                             </select>
                         </td>
+                    </tr>
+                    <tr class="mattkarb-szakaszsor">
+                        <td colspan="8"><div class="mattkarb-szakaszcim">{at('Fizetés')}</div></td>
                     </tr>
                     <tr>
                         <td class="mattable-important"><label for="FizmodEdit">{at('Fizetési mód')}:</label></td>
@@ -396,6 +405,9 @@
                                        value="{$egyed.belsouzletkotojutalek}"></td>
                         </tr>
                     {/if}
+                    <tr class="mattkarb-szakaszsor">
+                        <td colspan="8"><div class="mattkarb-szakaszcim">{at('Dátumok és pénznem')}</div></td>
+                    </tr>
                     <tr>
                         <td class="mattable-important"><label for="KeltEdit">{at('Kelt')}:</label></td>
                         <td><input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required">
@@ -474,6 +486,9 @@
                                 {/foreach}
                             </select>
                         </td>
+                    </tr>
+                    <tr class="mattkarb-szakaszsor">
+                        <td colspan="8"><div class="mattkarb-szakaszcim">{at('Egyéb')}</div></td>
                     </tr>
                     {if ($showerbizonylatszam)}
                         <tr>

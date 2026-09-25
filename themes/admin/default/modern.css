@@ -829,6 +829,56 @@ body.modernui {
     max-width: 100%;
 }
 
+/* négy mezőpáros változat (bizonylat karbantartó): keskenyebb oszlopok, a colspan a sor végéig tarthat */
+.modernui table.mattkarb-racs-4 {
+    --mkw-cimkeoszlop: 9.5em;
+    --mkw-mezooszlop: 15em;
+    --mkw-racsszelesseg: calc(4 * (var(--mkw-cimkeoszlop) + var(--mkw-mezooszlop)) + 98px);
+}
+
+.modernui table.mattkarb-racs-4 > tbody > tr {
+    grid-template-columns: repeat(4, var(--mkw-cimkeoszlop) minmax(0, var(--mkw-mezooszlop)));
+}
+
+.modernui table.mattkarb-racs-4 > tbody > tr > td[colspan="4"] {
+    grid-column: span 4;
+}
+
+.modernui table.mattkarb-racs-4 > tbody > tr > td[colspan="5"] {
+    grid-column: span 5;
+}
+
+.modernui table.mattkarb-racs-4 > tbody > tr > td[colspan="6"] {
+    grid-column: span 6;
+}
+
+.modernui table.mattkarb-racs-4 > tbody > tr > td[colspan="7"] {
+    grid-column: span 7;
+}
+
+.modernui table.mattkarb-racs-4 > tbody > tr > td[colspan="8"] {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 1500px) {
+    .modernui table.mattkarb-racs-4 {
+        --mkw-racsszelesseg: calc(2 * (var(--mkw-cimkeoszlop) + var(--mkw-mezooszlop)) + 42px);
+    }
+
+    .modernui table.mattkarb-racs-4 > tbody > tr {
+        grid-template-columns: repeat(2, var(--mkw-cimkeoszlop) minmax(0, var(--mkw-mezooszlop)));
+    }
+
+    /* két páros nézetben csak a sor első mezője nyúlhat a sor végéig, a későbbiek egy oszlopot kapnak */
+    .modernui table.mattkarb-racs-4 > tbody > tr > td[colspan]:not(:first-child) {
+        grid-column: span 1;
+    }
+
+    .modernui table.mattkarb-racs-4 > tbody > tr > td[colspan]:nth-child(2) {
+        grid-column: 2 / -1;
+    }
+}
+
 @media (max-width: 1200px) {
     .modernui {
         --mkw-racsszelesseg: calc(var(--mkw-cimkeoszlop) + var(--mkw-mezooszlop) + 14px);
