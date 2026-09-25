@@ -104,8 +104,6 @@ class termekmenuController extends \mkwhelpers\MattableController
         if (!$obj->getParent() || !$obj->isDeletable()) {
             throw new \mkwhelpers\Exceptions\UserMessageException(t('A kategória nem törölhető: a menü gyökere, vagy van alkategóriája vagy terméke.'));
         }
-        // the old per-product column (restrict) still points here until the next release drops it
-        $this->getEm()->getConnection()->executeStatement('UPDATE termek SET termekmenu1_id = NULL WHERE termekmenu1_id = ?', [$obj->getId()]);
     }
 
     public function viewlist()

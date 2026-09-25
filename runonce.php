@@ -1674,8 +1674,7 @@ if ($DBVersion < '0135') {
                 . ' SET t.termekmenu2_id = m.id'
                 . ' WHERE t.termekfa1_id IS NOT NULL'
             );
-            // a karkod a fa szerkezetéből származik, a termékeké is innen frissül
-            \mkw\store::getEm()->getRepository(\Entities\TermekMenu2::class)->regenerateKarKod();
+            // a karkód-frissítés a TermekMenu2 entitással (termékmenü R2) megszűnt; a blokk mindenhol lefutott már
         }
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0135');
@@ -3044,6 +3043,21 @@ if ($DBVersion < '0202') {
         );
     }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0202');
+}
+
+if ($DBVersion < '0203') {
+    // termékmenü R2 (docs/terv-termekmenu-webshoponkent-20260925.md): a régi második fa és a régi beállítások törlése.
+    // Csak a 0200-as másolás után; jelző nélkül a verzió marad, és a blokk a következő admin kéréskor újra próbálkozik.
+    // Az oszlopokat már az updateschema eldobta, egész táblát viszont nem dob el.
+    if (\mkw\store::getParameter(\mkw\consts::TermekMenuFaMigracio, '')) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $conn->executeStatement('DROP TABLE IF EXISTS termekmenu2');
+        $conn->executeStatement(
+            'DELETE FROM parameterek WHERE id IN ("termekmenunev", "termekmenu2nev", "termekmenutipus",'
+            . ' "termekmenutipus2", "termekmenutipus3", "termekmenutipus4", "termekmenutipus5")'
+        );
+        \mkw\store::setParameter(\mkw\consts::DBVersion, '0203');
+    }
 }
 
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem

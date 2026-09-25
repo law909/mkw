@@ -11,7 +11,7 @@ class TermekMenuFaService
 {
 
     /** node columns a copy takes over as they are */
-    private const SKIP_COLUMNS = ['id', 'parent_id', 'termekmenufa_id', 'termekmenu2id', 'karkod', 'created', 'lastmod'];
+    private const SKIP_COLUMNS = ['id', 'parent_id', 'termekmenufa_id', 'created', 'lastmod'];
 
     public function create(string $nev): TermekMenuFa
     {
@@ -106,11 +106,6 @@ class TermekMenuFaService
         $conn = \mkw\store::getEm()->getConnection();
         $conn->transactional(function ($conn) use ($fa) {
             $conn->executeStatement('DELETE FROM termekmenutermek WHERE termekmenufa_id = ?', [$fa->getId()]);
-            // the old per-product column still references menu 1 nodes until the next release drops it
-            $conn->executeStatement(
-                'UPDATE termek SET termekmenu1_id = NULL WHERE termekmenu1_id IN (SELECT id FROM termekmenu WHERE termekmenufa_id = ?)',
-                [$fa->getId()]
-            );
             $conn->executeStatement('UPDATE termekmenu SET parent_id = NULL WHERE termekmenufa_id = ?', [$fa->getId()]);
             $conn->executeStatement('DELETE FROM termekmenu WHERE termekmenufa_id = ?', [$fa->getId()]);
             $conn->executeStatement('DELETE FROM termekmenufa WHERE id = ?', [$fa->getId()]);

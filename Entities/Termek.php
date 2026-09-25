@@ -16,8 +16,6 @@ use Traits\GetsFieldValue;
  * options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
  * indexes={
  * 		@ORM\index(name="termekfakarkod_idx",columns={"termekfa1karkod","termekfa2karkod","termekfa3karkod"}),
- * 		@ORM\index(name="termekmenukarkod_idx",columns={"termekmenu1karkod"}),
- * 		@ORM\index(name="termekmenu2karkod_idx",columns={"termekmenu2karkod"}),
  * 		@ORM\index(name="termekfacounter_idx",columns={"inaktiv","lathato"}),
  * 		@ORM\index(name="termeknev_idx",columns={"nev"}),
  * 		@ORM\index(name="termekslug_idx",columns={"slug"}),
@@ -293,27 +291,6 @@ class Termek
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $termekfa3karkod = '';
-
-    /**
-     * @ORM\ManyToOne(targetEntity="TermekMenu",inversedBy="termekek1")
-     * @ORM\JoinColumn(name="termekmenu1_id",referencedColumnName="id",nullable=true,onDelete="restrict")
-     */
-    private $termekmenu1;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $termekmenu1karkod = '';
-
-    /**
-     * A második menüfa (TermekMenu2) besorolása. Az elsőtől független: a webshop beállítása
-     * dönti el, melyik fából épül a menüje.
-     *
-     * @ORM\ManyToOne(targetEntity="TermekMenu2",inversedBy="termekek1")
-     * @ORM\JoinColumn(name="termekmenu2_id",referencedColumnName="id",nullable=true,onDelete="restrict")
-     */
-    private $termekmenu2;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $termekmenu2karkod = '';
 
     /**
      * The product's node in each menu (TermekMenuFa), at most one per menu.
@@ -2044,95 +2021,6 @@ class Termek
         } else {
             $this->termekfa3karkod = '';
         }
-    }
-
-    /**
-     * @return TermekMenu
-     */
-    public function getTermekmenu1()
-    {
-        return $this->termekmenu1;
-    }
-
-    public function getTermekmenu1Nev()
-    {
-        if ($this->termekmenu1) {
-            if ($this->termekmenu1->getId() > 1) {
-                return $this->termekmenu1->getNev();
-            }
-        }
-        return '';
-    }
-
-    public function getTermekmenu1Id()
-    {
-        if ($this->termekmenu1) {
-            return $this->termekmenu1->getId();
-        }
-        return 1;
-    }
-
-    public function getTermekmenu1Path()
-    {
-        if ($this->termekmenu1) {
-            if ($this->termekmenu1->getId() > 1) {
-                return $this->termekmenu1->getPath($this->termekmenu1);
-            }
-        }
-        return [];
-    }
-
-    public function setTermekmenu1($termekmenu)
-    {
-        $this->termekmenu1 = $termekmenu;
-        if ($termekmenu) {
-            $this->termekmenu1karkod = $termekmenu->getKarkod();
-//            $termekmenu->addTermek1($this);
-        } else {
-            $this->termekmenu1karkod = '';
-        }
-    }
-
-    /**
-     * @return TermekMenu2
-     */
-    public function getTermekmenu2()
-    {
-        return $this->termekmenu2;
-    }
-
-    public function getTermekmenu2Nev()
-    {
-        if ($this->termekmenu2) {
-            if ($this->termekmenu2->getId() > 1) {
-                return $this->termekmenu2->getNev();
-            }
-        }
-        return '';
-    }
-
-    public function getTermekmenu2Id()
-    {
-        if ($this->termekmenu2) {
-            return $this->termekmenu2->getId();
-        }
-        return 1;
-    }
-
-    public function getTermekmenu2Path()
-    {
-        if ($this->termekmenu2) {
-            if ($this->termekmenu2->getId() > 1) {
-                return $this->termekmenu2->getPath($this->termekmenu2);
-            }
-        }
-        return [];
-    }
-
-    public function setTermekmenu2($termekmenu)
-    {
-        $this->termekmenu2 = $termekmenu;
-        $this->termekmenu2karkod = $termekmenu ? $termekmenu->getKarkod() : '';
     }
 
     public function getTermekKepek($csaklathato = false)

@@ -50,13 +50,12 @@ class TermekMenuRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult($nevfieldname, 'caption');
         $rsm->addScalarResult('slug', 'slug');
-        $rsm->addScalarResult('karkod', 'karkod');
         $rsm->addScalarResult($leirasfieldname, 'leiras');
         $rsm->addScalarResult('kepurl', 'kepurl');
         $rsm->addScalarResult('kepleiras', 'kepleiras');
         $rsm->addScalarResult('sorrend', 'sorrend');
         $q = $this->_em->createNativeQuery(
-            'SELECT id,' . $nevfieldname . ',slug,karkod,' . $leirasfieldname . ',kepurl,kepleiras,'
+            'SELECT id,' . $nevfieldname . ',slug,' . $leirasfieldname . ',kepurl,kepleiras,'
             . 'sorrend '
             . 'FROM termekmenu f '
             . 'WHERE parent_id=' . (int)$parentid . ' AND COALESCE(inaktiv, 0) = 0 '
@@ -160,15 +159,6 @@ class TermekMenuRepository extends \mkwhelpers\Repository
             $rsm
         );
         return $q->getScalarResult();
-    }
-
-    public function getKarkod($id)
-    {
-        $o = $this->find($id);
-        if ($o) {
-            return $o->getKarkod();
-        }
-        return false;
     }
 
 }
