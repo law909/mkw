@@ -80,6 +80,7 @@ class partnerController extends \mkwhelpers\MattableController
         $x = $this->getEntityFieldsArray($t);
         $x['orszagnev'] = $t->getOrszagNev();
         $x['szallorszagnev'] = $t->getSzallorszagNev();
+        $x['cim'] = $t->getCim();
         $x['lcim'] = $t->getLCim();
         // listánál a kötegelt előtöltésből (1 query), egyébként az entityből (lusta betöltés)
         $x['cimkek'] = is_null($this->cimkenevekcache)
