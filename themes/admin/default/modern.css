@@ -331,8 +331,12 @@ body.modernui {
     background: var(--mkw-surface);
 }
 
+.modernui .mattable-table > tbody > tr.ui-widget-content:nth-child(even) {
+    background: var(--mkw-row-alt);
+}
+
 .modernui .mattable-table > tbody > tr.ui-widget-content:hover {
-    background: var(--mkw-hover);
+    background: var(--mkw-row-hover);
 }
 
 .modernui .mattable-cell {
@@ -340,8 +344,12 @@ body.modernui {
     vertical-align: top;
 }
 
-.modernui .mattable-tborder {
-    border-top-color: var(--mkw-border);
+.modernui .mattable-table > tbody > tr > .mattable-tborder {
+    border-top-color: var(--mkw-row-separator);
+}
+
+.modernui .mattable-table > tbody > tr:first-child > .mattable-tborder {
+    border-top-color: transparent;
 }
 
 .modernui .mattable-rborder {

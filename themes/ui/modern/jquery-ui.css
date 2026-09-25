@@ -875,6 +875,9 @@ body .ui-tooltip {
 	--mkw-border-strong: #d4d4d8;
 	--mkw-text: #18181b;
 	--mkw-muted: #71717a;
+	--mkw-row-alt: #f5f5f6;
+	--mkw-row-hover: #eef4ff;
+	--mkw-row-separator: #c4c4cc;
 
 	--mkw-accent: #2563eb;
 	--mkw-accent-hover: #1d4ed8;
