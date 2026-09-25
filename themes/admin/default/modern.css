@@ -740,6 +740,7 @@ body.modernui {
     margin-left: 14px;
 }
 
+.modernui .mezo-cimke,
 .modernui .mattkarb-page td > label,
 .modernui .mattkarb-page label {
     color: var(--mkw-muted);

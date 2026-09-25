@@ -7,36 +7,27 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="ErtekEdit">{at('ÁFA kulcs')}:</label></td>
-                    <td><input id="ErtekEdit" name="ertek" type="number" step="any" value="{$egyed.ertek}" required="required"> %</td>
-                </tr>
-                <tr>
-                    <td><label for="NavcaseEdit">{at('NAV case')}:</label></td>
-                    <td>
-                        <select id="NavcaseEdit" name="navcase">
-                            {foreach $egyed.navcaselist as $_case}
-                                <option value="{$_case.id}"{if ($_case.selected)} selected="selected"{/if}>{$_case.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="MagyarEdit">{at('Magyar ÁFA kulcs')}:</label></td>
-                    <td><input id="MagyarEdit" name="magyar" type="checkbox"{if ($egyed.magyar)} checked="checked"{/if}></td>
-                </tr>
-                <tr>
-                    <td><label for="RlbkodEdit">{at('RLB kód')}:</label></td>
-                    <td><input id="RlbkodEdit" name="rlbkod" type="number" value="{$egyed.rlbkod}"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit" szeles=true}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="ÁFA kulcs" for="ErtekEdit"}
+                    <input id="ErtekEdit" name="ertek" type="number" step="any" value="{$egyed.ertek}" required="required"> %
+                {/mezo}
+                {mezo cimke="NAV case" for="NavcaseEdit"}
+                    <select id="NavcaseEdit" name="navcase">
+                        {foreach $egyed.navcaselist as $_case}
+                            <option value="{$_case.id}"{if ($_case.selected)} selected="selected"{/if}>{$_case.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Magyar ÁFA kulcs" for="MagyarEdit"}
+                    <input id="MagyarEdit" name="magyar" type="checkbox"{if ($egyed.magyar)} checked="checked"{/if}>
+                {/mezo}
+                {mezo cimke="RLB kód" for="RlbkodEdit"}
+                    <input id="RlbkodEdit" name="rlbkod" type="number" value="{$egyed.rlbkod}">
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

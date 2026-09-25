@@ -66,6 +66,10 @@ class SmartyView extends View
             $this->tplengine->registerPlugin('modifier', $f, $f);
         }
 
+        // karbantartó mezőelrendezés táblázat helyett, lásd mezocsoportBlock() / mezoBlock()
+        $this->tplengine->registerPlugin('block', 'mezocsoport', ['\mkwhelpers\SmartyView', 'mezocsoportBlock']);
+        $this->tplengine->registerPlugin('block', 'mezo', ['\mkwhelpers\SmartyView', 'mezoBlock']);
+
         $this->tplengine->registerPlugin('function', 't', function (array $params) {
             return \t($params['msgid'] ?? $params['text'] ?? $params['value'] ?? '');
         });
@@ -100,6 +104,44 @@ class SmartyView extends View
                 $params['url'] ?? ''
             );
         });
+    }
+
+    /**
+     * Karbantartó mezőcsoport: `{mezocsoport cim="Alapadatok"}…{/mezocsoport}`. A benne lévő
+     * `{mezo}`-k rácsba rendeződnek (soronként két címke–mező pár, keskeny képernyőn egy).
+     * A `cim` elhagyható; az at()-tal fordítódik, mint a sablonok többi felirata.
+     */
+    public static function mezocsoportBlock(array $params, $content, $template, &$repeat)
+    {
+        if ($repeat) {
+            return '';
+        }
+        $cim = isset($params['cim']) && $params['cim'] !== ''
+            ? '<div class="mattkarb-szakaszcim">' . htmlspecialchars(\at($params['cim'])) . '</div>'
+            : '';
+        return '<div class="mezocsoport">' . $cim . '<div class="mezok">' . $content . '</div></div>';
+    }
+
+    /**
+     * Egy címke–mező pár: `{mezo cimke="Név" for="NevEdit" szeles=true}<input …>{/mezo}`.
+     * `for` nélkül a címke nem kattintható (pl. több mezős sor), `szeles` = a mező a sor végéig ér,
+     * `nyers` = a címke már kész szöveg (pl. webshop neve), nem fordítandó.
+     */
+    public static function mezoBlock(array $params, $content, $template, &$repeat)
+    {
+        if ($repeat) {
+            return '';
+        }
+        $cimke = (string)($params['cimke'] ?? '');
+        if ($cimke !== '' && empty($params['nyers'])) {
+            $cimke = \at($cimke);
+        }
+        $cimke = htmlspecialchars($cimke) . ($cimke !== '' ? ':' : '');
+        $label = !empty($params['for'])
+            ? '<label class="mezo-cimke" for="' . htmlspecialchars($params['for']) . '">' . $cimke . '</label>'
+            : '<span class="mezo-cimke">' . $cimke . '</span>';
+        $class = 'mezo' . (!empty($params['szeles']) ? ' mezo-szeles' : '');
+        return '<div class="' . $class . '">' . $label . '<div class="mezo-ertek">' . $content . '</div></div>';
     }
 
     /**

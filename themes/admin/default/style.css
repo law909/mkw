@@ -671,3 +671,42 @@ select.tetelszamhiba,
     font-weight: bold;
 }
 
+/* Karbantartó mezőelrendezés táblázat helyett ({mezocsoport}/{mezo}, SmartyView). A .mezo display:contents,
+   így a címkék és a mezők közvetlenül a csoport rácsába kerülnek, és soronként egymás alá igazodnak. */
+.mezok {
+    display: grid;
+    grid-template-columns: repeat(2, var(--mkw-cimkeoszlop, 13em) minmax(0, var(--mkw-mezooszlop, 26em)));
+    column-gap: 14px;
+    row-gap: 4px;
+    align-items: center;
+}
+
+.mezo {
+    display: contents;
+}
+
+.mezo-szeles > .mezo-cimke {
+    grid-column: 1;
+}
+
+.mezo-szeles > .mezo-ertek {
+    grid-column: 2 / -1;
+}
+
+.mezo-ertek {
+    min-width: 0;
+    padding: 3px 0;
+}
+
+.mezo-ertek input:not([type="checkbox"]):not([type="radio"]),
+.mezo-ertek select,
+.mezo-ertek textarea {
+    max-width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .mezok {
+        grid-template-columns: var(--mkw-cimkeoszlop, 13em) minmax(0, var(--mkw-mezooszlop, 26em));
+    }
+}
+
