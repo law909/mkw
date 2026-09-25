@@ -374,6 +374,20 @@ body.modernui {
     color: var(--mkw-muted);
 }
 
+/* Kapcsolódó tételek a karbantartón (ársávok, változatok, …): mindegyik külön kártya */
+.modernui .mattable-repeatable {
+    margin: 0 0 10px;
+    padding: 6px 10px;
+    border: 1px solid var(--mkw-border-strong);
+    border-radius: var(--mkw-radius);
+    background: var(--mkw-row-alt);
+    box-shadow: var(--mkw-shadow-sm);
+}
+
+.modernui .mattable-repeatable:hover {
+    border-color: var(--mkw-accent-border);
+}
+
 .modernui .mattkarb-footer {
     display: flex;
     align-items: center;
