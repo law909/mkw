@@ -95,11 +95,29 @@ class UiAppearanceService
         }
     }
 
-    /** A bejelentkezett dolgozó színe; a sysadminnak nincs dolgozó rekordja, ő az alapszínt kapja. */
+    /** A bejelentkezett dolgozó színe; a sysadminé a paraméterekben (setSysadmin()). */
     public static function getCurrentAccent(): string
     {
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            return self::normalizeAccent(\mkw\store::getParameter(\mkw\consts::SysadminUiaccent)) ?? self::DEFAULT_ACCENT;
+        }
         $dolgozoid = DolgozoParameterService::getDolgozoId();
         return $dolgozoid ? self::getAccentFor($dolgozoid) : self::DEFAULT_ACCENT;
+    }
+
+    /** Csak a sysadmin belépésnek; az érvénytelen értéket figyelmen kívül hagyja. */
+    public static function setSysadmin($theme, $accent): void
+    {
+        if (\mkw\store::getAdminSession()->pk != -1) {
+            return;
+        }
+        if (self::isValidTheme($theme)) {
+            \mkw\store::setParameter(\mkw\consts::SysadminUitheme, $theme);
+        }
+        $accent = self::normalizeAccent($accent);
+        if ($accent) {
+            \mkw\store::setParameter(\mkw\consts::SysadminUiaccent, $accent);
+        }
     }
 
     /**

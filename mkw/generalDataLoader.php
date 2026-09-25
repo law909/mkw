@@ -29,6 +29,9 @@ class generalDataLoader
         if (is_array($lu) && array_key_exists('uitheme', $lu)) {
             $uitheme = $lu['uitheme'];
         }
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            $uitheme = \mkw\store::getParameter(\mkw\consts::SysadminUitheme, '');
+        }
         // az érték egy href útvonalába kerül, ezért csak a listában szereplő téma mehet át
         if (!\Services\UiAppearanceService::isValidTheme($uitheme)) {
             $uitheme = \Services\UiAppearanceService::DEFAULT_THEME;

@@ -624,6 +624,13 @@ select.tetelszamhiba,
     margin-bottom: 3px;
 }
 
+.menu-sysadminmegjelenes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
 /* Kiemelő szín választó (partials/uiaccentpicker.tpl) */
 .uiaccentpicker {
     display: flex;

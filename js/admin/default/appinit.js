@@ -186,6 +186,22 @@ $(document).ready(
                 $(this).toggleClass('uiaccentpicker-minta-aktiv', String($(this).data('color')).toLowerCase() === color);
             });
         });
+        // sysadmin téma- és színválasztó az oldalsáv alján; a színminta is change-et vált ki a keverő mezőn
+        $('.js-sysadminmegjelenes').on('change', 'select, input', function () {
+            const $box = $(this).closest('.js-sysadminmegjelenes');
+            $.ajax({
+                url: '/admin/setsysadminappearance',
+                type: 'POST',
+                global: false,
+                data: {
+                    uitheme: $box.find('select[name="uitheme"]').val(),
+                    uiaccent: $box.find('input[name="uiaccent"]').val()
+                },
+                success: function () {
+                    window.location.reload();
+                }
+            });
+        });
         $('.js-regeneratekarkod').on('click', function (e) {
             e.preventDefault();
             $.ajax({

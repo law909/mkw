@@ -9,6 +9,10 @@ class consts
 
     const Uitheme = 'uitheme';
 
+    /** A sysadminnak nincs dolgozó rekordja, ezért a témája és a kiemelő színe a paraméterekben él */
+    const SysadminUitheme = 'sysadminuitheme';
+    const SysadminUiaccent = 'sysadminuiaccent';
+
     const Tulajcrc = 'tulajcrc';
 
     const DBVersion = 'dbversion';

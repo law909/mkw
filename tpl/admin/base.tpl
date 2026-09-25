@@ -129,6 +129,15 @@
             {/while}
             {if ($sysadmin|default:false)}
                 <div class="menu-lablec">
+                    {* csak a sysadminnak: neki nincs dolgozó karbantartója, a választás a paraméterekbe megy *}
+                    <div class="menu-sysadminmegjelenes js-sysadminmegjelenes">
+                        <select name="uitheme" title="{at('Téma')}">
+                            {foreach $uithemes as $_uitheme}
+                                <option value="{$_uitheme}"{if ($uitheme == $_uitheme)} selected="selected"{/if}>{$_uitheme}</option>
+                            {/foreach}
+                        </select>
+                        {include "./partials/uiaccentpicker.tpl" accentname="uiaccent" accentvalue=$uiaccent}
+                    </div>
                     <a class="js-szuletesnapteszt ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
                        href="#" title="{at('Születésnapi tűzijáték')}"><span class="ui-button-text">🎆</span></a>
                 </div>
