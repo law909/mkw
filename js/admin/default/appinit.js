@@ -1,6 +1,16 @@
+const isModernUi = () => document.body.classList.contains('modernui');
+
 function pleaseWait(msg) {
     if (typeof (msg) !== 'string') {
         msg = 'Kérem várjon...';
+    }
+    if (isModernUi()) {
+        $.blockUI({
+            message: $('<div class="mkw-varakozas">').append('<span class="mkw-porgetyu"></span>', $('<span>').text(msg)),
+            css: {border: 'none', padding: 0, background: 'transparent', width: 'auto', left: '50%', transform: 'translateX(-50%)'},
+            overlayCSS: {backgroundColor: '#09090b', opacity: .2}
+        });
+        return;
     }
     $.blockUI({
         message: msg,
@@ -41,8 +51,30 @@ function mkwHiba(uzenet) {
         });
 }
 
-/** Semleges/sikeres visszajelzés a lap tetején, kattintásra eltűnik. */
+function mkwToastTarolo() {
+    let $tarolo = $('.mkw-toastok');
+    if (!$tarolo.length) {
+        $tarolo = $('<div class="mkw-toastok" aria-live="polite">').appendTo('body');
+    }
+    return $tarolo;
+}
+
+/** Rövid, magától eltűnő értesítés a jobb alsó sarokban (modern téma). */
+function mkwToast(uzenet, tipus) {
+    const $tarolo = mkwToastTarolo();
+    const $toast = $('<div class="mkw-toast">').addClass(tipus === 'hiba' ? 'mkw-toast-hiba' : 'mkw-toast-siker')
+        .text(uzenet).appendTo($tarolo);
+    const eltuntet = () => $toast.addClass('mkw-toast-eltunik').delay(200).queue(() => $toast.remove());
+    $toast.on('click', eltuntet);
+    setTimeout(eltuntet, 4000);
+}
+
+/** Semleges/sikeres visszajelzés: modern témában toast, egyébként a lap tetején, kattintásra eltűnik. */
 function mkwUzenet(uzenet) {
+    if (isModernUi()) {
+        mkwToast(uzenet);
+        return;
+    }
     $('#messagecenter')
         .text(uzenet)
         .hide()
@@ -121,6 +153,10 @@ $(document).ready(
 
         var msgcenter = $('#messagecenter').hide(),
             dialogcenter = $('#dialogcenter');
+        if (isModernUi()) {
+            // a régi, lap tetejére szánt üzenetek is a toastok közé kerülnek
+            msgcenter.appendTo(mkwToastTarolo());
+        }
 
         // Bizonylatra ugró ikon a #dialogcenter párbeszédekben (pl. kiegyenlítetlen
         // bizonylat választó). A sorra kattintás ott kijelölést jelent, és a sor-kezelő
@@ -243,6 +279,10 @@ $(document).ready(
                         datum: arfdatum
                     },
                     success: function () {
+                        if (isModernUi()) {
+                            mkwToast('Az árfolyamok letöltése sikerült.');
+                            return;
+                        }
                         dialogcenter.html('Az árfolyamok letöltése sikerült.').dialog({
                             resizable: false,
                             height: 140,
@@ -356,6 +396,10 @@ $(document).ready(
                 url: '/admin/nepszeruseg/clear',
                 type: 'POST',
                 success: function (data) {
+                    if (isModernUi()) {
+                        mkwToast('A népszerűség inicializálás sikerült.');
+                        return;
+                    }
                     dialogcenter.html('A népszerűség inicializálás sikerült.').dialog({
                         resizable: false,
                         height: 140,

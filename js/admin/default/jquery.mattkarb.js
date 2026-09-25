@@ -48,7 +48,11 @@
                         window.location.href = listUrl;
                     }, 200);
                 };
-                if (showSuccess) {
+                if (showSuccess && document.body.classList.contains('modernui')) {
+                    // modern témában toast, és a fül akkor csukódik, amikor már el lehetett olvasni
+                    mkwToast('A mentés sikerült.');
+                    setTimeout(closeTab, 1500);
+                } else if (showSuccess) {
                     // mentés után előbb visszajelzünk a sikerről, és az OK (vagy bezárás) után csukunk
                     $('<div>A mentés sikerült.</div>').dialog({
                         title: 'Mentés',

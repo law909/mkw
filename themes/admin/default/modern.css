@@ -405,11 +405,86 @@ body.modernui {
     font-size: 1.05em;
 }
 
-.modernui .matt-messagecenter {
-    margin: 0;
-    padding: .7em 1em;
-    font-size: 1.1em;
+/* Értesítések: toast (mkwToast) és a régi #messagecenter is a jobb alsó sarokba kerül
+----------------------------------*/
+.mkw-toastok {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.mkw-toast,
+.modernui #messagecenter.matt-messagecenter {
+    max-width: 420px;
+    padding: 10px 14px;
+    border: 1px solid var(--mkw-border);
+    border-left: 4px solid var(--mkw-success);
+    border-radius: var(--mkw-radius);
+    background: var(--mkw-surface);
+    box-shadow: var(--mkw-shadow);
+    color: var(--mkw-text);
+    font-size: 1em;
+    text-align: left;
     cursor: pointer;
+    pointer-events: auto;
+    animation: mkwToastBe .18s ease-out;
+}
+
+.modernui #messagecenter.matt-messagecenter {
+    margin: 0;
+}
+
+.modernui #messagecenter.matt-messagecenter.ui-state-error,
+.mkw-toast-hiba {
+    border-left-color: var(--mkw-danger);
+}
+
+.mkw-toast-eltunik {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .2s, transform .2s;
+}
+
+@keyframes mkwToastBe {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
+.mkw-varakozas {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border: 1px solid var(--mkw-border);
+    border-radius: 8px;
+    background: var(--mkw-surface);
+    box-shadow: var(--mkw-shadow);
+    color: var(--mkw-text);
+    font: 1em var(--mkw-font);
+    white-space: nowrap;
+}
+
+.mkw-porgetyu {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--mkw-accent-border);
+    border-top-color: var(--mkw-accent);
+    border-radius: 50%;
+    animation: mkwPorog .7s linear infinite;
+}
+
+@keyframes mkwPorog {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* Panelek: lista (mattable), karbantartó (mattkarb)
