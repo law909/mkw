@@ -49,6 +49,12 @@ class PartnerWriterService
     public function kapcsolat(): self
     {
         $this->partner->setEmail($this->params->getStringRequestParam('email'));
+        return $this->telefon();
+    }
+
+    /** mkwcansas: the form has area code + number, the documents take the full number (telefon) from them. */
+    public function telefon(): self
+    {
         if (\mkw\store::isMindentkapni()) {
             $telkorzet = $this->params->getStringRequestParam('telkorzet');
             $telszam = preg_replace('/[^0-9+]/', '', $this->params->getStringRequestParam('telszam'));

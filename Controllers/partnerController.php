@@ -182,6 +182,10 @@ class partnerController extends \mkwhelpers\MattableController
         $obj = $this->setEntityFieldsFromRequest($obj, [
             'skip' => ['jelszo', 'vendeg', 'apireg', 'anonymizalnikell', 'anonym']
         ]);
+        // mkwcansas: area code + number on the form, the full number was lost with the automatic field mapping
+        if (\mkw\store::isMindentkapni() && $this->params->existsRequestParam('telkorzet')) {
+            (new \Services\PartnerWriterService($obj, $this->params))->telefon();
+        }
 
         $j1 = $this->params->getStringRequestParam('jelszo1');
         $j2 = $this->params->getStringRequestParam('jelszo2');

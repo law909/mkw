@@ -3021,6 +3021,18 @@ if ($DBVersion < '0200') {
     }
 }
 
+if ($DBVersion < '0201') {
+    // mkwcansas: 2026-07-11 óta az admin partnermentés nem állította össze a telefont a körzetszámból és a számból, a
+    // megrendelésbe ezért üres szám került; csak az üreset pótoljuk (a megrendelés-űrlapról kézzel is írható)
+    if (\mkw\store::isMindentkapni()) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE partner SET telefon = CONCAT("+36", telkorzet, telszam)'
+            . ' WHERE COALESCE(telefon, "") = "" AND COALESCE(telkorzet, "") <> "" AND COALESCE(telszam, "") <> ""'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0201');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
