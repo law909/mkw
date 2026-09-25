@@ -710,3 +710,10 @@ select.tetelszamhiba,
     }
 }
 
+.menu-gyakranhasznalt-ures {
+    padding: 4px 8px;
+    font-size: .9em;
+    font-style: italic;
+    opacity: .7;
+}
+

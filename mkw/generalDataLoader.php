@@ -62,7 +62,10 @@ class generalDataLoader
         $view->setVar('noversion', \mkw\store::getParameter(\mkw\consts::NAVOnlineVersion));
         $view->setVar('today', date(\mkw\store::$DateFormat));
         $menuc = new \Controllers\menuController();
-        $view->setVar('menu', $menuc->getMenu());
+        $menu = $menuc->getMenu();
+        $view->setVar('menu', $menu);
+        $view->setVar('gyakranhasznalt', \Services\MenuHasznalatService::getGyakori($menu));
+        $view->setVar('gyakrannyitva', (bool)\Services\UiAppearanceService::getPref('gyakrannyitva', true));
         $jelenc = new \Controllers\jelenletiivController();
         $view->setVar('dolgozojelen', $jelenc->isDolgozoJelen(\mkw\store::getAdminSession()->pk));
         $btc = new BizonylattipusController();

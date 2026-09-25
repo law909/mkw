@@ -132,9 +132,14 @@
                Csoport nélküli menüpont nem kap fejlécet, és mindig látszik. *}
             {$cscikl = 0}
             {$mdb = count($menu)}
+            {$gyakranrajzolva = false}
             {while ($cscikl < $mdb)}
                 {$mcs = $menu[$cscikl]['mcsid']}
                 {$mcsnyitva = $menu[$cscikl]['mcsnyitva']}
+                {if ($menu[$cscikl]['mcsnev'] && !$gyakranrajzolva)}
+                    {include "./partials/gyakranhasznalt.tpl"}
+                    {$gyakranrajzolva = true}
+                {/if}
                 {if ($menu[$cscikl]['mcsnev'])}
                     <div class="menu-titlebar mattedit-titlebar ui-widget-header ui-helper-clearfix ui-corner-all js-menucsoporttoggle"
                          data-mcsid="{$mcs}" title="{t('Nyitás/zárás')}">

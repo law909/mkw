@@ -106,7 +106,7 @@ class UiAppearanceService
     }
 
     /** Felületi beállítások, amelyeket a kliens menthet (setuipref); más név nem írható. */
-    const PREFS = ['oldalsavrejtve'];
+    const PREFS = ['oldalsavrejtve', 'gyakrannyitva'];
 
     /** Dolgozónként a dolgozoparameterek-ben, a sysadminnál 'sysadmin' előtaggal a parameterek-ben. */
     public static function getPref(string $name, $default = null)
@@ -119,9 +119,14 @@ class UiAppearanceService
 
     public static function setPref(string $name, string $value): void
     {
-        if (!in_array($name, self::PREFS, true)) {
-            return;
+        if (in_array($name, self::PREFS, true)) {
+            self::savePref($name, $value);
         }
+    }
+
+    /** Szerveroldali mentés a PREFS-szűrés nélkül (pl. a menühasználat számlálója). */
+    public static function savePref(string $name, string $value): void
+    {
         if (\mkw\store::getAdminSession()->pk == -1) {
             \mkw\store::setParameter('sysadmin' . $name, $value);
             return;

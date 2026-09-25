@@ -451,6 +451,15 @@ class adminController extends mkwhelpers\Controller
         );
     }
 
+    /** A megnyitott menüpont-oldal pontot kap a „Gyakran használt" listához (appinit.js). */
+    public function recordMenuHasznalat()
+    {
+        \Services\MenuHasznalatService::record(
+            $this->params->getStringRequestParam('url'),
+            (new menuController())->getMenu()
+        );
+    }
+
     public function setUIPref()
     {
         \Services\UiAppearanceService::setPref(

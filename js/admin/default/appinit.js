@@ -88,10 +88,15 @@ function markActiveMenupont() {
     const dir = (path) => path.replace(/[^/]*$/, '');
     const here = window.location.pathname;
     const items = $('.menupont').toArray().filter((a) => /^\/admin\/./.test(a.getAttribute('href') || ''));
-    const active = items.find((a) => a.pathname === here)
-        || items.find((a) => dir(a.pathname) !== '/admin/' && dir(a.pathname) === dir(here));
+    const exact = items.find((a) => a.pathname === here);
+    const active = exact || items.find((a) => dir(a.pathname) !== '/admin/' && dir(a.pathname) === dir(here));
     if (active) {
-        $(active).addClass('menupont-aktiv');
+        // a „Gyakran használt" szakaszban ugyanaz a menüpont még egyszer szerepelhet
+        $('.menupont').filter((i, a) => a.getAttribute('href') === active.getAttribute('href')).addClass('menupont-aktiv');
+    }
+    // csak a menüpont saját oldala számít megnyitásnak, a hozzá tartozó karbantartó nem
+    if (exact) {
+        $.ajax({url: '/admin/menuhasznalat', type: 'POST', global: false, data: {url: exact.getAttribute('href')}});
     }
 }
 
@@ -210,6 +215,16 @@ $(document).ready(
             });
         });
         markActiveMenupont();
+        $('.js-gyakranhasznalttoggle').on('click', function (e) {
+            e.preventDefault();
+            const $szakasz = $('.js-gyakranhasznalt'),
+                nyitva = !$szakasz.is(':visible');
+            $(this).children('.menu-titlebar-icon')
+                .toggleClass('ui-icon-circle-triangle-n', nyitva)
+                .toggleClass('ui-icon-circle-triangle-s', !nyitva);
+            $szakasz.slideToggle(200);
+            $.ajax({url: '/admin/setuipref', type: 'POST', global: false, data: {name: 'gyakrannyitva', value: nyitva ? 1 : 0}});
+        });
         $('.js-oldalsavkapcsolo').on('click', function () {
             const rejtve = $('body').toggleClass('oldalsav-rejtve').hasClass('oldalsav-rejtve');
             $.ajax({

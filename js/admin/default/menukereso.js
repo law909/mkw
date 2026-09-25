@@ -38,7 +38,8 @@ const menukereso = (function () {
         $('.js-menucsoporttoggle').each(function () {
             csoportnevek[$(this).data('mcsid')] = $(this).find('.ui-jqgrid-title').text().trim();
         });
-        return $('.menupont').toArray().map((a) => {
+        // a „Gyakran használt" szakasz másolatai nélkül, különben minden találat kétszer jönne
+        return $('.menupont').not('.js-gyakranhasznalt .menupont').toArray().map((a) => {
             const nev = $(a).text().trim();
             const csoport = csoportnevek[$(a).closest('.js-menucsoport').data('mcsid')] || '';
             return {elem: a, href: a.getAttribute('href') || '', nev, csoport, kereso: normalize(nev + ' ' + csoport), nevnorm: normalize(nev)};
