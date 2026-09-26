@@ -3,14 +3,11 @@
 namespace Controllers;
 
 use Entities\Arsav;
-use Entities\Bankszamla;
-use Entities\Bizonylattipus;
 use Entities\Dolgozo;
 use Entities\Fizmod;
 use Entities\JogaBerlet;
 use Entities\Jogaoratipus;
 use Entities\JogaReszvetel;
-use Entities\Jogcim;
 use Entities\Partner;
 use Entities\Penztar;
 use Entities\Termek;
@@ -52,7 +49,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
 
         $x['tanar'] = $t->getTanar()?->getId();
         $x['tanarnev'] = $t->getTanar()?->getNev();
-
 
         $x['jogaoratipus'] = $t->getJogaoratipus()?->getId();
         $x['jogaoratipusnev'] = $t->getJogaoratipus()?->getNev();
@@ -497,87 +493,6 @@ class jogareszvetelController extends \mkwhelpers\MattableController
                     }
                 }
             }
-        }
-    }
-
-    public function fizet()
-    {
-        /** @var \Entities\JogaReszvetel $r */
-        $r = $this->getRepo()->find($this->params->getIntRequestParam('id'));
-        /** @var \Entities\Fizmod $fizmod */
-        $fizmod = $this->getRepo(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
-        $bankszamla = $this->getRepo(Bankszamla::class)->find($this->params->getIntRequestParam('bankszamla'));
-        $penztar = $this->getRepo(Penztar::class)->find($this->params->getIntRequestParam('penztar'));
-        $jogcim = $this->getRepo(Jogcim::class)->find($this->params->getIntRequestParam('jogcim'));
-        $osszeg = $this->params->getNumRequestParam('osszeg');
-
-        if ($r && $fizmod && $jogcim
-            && (($this->params->getIntRequestParam('bankszamla') && $bankszamla) || ($this->params->getIntRequestParam('penztar') && $penztar))
-            && $osszeg) {
-            $tipus = $fizmod->getTipus();
-            if ($tipus === 'B' && $bankszamla) {
-                $biz = new \Entities\Bankbizonylatfej();
-                $bt = new \Entities\Bankbizonylattetel();
-                $biz->addBizonylattetel($bt);
-
-                $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('bank'));
-                $biz->setMegjegyzes(at('Automatikus bizonylat'));
-                $biz->setBankszamla($bankszamla);
-                $biz->setPartner($r->getPartner());
-                $biz->setKelt('');
-                $biz->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
-
-                $bt->setPartner($r->getPartner());
-                $bt->setValutanem(\mkw\store::getParameter(\mkw\consts::Valutanem));
-                $bt->setDatum($this->params->getStringRequestParam('datum'));
-                $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
-                $bt->setBrutto($osszeg);
-                $bt->setIrany(1);
-                $bt->setJogcim($jogcim);
-
-                $this->getEm()->persist($biz);
-                $this->getEm()->flush($biz);
-
-                $r->setFizetvebankszamla($bankszamla);
-                $r->setFizetvebankbizonylatszam($biz->getId());
-                $r->setFizetvebanktetelid($bt->getId());
-            } elseif ($tipus === 'P' && $penztar) {
-                $biz = new \Entities\Penztarbizonylatfej();
-                $bt = new \Entities\Penztarbizonylattetel();
-                $biz->addBizonylattetel($bt);
-
-                $biz->setBizonylattipus($this->getRepo(Bizonylattipus::class)->find('penztar'));
-                $biz->setMegjegyzes(at('Automatikus bizonylat'));
-                $biz->setIrany(1);
-                $biz->setKelt('');
-                $biz->setPenztar($penztar);
-                $biz->setPartner($r->getPartner());
-
-                $bt->setJogcim($jogcim);
-                $bt->setBrutto($osszeg);
-                // a bizonylattétel szövege az óra típusa; korábban egy nem létező getRendezveny()-t hívott
-                $bt->setSzoveg($r->getJogaoratipus()?->getNev());
-                $bt->setHivatkozottdatum($this->params->getStringRequestParam('datum'));
-
-                $this->getEm()->persist($biz);
-                $this->getEm()->flush($biz);
-
-                $r->setFizetvepenztar($penztar);
-                $r->setFizetvepenztarbizonylatszam($biz->getId());
-                $r->setFizetvepenztartetelid($bt->getId());
-            }
-
-            $r->setFizetesdatum($this->params->getStringRequestParam('datum'));
-            $r->setFizetveosszeghuf($osszeg);
-            $r->setFizmod($fizmod);
-            $r->setFizetve(true);
-
-            $this->getEm()->persist($r);
-            $this->getEm()->flush();
-
-            echo json_encode(['result' => 'ok']);
-        } else {
-            echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
         }
     }
 
