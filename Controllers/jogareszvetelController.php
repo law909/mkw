@@ -129,7 +129,7 @@ class jogareszvetelController extends \mkwhelpers\MattableController
         }
 
         $obj->setDatum($this->params->getStringRequestParam('datum'));
-        $ck = \mkw\store::getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('tanar', 0));
+        $ck = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('tanar', 0));
         if ($ck) {
             $obj->setTanar($ck);
         }
