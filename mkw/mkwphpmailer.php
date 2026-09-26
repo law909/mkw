@@ -15,12 +15,20 @@ class mkwphpmailer
     private $headers;
     private $replyto;
     private $attachment;
+    private $withoutBcc = false;
     public $ErrorInfo;
 
     public function clear()
     {
         $this->to = [];
+        $this->withoutBcc = false;
         unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
+    }
+
+    /** a levél a Beállítások BCC címeire se menjen ki (pl. mert jelszó van benne) */
+    public function withoutBcc()
+    {
+        $this->withoutBcc = true;
     }
 
     public function setTo($to)
@@ -154,14 +162,16 @@ class mkwphpmailer
                 }
             }
         }
-        if ($statusvaltas) {
-            $bcc = $this->getStatuszValtasArray();
-        } else {
-            $bcc = $this->getBccArray();
-        }
-        foreach ($bcc as $_bcc) {
-            if ($_bcc) {
-                $this->mailer->addBCC($_bcc);
+        if (!$this->withoutBcc) {
+            if ($statusvaltas) {
+                $bcc = $this->getStatuszValtasArray();
+            } else {
+                $bcc = $this->getBccArray();
+            }
+            foreach ($bcc as $_bcc) {
+                if ($_bcc) {
+                    $this->mailer->addBCC($_bcc);
+                }
             }
         }
 

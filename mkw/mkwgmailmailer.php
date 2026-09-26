@@ -14,12 +14,20 @@ class mkwgmailmailer
     private $headers;
     private $replyto;
     private $attachment;
+    private $withoutBcc = false;
     public $ErrorInfo;
 
     public function clear()
     {
         $this->to = [];
+        $this->withoutBcc = false;
         unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
+    }
+
+    /** a levél a Beállítások BCC címeire se menjen ki (pl. mert jelszó van benne) */
+    public function withoutBcc()
+    {
+        $this->withoutBcc = true;
     }
 
     public function setTo($to)
@@ -131,7 +139,9 @@ class mkwgmailmailer
             $to = implode(',', $this->getTo());
         }
 
-        if ($statusvaltas) {
+        if ($this->withoutBcc) {
+            $bcc = '';
+        } elseif ($statusvaltas) {
             $bcc = implode(',', $this->getStatuszValtasArray());
         } else {
             $bcc = implode(',', $this->getBccArray());

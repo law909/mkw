@@ -121,6 +121,7 @@ trait PartnerBulkOps
             \mkw\store::writelog($body->getTemplateResult(), 'partnerjelszoemail.html');
         } else {
             $mailer = \mkw\store::getMailer();
+            $mailer->withoutBcc();
             $mailer->addTo($partner->getEmail());
             $mailer->setSubject($subject->getTemplateResult());
             $mailer->setMessage($body->getTemplateResult());

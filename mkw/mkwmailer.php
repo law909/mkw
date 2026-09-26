@@ -14,10 +14,17 @@ class mkwmailer {
     private $headers;
     private $replyto;
     private $attachment;
+    private $withoutBcc = false;
 
     public function clear() {
         $this->to = [];
+        $this->withoutBcc = false;
         unset($this->subject, $this->message, $this->headers, $this->replyto, $this->attachment);
+    }
+
+    /** a levél a Beállítások BCC címeire se menjen ki (pl. mert jelszó van benne) */
+    public function withoutBcc() {
+        $this->withoutBcc = true;
     }
 
     public function addTo($to) {
@@ -118,8 +125,10 @@ class mkwmailer {
         else {
             $this->headers .= $this->replyto . "\r\n";
         }
-        $this->headers .= "Bcc: " . $this->getBcc($statusvaltas) . "\r\n"
-            . "MIME-version: 1.0\r\n"
+        if (!$this->withoutBcc) {
+            $this->headers .= "Bcc: " . $this->getBcc($statusvaltas) . "\r\n";
+        }
+        $this->headers .= "MIME-version: 1.0\r\n"
             . $contenttype;
 
         $ret = mail(implode(', ', $this->to), $this->subject, $body, $this->headers);
