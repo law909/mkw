@@ -61,6 +61,7 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('bankbizonylatfej_id', 'bankbizonylatfej_id');
         $rsm->addScalarResult('brutto', 'brutto');
+        $rsm->addScalarResult('irany', 'irany');
         $rsm->addScalarResult('valutanem_id', 'valutanem_id');
         $rsm->addScalarResult('valutanemnev', 'valutanemnev');
         $rsm->addScalarResult('datum', 'datum');
@@ -80,7 +81,7 @@ class BankbizonylattetelRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('partnernev', 'partnernev');
 
         $q = $this->_em->createNativeQuery(
-            'SELECT _xx.id, _xx.bankbizonylatfej_id, _xx.brutto, _xx.valutanem_id, _xx.valutanemnev,'
+            'SELECT _xx.id, _xx.bankbizonylatfej_id, _xx.brutto, _xx.irany, _xx.valutanem_id, _xx.valutanemnev,'
             . '_xx.datum, _xx.hivatkozottdatum, _xx.hivatkozottbizonylat,'
             . $ukfields . ', bf.partnernev '
             . ' FROM bankbizonylattetel _xx '

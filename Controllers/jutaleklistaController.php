@@ -68,8 +68,9 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         $filter
             ->addFilter($datummezo, '>=', $this->tolstr)
             ->addFilter($datummezo, '<=', $this->igstr)
-            ->addFilter('irany', '=', 1)
-            ->addFilter('rontott', '=', 0);
+            ->addFilter('rontott', '=', 0)
+            // outgoing lines on sales documents are refunds; on other documents they pay a supplier
+            ->addSql('_xx.irany = 1 OR (_xx.irany = -1 AND bf.irany = -1)');
 
         $this->cimkek = $this->params->getArrayRequestParam('cimkefilter');
         $cimkeSubquery = $this->getRepo('Entities\Partner')->getCimkeSubquery($this->cimkek);
@@ -103,13 +104,16 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         $elsoBefizetes = $this->getRepo(Bankbizonylattetel::class)->getFirstIdByHivatkozottBizonylat($bizonylatok);
         $ret = [];
         foreach ($mihez as $sor) {
+            if ($sor['irany'] < 0) {
+                $sor['brutto'] *= -1;
+            }
             $sor['jutalekosszeg'] = \mkw\store::kerekit($sor['brutto'] * $sor['uzletkotojutalek'] / 100, 0.01);
             $sor['type'] = 'Item';
             $ret[] = $sor;
             $ktg = $szallktg[$sor['hivatkozottbizonylat']] ?? null;
             // only the first payment of an invoice gives back its shipping cost
             $elso = $elsoBefizetes[$sor['hivatkozottbizonylat']] ?? null;
-            if ($ktg !== null && ($elso === null || $elso == $sor['id'])) {
+            if ($ktg !== null && $elso == $sor['id']) {
                 $brutto = $ktg['brutto'];
                 $ret[] = [
                     'id' => 0,
