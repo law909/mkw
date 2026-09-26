@@ -33,8 +33,25 @@ class jutaleklistaController extends \mkwhelpers\MattableController
     private $ukid;
     private $belso;
 
+    private function checkJog(): bool
+    {
+        if (\mkw\store::haveMenuJog('/admin/jutaleklista/view', 40)) {
+            return true;
+        }
+        $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
+        return false;
+    }
+
+    protected function checkNezetJog(): bool
+    {
+        return $this->checkJog();
+    }
+
     public function view()
     {
+        if (!\mkw\store::haveMenuJog('/admin/jutaleklista/view', 40)) {
+            return;
+        }
         $view = $this->createView('jutaleklista.tpl');
 
         $view->setVar('toldatum', date(\mkw\store::$DateFormat));
@@ -54,7 +71,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     protected function createFilter()
     {
-        $this->belso = $this->params->getBoolRequestParam('belso');
+        // the internal salesperson settlement is on the screen with right 90 only
+        $this->belso = $this->params->getBoolRequestParam('belso') && \mkw\store::haveJog(90);
 
         $this->tolstr = $this->params->getStringRequestParam('tol');
         $this->tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->tolstr)));
@@ -213,6 +231,9 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     public function createLista()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         $mind = $this->getItems();
 
         $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
@@ -237,6 +258,9 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     public function exportLista()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         function x($o)
         {
             if ($o <= 26) {
@@ -456,12 +480,18 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
     public function refresh()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         header('Content-Type: application/json');
         echo json_encode($this->buildReport());
     }
 
     public function pdf()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         $report = $this->buildReport();
         $szurok = [[t('Időszak'), $this->tolstr . ' – ' . $this->igstr]];
         if ($this->ukid) {
