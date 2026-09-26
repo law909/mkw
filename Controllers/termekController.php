@@ -742,7 +742,7 @@ class termekController extends \mkwhelpers\MattableController
         if (\mkw\store::isDarshan()) {
             $obj->setJogaalkalom($this->params->getIntRequestParam('jogaalkalom'));
             $obj->setJogaervenyesseg($this->params->getIntRequestParam('jogaervenyesseg'));
-            $obj->setJogaelszamolasalap($this->params->getIntRequestParam('jogaelszamolasalap'));
+            $obj->setJogaelszamolasalap($this->params->getFloatRequestParam('jogaelszamolasalap'));
             $obj->setJogaervenyessegnap($this->params->getIntRequestParam('jogaervenyessegnap'));
         }
 
