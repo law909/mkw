@@ -105,7 +105,12 @@ class uzletkotoController extends \mkwhelpers\MattableController
         $rec = $this->getRepo()->getAll($filter, ['nev' => 'ASC']);
         $res = [];
         foreach ($rec as $sor) {
-            $res[] = ['id' => $sor->getId(), 'caption' => $sor->getNev(), 'selected' => ($sor->getId() == $selid)];
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev(),
+                'selected' => ($sor->getId() == $selid),
+                'jutalek' => $sor->getJutalek(),
+            ];
         }
         return $res;
     }

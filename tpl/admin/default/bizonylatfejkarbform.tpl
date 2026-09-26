@@ -383,7 +383,7 @@
                         <td><select id="UzletkotoEdit" name="uzletkoto" class="mattable-important">
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $uzletkotolist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    <option value="{$_mk.id}" data-jutalek="{$_mk.jutalek}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                 {/foreach}
                             </select>
                         </td>
@@ -396,7 +396,7 @@
                             <td><select id="BelsoUzletkotoEdit" name="belsouzletkoto" class="mattable-important">
                                     <option value="">{at('válasszon')}</option>
                                     {foreach $belsouzletkotolist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                        <option value="{$_mk.id}" data-jutalek="{$_mk.jutalek}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                     {/foreach}
                                 </select>
                             </td>

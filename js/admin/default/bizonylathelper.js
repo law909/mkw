@@ -1572,6 +1572,11 @@ let bizonylathelper = function ($) {
         getArfolyam();
     }
 
+    // the % comes with the salesperson; the old value would otherwise be saved with the new one
+    function syncUzletkotoJutalek(select, input) {
+        $(input).val($('option:selected', select).data('jutalek') ?? '');
+    }
+
     function setPartnerData(d) {
         if (d.fizmod) {
             $('#FizmodEdit').val(d.fizmod);
@@ -1582,8 +1587,9 @@ let bizonylathelper = function ($) {
         if (d.szallitasimod) {
             $('#SzallitasimodEdit').val(d.szallitasimod);
         }
-        if (d.uzletkoto) {
+        if (d.uzletkoto && $('#UzletkotoEdit').val() != d.uzletkoto) {
             $('#UzletkotoEdit').val(d.uzletkoto);
+            syncUzletkotoJutalek('#UzletkotoEdit', '#UKJutalekEdit');
         }
         if (d.bizonylatnyelv) {
             $('#BizonylatnyelvEdit').val(d.bizonylatnyelv);
@@ -2034,6 +2040,8 @@ let bizonylathelper = function ($) {
                 $('#ValutanemEdit').change(function () {
                     valutanemChange();
                 });
+                $('#UzletkotoEdit').on('change', () => syncUzletkotoJutalek('#UzletkotoEdit', '#UKJutalekEdit'));
+                $('#BelsoUzletkotoEdit').on('change', () => syncUzletkotoJutalek('#BelsoUzletkotoEdit', '#BelsoUKJutalekEdit'));
                 fizmodedit.on('change', function () {
                     setDates();
                     syncPenztmozgat();
