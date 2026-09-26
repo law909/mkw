@@ -3083,6 +3083,12 @@ if ($DBVersion < '0204' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0204');
 }
 
+if ($DBVersion < '0205' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0204') {
+    // az óra jutalék %-ában eddig a 0 jelentette a globális %-ot, mostantól a NULL; a 0 valódi 0%
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE orarend SET jutalekszazalek = NULL WHERE jutalekszazalek = 0');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0205');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

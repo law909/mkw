@@ -98,8 +98,11 @@ class Orarend
     /** @ORM\Column(type="boolean", nullable=false) */
     private $lemondhato = false;
 
-    /** @ORM\Column(type="integer",nullable=true) */
-    private $jutalekszazalek = 0;
+    /**
+     * NULL: the global jogajutalek parameter applies; 0 is a real 0%
+     * @ORM\Column(type="decimal",precision=6,scale=2,nullable=true)
+     */
+    private $jutalekszazalek = null;
 
     /** @ORM\Column(type="boolean", nullable=false) */
     private $orarendbennincs = false;
@@ -475,20 +478,14 @@ class Orarend
         $this->lemondhato = $lemondhato;
     }
 
-    /**
-     * @return int
-     */
     public function getJutalekszazalek()
     {
         return $this->jutalekszazalek;
     }
 
-    /**
-     * @param int $jutalekszazalek
-     */
     public function setJutalekszazalek($jutalekszazalek)
     {
-        $this->jutalekszazalek = $jutalekszazalek;
+        $this->jutalekszazalek = ($jutalekszazalek === '' || $jutalekszazalek === null) ? null : $jutalekszazalek;
     }
 
     /**

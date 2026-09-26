@@ -54,7 +54,11 @@ class orarendController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj)
     {
-        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['onlineurl']]);
+        $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['onlineurl'], 'skip' => ['jutalekszazalek']]);
+        // empty: the global %; the auto-mapping would turn it into 0%
+        $obj->setJutalekszazalek($this->params->getStringRequestParam('jutalekszazalek') === ''
+            ? null
+            : $this->params->getFloatRequestParam('jutalekszazalek'));
 
         $dolgozo = \mkw\store::getEm()->getRepository(Dolgozo::class)->find($this->params->getIntRequestParam('dolgozo'));
         if ($dolgozo) {

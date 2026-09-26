@@ -518,7 +518,7 @@ class JogaReszvetel
             $this->setJutalek(\mkw\store::getParameter(\mkw\consts::JogaAYCMJutalek, 500));
         } else {
             $jutalekszaz = $jutalekszazalek;
-            if (!$jutalekszaz) {
+            if ($jutalekszaz === null || $jutalekszaz === '') {
                 $jutalekszaz = \mkw\store::getParameter(\mkw\consts::JogaJutalek, 47);
             }
             $this->setJutalek($this->getBruttoegysar() * $jutalekszaz / 100);

@@ -29,7 +29,7 @@
                             <td>Min.bejelentkezés: {$_orarend.minbejelentkezes}</td>
                         </tr>
                         <tr>
-                            <td>Jutalék: {$_orarend.jutalekszazalek} %</td>
+                            <td>Jutalék: {if $_orarend.jutalekszazalek === null}{at('alapértelmezett')}{else}{$_orarend.jutalekszazalek} %{/if}</td>
                         </tr>
                         </tbody>
                     </table>
