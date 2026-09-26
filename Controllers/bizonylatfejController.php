@@ -804,6 +804,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         return false;
     }
 
+    // an empty field means the salesperson's own %, a typed 0 means 0%
+    private function getJutalekRequestParam(string $key, ?Uzletkoto $uzletkoto): float
+    {
+        if ($this->params->getStringRequestParam($key) === '') {
+            return $uzletkoto ? (float)$uzletkoto->getJutalek() : 0;
+        }
+        return $this->params->getNumRequestParam($key);
+    }
+
     protected function setFields(\Entities\Bizonylatfej $obj, $parancs)
     {
         $partnerkod = $this->params->getIntRequestParam('partner');
@@ -978,8 +987,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $obj->setTarsbizonylat(null);
         }
 
-        if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
-            $obj->setUzletkotojutalek($this->params->getNumRequestParam('uzletkotojutalek'));
+        if ($this->params->existsRequestParam('uzletkotojutalek')) {
+            $obj->setUzletkotojutalek($this->getJutalekRequestParam('uzletkotojutalek', $obj->getUzletkoto()));
         }
         // the form shows the internal salesperson with right 90 only; without it the save must not clear it
         if (\mkw\store::haveJog(90)) {
@@ -990,8 +999,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $obj->removeBelsouzletkoto();
             }
 
-            if ($this->params->getNumRequestParam('belsouzletkotojutalek') !== 0) {
-                $obj->setBelsouzletkotojutalek($this->params->getNumRequestParam('belsouzletkotojutalek'));
+            if ($this->params->existsRequestParam('belsouzletkotojutalek')) {
+                $obj->setBelsouzletkotojutalek($this->getJutalekRequestParam('belsouzletkotojutalek', $obj->getBelsouzletkoto()));
             }
         }
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
