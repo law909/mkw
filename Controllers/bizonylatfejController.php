@@ -1950,17 +1950,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('bankszamlalist', $bankszla->getSelectList($bankszlaid));
 
             $uk = new uzletkotoController();
-            if ($record && $record->getUzletkotoId()) {
-                $ukid = $record->getUzletkotoId();
-            }
-            $view->setVar('uzletkotolist', $uk->getSelectList($ukid));
+            $view->setVar('uzletkotolist', $uk->getSelectList($record?->getUzletkotoId()));
 
-            if ($record && $record->getBelsouzletkotoId()) {
-                $ukid = $record->getBelsouzletkotoId();
-            }
             $fofilter = new \mkwhelpers\FilterDescriptor();
             $fofilter->addFilter('belso', '=', true);
-            $view->setVar('belsouzletkotolist', $uk->getSelectList($ukid, $fofilter));
+            $view->setVar('belsouzletkotolist', $uk->getSelectList($record?->getBelsouzletkotoId(), $fofilter));
 
             $view->setVar('esedekessegalap', \mkw\store::getParameter(\mkw\consts::Esedekessegalap, 1));
             // Képzett bizonylatnál a $record még az ELŐD (pl. a megrendelés), a form viszont a
