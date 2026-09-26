@@ -180,6 +180,9 @@
                 {/foreach}
             </select>
             <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
+            {if ($arazasimport|default:false)}
+                <a href="#" class="js-arazasimport">{at('Árazás import')}</a>
+            {/if}
         </div>
         <table id="mattable-table">
             <thead>
@@ -216,6 +219,17 @@
             {/foreach}
         </select>
     </div>
+    {if ($arazasimport|default:false)}
+        <div id="arazasimport" class="hidden">
+            <p>
+                <label for="ArazasImportFile">{at('Importálandó fájl')}:</label>
+                <input id="ArazasImportFile" type="file" accept=".xlsx,.xls">
+            </p>
+            <p>Az XLSX első sora a fejléc. A terméket a kod (termék ID), a vonalkod vagy a cikkszam oszlop azonosítja,
+                ebben a sorrendben. Frissíthető: nev (nev_EN stb. más nyelvre), cikkszam, vonalkod, vtsz, és az árak
+                netto_HUF_&lt;ársáv neve&gt; / brutto_HUF_&lt;ársáv neve&gt; alakú oszlopokból. A nem talált sor kimarad.</p>
+        </div>
+    {/if}
     <div id="cimkeset" class="hidden">
         <label>{at('Címke')}: </label>
         <select class="js-cimkeset">

@@ -1383,6 +1383,48 @@ $(document).ready(function () {
             }
         });
 
+        // galad, superzoneb2b: the former "Termék adatok" import of the import screen
+        $('.js-arazasimport').on('click', function (e) {
+            e.preventDefault();
+            const $dialog = $('#arazasimport');
+            const $file = $('#ArazasImportFile').val('');
+            $dialog.removeClass('hidden').dialog({
+                title: 'Árazás import',
+                resizable: false,
+                modal: true,
+                width: 520,
+                buttons: {
+                    'Import': function () {
+                        if (!$file.val()) {
+                            mkwHiba('Válasszon fájlt!');
+                            return;
+                        }
+                        const data = new FormData();
+                        data.append('toimport', $file[0].files[0]);
+                        $.ajax({
+                            url: '/admin/import/szimport',
+                            type: 'POST',
+                            data: data,
+                            processData: false,
+                            contentType: false
+                        }).done((valasz) => {
+                            // the import answers only on error, as plain text
+                            if (valasz) {
+                                mkwHiba(valasz);
+                                return;
+                            }
+                            $dialog.dialog('close');
+                            mkwUzenet('Az árazás import kész.');
+                            $('.mattable-tablerefresh').click();
+                        });
+                    },
+                    'Mégsem': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }).button();
+
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
         });

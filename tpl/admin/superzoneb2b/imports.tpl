@@ -37,10 +37,6 @@
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
-                        <a href="/admin/import/szimport" class="js-szinvarimport">Termék adatok</a>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
                         <a href="/admin/import/szcimkeimport" class="js-szcimkeimport">Termék adatok cimkékkel</a>
                     </div>
                     <div class="matt-hseparator"></div>

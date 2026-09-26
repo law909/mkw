@@ -28,7 +28,7 @@ $(document).ready(function () {
                 }
             }).button();
 
-            $('.js-szinvarimport, .js-szcimkeimport, .js-szmeretimport, .js-szcolorimport, '
+            $('.js-szcimkeimport, .js-szmeretimport, .js-szcolorimport, '
                 + '.js-fcmotoorderimport, .js-szinimport, .js-meretimport, .js-orszagimport').on('click', function (e) {
                 e.preventDefault();
                 var data = new FormData($('#mattkarb-form')[0]);

@@ -1851,6 +1851,8 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('termekcsoportlist', $tcs->getSelectList());
         $rc = new raktarController();
         $view->setVar('raktarlist', $rc->getSelectList());
+        // the /admin/import/szimport route exists only when not closed
+        $view->setVar('arazasimport', (\mkw\store::isGalad() || \mkw\store::isSuperzoneB2B()) && !\mkw\store::isClosed());
         $view->printTemplateResult();
     }
 
