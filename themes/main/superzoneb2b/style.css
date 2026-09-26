@@ -208,6 +208,7 @@ fieldset[disabled] .btn-red.active {
 
 .top-navbar-nav {
     float: right;
+    margin-left: auto;
 }
 
 .top-navbar-nav > li {
@@ -215,8 +216,26 @@ fieldset[disabled] .btn-red.active {
     margin-left: 4px;
 }
 
+/* the row grows with the logo; Bootstrap would fix it at 50px */
 .top-navbar .navbar-header {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.top-navbar .navbar-header:before,
+.top-navbar .navbar-header:after {
+    display: none;
+}
+
+.top-navbar .navbar-brand {
+    height: auto;
+    padding-bottom: 3px;
+}
+
+.top-navbar .headerbtnbefoglalo {
+    padding-top: 0;
 }
 
 .navbar-default {
