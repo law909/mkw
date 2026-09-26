@@ -30,8 +30,6 @@
         </tr>
         </thead>
         <tbody>
-        {$sumincome = 0}
-        {$sumcom = 0}
         {foreach $lista as $elem}
             <tr>
                 <td class="cell nowrap">{$elem.hivatkozottdatum}</td>
@@ -44,11 +42,10 @@
                 <td class="cell textalignright">{bizformat($elem.uzletkotojutalek)} %</td>
                 <td class="cell textalignright nowrap">{bizformat($elem.jutalekosszeg)} {$elem.valutanemnev}</td>
             </tr>
-            {$sumincome = $sumincome + $elem.brutto}
-            {$sumcom = $sumcom + $elem.jutalekosszeg}
         {/foreach}
         </tbody>
         <tfoot>
+        {foreach $osszesitok as $valutanemnev => $osszesito}
         <tr>
             <td></td>
             <td></td>
@@ -56,10 +53,11 @@
             <td></td>
             <td></td>
             <td>Total</td>
-            <td class="cell textalignright nowrap">{bizformat($sumincome)} {$elem.valutanemnev}</td>
+            <td class="cell textalignright nowrap">{bizformat($osszesito.brutto)} {$valutanemnev}</td>
             <td></td>
-            <td class="cell textalignright nowrap">{bizformat($sumcom)} {$elem.valutanemnev}</td>
+            <td class="cell textalignright nowrap">{bizformat($osszesito.jutalekosszeg)} {$valutanemnev}</td>
         </tr>
+        {/foreach}
         </tfoot>
     </table>
 {/block}

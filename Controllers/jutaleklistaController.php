@@ -217,8 +217,18 @@ class jutaleklistaController extends \mkwhelpers\MattableController
 
         $cimkenevek = $this->getRepo('Entities\Partnercimketorzs')->getCimkeNevek($this->params->getArrayRequestParam('cimkefilter'));
 
+        $osszesitok = [];
+        foreach ($mind as $elem) {
+            $osszesito = &$osszesitok[$elem['valutanemnev']];
+            $osszesito['brutto'] = ($osszesito['brutto'] ?? 0) + $elem['brutto'];
+            $osszesito['jutalekosszeg'] = ($osszesito['jutalekosszeg'] ?? 0) + $elem['jutalekosszeg'];
+            unset($osszesito);
+        }
+        ksort($osszesitok);
+
         $report = $this->createView('rep_jutalek.tpl');
         $report->setVar('lista', $mind);
+        $report->setVar('osszesitok', $osszesitok);
         $report->setVar('tolstr', $this->tolstr);
         $report->setVar('igstr', $this->igstr);
         $report->setVar('cimkenevek', $cimkenevek);
