@@ -981,15 +981,18 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($this->params->getNumRequestParam('uzletkotojutalek') !== 0) {
             $obj->setUzletkotojutalek($this->params->getNumRequestParam('uzletkotojutalek'));
         }
-        $ck = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('belsouzletkoto'));
-        if ($ck) {
-            $obj->setBelsouzletkoto($ck);
-        } else {
-            $obj->removeBelsouzletkoto();
-        }
+        // the form shows the internal salesperson with right 90 only; without it the save must not clear it
+        if (\mkw\store::haveJog(90)) {
+            $ck = \mkw\store::getEm()->getRepository(Uzletkoto::class)->find($this->params->getIntRequestParam('belsouzletkoto'));
+            if ($ck) {
+                $obj->setBelsouzletkoto($ck);
+            } else {
+                $obj->removeBelsouzletkoto();
+            }
 
-        if ($this->params->getNumRequestParam('belsouzletkotojutalek') !== 0) {
-            $obj->setBelsouzletkotojutalek($this->params->getNumRequestParam('belsouzletkotojutalek'));
+            if ($this->params->getNumRequestParam('belsouzletkotojutalek') !== 0) {
+                $obj->setBelsouzletkotojutalek($this->params->getNumRequestParam('belsouzletkotojutalek'));
+            }
         }
         $obj->setKelt($this->params->getStringRequestParam('kelt'));
         $obj->setTeljesites($this->params->getStringRequestParam('teljesites'));
