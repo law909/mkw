@@ -37,10 +37,10 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             $pig = $this->params->getStringRequestParam('ig');
         }
 
-        $tol = new \DateTime(\mkw\store::convDate($ptol));
-        $ig = new \DateTime(\mkw\store::convDate($pig));
-        $kul = $tol->diff($ig);
-        $hokulonbseg = $kul->y * 12 + $kul->m;
+        $hokulonbseg = $this->countCalendarMonths(
+            new \DateTime(\mkw\store::convDate($ptol)),
+            new \DateTime(\mkw\store::convDate($pig))
+        );
 
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($ptol)));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($pig)));
@@ -62,6 +62,14 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         return $tetelek;
     }
 
+    // every calendar month the period touches counts: 08.01-08.31 = 1, 08.15-09.14 = 2
+    private function countCalendarMonths(\DateTimeInterface $tol, \DateTimeInterface $ig): int
+    {
+        $months = ((int)$ig->format('Y') - (int)$tol->format('Y')) * 12
+            + (int)$ig->format('n') - (int)$tol->format('n') + 1;
+        return max(0, $months);
+    }
+
     protected function reszletezoExport()
     {
         function x($o)
@@ -72,10 +80,10 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             return chr(65 + floor($o / 26)) . chr(65 + ($o % 26));
         }
 
-        $tol = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('tol')));
-        $ig = new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('ig')));
-        $kul = $tol->diff($ig);
-        $hokulonbseg = $kul->y * 12 + $kul->m;
+        $hokulonbseg = $this->countCalendarMonths(
+            new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))),
+            new \DateTime(\mkw\store::convDate($this->params->getStringRequestParam('ig')))
+        );
 
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
