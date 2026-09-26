@@ -174,6 +174,7 @@ class consts
     const ErtekelesKeroSablon = 'ertekeleskerosablon';
     const ErtekelesErtesitoSablon = 'ertekelesertesitosablon';
     const ElallasElismervenySablon = 'elallaselismervenysablon';
+    const PartnerJelszoSablon = 'partnerjelszosablon';
     const SzallitasiFeltetelSablon = 'szallfeltsablon';
     const SzamlalevelSablon = 'szamlalevelsablon';
     const KonyvelolevelSablon = 'konyvelolevelsablon';

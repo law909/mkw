@@ -1554,6 +1554,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/partner/termekkategoriakedvezmenyedit', 'partnerController#setTermekkategoriaKedvezmenyek', 'adminpartnertermekkategoriakedvezmenyedit');
     $router->map('POST', '/admin/partner/setflag', 'partnerController#setflag', 'adminpartnersetflag');
     $router->map('POST', '/admin/partner/sendemailsablonok', 'partnerController#sendEmailSablonok', 'adminpartnersendemailsablonok');
+    $router->map('POST', '/admin/partner/sendjelszo', 'partnerController#sendGeneratedJelszo', 'adminpartnersendjelszo');
     $router->map('GET', '/admin/partner/querytaxpayer', 'partnerController#querytaxpayer', 'adminquerytaxpayer');
 }
 

@@ -449,6 +449,15 @@
                             </select>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="PartnerJelszoSablonEdit">{at('Partner új jelszó sablon')}:</label></span>
+                            <select id="PartnerJelszoSablonEdit" name="partnerjelszosablon">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $partnerjelszosablonlist as $_belsouk}
+                                    <option value="{$_belsouk.id}"{if ($_belsouk.selected)} selected="selected"{/if}>{$_belsouk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="MunkaJelenletEdit">{at('Munkaidő')}:</label></span>
                             <select id="MunkaJelenletEdit" name="munkajelenlet">
                                 <option value="">{at('válasszon')}</option>

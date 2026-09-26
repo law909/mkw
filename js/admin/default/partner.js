@@ -682,7 +682,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/partner/getlistbody',
                 onStyle: function () {
-                    $('.js-anonym').button();
+                    $('.js-anonym, .js-sendjelszo').button();
                 },
                 onDoEditLink: function () {
                     $('#mattable-table').on('.js-anonym', 'click', function (e) {
@@ -913,6 +913,44 @@ $(document).ready(function () {
                             }
                         });
                         $(this).dialog('close');
+                    },
+                    'Nem': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        });
+        $('#mattable-body').on('click', '.js-sendjelszo', function (e) {
+            e.preventDefault();
+            const $this = $(this);
+            const showMsg = (msg) => {
+                dialogcenter.html(msg).dialog({
+                    resizable: false,
+                    modal: true,
+                    buttons: {
+                        'OK': function () {
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+            };
+            dialogcenter.text(`Biztos, hogy új jelszót generál a partnernek, és kiküldi a(z) ${$this.data('email')} címre? A régi jelszava nem lesz érvényes.`).dialog({
+                resizable: false,
+                modal: true,
+                width: 400,
+                buttons: {
+                    'Igen': function () {
+                        $(this).dialog('close');
+                        $.ajax({
+                            url: '/admin/partner/sendjelszo',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                id: $this.data('partnerid')
+                            },
+                            success: (data) => showMsg(data.msg),
+                            error: () => showMsg('A jelszó küldése nem sikerült.')
+                        });
                     },
                     'Nem': function () {
                         $(this).dialog('close');

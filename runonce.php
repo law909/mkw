@@ -3060,6 +3060,29 @@ if ($DBVersion < '0203') {
     }
 }
 
+// a 0203 feltételesen léptet: amíg az nem futott le, ez sem léphet túl rajta
+if ($DBVersion < '0204' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0203') {
+    // a partnerlista „Új jelszó" gombjának levele (PartnerBulkOps::sendGeneratedJelszo()), alapszöveggel; a Levélsablonoknál szerkeszthető
+    $conn = \mkw\store::getEm()->getConnection();
+    $sablonid = \mkw\store::getParameter(\mkw\consts::PartnerJelszoSablon);
+    $letezik = $sablonid && $conn->fetchOne('SELECT COUNT(*) FROM emailtemplate WHERE id = ?', [$sablonid]);
+    if (!$letezik) {
+        $szoveg = 'Kedves {$partner.nev}!<br><br>'
+            . 'Új jelszót készítettünk a webshopunkba való belépéshez.<br><br>'
+            . 'Felhasználónév (email cím): <strong>{$email}</strong><br>'
+            . 'Jelszó: <strong>{$jelszo}</strong><br><br>'
+            . 'Belépés: <a href="{$belepesurl}">{$belepesurl}</a><br><br>'
+            . 'Belépés után a jelszavát a fiókjában megváltoztathatja.<br><br>'
+            . 'Üdvözlettel:<br>' . \mkw\store::getParameter(\mkw\consts::Tulajnev);
+        $conn->executeStatement(
+            'INSERT INTO emailtemplate (nev, targy, szoveg, aszfcsatolaskell) VALUES (?, ?, ?, 0)',
+            ['Partner új jelszó', 'Új jelszó - ' . \mkw\store::getParameter(\mkw\consts::Tulajnev), $szoveg]
+        );
+        \mkw\store::setParameter(\mkw\consts::PartnerJelszoSablon, $conn->lastInsertId());
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0204');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
