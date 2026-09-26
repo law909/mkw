@@ -149,7 +149,7 @@
                                 {/foreach}
                             </select>
                         </div>
-                        {if ($setup.darshan)}
+                        {if ($maintheme === 'darshan' || $setup.darshan == 1)}
                             <input name="darshanfizmodvan" type="hidden" value="1">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="SZEPFizmodEdit">{at('SZÉP kártya fiz.mód')}:</label></span>
