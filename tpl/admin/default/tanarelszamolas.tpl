@@ -18,8 +18,6 @@
                 {include "comp_idoszak.tpl" comptype="datum"}
                 <div class="matt-hseparator clearboth"></div>
                 <a href="#" class="js-refresh">{at('Frissít')}</a>
-                <a href="/admin/tanarelszamolas/export" class="js-exportbutton">{at('Export')}</a>
-                <a href="/admin/tanarelszamolas/print" class="js-print">{at('Nyomtat')}</a>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>
