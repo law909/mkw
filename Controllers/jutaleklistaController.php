@@ -68,7 +68,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         $filter
             ->addFilter($datummezo, '>=', $this->tolstr)
             ->addFilter($datummezo, '<=', $this->igstr)
-            ->addFilter('irany', '=', 1);
+            ->addFilter('irany', '=', 1)
+            ->addFilter('rontott', '=', 0);
 
         $this->cimkek = $this->params->getArrayRequestParam('cimkefilter');
         $cimkeSubquery = $this->getRepo('Entities\Partner')->getCimkeSubquery($this->cimkek);
