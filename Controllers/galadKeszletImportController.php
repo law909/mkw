@@ -8,6 +8,7 @@ use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Fizmod;
 use Entities\Partner;
+use Entities\Penztar;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekValtozat;
@@ -19,7 +20,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Az előző program készletének betöltése a "stock_detailed" formájú XLSX-ből:
- * raktáranként egy bevét a tulaj partnerre, készpénzes fizetési móddal, kintlévőség nélkül,
+ * raktáranként egy bevét a tulaj partnerre, készpénzes fizetési móddal, az alapértelmezett pénztárral, kintlévőség nélkül,
  * "Induló készlet" belső megjegyzéssel.
  *
  * Oszlopok fejléc szerint: Cikkszám, Termék, Vonalkód, Raktár, Teljes mennyiség, és ha van,
@@ -371,6 +372,7 @@ class galadKeszletImportController extends \mkwhelpers\Controller
         $fej->setArfolyam($arf->getArfolyam());
         $fej->setRaktar($raktar);
         $fej->setFizmod($this->getKeszpenzFizmod());
+        $fej->setPenztar($this->getAlapPenztar($fej->getValutanem()));
         // the opening stock is no debt to the owner partner; the document type would turn it on
         $fej->setPenztmozgat(false);
         $fej->setBelsomegjegyzes(self::MEGJEGYZES);
@@ -384,6 +386,16 @@ class galadKeszletImportController extends \mkwhelpers\Controller
         return $this->getRepo(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::KeszpenzFizmod))
             ?? $this->getRepo(Fizmod::class)->getAllKeszpenzes()[0]
             ?? null;
+    }
+
+    // the same choice the form offers and BizonylatfejListener::getAutoPenztar() makes
+    private function getAlapPenztar(?Valutanem $valutanem): ?Penztar
+    {
+        $penztar = $this->getRepo(Penztar::class)->find(\mkw\store::getParameter(\mkw\consts::AutoPenztarbizonylatPenztar));
+        if (!$penztar || $penztar->getValutanemId() != $valutanem?->getId()) {
+            $penztar = $this->getRepo(Penztar::class)->getByValutanem($valutanem);
+        }
+        return $penztar;
     }
 
     /** @return string|null a napló letöltő URL-je, ha készült napló */

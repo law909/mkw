@@ -73,7 +73,7 @@
                     <p>Az "Előző program készlete" a stock_detailed vagy a stock_value XLSX-et várja (Cikkszám,
                         Termék, Vonalkód, Raktár, Teljes mennyiség/Mennyiség, és ha van, Egységár oszlopok). Az
                         Egységár forintos nettó beszerzési árként kerül a tételre, nélküle a tétel ára a termék
-                        eladási ára. Raktáranként egy-egy készpénzes, kintlévőséget nem képző bevét
+                        eladási ára. Raktáranként egy-egy készpénzes, az alapértelmezett pénztárra szóló, kintlévőséget nem képző bevét
                         készül a tulaj partnerre, "Induló készlet" belső megjegyzéssel; a raktárt a neve azonosítja, ha nincs ilyen, felveszi. A termék
                         keresése előbb vonalkód, aztán cikkszám alapján megy. A kimaradó sorok XLSX naplóba kerülnek.</p>
                 </div>
