@@ -67,27 +67,28 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository
         return $q->getSingleScalarResult();
     }
 
-    public function getTanarTanitasnap($filter)
+    /** The distinct dates (Y-m-d) of the rows matching the filter. */
+    public function getTanarTanitasnapok($filter): array
     {
         $q = $this->_em->createQuery(
-            'SELECT DISTINCT(_xx.datum)'
+            'SELECT DISTINCT(_xx.datum) AS datum'
             . ' FROM Entities\JogaReszvetel _xx'
             . ' LEFT JOIN _xx.tanar ta'
             . ' LEFT JOIN ta.fizmod fm'
             . $this->getFilterString($filter)
         );
         $q->setParameters($this->getQueryParameters($filter));
-        $res = $q->getArrayResult();
-        return count($res);
+        return array_map(fn($row) => substr($row['datum'], 0, 10), $q->getArrayResult());
     }
 
     /**
      * @param FilterDescriptor $filter
-     * @param $honap
+     * @param int $honap
+     * @param array $idopontNapok Dolgozo id => appointment dates (Y-m-d); these days count for the daily deduction too
      *
      * @return array
      */
-    public function getTanarOsszesito($filter, $honap = 1)
+    public function getTanarOsszesito($filter, $honap = 1, array $idopontNapok = [])
     {
         $res = [];
         $q = $this->_em->createQuery(
@@ -107,7 +108,8 @@ class JogaReszvetelRepository extends \mkwhelpers\Repository
             $xfilter->clear();
             $xfilter->addArray($filter->getArray());
             $xfilter->addFilter('tanar', '=', $to['id']);
-            $napilevonas = $this->getTanarTanitasnap($xfilter) * $to['napilevonas'];
+            $napok = array_unique(array_merge($this->getTanarTanitasnapok($xfilter), $idopontNapok[$to['id']] ?? []));
+            $napilevonas = count($napok) * $to['napilevonas'];
             $res[] = [
                 'id' => $to['id'],
                 'nev' => $to['nev'],

@@ -16,6 +16,22 @@ class IdopontreszvetelRepository extends \mkwhelpers\Repository
         ]);
     }
 
+    /** Dolgozo id => the distinct dates (Y-m-d) of the teacher's appointment attendances in the period. */
+    public function getTanarNapok(string $tol, string $ig, ?int $tanarid = null): array
+    {
+        $sql = 'SELECT DISTINCT tanar_id, datum FROM idopontreszvetel WHERE tanar_id IS NOT NULL AND datum >= ? AND datum <= ?';
+        $params = [$tol, $ig];
+        if ($tanarid) {
+            $sql .= ' AND tanar_id = ?';
+            $params[] = $tanarid;
+        }
+        $ret = [];
+        foreach ($this->_em->getConnection()->fetchAllAssociative($sql, $params) as $row) {
+            $ret[$row['tanar_id']][] = substr($row['datum'], 0, 10);
+        }
+        return $ret;
+    }
+
     public function getWithJoins($filter, $order = [], $offset = 0, $elemcount = 0): mixed
     {
         $q = $this->_em->createQuery(

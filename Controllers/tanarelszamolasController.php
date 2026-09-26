@@ -57,7 +57,12 @@ class tanarelszamolasController extends \mkwhelpers\Controller
         }
         $filter->addFilter('_xx.tisztaznikell', '=', false);
 
-        $tetelek = $this->getRepo(JogaReszvetel::class)->getTanarOsszesito($filter, $hokulonbseg);
+        $idopontNapok = $this->getRepo(Idopontreszvetel::class)->getTanarNapok(
+            date('Y-m-d', strtotime(\mkw\store::convDate($ptol))),
+            date('Y-m-d', strtotime(\mkw\store::convDate($pig))),
+            $tanarid ?: null
+        );
+        $tetelek = $this->getRepo(JogaReszvetel::class)->getTanarOsszesito($filter, $hokulonbseg, $idopontNapok);
 
         return $tetelek;
     }
@@ -102,6 +107,7 @@ class tanarelszamolasController extends \mkwhelpers\Controller
             $filter->addFilter('_xx.datum', '<=', $igstr);
         }
         $filter->addFilter('_xx.tanar', '=', $tanarid);
+        $filter->addFilter('_xx.tisztaznikell', '=', false);
 
         $adat = $this->getRepo(JogaReszvetel::class)->getWithJoins($filter, ['datum' => 'ASC']);
 
