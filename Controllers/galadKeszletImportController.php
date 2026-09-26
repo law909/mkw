@@ -6,6 +6,7 @@ use Entities\Arfolyam;
 use Entities\Bizonylatfej;
 use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
+use Entities\Fizmod;
 use Entities\Partner;
 use Entities\Raktar;
 use Entities\Termek;
@@ -18,7 +19,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Az előző program készletének betöltése a "stock_detailed" formájú XLSX-ből:
- * raktáranként egy bevét a tulaj partnerre, "Induló készlet" megjegyzéssel.
+ * raktáranként egy bevét a tulaj partnerre, készpénzes fizetési móddal, kintlévőség nélkül,
+ * "Induló készlet" belső megjegyzéssel.
  *
  * Oszlopok fejléc szerint: Cikkszám, Termék, Vonalkód, Raktár, Teljes mennyiség, és ha van,
  * Egységár (a stock_value fájl forintos nettó beszerzési ára); nélküle a tétel ára eladási ár.
@@ -368,10 +370,20 @@ class galadKeszletImportController extends \mkwhelpers\Controller
         $arf = $this->getRepo(Arfolyam::class)->getActualArfolyam($fej->getValutanem(), $fej->getTeljesites());
         $fej->setArfolyam($arf->getArfolyam());
         $fej->setRaktar($raktar);
-        $fej->setMegjegyzes(self::MEGJEGYZES);
+        $fej->setFizmod($this->getKeszpenzFizmod());
+        // the opening stock is no debt to the owner partner; the document type would turn it on
+        $fej->setPenztmozgat(false);
+        $fej->setBelsomegjegyzes(self::MEGJEGYZES);
         $this->getEm()->persist($fej);
 
         return $fej;
+    }
+
+    private function getKeszpenzFizmod(): ?Fizmod
+    {
+        return $this->getRepo(Fizmod::class)->find(\mkw\store::getParameter(\mkw\consts::KeszpenzFizmod))
+            ?? $this->getRepo(Fizmod::class)->getAllKeszpenzes()[0]
+            ?? null;
     }
 
     /** @return string|null a napló letöltő URL-je, ha készült napló */
