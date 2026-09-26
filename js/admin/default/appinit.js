@@ -234,6 +234,13 @@ $(document).ready(
                 data: {name: 'oldalsavrejtve', value: rejtve ? 1 : 0}
             });
         });
+        // Tanár elszámolás e-mail: a lista a tanár elszámolás képernyőn és a darshan irányítópulton is megjelenik
+        $(document).on('click', '.js-tanarelszamolasemail', function (e) {
+            e.preventDefault();
+            const $link = $(this);
+            $.post('/admin/tanarelszamolas/email', { id: $link.data('id'), tol: $link.data('tol'), ig: $link.data('ig') }, null, 'json')
+                .done((valasz) => mkwUzenet(valasz.message));
+        });
         // Kiemelő szín választó (partials/uiaccentpicker.tpl): a minta a keverő mezőt állítja be.
         // Delegált, mert a dolgozó karbantartóba ajaxszal töltődik be.
         $(document).on('click', '.js-uiaccentpreset', function (e) {

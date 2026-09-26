@@ -1806,7 +1806,9 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/tanarelszamolas/view', 'tanarelszamolasController#view', 'admintanarelszamolasview');
 $router->map('GET', '/admin/tanarelszamolas/refresh', 'tanarelszamolasController#refresh', 'admintanarelszamolasrefresh');
 $router->map('GET', '/admin/tanarelszamolas/reszletezo', 'tanarelszamolasController#reszletezo', 'admintanarelszamolasreszletezo');
-$router->map('GET', '/admin/tanarelszamolas/email', 'tanarelszamolasController#sendEmail', 'admintanarelszamolassendemail');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/tanarelszamolas/email', 'tanarelszamolasController#sendEmail', 'admintanarelszamolassendemail');
+}
 
 $router->map('GET', '/admin/teljesitmenyjelentes/view', 'teljesitmenyjelentesController#view', 'adminteljesitmenyjelentesview');
 $router->map('GET', '/admin/teljesitmenyjelentes/refresh', 'teljesitmenyjelentesController#refresh', 'adminteljesitmenyjelentesrefresh');

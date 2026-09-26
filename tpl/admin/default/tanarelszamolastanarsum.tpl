@@ -25,7 +25,7 @@
             <td class="datacell textalignright">{bizformat($tetel.jutalek-$tetel.havilevonas-$tetel.napilevonas)}</td>
             <td class="datacell">{$tetel.fizmodnev}</td>
             <td class="datacell"><a href="\admin\tanarelszamolas\reszletezo?id={$tetel.id}&tol={$tol}&ig={$ig}" target="_blank">{at('Részletezés')}</a></td>
-            <td class="datacell"><a href="\admin\tanarelszamolas\email?id={$tetel.id}&tol={$tol}&ig={$ig}" target="_blank">{at('Email')}</a></td>
+            <td class="datacell"><a href="#" class="js-tanarelszamolasemail" data-id="{$tetel.id}" data-tol="{$tol}" data-ig="{$ig}">{at('Email')}</a></td>
         </tr>
     {/foreach}
     </tbody>

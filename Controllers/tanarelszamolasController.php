@@ -19,8 +19,20 @@ class tanarelszamolasController extends \mkwhelpers\Controller
     private $tolstr;
     private $igstr;
 
+    private function checkJog(): bool
+    {
+        if (\mkw\store::haveMenuJog('/admin/tanarelszamolas/view', 20)) {
+            return true;
+        }
+        $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
+        return false;
+    }
+
     public function view()
     {
+        if (!\mkw\store::haveMenuJog('/admin/tanarelszamolas/view', 20)) {
+            return;
+        }
         $view = $this->createView('tanarelszamolas.tpl');
 
         $view->setVar('pagetitle', t('Tanár elszámolás'));
@@ -251,6 +263,9 @@ class tanarelszamolasController extends \mkwhelpers\Controller
 
     public function refresh()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         $res = $this->getData();
 
         $view = $this->createView('tanarelszamolastanarsum.tpl');
@@ -263,6 +278,9 @@ class tanarelszamolasController extends \mkwhelpers\Controller
 
     public function reszletezo()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         [$filepath, $filename] = $this->reszletezoExport();
         $fileSize = filesize($filepath);
 
@@ -279,60 +297,70 @@ class tanarelszamolasController extends \mkwhelpers\Controller
 
     public function sendEmail()
     {
+        if (!$this->checkJog()) {
+            return;
+        }
         $tanarid = $this->params->getIntRequestParam('id');
         $tolstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('tol'))));
         $igstr = date(\mkw\store::$DateFormat, strtotime(\mkw\store::convDate($this->params->getStringRequestParam('ig'))));
         /** @var \Entities\Dolgozo $tanar */
         $tanar = $this->getRepo(Dolgozo::class)->find($tanarid);
-        if ($tanar) {
-            $tanaremail = $tanar->getEmail();
-            $tanarnev = $tanar->getNev();
+        if (!$tanar || !$tanar->getEmail()) {
+            $this->jsonError(t('A tanárnak nincs email címe.'));
+            return;
         }
         $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::JogaTanarelszamolasSablon));
-        if ($tanaremail && $emailtpl) {
-            [$filepath, $filename] = $this->reszletezoExport();
-            $adat = $this->getData($tanarid);
-
-            $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
-            $subject->setVar('tol', $tolstr);
-            $subject->setVar('ig', $igstr);
-            $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
-            $body->setVar('tol', $tolstr);
-            $body->setVar('ig', $igstr);
-            $body->setVar('nev', $tanarnev);
-            $body->setVar('fizmodtipus', $tanar->getFizmodTipus());
-
-            /** @var \Entities\Valutanem $defavaluta */
-            $defavaluta = \mkw\store::getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
-            $defakerekit = true;
-            $mincimlet = 0;
-            if ($defavaluta) {
-                $defakerekit = $defavaluta->getKerekit();
-                $mincimlet = $defavaluta->getMincimlet();
-            }
-            $osszeg = $adat[0]['jutalek'] - $adat[0]['havilevonas'] - $adat[0]['napilevonas'];
-            if ($defakerekit) {
-                $osszeg = round($osszeg);
-            }
-            if ($tanar->getFizmodTipus() === 'P') {
-                $osszeg = \mkw\store::kerekit($osszeg, $mincimlet);
-            }
-            $body->setVar('osszeg', $osszeg);
-
-            $mailer = \mkw\store::getMailer();
-
-            $mailer->setAttachment($filepath);
-            $mailer->addTo($tanaremail);
-            $mailer->setSubject($subject->getTemplateResult());
-            $mailer->setMessage($body->getTemplateResult());
-
-            if (\mkw\store::isDeveloper()) {
-                \mkw\store::writelog($subject->getTemplateResult());
-                \mkw\store::writelog($body->getTemplateResult());
-            } else {
-                $mailer->send();
-            }
-            \unlink($filepath);
+        if (!$emailtpl) {
+            $this->jsonError(t('Nincs beállítva a tanár elszámolás levélsablonja.'));
+            return;
         }
+        $adat = $this->getData($tanarid);
+        if (!$adat) {
+            $this->jsonError(t('A tanárnak nincs elszámolandó tétele az időszakban.'));
+            return;
+        }
+        [$filepath, $filename] = $this->reszletezoExport();
+
+        $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
+        $subject->setVar('tol', $tolstr);
+        $subject->setVar('ig', $igstr);
+        $body = \mkw\store::getTemplateFactory()->createMainView('string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg())));
+        $body->setVar('tol', $tolstr);
+        $body->setVar('ig', $igstr);
+        $body->setVar('nev', $tanar->getNev());
+        $body->setVar('fizmodtipus', $tanar->getFizmodTipus());
+
+        /** @var \Entities\Valutanem $defavaluta */
+        $defavaluta = \mkw\store::getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+        $defakerekit = true;
+        $mincimlet = 0;
+        if ($defavaluta) {
+            $defakerekit = $defavaluta->getKerekit();
+            $mincimlet = $defavaluta->getMincimlet();
+        }
+        $osszeg = $adat[0]['jutalek'] - $adat[0]['havilevonas'] - $adat[0]['napilevonas'];
+        if ($defakerekit) {
+            $osszeg = round($osszeg);
+        }
+        if ($tanar->getFizmodTipus() === 'P') {
+            $osszeg = \mkw\store::kerekit($osszeg, $mincimlet);
+        }
+        $body->setVar('osszeg', $osszeg);
+
+        $mailer = \mkw\store::getMailer();
+
+        $mailer->setAttachment($filepath);
+        $mailer->addTo($tanar->getEmail());
+        $mailer->setSubject($subject->getTemplateResult());
+        $mailer->setMessage($body->getTemplateResult());
+
+        if (\mkw\store::isDeveloper()) {
+            \mkw\store::writelog($subject->getTemplateResult());
+            \mkw\store::writelog($body->getTemplateResult());
+        } else {
+            $mailer->send();
+        }
+        \unlink($filepath);
+        echo json_encode(['ok' => true, 'message' => t('Az elszámolást elküldtük: ') . $tanar->getEmail()]);
     }
 }

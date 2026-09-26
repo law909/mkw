@@ -1963,6 +1963,12 @@ class store
         return self::$routename;
     }
 
+    /** The right the admin menu asks for the screen, so that a direct URL is not more open than the menu. */
+    public static function haveMenuJog(string $url, int $default): bool
+    {
+        return self::haveJog(self::getEm()->getRepository(\Entities\Menu::class)->getJogosultsagByUrl($url) ?? $default);
+    }
+
     public static function haveJog($jog)
     {
         $lu = self::getAdminSession()->loggedinuser;
