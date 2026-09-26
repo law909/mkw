@@ -77,6 +77,11 @@ class jutaleklistaController extends \mkwhelpers\MattableController
             $filter->addSql('_xx.partner_id IN (' . $cimkeSubquery . ')');
         }
 
+        $teljesOsszegSql = $this->getRepo(Bizonylatfej::class)->getJutalekTeljesOsszegSql('bf');
+        if ($teljesOsszegSql) {
+            $filter->addSql('NOT ' . $teljesOsszegSql);
+        }
+
         $uk = $this->getRepo('Entities\Uzletkoto')->find($this->params->getIntRequestParam('uzletkoto'));
         $this->ukid = null;
         if ($uk) {

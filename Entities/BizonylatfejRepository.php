@@ -1837,6 +1837,28 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    /**
+     * Native SQL condition on the document alias: true when the commission report already counts the whole document as
+     * a KP or a Fake row, so a bank payment referring to it must not add an Item row. Keep it in step with
+     * getKeszpenzesJutalekRows() and getAllFakeKifizetes().
+     */
+    public function getJutalekTeljesOsszegSql(string $alias): string
+    {
+        $fmids = array_map(fn($fm) => (int)$fm->getId(), $this->getRepo(Fizmod::class)->getAllKeszpenzes());
+        $el = "$alias.rontott = 0 AND $alias.storno = 0 AND $alias.stornozott = 0";
+        $feltetelek = [];
+        if ($fmids) {
+            $feltetelek[] = "($el AND $alias.bizonylattipus_id IN ('szamla','keziszamla','egyeb','garancialevel')"
+                . " AND $alias.fizmod_id IN (" . implode(',', $fmids) . ')'
+                . " AND COALESCE($alias.fakekintlevoseg, 0) = 0"
+                . " AND NOT EXISTS (SELECT 1 FROM bizonylatfej jtpar WHERE jtpar.id = $alias.parbizonylatfej_id AND jtpar.fakekintlevoseg = 1))";
+        }
+        if (\mkw\store::isFakeKintlevoseg()) {
+            $feltetelek[] = "($el AND $alias.fakekintlevoseg = 1 AND $alias.fakekifizetve = 1)";
+        }
+        return $feltetelek ? '(' . implode(' OR ', $feltetelek) . ')' : '';
+    }
+
     /** Bizonylatfej id => gross of its first shipping cost line, for the documents that have one. */
     public function getSzallitasiKtgBruttok(array $ids): array
     {
