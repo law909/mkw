@@ -1801,6 +1801,9 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
     public function getKeszpenzesJutalekRows($tol, $ig, array $cimkek = [], $ukid = null, $belso = false): array
     {
         $fmids = array_map(fn($fm) => $fm->getId(), $this->getRepo(Fizmod::class)->getAllKeszpenzes());
+        if (!$fmids) {
+            return [];
+        }
 
         $filter = new FilterDescriptor();
         $filter
@@ -1819,9 +1822,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         if ($ukid) {
             $filter->addFilter($belso ? 'belsouzletkoto' : 'uzletkoto', '=', $ukid);
         }
-        if ($fmids) {
-            $filter->addFilter('fizmod', 'IN', $fmids);
-        }
+        $filter->addFilter('fizmod', 'IN', $fmids);
 
         $uk = $belso ? 'belsouzletkoto' : 'uzletkoto';
         $q = $this->_em->createQuery(
