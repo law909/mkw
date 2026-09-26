@@ -100,21 +100,23 @@ class jutaleklistaController extends \mkwhelpers\MattableController
     {
         $bizonylatok = array_column($mihez, 'hivatkozottbizonylat');
         $szallktg = $this->getRepo(Bizonylatfej::class)->getSzallitasiKtgBruttok($bizonylatok);
-        $elsoBefizetes = $this->getRepo(Bankbizonylattetel::class)->getFirstDatumByHivatkozottBizonylat($bizonylatok);
+        $elsoBefizetes = $this->getRepo(Bankbizonylattetel::class)->getFirstIdByHivatkozottBizonylat($bizonylatok);
         $ret = [];
         foreach ($mihez as $sor) {
             $sor['jutalekosszeg'] = \mkw\store::kerekit($sor['brutto'] * $sor['uzletkotojutalek'] / 100, 0.01);
             $sor['type'] = 'Item';
             $ret[] = $sor;
-            $brutto = $szallktg[$sor['hivatkozottbizonylat']] ?? null;
+            $ktg = $szallktg[$sor['hivatkozottbizonylat']] ?? null;
             // only the first payment of an invoice gives back its shipping cost
             $elso = $elsoBefizetes[$sor['hivatkozottbizonylat']] ?? null;
-            if ($brutto !== null && ($elso === null || $elso >= $sor['datum'])) {
+            if ($ktg !== null && ($elso === null || $elso == $sor['id'])) {
+                $brutto = $ktg['brutto'];
                 $ret[] = [
                     'id' => 0,
                     'bankbizonylatfej_id' => $sor['bankbizonylatfej_id'],
-                    'valutanem_id' => $sor['valutanem_id'],
-                    'valutanemnev' => $sor['valutanemnev'],
+                    // the shipping cost is in the invoice's currency, which may differ from the payment's
+                    'valutanem_id' => $ktg['valutanem_id'],
+                    'valutanemnev' => $ktg['valutanemnev'],
                     'datum' => $sor['datum'],
                     'hivatkozottdatum' => $sor['hivatkozottdatum'],
                     'hivatkozottbizonylat' => $sor['hivatkozottbizonylat'],

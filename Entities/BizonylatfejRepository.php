@@ -1860,7 +1860,7 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         return $feltetelek ? '(' . implode(' OR ', $feltetelek) . ')' : '';
     }
 
-    /** Bizonylatfej id => gross of its first shipping cost line, for the documents that have one. */
+    /** Bizonylatfej id => gross of its first shipping cost line and the document's currency, for the documents that have one. */
     public function getSzallitasiKtgBruttok(array $ids): array
     {
         $termekid = \mkw\store::getIntParameter(\mkw\consts::SzallitasiKtgTermek);
@@ -1870,12 +1870,14 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
         }
         foreach (array_chunk(array_values(array_unique($ids)), 1000) as $chunk) {
             $rows = $this->_em->getConnection()->fetchAllAssociative(
-                'SELECT bizonylatfej_id, brutto FROM bizonylattetel WHERE termek_id = ? AND bizonylatfej_id IN (?) ORDER BY id',
+                'SELECT bt.bizonylatfej_id, bt.brutto, bf.valutanem_id, bf.valutanemnev FROM bizonylattetel bt'
+                . ' JOIN bizonylatfej bf ON bf.id = bt.bizonylatfej_id'
+                . ' WHERE bt.termek_id = ? AND bt.bizonylatfej_id IN (?) ORDER BY bt.id',
                 [$termekid, $chunk],
                 [\Doctrine\DBAL\ParameterType::INTEGER, \Doctrine\DBAL\ArrayParameterType::STRING]
             );
             foreach ($rows as $row) {
-                $ret[$row['bizonylatfej_id']] ??= $row['brutto'];
+                $ret[$row['bizonylatfej_id']] ??= $row;
             }
         }
         return $ret;
