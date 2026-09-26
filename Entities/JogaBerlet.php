@@ -566,11 +566,11 @@ class JogaBerlet
 
     public function getElszamoloAr()
     {
-        if ($this->ervenyesseg) {
+        // a weekly pass without a number of occasions falls back to the settlement base, like the monthly one
+        if ($this->ervenyesseg && $this->getAlkalom()) {
             return $this->getBruttoegysar() / $this->getAlkalom();
-        } else {
-            return $this->getJogaelszamolasalap();
         }
+        return $this->getJogaelszamolasalap();
     }
 
     public function getTeljesAr($valtozat = null)
