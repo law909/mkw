@@ -192,29 +192,8 @@ class jutaleklistaController extends \mkwhelpers\MattableController
         return $mihez;
     }
 
-    private function updateDB()
-    {
-        if (\mkw\store::isSuperzoneB2B()) {
-            $a = $this->getEm()->getConnection()->prepare(
-                'UPDATE bizonylatfej SET belsouzletkoto_id=9,belsouzletkotonev="Szász Balázs",belsouzletkotojutalek=3 '
-                . 'WHERE (partner_id IN (SELECT partner_id FROM partner_cimkek WHERE cimketorzs_id=20)) AND '
-                . '(bizonylattipus_id IN (\'egyeb\',\'keziszamla\',\'szamla\',\'garancialevel\')) AND (kelt>=\'2022-01-01\')'
-            );
-            $a->executeStatement();
-
-            $b = $this->getEm()->getConnection()->prepare(
-                'UPDATE bizonylatfej SET belsouzletkoto_id=9,belsouzletkotonev="Szász Balázs",belsouzletkotojutalek=0.5 '
-                . 'WHERE (partner_id IN (SELECT partner_id FROM partner_cimkek WHERE cimketorzs_id IN (2,13))) AND '
-                . '(bizonylattipus_id IN (\'egyeb\',\'keziszamla\',\'szamla\')) AND (kelt>=\'2016-07-21\')'
-            );
-            $b->executeStatement();
-        }
-    }
-
     private function getItems(): array
     {
-        $this->updateDB();
-
         $filter = $this->createFilter();
 
         /** @var \Entities\BankbizonylattetelRepository $btrepo */
