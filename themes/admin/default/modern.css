@@ -84,6 +84,12 @@ body.modernui {
     color: var(--mkw-muted);
 }
 
+/* a kama skin a forrásnézetet fixen fehérre festi, mint a WYSIWYG iframe-et; a téma szövegszíne ezen sötét témában olvashatatlan */
+.modernui textarea.cke_source {
+    background-color: #fff;
+    color: #000;
+}
+
 .modernui input[type="checkbox"],
 .modernui input[type="radio"] {
     accent-color: var(--mkw-accent);
