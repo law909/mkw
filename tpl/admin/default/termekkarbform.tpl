@@ -745,7 +745,7 @@
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <span>{$szinkep.nev}</span>
                             <input name="szinkepid[]" type="hidden" value="{$szinkep.id}">
-                            <ul id="SzinKepEdit_{$szinkep.id}" class="valtozatkepedit js-szinkepedit">
+                            <ul id="SzinKepEdit_{$szinkep.id}" class="valtozatkepedit szinkepedit js-szinkepedit">
                                 {foreach $szinkep.kepek as $kep}
                                     <li data-value="{$kep.id}" data-valtozatid="{$szinkep.id}"
                                         title="{if ($kep.fokep)}{at('Főkép')}{else}{$kep.caption}{/if}"

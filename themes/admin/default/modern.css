@@ -997,6 +997,13 @@ body.modernui {
     text-transform: uppercase;
 }
 
+/* termék karb, Szín képek: a kijelölt kép a dolgozó színével, a sárga kiemelés helyett */
+.modernui .szinkepedit li.ui-selected {
+    border-color: var(--mkw-accent);
+    background: var(--mkw-accent);
+    color: var(--mkw-accent-text);
+}
+
 .modernui .mattkarb-hibasmezo {
     border-color: var(--mkw-danger);
     background-color: var(--mkw-danger-soft);
