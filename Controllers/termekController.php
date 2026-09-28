@@ -1882,7 +1882,7 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('egyed', $this->loadVars($termek, true));
 
         $vtsz = new vtszController();
-        $view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : 0)));
+        $view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : \mkw\store::getParameter(\mkw\consts::DefaultVtsz, 0))));
 
         $afa = new afaController();
         $view->setVar('afalist', $afa->getSelectList(($termek ? $termek->getAfaId() : 0)));

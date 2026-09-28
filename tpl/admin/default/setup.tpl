@@ -990,6 +990,19 @@
                         </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <div class="setuprow"><b>{at('Termék beállítások')}</b></div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="DefaultVtszEdit">{at('Alapértelmezett VTSZ')}:</label></span>
+                            <select id="DefaultVtszEdit" name="defaultvtsz">
+                                <option value="">{at('nincs')}</option>
+                                {foreach $defaultvtszlist as $_vtsz}
+                                    <option value="{$_vtsz.id}"{if ($_vtsz.selected)} selected="selected"{/if}>{$_vtsz.caption|escape}</option>
+                                {/foreach}
+                            </select>
+                            <span>{at('új termék felvitelekor ez kerül a VTSZ mezőbe')}</span>
+                        </div>
+                    </div>
+                    <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow"><b>{at('Bizonylat beállítások')}</b></div>
                         <div class="setuprow">
                             <span class="setuplabel"><label

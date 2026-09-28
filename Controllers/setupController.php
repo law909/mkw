@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Entities\Afa;
+use Entities\Vtsz;
 use Entities\Arsav;
 use Entities\Emailtemplate;
 use Entities\Fizmod;
@@ -353,6 +354,9 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::NullasAfa);
         $fizmod = new afaController();
         $view->setVar('nullasafalist', $fizmod->getSelectList(($p ? $p->getErtek() : 0)));
+
+        $p = $repo->find(\mkw\consts::DefaultVtsz);
+        $view->setVar('defaultvtszlist', (new vtszController())->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::BelsoUzletkoto);
         $uk = new uzletkotoController();
@@ -2318,6 +2322,8 @@ class setupController extends \mkwhelpers\Controller
         if ($afa) {
             $this->setObj(\mkw\consts::NullasAfa, $afa->getId());
         }
+        $vtsz = \mkw\store::getEm()->getRepository(Vtsz::class)->find($this->params->getIntRequestParam('defaultvtsz', 0));
+        $this->setObj(\mkw\consts::DefaultVtsz, $vtsz ? $vtsz->getId() : '');
         $raktar = \mkw\store::getEm()->getRepository(Raktar::class)->find($this->params->getIntRequestParam('raktar', 0));
         if ($raktar) {
             $this->setObj(\mkw\consts::Raktar, $raktar->getId());

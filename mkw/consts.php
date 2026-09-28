@@ -532,6 +532,7 @@ class consts
 
     const DefaultPartner = 'defaultpartner';
     const DefaultTermek = 'defaulttermek';
+    const DefaultVtsz = 'defaultvtsz';
 
     /** Új partner felvitelekor előre kitöltött értékek (üresen hagyva nincs előtöltés) */
     const PartnerAlapTipus = 'partneralaptipus';
