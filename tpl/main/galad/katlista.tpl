@@ -6,7 +6,7 @@
             <h3>{$kategorianev|default:''}</h3>
         </div>
     </div>
-    <div class="row">
+    <div class="row szinracs">
         {foreach $children as $_kat}
             <div class="col-md-4">
                 <div class="szindoboz">

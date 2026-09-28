@@ -6,7 +6,7 @@
             <h3>{$termek.cikkszam} {$termek.caption}</h3>
         </div>
     </div>
-    <div class="row">
+    <div class="row szinracs">
         {foreach $termek.valtozatok as $_valt}
             {if ($_valt.keszlet > 0 || $_valt.bejon)}
                 <div class="col-md-4">

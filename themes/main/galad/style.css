@@ -314,8 +314,36 @@ fieldset[disabled] .btn-red.active {
     border-radius: 2px;
 }
 
+/* flex instead of Bootstrap 3 floats: a taller box no longer snags the next row */
+.szinracs {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.szinracs::before,
+.szinracs::after {
+    display: none;
+}
+
+.szinracs > [class*="col-"] {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 991px) {
+    .szinracs > [class*="col-"] {
+        width: 100%;
+    }
+}
+
+.szinracs .szindoboz {
+    flex: 1 1 auto;
+}
+
 .szinkep {
     display: block;
+    max-width: 100%;
+    height: auto;
     margin-left: auto;
     margin-right: auto;
 }

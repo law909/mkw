@@ -1,7 +1,7 @@
 {extends "base.tpl"}
 
 {block "body"}
-    <div class="row">
+    <div class="row szinracs">
         {foreach $menu1 as $_menupont}
             <div class="col-md-4">
                 <div class="szindoboz">
