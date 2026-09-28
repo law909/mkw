@@ -90,6 +90,10 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><label for="NemjelenletiivEdit">{at('Nem szerepel a jelenléti íven')}:</label></td>
+                        <td colspan="3"><input id="NemjelenletiivEdit" name="nemjelenletiiv" type="checkbox"{if ($egyed.nemjelenletiiv)} checked{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="EvesmaxszabiEdit">{at('Éves max. szabadság')}:</label></td>
                         <td colspan="3"><input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5"
                                                value="{$egyed.evesmaxszabi}"> {at('nap')}</td>

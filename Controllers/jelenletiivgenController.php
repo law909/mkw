@@ -309,6 +309,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         }
         $filter = new FilterDescriptor();
         $filter->addFilter('inaktiv', '=', false);
+        $filter->addFilter('nemjelenletiiv', '=', false);
         return $this->getRepo(Dolgozo::class)->getAll($filter, ['nev' => 'ASC']);
     }
 

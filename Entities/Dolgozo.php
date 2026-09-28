@@ -87,6 +87,9 @@ class Dolgozo
     /** @ORM\Column(type="boolean",nullable=false) */
     private $munkanap7 = false;
 
+    /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
+    private $nemjelenletiiv = false;
+
     /** @ORM\OneToMany(targetEntity="Jelenletiiv", mappedBy="dolgozo") */
     private $jelenletek;
 
@@ -414,6 +417,16 @@ class Dolgozo
     public function setMunkanap7($munkanap7)
     {
         $this->munkanap7 = $munkanap7;
+    }
+
+    public function isNemjelenletiiv()
+    {
+        return $this->nemjelenletiiv;
+    }
+
+    public function setNemjelenletiiv($nemjelenletiiv)
+    {
+        $this->nemjelenletiiv = (bool)$nemjelenletiiv;
     }
 
     /**

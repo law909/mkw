@@ -62,7 +62,7 @@ class dolgozoController extends \mkwhelpers\MattableController
      */
     protected function setFields($obj, $oper)
     {
-        // a munkarend csak az adminnak látszik a formon, a hiányzó checkboxok különben kinullaznák
+        // a munkarend (és a jelenléti ív pipa) csak az adminnak látszik a formon, a hiányzó checkboxok különben kinullaznák
         $skip = array_merge(['uitheme'], $this->isAdminUser() ? [] : $this->getMunkarendFields());
         $obj = $this->setEntityFieldsFromRequest($obj, ['skip' => $skip]);
         $uitheme = $this->params->getStringRequestParam('uitheme');
@@ -118,7 +118,7 @@ class dolgozoController extends \mkwhelpers\MattableController
 
     private function getMunkarendFields()
     {
-        $fields = ['munkakezdes', 'munkavege'];
+        $fields = ['munkakezdes', 'munkavege', 'nemjelenletiiv'];
         foreach (array_keys(Dolgozo::getNapok()) as $napszam) {
             $fields[] = 'munkanap' . $napszam;
         }

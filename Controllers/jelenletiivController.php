@@ -130,6 +130,7 @@ class jelenletiivController extends \mkwhelpers\MattableController
         $jt = \mkw\store::getEm()->getRepository(Jelenlettipus::class)->find($this->params->getIntRequestParam('jt', 0));
         $dolgozofilter = new \mkwhelpers\FilterDescriptor();
         $dolgozofilter->addFilter('inaktiv', '=', false);
+        $dolgozofilter->addFilter('nemjelenletiiv', '=', false);
         $egyedek = \mkw\store::getEm()->getRepository(Dolgozo::class)->getWithJoins($dolgozofilter, []);
         foreach ($egyedek as $egyed) {
             if ($this->getRepo()->getCount('(_xx.datum=\'' . $nap . '\') AND (d.id=' . $egyed->getId() . ') AND (j.id=' . $jt->getId() . ')') == 0) {
