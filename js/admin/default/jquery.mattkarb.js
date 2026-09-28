@@ -128,9 +128,17 @@
                     return true;
                 },
                 success: function (data) {
+                    // Üres válasz csak az oper nélküli űrlapoknál jogos (pl. a setup mentése); a karbantartó
+                    // felvitele/módosítása mindig választ ad, ott az üres válasz egy elnyelt szerverhiba.
+                    const oper = $('input[name="oper"]', setup.form).val();
+                    const ures = data === undefined || data === null || (typeof data === 'string' && data.trim() === '');
+                    if (ures && ['add', 'edit', 'addreopen', 'inherit'].includes(oper)) {
+                        mkwHiba('A szerver üres választ adott, a mentés nem történt meg. A részletek a szerver hibanaplójában vannak.');
+                        return;
+                    }
                     // A saját hibaágat futtató controllerek 200-nal, {ok:false}-szal is válaszolhatnak;
                     // ilyenkor nincs mit frissíteni, és az önálló karb oldal sem írhatja ki, hogy
-                    // "A mentés sikerült". (Az üres válasz viszont jogos: pl. a setup mentése.)
+                    // "A mentés sikerült".
                     if (data && data.ok === false) {
                         // a válasz kérdés is lehet, nem csak hiba: a képernyő dönt, mit kezd vele
                         if (data.confirm && typeof setup.onConfirm === 'function') {

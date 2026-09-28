@@ -253,10 +253,20 @@ class MattableController extends Controller
     /**
      * A PHP a max_input_vars fölötti mezőket csendben eldobja. A csonka űrlapból mentett rekord
      * adatot veszítene (a termék pl. a le nem érkezett színek kép-összerendeléseit törli), ezért
-     * ilyenkor nem mentünk.
+     * ilyenkor nem mentünk. Ha a teljes törzs elveszett, oper sincs, és a mentés hiba nélkül,
+     * üres válasszal semmit sem csinálna.
      */
     protected function checkPostComplete()
     {
+        // post_max_size fölött, vagy ha a PHP nem tudja pufferelni (nem írható temp mappa), a törzs elvész
+        $contentType = strtolower($_SERVER['CONTENT_TYPE'] ?? '');
+        $isFormBody = str_starts_with($contentType, 'application/x-www-form-urlencoded')
+            || str_starts_with($contentType, 'multipart/form-data');
+        if ($isFormBody && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0 && !$_POST && !$_FILES) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(
+                t('A szerver nem kapta meg az űrlap adatait (a PHP eldobta a kérést: post_max_size, vagy nem írható az ideiglenes könyvtára), ezért a mentés nem történt meg. A részletek a szerver hibanaplójában vannak.')
+            );
+        }
         $limit = (int)ini_get('max_input_vars');
         $count = 0;
         array_walk_recursive($_POST, function () use (&$count) {
