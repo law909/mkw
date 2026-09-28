@@ -340,10 +340,14 @@ fieldset[disabled] .btn-red.active {
     flex: 1 1 auto;
 }
 
-.szinkep {
-    display: block;
+/* only in the grid: the cart tables use .szinkep too, where a % max-width lets the cell squeeze the image */
+.szinracs .szinkep {
     max-width: 100%;
     height: auto;
+}
+
+.szinkep {
+    display: block;
     margin-left: auto;
     margin-right: auto;
 }
