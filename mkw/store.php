@@ -689,6 +689,9 @@ class store
             $v->setVar('mugenracefejleckep', self::getParameter(\mkw\consts::MugenraceFejlecKep));
             $v->setVar('mugenracefooterlogo', self::getParameter(\mkw\consts::MugenraceFooterLogo));
         }
+        if (self::isGalad()) {
+            $v->setVar('gyartoszurolist', (new termekfaController())->getGyartoSzuroList());
+        }
         $v->setVar('hidecart', self::getSetupValue('hidecart') || self::isKatalogus());
         $v->setVar('fixszinmode', self::isFixSzinMode());
         $v->setVar('globaltitle', self::getParameter('oldalcim'));

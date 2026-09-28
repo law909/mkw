@@ -134,6 +134,16 @@ $(document).ready(function() {
 
     });
 
+    // on a product list the filter applies in place, elsewhere it opens the manufacturer's products
+    $('.js-gyartoszuro').on('change', function () {
+        const gyarto = $(this).val();
+        const url = $('.js-termeklista').length || gyarto === '0'
+            ? new URL(window.location.href)
+            : new URL('/kereses', window.location.origin);
+        url.searchParams.set('gyarto', gyarto);
+        window.location.href = url.toString();
+    });
+
     if ($.fn.magnificPopup) {
         $('.js-lightbox').magnificPopup({
             gallery: {

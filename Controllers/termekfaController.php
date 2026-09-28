@@ -957,6 +957,10 @@ class termekfaController extends \mkwhelpers\MattableController
                         $keresofilter->addFilter('_xx.id', 'IN', $termekrepo->getIdsByKeresoszo($pKeresoszo) ?: [0]);
                     }
                 }
+                $gyartoid = $this->getGyartoSzuro();
+                if ($gyartoid) {
+                    $keresofilter->addFilter('_xx.gyarto', '=', $gyartoid);
+                }
                 $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'DESC']);
                 $termeklista = [];
                 foreach ($termekek as $te) {
@@ -968,6 +972,31 @@ class termekfaController extends \mkwhelpers\MattableController
             default :
                 throw new \Exception('ISMERETLEN THEME: ' . \mkw\store::getTheme());
         }
+    }
+
+    /** B2B manufacturer filter next to the search box: ?gyarto=id sets it (0 clears), the session keeps it across pages. */
+    public function getGyartoSzuro()
+    {
+        $session = \mkw\store::getMainSession();
+        if ($this->params && $this->params->existsRequestParam('gyarto')) {
+            $session->gyartoszuro = $this->params->getIntRequestParam('gyarto');
+        }
+        return (int)$session->gyartoszuro;
+    }
+
+    /** The manufacturer dropdown of the B2B header: manufacturers that have a product in the webshop. */
+    public function getGyartoSzuroList()
+    {
+        $sel = $this->getGyartoSzuro();
+        $ret = [];
+        foreach ($this->getRepo(Termek::class)->getWebshopGyartok() as $gy) {
+            $ret[] = [
+                'id' => $gy['id'],
+                'caption' => $gy['nev'],
+                'selected' => $gy['id'] == $sel,
+            ];
+        }
+        return $ret;
     }
 
     public function redirectOldUrl()

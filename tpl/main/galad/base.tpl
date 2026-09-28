@@ -14,6 +14,14 @@
                         <input type="text" name="keresett" class="form-control" placeholder="{t('Termék keresése')}"
                                value="{$keresett|default:''|escape}">
                     </div>
+                    <div class="form-group">
+                        <select name="gyarto" class="form-control js-gyartoszuro" aria-label="{t('Gyártó')}">
+                            <option value="0">{t('Minden gyártó')}</option>
+                            {foreach $gyartoszurolist|default:[] as $_gy}
+                                <option value="{$_gy.id}"{if ($_gy.selected)} selected{/if}>{$_gy.caption|escape}</option>
+                            {/foreach}
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">{t('Keresés')}</button>
                 </form>
                 <ul class="nav navbar-nav top-navbar-nav">

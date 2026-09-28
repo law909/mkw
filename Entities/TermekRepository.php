@@ -449,6 +449,20 @@ class TermekRepository extends \mkwhelpers\Repository
         }
     }
 
+    /** @return array<int,array{id:int,nev:string}> manufacturers of the active, visible products, by name */
+    public function getWebshopGyartok()
+    {
+        $filter = new FilterDescriptor();
+        $this->addAktivLathatoFilter($filter);
+        $q = $this->_em->createQuery(
+            'SELECT DISTINCT g.id, g.nev FROM Entities\Termek _xx JOIN _xx.gyarto g'
+            . $this->getFilterString($filter)
+            . ' ORDER BY g.nev ASC'
+        );
+        $q->setParameters($this->getQueryParameters($filter));
+        return $q->getScalarResult();
+    }
+
     public function getTermekListaCount($filter, $listVariations = false)
     {
         switch (true) {

@@ -334,10 +334,14 @@ class mainController extends \mkwhelpers\Controller
             echo json_encode($res);
         } else {
             $keresoszo = trim($this->params->getStringRequestParam('keresett'));
-            if ($keresoszo != '') {
-                $log = new \Entities\Keresoszolog($keresoszo);
-                \mkw\store::getEm()->persist($log);
-                \mkw\store::getEm()->flush();
+            // galad: a gyártó választása szó nélkül is lista, a gyártó összes terméke
+            $gyartoszuro = \mkw\store::isGalad() && (new termekfaController())->getGyartoSzuro();
+            if ($keresoszo != '' || $gyartoszuro) {
+                if ($keresoszo != '') {
+                    $log = new \Entities\Keresoszolog($keresoszo);
+                    \mkw\store::getEm()->persist($log);
+                    \mkw\store::getEm()->flush();
+                }
 
                 if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
                     $tf = \mkw\store::getTermekmenuController() ?? new termekmenuController();

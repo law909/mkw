@@ -1,9 +1,9 @@
 {extends "base.tpl"}
 
 {block "body"}
-    <div class="row">
+    <div class="row js-termeklista">
         <div class="col-md-12">
-            <h3>{t('Keresés eredménye')}{if ($keresett|default:'')}: {$keresett|escape}{/if}</h3>
+            <h3>{t('Keresés eredménye')}{if ($keresett|default:'')}: {$keresett|escape}{/if}{foreach $gyartoszurolist|default:[] as $_gy}{if ($_gy.selected)} ({t('gyártó')}: {$_gy.caption|escape}){/if}{/foreach}</h3>
         </div>
     </div>
     {if (count($termeklista) > 0)}
