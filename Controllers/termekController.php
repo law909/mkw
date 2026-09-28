@@ -15,7 +15,6 @@ use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekAr;
 use Entities\Termekcimketorzs;
-use Entities\Termekcsoport;
 use Entities\TermekDok;
 use Entities\TermekFa;
 use Entities\TermekKapcsolodo;
@@ -644,12 +643,6 @@ class termekController extends \mkwhelpers\MattableController
             $obj->setGyarto($ck);
         } else {
             $obj->setGyarto(null);
-        }
-        $csoport = $this->getRepo(Termekcsoport::class)->find($this->params->getIntRequestParam('termekcsoport'));
-        if ($csoport) {
-            $obj->setTermekcsoport($csoport);
-        } else {
-            $obj->setTermekcsoport(null);
         }
         $me = \mkw\store::getEm()->getRepository(ME::class)->find($this->params->getIntRequestParam('me'));
         if ($me) {
@@ -1313,9 +1306,6 @@ class termekController extends \mkwhelpers\MattableController
         if (!is_null($this->params->getRequestParam('gyartofilter', null))) {
             $filter->addFilter('gyarto', '=', $this->params->getIntRequestParam('gyartofilter'));
         }
-        if (!is_null($this->params->getRequestParam('termekcsoportfilter', null))) {
-            $filter->addFilter('termekcsoport', '=', $this->params->getIntRequestParam('termekcsoportfilter'));
-        }
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
             $nflike = '%' . str_replace("'", "''", $this->params->getStringRequestParam('nevfilter')) . '%';
             $lit = "'" . $nflike . "'";
@@ -1867,8 +1857,6 @@ class termekController extends \mkwhelpers\MattableController
         $view->setVar('cimkekat', $tcc->getWithCimkek(null));
         $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getGyartoSelectList(0));
-        $tcs = new termekcsoportController();
-        $view->setVar('termekcsoportlist', $tcs->getSelectList());
         $rc = new raktarController();
         $view->setVar('raktarlist', $rc->getSelectList());
         // the /admin/import/szimport route exists only when not closed
@@ -1919,8 +1907,6 @@ class termekController extends \mkwhelpers\MattableController
         $gyarto = new partnerController();
         $view->setVar('gyartolist', $gyarto->getGyartoSelectList(($termek ? $termek->getGyartoId() : 0)));
 
-        $csoport = new termekcsoportController();
-        $view->setVar('termekcsoportlist', $csoport->getSelectList(($termek ? $termek->getTermekcsoportId() : 0)));
 
         $me = new meController();
         $view->setVar('melist', $me->getSelectList(($termek ? $termek->getMekodId() : 0)));
@@ -3007,37 +2993,6 @@ class termekController extends \mkwhelpers\MattableController
 
         readfile($filepath);
         \unlink($filepath);
-    }
-
-    public function setTermekcsoport()
-    {
-        $ids = $this->params->getArrayRequestParam('ids');
-        //$ids = explode(',', $ids);
-        if ($ids) {
-            $tcsid = $this->params->getIntRequestParam('tcs');
-            $tcs = $this->getRepo(Termekcsoport::class)->find($tcsid);
-
-            $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter('id', 'IN', $ids);
-            $termekek = $this->getRepo()->getAll($filter, []);
-            $termekdb = 0;
-            $batchsize = 20;
-            /** @var Termek $termek */
-            foreach ($termekek as $termek) {
-                $termekdb++;
-                if ($tcs) {
-                    $termek->setTermekcsoport($tcs);
-                } else {
-                    $termek->setTermekcsoport(null);
-                }
-                $this->getEm()->persist($termek);
-                if (($termekdb % $batchsize) === 0) {
-                    $this->getEm()->flush();
-                }
-            }
-            $this->getEm()->flush();
-            $this->getEm()->clear();
-        }
     }
 
     public function setKategoria()

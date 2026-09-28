@@ -1043,7 +1043,7 @@ $(document).ready(function () {
     });
 
     if ($.fn.mattable) {
-        var lfilternames = ['#idfilter', '#egyediazonositofilter', '#gyartofilter', '#termekcsoportfilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
+        var lfilternames = ['#idfilter', '#egyediazonositofilter', '#gyartofilter', '#nevfilter', '#kepurlfilter', '#lathatofilter', '#nemkaphatofilter', '#fuggobenfilter', '#inaktivfilter',
             '#ajanlottfilter', '#kiemeltfilter', '#akciosfilter', '#cimkefilternincs',
             '#keszletmezofilter', '#keszletfilter', '#keszletraktarfilter'];
         for (var cikl = 2; cikl <= 15; cikl++) {
@@ -1223,37 +1223,6 @@ $(document).ready(function () {
                                     $(this).dialog('close');
                                 }
                             }
-                        });
-                        break;
-                    case 'tcsset':
-                        dialogcenter.html($('#tcsset').show()).dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'OK': function () {
-                                    var dia = $(this);
-                                    href = '/admin/termek/tcsset?ids=' + tomb.join(',');
-                                    $.ajax({
-                                        url: '/admin/termek/tcsset',
-                                        type: 'POST',
-                                        data: {
-                                            ids: tomb,
-                                            tcs: $('.js-tcsset').val()
-                                        },
-                                        success: function () {
-                                            dia.dialog('close');
-                                            $('#tcsset').hide();
-                                            $('.mattable-tablerefresh').click();
-                                        }
-                                    });
-                                },
-                                'Mégsem': function () {
-                                    $(this).dialog('close');
-                                    $('#tcsset').hide();
-                                }
-                            }
-
                         });
                         break;
                     case 'kategoriaset':

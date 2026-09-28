@@ -57,15 +57,6 @@
             <table class="mattkarb-racs">
                 <tbody>
                 <tr>
-                    <td><label for="TermekcsoportEdit">{at('Termékcsoport')}:</label></td>
-                    <td><select id="TermekcsoportEdit" name="termekcsoport">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $termekcsoportlist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
                     <td colspan="3"><input id="NevEdit" name="nev" type="text" size="83" maxlength="255"
                                            value="{$egyed.nev}" required autofocus></td>

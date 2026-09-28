@@ -24,7 +24,6 @@ class TermekRepository extends \mkwhelpers\Repository
             'colorexport' => 'Szín export',
             'cikkszamosexport' => 'Export változatokkal, cikkszámokkal',
             'minkeszletexport' => 'Min./opt. készlet export',
-            'tcsset' => 'Termékcsoport módosítás',
             'kategoriaset' => 'Termék kategória módosítás',
             'leirastisztitas' => 'Leírás tisztítása',
             'cimkehozzaadas' => 'Címke hozzáadása',

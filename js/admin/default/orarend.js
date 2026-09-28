@@ -55,37 +55,6 @@ $(document).ready(function () {
                             }
                         });
                         break;
-                    case 'tcsset':
-                        dialogcenter.html($('#tcsset').show()).dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            buttons: {
-                                'OK': function () {
-                                    var dia = $(this);
-                                    href = '/admin/orarend/tcsset?ids=' + tomb.join(',');
-                                    $.ajax({
-                                        url: '/admin/orarend/tcsset',
-                                        type: 'POST',
-                                        data: {
-                                            ids: tomb,
-                                            tcs: $('.js-tcsset').val()
-                                        },
-                                        success: function () {
-                                            dia.dialog('close');
-                                            $('#tcsset').hide();
-                                            $('.mattable-tablerefresh').click();
-                                        }
-                                    });
-                                },
-                                'Mégsem': function () {
-                                    $(this).dialog('close');
-                                    $('#tcsset').hide();
-                                }
-                            }
-
-                        });
-                        break;
                 }
             } else {
                 dialogcenter.html('Válasszon ki legalább egy órát!').dialog({

@@ -32,13 +32,6 @@
                             value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                     {/foreach}
                 </select>
-                <label for="termekcsoportfilter">{at('Termékcsoport')}: </label>
-                <select id="termekcsoportfilter" name="termekcsoportfilter">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $termekcsoportlist as $_tcs}
-                        <option value="{$_tcs.id}">{$_tcs.caption}</option>
-                    {/foreach}
-                </select>
             </div>
             <div class="matt-hseparator"></div>
             <div>
@@ -210,15 +203,6 @@
     </div>
     <div id="mattkarb"></div>
     <div id="termekfakarb"></div>
-    <div id="tcsset" class="hidden">
-        <label>Termékcsoport: </label>
-        <select class="js-tcsset">
-            <option value="">{at('válasszon')}</option>
-            {foreach $termekcsoportlist as $_tcs}
-                <option value="{$_tcs.id}">{$_tcs.caption}</option>
-            {/foreach}
-        </select>
-    </div>
     {if ($arazasimport|default:false)}
         <div id="arazasimport" class="hidden">
             <p>
