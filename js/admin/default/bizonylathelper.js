@@ -546,14 +546,31 @@ let bizonylathelper = function ($) {
     // vagy egy bizonylattételen szereplő egyedi azonosítóval. A kettő követi egymást: termékre
     // szűkül az azonosítólista, azonosítóra beáll a termék, a változata és a partner. A mentés
     // szerveroldalon ugyanígy oldja fel az azonosítót, ezért a kézzel beírt azonosító is jó.
+    // Bizonylattétel nélküli (külső) azonosító is menthető: annak a járművét kézzel kell választani,
+    // ezért a termékválasztás csak a nálunk ismert azonosítót törli.
 
     // Az az azonosító, amire a járműadat már betöltődött – enélkül a select és a rá következő
     // change kétszer kérdezné le ugyanazt, és a szerkesztésre nyitott munkalapon a betöltött
     // azonosító azonnal felülírná a kézzel átírt partnert.
     let munkalapUtolsoAzonosito = null;
+    let munkalapKulsoAzonosito = false;
 
     function munkalapTermekId() {
         return $('.js-munkalaptermekid').val();
+    }
+
+    function clearMunkalapKnownAzonosito() {
+        if (!munkalapKulsoAzonosito) {
+            $('.js-munkalapazonosito').val('');
+            $('.js-munkalapazonositouzenet').text('');
+            munkalapUtolsoAzonosito = '';
+        }
+    }
+
+    function clearMunkalapTermek() {
+        $('.js-munkalaptermekid').val('');
+        $('.js-munkalaptermekselect').val('');
+        fillMunkalapValtozatList([], '');
     }
 
     function fillMunkalapValtozatList(valtozatok, sel) {
@@ -621,7 +638,10 @@ let bizonylathelper = function ($) {
         if (azonosito === munkalapUtolsoAzonosito) {
             return;
         }
+        // the previous, known vehicle's product does not belong to the new identifier
+        const elozoIsmert = !!munkalapUtolsoAzonosito && !munkalapKulsoAzonosito;
         munkalapUtolsoAzonosito = azonosito;
+        munkalapKulsoAzonosito = false;
         uzenet.text('');
         if (!azonosito) {
             return;
@@ -632,14 +652,24 @@ let bizonylathelper = function ($) {
             dataType: 'json',
             data: {munkalapegyediazonosito: azonosito},
             success: function (res) {
+                munkalapKulsoAzonosito = !!(res && res.kulso);
                 if (!res || !res.ok) {
                     uzenet.text((res && res.error) ? res.error : 'A keresés nem sikerült.');
+                    if (munkalapKulsoAzonosito && elozoIsmert) {
+                        clearMunkalapTermek();
+                    }
                     return;
                 }
-                $('.js-munkalaptermekid').val(res.termekid);
-                $('.js-munkalaptermekselect').val(res.termeknev);
-                $('.js-munkalaptermekselectreal').val(res.termekid);
-                fillMunkalapValtozatList(res.valtozatlista, res.valtozatid);
+                if (res.kulso) {
+                    uzenet.text('Külső jármű, a legutóbbi munkalapja alapján.');
+                }
+                if (res.termekid) {
+                    $('.js-munkalaptermekid').val(res.termekid);
+                    $('.js-munkalaptermekselect').val(res.termeknev);
+                    fillMunkalapValtozatList(res.valtozatlista, res.valtozatid);
+                } else if (elozoIsmert) {
+                    clearMunkalapTermek();
+                }
                 setMunkalapPartner(res.partnerid, res.partnernev);
             }
         });
@@ -661,8 +691,7 @@ let bizonylathelper = function ($) {
                 }
                 $('.js-munkalaptermekid').val(termek.id);
                 // a korábbi jármű azonosítója nem tartozik az újhoz
-                $('.js-munkalapazonosito').val('');
-                munkalapUtolsoAzonosito = '';
+                clearMunkalapKnownAzonosito();
                 loadMunkalapValtozatList(termek.id, termek.valtozat);
             }
         }).autocompleteRenderer(termekAutocompleteRenderer);
@@ -703,6 +732,7 @@ let bizonylathelper = function ($) {
         // a form betöltésekor a mentett azonosító már fel van dolgozva – nem írjuk felül vele
         // a bizonylaton szereplő partnert
         munkalapUtolsoAzonosito = $.trim(input.val() || '');
+        munkalapKulsoAzonosito = input.data('kulso') == 1;
     }
 
     // A gyűjtő/sor-doboz kiszerelés mezői: a beírt darabszámokból számolt mennyiség kerül a
@@ -2253,8 +2283,7 @@ let bizonylathelper = function ($) {
                         );
                     })
                     .on('change', '.js-munkalaptermekselectreal', function (e) {
-                        $('.js-munkalapazonosito').val('');
-                        munkalapUtolsoAzonosito = '';
+                        clearMunkalapKnownAzonosito();
                         loadMunkalapValtozatList($(this).val(), '');
                     })
                     .on('change', '.js-quickmennyiseginput', function (e) {

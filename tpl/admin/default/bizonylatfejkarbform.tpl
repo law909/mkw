@@ -33,7 +33,8 @@
                 {if ($showmunkalapadatok)}
                     {* A jármű a tételekével azonos termékválasztóval, VAGY az egyedi azonosítójával
                        választható ki. Az azonosító az erősebb: kitöltve a mentés abból oldja fel a
-                       járművet, mert az konkrét példányt jelöl, és a partner is arról a bizonylatról jön. *}
+                       járművet, mert az konkrét példányt jelöl, és a partner is arról a bizonylatról jön.
+                       Bizonylattétel nélküli (külső) azonosító is beírható, akkor a jármű kézzel választható. *}
                     <fieldset class="mattkarb-doboz">
                         <legend>{at('Munkalap adatok')}</legend>
                         <table class="mattkarb-racs">
@@ -67,7 +68,8 @@
                             <tr>
                                 <td><label for="MunkalapEgyediazonositoEdit">{at('Egyedi azonosító')}:</label></td>
                                 <td colspan="3"><input id="MunkalapEgyediazonositoEdit" name="munkalapegyediazonosito" type="text" size="30" maxlength="255"
-                                                       value="{$egyed.munkalapegyediazonosito|escape}" class="js-munkalapazonosito" autocomplete="off">
+                                                       value="{$egyed.munkalapegyediazonosito|escape}" class="js-munkalapazonosito" autocomplete="off"
+                                                       data-kulso="{if ($egyed.munkalapazonositokulso)}1{else}0{/if}">
                                     <span class="js-munkalapazonositouzenet"></span></td>
                             </tr>
                             <tr>

@@ -14,6 +14,8 @@ use Entities\TermekValtozat;
  * A jármű kétféleképpen választható: a tételekével azonos termékválasztóval (+ változat), vagy egy
  * bizonylattételen szereplő egyedi azonosítóval. Az azonosító az erősebb: ha ki van töltve, a
  * terméket és a változatot mentéskor abból oldjuk fel, mert az konkrét példányt jelöl.
+ * Nem nálunk vett (külső vagy a rendszer előtt eladott) járműnek nincs bizonylattétele: az
+ * azonosítója ugyanúgy beírható, a termék és a változat ilyenkor a formról jön, és nem kötelező.
  *
  * A státusza a közös bizonylatstatusz törzsből jön: a munkalap bizonylattípusához kötött és a
  * bizonylattípus nélküli státuszok közül lehet választani.
@@ -61,6 +63,8 @@ class munkalapfejController extends bizonylatfejController
             }
         }
         $x['munkalapegyediazonosito'] = $t ? $t->getMunkalapegyediazonosito() : '';
+        $x['munkalapazonositokulso'] = $forKarb && $x['munkalapegyediazonosito']
+            && !$this->getRepo(Bizonylattetel::class)->findByEgyediazonosito($x['munkalapegyediazonosito']);
         $x['munkalapkmoraallas'] = $t ? $t->getMunkalapkmoraallas() : '';
         $x['munkalaphibaleiras'] = $t ? $t->getMunkalaphibaleiras() : '';
         $x['munkalapkovetkezoszervizstr'] = $t ? $t->getMunkalapkovetkezoszervizStr() : '';
@@ -78,12 +82,12 @@ class munkalapfejController extends bizonylatfejController
 
         $azonosito = trim($this->params->getStringRequestParam('munkalapegyediazonosito'));
         $obj->setMunkalapegyediazonosito($azonosito);
-        if ($azonosito) {
+        $tetel = $azonosito ? $this->getRepo(Bizonylattetel::class)->findByEgyediazonosito($azonosito) : null;
+        if ($tetel) {
             // az azonosító konkrét példányt jelöl, ezért a járművet mindig abból oldjuk fel –
             // a formról jövő termék csak a képernyőn látszó név forrása volt
-            $tetel = $this->getRepo(Bizonylattetel::class)->findByEgyediazonosito($azonosito);
-            $obj->setMunkalaptermek($tetel?->getTermek());
-            $obj->setMunkalaptermekvaltozat($tetel?->getTermekvaltozat());
+            $obj->setMunkalaptermek($tetel->getTermek());
+            $obj->setMunkalaptermekvaltozat($tetel->getTermekvaltozat());
         } else {
             $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('munkalaptermek'));
             $obj->setMunkalaptermek($termek);
@@ -104,15 +108,7 @@ class munkalapfejController extends bizonylatfejController
     protected function validate($obj, $parancs)
     {
         $hibak = parent::validate($obj, $parancs);
-        $azonosito = trim((string)$obj->getMunkalapegyediazonosito());
-        if ($azonosito) {
-            if (!$obj->getMunkalaptermek()) {
-                $hibak['munkalapegyediazonosito'] = sprintf(
-                    t('Nincs "%s" egyedi azonosítójú bizonylattétel.'),
-                    $azonosito
-                );
-            }
-        } elseif (!$obj->getMunkalaptermek()) {
+        if (!trim((string)$obj->getMunkalapegyediazonosito()) && !$obj->getMunkalaptermek()) {
             $mezo = \mkw\store::isTermekAutocomplete() ? 'munkalaptermeknev' : 'munkalaptermek';
             $hibak[$mezo] = t('Válassza ki a járművet, vagy adja meg az egyedi azonosítóját.');
         }
@@ -153,6 +149,7 @@ class munkalapfejController extends bizonylatfejController
     /**
      * Egy egyedi azonosító teljes járműadata a formhoz: termék, változat (a változatlistával
      * együtt), és a példány gazdája arról a bizonylatról, amelyiken az azonosító szerepel.
+     * Bizonylattétel nélküli (külső) járműnél a legutóbbi munkalapja az adatforrás.
      */
     public function jarmuAdat()
     {
@@ -160,14 +157,34 @@ class munkalapfejController extends bizonylatfejController
         $azonosito = trim($this->params->getStringRequestParam('munkalapegyediazonosito'));
         $rep = $this->getRepo(Bizonylattetel::class);
         $adat = $azonosito ? $rep->egyediazonositoAdat($rep->findByEgyediazonosito($azonosito)) : null;
-        if (!$adat) {
-            $this->jsonFail(sprintf(t('Nincs "%s" egyedi azonosítójú bizonylattétel.'), $azonosito));
-            return;
+        if ($adat) {
+            $partner = $rep->findOwnerBizonylattetel($azonosito)?->getBizonylatfej()?->getPartner();
+            $adat['kulso'] = false;
+        } else {
+            $elozo = $azonosito ? $this->getRepo()->findLastMunkalapByEgyediazonosito($azonosito) : null;
+            if (!$elozo) {
+                echo json_encode([
+                    'ok' => false,
+                    'kulso' => true,
+                    'error' => t('Nincs a rendszerben, külső járműként menthető – a járművet válassza ki kézzel.'),
+                ]);
+                return;
+            }
+            $termek = $elozo->getMunkalaptermek();
+            $valtozat = $elozo->getMunkalaptermekvaltozat();
+            $adat = [
+                'azonosito' => $azonosito,
+                'termekid' => $termek ? $termek->getId() : '',
+                'termeknev' => $termek ? $termek->getNev() : '',
+                'valtozatid' => $valtozat ? $valtozat->getId() : '',
+                'valtozatnev' => $valtozat ? $valtozat->getNev() : '',
+                'kulso' => true,
+            ];
+            $partner = $elozo->getPartner();
         }
         $termekCtrl = new termekController();
         $adat['ok'] = true;
-        $adat['valtozatlista'] = $termekCtrl->getValtozatList($adat['termekid'], $adat['valtozatid']);
-        $partner = $rep->findOwnerBizonylattetel($azonosito)?->getBizonylatfej()?->getPartner();
+        $adat['valtozatlista'] = $adat['termekid'] ? $termekCtrl->getValtozatList($adat['termekid'], $adat['valtozatid']) : [];
         $adat['partnerid'] = $partner ? $partner->getId() : '';
         $adat['partnernev'] = $partner ? $partner->getNev() : '';
         echo json_encode($adat);

@@ -94,6 +94,25 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
     }
 
     /**
+     * The latest non-voided munkalap for a vehicle identifier – for vehicles that were never on a
+     * bizonylattetel (bought elsewhere, sold before the system), this is the only record of them.
+     *
+     * @return \Entities\Bizonylatfej|null
+     */
+    public function findLastMunkalapByEgyediazonosito($azonosito)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT bf FROM Entities\Bizonylatfej bf'
+            . " WHERE bf.bizonylattipus = 'munkalap' AND bf.rontott = false"
+            . ' AND bf.munkalapegyediazonosito = :azonosito'
+            . ' ORDER BY bf.kelt DESC, bf.created DESC'
+        );
+        $q->setParameter('azonosito', $azonosito);
+        $q->setMaxResults(1);
+        return $q->getOneOrNullResult();
+    }
+
+    /**
      * Készült-e a bizonylatból másik bizonylat (öröklés): fej szinten (parbizonylatfej)
      * vagy tétel szinten (parbizonylattetel).
      *
