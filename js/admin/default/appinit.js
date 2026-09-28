@@ -35,7 +35,12 @@ function mkwHiba(uzenet) {
         // a "Kérem várjon..." réteg alatt az ablak nem látszana
         $.unblockUI();
     }
-    $('#dialogcenter')
+    // own element: dialog options stick to the element, on #dialogcenter the title and width carried over
+    let $ablak = $('#dialoghiba');
+    if (!$ablak.length) {
+        $ablak = $('<div id="dialoghiba">').appendTo('body');
+    }
+    $ablak
         .empty()
         .append($('<div>').text(uzenet || 'A művelet nem sikerült.'))
         .dialog({
