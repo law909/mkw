@@ -1661,14 +1661,30 @@ class termekController extends \mkwhelpers\MattableController
             $filter = new FilterDescriptor();
             $filter->addFilter(['_xx.nev', '_xx.cikkszam', '_xx.vonalkod'], 'LIKE', '%' . $term . '%');
             $res = \mkw\store::getEm()->getRepository(Termek::class)->getAllForSelectList($filter);
+            $labels = $this->getRepo(TermekValtozat::class)->getAutocompleteLabels(array_column($res, null, 'id'), $term);
             foreach ($res as $r) {
                 $ret[] = [
                     'id' => $r['id'],
+                    'label' => $labels[$r['id']],
                     'value' => $r['nev']
                 ];
             }
         }
         echo json_encode($ret);
+    }
+
+    /**
+     * @param \Entities\Termek[] $termekek
+     *
+     * @return array<int,array{nev:string,cikkszam:?string}> the input of TermekValtozatRepository::getAutocompleteLabels()
+     */
+    public static function toAutocompleteLabelInput($termekek)
+    {
+        $ret = [];
+        foreach ($termekek as $t) {
+            $ret[$t->getId()] = ['nev' => $t->getKiirtnev() ?: $t->getNev(), 'cikkszam' => $t->getCikkszam()];
+        }
+        return $ret;
     }
 
     /**
@@ -1829,10 +1845,10 @@ class termekController extends \mkwhelpers\MattableController
                 $valtozatrepo = \mkw\store::getEm()->getRepository(TermekValtozat::class);
                 $matches = $valtozatrepo->getCikkszamMatches($termekidk, $term);
                 $valtozatmatch = $valtozatrepo->getCikkszamMatchMap($termekidk, $term, $matches);
+                $labels = $valtozatrepo->getAutocompleteLabels($this->toAutocompleteLabelInput($res), $term, $matches);
                 foreach ($res as $r) {
                     $sor = $this->getBizonylattetelAdat($r, ($valtozatmatch[$r->getId()] ?? 0));
-                    $sor['label'] = ($sor['label'] ?? $sor['value'])
-                        . \Entities\TermekValtozatRepository::cikkszamMatchLabel($matches[$r->getId()] ?? []);
+                    $sor['label'] = $labels[$r->getId()];
                     $ret[] = $sor;
                 }
             }

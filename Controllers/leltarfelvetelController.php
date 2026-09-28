@@ -6,7 +6,6 @@ use Entities\Leltarfej;
 use Entities\Leltartetel;
 use Entities\Termek;
 use Entities\TermekValtozat;
-use Entities\TermekValtozatRepository;
 use mkwhelpers\FilterDescriptor;
 
 /**
@@ -70,16 +69,15 @@ class leltarfelvetelController extends \mkwhelpers\Controller
         $ret = [];
         if (mb_strlen($term) >= 3) {
             $termekek = $this->getRepo(Termek::class)->getBoltieladasTermekLista($term);
-            $matches = $this->getRepo(TermekValtozat::class)->getCikkszamMatches(
-                array_map(fn($t) => $t->getId(), $termekek),
+            $labels = $this->getRepo(TermekValtozat::class)->getAutocompleteLabels(
+                termekController::toAutocompleteLabelInput($termekek),
                 $term
             );
             foreach ($termekek as $termek) {
                 $nev = $termek->getKiirtnev() ?: $termek->getNev();
                 $ret[] = [
                     'id' => $termek->getId(),
-                    'label' => trim($termek->getCikkszam() . ' ' . $nev)
-                        . TermekValtozatRepository::cikkszamMatchLabel($matches[$termek->getId()] ?? []),
+                    'label' => $labels[$termek->getId()],
                     'value' => $nev,
                 ];
             }

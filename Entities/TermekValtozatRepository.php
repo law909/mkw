@@ -93,12 +93,41 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
     }
 
     /**
+     * Product autocomplete row labels: a product without variants shows its cikkszam, one with variants
+     * only its name (its own cikkszam identifies no variant), followed by the variant codes matching the term.
+     *
+     * @param array<int,array{nev:string,cikkszam:?string}> $termekek by termek id
+     * @param array|null $matches getCikkszamMatches() of the same ids, when the caller already has it
+     *
+     * @return array<int,string> by termek id
+     */
+    public function getAutocompleteLabels(array $termekek, $keresett, $matches = null)
+    {
+        $ids = array_keys($termekek);
+        $matches ??= $this->getCikkszamMatches($ids, $keresett);
+        $valtozatos = [];
+        if ($ids) {
+            $q = $this->_em->createQuery(
+                'SELECT DISTINCT IDENTITY(v.termek) AS termekid FROM Entities\TermekValtozat v WHERE IDENTITY(v.termek) IN (:ids)'
+            );
+            $q->setParameter('ids', $ids);
+            $valtozatos = array_flip(array_column($q->getScalarResult(), 'termekid'));
+        }
+        $ret = [];
+        foreach ($termekek as $id => $t) {
+            $ret[$id] = (isset($valtozatos[$id]) ? $t['nev'] : trim($t['cikkszam'] . ' ' . $t['nev']))
+                . self::cikkszamMatchLabel($matches[$id] ?? []);
+        }
+        return $ret;
+    }
+
+    /**
      * The autocomplete label suffix of a product row: the matching variants' cikkszam, so a hit on a
      * variant code is visible even though the list has one row per product.
      *
      * @param array<int,array{cikkszam:string}> $matches one product's rows from getCikkszamMatches()
      */
-    public static function cikkszamMatchLabel($matches, $max = 5)
+    private static function cikkszamMatchLabel($matches, $max = 5)
     {
         if (!$matches) {
             return '';
