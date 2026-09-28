@@ -1888,11 +1888,12 @@ class termekController extends \mkwhelpers\MattableController
         }
         $view->setVar('egyed', $this->loadVars($termek, true));
 
+        $defaultVtsz = $termek ? null : $this->getRepo(Vtsz::class)->find((int)\mkw\store::getParameter(\mkw\consts::DefaultVtsz, 0));
         $vtsz = new vtszController();
-        $view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : \mkw\store::getParameter(\mkw\consts::DefaultVtsz, 0))));
+        $view->setVar('vtszlist', $vtsz->getSelectList(($termek ? $termek->getVtszId() : $defaultVtsz?->getId())));
 
         $afa = new afaController();
-        $view->setVar('afalist', $afa->getSelectList(($termek ? $termek->getAfaId() : 0)));
+        $view->setVar('afalist', $afa->getSelectList(($termek ? $termek->getAfaId() : $defaultVtsz?->getAfaId())));
 
         $valtozatadattipus = new termekvaltozatadattipusController();
         $view->setVar('valtozatadattipuslist', $valtozatadattipus->getSelectList(($termek ? $termek->getValtozatadattipusId() : 0)));
