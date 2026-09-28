@@ -19,6 +19,7 @@
                 <table class="valtozattable">
                     <thead>
                     <tr>
+                        <th>Cikkszám</th>
                         <th></th>
                         <th class="textalignright">Listaár</th>
                         <th class="textalignright">Kedvezmény</th>
@@ -30,6 +31,7 @@
                     <tbody>
                     {foreach $termek.valtozatok as $_valt}
                         <tr class="valtozatkozep">
+                            <td><span>{$_valt.cikkszam|escape}</span></td>
                             <td class="">
                                 <span>{$termek.szin} - {$_valt.caption}</span>
                             </td>

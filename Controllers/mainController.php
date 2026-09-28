@@ -617,6 +617,7 @@ class mainController extends \mkwhelpers\Controller
             }
             $vtt[] = [
                 'id' => $valt->getId(),
+                'cikkszam' => $valt->getCikkszam(),
                 // szín szerinti oldalon a szín adott, ott elég a méret; egyébként a teljes változatnév
                 'caption' => $szinid ? $valt->getMeretNev() : $valt->getNev(),
                 'keszlet' => $valtkeszlet,
@@ -631,6 +632,7 @@ class mainController extends \mkwhelpers\Controller
             $keszlet = $termek->getAvailableStock(null, null, null, false);
             $vtt[] = [
                 'id' => '',
+                'cikkszam' => $termek->getCikkszam(),
                 'caption' => $termek->getLocalizedFieldValue('nev'),
                 'keszlet' => $keszlet,
                 'beerkezesdatumstr' => '',

@@ -26,7 +26,7 @@
         <td>
             <div>{$tetel.caption}</div>
             <div>{foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}</div>
-            {$tetel.cikkszam}</td>
+            {$tetel.valtozatcikkszam|default:$tetel.cikkszam}</td>
         <td>
             <div class="textalignright">{number_format($tetel.bruttoegysar, 2, ',', ' ')} {$valutanem}</div>
         </td>

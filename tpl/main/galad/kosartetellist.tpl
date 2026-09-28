@@ -43,7 +43,7 @@
             </div>
         </td>
         <td>
-            {$tetel.cikkszam}
+            {$tetel.valtozatcikkszam|default:$tetel.cikkszam}
             <div>
                 {if ($tetel.noedit)}
                     {$tetel.caption}

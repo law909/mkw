@@ -148,6 +148,7 @@ class Kosar
             }
         }
         $ret['valtozatok'] = $v;
+        $ret['valtozatcikkszam'] = $valt ? $valt->getCikkszam() : '';
         $ret['editlink'] = \mkw\store::getRouter()->generate('kosaredit');
         $ret['dellink'] = \mkw\store::getRouter()->generate('kosardel');
         $ret['showcheckoutlink'] = \mkw\store::getRouter()->generate('showcheckout');

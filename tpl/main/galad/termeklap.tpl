@@ -21,6 +21,7 @@
                     <table class="valtozattable">
                         <thead>
                         <tr>
+                            <th>{t('Cikkszám')}</th>
                             <th></th>
                             <th class="textalignright">{t('Listaár')}</th>
                             <th class="textalignright">{t('Kedvezmény')}</th>
@@ -32,6 +33,7 @@
                         <tbody>
                         {foreach $termek.valtozatok as $_valt}
                             <tr class="valtozatkozep">
+                                <td><span>{$_valt.cikkszam|escape}</span></td>
                                 <td><span>{$_valt.caption}</span></td>
                                 <td class="textalignright">
                                     <span>{number_format($termek.eredetiar, 2, ',', ' ')} {$termek.valutanemnev}</span>
