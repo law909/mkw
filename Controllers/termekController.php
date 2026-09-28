@@ -138,7 +138,6 @@ class termekController extends \mkwhelpers\MattableController
         $x['doklinkek'] = $this->getDokLinkek($t->getTermekDokok());
         $x['keszlet'] = $t->getKeszlet();
         $x['fifo'] = \mkw\store::isFifo() ? \Services\FifoService::getErtek($t) : null;
-        $x['termekcsoportnev'] = $t->getTermekcsoportNev();
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();
         $x['szabadkeszlet'] = $t->getFreeStock();
         $x['erkezik'] = $t->getIncomingStock();

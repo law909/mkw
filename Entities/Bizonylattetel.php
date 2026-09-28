@@ -295,16 +295,6 @@ class Bizonylattetel
     private $valtozatertek2;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Termekcsoport")
-     * @ORM\JoinColumn(name="termekcsoport_id",referencedColumnName="id",onDelete="restrict")
-     * @var \Entities\Termekcsoport
-     */
-    private $termekcsoport;
-
-    /** @ORM\Column(type="string",length=255,nullable=true) */
-    private $termekcsoportnev;
-
-    /**
      * The advance invoice this line offsets. Exactly one advance per line: the NAV advanceData
      * element is maxOccurs=1 on the line, so a 1:N child table would model a cardinality that
      * cannot occur. The offset amount is carried by the line's own netto/brutto.
@@ -810,12 +800,6 @@ class Bizonylattetel
                     $this->setSuly($val->getSuly());
                     $this->setSzelesseg($val->getSzelesseg());
                     $this->setKozvetitett($val->getKozvetitett());
-                    $csoport = $val->getTermekcsoport();
-                    if ($csoport) {
-                        $this->setTermekcsoport($csoport);
-                    } else {
-                        $this->setTermekcsoport(null);
-                    }
                     $vtsz = $val->getVtsz();
                     if ($vtsz) {
                         $this->setVtsz($vtsz);
@@ -1642,24 +1626,6 @@ class Bizonylattetel
         $this->rontott = $adat;
     }
 
-    public function getTermekcsoport()
-    {
-        return $this->termekcsoport;
-    }
-
-    /**
-     * @param \Entities\Termekcsoport $adat
-     */
-    public function setTermekcsoport($adat)
-    {
-        $this->termekcsoport = $adat;
-        if ($adat) {
-            $this->termekcsoportnev = $adat->getNev();
-        } else {
-            $this->termekcsoportnev = '';
-        }
-    }
-
     public function duplicateFrom($entityB)
     {
         $this->duplication = true;
@@ -1690,22 +1656,6 @@ class Bizonylattetel
     public function setHparany($hparany)
     {
         $this->hparany = $hparany;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTermekcsoportnev()
-    {
-        return $this->termekcsoportnev;
-    }
-
-    /**
-     * @param mixed $termekcsoportnev
-     */
-    public function setTermekcsoportnev($termekcsoportnev)
-    {
-        $this->termekcsoportnev = $termekcsoportnev;
     }
 
     /**

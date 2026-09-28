@@ -19,7 +19,7 @@
                         <tbody>
                         <tr>
                             <td colspan="3">{$_termek.termekfa1nev} | {$_termek.termekfa2nev}
-                                | {$_termek.termekfa3nev}{if ($_termek.termekcsoportnev)} ({$_termek.termekcsoportnev}){/if}</td>
+                                | {$_termek.termekfa3nev}</td>
                         </tr>
                         <tr>
                             <td>{at('Link')}:</td>
