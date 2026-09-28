@@ -108,6 +108,49 @@ function termekAutocompleteRenderer(ul, item) {
             }
         };
     };
+
+    // #dialogcenter is shared by ~180 call sites, most of them opening it 140px high and not resizable,
+    // which cuts longer messages off; the options also stick to the element between openings
+    const DIALOGCENTER_MIN_HEIGHT = 220;
+    const DIALOGCENTER_PICKER_HEIGHT = 560;
+
+    function dialogcenterOption(key, value) {
+        const maxHeight = Math.max(DIALOGCENTER_MIN_HEIGHT, window.innerHeight - 40);
+        switch (key) {
+            case 'resizable':
+                return true;
+            case 'height':
+                if (typeof value !== 'number') {
+                    return value;
+                }
+                // small fixed heights are messages and short forms: they follow their content;
+                // the larger ones are the tree pickers
+                return value < 300 ? 'auto' : Math.min(Math.max(value, DIALOGCENTER_PICKER_HEIGHT), maxHeight);
+            case 'minHeight':
+                return Math.max(value || 0, DIALOGCENTER_MIN_HEIGHT);
+            case 'maxHeight':
+                return value ? Math.min(value, maxHeight) : maxHeight;
+            default:
+                return value;
+        }
+    }
+
+    $.widget('ui.dialog', $.ui.dialog, {
+        _create: function () {
+            if (this.element.is('#dialogcenter')) {
+                ['resizable', 'height', 'minHeight', 'maxHeight'].forEach((key) => {
+                    this.options[key] = dialogcenterOption(key, this.options[key]);
+                });
+            }
+            return this._super();
+        },
+        _setOption: function (key, value) {
+            if (this.element.is('#dialogcenter')) {
+                value = dialogcenterOption(key, value);
+            }
+            return this._super(key, value);
+        }
+    });
 })(jQuery);
 
 var mkwcomp = (function ($) {
