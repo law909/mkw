@@ -3089,6 +3089,16 @@ if ($DBVersion < '0205' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0205');
 }
 
+if ($DBVersion < '0206' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0205') {
+    // galad: a termék szín képek az UNAS import képneveiből (a kép neve a változat cikkszáma, a változatnak színe van)
+    if (\mkw\store::isGalad()) {
+        $report = (new \Services\UnasSzinKepService())->assignAll(true);
+        $report['ketertelmu_cikkszam'] = array_slice($report['ketertelmu_cikkszam'], 0, 50);
+        \mkw\store::writelog('runonce 0206: ' . json_encode($report, JSON_UNESCAPED_UNICODE), 'unas_szinkep.txt');
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0206');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
