@@ -9,6 +9,7 @@ use Entities\Szin;
 use Entities\Termek;
 use Entities\TermekFa;
 use Entities\TermekMenu;
+use Entities\TermekSzinKep;
 use Entities\TermekValtozat;
 use mkw\consts;
 use mkw\store;
@@ -519,8 +520,11 @@ class mainController extends \mkwhelpers\Controller
                             }
                         }
                     }
-                    foreach ($vtt as &$szin) {
-                        if (empty($szin['kepurlmedium'])) {
+                    $szinkepurls = $this->getSzinKepUrls($termek);
+                    foreach ($vtt as $szinid => &$szin) {
+                        if (isset($szinkepurls[$szinid])) {
+                            $szin = array_merge($szin, $szinkepurls[$szinid]);
+                        } elseif (empty($szin['kepurlmedium'])) {
                             $szin['kepurlmini'] = $termek->getKepurlMini();
                             $szin['kepurlsmall'] = $termek->getKepurlSmall();
                             $szin['kepurlmedium'] = $termek->getKepurlMedium();
@@ -566,6 +570,44 @@ class mainController extends \mkwhelpers\Controller
             }
         }
         return false;
+    }
+
+    /**
+     * Színenként a termék karbantartó Szín képek fülén elsőnek (legkisebb sorrenddel) választott kép;
+     * a kép nélküli összerendelés a termék főképe.
+     */
+    private function getSzinKepUrls(Termek $termek)
+    {
+        $elsok = [];
+        /** @var TermekSzinKep $szinkep */
+        foreach ($termek->getTermekSzinKepek() as $szinkep) {
+            $szinid = $szinkep->getSzinId();
+            if (!$szinid) {
+                continue;
+            }
+            $elso = $elsok[$szinid] ?? null;
+            if (!$elso || [(int)$szinkep->getSorrend(), $szinkep->getId()] < [(int)$elso->getSorrend(), $elso->getId()]) {
+                $elsok[$szinid] = $szinkep;
+            }
+        }
+        $urls = [];
+        foreach ($elsok as $szinid => $szinkep) {
+            $kep = $szinkep->getKep();
+            $urls[$szinid] = $kep
+                ? [
+                    'kepurlmini' => $kep->getUrlMini(),
+                    'kepurlsmall' => $kep->getUrlSmall(),
+                    'kepurlmedium' => $kep->getUrlMedium(),
+                    'kepurllarge' => $kep->getUrlLarge(),
+                ]
+                : [
+                    'kepurlmini' => $termek->getKepurlMini(),
+                    'kepurlsmall' => $termek->getKepurlSmall(),
+                    'kepurlmedium' => $termek->getKepurlMedium(),
+                    'kepurllarge' => $termek->getKepurlLarge(),
+                ];
+        }
+        return $urls;
     }
 
     /** A galad morzsa a termékfában elfoglalt helyhez; a lánc végén maga a termék, link nélkül. */
@@ -653,6 +695,11 @@ class mainController extends \mkwhelpers\Controller
                 'beerkezesdatumstr' => '',
                 'bejon' => false
             ];
+        }
+        $szinkepurl = $szinid ? ($this->getSzinKepUrls($termek)[$szinid] ?? null) : null;
+        if ($szinkepurl) {
+            $t['kepurllarge'] = $szinkepurl['kepurllarge'];
+            $t['kepurlmedium'] = $szinkepurl['kepurlmedium'];
         }
         $t['valtozatok'] = $vtt;
         $this->view->setVar('termek', $t);
