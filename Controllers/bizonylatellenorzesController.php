@@ -5,6 +5,7 @@ namespace Controllers;
 use Entities\Bizonylatfej;
 use Entities\Termek;
 use Entities\TermekValtozat;
+use Entities\TermekValtozatRepository;
 
 /**
  * Tételek ellenőrzése: a mentett bizonylat tételeit vonalkóddal (vagy kereséssel) végigpipálják,
@@ -95,11 +96,17 @@ class bizonylatellenorzesController extends \mkwhelpers\Controller
         $term = trim($this->params->getStringRequestParam('term'));
         $ret = [];
         if (mb_strlen($term) >= 3) {
-            foreach ($this->getRepo(Termek::class)->getBoltieladasTermekLista($term) as $termek) {
+            $termekek = $this->getRepo(Termek::class)->getBoltieladasTermekLista($term);
+            $matches = $this->getRepo(TermekValtozat::class)->getCikkszamMatches(
+                array_map(fn($t) => $t->getId(), $termekek),
+                $term
+            );
+            foreach ($termekek as $termek) {
                 $nev = $termek->getKiirtnev() ?: $termek->getNev();
                 $ret[] = [
                     'id' => $termek->getId(),
-                    'label' => trim($termek->getCikkszam() . ' ' . $nev),
+                    'label' => trim($termek->getCikkszam() . ' ' . $nev)
+                        . TermekValtozatRepository::cikkszamMatchLabel($matches[$termek->getId()] ?? []),
                     'value' => $nev,
                 ];
             }

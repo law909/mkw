@@ -12,6 +12,7 @@ use Entities\Penztar;
 use Entities\Raktar;
 use Entities\Termek;
 use Entities\TermekValtozat;
+use Entities\TermekValtozatRepository;
 use Entities\Valutanem;
 
 class boltieladasController extends \mkwhelpers\Controller
@@ -101,11 +102,16 @@ class boltieladasController extends \mkwhelpers\Controller
         $ret = [];
         if (mb_strlen($term) >= 4) {
             $termekek = $this->getRepo(Termek::class)->getBoltieladasTermekLista($term);
+            $matches = $this->getRepo(TermekValtozat::class)->getCikkszamMatches(
+                array_map(fn($t) => $t->getId(), $termekek),
+                $term
+            );
             foreach ($termekek as $t) {
                 $nev = $t->getKiirtnev() ?: $t->getNev();
                 $ret[] = [
                     'id' => $t->getId(),
-                    'label' => trim($t->getCikkszam() . ' ' . $nev),
+                    'label' => trim($t->getCikkszam() . ' ' . $nev)
+                        . TermekValtozatRepository::cikkszamMatchLabel($matches[$t->getId()] ?? []),
                     'value' => $nev,
                 ];
             }

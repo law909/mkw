@@ -71,23 +71,46 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
         return $ret;
     }
 
-    public function getCikkszamMatchMap($termekids, $keresett)
+    /** @return array<int,array<int,array{valtozatid:int,termekid:int,cikkszam:string}>> variants whose cikkszam contains the term, by termek */
+    public function getCikkszamMatches($termekids, $keresett)
     {
-        $ret = [];
+        $byTermek = [];
         if (!$termekids || ((string)$keresett === '')) {
-            return $ret;
+            return $byTermek;
         }
         $q = $this->_em->createQuery(
             'SELECT v.id AS valtozatid, IDENTITY(v.termek) AS termekid, v.cikkszam AS cikkszam'
             . ' FROM Entities\TermekValtozat v'
             . ' WHERE IDENTITY(v.termek) IN (:ids) AND v.cikkszam LIKE :keresett'
+            . ' ORDER BY v.cikkszam ASC'
         );
         $q->setParameter('ids', $termekids);
         $q->setParameter('keresett', '%' . $keresett . '%');
-        $byTermek = [];
         foreach ($q->getScalarResult() as $row) {
             $byTermek[$row['termekid']][] = $row;
         }
+        return $byTermek;
+    }
+
+    /**
+     * The autocomplete label suffix of a product row: the matching variants' cikkszam, so a hit on a
+     * variant code is visible even though the list has one row per product.
+     *
+     * @param array<int,array{cikkszam:string}> $matches one product's rows from getCikkszamMatches()
+     */
+    public static function cikkszamMatchLabel($matches, $max = 5)
+    {
+        if (!$matches) {
+            return '';
+        }
+        $kodok = array_column(array_slice($matches, 0, $max), 'cikkszam');
+        return ' – ' . t('változat') . ': ' . implode(', ', $kodok) . (count($matches) > $max ? ', …' : '');
+    }
+
+    public function getCikkszamMatchMap($termekids, $keresett, $byTermek = null)
+    {
+        $ret = [];
+        $byTermek ??= $this->getCikkszamMatches($termekids, $keresett);
         foreach ($byTermek as $termekid => $matches) {
             $valtozatid = null;
             foreach ($matches as $m) {

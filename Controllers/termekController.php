@@ -1826,10 +1826,14 @@ class termekController extends \mkwhelpers\MattableController
                 foreach ($res as $_t) {
                     $termekidk[] = $_t->getId();
                 }
-                $valtozatmatch = \mkw\store::getEm()->getRepository(TermekValtozat::class)
-                    ->getCikkszamMatchMap($termekidk, $term);
+                $valtozatrepo = \mkw\store::getEm()->getRepository(TermekValtozat::class);
+                $matches = $valtozatrepo->getCikkszamMatches($termekidk, $term);
+                $valtozatmatch = $valtozatrepo->getCikkszamMatchMap($termekidk, $term, $matches);
                 foreach ($res as $r) {
-                    $ret[] = $this->getBizonylattetelAdat($r, ($valtozatmatch[$r->getId()] ?? 0));
+                    $sor = $this->getBizonylattetelAdat($r, ($valtozatmatch[$r->getId()] ?? 0));
+                    $sor['label'] = ($sor['label'] ?? $sor['value'])
+                        . \Entities\TermekValtozatRepository::cikkszamMatchLabel($matches[$r->getId()] ?? []);
+                    $ret[] = $sor;
                 }
             }
         }

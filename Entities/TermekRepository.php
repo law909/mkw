@@ -1144,7 +1144,7 @@ class TermekRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * Bolti eladás autocomplete keresője: név vagy cikkszám szerinti részleges egyezés.
+     * Bolti eladás autocomplete keresője: név, cikkszám vagy változat cikkszám szerinti részleges egyezés.
      *
      * @param string $term
      *
@@ -1155,6 +1155,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $q = $this->_em->createQuery(
             'SELECT _xx FROM Entities\Termek _xx'
             . ' WHERE _xx.nev LIKE :term OR _xx.cikkszam LIKE :term'
+            . ' OR EXISTS (SELECT v.id FROM Entities\TermekValtozat v WHERE v.termek = _xx AND v.cikkszam LIKE :term)'
             . ' ORDER BY _xx.nev ASC'
         );
         $q->setParameter('term', '%' . $term . '%');
