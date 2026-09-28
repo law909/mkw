@@ -682,6 +682,7 @@ class mainController extends \mkwhelpers\Controller
                 'bejon' => ($valtkeszlet <= 0) && $valt->isArrivalExpected()
             ];
         }
+        $t['vanvaltozat'] = (bool)$vtt;
         if (!$vtt && !$szinid) {
             // Változat nélküli termék: egyetlen sor, változat azonosító nélkül. Így a sablonnak
             // és a kosárba tevésnek nem kell külön ág, a szerver a üres azonosítóból tudja, hogy

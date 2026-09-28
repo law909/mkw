@@ -3,7 +3,7 @@
 {block "body"}
     <div class="row">
         <div class="col-md-12">
-            <h3>{$termek.cikkszam} {$termek.caption}</h3>
+            <h3>{$termek.caption}</h3>
             <h4>{$termek.szin}</h4>
         </div>
     </div>
