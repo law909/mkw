@@ -681,7 +681,7 @@ let bizonylathelper = function ($) {
             return;
         }
         input.autocomplete({
-            minLength: 4,
+            minLength: 3,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function (event, ui) {
@@ -1197,7 +1197,7 @@ let bizonylathelper = function ($) {
 
     function termekAutocompleteConfig() {
         return {
-            minLength: 4,
+            minLength: 3,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function (event, ui) {
@@ -1551,7 +1551,7 @@ let bizonylathelper = function ($) {
 
     function quicktermekAutocompleteConfig() {
         return {
-            minLength: 4,
+            minLength: 3,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function (event, ui) {

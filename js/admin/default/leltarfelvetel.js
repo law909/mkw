@@ -1,7 +1,7 @@
 /**
  * Leltár felvételi lista vonalkódos rögzítése.
  *
- * A vonalkód mező a bolti eladáséval azonos: 4 karaktertől név/cikkszám autocomplete, Enterre
+ * A vonalkód mező a bolti eladáséval azonos: 3 karaktertől név/cikkszám autocomplete, Enterre
  * vonalkódos keresés. A beolvasás a leltár termék+változat sorát keresi meg
  * és növeli eggyel a tény mennyiségét; az első beolvasásnál a sor létre is jön.
  */
@@ -173,9 +173,9 @@ var leltarfelvetel = (function ($) {
     }
 
     function wire($cont) {
-        // Kereső: 4 karaktertől név/cikkszám autocomplete (termékválasztás), Enterre vonalkódos keresés.
+        // Kereső: 3 karaktertől név/cikkszám autocomplete (termékválasztás), Enterre vonalkódos keresés.
         $cont.find('.js-leltarkereso').autocomplete({
-            minLength: 4,
+            minLength: 3,
             delay: 200,
             autoFocus: false,
             source: URL_KERESES,

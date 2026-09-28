@@ -295,9 +295,9 @@ var boltieladas = (function ($) {
     }
 
     function wire($cont) {
-        // Kereső: 4 karaktertől név/cikkszám autocomplete (termékválasztás), Enterre vonalkódos keresés.
+        // Kereső: 3 karaktertől név/cikkszám autocomplete (termékválasztás), Enterre vonalkódos keresés.
         $cont.find('.js-boltieladas-vonalkod').autocomplete({
-            minLength: 4,
+            minLength: 3,
             delay: 200,
             autoFocus: false,
             source: URL_KERESES,

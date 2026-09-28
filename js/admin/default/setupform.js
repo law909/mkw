@@ -114,7 +114,7 @@ $(document).ready(function () {
             // Termék / partner autocomplete a setup mezőkhöz (select helyett).
             // A kiválasztott elem neve a szövegmezőbe, id-je a data-target nevű rejtett inputba kerül.
             $('.js-setuptermekselect').autocomplete({
-                minLength: 4,
+                minLength: 3,
                 autoFocus: true,
                 source: '/admin/bizonylattetel/gettermeklist',
                 select: function (event, ui) {

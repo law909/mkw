@@ -165,7 +165,7 @@ var bizonylatpos = (function ($) {
         };
 
         $cont.find('.js-poskereso').autocomplete({
-            minLength: 4,
+            minLength: 3,
             delay: 200,
             autoFocus: false,
             source: function (request, response) {

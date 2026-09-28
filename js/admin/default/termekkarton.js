@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     function termekAutocompleteConfig() {
         return {
-            minLength: 4,
+            minLength: 3,
             autoFocus: true,
             source: '/admin/bizonylattetel/gettermeklist',
             select: function (event, ui) {

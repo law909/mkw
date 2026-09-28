@@ -62,13 +62,13 @@ class leltarfelvetelController extends \mkwhelpers\Controller
     }
 
     /**
-     * Az autocomplete kereső forrása: 4 karaktertől név és cikkszám alapján listáz termékeket.
+     * Az autocomplete kereső forrása: 3 karaktertől név és cikkszám alapján listáz termékeket.
      */
     public function kereses()
     {
         $term = trim($this->params->getStringRequestParam('term'));
         $ret = [];
-        if (mb_strlen($term) >= 4) {
+        if (mb_strlen($term) >= 3) {
             $termekek = $this->getRepo(Termek::class)->getBoltieladasTermekLista($term);
             $matches = $this->getRepo(TermekValtozat::class)->getCikkszamMatches(
                 array_map(fn($t) => $t->getId(), $termekek),
