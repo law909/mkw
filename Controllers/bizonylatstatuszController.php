@@ -47,6 +47,8 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $ck = store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('emailtemplate'));
         if ($ck) {
             $obj->setEmailtemplate($ck);
+        } else {
+            $obj->removeEmailtemplate();
         }
         $ck = \mkw\store::getEm()->getRepository(Fizmod::class)->find($this->params->getIntRequestParam('fizmod'));
         if ($ck) {
