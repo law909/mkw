@@ -502,10 +502,12 @@ class mainController extends \mkwhelpers\Controller
                             if ($valt->getSzin()) {
                                 $vtt[$valt->getSzinId()]['id'] = $valt->getSzinId();
                                 $vtt[$valt->getSzinId()]['caption'] = $valt->getSzinNev();
-                                $vtt[$valt->getSzinId()]['kepurlmini'] = $valt->getKepurlMini();
-                                $vtt[$valt->getSzinId()]['kepurlsmall'] = $valt->getKepurlSmall();
-                                $vtt[$valt->getSzinId()]['kepurlmedium'] = $valt->getKepurlMedium();
-                                $vtt[$valt->getSzinId()]['kepurllarge'] = $valt->getKepurlLarge();
+                                if (empty($vtt[$valt->getSzinId()]['kepurlmedium']) && $valt->getKepurlMedium()) {
+                                    $vtt[$valt->getSzinId()]['kepurlmini'] = $valt->getKepurlMini();
+                                    $vtt[$valt->getSzinId()]['kepurlsmall'] = $valt->getKepurlSmall();
+                                    $vtt[$valt->getSzinId()]['kepurlmedium'] = $valt->getKepurlMedium();
+                                    $vtt[$valt->getSzinId()]['kepurllarge'] = $valt->getKepurlLarge();
+                                }
                                 $vtt[$valt->getSzinId()]['keszlet'] += $valt->getAvailableStock();
                                 $vtt[$valt->getSzinId()]['bejon'] = $vtt[$valt->getSzinId()]['bejon'] || $valt->isArrivalExpected();
                                 $vtt[$valt->getSzinId()]['link'] = \mkw\store::getRouter()->generate(
@@ -517,6 +519,15 @@ class mainController extends \mkwhelpers\Controller
                             }
                         }
                     }
+                    foreach ($vtt as &$szin) {
+                        if (empty($szin['kepurlmedium'])) {
+                            $szin['kepurlmini'] = $termek->getKepurlMini();
+                            $szin['kepurlsmall'] = $termek->getKepurlSmall();
+                            $szin['kepurlmedium'] = $termek->getKepurlMedium();
+                            $szin['kepurllarge'] = $termek->getKepurlLarge();
+                        }
+                    }
+                    unset($szin);
                     $t['valtozatok'] = $vtt;
                     $this->view->setVar('termek', $t);
                     $this->view->printTemplateResult(true);
