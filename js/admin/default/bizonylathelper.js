@@ -2829,6 +2829,36 @@ let bizonylathelper = function ($) {
                                 }
                             });
                             break;
+                        case 'glsdelete':
+                            dialogcenter.html('Biztos, hogy törli a kijelölt megrendelések csomagcímkéjét a GLS-nél?').dialog({
+                                resizable: false,
+                                height: 140,
+                                modal: true,
+                                buttons: {
+                                    'Igen': function () {
+                                        const dia = $(this);
+                                        $.ajax({
+                                            url: `/admin/${entityName}/delglsparcel`,
+                                            type: 'POST',
+                                            dataType: 'json',
+                                            data: {
+                                                ids: tomb
+                                            },
+                                            success: (res) => {
+                                                dia.dialog('close');
+                                                $('.mattable-tablerefresh').click();
+                                                if (res && res.error) {
+                                                    mkwHiba(res.error);
+                                                }
+                                            }
+                                        });
+                                    },
+                                    'Nem': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                            break;
                         case 'fedexsend':
                             dialogcenter.html('Biztos, hogy elküldi a megrendeléseket?').dialog({
                                 resizable: false,
@@ -3404,12 +3434,16 @@ let bizonylathelper = function ($) {
                                 $.ajax({
                                     url: '/admin/' + entityName + '/delglsparcel',
                                     type: 'POST',
+                                    dataType: 'json',
                                     data: {
-                                        id: $this.data('egyedid')
+                                        ids: [$this.data('egyedid')]
                                     },
-                                    success: function (data) {
+                                    success: function (res) {
                                         dia.dialog('close');
                                         $('.mattable-tablerefresh').click();
+                                        if (res && res.error) {
+                                            mkwHiba(res.error);
+                                        }
                                     }
                                 });
                             },

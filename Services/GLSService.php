@@ -138,14 +138,7 @@ class GLSService
 
     private function _sendToGLS($glsmegrend, $pdfname)
     {
-        $glsapi = new \mkwhelpers\GLSAPI([
-                'clientnumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
-                'username' => \mkw\store::getParameter(\mkw\consts::GLSUsername),
-                'password' => \mkw\store::getParameter(\mkw\consts::GLSPassword),
-                'apiurl' => \mkw\store::getParameter(\mkw\consts::GLSApiURL),
-                'pdfdirectory' => \mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir)
-            ]
-        );
+        $glsapi = $this->getApi();
         $glsres = $glsapi->printLabels($glsmegrend, $pdfname);
         $glserror = $glsapi->getLasterrors();
         if ($glserror) {
@@ -189,29 +182,81 @@ class GLSService
         return $result;
     }
 
-    public function delGLSParcel($id)
+    /**
+     * @return array a GLS hibái olvasható formában – üres tömb, ha minden címke törlődött
+     */
+    public function delGLSParcels($ids)
     {
-        /** @var \Entities\Bizonylatfej $megrendfej */
-        $megrendfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
-        if ($megrendfej) {
-            $glsapi = new \mkwhelpers\GLSAPI([
-                    'clientnumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
-                    'username' => \mkw\store::getParameter(\mkw\consts::GLSUsername),
-                    'password' => \mkw\store::getParameter(\mkw\consts::GLSPassword),
-                    'apiurl' => \mkw\store::getParameter(\mkw\consts::GLSApiURL),
-                    'pdfdirectory' => \mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir)
-                ]
-            );
-            $glsres = $glsapi->deleteLabels([$megrendfej->getGlsparcelid()]);
-            if ($glsres && $glsres[0]->ParcelId == $megrendfej->getGlsparcelid()) {
-                $megrendfej->setSimpleedit(true);
-                $megrendfej->setGlsparcellabelurl(null);
-                $megrendfej->setGlsparcelid(null);
-                $megrendfej->setFuvarlevelszam(null);
-                \mkw\store::getEm()->persist($megrendfej);
-                \mkw\store::getEm()->flush();
+        $parcelids = [];
+        foreach ($ids as $id) {
+            /** @var Bizonylatfej $megrendfej */
+            $megrendfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
+            if ($megrendfej && $megrendfej->getGlsparcelid()) {
+                $parcelids[$megrendfej->getGlsparcelid()] = $megrendfej->getId();
             }
         }
+        if (!$parcelids) {
+            return [t('A kijelöltek közt nincs olyan megrendelés, amelynek GLS csomagcímkéje van.')];
+        }
+        $glsapi = $this->getApi();
+        $glsres = $glsapi->deleteLabels(array_keys($parcelids));
+        $glserror = $glsapi->getLasterrors();
+        if ($glserror) {
+            \mkw\store::writeLog('GLS API error: ' . json_encode($glserror), 'gls_api_error.txt');
+        }
+        foreach ((array)$glsres as $item) {
+            if (isset($parcelids[$item->ParcelId])) {
+                $this->clearGLSParcel($parcelids[$item->ParcelId]);
+            }
+        }
+        $result = [];
+        foreach ((array)$glserror as $error) {
+            $bizonylatok = (array)($error->ClientReferenceList ?? []);
+            foreach ((array)($error->ParcelIdList ?? []) as $parcelid) {
+                $bizonylatok[] = $parcelids[$parcelid] ?? $parcelid;
+            }
+            $bizonylatok = array_unique($bizonylatok);
+            $result[] = trim(implode(', ', $bizonylatok) . ': ' . ($error->ErrorDescription ?? ''), ': ');
+        }
+        if (!$result && !$glsres) {
+            $result[] = t('A GLS nem válaszolt.');
+        }
+        return $result;
+    }
+
+    private function clearGLSParcel($id)
+    {
+        /** @var Bizonylatfej $megrendfej */
+        $megrendfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
+        $pdfname = $megrendfej->getGlsparcellabelurl('');
+        $megrendfej->setSimpleedit(true);
+        $megrendfej->setGlsparcellabelurl(null);
+        $megrendfej->setGlsparcelid(null);
+        $megrendfej->setFuvarlevelszam(null);
+        \mkw\store::getEm()->persist($megrendfej);
+        \mkw\store::getEm()->flush();
+        // one PDF holds up to 4 labels: remove it only once none of them is left, so a deleted label can't be printed
+        if ($pdfname) {
+            $marad = \mkw\store::getEm()->getConnection()->fetchOne(
+                'SELECT COUNT(*) FROM bizonylatfej WHERE glsparcellabelurl = ?',
+                [$pdfname]
+            );
+            if (!$marad && is_file($pdfname)) {
+                @unlink($pdfname);
+            }
+        }
+    }
+
+    private function getApi()
+    {
+        return new \mkwhelpers\GLSAPI([
+                'clientnumber' => \mkw\store::getParameter(\mkw\consts::GLSClientNumber),
+                'username' => \mkw\store::getParameter(\mkw\consts::GLSUsername),
+                'password' => \mkw\store::getParameter(\mkw\consts::GLSPassword),
+                'apiurl' => \mkw\store::getParameter(\mkw\consts::GLSApiURL),
+                'pdfdirectory' => \mkw\store::getParameter(\mkw\consts::GLSParcelLabelDir)
+            ]
+        );
     }
 
 }

@@ -21,6 +21,7 @@ class webshopbizfejController extends bizonylatfejController
         $this->getRepo()->addToBatches(['foxpostsend' => 'Küldés Foxpostnak']);
         $this->getRepo()->addToBatches(['foxpostlabel' => 'Foxpost címke letöltés']);
         $this->getRepo()->addToBatches(['glssend' => 'Küldés GLS-nek']);
+        $this->getRepo()->addToBatches(['glsdelete' => 'GLS csomagcímke törlés']);
         $this->getRepo()->addToBatches(['fedexsend' => 'Küldés Fedexnek']);
         $this->getRepo()->addToBatches(['recalcprice' => 'Árak újra számolása']);
         $this->getRepo()->addToBatches(['sendemailek' => 'Email sablon küldés']);
@@ -66,7 +67,12 @@ class webshopbizfejController extends bizonylatfejController
     public function delGLSParcel()
     {
         $glssvc = new GLSService();
-        $glssvc->delGLSParcel($this->params->getStringRequestParam('id'));
+        $errors = $glssvc->delGLSParcels($this->params->getArrayRequestParam('ids'));
+        if ($errors) {
+            $this->jsonFail(implode("\n", $errors));
+            return;
+        }
+        echo json_encode(['ok' => true]);
     }
 
     public function sendToFedex()

@@ -149,8 +149,9 @@ class GLSAPI {
         $response = $this->callAPI('DeleteLabels', $requestdata);
         if ($response) {
             $response = json_decode($response);
-            $this->lasterrors = $response->DeleteLabelsErrorList;
-            if (count($response->DeleteLabelsErrorList) === 0 && count($response->SuccessfullyDeletedList) > 0) {
+            $this->lasterrors = $response->DeleteLabelsErrorList ?? [];
+            // partial success is possible: the deleted ones are listed even when others failed
+            if (!empty($response->SuccessfullyDeletedList)) {
                 return $response->SuccessfullyDeletedList;
             }
         }
