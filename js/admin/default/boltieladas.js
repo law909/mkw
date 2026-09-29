@@ -93,6 +93,19 @@ var boltieladas = (function ($) {
         recalcRow($row);
     }
 
+    // A fej kedvezménye minden tételre; üresen hagyva a tételek saját kedvezménye marad.
+    function applyKedvezmeny($cont, $rows) {
+        const kedv = $cont.find('.js-boltieladas-kedvezmeny').val();
+        if (kedv === '' || kedv === undefined) {
+            return;
+        }
+        $rows.each(function () {
+            const $row = $(this);
+            $row.find('.js-be-kedvezmeny').val(fmt(num(kedv)));
+            syncPrices($row, 'kedvezmeny');
+        });
+    }
+
     // A keresés eredményének kezelése: kész tételsor a táblázatba, változatválasztó a táblázat
     // alatti dobozba, semmi találat esetén hibaüzenet.
     function handleResult($cont, res) {
@@ -118,6 +131,7 @@ var boltieladas = (function ($) {
         var $row = $(html);
         $cont.find('.js-boltieladas-tetelek').append($row);
         recalcRow($row);
+        applyKedvezmeny($cont, $row);
         recalcTotals($cont);
         $cont.find('.js-boltieladas-valtozatvalaszto').empty();
         $cont.find('.js-boltieladas-vonalkod').val('').focus();
@@ -233,6 +247,7 @@ var boltieladas = (function ($) {
             success: function (res) {
                 if (res && res.ok) {
                     $cont.find('.js-boltieladas-tetelek').empty();
+                    $cont.find('.js-boltieladas-kedvezmeny').val('');
                     recalcTotals($cont);
                     $uzenet.removeClass('boltieladas-hiba').text('Rögzítve: ' + res.id);
                     $cont.find('.js-boltieladas-vonalkod').val('').focus();
@@ -275,6 +290,7 @@ var boltieladas = (function ($) {
                     }
                     // A számla megnyílt: a POS kosarát ürítjük.
                     $cont.find('.js-boltieladas-tetelek').empty();
+                    $cont.find('.js-boltieladas-kedvezmeny').val('');
                     recalcTotals($cont);
                     $cont.find('.js-boltieladas-vonalkod').val('').focus();
                     $uzenet.removeClass('boltieladas-hiba').text('Számla megnyitva.');
@@ -346,6 +362,10 @@ var boltieladas = (function ($) {
         });
         $cont.on('change', '.js-be-kedvezmeny', function () {
             syncPrices($(this).closest('.js-boltieladas-tetel'), 'kedvezmeny');
+            recalcTotals($cont);
+        });
+        $cont.on('change', '.js-boltieladas-kedvezmeny', function () {
+            applyKedvezmeny($cont, $cont.find('.js-boltieladas-tetel'));
             recalcTotals($cont);
         });
         $cont.on('change', '.js-be-nettoegysar', function () {
