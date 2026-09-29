@@ -1353,7 +1353,7 @@ class Bizonylatfej
                 }
                 $mailer->setSubject($subject->getTemplateResult());
                 $mailer->setMessage($body->getTemplateResult());
-                if ($bf->getBizonylatstatuszId() == \mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben)) {
+                if ($bf->getBizonylatstatuszId() == Bizonylattipus::rogzitveStatuszFor($bf->getBizonylattipus())?->getId()) {
                     $mailer->send();
                 } else {
                     $mailer->send(true);

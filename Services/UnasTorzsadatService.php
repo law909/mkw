@@ -299,7 +299,7 @@ class UnasTorzsadatService
      *
      * @return Bizonylatstatusz|null
      */
-    public function resolveBizonylatstatusz(array $order)
+    public function resolveBizonylatstatusz(array $order, ?\Entities\Bizonylattipus $tipus = null)
     {
         $repo = $this->repo(Bizonylatstatusz::class);
         $status = $order['status'] ?? [];
@@ -320,7 +320,7 @@ class UnasTorzsadatService
         }
 
         $type = trim((string)($status['type'] ?? ''));
-        $statusz = $repo->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+        $statusz = \Entities\Bizonylattipus::rogzitveStatuszFor($tipus);
         $this->warn(
             sprintf(
                 t('Az UNAS "%s" (id: %s, típus: %s) rendelésstátusza nincs leképezve, a bizonylat a(z) "%s" státuszt kapta.'),

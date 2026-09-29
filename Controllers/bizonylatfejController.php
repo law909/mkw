@@ -156,7 +156,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
                 if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
                     $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(
-                        \mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben),
+                        Bizonylattipus::rogzitveStatuszFor($this->getBiztipus())?->getId(),
                         null,
                         null,
                         $this->getBiztipusId()

@@ -137,6 +137,24 @@ class Bizonylattipus
     /** A munkalap saját fejadatai: jármű, km óra, hiba, következő szerviz, munkalap státusz. */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showmunkalapadatok = false;
+    /**
+     * A típus saját "rögzítve", "teljesíthető" és "backorder" státusza; üresen a Beállítások
+     * szerinti közös státusz érvényes (getRogzitveStatuszOrDefault() és társai).
+     *
+     * @ORM\ManyToOne(targetEntity="Bizonylatstatusz")
+     * @ORM\JoinColumn(name="rogzitvestatusz_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $rogzitvestatusz;
+    /**
+     * @ORM\ManyToOne(targetEntity="Bizonylatstatusz")
+     * @ORM\JoinColumn(name="teljesithetostatusz_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $teljesithetostatusz;
+    /**
+     * @ORM\ManyToOne(targetEntity="Bizonylatstatusz")
+     * @ORM\JoinColumn(name="backorderstatusz_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $backorderstatusz;
 
     /**
      * A számla jellegű bizonylattípusok id-i. A típuson nincs „ez számla" jelző, a
@@ -877,6 +895,79 @@ class Bizonylattipus
     public function setShowgarancialisadatok($showgarancialisadatok): void
     {
         $this->showgarancialisadatok = $showgarancialisadatok;
+    }
+
+    public function getRogzitvestatusz(): ?Bizonylatstatusz
+    {
+        return $this->rogzitvestatusz;
+    }
+
+    public function getRogzitvestatuszId()
+    {
+        return $this->rogzitvestatusz?->getId();
+    }
+
+    public function setRogzitvestatusz(?Bizonylatstatusz $val): void
+    {
+        $this->rogzitvestatusz = $val;
+    }
+
+    public function getTeljesithetostatusz(): ?Bizonylatstatusz
+    {
+        return $this->teljesithetostatusz;
+    }
+
+    public function getTeljesithetostatuszId()
+    {
+        return $this->teljesithetostatusz?->getId();
+    }
+
+    public function setTeljesithetostatusz(?Bizonylatstatusz $val): void
+    {
+        $this->teljesithetostatusz = $val;
+    }
+
+    public function getBackorderstatusz(): ?Bizonylatstatusz
+    {
+        return $this->backorderstatusz;
+    }
+
+    public function getBackorderstatuszId()
+    {
+        return $this->backorderstatusz?->getId();
+    }
+
+    public function setBackorderstatusz(?Bizonylatstatusz $val): void
+    {
+        $this->backorderstatusz = $val;
+    }
+
+    public function getRogzitveStatuszOrDefault(): ?Bizonylatstatusz
+    {
+        return $this->rogzitvestatusz ?? self::findDefaultStatusz(\mkw\consts::BizonylatStatuszFuggoben);
+    }
+
+    public function getTeljesithetoStatuszOrDefault(): ?Bizonylatstatusz
+    {
+        return $this->teljesithetostatusz ?? self::findDefaultStatusz(\mkw\consts::BizonylatStatuszTeljesitheto);
+    }
+
+    public function getBackorderStatuszOrDefault(): ?Bizonylatstatusz
+    {
+        return $this->backorderstatusz ?? self::findDefaultStatusz(\mkw\consts::BizonylatStatuszBackorder);
+    }
+
+    /** A Beállításokban megadott közös státusz; típus nélküli hívóknak is. */
+    public static function findDefaultStatusz(string $parameter): ?Bizonylatstatusz
+    {
+        $id = \mkw\store::getParameter($parameter);
+        return $id ? \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find($id) : null;
+    }
+
+    /** A típus "rögzítve" státusza, típus nélkül a közös. */
+    public static function rogzitveStatuszFor(?Bizonylattipus $tipus): ?Bizonylatstatusz
+    {
+        return $tipus ? $tipus->getRogzitveStatuszOrDefault() : self::findDefaultStatusz(\mkw\consts::BizonylatStatuszFuggoben);
     }
 
 }

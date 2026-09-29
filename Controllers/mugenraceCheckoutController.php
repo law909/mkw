@@ -236,7 +236,7 @@ class mugenraceCheckoutController extends checkoutController
             } elseif (\mkw\store::isStripeFizmod($fizetesimod)) {
                 $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::StripeFizetesrevarStatusz));
             } else {
-                $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                $bizstatusz = Bizonylattipus::rogzitveStatuszFor($biztipus);
             }
             $megrendfej->setBizonylatstatusz($bizstatusz);
 

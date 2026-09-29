@@ -3,7 +3,6 @@
 namespace Services;
 
 use Entities\Bizonylatfej;
-use Entities\Bizonylatstatusz;
 use Entities\Bizonylattipus;
 use Entities\TermekFa;
 
@@ -67,12 +66,13 @@ class BackorderService extends AbstractBizonylatSzetbontasService
             \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
         )?->getKarkod();
         $stocktozero = $this->isStockToZero();
-        $teljesitheto = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(
-            \mkw\store::getParameter(\mkw\consts::BizonylatStatuszTeljesitheto)
-        );
-        $backorder = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(
-            \mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder)
-        );
+        $tipus = $regibiz->getBizonylattipus();
+        $teljesitheto = $tipus
+            ? $tipus->getTeljesithetoStatuszOrDefault()
+            : Bizonylattipus::findDefaultStatusz(\mkw\consts::BizonylatStatuszTeljesitheto);
+        $backorder = $tipus
+            ? $tipus->getBackorderStatuszOrDefault()
+            : Bizonylattipus::findDefaultStatusz(\mkw\consts::BizonylatStatuszBackorder);
         \mkw\store::getEm()->beginTransaction();
         try {
             // tervet készítünk: tételenként mennyi teljesíthető és mennyi kerül backorderre
@@ -201,21 +201,34 @@ class BackorderService extends AbstractBizonylatSzetbontasService
     public function getTeljesithetoBackorderLista()
     {
         $ret = [];
-        $foglalotipusok = Bizonylattipus::getFoglalIdList();
-        $backorder = \mkw\store::getEm()->getRepository(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszBackorder));
-        if ($backorder && $foglalotipusok) {
+        // típusonként más lehet a backorder státusz: státuszonként egy lekérdezés a hozzá tartozó típusokkal
+        $tipusokStatuszonkent = [];
+        $tipusrepo = \mkw\store::getEm()->getRepository(Bizonylattipus::class);
+        foreach (Bizonylattipus::getFoglalIdList() as $tipusid) {
+            $backorder = $tipusrepo->find($tipusid)?->getBackorderStatuszOrDefault();
+            if ($backorder) {
+                $tipusokStatuszonkent[$backorder->getId()][] = $tipusid;
+            }
+        }
+        if ($tipusokStatuszonkent) {
             $nominkeszlet = \mkw\store::getParameter(\mkw\consts::NoMinKeszlet);
             $nominkeszletkat = \mkw\store::getEm()->getRepository(TermekFa::class)->find(
                 \mkw\store::getParameter(\mkw\consts::NoMinKeszletTermekkat)
             )?->getKarkod();
             $stocktozero = $this->isStockToZero();
 
-            $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter('bizonylatstatusz', '=', $backorder);
-            $filter->addFilter('bizonylattipus', '', $foglalotipusok);
-            $filter->addFilter('rontott', '=', false);
-            $filter->addFilter('hibas', '=', false);
-            $fejek = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->getWithTetelek($filter, ['hatarido' => 'ASC']);
+            $fejek = [];
+            foreach ($tipusokStatuszonkent as $statuszid => $tipusok) {
+                $filter = new \mkwhelpers\FilterDescriptor();
+                $filter->addFilter('bizonylatstatusz', '=', $statuszid);
+                $filter->addFilter('bizonylattipus', '', $tipusok);
+                $filter->addFilter('rontott', '=', false);
+                $filter->addFilter('hibas', '=', false);
+                array_push($fejek, ...\mkw\store::getEm()->getRepository(Bizonylatfej::class)->getWithTetelek($filter, ['hatarido' => 'ASC']));
+            }
+            if (count($tipusokStatuszonkent) > 1) {
+                usort($fejek, fn($a, $b) => $a->getHatarido() <=> $b->getHatarido());
+            }
             if ($fejek) {
                 /** @var \Entities\Bizonylatfej $fej */
                 foreach ($fejek as $fej) {

@@ -259,7 +259,7 @@ class mindentkapniCheckoutController extends checkoutController
             if (\mkw\store::isBarionFizmod($fizetesimod)) {
                 $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BarionFizetesrevarStatusz));
             } else {
-                $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                $bizstatusz = Bizonylattipus::rogzitveStatuszFor($biztipus);
             }
             $megrendfej->setBizonylatstatusz($bizstatusz);
             if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {

@@ -489,7 +489,7 @@ class checkoutController extends \mkwhelpers\MattableController
             $mf->setFizmod($f);
             $this->getEm()->persist($mf);
             $this->getEm()->flush();
-            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+            $bizstatusz = \Entities\Bizonylattipus::rogzitveStatuszFor($mf->getBizonylattipus());
             if ($bizstatusz) {
                 $mf->sendStatuszEmail($bizstatusz->getEmailtemplate());
             }

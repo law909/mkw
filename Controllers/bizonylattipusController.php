@@ -52,7 +52,12 @@ class bizonylattipusController extends \mkwhelpers\MattableController
             $t = new Bizonylattipus();
             $this->getEm()->detach($t);
         }
-        return $this->getEntityFieldsArray($t);
+        $bsc = new bizonylatstatuszController();
+        return $this->getEntityFieldsArray($t, [
+            'rogzitvestatuszlist' => $bsc->getSelectList($t->getRogzitvestatuszId(), null, null, $t->getId()),
+            'teljesithetostatuszlist' => $bsc->getSelectList($t->getTeljesithetostatuszId(), null, null, $t->getId()),
+            'backorderstatuszlist' => $bsc->getSelectList($t->getBackorderstatuszId(), null, null, $t->getId()),
+        ]);
     }
 
     /**
@@ -68,6 +73,10 @@ class bizonylattipusController extends \mkwhelpers\MattableController
             $obj->setId($this->params->getStringRequestParam('id'));
         }
         $this->setEntityFieldsFromRequest($obj);
+        $statuszrepo = $this->getRepo(\Entities\Bizonylatstatusz::class);
+        $obj->setRogzitvestatusz($statuszrepo->find($this->params->getIntRequestParam('rogzitvestatusz')));
+        $obj->setTeljesithetostatusz($statuszrepo->find($this->params->getIntRequestParam('teljesithetostatusz')));
+        $obj->setBackorderstatusz($statuszrepo->find($this->params->getIntRequestParam('backorderstatusz')));
         return $obj;
     }
 

@@ -82,6 +82,39 @@
                         <td><label for="KellkapcsolodokoltsegetszamolniEdit">Kapcsolódó költséget számol:</label></td>
                         <td><input id="KellkapcsolodokoltsegetszamolniEdit" name="kellkapcsolodokoltsegetszamolni" type="checkbox"{if ($egyed.kellkapcsolodokoltsegetszamolni)} checked="checked"{/if}></td>
                     </tr>
+                    <tr>
+                        <td><label for="RogzitvestatuszEdit">{at('"Rögzítve" státusz')}:</label></td>
+                        <td colspan="3">
+                            <select id="RogzitvestatuszEdit" name="rogzitvestatusz">
+                                <option value="">{at('a Beállítások szerint')}</option>
+                                {foreach $egyed.rogzitvestatuszlist as $_st}
+                                    <option value="{$_st.id}"{if ($_st.selected)} selected="selected"{/if}>{$_st.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="TeljesithetostatuszEdit">{at('"Teljesíthető" státusz')}:</label></td>
+                        <td colspan="3">
+                            <select id="TeljesithetostatuszEdit" name="teljesithetostatusz">
+                                <option value="">{at('a Beállítások szerint')}</option>
+                                {foreach $egyed.teljesithetostatuszlist as $_st}
+                                    <option value="{$_st.id}"{if ($_st.selected)} selected="selected"{/if}>{$_st.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="BackorderstatuszEdit">{at('"Backorder" státusz')}:</label></td>
+                        <td colspan="3">
+                            <select id="BackorderstatuszEdit" name="backorderstatusz">
+                                <option value="">{at('a Beállítások szerint')}</option>
+                                {foreach $egyed.backorderstatuszlist as $_st}
+                                    <option value="{$_st.id}"{if ($_st.selected)} selected="selected"{/if}>{$_st.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

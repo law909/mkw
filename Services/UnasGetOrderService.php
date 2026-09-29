@@ -359,7 +359,7 @@ class UnasGetOrderService
         $valutanem = $this->torzsadat->resolveValutanem($order['currency']);
         $fizmod = $this->torzsadat->resolveFizmod($order['payment']);
         $szallitasimod = $this->torzsadat->resolveSzallitasimod($order['shipping']);
-        $bizonylatstatusz = $this->torzsadat->resolveBizonylatstatusz($order);
+        $bizonylatstatusz = $this->torzsadat->resolveBizonylatstatusz($order, $biztipus);
         $raktar = $this->torzsadat->resolveRaktar();
         $terminal = $this->torzsadat->resolveCsomagterminal(
             $szallitasimod,
@@ -464,7 +464,7 @@ class UnasGetOrderService
             return $this->rebuildOrder($fej, $order);
         }
 
-        $statusz = $this->torzsadat->resolveBizonylatstatusz($order);
+        $statusz = $this->torzsadat->resolveBizonylatstatusz($order, $fej->getBizonylattipus());
         $valtozott = false;
 
         if ($statusz && $fej->getBizonylatstatuszId() != $statusz->getId()) {
@@ -509,8 +509,7 @@ class UnasGetOrderService
         if (count($fej->getSzulobizonylatfejek())) {
             return false;
         }
-        $fuggoben = \mkw\store::getEm()->getRepository(\Entities\Bizonylatstatusz::class)
-            ->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+        $fuggoben = Bizonylattipus::rogzitveStatuszFor($fej->getBizonylattipus());
         if (!$fuggoben) {
             return false;
         }
@@ -535,7 +534,7 @@ class UnasGetOrderService
         $em = \mkw\store::getEm();
 
         $szallitasimod = $this->torzsadat->resolveSzallitasimod($order['shipping']);
-        $statusz = $this->torzsadat->resolveBizonylatstatusz($order);
+        $statusz = $this->torzsadat->resolveBizonylatstatusz($order, $fej->getBizonylattipus());
         $items = $this->resolveItems($order, $szallitasimod);
 
         $em->beginTransaction();

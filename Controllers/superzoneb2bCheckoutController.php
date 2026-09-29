@@ -123,7 +123,7 @@ class superzoneb2bCheckoutController extends checkoutController
             if ($valutanem) {
                 $megrendfej->setBankszamla($valutanem->getBankszamla());
             }
-            $bizstatusz = $this->getRepo(Bizonylatstatusz::class)->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+            $bizstatusz = Bizonylattipus::rogzitveStatuszFor($biztipus);
             $megrendfej->setBizonylatstatusz($bizstatusz);
 
             $lasttermeknevek = [];

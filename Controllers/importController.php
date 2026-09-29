@@ -3749,7 +3749,7 @@ class importController extends \mkwhelpers\Controller
                 }
                 $fej->setArfolyam(1);
 
-                $ck = \mkw\store::getEm()->getRepository('Entities\Bizonylatstatusz')->find(\mkw\store::getParameter(\mkw\consts::BizonylatStatuszFuggoben));
+                $ck = Bizonylattipus::rogzitveStatuszFor($fej->getBizonylattipus());
                 if ($ck) {
                     $fej->setBizonylatstatusz($ck);
                 }
