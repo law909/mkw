@@ -27,6 +27,14 @@ class ElolegService
 
     public const BIZTIPUS = 'elolegszamla';
 
+    public const SZALLITOIBIZTIPUS = 'szallitoieloleg';
+
+    /** An incoming document (irany 1, e.g. bevét) offsets supplier advances, an outgoing one advance invoices. */
+    public static function getAdvanceTypeFor(Bizonylatfej $szamla): string
+    {
+        return $szamla->getIrany() == 1 ? self::SZALLITOIBIZTIPUS : self::BIZTIPUS;
+    }
+
     /**
      * The configured advance product, or null with the reason in $hiba.
      *
@@ -54,7 +62,7 @@ class ElolegService
     }
 
     /**
-     * Advance invoices still offsettable against this final invoice: same partner, same currency,
+     * Advances (see getAdvanceTypeFor()) still offsettable against this document: same partner, same currency,
      * not voided, neither a reversal nor reversed, and with a remaining amount.
      *
      * @return array<int, array{id: string, keltstr: string, teljesitesstr: string, egyenleg: float,
@@ -66,7 +74,7 @@ class ElolegService
             return [];
         }
         $filter = new FilterDescriptor();
-        $filter->addFilter('bizonylattipus', '=', self::BIZTIPUS);
+        $filter->addFilter('bizonylattipus', '=', self::getAdvanceTypeFor($szamla));
         $filter->addFilter('partner', '=', $szamla->getPartnerId());
         $filter->addFilter('rontott', '=', false);
         $filter->addFilter('storno', '=', false);
@@ -225,7 +233,7 @@ class ElolegService
             $cikl++;
         }
         if (!$ret) {
-            $hiba = t('Ezen az előlegszámlán nincs beszámítható összeg.');
+            $hiba = t('Ezen az előlegen nincs beszámítható összeg.');
         }
         return $ret;
     }
@@ -272,20 +280,22 @@ class ElolegService
             $hiba = t('Az előlegszámla nem található.');
             return false;
         }
-        if ($eloleg->getBizonylattipusId() !== self::BIZTIPUS) {
-            $hiba = t('A hivatkozott bizonylat nem előlegszámla.');
+        if ($eloleg->getBizonylattipusId() !== self::getAdvanceTypeFor($szamla)) {
+            $hiba = $szamla->getIrany() == 1
+                ? t('A hivatkozott bizonylat nem szállítói előleg.')
+                : t('A hivatkozott bizonylat nem előlegszámla.');
             return false;
         }
         if ($eloleg->getRontott() || $eloleg->getStorno() || $eloleg->getStornozott()) {
-            $hiba = t('A hivatkozott előlegszámla rontott, stornó vagy stornózott.');
+            $hiba = t('A hivatkozott előleg rontott, stornó vagy stornózott.');
             return false;
         }
         if ($eloleg->getPartnerId() != $szamla->getPartnerId()) {
-            $hiba = t('Az előlegszámla más partneré.');
+            $hiba = t('Az előleg más partneré.');
             return false;
         }
         if ($eloleg->getValutanemId() != $szamla->getValutanemId()) {
-            $hiba = t('Az előlegszámla más valutanemű.');
+            $hiba = t('Az előleg más valutanemű.');
             return false;
         }
         return true;

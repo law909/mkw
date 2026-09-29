@@ -890,7 +890,7 @@ class Bizonylatfej
                 continue;
             }
             if ($eloleg->getValutanemId() != $this->getValutanemId()) {
-                $hibak[] = t('A beszámított előlegszámla valutaneme eltér a bizonylatétól') . ': ' . $eloleg->getId();
+                $hibak[] = t('A beszámított előleg valutaneme eltér a bizonylatétól') . ': ' . $eloleg->getId();
             }
             if (!$bt->getElolegfizetesdatum()) {
                 $hibak[] = t('A beszámított előlegnél hiányzik a fizetés dátuma') . ': ' . $eloleg->getId();
@@ -915,7 +915,7 @@ class Bizonylatfej
             $kerete = $maradek[$afaid]['netto'] ?? 0;
             // the offset is negative, the remaining budget positive
             if (-$osszeg - $kerete > 0.01) {
-                $hibak[] = t('A beszámított előleg összege nagyobb az előlegszámla összegénél') . ': ' . $elolegid;
+                $hibak[] = t('A beszámított előleg összege nagyobb az előleg összegénél') . ': ' . $elolegid;
             }
         }
     }

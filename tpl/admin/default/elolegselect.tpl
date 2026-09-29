@@ -24,7 +24,7 @@
             </tr>
         {foreachelse}
             <tr>
-                <td colspan="6">{at('Nincs beszámítható előlegszámla ehhez a partnerhez.')}</td>
+                <td colspan="6">{if ($szallitoieloleg)}{at('Nincs beszámítható szállítói előleg ehhez a partnerhez.')}{else}{at('Nincs beszámítható előlegszámla ehhez a partnerhez.')}{/if}</td>
             </tr>
         {/foreach}
         </tbody>

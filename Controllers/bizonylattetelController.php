@@ -162,6 +162,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         \Services\ElolegService::getElolegTermek($hiba);
         $view->setVar('hiba', $hiba);
         $view->setVar('elolegek', $hiba ? [] : \Services\ElolegService::getOffsettableAdvances($szamla));
+        $view->setVar('szallitoieloleg', \Services\ElolegService::getAdvanceTypeFor($szamla) === \Services\ElolegService::SZALLITOIBIZTIPUS);
         echo json_encode(['html' => $view->getTemplateResult()]);
     }
 
