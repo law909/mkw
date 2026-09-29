@@ -15,6 +15,8 @@ body.mediatar {
 }
 
 #mediatar {
+    /* a dolgozó színe a fehér háttérhez igazított árnyalatban (a <html> style-ban, UiAppearanceService) */
+    --mt-accent: var(--mkw-accent-l, #2563eb);
     position: absolute;
     top: 0;
     left: 0;
@@ -180,12 +182,16 @@ body.mediatar {
 }
 
 .mt-tile.folder .box {
-    background: #fdf6e3;
-    border-color: #eadfc0;
+    background: color-mix(in srgb, var(--mt-accent) 9%, #fff);
+    border-color: color-mix(in srgb, var(--mt-accent) 35%, #fff);
 }
 
 .mt-tile.folder .icon {
-    color: #d3a83b;
+    color: var(--mt-accent);
+}
+
+.mt-tile.folder svg.icon {
+    vertical-align: middle;
 }
 
 .mt-tile.folder .name {
@@ -346,6 +352,7 @@ body.mediatar {
 }
 
 .mt-msg {
+    white-space: pre-line;
     padding: 6px 10px;
     background: #fde8e8;
     color: #a00;

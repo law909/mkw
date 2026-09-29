@@ -7,6 +7,10 @@
 
     var PAGE = 200;
 
+    // nem emoji: annak a színe CSS-ből nem állítható, a mappa pedig a dolgozó színét kapja
+    const FOLDERICON = '<svg class="icon" viewBox="0 0 24 24" width="42" height="42" aria-hidden="true">'
+        + '<path fill="currentColor" d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"/></svg>';
+
     var $root = $('#mediatar'),
         state = {
             type: $root.data('type') || 'Images',
@@ -23,6 +27,8 @@
             to: 0,
             filter: '',
             pending: '',
+            // a következő sikeres load() ezt írja ki (pl. a feltöltési hibák összesítése)
+            notice: '',
             // a kijelölt fájlok kattintási sorrendben; az utolsó a "fő" kijelölés
             selection: []
         };
@@ -243,7 +249,8 @@
                     $grid.html('<div class="mt-empty">–</div>');
                     return;
                 }
-                message('');
+                message(state.notice);
+                state.notice = '';
                 state.path = d.path;
                 state.folders = d.folders || [];
                 state.files = d.files || [];
@@ -323,7 +330,7 @@
         $.each(state.folders, function (i, f) {
             html.push('<div class="mt-tile folder" data-path="' + esc(f.path) + '" data-name="' + esc(f.name) + '">'
                 + (state.writable ? '<span class="fdel" title="Mappa törlése">&#10005;</span>' : '')
-                + '<div class="box"><span class="icon">&#128193;</span></div>'
+                + '<div class="box">' + FOLDERICON + '</div>'
                 + '<div class="name">' + esc(f.name) + '</div></div>');
         });
         return html.join('');
@@ -603,6 +610,43 @@
     // ------------------------------------------------------------------
 
     var queue = [], uploading = false;
+    let failed = [];
+
+    /** A nem-JSON válaszok (403, 413, PHP fatal, üres törzs) is mondjanak valamit. */
+    function uploadErrorText(xhr, status) {
+        try {
+            const d = JSON.parse(xhr.responseText);
+            if (d && d.error) {
+                return d.error;
+            }
+        } catch (e) {
+            // nem JSON
+        }
+        if (status === 'timeout') {
+            return 'időtúllépés: a szerver nem válaszolt időben';
+        }
+        if (xhr.status === 0) {
+            return 'megszakadt a kapcsolat a szerverrel';
+        }
+        if (xhr.status === 413) {
+            return 'a fájl nagyobb, mint amit a webszerver elfogad (HTTP 413)';
+        }
+        if (xhr.status === 401 || xhr.status === 403) {
+            return `nincs jogosultság, vagy lejárt a bejelentkezés (HTTP ${xhr.status})`;
+        }
+        if (xhr.status >= 500) {
+            return `szerverhiba a feldolgozás közben (HTTP ${xhr.status})`;
+        }
+        if ($.trim(xhr.responseText || '') === '') {
+            return 'a szerver üres választ adott, a fájl nem mentődött el (lehet, hogy túl nagy, vagy a szerver ideiglenes mappája nem írható)';
+        }
+        return `a szerver nem várt választ adott (HTTP ${xhr.status})`;
+    }
+
+    function fail($item, name, reason) {
+        $item.addClass('err').find('.t').text(`${name} — ${reason}`);
+        failed.push(`${name}: ${reason}`);
+    }
 
     function enqueue(files) {
         if (!state.writable) {
@@ -622,6 +666,11 @@
         var file = queue.shift();
         if (!file) {
             uploading = false;
+            if (failed.length) {
+                state.notice = (failed.length === 1 ? 'A fájl feltöltése nem sikerült' : `${failed.length} fájl feltöltése nem sikerült`)
+                    + ':\n' + failed.join('\n');
+                failed = [];
+            }
             load(state.path);
             return;
         }
@@ -633,7 +682,7 @@
         $queue.scrollTop($queue[0].scrollHeight);
 
         if (state.maxsize && file.size > state.maxsize) {
-            $item.addClass('err').find('.t').text(file.name + ' — túl nagy (max. ' + fmtSize(state.maxsize) + ')');
+            fail($item, file.name, `túl nagy (max. ${fmtSize(state.maxsize)})`);
             uploading = false;
             pump();
             return;
@@ -668,11 +717,11 @@
                     $item.addClass('ok').find('.t').text(d.name + ' — feltöltve');
                     $item.find('.bar i').css('width', '100%');
                 } else {
-                    $item.addClass('err').find('.t').text(file.name + ' — ' + ((d && d.error) || 'hiba'));
+                    fail($item, file.name, (d && d.error) || 'ismeretlen hiba');
                 }
             },
-            error: function () {
-                $item.addClass('err').find('.t').text(file.name + ' — a szerver nem válaszolt');
+            error: function (xhr, status) {
+                fail($item, file.name, uploadErrorText(xhr, status));
             },
             complete: function () {
                 uploading = false;

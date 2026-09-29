@@ -165,12 +165,19 @@ class mediatarController extends \mkwhelpers\Controller
         $this->requireAdmin();
         $this->requireWritable();
         $this->requireSameOrigin();
+        $this->respondOnFatal(function ($msg) {
+            if (!headers_sent()) {
+                http_response_code(200);
+                header('Content-Type: application/json; charset=utf-8');
+            }
+            $this->jsonFail($msg);
+        });
         try {
             $this->checkPostMaxSize();
             $mediatar = new \Services\MediatarService($this->getType());
             $file = $_FILES['file'] ?? null;
             if (!$file) {
-                throw new \RuntimeException(t('Nem érkezett fájl'));
+                throw new \RuntimeException($this->noFileMessage());
             }
             $res = $mediatar->upload($file, $this->getOrig('path', '/'));
             $res['ok'] = true;
@@ -201,12 +208,18 @@ class mediatarController extends \mkwhelpers\Controller
             $this->ckCallback($funcnum, '', t('A rendszer zárolva van'));
             return;
         }
+        $this->respondOnFatal(function ($msg) use ($funcnum) {
+            if (!headers_sent()) {
+                http_response_code(200);
+            }
+            $this->ckCallback($funcnum, '', $msg);
+        });
         try {
             $this->checkPostMaxSize();
             $mediatar = new \Services\MediatarService($this->getType());
             $file = $_FILES['upload'] ?? ($_FILES['file'] ?? null);
             if (!$file) {
-                throw new \RuntimeException(t('Nem érkezett fájl'));
+                throw new \RuntimeException($this->noFileMessage());
             }
             $res = $mediatar->upload($file, $this->getOrig('path', '/'));
             $this->ckCallback($funcnum, $res['url'], '');
