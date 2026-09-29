@@ -30,7 +30,7 @@ class UnasGetOrderTask implements CronTask
         \mkw\store::setParameter(\mkw\consts::UnasUtolsoCron, time());
 
         $uzenet = sprintf(
-            'rendelés: %d feldolgozva (%d új, %d meglévő, %d kihagyva, %d hiba, %d lap), kurzor: %s',
+            'rendelés: %d feldolgozva (%d új, %d meglévő, %d kihagyva, %d hiba, %d lap), kurzor: %s%s',
             $poll['feldolgozva'],
             $poll['uj'],
             $poll['letezo'],
@@ -38,6 +38,7 @@ class UnasGetOrderTask implements CronTask
             $poll['hiba'],
             $poll['lapok'],
             $poll['kurzor'] ? date(\mkw\store::$DateTimeFormat, $poll['kurzor']) : '-',
+            $poll['felzarkozas'] ? ' (felzárkózás folyamatban)' : '',
         );
 
         if ($poll['hiba']) {

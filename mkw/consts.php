@@ -496,8 +496,10 @@ class consts
     const UnasVisszairasStatusz = 'unasvisszairasstatusz';
     const UnasVisszairasSzamla = 'unasvisszairasszamla';
     const UnasVisszairasCsomag = 'unasvisszairascsomag';
-    // a rendelés-poller kurzora (unix ts), csak hibátlan futás után lép
+    // a rendelés-poller kurzora (unix ts): eddig a módosítási időig minden rendelés feldolgozva
     const UnasImportCursor = 'unasimportcursor';
+    // felzárkózás közben a bevált lekérési ablak szélessége (mp), 0 = a kurzortól máig
+    const UnasImportWindow = 'unasimportwindow';
     const UnasUtolsoCron = 'unasutolsocron';
 
     const SzamlaOrzesAlap = 'szamlaorzesalap';

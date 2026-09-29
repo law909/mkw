@@ -55,6 +55,13 @@
         <td>{at('Kurzor')}</td>
         <td class="textalignright">{$osszesito.kurzor|date_format:"%Y-%m-%d %H:%M"}</td>
     </tr>
+    {if ($osszesito.felzarkozas)}
+        <tr>
+            <td></td>
+            <td></td>
+            <td colspan="2">{at('Felzárkózás folyamatban, a következő futás innen folytatja.')}</td>
+        </tr>
+    {/if}
     </tbody>
 </table>
 

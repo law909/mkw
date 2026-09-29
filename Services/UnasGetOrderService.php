@@ -33,10 +33,13 @@ class UnasGetOrderService
     /** a getOrder egy hívásban max. 500-at ad, de a feldolgozás a szűk keresztmetszet */
     private const POLLLIMIT = 100;
 
-    /** ennyi lapot húzunk le egy futásban – a többrendeléses getOrder PREMIUM-on 30/óra */
-    private const POLLMAXPAGES = 3;
+    /** az API felső határa: csak a tovább nem szűkíthető, egy másodperces ablakra kérjük */
+    private const POLLMAXLIMIT = 500;
 
-    /** átfedés a kurzor előtt, hogy egy határra eső rendelés se csússzon ki */
+    /** ennyi getOrder hívás egy futásban – a többrendeléses getOrder PREMIUM-on 30/óra */
+    private const POLLMAXCALLS = 3;
+
+    /** a lezárt ablak után ennyit visszalépünk, hogy a határra későn beíródó módosítás se csússzon ki */
     private const POLLOVERLAP = 300;
 
     /** biztonsági margó: a most születő rendelést a következő körben hozzuk */
@@ -168,8 +171,6 @@ class UnasGetOrderService
                 );
                 $result = $this->result('hiba', $order['key'], null, $e->getMessage());
             }
-            // a poller kurzora ebből lép, ha a lapkorlát miatt kellett megállnunk
-            $result['datemod'] = $this->timestamp($order['datemod'] ?: $order['date']);
             $results[] = $result;
             if (!\mkw\store::getEm()->isOpen()) {
                 // zárt EntityManager mellett a köteg többi eleme is elhasalna
@@ -185,12 +186,20 @@ class UnasGetOrderService
      * (API hiba, zárt EntityManager) állítja meg – EGY rendelés bukása nem, különben egy hiányzó
      * törzsadat örökre megállítaná a lehúzást.
      *
+     * Az UNAS a listát rendelési idő szerint adja, nem módosítás szerint, ezért egy tele lapból nem
+     * derül ki, meddig ért a módosítási idő: a kurzort a lehozottak legnagyobb `DateMod`-jára
+     * léptetve a még le nem hozott, korábban módosított rendelések kiestek. Ehelyett csak olyan
+     * módosítási időablakot dolgozunk fel, amire a limitnél kevesebb rendelés jött (az az ablak
+     * teljes tartalma); tele lapnál az ablakot felezzük. A bevált ablakszélesség a következő
+     * futásra megmarad (`UnasImportWindow`), a kurzor mindig a hiánytalanul feldolgozott rész végén áll.
+     *
      * @param bool $csakLetoltes csak lekérjük a rendeléseket és a nyers XML-t elmentjük a
      *                           `storage/logs` alá – NEM importálunk, és a kurzor sem lép,
      *                           tehát a következő igazi lehúzás ugyanezeket hozza majd
      *
-     * @return array{feldolgozva: int, uj: int, letezo: int, hiba: int, lapok: int,
-     *               kurzor: int, csakletoltes: bool, talalt: int, fajlok: array, eredmenyek: array[]}
+     * @return array{feldolgozva: int, uj: int, letezo: int, kihagyva: int, hiba: int, lapok: int,
+     *               kurzor: int, felzarkozas: bool, csakletoltes: bool, talalt: int, fajlok: array,
+     *               eredmenyek: array[]}
      */
     public function pollOrders($csakLetoltes = false)
     {
@@ -198,6 +207,7 @@ class UnasGetOrderService
         if ($cursor <= 0) {
             $cursor = time() - self::FIRSTRUNDAYS * 86400;
         }
+        $width = max(0, (int)\mkw\store::getParameter(\mkw\consts::UnasImportWindow, 0));
         $until = time() - self::POLLMARGIN;
         $summary = [
             'feldolgozva' => 0,
@@ -207,51 +217,56 @@ class UnasGetOrderService
             'hiba' => 0,
             'lapok' => 0,
             'kurzor' => $cursor,
+            'felzarkozas' => $width > 0,
             'csakletoltes' => (bool)$csakLetoltes,
             'talalt' => 0,
             'fajlok' => [],
             'eredmenyek' => []
         ];
-        if ($until <= $cursor - self::POLLOVERLAP) {
+        if ($until <= $cursor) {
             return $summary;
+        }
+        if ($csakLetoltes) {
+            return $this->downloadOnly($cursor, $until, $summary);
         }
 
         $api = $this->unas->getApi();
+        $start = $cursor;
         $vege = false;
-        $megszakadt = false;
-        $utolsoDateMod = 0;
-        for ($page = 0; $page < self::POLLMAXPAGES; $page++) {
+        for ($call = 0; $call < self::POLLMAXCALLS; $call++) {
+            $end = $width > 0 ? min($until, $start + $width) : $until;
+            // egy másodpercnél tovább nem felezhető: ott a teljes API limittel kérünk
+            $limit = $end - $start <= 1 ? self::POLLMAXLIMIT : self::POLLLIMIT;
             $xml = $api->getOrder([
-                'TimeModStart' => $cursor - self::POLLOVERLAP,
-                'TimeModEnd' => $until,
+                'TimeModStart' => $start,
+                'TimeModEnd' => $end,
                 'Order' => 'order_time_asc',
-                'LimitNum' => self::POLLLIMIT,
-                'LimitStart' => $page * self::POLLLIMIT,
+                'LimitNum' => $limit,
+                'LimitStart' => 0,
             ]);
-            if (!$xml) {
+            if ($xml === false) {
                 $summary['hiba']++;
                 $summary['eredmenyek'][] = $this->result('hiba', '', null, $api->getLasterrorsAsString());
-                return $summary;
+                break;
             }
             $summary['lapok']++;
 
-            if ($csakLetoltes) {
-                // a nyers választ az UnasAPI::parseResponse() már kimentette a storage/logs alá
-                $fajl = $api->getLastDumpFile();
-                if ($fajl) {
-                    $summary['fajlok'][] = $fajl;
-                }
-                $db = count($this->orderNodes($xml));
-                $summary['talalt'] += $db;
-                if ($db < self::POLLLIMIT) {
-                    break;
-                }
+            $orderCount = count($this->orderNodes($xml));
+            if ($orderCount >= $limit && $limit < self::POLLMAXLIMIT) {
+                // nem biztos, hogy megvan az ablak minden rendelése: szűkítjük, feldolgozás nélkül
+                $width = max(1, intdiv($end - $start, 2));
                 continue;
             }
+            if ($orderCount >= self::POLLMAXLIMIT) {
+                $summary['hiba']++;
+                $summary['eredmenyek'][] = $this->result('hiba', '', null, sprintf(
+                    t('Egyetlen másodpercben (%s) legalább %d rendelés módosult, a többletet az import nem látja.'),
+                    date(\mkw\store::$DateTimeFormat, $start),
+                    self::POLLMAXLIMIT
+                ));
+            }
 
-            $results = $this->importFromXml($xml);
-            $vege = count($results) < self::POLLLIMIT;
-            foreach ($results as $result) {
+            foreach ($this->importFromXml($xml) as $result) {
                 $summary['eredmenyek'][] = $result;
                 $summary['feldolgozva']++;
                 if ($result['statusz'] === 'uj') {
@@ -263,33 +278,64 @@ class UnasGetOrderService
                 } else {
                     $summary['letezo']++;
                 }
-                if ($result['statusz'] !== 'hiba' && !empty($result['datemod'])) {
-                    $utolsoDateMod = max($utolsoDateMod, (int)$result['datemod']);
-                }
             }
             if (!\mkw\store::getEm()->isOpen()) {
-                $megszakadt = true;
+                // a félbemaradt ablak a következő futásban újra sorra kerül
                 break;
             }
-            if ($vege) {
+            if ($end >= $until) {
+                $vege = true;
                 break;
+            }
+            // a határ másodperce mindkét ablakba beleesik: a dupla import ártalmatlan, a kiesés nem
+            $start = $end;
+            if ($width > 0 && $orderCount < $limit / 2) {
+                $width *= 2;
             }
         }
 
-        // A kurzort infrastruktúra-hiba állítja meg (API hiba: fentebb visszatérünk; zárt
-        // EntityManager: itt), EGY rendelés bukása NEM. Különben egy hiányzó törzsadat miatt
-        // elakadó rendelés örökre megállítaná a lehúzást, és minden körben újranaplózná magát.
-        // A bukott rendelés Apierrorlog sorban a `Key`-jével szerepel, onnan kézzel újraimportálható.
-        if ($csakLetoltes) {
-            // semmit nem importáltunk, tehát a kurzor NEM léphet: a következő igazi lehúzásnak
-            // ugyanezt az ablakot kell újra végigmennie
-            return $summary;
+        if ($vege) {
+            // az átfedés a következő futásban a határra eső, későn beíródó módosításokat is elhozza
+            $start = $until - self::POLLOVERLAP;
+            $width = 0;
         }
-        if (!$megszakadt) {
-            // Ha a lapkorlát miatt álltunk meg, a kurzor csak a feldolgozott rendelésekig lép:
-            // `$until`-ra ugorva a maradék némán kimaradna. Így a következő futás onnan folytatja.
-            $summary['kurzor'] = $vege ? $until : ($utolsoDateMod ?: $cursor);
-            \mkw\store::setParameter(\mkw\consts::UnasImportCursor, $summary['kurzor']);
+        $summary['kurzor'] = max($cursor, $start);
+        $summary['felzarkozas'] = !$vege;
+        \mkw\store::setParameter(\mkw\consts::UnasImportCursor, $summary['kurzor']);
+        \mkw\store::setParameter(\mkw\consts::UnasImportWindow, $vege ? 0 : $width);
+        return $summary;
+    }
+
+    /**
+     * Csak lekérés és a nyers XML mentése: nem importál, és a kurzor sem lép.
+     */
+    private function downloadOnly($cursor, $until, array $summary)
+    {
+        $api = $this->unas->getApi();
+        for ($page = 0; $page < self::POLLMAXCALLS; $page++) {
+            $xml = $api->getOrder([
+                'TimeModStart' => $cursor,
+                'TimeModEnd' => $until,
+                'Order' => 'order_time_asc',
+                'LimitNum' => self::POLLLIMIT,
+                'LimitStart' => $page * self::POLLLIMIT,
+            ]);
+            if ($xml === false) {
+                $summary['hiba']++;
+                $summary['eredmenyek'][] = $this->result('hiba', '', null, $api->getLasterrorsAsString());
+                break;
+            }
+            $summary['lapok']++;
+            // a nyers választ az UnasAPI::parseResponse() már kimentette a storage/logs alá
+            $fajl = $api->getLastDumpFile();
+            if ($fajl) {
+                $summary['fajlok'][] = $fajl;
+            }
+            $db = count($this->orderNodes($xml));
+            $summary['talalt'] += $db;
+            if ($db < self::POLLLIMIT) {
+                break;
+            }
         }
         return $summary;
     }

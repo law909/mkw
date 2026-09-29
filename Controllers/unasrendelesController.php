@@ -140,6 +140,7 @@ class unasrendelesController extends \mkwhelpers\Controller
             }
         }
         \mkw\store::setParameter(\mkw\consts::UnasImportCursor, $ts);
+        \mkw\store::setParameter(\mkw\consts::UnasImportWindow, 0);
         $this->json(['ok' => true, 'kurzor' => $this->cursorStr(), 'kurzorinput' => $this->cursorInput()]);
     }
 
@@ -334,7 +335,11 @@ class unasrendelesController extends \mkwhelpers\Controller
     private function cursorStr()
     {
         $ts = (int)\mkw\store::getParameter(\mkw\consts::UnasImportCursor, 0);
-        return $ts ? date(\mkw\store::$DateTimeFormat, $ts) : t('még nem futott');
+        if (!$ts) {
+            return t('még nem futott');
+        }
+        return date(\mkw\store::$DateTimeFormat, $ts)
+            . ((int)\mkw\store::getParameter(\mkw\consts::UnasImportWindow, 0) ? ' ' . t('(felzárkózás folyamatban)') : '');
     }
 
     private function cursorInput()
