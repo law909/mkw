@@ -22,12 +22,6 @@
                     {/foreach}
                 </select>
             </div>
-            <div class="matt-hseparator"></div>
-            <div class="boltieladas-fejsor">
-                <label for="BoltieladasKedvezmenyEdit">{t('Kedvezmény')} %:</label>
-                <input id="BoltieladasKedvezmenyEdit" class="js-boltieladas-kedvezmeny boltieladas-num" type="number" step="any" min="0" max="100">
-                <span>{t('minden tételre')}</span>
-            </div>
             {if ($showpenztar)}
                 <div class="matt-hseparator"></div>
                 <div class="boltieladas-fejsor js-boltieladas-penztarsor" style="display: none;">
