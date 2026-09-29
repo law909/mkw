@@ -28,7 +28,7 @@ class csomagterminalController extends \mkwhelpers\MattableController
     {
         $view = $this->createView('glscsomagpontletoltes.tpl');
         $view->setVar('pagetitle', t('GLS csomagpont letöltés'));
-        $view->setVar('url', \mkw\store::getParameter(consts::GLSTerminalURL));
+        $view->setVar('vanurl', trim((string)\mkw\store::getParameter(consts::GLSTerminalURL)) !== '');
         $view->setVar('stat', (new GLSService())->getTerminalStat());
         $view->printTemplateResult();
     }
