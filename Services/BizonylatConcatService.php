@@ -46,6 +46,7 @@ class BizonylatConcatService
                             'enettoegysar' => $tetel->getEnettoegysar(),
                             'enettoegysarhuf' => $tetel->getEnettoegysarhuf(),
                             'kedvezmeny' => $tetel->getKedvezmeny(),
+                            'termekegyediazonosito' => $tetel->getTermekegyediazonosito(),
                         ];
                     } else {
                         $termekek[$kulcs]['mennyiseg'] += $tetel->getMennyiseg();
@@ -79,6 +80,7 @@ class BizonylatConcatService
                     $biztetel->setEnettoegysar($termek['enettoegysar']);
                     $biztetel->setEnettoegysarhuf($termek['enettoegysarhuf']);
                     $biztetel->setKedvezmeny($termek['kedvezmeny']);
+                    $biztetel->setTermekegyediazonosito($termek['termekegyediazonosito']);
                     $biztetel->setNettoegysar($termek['nettoegysar']);
                     $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
                     $biztetel->calc();
