@@ -199,28 +199,10 @@
                             </select>
                         </div>
                         <div class="setuprow">
-                            <span class="setuplabel"><label for="GLSSzallmodEdit">{at('GLS csomagpont száll.mód')}:</label></span>
-                            <select id="GLSSzallmodEdit" name="glsszallmod">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $glsszallmodlist as $_foxpost}
-                                    <option value="{$_foxpost.id}"{if ($_foxpost.selected)} selected="selected"{/if}>{$_foxpost.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
                             <span class="setuplabel"><label for="FedexSzallmodEdit">{at('Fedex szállítási mód')}:</label></span>
                             <select id="FedexSzallmodEdit" name="fedexszallmod">
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $fedexszallmodlist as $_foxpost}
-                                    <option value="{$_foxpost.id}"{if ($_foxpost.selected)} selected="selected"{/if}>{$_foxpost.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="GLSFutarSzallmodEdit">{at('GLS futár száll.mód')}:</label></span>
-                            <select id="GLSFutarSzallmodEdit" name="glsfutarszallmod">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $glsfutarszallmodlist as $_foxpost}
                                     <option value="{$_foxpost.id}"{if ($_foxpost.selected)} selected="selected"{/if}>{$_foxpost.caption}</option>
                                 {/foreach}
                             </select>
