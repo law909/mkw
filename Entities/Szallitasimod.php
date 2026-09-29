@@ -15,6 +15,11 @@ class Szallitasimod
 
     use GetsFieldValue;
 
+    public const TIPUS_GLSCSOMAGPONT = 'glscsomagpont';
+    public const TIPUS_GLSFUTAR = 'glsfutar';
+    public const TIPUS_MPL = 'mpl';
+    public const TIPUS_FOXPOST = 'foxpost';
+
     /**
      * @ORM\Id @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -47,6 +52,8 @@ class Szallitasimod
 
     /** @ORM\Column(type="string",length=20,nullable=true) */
     private $terminaltipus;
+    /** @ORM\Column(type="string",length=20,nullable=true) */
+    private $tipus;
     /**
      * Csomagpontra (automatába, átvevőpontra) szállít: a checkout kihagyja a listából, ha a
      * kosárban van csomagpontba nem szállítható termék.
@@ -194,7 +201,31 @@ class Szallitasimod
      */
     public function setTerminaltipus($terminaltipus)
     {
-        $this->terminaltipus = $terminaltipus;
+        $this->terminaltipus = $this->tipus === self::TIPUS_GLSCSOMAGPONT ? 'gls' : $terminaltipus;
+    }
+
+    /** A választható típusok: kulcs = tárolt érték. */
+    public static function getTipusok()
+    {
+        return [
+            self::TIPUS_GLSCSOMAGPONT => 'GLS csomagpont',
+            self::TIPUS_GLSFUTAR => 'GLS futár',
+            self::TIPUS_MPL => 'MPL',
+            self::TIPUS_FOXPOST => 'Foxpost',
+        ];
+    }
+
+    public function getTipus()
+    {
+        return $this->tipus;
+    }
+
+    public function setTipus($tipus)
+    {
+        $this->tipus = array_key_exists((string)$tipus, self::getTipusok()) ? $tipus : null;
+        if ($this->tipus === self::TIPUS_GLSCSOMAGPONT) {
+            $this->terminaltipus = 'gls';
+        }
     }
 
     /**

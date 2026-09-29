@@ -36,6 +36,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $x = $this->getEntityFieldsArray($t);
         $x['termek'] = $t->getTermek()?->getId();
         $x['termeknev'] = $t->getTermek()?->getNev();
+        $x['tipusnev'] = Szallitasimod::getTipusok()[$t->getTipus()] ?? '';
 
         if ($forKarb) {
             if ($letezik) {
@@ -222,6 +223,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
         $view->setVar('egyed', $this->loadVars($record, true));
+        $view->setVar('tipuslist', Szallitasimod::getTipusok());
         return $view->getTemplateResult();
     }
 

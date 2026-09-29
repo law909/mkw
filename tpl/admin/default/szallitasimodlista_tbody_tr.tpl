@@ -5,6 +5,7 @@
         <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a>
         <div class="matt-hseparator"></div>
+        {if ($_egyed.tipusnev)}<div>{$_egyed.tipusnev}</div>{/if}
         <div>{$_egyed.terminaltipus}</div>
         {if ($setup.multishop)}
             <div>{if ($_egyed.webes)}{at('Webes')}{else}{at('Nem webes')}{/if}</div>

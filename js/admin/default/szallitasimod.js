@@ -23,6 +23,14 @@ $(document).ready(function () {
         beforeShow: function () {
             $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                 .autocompleteRenderer(termekAutocompleteRenderer);
+            $('.js-tipus').on('change', function () {
+                const glscsomagpont = $(this).val() === 'glscsomagpont',
+                    $terminaltipus = $('.js-terminaltipus');
+                if (glscsomagpont) {
+                    $terminaltipus.val('gls');
+                }
+                $terminaltipus.prop('readonly', glscsomagpont);
+            });
             $('#AltalanosTab').on('click', '.js-termekclear', function (e) {
                 e.preventDefault();
                 $('.js-termekselect').val(null);

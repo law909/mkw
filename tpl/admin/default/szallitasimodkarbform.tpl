@@ -22,8 +22,20 @@
                     <td colspan="5"><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
                 </tr>
                 <tr>
+                    <td><label for="TipusEdit">{at('Típus')}:</label></td>
+                    <td colspan="5">
+                        <select id="TipusEdit" name="tipus" class="js-tipus">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $tipuslist as $_tipusid => $_tipusnev}
+                                <option value="{$_tipusid}"{if ($_tipusid == $egyed.tipus)} selected="selected"{/if}>{$_tipusnev}</option>
+                            {/foreach}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="TerminaltipusEdit">{at('Terminál típus')}:</label></td>
-                    <td colspan="5"><input id="TerminaltipusEdit" name="terminaltipus" type="text" size="80" maxlength="20" value="{$egyed.terminaltipus}"></td>
+                    <td colspan="5"><input id="TerminaltipusEdit" name="terminaltipus" type="text" size="80" maxlength="20" value="{$egyed.terminaltipus}"
+                                           class="js-terminaltipus"{if ($egyed.tipus == 'glscsomagpont')} readonly="readonly"{/if}></td>
                 </tr>
                 <tr>
                     <td><label for="FizmodEdit">{at('Fizetési módok')}:</label></td>
