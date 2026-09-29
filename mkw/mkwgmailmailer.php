@@ -125,9 +125,10 @@ class mkwgmailmailer
         $messageid = md5(rand()) . '@billy';
 
         $from = \mkw\store::getParameter(\mkw\consts::EmailFrom);
-        $fromdata = explode(';', $from);
-        $fromName = mb_encode_mimeheader($fromdata[1], 'UTF-8', 'Q');
+        // a beállítás `cím;név` alakú, de a név el is maradhat
+        $fromdata = array_map('trim', explode(';', (string)$from, 2));
         $fromAddress = $fromdata[0];
+        $fromName = ($fromdata[1] ?? '') !== '' ? mb_encode_mimeheader($fromdata[1], 'UTF-8', 'Q') : '';
 
         if (!$this->getTo()) {
             if ($statusvaltas) {
@@ -147,10 +148,10 @@ class mkwgmailmailer
             $bcc = implode(',', $this->getBccArray());
         }
 
-        $subject = mb_encode_mimeheader($this->getSubject(), 'UTF-8', 'Q');
+        $subject = mb_encode_mimeheader((string)$this->getSubject(), 'UTF-8', 'Q');
         $message = $this->getMessage();
 
-        $rawMessage = "From: $fromName <$fromAddress>\r\n";
+        $rawMessage = 'From: ' . ($fromName !== '' ? "$fromName <$fromAddress>" : $fromAddress) . "\r\n";
         $rawMessage .= "To: $to\r\n";
         if ($bcc) {
             $rawMessage .= 'Bcc: ' . $bcc . "\r\n";

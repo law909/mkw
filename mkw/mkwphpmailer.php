@@ -133,8 +133,8 @@ class mkwphpmailer
         }
 
         $from = \mkw\store::getParameter(\mkw\consts::EmailFrom);
-        $fromdata = explode(';', $from);
-        $this->mailer->setFrom($fromdata[0], $fromdata[1]);
+        $fromdata = array_map('trim', explode(';', (string)$from, 2));
+        $this->mailer->setFrom($fromdata[0], $fromdata[1] ?? '');
 
         if (!$this->replyto) {
             $replyto = \mkw\store::getParameter(\mkw\consts::EmailReplyTo);
