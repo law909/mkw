@@ -1026,12 +1026,9 @@ class Bizonylatfej
             $cimke = 'A(z) ' . $sorszam . '. tétel' . ($nev ? ' (' . $nev . ')' : '');
 
             $menny = (float)$tetel->getMennyiseg();
-            $kedv = (float)$tetel->getKedvezmeny();
             // Az ÁFA kulcs (százalék) a tételen tárolt érték, amit setAfa() a kiválasztott ÁFA-val
             // szinkronban tart. Ha nincs ÁFA kiválasztva, a 3. ellenőrzést kihagyjuk (JS: isNaN).
             $afakulcs = $tetel->getAfa() !== null ? (float)$tetel->getAfakulcs() : null;
-            $enettoegysar = (float)$tetel->getEnettoegysar();
-            $ebruttoegysar = (float)$tetel->getEbruttoegysar();
             $nettoegysar = (float)$tetel->getNettoegysar();
             $bruttoegysar = (float)$tetel->getBruttoegysar();
             $netto = (float)$tetel->getNetto();
@@ -1045,15 +1042,7 @@ class Bizonylatfej
                 $hibak[] = $cimke . ' bruttó értéke nem egyezik a mennyiség és a bruttó egységár szorzatával.';
             }
 
-            // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár (csak ha van eredeti egységár)
-            if ($kedv) {
-                if ($enettoegysar && !self::osszegEgyezik($nettoegysar, $enettoegysar * (100 - $kedv) / 100, 1)) {
-                    $hibak[] = $cimke . ' nettó egységára nem egyezik az eredeti egységár és a kedvezmény alapján számolt értékkel.';
-                }
-                if ($ebruttoegysar && !self::osszegEgyezik($bruttoegysar, $ebruttoegysar * (100 - $kedv) / 100, 1)) {
-                    $hibak[] = $cimke . ' bruttó egységára nem egyezik az eredeti egységár és a kedvezmény alapján számolt értékkel.';
-                }
-            }
+            // 2. (eredeti egységár * kedvezmény = egységár) szándékosan nincs: az egységár kézzel eltérhet tőle
 
             // 3. Nettó * (100 + ÁFA%) = Bruttó (csak ha van kiválasztott ÁFA kulcs)
             if ($afakulcs !== null) {

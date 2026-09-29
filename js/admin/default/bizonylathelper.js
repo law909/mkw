@@ -420,20 +420,13 @@ let bizonylathelper = function ($) {
         $('input.js-mennyiseginput').each(function () {
             let sorId = $(this).attr('name').split('_')[1],
                 menny = $('input[name="tetelmennyiseg_' + sorId + '"]').val() * 1,
-                kedv = $('input[name="tetelkedvezmeny_' + sorId + '"]').val() * 1,
                 afakulcs = $('select[name="tetelafa_' + sorId + '"] option:selected').data('afakulcs') * 1,
-                enettoegysar = $('input[name="tetelenettoegysar_' + sorId + '"]').val() * 1,
-                ebruttoegysar = $('input[name="tetelebruttoegysar_' + sorId + '"]').val() * 1,
                 nettoegysar = $('input[name="tetelnettoegysar_' + sorId + '"]').val() * 1,
                 bruttoegysar = $('input[name="tetelbruttoegysar_' + sorId + '"]').val() * 1,
                 netto = $('input[name="tetelnetto_' + sorId + '"]').val() * 1,
                 brutto = $('input[name="tetelbrutto_' + sorId + '"]').val() * 1,
                 nettohuf = $('input[name="tetelnettohuf_' + sorId + '"]'),
                 bruttohuf = $('input[name="tetelbruttohuf_' + sorId + '"]');
-
-            if (isNaN(kedv)) {
-                kedv = 0;
-            }
 
             // 1. Mennyiség * Egységár = Érték
             if (!egyezik(netto, menny * nettoegysar, menny)) {
@@ -443,18 +436,7 @@ let bizonylathelper = function ($) {
                 jelol('tetelbrutto_' + sorId);
             }
 
-            // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár
-            //    (csak akkor, ha van eredeti egységár)
-            if (kedv !== 0) {
-                if (enettoegysar && !egyezik(nettoegysar, enettoegysar * (100 - kedv) / 100, 1)) {
-                    jelol('tetelnettoegysar_' + sorId);
-                    jelol('tetelkedvezmeny_' + sorId);
-                }
-                if (ebruttoegysar && !egyezik(bruttoegysar, ebruttoegysar * (100 - kedv) / 100, 1)) {
-                    jelol('tetelbruttoegysar_' + sorId);
-                    jelol('tetelkedvezmeny_' + sorId);
-                }
-            }
+            // 2. (eredeti egységár * kedvezmény = egységár) szándékosan nincs: az egységár kézzel eltérhet tőle
 
             // 3. Nettó * (100 + ÁFA%) = Bruttó
             //    (csak akkor, ha van kiválasztott ÁFA kulcs)
