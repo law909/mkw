@@ -65,14 +65,24 @@ class UploadError
      */
     public static function writeFailure($folder, $size, $where)
     {
+        clearstatcache(true, $folder);
         if (!is_writable($folder)) {
-            $reason = 'a(z) ' . $where . ' mappa nem írható a webszerver számára';
+            // a teljes útvonal kell: a pool más gyökeret vagy symlinket láthat, mint amit a shellben nézünk
+            $real = realpath($folder) ?: $folder;
+            $reason = 'a(z) ' . $where . ' mappa (' . $real . ') nem írható a webszerver számára';
             if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
-                $owner = @fileowner($folder);
-                $perms = @fileperms($folder);
+                $owner = @fileowner($real);
+                $group = @filegroup($real);
+                $perms = @fileperms($real);
+                $groups = array_map(
+                    static fn($gid) => posix_getgrgid($gid)['name'] ?? $gid,
+                    array_unique(array_merge([posix_getegid()], posix_getgroups() ?: []))
+                );
                 $reason .= ' (tulajdonos: ' . ($owner !== false ? (posix_getpwuid($owner)['name'] ?? $owner) : '?')
+                    . ':' . ($group !== false ? (posix_getgrgid($group)['name'] ?? $group) : '?')
                     . ', jogok: ' . ($perms !== false ? substr(sprintf('%o', $perms), -4) : '?')
-                    . ', a PHP felhasználója: ' . (posix_getpwuid(posix_geteuid())['name'] ?? posix_geteuid()) . ')';
+                    . ', a PHP felhasználója: ' . (posix_getpwuid(posix_geteuid())['name'] ?? posix_geteuid())
+                    . ', csoportjai: ' . implode(', ', $groups) . ')';
             }
             return $reason;
         }
