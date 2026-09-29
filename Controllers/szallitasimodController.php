@@ -250,7 +250,7 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 'leiras' => $sor->getLocalizedFieldValue('leiras'),
                 'foxpost' => \mkw\store::isFoxpostSzallitasimod($sor->getId()),
                 'tof' => \mkw\store::isTOFSzallitasimod($sor->getId()),
-                'gls' => \mkw\store::isGLSSzallitasimod($sor->getId()),
+                'gls' => \mkw\store::isGLSCsomagpontSzallitasimod($sor->getId()),
                 'fedex' => \mkw\store::isFedexSzallitasimod($sor->getId()),
                 'terminaltipus' => $sor->getTerminaltipus(),
                 'csomagpont' => $sor->getCsomagpont(),

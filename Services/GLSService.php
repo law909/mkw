@@ -109,7 +109,7 @@ class GLSService
             /** @var Bizonylatfej $megrendfej */
             $megrendfej = \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
             if ($megrendfej
-                && (\mkw\store::isGLSSzallitasimod($megrendfej->getSzallitasimodId())
+                && (\mkw\store::isGLSCsomagpontSzallitasimod($megrendfej->getSzallitasimodId())
                     || \mkw\store::isGLSFutarSzallitasimod($megrendfej->getSzallitasimodId()))
                 && (!$megrendfej->getGlsparcelid())
             ) {

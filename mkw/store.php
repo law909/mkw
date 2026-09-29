@@ -1549,7 +1549,7 @@ class store
         return $i == self::getParameter(\mkw\consts::TOFSzallitasiMod);
     }
 
-    public static function isGLSSzallitasimod($szm)
+    public static function isGLSCsomagpontSzallitasimod($szm)
     {
         if (!self::getParameter(\mkw\consts::GLSSzallitasiMod)) {
             return false;

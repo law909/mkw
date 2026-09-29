@@ -69,7 +69,7 @@ class mindentkapniCheckoutController extends checkoutController
             $aszfready
         );
 
-        if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {
+        if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSCsomagpontSzallitasimod($szallitasimod)) {
             $ok = $ok && $csomagterminalid;
         }
 
@@ -120,7 +120,7 @@ class mindentkapniCheckoutController extends checkoutController
             if (!$szallitasimod) {
                 $errors[] = 'Nem adta meg a szállítási módot.';
             }
-            if ((\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) && (!$csomagterminalid)) {
+            if ((\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSCsomagpontSzallitasimod($szallitasimod)) && (!$csomagterminalid)) {
                 $errors[] = 'Nem adta meg a csomagterminált.';
             }
             if ($csomagponthiba) {
@@ -262,7 +262,7 @@ class mindentkapniCheckoutController extends checkoutController
                 $bizstatusz = Bizonylattipus::rogzitveStatuszFor($biztipus);
             }
             $megrendfej->setBizonylatstatusz($bizstatusz);
-            if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSSzallitasimod($szallitasimod)) {
+            if (\mkw\store::isFoxpostSzallitasimod($szallitasimod) || \mkw\store::isGLSCsomagpontSzallitasimod($szallitasimod)) {
                 $fpc = $this->getRepo(CsomagTerminal::class)->find($csomagterminalid);
                 if ($fpc) {
                     $megrendfej->setCsomagterminal($fpc);

@@ -155,12 +155,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             case \mkw\store::isMindentkapni():
                 $a = date(\mkw\store::$DateFormat, strtotime('-1 week'));
                 if ($this->getBiztipus()?->getShowbizonylatstatuszeditor()) {
-                    $view->setVar('bizonylatstatuszlist', $bsc->getSelectList(
-                        Bizonylattipus::rogzitveStatuszFor($this->getBiztipus())?->getId(),
-                        null,
-                        null,
-                        $this->getBiztipusId()
-                    ));
+                    $view->setVar(
+                        'bizonylatstatuszlist',
+                        $bsc->getSelectList(
+                            Bizonylattipus::rogzitveStatuszFor($this->getBiztipus())?->getId(),
+                            null,
+                            null,
+                            $this->getBiztipusId()
+                        )
+                    );
                 }
                 break;
             case \mkw\store::isSuperzoneB2B():
@@ -483,7 +486,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['csomagcount'] = $t->getCsomagcount();
         if (\mkw\store::isFoxpostSzallitasimod($t->getSzallitasimodId())) {
             $x['csomagkovetolink'] = 'https://www.foxpost.hu/csomagkovetes/?code=' . $t->getFuvarlevelszam();
-        } elseif (\mkw\store::isGLSSzallitasimod($t->getSzallitasimodId()) || \mkw\store::isGLSFutarSzallitasimod($t->getSzallitasimodId())) {
+        } elseif (\mkw\store::isGLSCsomagpontSzallitasimod($t->getSzallitasimodId()) || \mkw\store::isGLSFutarSzallitasimod($t->getSzallitasimodId())) {
             $x['csomagkovetolink'] = $t->getGlsparcellabelurl();
         } elseif (\mkw\store::isFedexSzallitasimod($t->getSzallitasimodId())) {
             $x['csomagkovetolink'] = 'https://www.fedex.com/fedextrack/?trknbr=' . $t->getFedextrackingnumber();

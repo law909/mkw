@@ -1511,7 +1511,7 @@ class Bizonylatfej
                 'SM2Parameter' => $sm2par
             ];
         }
-        if (\mkw\store::isGLSSzallitasimod($this->getSzallitasimodId())) {
+        if (\mkw\store::isGLSCsomagpontSzallitasimod($this->getSzallitasimodId())) {
             $psdpar = new \stdClass();
             $psdpar->StringValue = $this->getCsomagterminalIdegenId();
             $result['ServiceList'][] = [
@@ -2361,7 +2361,11 @@ class Bizonylatfej
 
             $afak = $bt->getAfa();
             $kivul = !$this->isForditottadozas() && Afa::isNavOutOfScope($afak?->getNavcase());
-            $result = $result . '<lineVatRate>' . $this->toNAVVatRate($afak ? (float)$afak->getErtek() : 0.0, $bt->getAfakulcs(), $afak?->getNavcase()) . '</lineVatRate>';
+            $result = $result . '<lineVatRate>' . $this->toNAVVatRate(
+                    $afak ? (float)$afak->getErtek() : 0.0,
+                    $bt->getAfakulcs(),
+                    $afak?->getNavcase()
+                ) . '</lineVatRate>';
 
             // outside the Hungarian VAT act NAV takes no VAT, and the gross is the net without the foreign VAT
             $result = $result . '<lineVatData>';
@@ -2371,7 +2375,9 @@ class Bizonylatfej
 
             $result = $result . '<lineGrossAmountData>';
             $result = $result . '<lineGrossAmountNormal>' . \mkw\store::NAVNum($kivul ? $bt->getNetto() : $bt->getBrutto()) . '</lineGrossAmountNormal>';
-            $result = $result . '<lineGrossAmountNormalHUF>' . \mkw\store::NAVNum($kivul ? $bt->getNettohuf() : $bt->getBruttohuf()) . '</lineGrossAmountNormalHUF>';
+            $result = $result . '<lineGrossAmountNormalHUF>' . \mkw\store::NAVNum(
+                    $kivul ? $bt->getNettohuf() : $bt->getBruttohuf()
+                ) . '</lineGrossAmountNormalHUF>';
             $result = $result . '</lineGrossAmountData>';
 
             $result = $result . '</lineAmountsNormal>';
@@ -2489,7 +2495,16 @@ class Bizonylatfej
             $ret['kulfoldiafa'] += $as['afa'];
             $ret['kulfoldiafahuf'] += $as['afahuf'];
             $key = 'case:' . $as['navcase'];
-            $ret['rates'][$key] ??= ['afakulcs' => 0, 'navcase' => $as['navcase'], 'netto' => 0, 'nettohuf' => 0, 'afa' => 0, 'afahuf' => 0, 'brutto' => 0, 'bruttohuf' => 0];
+            $ret['rates'][$key] ??= [
+                'afakulcs' => 0,
+                'navcase' => $as['navcase'],
+                'netto' => 0,
+                'nettohuf' => 0,
+                'afa' => 0,
+                'afahuf' => 0,
+                'brutto' => 0,
+                'bruttohuf' => 0
+            ];
             $ret['rates'][$key]['netto'] += $as['netto'];
             $ret['rates'][$key]['nettohuf'] += $as['nettohuf'];
             $ret['rates'][$key]['brutto'] += $as['netto'];
