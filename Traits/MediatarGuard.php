@@ -75,65 +75,23 @@ trait MediatarGuard
         }
     }
 
-    /**
-     * A post_max_size túllépésekor a PHP üres $_POST-ot ÉS $_FILES-t ad, figyelmeztetés
-     * nélkül. Explicit ellenőrzés nélkül ez rejtélyes hiba a felületen.
-     */
+    /** @throws \RuntimeException */
     protected function checkPostMaxSize()
     {
-        $len = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
-        $max = \mkw\thumbnail::returnBytes(ini_get('post_max_size'));
-        if (empty($_FILES) && $max && $len > $max) {
-            throw new \RuntimeException(
-                'A feltöltés mérete (' . \Services\MediatarService::formatSize($len) . ') meghaladja a szerveren '
-                . 'beállított post_max_size értéket (' . ini_get('post_max_size') . ')'
-            );
+        $msg = \mkwhelpers\UploadError::postMaxSizeMessage();
+        if ($msg !== null) {
+            throw new \RuntimeException($msg);
         }
     }
 
-    /**
-     * Ha a fájl nem érkezett meg, pedig a kérésnek volt törzse, a PHP nem tudta átvenni
-     * (jellemzően nem írható vagy hiányzó ideiglenes mappa) – ez nem a felhasználó hibája.
-     */
     protected function noFileMessage()
     {
-        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
-            return t('A szerver nem tudta átvenni a feltöltött fájlt (a PHP ideiglenes mappája hiányzik vagy nem írható). Szólj a rendszergazdának.');
-        }
-        return t('Nem érkezett fájl');
+        return \mkwhelpers\UploadError::noFileMessage();
     }
 
-    /**
-     * PHP fatal (elfogyott memória, időtúllépés) esetén is legyen értelmes válasz: a nagy
-     * képek kicsinyítése a GD-vel jellemzően a memory_limit-en bukik el.
-     *
-     * @param callable $respond function(string $message): a válasz kiírása
-     */
     protected function respondOnFatal(callable $respond)
     {
-        register_shutdown_function(function () use ($respond) {
-            $e = error_get_last();
-            if (!$e || !in_array($e['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE], true)) {
-                return;
-            }
-            while (ob_get_level() > 0) {
-                @ob_end_clean();
-            }
-            if (stripos($e['message'], 'Allowed memory size') !== false) {
-                $msg = sprintf(
-                    t('A fájl feldolgozása közben elfogyott a szerver memóriája (memory_limit: %s). Próbáld kisebb felbontású képpel; ha a fájl mégis megjelenik a listában, a kicsinyített változatai hiányozhatnak.'),
-                    ini_get('memory_limit')
-                );
-            } elseif (stripos($e['message'], 'Maximum execution time') !== false) {
-                $msg = sprintf(
-                    t('A fájl feldolgozása túl sokáig tartott (max_execution_time: %s mp).'),
-                    ini_get('max_execution_time')
-                );
-            } else {
-                $msg = t('A szerver a feldolgozás közben hibával leállt') . ': ' . $e['message'];
-            }
-            $respond($msg);
-        });
+        \mkwhelpers\UploadError::respondOnFatal($respond);
     }
 
     /**

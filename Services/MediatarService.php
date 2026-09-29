@@ -1073,35 +1073,10 @@ class MediatarService
         }
     }
 
-    /**
-     * Miért nem írható a mappa – a sikertelen move_uploaded_file()/mkdir() okát a PHP csak
-     * a figyelmeztetésben adja meg, a @ azt elnyeli.
-     */
     private function writeFailureReason($folder, $size)
     {
         $where = $this->rooturl . ltrim(str_replace('\\', '/', substr($folder, strlen($this->rootreal))), '/');
-        if (!is_writable($folder)) {
-            $reason = 'a(z) ' . $where . ' mappa nem írható a webszerver számára';
-            $owner = @fileowner($folder);
-            $perms = @fileperms($folder);
-            if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
-                $reason .= ' (tulajdonos: ' . (($owner !== false ? posix_getpwuid($owner)['name'] ?? $owner : '?'))
-                    . ', jogok: ' . ($perms !== false ? substr(sprintf('%o', $perms), -4) : '?')
-                    . ', a PHP felhasználója: ' . (posix_getpwuid(posix_geteuid())['name'] ?? posix_geteuid()) . ')';
-            }
-            return $reason;
-        }
-        $free = @disk_free_space($folder);
-        if ($free !== false && $free < $size + 1048576) {
-            return 'nincs elég szabad hely a szerver lemezén (' . self::formatSize((int)$free) . ' szabad)';
-        }
-        $last = error_get_last();
-        if ($last) {
-            // a PHP üzenet eleje a függvényhívás a teljes szerveroldali útvonallal – csak az ok kell
-            $pos = strrpos($last['message'], '): ');
-            return $pos !== false ? substr($last['message'], $pos + 3) : $last['message'];
-        }
-        return 'ismeretlen ok (' . $where . ')';
+        return \mkwhelpers\UploadError::writeFailure($folder, $size, $where);
     }
 
     /**
@@ -1109,21 +1084,10 @@ class MediatarService
      */
     private function checkUploadError($file)
     {
-        $code = $file['error'] ?? UPLOAD_ERR_NO_FILE;
-        if ($code === UPLOAD_ERR_OK) {
-            return;
+        $msg = \mkwhelpers\UploadError::uploadMessage($file['error'] ?? UPLOAD_ERR_NO_FILE);
+        if ($msg !== null) {
+            throw new \RuntimeException($msg);
         }
-        $msg = [
-            UPLOAD_ERR_INI_SIZE => 'A fájl nagyobb, mint a szerveren beállított upload_max_filesize ('
-                . ini_get('upload_max_filesize') . ')',
-            UPLOAD_ERR_FORM_SIZE => 'A fájl nagyobb a megengedettnél',
-            UPLOAD_ERR_PARTIAL => 'A fájl csak részben töltődött fel',
-            UPLOAD_ERR_NO_FILE => 'Nem érkezett fájl',
-            UPLOAD_ERR_NO_TMP_DIR => 'Hiányzik az ideiglenes könyvtár a szerveren',
-            UPLOAD_ERR_CANT_WRITE => 'A fájl nem írható a lemezre',
-            UPLOAD_ERR_EXTENSION => 'Egy PHP kiterjesztés megállította a feltöltést',
-        ];
-        throw new \RuntimeException($msg[$code] ?? 'Ismeretlen feltöltési hiba');
     }
 
     // ------------------------------------------------------------------

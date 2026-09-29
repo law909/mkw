@@ -1170,9 +1170,20 @@ class setupController extends \mkwhelpers\Controller
     public function uploadBarcodeSound()
     {
         header('Content-Type: application/json');
+        \mkwhelpers\UploadError::respondOnFatal(function ($msg) {
+            if (!headers_sent()) {
+                http_response_code(200);
+            }
+            $this->jsonFail($msg);
+        });
         $file = $_FILES['hang'] ?? null;
-        if (!$file || $file['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name'])) {
-            $this->jsonFail(t('A feltöltés nem sikerült.'));
+        $hiba = \mkwhelpers\UploadError::postMaxSizeMessage()
+            ?? (!$file ? \mkwhelpers\UploadError::noFileMessage() : \mkwhelpers\UploadError::uploadMessage($file['error']));
+        if ($hiba === null && !is_uploaded_file($file['tmp_name'])) {
+            $hiba = t('Érvénytelen feltöltés.');
+        }
+        if ($hiba !== null) {
+            $this->jsonFail($hiba);
             return;
         }
         if (strtolower(pathinfo($file['name'], PATHINFO_EXTENSION)) !== 'm4a') {
@@ -1190,8 +1201,11 @@ class setupController extends \mkwhelpers\Controller
             $this->jsonFail(t('A fájl nem m4a hang.'));
             return;
         }
-        if (!move_uploaded_file($file['tmp_name'], \mkw\store::storagePath(self::BARCODESOUNDFILE))) {
-            $this->jsonFail(t('A fájl mentése nem sikerült.'));
+        $cel = \mkw\store::storagePath(self::BARCODESOUNDFILE);
+        error_clear_last();
+        if (!@move_uploaded_file($file['tmp_name'], $cel)) {
+            $this->jsonFail(t('A fájl mentése nem sikerült') . ': '
+                . \mkwhelpers\UploadError::writeFailure(dirname($cel), (int)$file['size'], rtrim(\mkw\store::getConfigValue('path.storage', ''), '/') ?: '/'));
             return;
         }
         \mkw\store::setParameter(\mkw\consts::VonalkodHibaHang, (string)time());

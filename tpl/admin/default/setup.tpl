@@ -5,6 +5,7 @@
     {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/jquery.mattaccord.js"></script>
+    <script type="text/javascript" src="/js/admin/default/uploaderror.js"></script>
     <script type="text/javascript" src="/js/admin/default/setupform.js"></script>
 {/block}
 

@@ -38,8 +38,8 @@ $(document).ready(function () {
                         $uzenet.text((res && res.error) || 'A feltöltés nem sikerült.');
                     }
                 },
-                error: function () {
-                    $uzenet.text('A feltöltés nem sikerült.');
+                error: function (xhr, status) {
+                    $uzenet.text('A feltöltés nem sikerült: ' + window.uploadErrorText(xhr, status));
                 }
             });
         }).button();
