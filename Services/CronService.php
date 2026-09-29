@@ -34,6 +34,7 @@ class CronService
         'arfolyam' => Cron\ArfolyamTask::class,
         'navkoltsegszamla' => Cron\NavKoltsegszamlaTask::class,
         'fifo' => Cron\FifoTask::class,
+        'glscsomagpont' => Cron\GLSCsomagpontTask::class,
         'test' => Cron\TestTask::class,
     ];
 
