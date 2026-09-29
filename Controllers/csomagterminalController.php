@@ -116,46 +116,79 @@ class csomagterminalController extends \mkwhelpers\MattableController
         ]);
     }
 
-    public function getSelectList($selid, $tipus = null)
+    /** A bizonylat karb csomagpont választójának kezdő állapota: a városok, és a kiválasztott pont városának pontjai. */
+    public function getBizonylatSelectData($selid, $tipus): array
     {
-        if (!is_null($tipus)) {
-            $filter = new \mkwhelpers\FilterDescriptor();
-            $filter->addFilter('inaktiv', '=', false);
-            $filter->addFilter('tipus', '=', $tipus);
-            $rec = $this->getRepo()->getAll($filter, ['csoport' => 'ASC', 'nev' => 'ASC']);
-            $res = [];
-            foreach ($rec as $sor) {
-                $res[] = [
-                    'id' => $sor->getId(),
-                    'caption' => $sor->getCsoport() . ' ' . $sor->getNev() . ' ' . $sor->getCim(),
-                    'selected' => ($sor->getId() == $selid)
-                ];
-            }
-            return $res;
+        $ret = ['csoportlist' => [], 'terminallist' => []];
+        if (!$tipus) {
+            return $ret;
         }
-        return null;
+        $sel = $selid ? $this->getRepo()->find($selid) : null;
+        if ($sel && $sel->getTipus() !== $tipus) {
+            $sel = null;
+        }
+        $csoport = $sel ? (string)$sel->getCsoport() : '';
+        $ret['csoportlist'] = $this->getCsoportList($tipus, $csoport);
+        if ($sel) {
+            $ret['terminallist'] = $this->getTerminalList($tipus, $csoport, $sel);
+        }
+        return $ret;
     }
 
-    public function getHTMLList()
+    private function getCsoportList($tipus, $selcsoport): array
     {
-        $szmid = $this->params->getIntRequestParam('szmid');
-        $szm = $this->getRepo(Szallitasimod::class)->find($szmid);
-        $tipus = null;
-
-        if ($szm) {
-            $tipus = $szm->getTerminaltipus();
+        // a DISTINCT a kolláció szerint vonja össze a "Szeged"-et és a "SZEGED"-et, a kulcs ehhez igazodik
+        $key = fn($csoport) => mb_strtolower($csoport, 'UTF-8');
+        $csoportok = [];
+        foreach ($this->getRepo()->getCsoportok($tipus) ?? [] as $sor) {
+            $csoportok[$key($sor['csoport'])] = $sor['csoport'];
         }
+        // a kiválasztott pont azóta inaktív lehet, a városa akkor is kell
+        if ($selcsoport !== '' && !isset($csoportok[$key($selcsoport)])) {
+            $csoportok[$key($selcsoport)] = $selcsoport;
+            ksort($csoportok);
+        }
+        $res = [];
+        foreach ($csoportok as $k => $csoport) {
+            $res[] = ['id' => $csoport, 'caption' => $csoport, 'selected' => $selcsoport !== '' && $k === $key($selcsoport)];
+        }
+        return $res;
+    }
 
-        $res = $this->getSelectList(null, $tipus);
+    private function getTerminalList($tipus, $csoport, ?CsomagTerminal $sel = null): array
+    {
+        $rec = $this->getRepo()->getByCsoport($csoport, $tipus, ['nev' => 'ASC']) ?? [];
+        if ($sel && !in_array($sel, $rec, true)) {
+            $rec[] = $sel;
+        }
+        $res = [];
+        foreach ($rec as $sor) {
+            $res[] = [
+                'id' => $sor->getId(),
+                'caption' => $sor->getNev() . ' – ' . $sor->getCim() . ($sor->getInaktiv() ? ' (' . t('inaktív') . ')' : ''),
+                'selected' => $sel && $sor->getId() === $sel->getId(),
+            ];
+        }
+        return $res;
+    }
 
-        $view = \mkw\store::getTemplateFactory()->createView('csomagterminalselect.tpl');
-        $view->setVar('terminallist', $res);
-        $view->setVar('variable', $tipus . 'terminal');
-        $view->setVar('tagid', 'CsomagTerminalEdit');
+    private function getTerminaltipusParam()
+    {
+        $szm = $this->getRepo(Szallitasimod::class)->find($this->params->getIntRequestParam('szmid'));
+        return $szm ? $szm->getTerminaltipus() : null;
+    }
 
-        echo json_encode([
-            'html' => $view->getTemplateResult()
-        ]);
+    public function getAdminCsoportList()
+    {
+        $tipus = $this->getTerminaltipusParam();
+        echo json_encode(['csoportlist' => $tipus ? $this->getCsoportList($tipus, '') : []]);
+    }
+
+    public function getAdminTerminalList()
+    {
+        $tipus = $this->getTerminaltipusParam();
+        $csoport = $this->params->getStringRequestParam('cs');
+        echo json_encode(['terminallist' => $tipus && $csoport !== '' ? $this->getTerminalList($tipus, $csoport) : []]);
     }
 
     public function getTerminalId()

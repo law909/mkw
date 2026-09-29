@@ -280,18 +280,6 @@
                             <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail|escape}">
                         </td>
                     </tr>
-                    {if ($showfoxpostterminaleditor)}
-                        <tr>
-                            <td><label for="CsomagTerminalEdit">{at('Csomag terminál')}:</label></td>
-                            <td colspan="7"><select id="CsomagTerminalEdit" name="csomagterminal">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $csomagterminallist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                        </tr>
-                    {/if}
                     <tr>
                         <td><label for="RaktarEdit">{at('Raktár')}:</label></td>
                         <td colspan="7"><select id="RaktarEdit" name="raktar" required="required">
@@ -322,7 +310,24 @@
                                     class="mattable-important"{if ($maintheme=='mkwcansas' || $maintheme=='superzoneb2b')} required="required"{/if}>
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $szallitasimodlist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-terminaltipus="{$_mk.terminaltipus|escape}">{$_mk.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="js-csomagpontrow" data-terminaltipus="{$csomagpontterminaltipus|escape}"{if ($csomagpontterminaltipus == '')} style="display: none;"{/if}>
+                        <td><label for="CsomagTerminalCsoportEdit">{at('Csomagpont')}:</label></td>
+                        <td colspan="7">
+                            <select id="CsomagTerminalCsoportEdit">
+                                <option value="">{at('város')}</option>
+                                {foreach $csomagterminalcsoportlist as $_mk}
+                                    <option value="{$_mk.id|escape}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
+                                {/foreach}
+                            </select>
+                            <select id="CsomagTerminalEdit" name="csomagterminal">
+                                <option value="">{at('válasszon')}</option>
+                                {foreach $csomagterminallist as $_mk}
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
                                 {/foreach}
                             </select>
                         </td>

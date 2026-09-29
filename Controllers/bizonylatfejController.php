@@ -975,7 +975,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $obj->removeFelhasznalo();
         }
         $ck = \mkw\store::getEm()->getRepository(CsomagTerminal::class)->find($this->params->getIntRequestParam('csomagterminal'));
-        if ($ck) {
+        // a csomagpont csak a hozzá tartozó szállítási móddal marad meg
+        if ($ck && $obj->getSzallitasimod() && $obj->getSzallitasimod()->getTerminaltipus() === $ck->getTipus()) {
             $obj->setCsomagterminal($ck);
         } else {
             $obj->removeCsomagterminal();
@@ -1971,12 +1972,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
             $view->setVar('webshoplist', \mkw\store::getWebshopSelectList($record?->getWebshopnum()));
 
-            $csomagctrl = new csomagterminalController();
             $szallitasimodobj = $this->getRepo(Szallitasimod::class)->find($szallmodid);
-            $view->setVar(
-                'csomagterminallist',
-                $csomagctrl->getSelectList(($record ? $record->getCsomagterminalId() : 0), ($szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null))
-            );
+            $terminaltipus = $szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null;
+            $csomagpont = (new csomagterminalController())->getBizonylatSelectData($record?->getCsomagterminalId(), $terminaltipus);
+            $view->setVar('csomagpontterminaltipus', (string)$terminaltipus);
+            $view->setVar('csomagterminalcsoportlist', $csomagpont['csoportlist']);
+            $view->setVar('csomagterminallist', $csomagpont['terminallist']);
 
             $felh = new dolgozoController();
             $view->setVar('felhasznalolist', $felh->getSelectList(($record ? $record->getFelhasznaloId() : 0)));

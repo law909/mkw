@@ -152,8 +152,8 @@
                         <td><input id="ShowkuponEdit" name="showkupon" type="checkbox"{if ($egyed.showkupon)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
-                        <td><label for="ShowfoxpostterminaleditorEdit">Foxpost automata:</label></td>
-                        <td><input id="ShowfoxpostterminaleditorEdit" name="showfoxpostterminaleditor" type="checkbox"{if ($egyed.showfoxpostterminaleditor)} checked="checked"{/if}></td>
+                        <td></td>
+                        <td></td>
                         <td><label for="ShowfelhasznaloEdit">Dolgozó:</label></td>
                         <td><input id="ShowfelhasznaloEdit" name="showfelhasznalo" type="checkbox"{if ($egyed.showfelhasznalo)} checked="checked"{/if}></td>
                     </tr>

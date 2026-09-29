@@ -1829,7 +1829,8 @@ $router->map('GET', '/admin/szallmegrpenzugylista/view', 'szallmegrpenzugylistaC
 $router->map('GET', '/admin/szallmegrpenzugylista/refresh', 'szallmegrpenzugylistaController#refresh', 'adminszallmegrpenzugylistarefresh');
 $router->map('GET', '/admin/szallmegrpenzugylista/export', 'szallmegrpenzugylistaController#export', 'adminszallmegrpenzugylistaexport');
 
-$router->map('GET', '/admin/csomagterminal/gethtmllist', 'csomagterminalController#getHTMLList', 'admincsomagterminalgethtmllist');
+$router->map('GET', '/admin/csomagterminal/csoportlist', 'csomagterminalController#getAdminCsoportList', 'admincsomagterminalcsoportlist');
+$router->map('GET', '/admin/csomagterminal/terminallist', 'csomagterminalController#getAdminTerminalList', 'admincsomagterminalterminallist');
 
 $router->map('POST', '/admin/konyveloexport', 'bankbizonylatfejController#exportKonyvelo', 'adminkonyveloexport');
 

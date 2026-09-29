@@ -1607,6 +1607,32 @@ let bizonylathelper = function ($) {
         $(input).val($('option:selected', select).data('jutalek') ?? '');
     }
 
+    function fillCsomagpontSelect(select, list, placeholder) {
+        const $select = $(select).empty().append($('<option value=""></option>').text(placeholder));
+        (list || []).forEach((item) => $select.append($('<option></option>').val(item.id).text(item.caption)));
+    }
+
+    // the pickup point list belongs to the shipping method's terminal type, a new type starts it over
+    function refreshCsomagpont() {
+        const $row = $('.js-csomagpontrow'),
+            tipus = $('#SzallitasimodEdit option:selected').data('terminaltipus') || '';
+        if (!$row.length) {
+            return;
+        }
+        if (tipus === $row.data('terminaltipus')) {
+            $row.toggle(tipus !== '');
+            return;
+        }
+        $row.data('terminaltipus', tipus).toggle(tipus !== '');
+        fillCsomagpontSelect('#CsomagTerminalCsoportEdit', [], 'város');
+        fillCsomagpontSelect('#CsomagTerminalEdit', [], 'válasszon');
+        if (tipus) {
+            $.getJSON('/admin/csomagterminal/csoportlist', {szmid: $('#SzallitasimodEdit').val()}, function (d) {
+                fillCsomagpontSelect('#CsomagTerminalCsoportEdit', d.csoportlist, 'város');
+            });
+        }
+    }
+
     function setPartnerData(d) {
         if (d.fizmod) {
             $('#FizmodEdit').val(d.fizmod);
@@ -1616,6 +1642,7 @@ let bizonylathelper = function ($) {
         }
         if (d.szallitasimod) {
             $('#SzallitasimodEdit').val(d.szallitasimod);
+            refreshCsomagpont();
         }
         if (d.uzletkoto && $('#UzletkotoEdit').val() != d.uzletkoto) {
             $('#UzletkotoEdit').val(d.uzletkoto);
@@ -2296,20 +2323,19 @@ let bizonylathelper = function ($) {
                         quickcalcKedvezmeny($(this).attr('name').split('_')[1]);
                     })
                     .on('change', '#SzallitasimodEdit', function (e) {
-                        $.ajax({
-                            url: '/admin/csomagterminal/gethtmllist',
-                            type: 'GET',
-                            data: {
-                                szmid: $('#SzallitasimodEdit option:selected').val()
-                            },
-                            success: function (data) {
-                                let d = JSON.parse(data);
-                                if (d) {
-                                    $('#CsomagTerminalEdit').html(d.html);
-                                }
-                            }
-                        });
-
+                        refreshCsomagpont();
+                    })
+                    .on('change', '#CsomagTerminalCsoportEdit', function (e) {
+                        const csoport = $(this).val();
+                        fillCsomagpontSelect('#CsomagTerminalEdit', [], 'válasszon');
+                        if (csoport) {
+                            $.getJSON('/admin/csomagterminal/terminallist', {
+                                szmid: $('#SzallitasimodEdit').val(),
+                                cs: csoport
+                            }, function (d) {
+                                fillCsomagpontSelect('#CsomagTerminalEdit', d.terminallist, 'válasszon');
+                            });
+                        }
                     })
                     .on('change', '.js-termekselectreal', function (e) {
                         let $this = $(this),
