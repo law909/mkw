@@ -474,6 +474,17 @@ class UnasGetOrderService
         if ($this->fillCsomagadat($fej, $order)) {
             $valtozott = true;
         }
+        // a csomagpont a rendelés beérkezésekor még hiányozhatott a törzsből
+        if (!$fej->getCsomagterminal()) {
+            $terminal = $this->torzsadat->resolveCsomagterminal(
+                $fej->getSzallitasimod(),
+                $order['customer']['shipping']['deliverypointid'] ?? ''
+            );
+            if ($terminal) {
+                $fej->setCsomagterminal($terminal);
+                $valtozott = true;
+            }
+        }
         if ($order['internalkey'] !== '' && !$fej->getUnasinternalkey()) {
             $fej->setUnasinternalkey(mb_substr($order['internalkey'], 0, self::KEYMAXLENGTH));
             $valtozott = true;
@@ -535,6 +546,10 @@ class UnasGetOrderService
 
         $szallitasimod = $this->torzsadat->resolveSzallitasimod($order['shipping']);
         $statusz = $this->torzsadat->resolveBizonylatstatusz($order, $fej->getBizonylattipus());
+        $terminal = $this->torzsadat->resolveCsomagterminal(
+            $szallitasimod,
+            $order['customer']['shipping']['deliverypointid'] ?? ''
+        );
         $items = $this->resolveItems($order, $szallitasimod);
 
         $em->beginTransaction();
@@ -555,6 +570,9 @@ class UnasGetOrderService
             }
             if ($szallitasimod) {
                 $fej->setSzallitasimod($szallitasimod);
+            }
+            if ($terminal) {
+                $fej->setCsomagterminal($terminal);
             }
             $this->fillCsomagadat($fej, $order);
             $fej->setBelsomegjegyzes($this->buildBelsomegjegyzes($order, $items));

@@ -353,14 +353,19 @@ class UnasTorzsadatService
     }
 
     /**
-     * Az UNAS csomagpont-azonosítója a szállítási mód `terminaltipus`-a szerinti terminál.
+     * Az UNAS csomagpont-azonosítója a szállítási mód `terminaltipus`-a szerinti terminál; GLS csomagpont
+     * típusú szállítási módnál mindig a GLS csomagpontok közül.
      *
      * @return CsomagTerminal|null
      */
     public function resolveCsomagterminal($szallitasimod, $deliveryPointId)
     {
         $deliveryPointId = trim((string)$deliveryPointId);
-        $tipus = $szallitasimod ? trim((string)$szallitasimod->getTerminaltipus()) : '';
+        $glscsomagpont = \mkw\store::isGLSCsomagpontSzallitasimod($szallitasimod);
+        $tipus = $glscsomagpont ? 'gls' : ($szallitasimod ? trim((string)$szallitasimod->getTerminaltipus()) : '');
+        if ($deliveryPointId === '' && $glscsomagpont) {
+            $this->warn(t('A rendelés GLS csomagpontos, de az UNAS nem küldött csomagpontot, a bizonylatra nem került csomagpont.'));
+        }
         if ($deliveryPointId === '' || $tipus === '') {
             return null;
         }
