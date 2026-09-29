@@ -696,14 +696,30 @@ var mkwcomp = (function ($) {
     function notFound() {
         let audioCtx = null;
         let $open = null;
+        // the uploaded sound, decoded once per URL
+        let soundUrl = null;
+        let soundLoading = null;
+
+        // a recording is much quieter than the square-wave siren (0.35 square = 0.35 RMS),
+        // and an <audio> element cannot go above volume 1: the gain brings it to the siren's level
+        const TARGETRMS = 0.3;
+        const MAXGAIN = 30;
+
+        function getCtx() {
+            audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
 
         // two alternating tones, like a siren, loud enough over shop noise
         function siren(onEnded) {
             try {
-                audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                const t0 = audioCtx.currentTime;
+                const ctx = getCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const t0 = ctx.currentTime;
                 const lepes = 0.12;
                 osc.type = 'square';
                 for (let i = 0; i < 8; i++) {
@@ -713,7 +729,7 @@ var mkwcomp = (function ($) {
                 gain.gain.setValueAtTime(0.35, t0 + 8 * lepes - 0.02);
                 gain.gain.linearRampToValueAtTime(0, t0 + 8 * lepes);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(ctx.destination);
                 if (onEnded) {
                     osc.onended = onEnded;
                 }
@@ -727,6 +743,78 @@ var mkwcomp = (function ($) {
             }
         }
 
+        // RMS of the audible part only: leading/trailing silence would make it look quieter than it is
+        function loudnessGain(buffer) {
+            let sum = 0;
+            let n = 0;
+            for (let c = 0; c < buffer.numberOfChannels; c++) {
+                const data = buffer.getChannelData(c);
+                for (let i = 0; i < data.length; i += 4) {
+                    const x = data[i];
+                    if (x > 0.02 || x < -0.02) {
+                        sum += x * x;
+                        n++;
+                    }
+                }
+            }
+            if (!n) {
+                return 1;
+            }
+            return Math.min(MAXGAIN, Math.max(1, TARGETRMS / Math.sqrt(sum / n)));
+        }
+
+        function loadSound(url) {
+            if (url !== soundUrl || !soundLoading) {
+                soundUrl = url;
+                soundLoading = fetch(url, {credentials: 'same-origin'})
+                    .then(r => {
+                        if (!r.ok) {
+                            throw new Error(`HTTP ${r.status}`);
+                        }
+                        return r.arrayBuffer();
+                    })
+                    .then(data => new Promise((resolve, reject) => getCtx().decodeAudioData(data, resolve, reject)))
+                    .then(buffer => ({buffer, gain: loudnessGain(buffer)}));
+                // a failed load is retried at the next scan
+                soundLoading.catch(() => {
+                    soundLoading = null;
+                });
+            }
+            return soundLoading;
+        }
+
+        function playLoaded(sound) {
+            const ctx = getCtx();
+            const src = ctx.createBufferSource();
+            const gain = ctx.createGain();
+            // a hard limiter, so the boosted peaks do not clip
+            const limiter = ctx.createDynamicsCompressor();
+            limiter.threshold.value = -3;
+            limiter.knee.value = 0;
+            limiter.ratio.value = 20;
+            limiter.attack.value = 0.001;
+            limiter.release.value = 0.1;
+            src.buffer = sound.buffer;
+            gain.gain.value = sound.gain;
+            src.connect(gain);
+            gain.connect(limiter);
+            limiter.connect(ctx.destination);
+            src.start();
+        }
+
+        // without Web Audio decoding, at least the plain (quieter) playback
+        function playFallback(url) {
+            try {
+                const p = new Audio(url).play();
+                if (p && p.catch) {
+                    p.catch(function () {
+                    });
+                }
+            } catch (e) {
+                // no audio support
+            }
+        }
+
         // the siren, then the sound uploaded in the settings when there is one
         function playSound() {
             const url = $('body').attr('data-vonalkodhibahang');
@@ -734,22 +822,19 @@ var mkwcomp = (function ($) {
                 siren();
                 return;
             }
-            let audio = null;
+            let loading = null;
             try {
-                audio = new Audio(url);
-                audio.preload = 'auto';
+                // decoding runs while the siren plays
+                loading = loadSound(url);
             } catch (e) {
-                audio = null;
+                loading = null;
             }
             siren(function () {
-                if (!audio) {
+                if (!loading) {
+                    playFallback(url);
                     return;
                 }
-                const p = audio.play();
-                if (p && p.catch) {
-                    p.catch(function () {
-                    });
-                }
+                loading.then(playLoaded).catch(() => playFallback(url));
             });
         }
 
