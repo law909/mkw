@@ -30,6 +30,10 @@ class BizonylatConcatService
                 /** @var Bizonylattetel $tetel */
                 foreach ($fej->getBizonylattetelek() as $tetel) {
                     $kulcs = $tetel->getTermekId() . '-' . $tetel->getTermekvaltozatId() . '-' . $tetel->getNettoegysar();
+                    if ($tetel->getTermekegyediazonosito() || $tetel->getTermek()?->getKellegyediazonosito()) {
+                        // az egyedi azonosítós tétel mennyisége csak 1 vagy -1 lehet, ezért nem vonjuk össze
+                        $kulcs = 'egyedi-' . $tetel->getId();
+                    }
                     if (!isset($termekek[$kulcs])) {
                         $termekek[$kulcs] = [
                             'termekid' => $tetel->getTermekId(),
