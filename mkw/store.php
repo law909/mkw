@@ -1551,14 +1551,16 @@ class store
 
     public static function isGLSCsomagpontSzallitasimod($szm)
     {
-        if (!self::getParameter(\mkw\consts::GLSSzallitasiMod)) {
-            return false;
+        return self::isSzallitasimodTipus($szm, Szallitasimod::TIPUS_GLSCSOMAGPONT);
+    }
+
+    /** @param Szallitasimod|int|null $szm */
+    private static function isSzallitasimodTipus($szm, $tipus)
+    {
+        if ($szm && !is_a($szm, Szallitasimod::class)) {
+            $szm = self::getEm()->getRepository(Szallitasimod::class)->find($szm);
         }
-        $i = $szm;
-        if (is_a($szm, Szallitasimod::class)) {
-            $i = $szm->getId();
-        }
-        return $i == self::getParameter(\mkw\consts::GLSSzallitasiMod);
+        return $szm && $szm->getTipus() === $tipus;
     }
 
     public static function isFedexSzallitasimod($szm)
@@ -1575,14 +1577,7 @@ class store
 
     public static function isGLSFutarSzallitasimod($szm)
     {
-        if (!self::getParameter(\mkw\consts::GLSFutarSzallitasmod)) {
-            return false;
-        }
-        $i = $szm;
-        if (is_a($szm, Szallitasimod::class)) {
-            $i = $szm->getId();
-        }
-        return $i == self::getParameter(\mkw\consts::GLSFutarSzallitasmod);
+        return self::isSzallitasimodTipus($szm, Szallitasimod::TIPUS_GLSFUTAR);
     }
 
     public static function isUtanvetFizmod($fm)
