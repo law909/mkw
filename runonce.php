@@ -3143,6 +3143,19 @@ if ($DBVersion < '0210' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0210');
 }
 
+if ($DBVersion < '0211' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0210') {
+    // CGM termék import az "Egyéb műveletek" csoportba, az Importok mellé; csak galadon van útvonala
+    if (\mkw\store::isGalad()) {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+            . ' SELECT i.menucsoport_id, "CGM termék import", "/admin/cgmtermekimport/view", "/admin/cgmtermekimport", 40, 1, 105, ""'
+            . ' FROM (SELECT menucsoport_id FROM menu WHERE url = "/admin/import/view" LIMIT 1) i'
+            . ' WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/cgmtermekimport/view") m)'
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0211');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

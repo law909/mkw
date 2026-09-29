@@ -11,6 +11,12 @@ $router->map('GET', '/admin/minkeszletimport/view', 'minkeszletimportController#
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/minkeszletimport/import', 'minkeszletimportController#import', 'adminminkeszletimportimport');
 }
+if (\mkw\store::isGalad()) {
+    $router->map('GET', '/admin/cgmtermekimport/view', 'cgmtermekimportController#view', 'admincgmtermekimportview');
+    if (!\mkw\store::isClosed()) {
+        $router->map('POST', '/admin/cgmtermekimport/import', 'cgmtermekimportController#import', 'admincgmtermekimportimport');
+    }
+}
 $router->map('GET', '/admin/fixlocale', 'fixlocaleController#run', 'adminfixlocale');
 $router->map('GET', '/admin/hiba', 'errortestController#run', 'adminhiba');
 
