@@ -974,6 +974,11 @@ body.modernui {
     box-shadow: 0 -6px 12px -10px rgba(0, 0, 0, .35);
 }
 
+/* a jQuery UI inline az input z-indexe + 1-et adja a naptárnak, ami a sticky lábléc alá kerülne; a párbeszédablakok (100) fölé is kell */
+.modernui .ui-datepicker {
+    z-index: 1001 !important;
+}
+
 .modernui #mattkarb-okbutton,
 .modernui #mattkarb-okbutton:hover,
 .modernui #mattkarb-okbutton:focus {
