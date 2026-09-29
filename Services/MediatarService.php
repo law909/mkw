@@ -1029,8 +1029,9 @@ class MediatarService
         $name = $this->uniqueName($folder, $name);
         $dst = $folder . DIRECTORY_SEPARATOR . $name;
 
+        error_clear_last();
         if (!@move_uploaded_file($file['tmp_name'], $dst)) {
-            throw new \RuntimeException('A fájl mentése nem sikerült');
+            throw new \RuntimeException('A fájl mentése nem sikerült: ' . $this->writeFailureReason($folder, (int)$file['size']));
         }
         @chmod($dst, self::FILE_PERMISSION);
 
@@ -1070,6 +1071,37 @@ class MediatarService
                 @chmod($dst, self::FILE_PERMISSION);
             }
         }
+    }
+
+    /**
+     * Miért nem írható a mappa – a sikertelen move_uploaded_file()/mkdir() okát a PHP csak
+     * a figyelmeztetésben adja meg, a @ azt elnyeli.
+     */
+    private function writeFailureReason($folder, $size)
+    {
+        $where = $this->rooturl . ltrim(str_replace('\\', '/', substr($folder, strlen($this->rootreal))), '/');
+        if (!is_writable($folder)) {
+            $reason = 'a(z) ' . $where . ' mappa nem írható a webszerver számára';
+            $owner = @fileowner($folder);
+            $perms = @fileperms($folder);
+            if (function_exists('posix_getpwuid') && function_exists('posix_geteuid')) {
+                $reason .= ' (tulajdonos: ' . (($owner !== false ? posix_getpwuid($owner)['name'] ?? $owner : '?'))
+                    . ', jogok: ' . ($perms !== false ? substr(sprintf('%o', $perms), -4) : '?')
+                    . ', a PHP felhasználója: ' . (posix_getpwuid(posix_geteuid())['name'] ?? posix_geteuid()) . ')';
+            }
+            return $reason;
+        }
+        $free = @disk_free_space($folder);
+        if ($free !== false && $free < $size + 1048576) {
+            return 'nincs elég szabad hely a szerver lemezén (' . self::formatSize((int)$free) . ' szabad)';
+        }
+        $last = error_get_last();
+        if ($last) {
+            // a PHP üzenet eleje a függvényhívás a teljes szerveroldali útvonallal – csak az ok kell
+            $pos = strrpos($last['message'], '): ');
+            return $pos !== false ? substr($last['message'], $pos + 3) : $last['message'];
+        }
+        return 'ismeretlen ok (' . $where . ')';
     }
 
     /**
@@ -1248,8 +1280,9 @@ class MediatarService
         if (file_exists($abs)) {
             throw new \RuntimeException('Már létezik ilyen nevű mappa vagy fájl');
         }
+        error_clear_last();
         if (!@mkdir($abs, self::DIR_PERMISSON)) {
-            throw new \RuntimeException('A mappa létrehozása nem sikerült');
+            throw new \RuntimeException('A mappa létrehozása nem sikerült: ' . $this->writeFailureReason(dirname($abs), 0));
         }
         return $this->normalizePath($path) . $name . '/';
     }
