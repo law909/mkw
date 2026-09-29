@@ -337,9 +337,7 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::ElolegTermek);
         $this->setTermekAutocompleteVars($view, 'elolegtermek', ($p ? $p->getErtek() : ''));
 
-        $p = $repo->find(\mkw\consts::FoxpostSzallitasiMod);
         $szallmod = new szallitasimodController();
-        $view->setVar('foxpostszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::TOFSzallitasiMod);
         $view->setVar('tofszallmodlist', $szallmod->getSelectList(($p ? $p->getErtek() : 0), true));
         $p = $repo->find(\mkw\consts::FedexSzallitasiMod);
@@ -1700,13 +1698,6 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::DefaultTermek, $szkt->getId());
         } else {
             $this->setObj(\mkw\consts::DefaultTermek, '');
-        }
-
-        $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('foxpostszallmod', 0));
-        if ($szm) {
-            $this->setObj(\mkw\consts::FoxpostSzallitasiMod, $szm->getId());
-        } else {
-            $this->setObj(\mkw\consts::FoxpostSzallitasiMod, '');
         }
 
         $szm = \mkw\store::getEm()->getRepository(Szallitasimod::class)->find($this->params->getIntRequestParam('tofszallmod', 0));

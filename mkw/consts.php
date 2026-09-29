@@ -256,7 +256,6 @@ class consts
     const ValtozatTipusSzin = 'valtozattipusszin';
     const ValtozatTipusMeret = 'valtozattipusmeret';
 
-    const FoxpostSzallitasiMod = 'foxpostszallitasimod';
     const FoxpostApiURL = 'foxpostapiurl';
     const FoxpostUsername = 'foxpostusername';
     const FoxpostPassword = 'foxpostpassword';

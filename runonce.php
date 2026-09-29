@@ -3132,6 +3132,17 @@ if ($DBVersion < '0209' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0209');
 }
 
+if ($DBVersion < '0210' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0209') {
+    // a Foxpost szállítási módot is a típusa jelöli, a paraméter kivezetve
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'UPDATE szallitasimod SET tipus = "foxpost"'
+        . ' WHERE id = (SELECT ertek FROM parameterek WHERE id = "foxpostszallitasimod")'
+    );
+    $conn->executeStatement('DELETE FROM parameterek WHERE id = "foxpostszallitasimod"');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0210');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

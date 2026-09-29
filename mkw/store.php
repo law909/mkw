@@ -1527,14 +1527,7 @@ class store
 
     public static function isFoxpostSzallitasimod($szm)
     {
-        if (!self::getParameter(\mkw\consts::FoxpostSzallitasiMod)) {
-            return false;
-        }
-        $i = $szm;
-        if (is_a($szm, Szallitasimod::class)) {
-            $i = $szm->getId();
-        }
-        return $i == self::getParameter(\mkw\consts::FoxpostSzallitasiMod);
+        return self::isSzallitasimodTipus($szm, Szallitasimod::TIPUS_FOXPOST);
     }
 
     public static function isTOFSzallitasimod($szm)
