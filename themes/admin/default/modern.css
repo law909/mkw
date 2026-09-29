@@ -55,7 +55,7 @@ body.modernui {
 .modernui select,
 .modernui textarea {
     box-sizing: border-box;
-    padding: 4px 8px;
+    padding: 6px 8px;
     border: 1px solid var(--mkw-border-strong);
     border-radius: var(--mkw-radius-sm);
     background-color: var(--mkw-surface);
@@ -504,7 +504,7 @@ body.modernui {
 }
 
 .modernui .mattable-titlebar {
-    padding: .6em 1em;
+    padding: 1em;
     border-bottom: 1px solid var(--mkw-border);
     border-radius: 0;
 }
@@ -552,7 +552,7 @@ body.modernui {
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
-    padding: .5em .8em;
+    padding: 1em .8em;
     border: 0;
     border-top: 1px solid var(--mkw-border);
     font-weight: 400;
@@ -747,7 +747,7 @@ body.modernui {
 }
 
 .modernui .mattable-cell {
-    padding: 1em .8em;
+    padding: 2em 1em;
     vertical-align: top;
 }
 
@@ -766,7 +766,7 @@ body.modernui {
 /* Karbantartó
 ----------------------------------*/
 .modernui .mattedit-page {
-    padding: 1em 1.2em;
+    padding: 2em;
 }
 
 .modernui .mattkarb-page td {
@@ -946,7 +946,7 @@ body.modernui {
 /* Kapcsolódó tételek a karbantartón (ársávok, változatok, …): mindegyik külön kártya */
 .modernui .mattable-repeatable {
     margin: 0 0 10px;
-    padding: 6px 10px;
+    padding: 1em;
     border: 1px solid var(--mkw-border-strong);
     border-radius: var(--mkw-radius);
     background: var(--mkw-row-alt);
@@ -955,6 +955,10 @@ body.modernui {
 
 .modernui .mattable-repeatable:hover {
     border-color: var(--mkw-accent-border);
+}
+
+.modernui .bizonylatosszesito {
+    margin-top: 1em;
 }
 
 .modernui .mattkarb-footer {
