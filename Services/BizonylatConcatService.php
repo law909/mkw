@@ -47,9 +47,24 @@ class BizonylatConcatService
                             'enettoegysarhuf' => $tetel->getEnettoegysarhuf(),
                             'kedvezmeny' => $tetel->getKedvezmeny(),
                             'termekegyediazonosito' => $tetel->getTermekegyediazonosito(),
+                            'termeknev' => $tetel->getTermeknev(),
+                            'megjegyzes' => [],
+                            'megjegyzes2' => [],
+                            'hatarido' => $tetel->getHatarido(),
+                            'vasarlasdatum' => $tetel->getVasarlasdatum(),
+                            'gyujtomennyiseg' => 0,
+                            'sordobozmennyiseg' => 0,
                         ];
                     } else {
                         $termekek[$kulcs]['mennyiseg'] += $tetel->getMennyiseg();
+                    }
+                    $termekek[$kulcs]['gyujtomennyiseg'] += $tetel->getGyujtomennyiseg();
+                    $termekek[$kulcs]['sordobozmennyiseg'] += $tetel->getSordobozmennyiseg();
+                    foreach (['megjegyzes' => $tetel->getMegjegyzes(), 'megjegyzes2' => $tetel->getMegjegyzes2()] as $mezo => $szoveg) {
+                        $szoveg = trim((string)$szoveg);
+                        if ($szoveg !== '' && !in_array($szoveg, $termekek[$kulcs][$mezo], true)) {
+                            $termekek[$kulcs][$mezo][] = $szoveg;
+                        }
                     }
                 }
             }
@@ -81,6 +96,19 @@ class BizonylatConcatService
                     $biztetel->setEnettoegysarhuf($termek['enettoegysarhuf']);
                     $biztetel->setKedvezmeny($termek['kedvezmeny']);
                     $biztetel->setTermekegyediazonosito($termek['termekegyediazonosito']);
+                    // a setTermek() a termék aktuális nevét írta be, az eredeti tétel kézzel átírt neve kell
+                    $biztetel->setTermeknev($termek['termeknev']);
+                    $biztetel->setMegjegyzes(implode('; ', $termek['megjegyzes']) ?: null);
+                    $biztetel->setMegjegyzes2(implode('; ', $termek['megjegyzes2']) ?: null);
+                    // null-lal a setterek a mai dátumot írnák be
+                    if ($termek['hatarido']) {
+                        $biztetel->setHatarido(clone $termek['hatarido']);
+                    }
+                    if ($termek['vasarlasdatum']) {
+                        $biztetel->setVasarlasdatum(clone $termek['vasarlasdatum']);
+                    }
+                    $biztetel->setGyujtomennyiseg($termek['gyujtomennyiseg']);
+                    $biztetel->setSordobozmennyiseg($termek['sordobozmennyiseg']);
                     $biztetel->setNettoegysar($termek['nettoegysar']);
                     $biztetel->setNettoegysarhuf($termek['nettoegysarhuf']);
                     $biztetel->calc();
