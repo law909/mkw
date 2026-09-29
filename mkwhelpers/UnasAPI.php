@@ -165,7 +165,6 @@ class UnasAPI
             return false;
         }
 
-        \mkw\store::writelog('login() start: ' . $this->apiurl, self::LOGFILE);
         $response = $this->httpPost('/login', $this->buildXml(['ApiKey' => $this->apikey]), null);
         // a válaszban ott a Bearer token, ezért ezt az egy végpontot nem dumpoljuk fájlba
         $xml = $this->parseResponse('login', $response['body'], $response['httpcode'], false);
@@ -190,12 +189,6 @@ class UnasAPI
             'expiretime' => $expiretime,
             'permissions' => $this->permissionList($xml),
         ];
-        \mkw\store::writelog(
-            'login() ok: shop=' . $this->logininfo['shopid']
-            . ' subscription=' . $this->logininfo['subscription']
-            . ' permissions=' . implode(',', $this->logininfo['permissions']),
-            self::LOGFILE
-        );
         return $this->logininfo;
     }
 
@@ -306,7 +299,6 @@ class UnasAPI
         }
         if ($this->isMaintenanceWindow()) {
             $this->addError('MAINTENANCE', 'Az UNAS karbantartási ablakában vagyunk (23:55–00:10).');
-            \mkw\store::writelog('callAPI(' . $endpoint . ') kihagyva: karbantartási ablak', self::LOGFILE);
             return false;
         }
         if (!$this->rateOk($endpoint, $params)) {
@@ -323,10 +315,8 @@ class UnasAPI
         $this->rateInc($this->rateBucket($endpoint, $params)['kulcs']);
         $response = $this->httpPost('/' . $endpoint, $req, $token);
 
-        \mkw\store::writelog('callAPI(' . $endpoint . ') kérés: ' . $this->maskXml($req), self::LOGFILE);
 
         if ($retry && ($response['httpcode'] == 401 || $response['httpcode'] == 403)) {
-            \mkw\store::writelog('callAPI(' . $endpoint . ') ' . $response['httpcode'] . ' – token eldobása', self::LOGFILE);
             $this->clearToken();
             return $this->callAPI($endpoint, $params, false);
         }
@@ -367,7 +357,6 @@ class UnasAPI
 
         if ($errno) {
             $this->addError('CURL' . $errno, $error);
-            \mkw\store::writelog('curl hiba (' . $endpoint . '): ' . $errno . ' ' . $error, self::LOGFILE);
         }
 
         return ['body' => $response, 'httpcode' => $httpcode, 'errno' => $errno, 'error' => $error];
@@ -411,10 +400,6 @@ class UnasAPI
         fclose($fh);
 
         $size = @filesize($abs);
-        \mkw\store::writelog(
-            'downloadToFile(' . $url . ') -> ' . $file . ' (' . (int)$size . ' bájt, http ' . $httpcode . ')',
-            self::LOGFILE
-        );
 
         if ($errno || $httpcode >= 400 || !$size) {
             @unlink($abs);
@@ -486,12 +471,6 @@ class UnasAPI
         if ($dumpable) {
             $this->lastdumpfile = $this->dump($endpoint, 'xml', (string)$body);
         }
-
-        \mkw\store::writelog(
-            'callAPI(' . $endpoint . ') válasz (http ' . $httpcode . '): '
-            . $this->maskXml(mb_substr((string)$body, 0, self::LOGRESPONSEMAX)),
-            self::LOGFILE
-        );
 
         if ($body === false || trim((string)$body) === '') {
             $this->addError('EMPTYRESPONSE', 'Az UNAS üres választ adott (http ' . $httpcode . ').');
@@ -571,14 +550,12 @@ class UnasAPI
     protected function getToken()
     {
         if ($this->token && $this->tokenexpires > time()) {
-            \mkw\store::writelog('Token a példányból', self::LOGFILE);
             return $this->token;
         }
         $cached = $this->readTokenCache();
         if ($cached) {
             $this->token = $cached['token'];
             $this->tokenexpires = $cached['expires'];
-            \mkw\store::writelog('Token cacheból', self::LOGFILE);
             return $this->token;
         }
         return $this->login() ? $this->token : false;
@@ -654,11 +631,6 @@ class UnasAPI
                 'Az UNAS órás hívásszám korlátja elérve (' . $megnevezes . ': ' . $used . '/' . $bucket['limit']
                 . '). Próbálja újra a következő órában.'
             );
-            \mkw\store::writelog(
-                'rate limit fék: ' . $megnevezes . ' ' . $used . '/' . $bucket['limit']
-                . ' (küszöb ' . $threshold . ')',
-                self::LOGFILE
-            );
             $this->writeErrorLog($endpoint);
             return false;
         }
@@ -726,10 +698,12 @@ class UnasAPI
                 if ($value === '') {
                     continue;
                 }
-                return count(array_filter(
-                    array_map('trim', explode(',', $value)),
-                    static fn($v) => $v !== ''
-                ));
+                return count(
+                    array_filter(
+                        array_map('trim', explode(',', $value)),
+                        static fn($v) => $v !== ''
+                    )
+                );
             }
             return PHP_INT_MAX;
         }
@@ -801,12 +775,10 @@ class UnasAPI
             $content = $this->maskXml($content);
         }
         if (@file_put_contents(\mkw\store::logsPath($file), $content) === false) {
-            \mkw\store::writelog('a dump fájl nem írható: ' . $file, self::LOGFILE);
             return null;
         }
         @chmod(\mkw\store::logsPath($file), 0640);
         $this->pruneDumps($prefix, $ext, self::DUMPKEEP);
-        \mkw\store::writelog('a teljes válasz a storage/logs mappában: ' . $file, self::LOGFILE);
         return $file;
     }
 
