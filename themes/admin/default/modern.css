@@ -1085,7 +1085,11 @@ body.modernui {
     background: var(--mkw-highlight);
 }
 
+/* input/select/textarea előtaggal, különben a .modernui input[type="…"] űrlapszabály erősebb, és a hibás mező nem pirosodik */
 .modernui .tetelszamhiba,
+.modernui input.tetelszamhiba,
+.modernui select.tetelszamhiba,
+.modernui textarea.tetelszamhiba,
 .modernui .defaulttermektetel {
     border-color: var(--mkw-danger);
     background: var(--mkw-danger-soft);
