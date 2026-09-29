@@ -5,6 +5,7 @@
     {include "../partials/form.scripts.tpl"}
     {* a beágyazott bizonylat karbantartónak ugyanazok kellenek, mint a bizonylatfejkarb.tpl-ben *}
     <script type="text/javascript" src="/js/admin/default/jquery.flyout.js"></script>
+    <script type="text/javascript" src="/js/admin/default/uploaderror.js"></script>
     <script type="text/javascript" src="/js/admin/default/dokumentumtar.js"></script>
     <script type="text/javascript" src="/js/admin/default/bizonylathelper.js"></script>
     <script type="text/javascript" src="/js/admin/superzoneb2b/appinit.js"></script>

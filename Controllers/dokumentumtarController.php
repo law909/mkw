@@ -28,11 +28,18 @@ class dokumentumtarController extends \mkwhelpers\Controller
         $this->requireAdmin();
         $this->requireWritable();
         $this->requireSameOrigin();
+        $this->respondOnFatal(function ($msg) {
+            if (!headers_sent()) {
+                http_response_code(200);
+                header('Content-Type: application/json; charset=utf-8');
+            }
+            $this->jsonFail($msg);
+        });
         try {
             $this->checkPostMaxSize();
             $file = $_FILES['file'] ?? null;
             if (!$file) {
-                throw new \RuntimeException(t('Nem érkezett fájl'));
+                throw new \RuntimeException($this->noFileMessage());
             }
             $res = \Services\DokumentumUploadService::upload($file);
 

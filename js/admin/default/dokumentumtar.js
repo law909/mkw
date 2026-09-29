@@ -9,6 +9,18 @@
 (function ($) {
     'use strict';
 
+    function showError(name, reason) {
+        $('#dialogcenter').text(`A(z) ${name} feltöltése nem sikerült: ${reason}`).dialog({
+            resizable: false,
+            modal: true,
+            buttons: {
+                'OK': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    }
+
     window.initDokumentumUpload = function (doktab) {
         const fileinput = $('<input type="file" style="display:none">').appendTo(doktab);
 
@@ -40,15 +52,7 @@
                 gomb.removeClass('ui-state-disabled');
             }).done(function (d) {
                 if (!d || !d.ok) {
-                    $('#dialogcenter').text((d && d.error) || 'A feltöltés nem sikerült.').dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            'OK': function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
+                    showError(file.name, (d && d.error) || 'ismeretlen hiba');
                     return;
                 }
                 // a válasz sor a saját „új” gombját is hozza, ezért a régit eldobjuk – ugyanaz
@@ -56,16 +60,8 @@
                 doktab.find('.js-doknewbutton').remove();
                 doktab.append(d.html);
                 $('.js-doknewbutton,.js-dokdelbutton,.js-dokbrowsebutton,.js-dokopenbutton,.js-dokopen2button').button();
-            }).fail(function () {
-                $('#dialogcenter').text('A feltöltés nem sikerült.').dialog({
-                    resizable: false,
-                    modal: true,
-                    buttons: {
-                        'OK': function () {
-                            $(this).dialog('close');
-                        }
-                    }
-                });
+            }).fail(function (xhr, status) {
+                showError(file.name, window.uploadErrorText(xhr, status));
             });
         });
     };

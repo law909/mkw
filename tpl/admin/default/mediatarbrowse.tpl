@@ -74,6 +74,7 @@
 
 </div>
 
+<script type="text/javascript" src="/js/admin/default/uploaderror.js"></script>
 <script type="text/javascript" src="/js/admin/default/mediatarbrowse.js"></script>
 </body>
 </html>
