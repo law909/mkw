@@ -51,6 +51,9 @@ class UnasGetOrderService
     /** a `Bizonylatfej.unaskey` oszlop hossza */
     private const KEYMAXLENGTH = 50;
 
+    /** új bizonylat csak nyitott `StatusType`-ú rendelésből készül */
+    private const IMPORTSTATUSTYPES = ['open_normal', 'open_prepare'];
+
     /** @var UnasService */
     private $unas;
 
@@ -200,6 +203,7 @@ class UnasGetOrderService
             'feldolgozva' => 0,
             'uj' => 0,
             'letezo' => 0,
+            'kihagyva' => 0,
             'hiba' => 0,
             'lapok' => 0,
             'kurzor' => $cursor,
@@ -254,6 +258,8 @@ class UnasGetOrderService
                     $summary['uj']++;
                 } elseif ($result['statusz'] === 'hiba') {
                     $summary['hiba']++;
+                } elseif ($result['statusz'] === 'kihagyva') {
+                    $summary['kihagyva']++;
                 } else {
                     $summary['letezo']++;
                 }
@@ -312,6 +318,19 @@ class UnasGetOrderService
                 ->findOneBy(['unaskey' => $order['key']]);
             if ($fej) {
                 return $this->refreshOrder($fej, $order);
+            }
+            // a már importált rendelés a lezárása után is frissül, csak újat nem nyitunk belőle
+            if (!in_array($order['status']['type'], self::IMPORTSTATUSTYPES, true)) {
+                return $this->result(
+                    'kihagyva',
+                    $order['key'],
+                    null,
+                    sprintf(
+                        t('A rendelés státusztípusa %s, bizonylat csak %s rendelésből készül.'),
+                        $order['status']['type'] !== '' ? $order['status']['type'] : '-',
+                        implode(' / ', self::IMPORTSTATUSTYPES)
+                    )
+                );
             }
             return $this->createFromOrder($order);
         } finally {

@@ -44,6 +44,12 @@
         <td class="textalignright">{$osszesito.letezo}</td>
     </tr>
     <tr>
+        <td>{at('Kihagyva')}</td>
+        <td class="textalignright">{$osszesito.kihagyva}</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
         <td>{at('Hiba')}</td>
         <td class="textalignright{if ($osszesito.hiba)} redtext{/if}">{$osszesito.hiba}</td>
         <td>{at('Kurzor')}</td>

@@ -53,7 +53,7 @@ $(document).ready(function () {
         eredmeny.html($('<div>')
             .addClass('matt-messagecenter ui-widget ui-state-highlight')
             .css({padding: '5px', margin: '5px 0'})
-            .text(data.unaskey + ': ' + data.statusz + (data.bizonylat ? ' → ' + data.bizonylat : '')));
+            .text(data.unaskey + ': ' + data.statusz + (data.bizonylat ? ' → ' + data.bizonylat : '') + (data.hiba ? ' – ' + data.hiba : '')));
     });
 
     kuldForm($('#unasrendeleskurzor'), function (data) {
