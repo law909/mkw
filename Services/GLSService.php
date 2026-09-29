@@ -7,22 +7,39 @@ use Entities\CsomagTerminal;
 
 class GLSService
 {
+    /**
+     * @return array ['letoltve' => a listában szereplő pontok, 'inaktivalt' => a listából kimaradt, most inaktivált pontok]
+     * @throws \Exception ha nincs URL, vagy a letöltés nem hozott egyetlen csomagpontot sem
+     */
     public function downloadGLSTerminalList()
     {
         $sep = ';';
-        $ch = curl_init(\mkw\store::getParameter(\mkw\consts::GLSTerminalURL));
+        $url = trim((string)\mkw\store::getParameter(\mkw\consts::GLSTerminalURL));
+        if ($url === '') {
+            throw new \Exception(t('Nincs megadva a GLS csomagpont URL a Beállításokban.'));
+        }
+        $ch = curl_init($url);
         $fh = fopen(\mkw\store::storagePath('glscsomagpont.csv'), 'w');
         curl_setopt($ch, CURLOPT_FILE, $fh);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_exec($ch);
+        $sikeres = curl_exec($ch);
+        $curlhiba = curl_error($ch);
         fclose($fh);
+        if (!$sikeres) {
+            throw new \Exception(sprintf(t('A GLS csomagpont lista letöltése nem sikerült: %s'), $curlhiba));
+        }
+        $inaktivalt = 0;
+        $pontok = [];
         $fh = fopen(\mkw\store::storagePath('glscsomagpont.csv'), 'r');
         if ($fh) {
-            $pontok = [];
             fgetcsv($fh, 0, $sep);
             while ($data = fgetcsv($fh, 0, $sep)) {
                 $pontok[] = $data;
+            }
+            // üres lista mellett a lenti kör minden meglévő GLS pontot inaktiválna
+            if (!$pontok) {
+                throw new \Exception(t('A letöltött GLS csomagpont lista üres, a meglévő csomagpontok változatlanok maradtak.'));
             }
             $db = 0;
             foreach ($pontok as $i => $r) {
@@ -56,14 +73,26 @@ class GLSService
                 foreach ($pontok as $r) {
                     $megvan = $megvan || ($r[\mkw\store::n('a')] == $terminal->getIdegenid());
                 }
-                if (!$megvan) {
-                    $terminal->setInaktiv(!$megvan);
+                if (!$megvan && !$terminal->getInaktiv()) {
+                    $terminal->setInaktiv(true);
                     \mkw\store::getEm()->persist($terminal);
+                    $inaktivalt++;
                 }
             }
             \mkw\store::getEm()->flush();
             \mkw\store::getEm()->clear();
         }
+        return ['letoltve' => count($pontok), 'inaktivalt' => $inaktivalt];
+    }
+
+    /** @return array ['aktiv' => int, 'inaktiv' => int] a GLS csomagpontok száma a törzsben */
+    public function getTerminalStat()
+    {
+        $sorok = \mkw\store::getEm()->getConnection()->fetchAllKeyValue(
+            'SELECT inaktiv, COUNT(*) FROM csomagterminal WHERE tipus = ? GROUP BY inaktiv',
+            ['gls']
+        );
+        return ['aktiv' => (int)($sorok[0] ?? 0), 'inaktiv' => (int)($sorok[1] ?? 0)];
     }
 
     /**

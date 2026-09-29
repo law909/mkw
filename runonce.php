@@ -3099,6 +3099,17 @@ if ($DBVersion < '0206' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0206');
 }
 
+if ($DBVersion < '0207' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0206') {
+    // GLS csomagpont letöltés az "Egyéb műveletek" csoportba, az Importok után
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT i.menucsoport_id, "GLS csomagpont letöltés", "/admin/glscsomagpont/view", "/admin/glscsomagpont", 40, 1, 110, ""'
+        . ' FROM (SELECT menucsoport_id FROM menu WHERE url = "/admin/import/view" LIMIT 1) i'
+        . ' WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/glscsomagpont/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0207');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

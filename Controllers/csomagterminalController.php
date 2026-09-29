@@ -24,10 +24,27 @@ class csomagterminalController extends \mkwhelpers\MattableController
         $foxpostsvc->downloadFoxpostTerminalList();
     }
 
+    public function viewGLSDownload()
+    {
+        $view = $this->createView('glscsomagpontletoltes.tpl');
+        $view->setVar('pagetitle', t('GLS csomagpont letöltés'));
+        $view->setVar('url', \mkw\store::getParameter(consts::GLSTerminalURL));
+        $view->setVar('stat', (new GLSService())->getTerminalStat());
+        $view->printTemplateResult();
+    }
+
     public function downloadGLSTerminalList()
     {
+        // több ezer pont egyenkénti mentése
+        @set_time_limit(600);
         $glsservice = new GLSService();
-        $glsservice->downloadGLSTerminalList();
+        try {
+            $eredmeny = $glsservice->downloadGLSTerminalList();
+        } catch (\Exception $e) {
+            $this->jsonFail($e->getMessage());
+            return;
+        }
+        echo json_encode(['ok' => true] + $eredmeny + $glsservice->getTerminalStat());
     }
 
     public function getCsoportok()

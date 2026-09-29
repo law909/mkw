@@ -1672,6 +1672,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/fcmotoorderimport', 'importController#fcmotoorderimport', 'adminfcmotoorderimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');
+    $router->map('GET', '/admin/glscsomagpont/view', 'csomagterminalController#viewGLSDownload', 'adminglscsomagpontview');
     $router->map('POST', '/admin/import/aszfdownload', 'importController#aszfdownload', 'adminaszfdownload');
     $router->map('GET', '/admin/import/siikerpartnerimport', 'importController#SIIKerPartnerImport', 'adminsiikerpartnerimport');
     $router->map('POST', '/admin/import/galadpartner', 'importController#galadPartnerImport', 'admingaladpartnerimport');
