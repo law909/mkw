@@ -3110,6 +3110,20 @@ if ($DBVersion < '0207' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0207');
 }
 
+if ($DBVersion < '0208' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0207') {
+    // a GLS szállítási módot eddig a Beállítások paramétere jelölte ki, mostantól a szállítási mód típusa
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'UPDATE szallitasimod SET tipus = "glscsomagpont", terminaltipus = "gls"'
+        . ' WHERE id = (SELECT ertek FROM parameterek WHERE id = "glsszallitasimod")'
+    );
+    $conn->executeStatement(
+        'UPDATE szallitasimod SET tipus = "glsfutar"'
+        . ' WHERE id = (SELECT ertek FROM parameterek WHERE id = "glsfutarszallitasimod")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0208');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
