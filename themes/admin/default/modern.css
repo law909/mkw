@@ -804,7 +804,7 @@ body.modernui {
     margin: 1.4em 0 .5em;
     padding: 0 0 4px;
     border-bottom: 1px solid var(--mkw-border);
-    color: var(--mkw-muted);
+    color: var(--mkw-accent);
     font-size: .85em;
     font-weight: 600;
     letter-spacing: .05em;
