@@ -2,7 +2,9 @@
    A tartalmat termék- és változatváltáskor a /admin/bizonylattetel/getraktarkeszlet cseréli le.
    A foglalt és az érkező mennyiség linkje a foglaló / érkeztető bizonylatok modalját nyitja
    (mkwcomp.keszletBizonylatok); ehhez kell a termekid és a valtozatid. *}
-{if ($lista)}
+{if ($nemmozgat|default:false)}
+    {at('A termék nem mozgat készletet')}
+{elseif ($lista)}
     <table class="tetelkeszlettabla">
         <tbody>
         <tr>

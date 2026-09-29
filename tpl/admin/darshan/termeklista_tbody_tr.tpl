@@ -73,9 +73,11 @@
                 <td><a href="#" data-id="{$_termek.id}" data-flag="eladhato"
                        class="js-flagcheckbox{if ($_termek.eladhato)} ui-state-hover{/if}">{at('Eladható')}</a></td>
             </tr>
-            <tr>
-                <td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{at('Készlet')}: {$_termek.keszlet}</a></td>
-            </tr>
+            {if ($_termek.mozgat)}
+                <tr>
+                    <td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{at('Készlet')}: {$_termek.keszlet}</a></td>
+                </tr>
+            {/if}
             </tbody>
         </table>
     </td>

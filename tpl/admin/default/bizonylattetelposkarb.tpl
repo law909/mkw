@@ -16,9 +16,13 @@
         <input class="js-posnettoegysar" name="tetelnettoegysar_{$tetelid}" type="hidden" value="{$nettoegysar}">
         {$nev|escape}
     </td>
-    <td class="bizonylatpos-raktaron {if $raktaron}greentext{else}redtext{/if}">
-        {if $raktaron}{at('Van')}{else}{at('Nincs')}{/if} ({$keszlet|string_format:"%g"})
-    </td>
+    {if ($mozgat)}
+        <td class="bizonylatpos-raktaron {if $raktaron}greentext{else}redtext{/if}">
+            {if $raktaron}{at('Van')}{else}{at('Nincs')}{/if} ({$keszlet|string_format:"%g"})
+        </td>
+    {else}
+        <td class="bizonylatpos-raktaron"></td>
+    {/if}
     <td><input class="js-posmennyiseg bizonylatpos-num" name="tetelmennyiseg_{$tetelid}" type="number" step="any" value="1"></td>
     <td><input class="js-poskedvezmeny bizonylatpos-num" name="tetelkedvezmeny_{$tetelid}" type="number" step="any" value="{$kedvezmeny}"></td>
     <td><input class="js-posbruttoegysar bizonylatpos-num" name="tetelbruttoegysar_{$tetelid}" type="number" step="any" value="{$bruttoegysar}"></td>

@@ -89,6 +89,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
 
         if ($forKarb) {
             $x['raktarkeszlet'] = $this->getRaktarKeszletLista($term, $t->getTermekvaltozat());
+            $x['nemmozgat'] = $term && !$term->getMozgat();
             $x['valtozatlist'] = $termekCtrl->getValtozatList($t->getTermekId(), $t->getTermekvaltozatId());
             $x['vtszlist'] = $vtsz->getSelectList(($t->getVtsz() ? $t->getVtsz()->getId() : 0));
             $x['afalist'] = $afa->getSelectList(($t->getAfa() ? $t->getAfa()->getId() : 0));
@@ -113,6 +114,9 @@ class bizonylattetelController extends \mkwhelpers\MattableController
      */
     private function getRaktarKeszletLista(?Termek $termek, ?TermekValtozat $valtozat)
     {
+        if ($termek && !$termek->getMozgat()) {
+            return [];
+        }
         $entity = $valtozat ?: $termek;
         return $entity ? \Services\KeszletService::getKeszletByRaktar($entity) : [];
     }
@@ -128,6 +132,7 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         }
         $view = $this->createView('bizonylattetelraktarkeszlet.tpl');
         $view->setVar('lista', $this->getRaktarKeszletLista($termek, $valtozat));
+        $view->setVar('nemmozgat', $termek && !$termek->getMozgat());
         $view->setVar('termekid', $termek?->getId());
         $view->setVar('valtozatid', $valtozat?->getId());
         $view->printTemplateResult();

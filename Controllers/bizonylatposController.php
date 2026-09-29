@@ -164,7 +164,7 @@ class bizonylatposController extends \mkwhelpers\Controller
         }
         $cikkszam = ($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam();
 
-        $keszlet = ($valtozat ?: $termek)->getAvailableStock(datum: null, raktarid: $raktar?->getId());
+        $keszlet = $termek->getMozgat() ? ($valtozat ?: $termek)->getAvailableStock(datum: null, raktarid: $raktar?->getId()) : null;
 
         $view = $this->createView('bizonylattetelposkarb.tpl');
         $view->setVar('tetelid', \mkw\store::createUID());
@@ -174,6 +174,7 @@ class bizonylatposController extends \mkwhelpers\Controller
         $view->setVar('afakulcs', $afakulcs);
         $view->setVar('nev', $nev);
         $view->setVar('cikkszam', $cikkszam);
+        $view->setVar('mozgat', $keszlet !== null);
         $view->setVar('raktaron', ($keszlet > 0));
         $view->setVar('keszlet', (float)$keszlet);
         $view->setVar('enettoegysar', number_format((float)$enetto, 2, '.', ''));

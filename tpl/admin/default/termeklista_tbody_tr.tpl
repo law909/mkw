@@ -96,7 +96,9 @@
         {$_termek.cimkenevek}
     </td>
     <td class="cell">
-        {include 'termekkeszletsorok.tpl' termek=$_termek}
+        {if ($_termek.mozgat)}
+            {include 'termekkeszletsorok.tpl' termek=$_termek}
+        {/if}
     </td>
     <td class="cell">
         {include 'dokumentumlinkek.tpl' doklinkek=$_termek.doklinkek}
@@ -165,9 +167,11 @@
             <tr>
                 <td>{at('Hűségpont arány')}: {$_termek.hparany}</td>
             </tr>
-            <tr>
-                <td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{at('Készlet')}: {$_termek.keszlet}</a></td>
-            </tr>
+            {if ($_termek.mozgat)}
+                <tr>
+                    <td><a href="#" data-id="{$_termek.id}" class="js-keszletreszletezobutton">{at('Készlet')}: {$_termek.keszlet}</a></td>
+                </tr>
+            {/if}
             </tbody>
         </table>
     </td>

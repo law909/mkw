@@ -1533,7 +1533,8 @@ class termekController extends \mkwhelpers\MattableController
                             'cikkszam' => $valt->getCikkszam(),
                             'selected' => $sel == $valt->getId(),
                             'elerheto' => $valt->getXElerheto(),
-                            'keszlet' => $valt->getKeszlet(null, $raktarid) * 1
+                            'mozgat' => (bool)$termek->getMozgat(),
+                            'keszlet' => $termek->getMozgat() ? $valt->getKeszlet(null, $raktarid) * 1 : 0
                         ];
                     }
                 }
