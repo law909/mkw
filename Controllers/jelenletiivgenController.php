@@ -30,6 +30,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $view->setVar('igdatum', date(\mkw\store::$DateFormat, strtotime('last day of this month')));
         $d = new dolgozoController();
         $view->setVar('dolgozolist', $d->getSelectList());
+        $view->setVar('munkakorlist', (new munkakorController())->getSelectList());
 
         $view->printTemplateResult();
     }
@@ -310,6 +311,10 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $filter = new FilterDescriptor();
         $filter->addFilter('inaktiv', '=', false);
         $filter->addFilter('nemjelenletiiv', '=', false);
+        $munkakorok = array_filter(array_map('intval', $this->params->getArrayRequestParam('munkakor')));
+        if ($munkakorok) {
+            $filter->addFilter('munkakor', '', array_values($munkakorok));
+        }
         return $this->getRepo(Dolgozo::class)->getAll($filter, ['nev' => 'ASC']);
     }
 

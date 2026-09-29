@@ -196,6 +196,7 @@ class dolgozoController extends \mkwhelpers\MattableController
                 'caption' => $sor['nev'],
                 'selected' => ($sor['id'] == $selid),
                 'email' => $sor['email'],
+                'munkakor' => $sor['munkakor'],
             ];
         }
         return $res;
