@@ -2077,7 +2077,7 @@ class Bizonylatfej
         $ret['vanmitertekelni'] = false;
         $tetellist = [];
         /** @var Bizonylattetel $tetel */
-        foreach ($this->bizonylattetelek as $tetel) {
+        foreach ($this->getRendezettTetelek() as $tetel) {
             $_x = $tetel->toLista();
             $szallmods = \mkw\store::getEm()->getRepository(Szallitasimod::class)->findBy(['termek' => $tetel->getTermek()]);
             if (!$_x['marertekelt'] &&
@@ -2093,7 +2093,7 @@ class Bizonylatfej
             $ret['vanmitertekelni'] = false;
         }
         switch (true) {
-            case \mkw\store::isSuperzoneB2B():
+            case \mkw\store::isSuperzoneB2B() && !self::isNevSzinMeretSorrend():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);
@@ -2932,6 +2932,45 @@ class Bizonylatfej
     public function getBizonylattetelek()
     {
         return $this->bizonylattetelek;
+    }
+
+    /**
+     * The lines for display (editor, print) in the Beállítások "Tételek sorrendje" order. Not for the
+     * NAV XML: a storno refers to the line numbers sent in the original order.
+     *
+     * @return Bizonylattetel[]
+     */
+    public function getRendezettTetelek()
+    {
+        $tetelek = $this->bizonylattetelek->toArray();
+        if (!self::isNevSzinMeretSorrend()) {
+            return $tetelek;
+        }
+        $collator = class_exists(\Collator::class) ? new \Collator('hu_HU') : null;
+        $compare = fn($a, $b) => $collator ? $collator->compare($a, $b) : strcasecmp($a, $b);
+        $kulcsok = array_map(fn(Bizonylattetel $tetel) => $tetel->getNevSzinMeretKulcs(), $tetelek);
+        // the shipping and cash-on-delivery cost lines stay at the end
+        $ktg = array_map(
+            fn(Bizonylattetel $tetel) => \mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())
+                || \mkw\store::isUtanvetKtgTermek($tetel->getTermekId()),
+            $tetelek
+        );
+        $sorrend = array_keys($tetelek);
+        usort($sorrend, function ($i, $j) use ($kulcsok, $ktg, $compare) {
+            [$anev, $aszin, $ameretsorrend, $ameret] = $kulcsok[$i];
+            [$bnev, $bszin, $bmeretsorrend, $bmeret] = $kulcsok[$j];
+            return ($ktg[$i] <=> $ktg[$j])
+                ?: $compare($anev, $bnev)
+                ?: $compare($aszin, $bszin)
+                ?: ($ameretsorrend <=> $bmeretsorrend)
+                ?: strnatcasecmp($ameret, $bmeret);
+        });
+        return array_map(fn($i) => $tetelek[$i], $sorrend);
+    }
+
+    public static function isNevSzinMeretSorrend()
+    {
+        return \mkw\store::getParameter(\mkw\consts::BizonylattetelSorrend, '') === \mkw\consts::BizonylattetelSorrendNevSzinMeret;
     }
 
     public function addBizonylattetel(Bizonylattetel $val)

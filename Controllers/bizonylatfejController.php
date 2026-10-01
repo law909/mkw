@@ -686,7 +686,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     }
                 }
             }
-            foreach ($t->getBizonylattetelek() as $ttetel) {
+            foreach ($t->getRendezettTetelek() as $ttetel) {
                 $tetel[] = $tetelCtrl->loadVars($ttetel, true);
             }
 //				$tetel[]=$tetelCtrl->loadVars(null,true);

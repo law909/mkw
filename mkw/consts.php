@@ -296,6 +296,8 @@ class consts
     const RendezendoValtozat = 'rendezendovaltozat';
 
     const BizonylatMennyiseg = 'bizonylatmennyiseg';
+    const BizonylattetelSorrend = 'bizonylattetelsorrend';
+    const BizonylattetelSorrendNevSzinMeret = 'nevszinmeret';
 
     const GyartoKreativ = 'gyartokreativ';
     const GyartoDelton = 'gyartodelton';

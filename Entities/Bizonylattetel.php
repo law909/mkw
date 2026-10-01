@@ -1504,6 +1504,65 @@ class Bizonylattetel
         $this->valtozatertek2 = $val;
     }
 
+    /**
+     * The keys of the "név, szín, méret" line order: [név, szín, méret helye, méret]. The size's place is
+     * its sorrend in the Méret törzs, else its position in the Beállítások value order, else the usual
+     * clothing size order, else last.
+     */
+    public function getNevSzinMeretKulcs()
+    {
+        $szin = '';
+        $meret = '';
+        $meretsorrend = PHP_INT_MAX;
+        $valt = $this->getTermekvaltozat();
+        if ($valt?->getSzinObject()) {
+            $szin = $valt->getSzinNev();
+        }
+        if ($valt?->getMeretObject()) {
+            $meret = $valt->getMeretNev();
+            $meretsorrend = (int)$valt->getMeretObject()->getSorrend() ?: PHP_INT_MAX;
+        }
+        // without the Szín/Méret törzs: the variant values stored on the line, typed in Beállítások
+        $ertekek = [
+            [$this->getValtozatadattipus1()?->getId(), (string)$this->getValtozatertek1()],
+            [$this->getValtozatadattipus2()?->getId(), (string)$this->getValtozatertek2()],
+        ];
+        foreach ($ertekek as [$tipus, $ertek]) {
+            if (!$tipus || $ertek === '') {
+                continue;
+            }
+            if ($szin === '' && $tipus == \mkw\store::getParameter(\mkw\consts::ValtozatTipusSzin)) {
+                $szin = $ertek;
+            }
+            if ($meret === '' && $tipus == \mkw\store::getParameter(\mkw\consts::ValtozatTipusMeret)) {
+                $meret = $ertek;
+            }
+        }
+        if ($meret !== '' && $meretsorrend === PHP_INT_MAX) {
+            $sorrend = array_map('trim', explode(',', (string)\mkw\store::getParameter(\mkw\consts::ValtozatSorrend, '')));
+            $hely = array_search($meret, $sorrend, true);
+            $meretsorrend = $hely !== false ? $hely + 1 : self::getSzokasosMeretHely($meret);
+        }
+        return [(string)$this->getTermeknev(), $szin, $meretsorrend, $meret];
+    }
+
+    /** XS < S < M < L < XL < XXL (= 2XL) …, the youth sizes (YS, YM …) before the adult ones. */
+    private static function getSzokasosMeretHely($meret)
+    {
+        $helyek = [
+            'XXXS' => 1, 'XXS' => 2, 'XS' => 3, 'S' => 4, 'M' => 5, 'L' => 6, 'XL' => 7,
+            'XXL' => 8, '2XL' => 8, 'XXXL' => 9, '3XL' => 9, '4XL' => 10, '5XL' => 11, '6XL' => 12,
+        ];
+        $meret = strtoupper(trim($meret));
+        if (isset($helyek[$meret])) {
+            return 1000000 + $helyek[$meret];
+        }
+        if (str_starts_with($meret, 'Y') && isset($helyek[substr($meret, 1)])) {
+            return 999000 + $helyek[substr($meret, 1)];
+        }
+        return PHP_INT_MAX;
+    }
+
     public function getValtozatadattipus1()
     {
         return $this->valtozatadattipus1;

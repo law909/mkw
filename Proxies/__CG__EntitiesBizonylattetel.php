@@ -1823,6 +1823,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getNevSzinMeretKulcs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getNevSzinMeretKulcs', []);
+
+        return parent::getNevSzinMeretKulcs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getValtozatadattipus1()
     {
 

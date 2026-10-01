@@ -558,6 +558,17 @@ class Bizonylatfej extends \Entities\Bizonylatfej implements \Doctrine\ORM\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getRendezettTetelek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezettTetelek', []);
+
+        return parent::getRendezettTetelek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function addBizonylattetel(\Entities\Bizonylattetel $val)
     {
 
