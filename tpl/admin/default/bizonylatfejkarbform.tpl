@@ -599,6 +599,8 @@
                     <thead>
                     <tr>
                         <th class="mattable-cell mattable-rborder"></th>
+                        <th class="mattable-cell mattable-rborder">{at('Tételszám')}</th>
+                        <th class="mattable-cell mattable-rborder">{at('Mennyiség')}</th>
                         <th class="mattable-cell mattable-rborder">{at('Nettó')}</th>
                         <th class="mattable-cell mattable-rborder">{at('Bruttó')}</th>
                         {if ($showvalutanem)}
@@ -610,6 +612,8 @@
                     <tbody>
                     <tr>
                         <th class="mattable-cell mattable-rborder mattable-tborder">{at('Összesen')}</th>
+                        <td class="js-tetelszamsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
+                        <td class="js-mennyisegsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
                         <td class="js-nettosum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
                         <td class="js-bruttosum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
                         {if ($showvalutanem)}

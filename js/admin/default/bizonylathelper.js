@@ -80,7 +80,18 @@ let bizonylathelper = function ($) {
     }
 
     function calcOsszesen() {
-        let netto = 0, brutto = 0, nettohuf = 0, bruttohuf = 0;
+        let netto = 0, brutto = 0, nettohuf = 0, bruttohuf = 0, tetelszam = 0, mennyiseg = 0;
+        // every entry mode (normal, quick, POS) names its quantity input like this
+        $('input[name^="tetelmennyiseg_"]').each(function () {
+            const $this = $(this),
+                menny = $this.val() * 1;
+            // the quick entry lists every variant, an empty one is not an item
+            if ($this.hasClass('js-quickmennyiseginput') && !menny) {
+                return;
+            }
+            tetelszam++;
+            mennyiseg = mennyiseg + menny;
+        });
         $('input[name^="tetelnetto_"]').each(function () {
             netto = netto + $(this).val() * 1;
         });
@@ -115,6 +126,9 @@ let bizonylathelper = function ($) {
             bruttohuf = bruttohuf + pos.brutto * arfolyam;
         }
 
+        mennyiseg = tools.round(mennyiseg, -2);
+        $('.js-tetelszamsum').text(tetelszam);
+        $('.js-mennyisegsum').text(accounting.formatNumber(mennyiseg, Number.isInteger(mennyiseg) ? 0 : 2, ' '));
         $('.js-nettosum').text(accounting.formatNumber(tools.round(netto, -2), 2, ' '));
         $('.js-bruttosum').text(accounting.formatNumber(tools.round(brutto, -2), 2, ' '));
         $('.js-nettohufsum').text(accounting.formatNumber(tools.round(nettohuf, -2), 2, ' '));
@@ -1238,6 +1252,7 @@ let bizonylathelper = function ($) {
                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                     .autocompleteRenderer(termekAutocompleteRenderer);
                 $ujgomb.remove();
+                calcOsszesen();
             }
         });
         return sorid;
@@ -2174,6 +2189,7 @@ let bizonylathelper = function ($) {
                                 $('.js-termekselect').autocomplete(termekAutocompleteConfig())
                                     .autocompleteRenderer(termekAutocompleteRenderer);
                                 $this.remove();
+                                calcOsszesen();
                                 $sor.find('.js-termekselect').first().trigger('focus');
                             }
                         });
