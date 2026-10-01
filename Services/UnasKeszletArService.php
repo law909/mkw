@@ -44,6 +44,12 @@ class UnasKeszletArService
         return (bool)\mkw\store::getParameter(\mkw\consts::UnasArFeltoltes);
     }
 
+    /** Az akciós ár csak ársávos telepítésen, kiválasztott akciós ársávval megy – különben az UNAS-é. */
+    public static function isAkcioEnabled()
+    {
+        return \mkw\store::isArsavok() && (int)\mkw\store::getParameter(\mkw\consts::UnasAkciosArsav) > 0;
+    }
+
     /**
      * Szándékosan nem a rendelés-import raktára (UnasRaktar): oda csak az UNAS rendelések kerülnek,
      * a valódi készlet máshol van. Üresen az UNAS webshopjában látható raktárak – null, ha mind.
@@ -97,10 +103,18 @@ class UnasKeszletArService
                 if (array_key_exists('keszlet', $t) && ($teljes || !$s || !$this->egyezik($s['keszlet'], $t['keszlet']))) {
                     $keszletKuldendo[$unasid] = $t;
                 }
-                if (array_key_exists('brutto', $t) && ($teljes || !$s
-                        || !$this->egyezik($s['netto'], $t['netto'], 2) || !$this->egyezik($s['brutto'], $t['brutto'], 2))
-                ) {
-                    $arKuldendo[$unasid] = $t;
+                if (array_key_exists('brutto', $t)) {
+                    $normal = $teljes || !$s || $s['arkuldve'] === null
+                        || !$this->egyezik($s['netto'], $t['netto'], 2) || !$this->egyezik($s['brutto'], $t['brutto'], 2);
+                    $t['akciokuld'] = array_key_exists('akcio', $t)
+                        && ($teljes || !$s || $s['akcioskuldve'] === null || !$this->egyezikAkcio($s, $t['akcio']));
+                    if ($normal || $t['akciokuld']) {
+                        // a lejárttá tételhez a legutóbb kiküldött akciós ár kell
+                        $t['akcioregi'] = $s && $s['akciosbrutto'] !== null
+                            ? ['netto' => (float)$s['akciosnetto'], 'brutto' => (float)$s['akciosbrutto']]
+                            : null;
+                        $arKuldendo[$unasid] = $t;
+                    }
                 }
             }
             $report['keszlet']['valtozott'] += count($keszletKuldendo);
@@ -192,6 +206,7 @@ class UnasKeszletArService
             }
         }
         $arak = $arBe ? $this->loadArak($termekek) : [];
+        $akcioBe = $arBe && self::isAkcioEnabled();
 
         $result = [];
         foreach ($koteg as $cel) {
@@ -219,6 +234,9 @@ class UnasKeszletArService
                 if ($ar) {
                     $t['netto'] = $ar['netto'];
                     $t['brutto'] = $ar['brutto'];
+                    if ($akcioBe) {
+                        $t['akcio'] = $this->calcAkcio($termek, $arak, $ar['brutto']);
+                    }
                 } else {
                     $report['ar']['nincsar']++;
                 }
@@ -259,19 +277,28 @@ class UnasKeszletArService
 
     /**
      * Ársávos telepítésen a beállított (vagy az alapértelmezett) ársáv sora – szándékosan NEM az
-     * akciós sávok láncán át: az UNAS normál árába az alapár való.
+     * akciós sávok láncán át: az UNAS normál árába az alapár való, az akciós a sajátjába.
      *
-     * @return array<int, TermekAr>
+     * @return array{normal: array<int, TermekAr>, akcios: array<int, TermekAr>}
      */
     private function loadArak(array $termekek)
     {
+        $result = ['normal' => [], 'akcios' => []];
         if (!\mkw\store::isArsavok() || !$termekek) {
-            return [];
+            return $result;
         }
-        $arsav = \mkw\store::getParameter(\mkw\consts::UnasArsav) ?: \mkw\store::getParameter(\mkw\consts::Arsav);
+        $repo = \mkw\store::getEm()->getRepository(TermekAr::class);
         $valutanem = \mkw\store::getParameter(\mkw\consts::UnasValutanem) ?: null;
-        return \mkw\store::getEm()->getRepository(TermekAr::class)
-            ->getArsavArByTermek(array_keys($termekek), $valutanem, $arsav ?: null);
+        $arsav = \mkw\store::getParameter(\mkw\consts::UnasArsav) ?: \mkw\store::getParameter(\mkw\consts::Arsav);
+        $result['normal'] = $repo->getArsavArByTermek(array_keys($termekek), $valutanem, $arsav ?: null);
+        if (self::isAkcioEnabled()) {
+            $result['akcios'] = $repo->getArsavArByTermek(
+                array_keys($termekek),
+                $valutanem,
+                \mkw\store::getParameter(\mkw\consts::UnasAkciosArsav)
+            );
+        }
+        return $result;
     }
 
     /**
@@ -283,7 +310,7 @@ class UnasKeszletArService
     private function calcAr(Termek $termek, ?TermekValtozat $valtozat, array $arak)
     {
         if (\mkw\store::isArsavok()) {
-            $ar = $arak[$termek->getId()] ?? null;
+            $ar = $arak['normal'][$termek->getId()] ?? null;
             $netto = $ar ? (float)$ar->getNetto() : 0.0;
             $brutto = $ar ? (float)$ar->getBrutto() : 0.0;
         } else {
@@ -294,6 +321,20 @@ class UnasKeszletArService
             return null;
         }
         return ['netto' => round($netto, 2), 'brutto' => round($brutto, 2)];
+    }
+
+    /**
+     * Az akciós ársáv ára, ha kisebb a normálnál – az akciós sávban sokszor a normál ár másolata áll.
+     *
+     * @return array{netto: float, brutto: float}|null null, ha nincs akció
+     */
+    private function calcAkcio(Termek $termek, array $arak, $normalBrutto)
+    {
+        $ar = $arak['akcios'][$termek->getId()] ?? null;
+        if (!$ar || (float)$ar->getBrutto() <= 0 || round((float)$ar->getBrutto(), 2) >= $normalBrutto) {
+            return null;
+        }
+        return ['netto' => round((float)$ar->getNetto(), 2), 'brutto' => round((float)$ar->getBrutto(), 2)];
     }
 
     // ------------------------------------------------------------------
@@ -337,15 +378,19 @@ class UnasKeszletArService
     {
         $products = [];
         foreach ($tetelek as $unasid => $t) {
-            // csak a normál ár: az akciós ár (sale) az UNAS-ban marad, ahol beállították
+            $prices = [[
+                'Type' => 'normal',
+                'Net' => $this->formatSzam($t['netto']),
+                'Gross' => $this->formatSzam($t['brutto']),
+            ]];
+            // akciókapcsoló nélkül a sale ár az UNAS-ban marad, ahol beállították
+            if ($t['akciokuld']) {
+                $prices[] = $this->salePrice($t);
+            }
             $products[] = [
                 'Id' => $unasid,
                 'Action' => 'modify',
-                'Prices' => ['Price' => [
-                    'Type' => 'normal',
-                    'Net' => $this->formatSzam($t['netto']),
-                    'Gross' => $this->formatSzam($t['brutto']),
-                ]],
+                'Prices' => ['Price' => $prices],
             ];
         }
         $api = $this->unas->getApi();
@@ -359,13 +404,46 @@ class UnasKeszletArService
             $t = $tetelek[$unasid];
             if ($hiba === '') {
                 $report['ar']['kuldve']++;
-                $this->saveState($unasid, $t, ['netto' => $t['netto'], 'brutto' => $t['brutto'], 'arkuldve' => $now]);
+                $mezok = ['netto' => $t['netto'], 'brutto' => $t['brutto'], 'arkuldve' => $now];
+                if ($t['akciokuld']) {
+                    $report['ar'][$t['akcio'] ? 'akcios' : 'akciolejarat']++;
+                    $mezok += [
+                        'akciosnetto' => $t['akcio']['netto'] ?? null,
+                        'akciosbrutto' => $t['akcio']['brutto'] ?? null,
+                        'akcioskuldve' => $now,
+                    ];
+                }
+                $this->saveState($unasid, $t, $mezok);
             } else {
                 $report['ar']['hiba']++;
                 $this->saveHiba($unasid, $t, 'setProduct: ' . $hiba, $report);
             }
         }
         return true;
+    }
+
+    /**
+     * Az UNAS-ban akciós árat törölni nem lehet, csak lejárttá tenni: megszűnt akciónál a legutóbbi
+     * akciós árat tegnapi lejárattal küldjük. Az ársávos akciónak nincs dátuma, ezért ma kezdődik.
+     */
+    private function salePrice(array $t)
+    {
+        if ($t['akcio']) {
+            return [
+                'Type' => 'sale',
+                'Net' => $this->formatSzam($t['akcio']['netto']),
+                'Gross' => $this->formatSzam($t['akcio']['brutto']),
+                'Start' => date('Y.m.d'),
+            ];
+        }
+        $regi = $t['akcioregi'] ?: ['netto' => $t['netto'], 'brutto' => $t['brutto']];
+        return [
+            'Type' => 'sale',
+            'Net' => $this->formatSzam($regi['netto']),
+            'Gross' => $this->formatSzam($regi['brutto']),
+            'Start' => date('Y.m.d', strtotime('-2 days')),
+            'End' => date('Y.m.d', strtotime('-1 day')),
+        ];
     }
 
     /**
@@ -451,7 +529,8 @@ class UnasKeszletArService
             return [];
         }
         $rows = \mkw\store::getEm()->getConnection()->fetchAllAssociative(
-            'SELECT unasid, keszlet, netto, brutto, hibadb FROM unastermekszinkron WHERE unasid IN (?)',
+            'SELECT unasid, keszlet, netto, brutto, arkuldve, akciosnetto, akciosbrutto, akcioskuldve, hibadb'
+            . ' FROM unastermekszinkron WHERE unasid IN (?)',
             [$unasids],
             [\Doctrine\DBAL\ArrayParameterType::STRING]
         );
@@ -495,6 +574,14 @@ class UnasKeszletArService
         return $regi !== null && round((float)$regi, $tizedes) === round((float)$uj, $tizedes);
     }
 
+    private function egyezikAkcio(array $s, ?array $akcio)
+    {
+        if (!$akcio) {
+            return $s['akciosbrutto'] === null;
+        }
+        return $this->egyezik($s['akciosnetto'], $akcio['netto'], 2) && $this->egyezik($s['akciosbrutto'], $akcio['brutto'], 2);
+    }
+
     /** Tizedespont, felesleges nullák nélkül: 12.5000 → 12.5, -0 → 0 */
     private function formatSzam($n)
     {
@@ -515,6 +602,14 @@ class UnasKeszletArService
                 return;
             }
             $report['minta'][] = ['unasid' => $unasid, 'mezo' => 'brutto', 'regi' => $state[$unasid]['brutto'] ?? null, 'uj' => $t['brutto']];
+            if ($t['akciokuld'] && count($report['minta']) < self::MINTA) {
+                $report['minta'][] = [
+                    'unasid' => $unasid,
+                    'mezo' => 'akciós bruttó',
+                    'regi' => $state[$unasid]['akciosbrutto'] ?? null,
+                    'uj' => $t['akcio']['brutto'] ?? 'lejár',
+                ];
+            }
         }
     }
 
@@ -544,7 +639,7 @@ class UnasKeszletArService
             'duplikalt' => 0,
             'kihagyva_hiba' => 0,
             'keszlet' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nemkeszletes' => 0, 'unasvaltozatos' => 0],
-            'ar' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nincsar' => 0],
+            'ar' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nincsar' => 0, 'akcios' => 0, 'akciolejarat' => 0],
             'hivasok' => 0,
             'valasz_tetel_nelkul' => 0,
             'fek' => false,

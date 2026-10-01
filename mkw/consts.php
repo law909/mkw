@@ -510,6 +510,8 @@ class consts
     // ársávos telepítésen ennek az ársávnak és valutanemnek az ára megy ki, üresen az alapértelmezett
     const UnasArsav = 'unasarsav';
     const UnasValutanem = 'unasvalutanem';
+    // ennek az ársávnak az ára megy ki akciós (sale) árként; üresen az akciós árhoz nem nyúlunk
+    const UnasAkciosArsav = 'unasakciosarsav';
 
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';

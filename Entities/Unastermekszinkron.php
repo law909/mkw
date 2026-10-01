@@ -58,6 +58,17 @@ class Unastermekszinkron
     /** @ORM\Column(type="datetime",nullable=true) */
     private $arkuldve;
 
+    /** a legutóbb kiküldött akciós ár; null, ha lejárttá tettük vagy nem volt
+     * @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $akciosnetto;
+
+    /** @ORM\Column(type="decimal",precision=14,scale=4,nullable=true) */
+    private $akciosbrutto;
+
+    /** null: az akciós ár állapota még nem ment ki, tehát az UNAS-beli akcióról nem tudunk semmit
+     * @ORM\Column(type="datetime",nullable=true) */
+    private $akcioskuldve;
+
     /** egymás utáni sikertelen küldések száma; a MAXHIBA fölött a sor csak --teljes futással megy újra
      * @ORM\Column(type="integer",nullable=false) */
     private $hibadb = 0;
@@ -111,6 +122,21 @@ class Unastermekszinkron
     public function getArkuldve()
     {
         return $this->arkuldve;
+    }
+
+    public function getAkciosnetto()
+    {
+        return $this->akciosnetto;
+    }
+
+    public function getAkciosbrutto()
+    {
+        return $this->akciosbrutto;
+    }
+
+    public function getAkcioskuldve()
+    {
+        return $this->akcioskuldve;
     }
 
     public function getHibadb()

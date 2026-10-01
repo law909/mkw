@@ -590,6 +590,8 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar('unaskeszletraktarlist', (new raktarController())->getSelectList(($p ? $p->getErtek() : 0)));
         $p = $repo->find(\mkw\consts::UnasArsav);
         $view->setVar('unasarsavlist', (new arsavController())->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::UnasAkciosArsav);
+        $view->setVar('unasakciosarsavlist', (new arsavController())->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::UnasValutanem);
         $view->setVar('unasvalutanemlist', (new valutanemController())->getSelectList(($p ? $p->getErtek() : 0)));
 
@@ -1500,6 +1502,7 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::UnasArFeltoltes,
             \mkw\consts::UnasKeszletRaktar,
             \mkw\consts::UnasArsav,
+            \mkw\consts::UnasAkciosArsav,
             \mkw\consts::UnasValutanem,
         ],
     ];
@@ -1570,6 +1573,9 @@ class setupController extends \mkwhelpers\Controller
             $arsav = \mkw\store::getEm()->getRepository(Arsav::class)
                 ->find($this->params->getIntRequestParam(\mkw\consts::UnasArsav, 0));
             $this->setObj(\mkw\consts::UnasArsav, $arsav ? $arsav->getId() : '');
+            $akciosarsav = \mkw\store::getEm()->getRepository(Arsav::class)
+                ->find($this->params->getIntRequestParam(\mkw\consts::UnasAkciosArsav, 0));
+            $this->setObj(\mkw\consts::UnasAkciosArsav, $akciosarsav ? $akciosarsav->getId() : '');
             $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)
                 ->find($this->params->getIntRequestParam(\mkw\consts::UnasValutanem, 0));
             $this->setObj(\mkw\consts::UnasValutanem, $valutanem ? $valutanem->getId() : '');

@@ -2511,10 +2511,12 @@
                                 <input id="UnasArFeltoltesEdit" name="unasarfeltoltes"
                                        type="checkbox"{if ($unasarfeltoltes)} checked="checked"{/if}>
                             </div>
-                            <div class="setuprow">
-                                <span class="setuplabel">&nbsp;</span>
-                                <span>{at('Csak a normál ár megy ki, az akciós ár az UNAS-ban marad.')}</span>
-                            </div>
+                            {if (!$setup.arsavok)}
+                                <div class="setuprow">
+                                    <span class="setuplabel">&nbsp;</span>
+                                    <span>{at('Csak a normál ár megy ki, az akciós ár az UNAS-ban marad.')}</span>
+                                </div>
+                            {/if}
                             {if ($setup.arsavok)}
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UnasArsavEdit">{at('Ársáv')}:</label></span>
@@ -2524,6 +2526,19 @@
                                             <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
                                         {/foreach}
                                     </select>
+                                </div>
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UnasAkciosArsavEdit">{at('Akciós ársáv')}:</label></span>
+                                    <select id="UnasAkciosArsavEdit" name="unasakciosarsav">
+                                        <option value="">{at('nem küldünk akciós árat')}</option>
+                                        {foreach $unasakciosarsavlist as $_r}
+                                            <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <div class="setuprow">
+                                    <span class="setuplabel">&nbsp;</span>
+                                    <span>{at('Ha a termék ára ebben az ársávban kisebb a normál árnál, az UNAS-ba akciós árként megy ki. Ha megszűnik, az UNAS-ban lejárttá tesszük; ársáv nélkül az UNAS-beli akciós árhoz nem nyúlunk.')}</span>
                                 </div>
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UnasValutanemEdit">{at('Valutanem')}:</label></span>

@@ -38,7 +38,15 @@ class UnasKeszletArTask implements CronTask
                 ? sprintf('%d változott, %d küldve, %d hiba', $r['keszlet']['valtozott'], $r['keszlet']['kuldve'], $r['keszlet']['hiba'])
                 : 'ki',
             $r['arbe']
-                ? sprintf('%d változott, %d küldve, %d hiba, %d ár nélkül', $r['ar']['valtozott'], $r['ar']['kuldve'], $r['ar']['hiba'], $r['ar']['nincsar'])
+                ? sprintf(
+                    '%d változott, %d küldve (%d akcióval, %d akció lejárt), %d hiba, %d ár nélkül',
+                    $r['ar']['valtozott'],
+                    $r['ar']['kuldve'],
+                    $r['ar']['akcios'],
+                    $r['ar']['akciolejarat'],
+                    $r['ar']['hiba'],
+                    $r['ar']['nincsar']
+                )
                 : 'ki',
             $r['hivasok']
         );

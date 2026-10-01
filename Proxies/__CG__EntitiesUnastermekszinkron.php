@@ -67,10 +67,10 @@ class Unastermekszinkron extends \Entities\Unastermekszinkron implements \Doctri
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'id', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'unasid', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termek', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszlet', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszletkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'netto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'brutto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'arkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibadb', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hiba', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibaido'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'id', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'unasid', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termek', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszlet', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszletkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'netto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'brutto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'arkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'akcioskuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibadb', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hiba', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibaido'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'id', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'unasid', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termek', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszlet', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszletkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'netto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'brutto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'arkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibadb', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hiba', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibaido'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'id', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'unasid', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termek', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'termekvaltozat', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszlet', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'keszletkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'netto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'brutto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'arkuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'akciosnetto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'akciosbrutto', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'akcioskuldve', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibadb', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hiba', '' . "\0" . 'Entities\\Unastermekszinkron' . "\0" . 'hibaido'];
     }
 
     /**
@@ -278,6 +278,39 @@ class Unastermekszinkron extends \Entities\Unastermekszinkron implements \Doctri
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArkuldve', []);
 
         return parent::getArkuldve();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAkciosnetto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciosnetto', []);
+
+        return parent::getAkciosnetto();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAkciosbrutto()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkciosbrutto', []);
+
+        return parent::getAkciosbrutto();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAkcioskuldve()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAkcioskuldve', []);
+
+        return parent::getAkcioskuldve();
     }
 
     /**
