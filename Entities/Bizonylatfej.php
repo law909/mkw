@@ -947,7 +947,10 @@ class Bizonylatfej
             }
         }
         if ($tetelszam === 0) {
-            $hibak[] = 'Nincsenek tételek a bizonylaton.';
+            // the document type may allow saving without items
+            if ($this->getBizonylattipus()?->getTetelkotelezo() ?? true) {
+                $hibak[] = 'Nincsenek tételek a bizonylaton.';
+            }
         } elseif ($vantermeknelkuli) {
             $hibak[] = 'Egy vagy több tételhez nincs termék kiválasztva.';
         }

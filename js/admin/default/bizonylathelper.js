@@ -2508,7 +2508,8 @@ let bizonylathelper = function ($) {
 
                 // POS módban a tételeket nem a form, hanem a kereső viszi fel: üres kosárral
                 // a mentés csak egy tétel nélküli bizonylatot hozna létre
-                if (window.bizonylatpos && $('input[name="pos"]', f).val() == 1 && !bizonylatpos.vanTetel()) {
+                if (window.bizonylatpos && $('input[name="pos"]', f).val() == 1 && !bizonylatpos.vanTetel()
+                    && $('#BizTetelkotelezo').val() !== '0') {
                     $('#dialogcenter').html('Nincs tétel a bizonylaton!').dialog({
                         resizable: false,
                         modal: true,
