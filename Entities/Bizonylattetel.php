@@ -1505,18 +1505,20 @@ class Bizonylattetel
     }
 
     /**
-     * The keys of the "név, szín, méret" line order: [név, szín, méret helye, méret]. The size's place is
-     * its sorrend in the Méret törzs, else its position in the Beállítások value order, else the usual
-     * clothing size order, else last.
+     * The keys of the "név, szín, méret" line order: [név, szín helye, szín, méret helye, méret]. The colour's
+     * place is its sorrend in the Szín törzs; the size's is its sorrend in the Méret törzs, else its position
+     * in the Beállítások value order, else the usual clothing size order. Without any of them: last.
      */
     public function getNevSzinMeretKulcs()
     {
         $szin = '';
+        $szinsorrend = PHP_INT_MAX;
         $meret = '';
         $meretsorrend = PHP_INT_MAX;
         $valt = $this->getTermekvaltozat();
         if ($valt?->getSzinObject()) {
             $szin = $valt->getSzinNev();
+            $szinsorrend = (int)$valt->getSzinObject()->getSorrend() ?: PHP_INT_MAX;
         }
         if ($valt?->getMeretObject()) {
             $meret = $valt->getMeretNev();
@@ -1543,7 +1545,7 @@ class Bizonylattetel
             $hely = array_search($meret, $sorrend, true);
             $meretsorrend = $hely !== false ? $hely + 1 : self::getSzokasosMeretHely($meret);
         }
-        return [(string)$this->getTermeknev(), $szin, $meretsorrend, $meret];
+        return [(string)$this->getTermeknev(), $szinsorrend, $szin, $meretsorrend, $meret];
     }
 
     /** XS < S < M < L < XL < XXL (= 2XL) …, the youth sizes (YS, YM …) before the adult ones. */

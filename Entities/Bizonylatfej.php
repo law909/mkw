@@ -2957,10 +2957,11 @@ class Bizonylatfej
         );
         $sorrend = array_keys($tetelek);
         usort($sorrend, function ($i, $j) use ($kulcsok, $ktg, $compare) {
-            [$anev, $aszin, $ameretsorrend, $ameret] = $kulcsok[$i];
-            [$bnev, $bszin, $bmeretsorrend, $bmeret] = $kulcsok[$j];
+            [$anev, $aszinsorrend, $aszin, $ameretsorrend, $ameret] = $kulcsok[$i];
+            [$bnev, $bszinsorrend, $bszin, $bmeretsorrend, $bmeret] = $kulcsok[$j];
             return ($ktg[$i] <=> $ktg[$j])
                 ?: $compare($anev, $bnev)
+                ?: ($aszinsorrend <=> $bszinsorrend)
                 ?: $compare($aszin, $bszin)
                 ?: ($ameretsorrend <=> $bmeretsorrend)
                 ?: strnatcasecmp($ameret, $bmeret);
