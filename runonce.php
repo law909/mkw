@@ -3167,6 +3167,17 @@ if ($DBVersion < '0212' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0212');
 }
 
+if ($DBVersion < '0213' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0212') {
+    // Rontás visszavétele az "Egyéb műveletek" csoportba, a Raktár készlet nullázás után
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class)'
+        . ' SELECT i.menucsoport_id, "Rontás visszavétele", "/admin/rontasvisszavetel/view", "/admin/rontasvisszavetel", 999, 1, 820, ""'
+        . ' FROM (SELECT menucsoport_id FROM menu WHERE url = "/admin/import/view" LIMIT 1) i'
+        . ' WHERE NOT EXISTS (SELECT 1 FROM (SELECT id FROM menu WHERE url = "/admin/rontasvisszavetel/view") m)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0213');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
