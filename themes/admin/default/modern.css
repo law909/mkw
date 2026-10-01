@@ -1393,6 +1393,12 @@ body.modernui {
         padding-bottom: 0;
     }
 
+    /* a mező után álló címke (Gyűjtő sor: Sor/doboz) is a saját mezője fölé kerül */
+    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td > input + label {
+        display: block;
+        margin-top: 8px;
+    }
+
     .modernui [id^="teteltable_"] input:not([type="checkbox"]):not([type="radio"]),
     .modernui [id^="teteltable_"] select {
         max-width: 100%;
