@@ -524,6 +524,8 @@ body.modernui {
     border-radius: 8px;
     box-shadow: var(--mkw-shadow-sm);
     overflow: clip;
+    /* a clip a széles táblázatot levágná: a panel nőjön vele, és a lap görögjön (overflow-x: auto a ragadós fejlécet törné) */
+    min-width: min-content;
 }
 
 .modernui .mattable-titlebar {
