@@ -69,9 +69,8 @@ var bizonylatpos = (function ($) {
         } else if (source === 'brutto') {
             netto = round2(brutto / (100 + afakulcs) * 100);
             $row.find('.js-posnettoegysar').val(fmt(netto));
-            if (enetto > 0) {
-                $row.find('.js-poskedvezmeny').val(fmt((1 - netto / enetto) * 100));
-            }
+            // a typed price is not a discount: no discount is derived from it, as on the shop sale screen
+            $row.find('.js-poskedvezmeny').val('');
         }
         recalcRow($row);
     }
