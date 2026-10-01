@@ -818,7 +818,7 @@ select.tetelszamhiba,
     min-width: 0;
 }
 
-/* a cikkszám kiírva, mellette (ha van) a változat cikkszáma; az üres változat-felirat ne foglaljon helyet */
+/* a cikkszám kiírva, mellette ugyanígy (ha van) a változat cikkszáma; az üres változat-cikkszám ne foglaljon helyet */
 .tetel-cikkszam {
     font-weight: bold;
 }
@@ -829,6 +829,10 @@ select.tetelszamhiba,
 
 .tetel-valtozatcikkszam:empty {
     display: none;
+}
+
+.tetel-valtozatcikkszam {
+    margin-left: 8px;
 }
 
 /* a változat választója a JS által újratöltött helyőrzőben van */

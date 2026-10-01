@@ -2340,7 +2340,7 @@ let bizonylathelper = function ($) {
                             sorid = $this.attr('name').split('_')[1],
                             valtozatcikkszam = $('option:selected', $this).attr('data-cikkszam');
                         // the line field keeps the product's code, the variant's is only shown
-                        $('.js-valtozatcikkszam_' + sorid).text(valtozatcikkszam ? `Változat: ${valtozatcikkszam}` : '');
+                        $('.js-valtozatcikkszam_' + sorid).text(valtozatcikkszam || '');
                         setTermekAr(sorid);
                         frissitRaktarKeszlet(sorid);
                     })

@@ -84,7 +84,7 @@
             {mezo cimke="Cikkszám" szeles=true}
                 <span class="tetel-cikkszam js-cikkszamszoveg_{$tetel.id}">{$tetel.cikkszam|escape}</span>
                 <input name="tetelcikkszam_{$tetel.id}" type="hidden" value="{$tetel.cikkszam|escape}">
-                <span class="tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span>
+                <span class="tetel-cikkszam tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}" title="{at('Változat cikkszáma')}">{$tetel.valtozatcikkszam|default|escape}</span>
             {/mezo}
             {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
             {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
