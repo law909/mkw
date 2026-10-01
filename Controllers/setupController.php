@@ -587,7 +587,13 @@ class setupController extends \mkwhelpers\Controller
             $view->setVar($par, ($p ? (bool)$p->getErtek() : false));
         }
         $p = $repo->find(\mkw\consts::UnasKeszletRaktar);
-        $view->setVar('unaskeszletraktarlist', (new raktarController())->getSelectList(($p ? $p->getErtek() : 0)));
+        $kivalasztott = \Services\UnasKeszletArService::parseRaktarids($p ? $p->getErtek() : '');
+        $raktarlist = [];
+        foreach ((new raktarController())->getSelectList() as $r) {
+            $r['selected'] = in_array((int)$r['id'], $kivalasztott, true);
+            $raktarlist[] = $r;
+        }
+        $view->setVar('unaskeszletraktarlist', $raktarlist);
         $p = $repo->find(\mkw\consts::UnasArsav);
         $view->setVar('unasarsavlist', (new arsavController())->getSelectList(($p ? $p->getErtek() : '')));
         $p = $repo->find(\mkw\consts::UnasAkciosArsav);
@@ -1577,9 +1583,11 @@ class setupController extends \mkwhelpers\Controller
         ] as $par) {
             $this->setObj($par, $this->params->getBoolRequestParam($par, false));
         }
-        $raktar = \mkw\store::getEm()->getRepository(\Entities\Raktar::class)
-            ->find($this->params->getIntRequestParam(\mkw\consts::UnasKeszletRaktar, 0));
-        $this->setObj(\mkw\consts::UnasKeszletRaktar, $raktar ? $raktar->getId() : '');
+        $raktarids = array_map('intval', $this->params->getArrayRequestParam(\mkw\consts::UnasKeszletRaktar));
+        $raktarak = $raktarids
+            ? \mkw\store::getEm()->getRepository(\Entities\Raktar::class)->findBy(['id' => $raktarids], ['id' => 'ASC'])
+            : [];
+        $this->setObj(\mkw\consts::UnasKeszletRaktar, implode(',', array_map(fn($r) => $r->getId(), $raktarak)));
         if (\mkw\store::isArsavok()) {
             $arsav = \mkw\store::getEm()->getRepository(Arsav::class)
                 ->find($this->params->getIntRequestParam(\mkw\consts::UnasArsav, 0));

@@ -52,17 +52,24 @@ class UnasKeszletArService
 
     /**
      * Szándékosan nem a rendelés-import raktára (UnasRaktar): oda csak az UNAS rendelések kerülnek,
-     * a valódi készlet máshol van. Üresen az UNAS webshopjában látható raktárak – null, ha mind.
+     * a valódi készlet máshol van. A Beállításokban több raktár is megadható (vesszős lista); üresen
+     * az UNAS webshopjában látható raktárak – null, ha mind.
      *
-     * @return int|int[]|null
+     * @return int[]|null
      */
     public static function getKeszletRaktar()
     {
-        $raktarid = (int)\mkw\store::getParameter(\mkw\consts::UnasKeszletRaktar);
-        if ($raktarid) {
-            return $raktarid;
+        $raktarids = self::parseRaktarids(\mkw\store::getParameter(\mkw\consts::UnasKeszletRaktar, ''));
+        if ($raktarids) {
+            return $raktarids;
         }
         return KeszletService::getWebshopRaktarIds((int)\mkw\store::getParameter(\mkw\consts::UnasWebshopnum) ?: null);
+    }
+
+    /** @return int[] */
+    public static function parseRaktarids($ertek)
+    {
+        return array_values(array_unique(array_filter(array_map('intval', explode(',', (string)$ertek)))));
     }
 
     /**
@@ -204,9 +211,10 @@ class UnasKeszletArService
 
         if ($keszletBe) {
             $termekCelids = array_column(array_filter($koteg, static fn($c) => !$c['valtozatid']), 'termekid');
-            KeszletService::preloadStock($termekCelids, $valtozatids, null, $raktarid);
-            if (!is_array($raktarid)) {
-                KeszletService::preload($termekids, $valtozatids, $raktarid);
+            // calcKeszlet() asks warehouse by warehouse, the cache is keyed the same way
+            foreach ($raktarid ?? [null] as $egyraktar) {
+                KeszletService::preloadStock($termekCelids, $valtozatids, null, $egyraktar);
+                KeszletService::preload($termekids, $valtozatids, $egyraktar);
             }
         }
         $arak = $arBe ? $this->loadArak($termekek) : [];
@@ -251,16 +259,19 @@ class UnasKeszletArService
     }
 
     /**
-     * A KeszletService::calcAvailableStock() képlete: készlet − foglalás − min. bolti készlet, nullára
-     * vágva. A foglalás levonása kell, mert az UNAS a rendeléskor már csökkentette a saját készletét.
-     * Raktárlistánál a min. készlet létrája raktár nélkül megy, az csak egy raktárt ismer.
+     * A raktárak szabad készletének összege (KeszletService::getFreeStock(), a Beállítások „Szabad készlet”
+     * képlete szerint), nullára vágva. Raktáranként, mert a min. készlet raktárankénti értéke csak egy
+     * raktárt ismer. A foglalás levonása kell, mert az UNAS a rendeléskor már csökkentette a saját készletét.
+     *
+     * @param int[]|null $raktarids null = minden raktár
      */
-    private function calcKeszlet(Termek $termek, ?TermekValtozat $valtozat, $raktarid)
+    private function calcKeszlet(Termek $termek, ?TermekValtozat $valtozat, $raktarids)
     {
         $o = $valtozat ?: $termek;
-        $keszlet = KeszletService::getKeszlet($o, null, $raktarid)
-            - KeszletService::getFoglaltMennyiseg($o, null, null, $raktarid)
-            - KeszletService::getMinKeszlet($termek, $valtozat, is_array($raktarid) ? null : $raktarid);
+        $keszlet = 0;
+        foreach ($raktarids ?? [null] as $raktarid) {
+            $keszlet += KeszletService::getFreeStock($o, null, $raktarid);
+        }
         return round(max((float)$keszlet, 0), 4);
     }
 

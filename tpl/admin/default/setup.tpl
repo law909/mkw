@@ -2563,17 +2563,16 @@
                                        type="checkbox"{if ($unaskeszletfeltoltes)} checked="checked"{/if}>
                             </div>
                             <div class="setuprow">
-                                <span class="setuplabel"><label for="UnasKeszletRaktarEdit">{at('Készlet raktára')}:</label></span>
-                                <select id="UnasKeszletRaktarEdit" name="unaskeszletraktar">
-                                    <option value="">{at('a rendelések webshopjában látható raktárak')}</option>
+                                <span class="setuplabel">{at('Készlet raktárai')}:</span>
+                                <span>
                                     {foreach $unaskeszletraktarlist as $_r}
-                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                        <label><input type="checkbox" name="unaskeszletraktar[]" value="{$_r.id}"{if ($_r.selected)} checked="checked"{/if}> {$_r.caption}</label>
                                     {/foreach}
-                                </select>
+                                </span>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel">&nbsp;</span>
-                                <span>{at('A szabad készlet megy ki: készlet − foglalás − min. bolti készlet. Nem a rendelések raktára: oda csak a beérkező UNAS rendelések kerülnek.')}</span>
+                                <span>{at('A kijelölt raktárak szabad készletének összege megy ki, a Szabad készlet beállítás képlete szerint. Ha egy sincs kijelölve, a rendelések webshopjában látható raktáraké. Nem a rendelések raktára: oda csak a beérkező UNAS rendelések kerülnek.')}</span>
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="UnasArFeltoltesEdit">{at('Ár feltöltése')}:</label></span>
