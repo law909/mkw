@@ -230,7 +230,13 @@ $(document).ready(
             $szakasz.slideToggle(200);
             $.ajax({url: '/admin/setuipref', type: 'POST', global: false, data: {name: 'gyakrannyitva', value: nyitva ? 1 : 0}});
         });
+        // same breakpoint as the mobile block at the end of modern.css
+        const mobileLayout = window.matchMedia('(max-width: 860px)');
         $('.js-oldalsavkapcsolo').on('click', function () {
+            if (mobileLayout.matches) {
+                $('body').toggleClass('oldalsav-mobilnyitva');
+                return;
+            }
             const rejtve = $('body').toggleClass('oldalsav-rejtve').hasClass('oldalsav-rejtve');
             $.ajax({
                 url: '/admin/setuipref',
@@ -238,6 +244,11 @@ $(document).ready(
                 global: false,
                 data: {name: 'oldalsavrejtve', value: rejtve ? 1 : 0}
             });
+        });
+        $(document).on('click', function (e) {
+            if ($('body').hasClass('oldalsav-mobilnyitva') && !$(e.target).closest('.menu-container, .js-oldalsavkapcsolo').length) {
+                $('body').removeClass('oldalsav-mobilnyitva');
+            }
         });
         // Tanár elszámolás e-mail: a lista a tanár elszámolás képernyőn és a darshan irányítópulton is megjelenik
         $(document).on('click', '.js-tanarelszamolasemail', function (e) {

@@ -2,6 +2,9 @@
 <html{if ($modernui|default:false)} style="{$uiaccentcss}"{/if}>
 <head>
     <meta charset="utf-8">
+    {if ($modernui|default:false)}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {/if}
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/style.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/{$theme}/matt.css"/>

@@ -1119,3 +1119,170 @@ body.modernui {
     border-color: var(--mkw-danger);
     background: var(--mkw-danger-soft);
 }
+
+/* Mobil elrendezés (a töréspont az appinit.js-ben is szerepel): a menü a hamburger gombra kicsúszó panel
+----------------------------------*/
+@media (max-width: 860px) {
+    .modernui .screen,
+    .modernui.oldalsav-rejtve .screen {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .modernui .menu-container,
+    .modernui.oldalsav-rejtve .menu-container {
+        position: fixed;
+        top: var(--mkw-topbar-height);
+        bottom: 0;
+        left: 0;
+        z-index: 45;
+        display: block;
+        width: min(300px, 85vw);
+        max-height: none;
+        visibility: hidden;
+        transform: translateX(-100%);
+        transition: transform .2s, visibility .2s;
+    }
+
+    .modernui.oldalsav-mobilnyitva .menu-container {
+        visibility: visible;
+        transform: none;
+        box-shadow: var(--mkw-shadow);
+    }
+
+    .modernui .menupont.ui-button {
+        padding: 8px;
+    }
+
+    .modernui.oldalsav-mobilnyitva::after {
+        content: "";
+        position: fixed;
+        inset: var(--mkw-topbar-height) 0 0 0;
+        z-index: 44;
+        background: var(--mkw-overlay);
+    }
+
+    .modernui .topbar {
+        gap: 6px;
+        padding: 0 6px;
+    }
+
+    .modernui .topbar-ceg {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .modernui .topbar-kereso {
+        flex: 0 0 auto;
+        margin: 0 0 0 auto;
+    }
+
+    .modernui .topbar-kereso-szoveg,
+    .modernui .topbar-kereso kbd,
+    .modernui .topbar-felhasznalo {
+        display: none;
+    }
+
+    .modernui .content-container {
+        padding: 8px;
+    }
+
+    /* 16px alatt az iOS a mezőbe lépéskor ránagyít, és nem áll vissza */
+    .modernui input:not([type="checkbox"]):not([type="radio"]),
+    .modernui select,
+    .modernui textarea {
+        font-size: 16px;
+    }
+
+    /* a széles lista a panelen belül görög, nem a lap; a ragadós fejléc görgető panelben elcsúszna */
+    .modernui .mattable {
+        min-width: 0;
+        overflow-x: auto;
+    }
+
+    .modernui .mattable-table th.mattable-thcolumn {
+        position: static;
+    }
+
+    .modernui .mattable-cell {
+        padding: 1em .6em;
+    }
+
+    /* a szűrő sablonjai címkét és mezőt egy sorfolyamba írnak: a mező előtti címke külön sorba kerül */
+    .modernui .mattable-filterwrapper label:has(+ input:not([type="checkbox"]):not([type="radio"]), + select) {
+        display: block;
+        margin-top: 6px;
+    }
+
+    .modernui .mattable-filterwrapper input,
+    .modernui .mattable-filterwrapper select {
+        max-width: 100%;
+    }
+
+    /* a lapozó cellái egészben törnek, nem a cellák szövege */
+    .modernui .mattable-pager table,
+    .modernui .mattable-pager tbody {
+        display: block;
+    }
+
+    .modernui .mattable-pager tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px 2px;
+    }
+
+    .modernui .mattable-pager td {
+        white-space: nowrap;
+    }
+
+    .modernui .mattkarb {
+        min-width: 0;
+    }
+
+    /* a lábléc a lapon kívül van, így ragadós marad */
+    .modernui .mattkarb-page {
+        overflow-x: auto;
+    }
+
+    .modernui .mattedit-page {
+        padding: 1em;
+    }
+
+    /* címke a mező fölött */
+    .modernui table.mattkarb-racs > tbody > tr,
+    .modernui table.mattkarb-racs > tbody > tr > td {
+        display: block;
+    }
+
+    .modernui table.mattkarb-racs > tbody > tr > td:nth-child(odd):not(:last-child) {
+        padding-bottom: 0;
+    }
+
+    .modernui table.mattkarb-sor > tbody > tr > td:first-child {
+        flex-basis: 100%;
+    }
+
+    .modernui .mattkarb-szakaszcim {
+        max-width: none;
+    }
+
+    .modernui .mezok {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .modernui .mezo-szeles > .mezo-cimke,
+    .modernui .mezo-szeles > .mezo-ertek {
+        grid-column: auto;
+    }
+
+    .modernui .ui-dialog {
+        max-width: calc(100vw - 16px);
+    }
+
+    .mkw-toastok {
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+    }
+}
