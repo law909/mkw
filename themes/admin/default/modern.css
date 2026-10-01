@@ -987,7 +987,6 @@ body.modernui {
     border-color: var(--mkw-accent-border);
 }
 
-/* az oszlop minimuma a nagy betűs, 8+2 jegyű Bruttóhoz (10,3em) igazodik; mobilon így is két oszlop fér ki */
 /* Bizonylattétel rögzítő: a szerkezet a style.css-ben, itt a megjelenés */
 .modernui .tetel-fej {
     padding-bottom: 12px;
@@ -1136,9 +1135,11 @@ body.modernui {
     font-variant-numeric: tabular-nums;
 }
 
+/* tördelődő sor: az összegek alapja 10,5em (a nagy betűs, 8+2 jegyű Bruttó 10,3em), a tételszámé és a mennyiségé a fele (style.css) */
 .modernui .bizonylatosszesito {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 12px 16px;
     margin-top: 1em;
     padding: 12px 16px;
@@ -1148,16 +1149,12 @@ body.modernui {
 }
 
 .modernui .bizonylatosszesito-cim {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
     color: var(--mkw-accent);
     font-size: .85em;
     font-weight: 600;
     letter-spacing: .05em;
     text-transform: uppercase;
-}
-
-.modernui .bizonylatosszesito-ertek {
-    text-align: left;
 }
 
 .modernui .bizonylatosszesito-cimke {

@@ -332,6 +332,7 @@ img {
 .bizonylatosszesito {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-end;
     gap: 4px 24px;
     margin-top: 5px;
     padding: 6px 8px;
@@ -342,10 +343,20 @@ img {
     font-weight: bold;
 }
 
+/* legfeljebb a kétszeresére nő, és a sor jobbra rendeződik: a tördelt, magányos érték se nyúljon a teljes szélességre */
 .bizonylatosszesito-ertek {
     display: flex;
+    flex: 2 1 10.5em;
     flex-direction: column;
+    min-width: max-content;
+    max-width: 21em;
     text-align: right;
+}
+
+/* tételszám, mennyiség: fele olyan széles, mint az összegek */
+.bizonylatosszesito-keskeny {
+    flex: 1 1 5.25em;
+    max-width: 10.5em;
 }
 
 .bizonylatosszesito-cimke {

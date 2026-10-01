@@ -597,8 +597,8 @@
                 {/if}
                 <div class="js-bizonylatosszesito ui-widget-content ui-corner-all bizonylatosszesito">
                     <div class="bizonylatosszesito-cim">{at('Összesen')}</div>
-                    <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Tételszám')}</span><span class="js-tetelszamsum"></span></div>
-                    <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Mennyiség')}</span><span class="js-mennyisegsum"></span></div>
+                    <div class="bizonylatosszesito-ertek bizonylatosszesito-keskeny"><span class="bizonylatosszesito-cimke">{at('Tételszám')}</span><span class="js-tetelszamsum"></span></div>
+                    <div class="bizonylatosszesito-ertek bizonylatosszesito-keskeny"><span class="bizonylatosszesito-cimke">{at('Mennyiség')}</span><span class="js-mennyisegsum"></span></div>
                     <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Nettó')}</span><span class="js-nettosum"></span></div>
                     <div class="bizonylatosszesito-ertek bizonylatosszesito-fo"><span class="bizonylatosszesito-cimke">{at('Bruttó')}</span><span class="js-bruttosum"></span></div>
                     {if ($showvalutanem)}
