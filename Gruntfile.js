@@ -113,6 +113,11 @@ module.exports = function (grunt) {
             },
             // a téma egyetlen stíluslapja: a hat különálló fájl hat render-blocking kérés volt
             mugenrace2026css: {
+                // @charset only counts as the very first rule, the one sass puts into style-2.css ended up mid-file
+                options: {
+                    banner: '@charset "UTF-8";\n',
+                    process: (src) => src.replace(/^@charset "UTF-8";\n/gm, '')
+                },
                 src: [
                     'themes/main/mugenrace2026/mgr.css',
                     'themes/main/mugenrace2026/style.css',

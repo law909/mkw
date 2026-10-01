@@ -220,7 +220,7 @@ select {
 }
 
 .cs-option.cs-selected::before {
-  content: '✓';
+  content: unquote('"\\2713"'); // escaped in the output too: sass would write the raw character back
   font-size: 11px;
   color: var(--color-primary, #d0112b);
   min-width: 12px;

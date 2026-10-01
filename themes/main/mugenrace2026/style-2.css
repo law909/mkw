@@ -909,7 +909,7 @@ select {
 }
 
 .cs-option.cs-selected::before {
-  content: "✓";
+  content: "\2713";
   font-size: 11px;
   color: var(--color-primary, #d0112b);
   min-width: 12px;

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v2.3.2
  *
@@ -1534,7 +1535,6 @@ select[name="foxpostterminal"] {
   }
 }
 
-@charset "UTF-8";
 /* Base */
 :root {
   /* Colors */
@@ -2445,7 +2445,7 @@ select {
 }
 
 .cs-option.cs-selected::before {
-  content: "✓";
+  content: "\2713";
   font-size: 11px;
   color: var(--color-primary, #d0112b);
   min-width: 12px;
