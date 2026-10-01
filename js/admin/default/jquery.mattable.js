@@ -746,6 +746,17 @@
             $('td.cell', table).addClass('mattable-cell mattable-tborder mattable-rborder');
             $('tbody tr td.cell:last-child', table).removeClass('mattable-rborder');
             $(setup.table + ' > tbody > tr').addClass('ui-widget-content');
+            // the mobile card layout (modern.css) shows each cell's column header above it
+            const columnLabels = table.children('thead').children('tr').first().children('th')
+                .map((i, th) => $(th).text().trim()).get();
+            $(setup.table + ' > tbody > tr').each(function () {
+                $(this).children('td.cell').each(function () {
+                    const label = columnLabels[this.cellIndex];
+                    if (label) {
+                        this.dataset.oszlop = label;
+                    }
+                });
+            });
             $('.mattable-editlink').button();
             $('.mattable-dellink').button();
             if (typeof setup.tablebody.onStyle === 'function') {

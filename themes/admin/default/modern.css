@@ -1194,18 +1194,80 @@ body.modernui {
         font-size: 16px;
     }
 
-    /* a széles lista a panelen belül görög, nem a lap; a ragadós fejléc görgető panelben elcsúszna */
+    /* Kártyás lista: soronként egy kártya, a cellák egymás alatt, fölöttük az oszlop neve (data-oszlop, jquery.mattable.js) */
     .modernui .mattable {
         min-width: 0;
-        overflow-x: auto;
     }
 
-    .modernui .mattable-table th.mattable-thcolumn {
+    .modernui .mattable-table,
+    .modernui .mattable-table > thead,
+    .modernui .mattable-table > tbody,
+    .modernui .mattable-table > tbody > tr > td {
+        display: block;
+    }
+
+    /* a fejlécből csak a mindent kijelölő pipa marad */
+    .modernui .mattable-table > thead > tr > th {
+        display: none;
+    }
+
+    .modernui .mattable-table > thead > tr > th:has(> input[type="checkbox"]) {
+        display: block;
         position: static;
+        background: transparent;
     }
 
-    .modernui .mattable-cell {
-        padding: 1em .6em;
+    .modernui .mattable-table > tbody {
+        padding: 0 8px;
+    }
+
+    .modernui .mattable-table > tbody > tr.ui-widget-content,
+    .modernui .mattable-table > tbody > tr.ui-widget-content:nth-child(even) {
+        position: relative;
+        display: block;
+        margin: 8px 0;
+        border: 1px solid var(--mkw-border-strong);
+        border-radius: var(--mkw-radius);
+        background: var(--mkw-surface);
+        box-shadow: var(--mkw-shadow-sm);
+    }
+
+    /* a cellában maradt széles belső táblázat a cellán belül görög */
+    .modernui .mattable-table > tbody > tr > td.mattable-cell.mattable-tborder {
+        overflow-x: auto;
+        padding: .5em .8em;
+        border: 0;
+        border-top: 1px solid var(--mkw-row-separator);
+    }
+
+    .modernui .mattable-table > tbody > tr > td.mattable-cell.mattable-tborder:first-child {
+        border-top: 0;
+    }
+
+    /* a kijelölő pipa a kártya jobb felső sarkába kerül */
+    .modernui .mattable-table > tbody > tr > td:first-child:has(> input[type="checkbox"]) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: auto;
+        padding: .7em .8em;
+        border: 0;
+    }
+
+    .modernui .mattable-table > tbody > tr > td.mattable-cell.mattable-tborder:first-child:has(> input[type="checkbox"]) + td {
+        padding-right: 2.6em;
+        border-top: 0;
+    }
+
+    .modernui .mattable-table td[data-oszlop]::before {
+        content: attr(data-oszlop);
+        display: block;
+        margin-bottom: 2px;
+        color: var(--mkw-muted);
+        font-size: .8em;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
     }
 
     /* a szűrő sablonjai címkét és mezőt egy sorfolyamba írnak: a mező előtti címke külön sorba kerül */
