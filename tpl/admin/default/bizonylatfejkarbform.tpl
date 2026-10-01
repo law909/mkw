@@ -675,6 +675,18 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="autokiserofej" data-oper="inherit"
                        title="{at('Gépjármű kísérő')}">{at('Gépjármű kísérő')}</a>
                 {/if}
+                {if ($showmegrendelesbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="megrendelesfej" data-oper="inherit"
+                       title="{at('Megrendelés')}">{at('Megrendelés')}</a>
+                {/if}
+                {if ($showb2bmegrendelesbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="b2brendelesfej" data-oper="inherit"
+                       title="{at('B2B rendelés')}">{at('B2B rendelés')}</a>
+                {/if}
+                {if ($showwebshopmegrendelesbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="webshopbizfej" data-oper="inherit"
+                       title="{at('Webshop rendelés')}">{at('Webshop rendelés')}</a>
+                {/if}
                 {if ($showelolegbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="elolegszamlafej" data-oper="inherit"
                        title="{at('Előlegszámla')}">{at('Előlegszámla')}</a>

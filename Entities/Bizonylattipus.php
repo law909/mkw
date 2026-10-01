@@ -63,6 +63,15 @@ class Bizonylattipus
     /** Gépjármű kísérő képezhető belőle. */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showautokiserobutton = false;
+    /** Megrendelés képezhető belőle. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showmegrendelesbutton = false;
+    /** B2B rendelés képezhető belőle. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showb2bmegrendelesbutton = false;
+    /** Webshop rendelés képezhető belőle. */
+    /** @ORM\Column(type="boolean",nullable=false) */
+    private $showwebshopmegrendelesbutton = false;
     /** Megrendelésen: előlegszámla képezhető belőle (fej-only inherit, egyetlen előlegsorral). */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showelolegbutton = false;
@@ -197,6 +206,9 @@ class Bizonylattipus
             'showszallmegrbutton' => $this->getShowszallmegrbutton(),
             'showboltieladasbutton' => $this->getShowboltieladasbutton(),
             'showautokiserobutton' => $this->getShowautokiserobutton(),
+            'showmegrendelesbutton' => $this->getShowmegrendelesbutton(),
+            'showb2bmegrendelesbutton' => $this->getShowb2bmegrendelesbutton(),
+            'showwebshopmegrendelesbutton' => $this->getShowwebshopmegrendelesbutton(),
             'showelolegbutton' => $this->getShowelolegbutton(),
             'showelolegbeszamitas' => $this->getShowelolegbeszamitas(),
             'nyomtatni' => $this->getNyomtatni(),
@@ -519,6 +531,36 @@ class Bizonylattipus
     public function setShowautokiserobutton($val)
     {
         $this->showautokiserobutton = $val;
+    }
+
+    public function getShowmegrendelesbutton()
+    {
+        return $this->showmegrendelesbutton;
+    }
+
+    public function setShowmegrendelesbutton($val)
+    {
+        $this->showmegrendelesbutton = $val;
+    }
+
+    public function getShowb2bmegrendelesbutton()
+    {
+        return $this->showb2bmegrendelesbutton;
+    }
+
+    public function setShowb2bmegrendelesbutton($val)
+    {
+        $this->showb2bmegrendelesbutton = $val;
+    }
+
+    public function getShowwebshopmegrendelesbutton()
+    {
+        return $this->showwebshopmegrendelesbutton;
+    }
+
+    public function setShowwebshopmegrendelesbutton($val)
+    {
+        $this->showwebshopmegrendelesbutton = $val;
     }
 
     public function getShowelolegbutton()

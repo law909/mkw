@@ -212,6 +212,17 @@
                         <td><input id="ShowautokiserobuttonEdit" name="showautokiserobutton" type="checkbox"{if ($egyed.showautokiserobutton)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="ShowmegrendelesbuttonEdit">Megrendelés:</label></td>
+                        <td><input id="ShowmegrendelesbuttonEdit" name="showmegrendelesbutton" type="checkbox"{if ($egyed.showmegrendelesbutton)} checked="checked"{/if}></td>
+                        <td><label for="Showb2bmegrendelesbuttonEdit">B2B rendelés:</label></td>
+                        <td><input id="Showb2bmegrendelesbuttonEdit" name="showb2bmegrendelesbutton" type="checkbox"{if ($egyed.showb2bmegrendelesbutton)} checked="checked"{/if}></td>
+                    </tr>
+                    <tr>
+                        <td><label for="ShowwebshopmegrendelesbuttonEdit">Webshop rendelés:</label></td>
+                        <td><input id="ShowwebshopmegrendelesbuttonEdit" name="showwebshopmegrendelesbutton" type="checkbox"{if ($egyed.showwebshopmegrendelesbutton)} checked="checked"{/if}></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
                         <td><label for="ShowbackorderEdit">Backorder:</label></td>
                         <td><input id="ShowbackorderEdit" name="showbackorder" type="checkbox"{if ($egyed.showbackorder)} checked="checked"{/if}></td>
                         <td><label for="ShowslicemanufacturerbuttonEdit">Szétbontás gyártónként:</label></td>

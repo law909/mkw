@@ -136,6 +136,18 @@
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="autokiserofej" data-oper="inherit"
                        title="{at('Gépjármű kísérő')}"><span{if (!$bizonylattipuslist['autokisero'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['autokisero']['azonosito']}</span></a>
                 {/if}
+                {if ($showmegrendelesbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="megrendelesfej" data-oper="inherit"
+                       title="{at('Megrendelés')}"><span{if (!$bizonylattipuslist['megrendeles'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['megrendeles']['azonosito']}</span></a>
+                {/if}
+                {if ($showb2bmegrendelesbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="b2brendelesfej" data-oper="inherit"
+                       title="{at('B2B rendelés')}"><span{if (!$bizonylattipuslist['b2brendeles'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['b2brendeles']['azonosito']}</span></a>
+                {/if}
+                {if ($showwebshopmegrendelesbutton)}
+                    <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="webshopbizfej" data-oper="inherit"
+                       title="{at('Webshop rendelés')}"><span{if (!$bizonylattipuslist['webshopbiz'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['webshopbiz']['azonosito']}</span></a>
+                {/if}
                 {if ($showcsomagbutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$_egyed.id}" data-egyednev="csomagfej" data-oper="inherit" title="{at('Csomag')}"
                     ><span{if (!$bizonylattipuslist['csomag'])} class="ui-icon ui-icon-arrowreturnthick-1-e"{/if}>{$bizonylattipuslist['csomag']['azonosito']}</span></a>
