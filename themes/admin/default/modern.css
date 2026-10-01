@@ -1388,6 +1388,10 @@ body.modernui {
         display: block;
     }
 
+    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td {
+        padding-right: 0;
+    }
+
     .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td:has(> label) {
         padding-top: 8px;
         padding-bottom: 0;
@@ -1426,6 +1430,11 @@ body.modernui {
 
     .modernui [id^="teteltable_"] > table + table input {
         width: 6.5em;
+    }
+
+    /* minden mező teljes szélességű; :where, hogy az ár-mátrix saját szélessége erősebb maradjon */
+    .modernui :is(.mattkarb-page, .mezok) :where(input:not([type="checkbox"], [type="radio"], [type="hidden"], [type="button"], [type="submit"], [type="file"], [type="color"]), select, textarea) {
+        width: 100%;
     }
 
     /* címke a mező fölött */
