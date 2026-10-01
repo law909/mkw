@@ -342,20 +342,18 @@ img {
     font-weight: bold;
 }
 
-/* legfeljebb a kétszeresére nő: a tördelt, magányos érték se nyúljon a teljes szélességre */
+/* nem nyúlik: annyi széles, amennyi az összegnek kell (a nagy betűs, 8+2 jegyű Bruttó 10,3em), de a számánál sosem keskenyebb */
 .bizonylatosszesito-ertek {
     display: flex;
-    flex: 2 1 10.5em;
+    flex: 0 0 10.5em;
     flex-direction: column;
     min-width: max-content;
-    max-width: 21em;
     text-align: right;
 }
 
 /* tételszám, mennyiség: fele olyan széles, mint az összegek */
 .bizonylatosszesito-keskeny {
-    flex: 1 1 5.25em;
-    max-width: 10.5em;
+    flex-basis: 5.25em;
 }
 
 .bizonylatosszesito-cimke {
