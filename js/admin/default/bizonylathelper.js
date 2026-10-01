@@ -2383,7 +2383,7 @@ let bizonylathelper = function ($) {
 
                 $('.js-inheritbizonylat').each(function () {
                     let $this = $(this);
-                    $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
+                    $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + encodeURIComponent($this.data('egyedid')) + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
                 });
 
                 mkwcomp.datumEdit.init('#KeltEdit');
@@ -2667,7 +2667,7 @@ let bizonylathelper = function ($) {
                     onDoEditLink: function () {
                         $('.js-inheritbizonylat').each(function () {
                             let $this = $(this);
-                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
+                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + encodeURIComponent($this.data('egyedid')) + '&source=' + bizonylattipus + '&oper=' + $this.data('oper'));
                         });
                         $('.js-printbizonylat').each(function () {
                             let $this = $(this);
@@ -2684,11 +2684,11 @@ let bizonylathelper = function ($) {
                         });
                         $('.js-stornobizonylat1').each(function () {
                             let $this = $(this);
-                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=1');
+                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + encodeURIComponent($this.data('egyedid')) + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=1');
                         });
                         $('.js-stornobizonylat2').each(function () {
                             let $this = $(this);
-                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + $this.data('egyedid') + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=2');
+                            $this.attr('href', '/admin/' + $this.data('egyednev') + '/viewkarb?id=' + encodeURIComponent($this.data('egyedid')) + '&source=' + bizonylattipus + '&oper=' + $this.data('oper') + '&stornotip=2');
                         });
                         $('.js-printelolegbekero').each(function () {
                             let $this = $(this);

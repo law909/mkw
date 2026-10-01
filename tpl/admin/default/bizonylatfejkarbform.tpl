@@ -2,6 +2,8 @@
     <h3>A számla még nincs beküldve a NAV-hoz, nem stornózhatja! Várja meg a beküldés eredményét.</h3>
 {elseif ($noinherit|default:false)}
     <h3>{at('Rontott vagy stornózott bizonylatból nem képezhető újabb bizonylat.')}</h3>
+{elseif ($nosource|default:false)}
+    <h3>{at('A forrás bizonylat nem található, előbb mentse el.')}</h3>
 {else}
     <div id="mattkarb-header" data-partnerautocomplete="{$setup.partnerautocomplete}" data-irany="{$egyed.irany|default:0}">
         <h3>{$pagetitle} - {$egyed.id}{if ($egyed.parentid|default)} ({$egyed.parentid}){/if}</h3>
@@ -646,7 +648,7 @@
                 <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$egyed.id|escape:'url'}" target="_blank"
                    title="{at('Tételek ellenőrzése')}">{at('Tételek ellenőrzése')}</a>
             {/if}
-            {if (!$egyed.hibas && $egyed.nemrossz)}
+            {if ($oper == 'edit' && !$egyed.hibas && $egyed.nemrossz)}
                 {if ($showszamlabutton)}
                     <a class="js-inheritbizonylat" href="#" data-egyedid="{$egyed.id}" data-egyednev="szamlafej" data-oper="inherit" title="{at('Számla')}"
                     >{at('Számla')}</a>
