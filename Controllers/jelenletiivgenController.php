@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Traits\Munkanap;
 
 /**
- * Aláírásra kész jelenléti ív a dolgozó rögzített munkarendjéből: azok a napok kerülnek rá,
+ * Munkaidő összesítő: aláírásra kész ív a dolgozó rögzített munkarendjéből: azok a napok kerülnek rá,
  * amikor dolgoznia kell (munkanapok, ünnepnap nélkül), a távollétek megjelölve.
  *
  * Nem keverendő a {@see jelenletiivController} képernyőjével: az a tényleges be- és kilépéseket
@@ -25,7 +25,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
     {
         $view = $this->createView('jelenletiivgen.tpl');
 
-        $view->setVar('pagetitle', t('Jelenléti ív generálás'));
+        $view->setVar('pagetitle', t('Munkaidő összesítő'));
         $view->setVar('toldatum', date(\mkw\store::$DateFormat, strtotime('first day of this month')));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat, strtotime('last day of this month')));
         $d = new dolgozoController();
@@ -101,7 +101,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             $lap = $excel->createSheet();
             $lap->setTitle($this->getLapnev($_iv['dolgozonev'], $lapnevek));
 
-            $lap->setCellValue('A1', t('Jelenléti ív'));
+            $lap->setCellValue('A1', t('Munkaidő összesítő'));
             $lap->setCellValue('A2', $_iv['dolgozonev'] . ($_iv['munkakornev'] ? ' (' . $_iv['munkakornev'] . ')' : ''));
             $lap->setCellValue('A3', $adat['tolstr'] . ' - ' . $adat['igstr']);
             $lap->setCellValue('C3', $_iv['munkaido']);
@@ -141,18 +141,18 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             }
         }
         if (!$excel->getSheetCount()) {
-            $excel->createSheet()->setTitle(t('Jelenléti ív'));
+            $excel->createSheet()->setTitle(t('Munkaidő összesítő'));
         }
         $excel->setActiveSheetIndex(0);
 
-        $filename = uniqid('jelenletiiv-') . '.xlsx';
+        $filename = uniqid('munkaidoosszesito-') . '.xlsx';
         $filepath = \mkw\store::storagePath($filename);
         IOFactory::createWriter($excel, 'Xlsx')->save($filepath);
 
         header('Cache-Control: private');
         header('Content-Type: application/stream');
         header('Content-Length: ' . filesize($filepath));
-        header('Content-Disposition: attachment; filename="jelenletiiv.xlsx"');
+        header('Content-Disposition: attachment; filename="munkaidoosszesito.xlsx"');
 
         readfile($filepath);
 

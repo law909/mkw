@@ -21,7 +21,7 @@
 {block "body"}
     {foreach $ivek as $_iv}
         <div{if (!$_iv@first)} class="pagebreakbefore"{/if}>
-            <h4>Jelenléti ív</h4>
+            <h4>Munkaidő összesítő</h4>
             <h5>{$_iv.dolgozonev}{if ($_iv.munkakornev)} ({$_iv.munkakornev}){/if}</h5>
             <h5>{$tolstr} - {$igstr}{if ($_iv.munkaido)} &nbsp;&nbsp; Munkaidő: {$_iv.munkaido}{/if}</h5>
             <table style="width:100%;">

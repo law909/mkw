@@ -139,6 +139,7 @@ return [
     'Jelenlét' => 'Attendance',
     'óra' => 'hour',
     'Jelenléti ív' => 'Attendance register',
+    'Munkaidő összesítő' => 'Working time summary',
     'Jutalék elszámolás' => 'Brokerage settlement',
     'Belső üzletkötő elszámolás' => '',
     'Export' => 'Export',
