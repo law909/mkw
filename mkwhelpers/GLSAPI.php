@@ -10,6 +10,8 @@ class GLSAPI {
     private $apiurl = 'https://api.test.mygls.hu/ParcelService.svc/json/';
     private $pdfdirectory;
     private $lasterrors = [];
+    // required by PrintLabels and PrepareLabels since 2025 (error 56), free text
+    private $webshopengine = 'MKW';
 
     public function __construct($param) {
         $this->clientnumber = $param['clientnumber'];
@@ -71,6 +73,7 @@ class GLSAPI {
     public function prepareLabels($parceldata) {
         $requestdata = [];
         $requestdata['ParcelList'] = $parceldata;
+        $requestdata['WebshopEngine'] = $this->webshopengine;
 
         $response = $this->callAPI('PrepareLabels', $requestdata);
         if ($response) {
@@ -108,6 +111,7 @@ class GLSAPI {
     public function printLabels($parcellist, $pdfname, $printposition = 1, $printdialog = 0) {
         $requestdata = [];
         $requestdata['ParcelList'] = $parcellist;
+        $requestdata['WebshopEngine'] = $this->webshopengine;
 
         $pdfname = implode('/', [
             rtrim($this->pdfdirectory, '/'),
