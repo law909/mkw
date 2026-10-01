@@ -99,17 +99,18 @@
             headerCaption: 'data-caption'
         };
 
+        // autocomplete="off": Vissza lépéskor a böngésző sorrend szerint tölti vissza a név nélküli mezőket, és a később épülő kategóriafa-kapcsoló pipája a "mind"-re csúszna
         let pagerhtml = '<div class="mattable-pager"><table><tbody>' +
             '<tr>' +
-            '<td><label class="mattable-pager-mind"><input class="' + _pagerIds.showAll + '" type="checkbox"/> mind</label></td>' +
+            '<td><label class="mattable-pager-mind"><input class="' + _pagerIds.showAll + '" type="checkbox" autocomplete="off"/> mind</label></td>' +
             '<td class="' + _pagerIds.first + ' ui-corner-all"><span class="ui-icon ui-icon-seek-first"></span></td>' +
             '<td class="' + _pagerIds.prev + ' ui-corner-all"><span class="ui-icon ui-icon-seek-prev"></span></td>' +
             '<td>' +
-            'Oldal <input class="' + _pagerIds.pageno + '" type="text" size="3" maxlength="7"/> / <span class="' + _pagerIds.pagecount + '"></span>' +
+            'Oldal <input class="' + _pagerIds.pageno + '" type="text" size="3" maxlength="7" autocomplete="off"/> / <span class="' + _pagerIds.pagecount + '"></span>' +
             '</td>' +
             '<td class="' + _pagerIds.next + ' ui-corner-all"><span class="ui-icon ui-icon-seek-next"></span></td>' +
             '<td class="' + _pagerIds.end + ' ui-corner-all"><span class="ui-icon ui-icon-seek-end"></span></td>' +
-            '<td><input class="' + _pagerIds.elemperpage + '" type="text" size="2" maxlength="7"/></td>' +
+            '<td><input class="' + _pagerIds.elemperpage + '" type="text" size="2" maxlength="7" autocomplete="off"/></td>' +
             '<td class="' + _pagerIds.elemcountinfo + '"></td>' +
             '</tr>' +
             '</tbody></table></div>';
@@ -196,7 +197,7 @@
                 // Az állapotot lista-URL + paraméternév kulccsal, a bejelentkezett dolgozóhoz
                 // kötve mentjük (AJAX -> dolgozoparameterek tábla, .../viewlist_mindignyitva),
                 // a kezdeti értéket a sablon adja át (window.mattableMindigNyitva).
-                header.append('<label class="mattable-mindignyitva"><input type="checkbox" class="js-mattable-mindignyitva"' +
+                header.append('<label class="mattable-mindignyitva"><input type="checkbox" class="js-mattable-mindignyitva" autocomplete="off"' +
                     (window.mattableMindigNyitva ? ' checked="checked"' : '') + '> ' + setup.txt.alwaysOpen + '</label>');
                 var _mindignyitva = $('.js-mattable-mindignyitva');
                 _mindignyitva.on('change', function () {

@@ -296,7 +296,7 @@ var mkwcomp = (function ($) {
         function init(sel) {
             const st = getState(sel);
             if (withSubtreeSwitch && !st.$switch) {
-                st.$switch = $('<input type="checkbox">').prop('checked', !st.csakEz);
+                st.$switch = $('<input type="checkbox" autocomplete="off">').prop('checked', !st.csakEz);
                 // az osztálynév nem kezdődhet "jstree"-vel: a jstree destroy-a azokat leszedi
                 st.$label = $('<label class="fafilter-switch">')
                     .attr('title', 'Kikapcsolva a kipipált kategória csak a közvetlenül benne lévő termékeket jelenti, '
