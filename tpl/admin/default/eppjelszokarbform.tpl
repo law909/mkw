@@ -16,7 +16,7 @@
                         {if ($egyed.id)}
                             {$egyed.oldalid}
                         {else}
-                            <input id="OldalidEdit" name="oldalid" type="number" min="1" style="width: 10em" required autofocus>
+                            <input id="OldalidEdit" name="oldalid" type="number" min="1" class="mezo-rovid" required autofocus>
                             <span>{at('a WP oldal (post) azonosítója, a szerkesztő URL-jében: post.php?post=123')}</span>
                         {/if}
                     </td>

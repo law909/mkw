@@ -717,6 +717,11 @@ select.tetelszamhiba,
     grid-column: 2 / -1;
 }
 
+/* rövid értékű mező (azonosító, darabszám); inline width helyett, hogy mobilon a modern téma teljes szélességre nyújthassa */
+.mezo-rovid {
+    width: 10em;
+}
+
 .mezo-ertek {
     min-width: 0;
     padding: 3px 0;

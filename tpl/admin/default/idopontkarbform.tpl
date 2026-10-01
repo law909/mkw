@@ -168,7 +168,7 @@
                 {if ($setup.epp|default:0)}
                     <tr>
                         <td><label for="WpoldalidEdit">{at('WP oldal ID')}:</label></td>
-                        <td colspan="3"><input id="WpoldalidEdit" name="wpoldalid" type="number" min="1" style="width: 10em"
+                        <td colspan="3"><input id="WpoldalidEdit" name="wpoldalid" type="number" min="1" class="mezo-rovid"
                                                value="{$egyed.wpoldalid}">
                             <span>{at('a jelszóval védett WordPress oldal (post) azonosítója; a jelentkezők ehhez kaphatnak jelszót')}</span></td>
                     </tr>
