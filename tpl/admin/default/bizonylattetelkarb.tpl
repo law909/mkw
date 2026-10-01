@@ -12,7 +12,8 @@
     {* fejléc: a termék és a hozzá tartozó linkek; a js-termekpicturerow_ alatt keresi a JS a képet, a linket és a kartont *}
     <div class="tetel-fej js-termekpicturerow_{$tetel.id}">
         <a class="js-toflyout tetel-kep" href="{$mainurl}{$tetel.kepurl|default:'/themes/main/empty.jpg'}" target="_blank"><img
-                    src="{$mainurl}{$tetel.kiskepurl|default:'/themes/main/empty.jpg'}" alt=""/></a>
+                    src="{$mainurl}{$tetel.kiskepurl|default:'/themes/main/empty.jpg'}" alt=""
+                    onerror="this.style.visibility='hidden'" onload="this.style.visibility=''"/></a>
         <div class="tetel-termek">
             <label class="mattable-important" for="TermekSelect{$tetel.id}">{at('Termék')}:</label>
             {* a termékválasztó és a js-termekid testvér marad: a választás a siblings()-be írja az id-t *}
@@ -56,18 +57,20 @@
            title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
     </div>
     <div class="tetel-mezok">
-        {mezocsoport}
-            {if ($showgarancialisadatok)}
-                {mezo cimke="Termék leírás" for="MegjegyzesEdit{$tetel.id}"}
+        {if ($showgarancialisadatok)}
+            {mezocsoport cim="Garanciális adatok" class="tetel-csoport-szeles"}
+                {mezo cimke="Termék leírás" for="MegjegyzesEdit{$tetel.id}" szeles=true}
                     <input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes|escape}">
                 {/mezo}
-                {mezo cimke="Hiba leírás" for="Megjegyzes2Edit{$tetel.id}"}
+                {mezo cimke="Hiba leírás" for="Megjegyzes2Edit{$tetel.id}" szeles=true}
                     <input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2|escape}">
                 {/mezo}
-                {mezo cimke="Vásárlás dátuma" for="VasarlasdatumEdit{$tetel.id}" szeles=true}
+                {mezo cimke="Vásárlás dátuma" for="VasarlasdatumEdit{$tetel.id}"}
                     <input id="VasarlasdatumEdit{$tetel.id}" type="text" name="tetelvasarlasdatum_{$tetel.id}" value="{$tetel.vasarlasdatum}">
                 {/mezo}
-            {/if}
+            {/mezocsoport}
+        {/if}
+        {mezocsoport cim="Azonosítás" class="tetel-csoport-szeles"}
             {mezo cimke="Név" for="NevEdit{$tetel.id}" szeles=true}
                 <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
                        required="required">
@@ -79,6 +82,15 @@
             {mezo cimke="Változat" for="ValtozatSelect{$tetel.id}"}
                 <div id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</div>
             {/mezo}
+            {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
+            {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
+                <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
+                       value="{$tetel.termekegyediazonosito|default|escape}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
+                <input class="js-egyediazonositokell" name="tetelkellegyediazonosito_{$tetel.id}" type="hidden"
+                       value="{if ($tetel.kellegyediazonosito|default)}1{else}0{/if}">
+            {/mezo}
+        {/mezocsoport}
+        {mezocsoport cim="Adózás"}
             {mezo cimke="VTSZ" for="VtszSelect{$tetel.id}"}
                 <select id="VtszSelect{$tetel.id}" name="tetelvtsz_{$tetel.id}" class="js-vtszselect" required="required">
                     <option value="">{at('válasszon')}</option>
@@ -96,16 +108,8 @@
                     {/foreach}
                 </select>
             {/mezo}
-            {mezo cimke="Mennyiség" for="MennyisegEdit{$tetel.id}" class="mezo-fontos" szeles=true}
-                <input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number"
-                       step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required"{if (!$tetel.bonthato)} readonly="readonly"{/if}>
-                <select id="MESelect{$tetel.id}" name="tetelme_{$tetel.id}" required="required">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $tetel.melist as $_me}
-                        <option value="{$_me.id}"{if ($_me.selected)} selected="selected"{/if}>{$_me.caption}</option>
-                    {/foreach}
-                </select>
-            {/mezo}
+        {/mezocsoport}
+        {mezocsoport cim="Mennyiség"}
             {$_kiszerelesrejtve = (!$tetel.gyujto && !$tetel.sordoboz)}
             {mezo cimke="Gyűjtő" for="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesrow_{$tetel.id}" rejtve=$_kiszerelesrejtve}
                 <input id="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelgyujtomennyiseg_{$tetel.id}" type="number"
@@ -117,12 +121,17 @@
                 <input id="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelsordobozmennyiseg_{$tetel.id}" type="number"
                        step="any" value="{$tetel.sordobozmennyiseg}" size="6">
             {/mezo}
-            {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
-            {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
-                <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
-                       value="{$tetel.termekegyediazonosito|default|escape}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
-                <input class="js-egyediazonositokell" name="tetelkellegyediazonosito_{$tetel.id}" type="hidden"
-                       value="{if ($tetel.kellegyediazonosito|default)}1{else}0{/if}">
+            {mezo cimke="Mennyiség" for="MennyisegEdit{$tetel.id}" class="mezo-fontos"}
+                <input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number"
+                       step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required"{if (!$tetel.bonthato)} readonly="readonly"{/if}>
+            {/mezo}
+            {mezo cimke="ME" for="MESelect{$tetel.id}"}
+                <select id="MESelect{$tetel.id}" name="tetelme_{$tetel.id}" required="required">
+                    <option value="">{at('válasszon')}</option>
+                    {foreach $tetel.melist as $_me}
+                        <option value="{$_me.id}"{if ($_me.selected)} selected="selected"{/if}>{$_me.caption}</option>
+                    {/foreach}
+                </select>
             {/mezo}
         {/mezocsoport}
     </div>

@@ -1019,6 +1019,10 @@ body.modernui {
     text-transform: uppercase;
 }
 
+.modernui .tetel-mezok .mattkarb-szakaszcim {
+    margin-top: 0;
+}
+
 .modernui .mezo-fontos > .mezo-cimke {
     color: var(--mkw-text);
 }
