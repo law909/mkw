@@ -13,7 +13,7 @@ use Mpdf\Output\Destination;
 
 /**
  * Termékcímke PDF: egy címke egy oldal, rajta a vonalkód, alatta a vonalkód számjegyei, a
- * cikkszám és a bruttó ár. A méret és a felépítés a docs/galadvonalkod1.pdf mintacímkéé
+ * cikkszám, a bruttó ár és legalul a termék neve (változatnál a színnel és a mérettel). A méret és a felépítés a docs/galadvonalkod1.pdf mintacímkéé
  * (141 x 70 pont fekvő = 49,75 x 24,69 mm), hogy a meglévő címkenyomtatóba változtatás
  * nélkül menjen.
  *
@@ -36,19 +36,33 @@ class VonalkodCimkeService
     // az EAN-13 a névleges 0,33 mm-es modulszélességgel (37,3 mm széles), a magasság a címkéhez szabva
     private const EAN13_SIZE = 1;
     private const EAN13_HEIGHT = 0.45;
+    private const FONT = 'dejavusanscondensed';
+    // the name gets one line at the bottom; the label size is fixed, so a longer name is cut
+    private const NEV_PT = 6;
 
     /**
      * Egy termék(változat) címkeadata. A vonalkód és a cikkszám a változaté, ha van neki,
      * különben a terméké – ugyanaz a visszalépés, mint a bizonylatellenőrzésnél.
      *
-     * @return array{vonalkod: string, cikkszam: string, ar: string}
+     * @return array{vonalkod: string, cikkszam: string, ar: string, nev: string, valtozat: string}
      */
     public function getCimkeAdat(Termek $termek, ?TermekValtozat $valtozat = null)
     {
+        $szinmeret = '';
+        if ($valtozat) {
+            // the Szín / Méret törzs if the variant has one, else the old free values
+            $szinmeret = implode(' ', array_filter([
+                trim((string)($valtozat->getSzinNev() ?: $valtozat->getSzin())),
+                trim((string)($valtozat->getMeretNev() ?: $valtozat->getMeret())),
+            ], fn($e) => $e !== ''));
+        }
         return [
             'vonalkod' => (string)(($valtozat && $valtozat->getVonalkod()) ? $valtozat->getVonalkod() : $termek->getVonalkod()),
             'cikkszam' => (string)(($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam()),
             'ar' => $this->formatAr($termek->getBruttoAr($valtozat)),
+            // some names are stored HTML-encoded ("&amp;")
+            'nev' => html_entity_decode((string)$termek->getNev(), ENT_QUOTES | ENT_HTML5),
+            'valtozat' => html_entity_decode($szinmeret, ENT_QUOTES | ENT_HTML5),
         ];
     }
 
@@ -57,7 +71,7 @@ class VonalkodCimkeService
      *
      * @param int $db hány példány
      *
-     * @return array<int, array{vonalkod: string, cikkszam: string, ar: string}>
+     * @return array<int, array{vonalkod: string, cikkszam: string, ar: string, nev: string, valtozat: string}>
      */
     public function getTermekCimkek(Termek $termek, ?TermekValtozat $valtozat = null, $db = 1)
     {
@@ -68,7 +82,7 @@ class VonalkodCimkeService
      * Egy bizonylat tételeinek címkéi: tételenként annyi, amennyi a tétel mennyisége. A tétel
      * árát szándékosan nem használjuk, a címkére a termék aktuális bolti ára kerül.
      *
-     * @return array<int, array{vonalkod: string, cikkszam: string, ar: string}>
+     * @return array<int, array{vonalkod: string, cikkszam: string, ar: string, nev: string, valtozat: string}>
      */
     public function getBizonylatCimkek(Bizonylatfej $bizonylatfej)
     {
@@ -91,7 +105,7 @@ class VonalkodCimkeService
     /**
      * A címkék PDF-je a böngésző nézőjébe. Semmit nem szabad kiírni előtte, mert fejlécet küld.
      *
-     * @param array<int, array{vonalkod: string, cikkszam: string, ar: string}> $cimkek
+     * @param array<int, array{vonalkod: string, cikkszam: string, ar: string, nev: string, valtozat: string}> $cimkek
      */
     public function output(array $cimkek, $filename)
     {
@@ -99,7 +113,7 @@ class VonalkodCimkeService
     }
 
     /**
-     * @param array<int, array{vonalkod: string, cikkszam: string, ar: string}> $cimkek
+     * @param array<int, array{vonalkod: string, cikkszam: string, ar: string, nev: string, valtozat: string}> $cimkek
      */
     public function createPdf(array $cimkek)
     {
@@ -108,27 +122,28 @@ class VonalkodCimkeService
             'format' => [self::SZELESSEG, self::MAGASSAG],
             'margin_left' => self::MARGO,
             'margin_right' => self::MARGO,
-            'margin_top' => 2,
+            'margin_top' => 1.5,
             'margin_bottom' => 0,
             'margin_header' => 0,
             'margin_footer' => 0,
-            'default_font' => 'dejavusanscondensed',
+            'default_font' => self::FONT,
             'tempDir' => $this->getTempDir(),
         ]);
-        $mpdf->WriteHTML($this->getHtml($cimkek));
+        $mpdf->WriteHTML($this->getHtml($cimkek, $mpdf));
         return $mpdf;
     }
 
     /**
-     * @param array<int, array{vonalkod: string, cikkszam: string, ar: string}> $cimkek
+     * @param array<int, array{vonalkod: string, cikkszam: string, ar: string, nev: string, valtozat: string}> $cimkek
      */
-    private function getHtml(array $cimkek)
+    private function getHtml(array $cimkek, Mpdf $mpdf)
     {
         $html = '<style>'
             . '.cimke{text-align:center;}'
             . '.cimkeszam{font-size:6pt;line-height:2.4mm;}'
             . '.cimkecikkszam{font-size:8pt;line-height:3.4mm;}'
-            . '.cimkear{font-size:12pt;font-weight:bold;line-height:5mm;}'
+            . '.cimkear{font-size:12pt;font-weight:bold;line-height:4.5mm;}'
+            . '.cimkenev{font-size:' . self::NEV_PT . 'pt;line-height:2.4mm;}'
             . '</style>';
         $elso = true;
         foreach ($cimkek as $cimke) {
@@ -141,9 +156,35 @@ class VonalkodCimkeService
                     : '<div class="cimkeszam">' . htmlspecialchars($cimke['vonalkod']) . '</div>')
                 . '<div class="cimkecikkszam">' . htmlspecialchars($cimke['cikkszam']) . '</div>'
                 . '<div class="cimkear">' . htmlspecialchars($cimke['ar']) . '</div>'
+                . '<div class="cimkenev">' . htmlspecialchars($this->fitNev($mpdf, $cimke['nev'] ?? '', $cimke['valtozat'] ?? '')) . '</div>'
                 . '</div>';
         }
         return $html;
+    }
+
+    /**
+     * The name and the variant in one line of the label's width. If it does not fit, the product name is cut, the colour
+     * and the size stay whole: the variant is what tells two labels of the same product apart.
+     */
+    private function fitNev(Mpdf $mpdf, string $nev, string $valtozat): string
+    {
+        $max = self::SZELESSEG - 2 * self::MARGO;
+        $mpdf->SetFont(self::FONT, '', self::NEV_PT);
+        $nev = trim($nev);
+        $teljes = trim($nev . ' ' . $valtozat);
+        if ($mpdf->GetStringWidth($teljes) <= $max) {
+            return $teljes;
+        }
+        $vege = $valtozat !== '' ? '… ' . $valtozat : '…';
+        while ($nev !== '' && $mpdf->GetStringWidth($nev . $vege) > $max) {
+            $nev = rtrim(mb_substr($nev, 0, -1));
+        }
+        $sor = $nev . $vege;
+        // even the variant alone is too wide: then it is cut too
+        while (mb_strlen($sor) > 1 && $mpdf->GetStringWidth($sor) > $max) {
+            $sor = mb_substr($sor, 0, -2) . '…';
+        }
+        return $sor;
     }
 
     /**
