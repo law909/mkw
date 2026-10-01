@@ -20,9 +20,9 @@ class RaktarRepository extends \mkwhelpers\Repository {
     }
 
     /**
-     * Ids of the warehouses whose stock counts in the given webshop (default: this deployment's).
-     * Returns null when every warehouse is visible there - the callers then run unfiltered, which
-     * keeps the common single-webshop case free of an extra IN () on every stock query.
+     * Ids of the warehouses whose stock counts in the given webshop (default: this deployment's): the
+     * visible ones, never an archived one. Returns null when every warehouse counts - the callers then run
+     * unfiltered, which keeps the common single-webshop case free of an extra IN () on every stock query.
      *
      * @return int[]|null
      */
@@ -31,12 +31,12 @@ class RaktarRepository extends \mkwhelpers\Repository {
         $num = (int)($webshopnum ?: \mkw\store::getWebshopNum());
         $mezo = 'lathato' . ($num > 1 && $num <= 15 ? $num : '');
         $rows = $this->_em->getConnection()->fetchAllAssociative(
-            'SELECT id, ' . $mezo . ' AS lathato FROM raktar'
+            'SELECT id, ' . $mezo . ' AS lathato, archiv FROM raktar'
         );
         $lathatok = [];
         $vanrejtett = false;
         foreach ($rows as $row) {
-            if ($row['lathato']) {
+            if ($row['lathato'] && !$row['archiv']) {
                 $lathatok[] = (int)$row['id'];
             } else {
                 $vanrejtett = true;

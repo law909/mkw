@@ -15,8 +15,8 @@ use mkwhelpers\FilterDescriptor;
 /**
  * Készletszámítás: a bizonylattételekből összegzett raktárkészlet és foglalás, ebből a szabad
  * készlet (készlet − foglalás, a Beállítások szerint a min. készlettel is csökkentve), valamint a
- * polcon tartandó minimum ("min. bolti készlet") feloldása, ami a webshopon eladható mennyiséget
- * mindig szűkíti.
+ * polcon tartandó minimum ("min. bolti készlet") feloldása. A webshopon eladható mennyiség
+ * ugyanezt a Beállítást követi.
  *
  * A minimum feloldási létrája – a szűkebb beállítás nyer, raktáras érték üti a globálisat:
  *   1. termekvaltozatminkeszlet(változat, raktár)  – ha nem nulla
@@ -428,8 +428,8 @@ class KeszletService
     }
 
     /**
-     * A webshopon eladható mennyiség: készlet − foglalt − min. bolti készlet, $clamp esetén
-     * nullára vágva. A szabad készlet beállítása erre nem hat, lásd getFreeStock().
+     * A webshopon eladható mennyiség: készlet − foglalt, a Beállítások „Szabad készlet” képlete szerint
+     * (isSzabadKeszletMinkeszlettel()) a min. bolti készlettel is csökkentve, $clamp esetén nullára vágva.
      *
      * @param bool $ignoreminkeszlet a nominkeszlet kapcsolóhoz – csak a BackorderService adja át
      * @param bool $ignorefoglalas a nyers raktárkészletet néző riportoknak
@@ -452,7 +452,7 @@ class KeszletService
         if (!$ignorefoglalas) {
             $keszlet -= self::getFoglaltMennyiseg($o, $kivevebiz, $datum, $raktarid);
         }
-        if (!$ignoreminkeszlet) {
+        if (!$ignoreminkeszlet && self::isSzabadKeszletMinkeszlettel()) {
             $keszlet -= self::getMinKeszlet($termek, $valtozat, $raktarid);
         }
         if ($clamp) {

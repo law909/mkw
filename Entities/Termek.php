@@ -3579,7 +3579,7 @@ class Termek
     }
 
     /**
-     * A webshopon eladható mennyiség: készlet − foglalt − min. bolti készlet.
+     * A webshopon eladható mennyiség: készlet − foglalt (− min. bolti készlet, ha a „Szabad készlet” beállítás így szól).
      * A számítás egyetlen helyen él, lásd \Services\KeszletService::calcAvailableStock().
      */
     public function getAvailableStock(
