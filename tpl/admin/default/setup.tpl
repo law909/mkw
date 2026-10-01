@@ -348,17 +348,6 @@
                                 {/foreach}
                             </select>
                         </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BizonylatMennyisegEdit">{at('Bizonylattétel alap mennyisége')}:</label></span>
-                            <span><input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}">
-                        </div>
-                        <div class="setuprow">
-                            <span class="setuplabel"><label for="BizonylattetelSorrendEdit">{at('Bizonylaton a tételek sorrendje')}:</label></span>
-                            <select id="BizonylattetelSorrendEdit" name="bizonylattetelsorrend">
-                                <option value="">{at('természetes')}</option>
-                                <option value="nevszinmeret"{if ($bizonylattetelsorrend == 'nevszinmeret')} selected="selected"{/if}>{at('név, szín, méret')}</option>
-                            </select>
-                        </div>
                         {if ($maintheme === 'mkwcansas')}
                             <input name="teljesitmenyvan" type="hidden" value="1">
                             <div class="setuprow">
@@ -990,6 +979,17 @@
                                     for="NyomtatasiKerdesMenteskorEdit">{at('Nyomtatási kérdés számla mentéskor')}:</label></span>
                             <input id="NyomtatasiKerdesMenteskorEdit" name="nyomtatasikerdesmenteskor"
                                    type="checkbox"{if ($nyomtatasikerdesmenteskor)} checked="checked"{/if}>
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BizonylatMennyisegEdit">{at('Bizonylattétel alap mennyisége')}:</label></span>
+                            <input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}">
+                        </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="BizonylattetelSorrendEdit">{at('Bizonylaton a tételek sorrendje')}:</label></span>
+                            <select id="BizonylattetelSorrendEdit" name="bizonylattetelsorrend">
+                                <option value="">{at('természetes')}</option>
+                                <option value="nevszinmeret"{if ($bizonylattetelsorrend == 'nevszinmeret')} selected="selected"{/if}>{at('név, szín, méret')}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
