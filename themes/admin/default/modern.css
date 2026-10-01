@@ -1352,6 +1352,21 @@ body.modernui {
         color: var(--mkw-accent-text);
     }
 
+    /* sok gombnál (bizonylat: Számla, Kivét, …) egy sorban marad és görög, nem foglal három sort a képernyő aljából */
+    .modernui .mattkarb-footer {
+        overflow-x: auto;
+        padding: .6em 8px;
+    }
+
+    .modernui .mattkarb-footer > * {
+        flex: 0 0 auto;
+    }
+
+    .modernui .bizonylatosszesito {
+        display: block;
+        overflow-x: auto;
+    }
+
     /* a lábléc a lapon kívül van, így ragadós marad */
     .modernui .mattkarb-page {
         overflow-x: auto;
@@ -1359,6 +1374,52 @@ body.modernui {
 
     .modernui .mattedit-page {
         padding: 1em;
+    }
+
+    /* bizonylattétel: a mezőpárok egymás alá, az ár-mátrix táblázat marad, de kitölti a szélességet */
+    .modernui [id^="teteltable_"] {
+        overflow-x: auto;
+    }
+
+    .modernui [id^="teteltable_"] > table:first-of-type,
+    .modernui [id^="teteltable_"] > table:first-of-type > tbody,
+    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr,
+    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td {
+        display: block;
+    }
+
+    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td:has(> label) {
+        padding-top: 8px;
+        padding-bottom: 0;
+    }
+
+    .modernui [id^="teteltable_"] input:not([type="checkbox"]):not([type="radio"]),
+    .modernui [id^="teteltable_"] select {
+        max-width: 100%;
+    }
+
+    .modernui [id^="teteltable_"] input[size="103"],
+    .modernui [id^="teteltable_"] .termekselect {
+        width: 100%;
+    }
+
+    .modernui [id^="teteltable_"] .tetelkeszletdoboz {
+        display: block;
+        overflow-x: auto;
+    }
+
+    /* blokként csak az ár-mátrix görög (a valutás oszlopokkal szélesebb lehet), nem az egész tétel */
+    .modernui [id^="teteltable_"] > table + table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .modernui [id^="teteltable_"] > table + table td {
+        padding-right: 6px;
+    }
+
+    .modernui [id^="teteltable_"] > table + table input {
+        width: 6.5em;
     }
 
     /* címke a mező fölött */
