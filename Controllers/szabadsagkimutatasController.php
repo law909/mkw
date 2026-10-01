@@ -9,11 +9,12 @@ use Traits\Munkanap;
 
 /**
  * Szabadság kimutatás: ki mikor volt szabadságon, hány munkanapot vett ki az időszakban, és
- * mennyi maradt az éves keretéből.
+ * mennyi maradt az éves keretéből. Csak a „szabadság” típust mutatja; a betegszabadság, a
+ * fizetetlen és a szabadnap nem szerepel, és az éves keretet ({@see Dolgozo::getEvesmaxszabi()})
+ * sem fogyasztja.
  *
  * A nap ugyanúgy számít, mint a jelenléti íven ({@see jelenletiivgenController}): csak a dolgozó
- * munkanapja, ünnepnap nélkül. Az éves keretet ({@see Dolgozo::getEvesmaxszabi()}) csak a
- * „szabadság” típus fogyasztja, a betegszabadság, a fizetetlen és a szabadnap nem.
+ * munkanapja, ünnepnap nélkül.
  */
 class szabadsagkimutatasController extends \mkwhelpers\Controller
 {
@@ -44,7 +45,7 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
     }
 
     /**
-     * @return array ['tolstr','igstr','ev','sorok'] – dolgozónként a távollétei és az egyenlege
+     * @return array ['tolstr','igstr','ev','sorok'] – dolgozónként a szabadságai és az egyenlege
      */
     protected function getData()
     {
@@ -76,18 +77,20 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
 
     private function createSor(Dolgozo $dolgozo, \DateTime $tol, \DateTime $ig, \DateTime $evtol, \DateTime $evig, array $unnepnapok)
     {
-        $tavolletek = [];
-        $idoszaki = array_fill_keys(array_keys(Dolgozoszabadsag::getTipusok()), 0);
+        $szabadsagok = [];
+        $idoszakiszabadsag = 0;
         /** @var Dolgozoszabadsag $szabadsag */
         foreach ($this->getRepo(Dolgozoszabadsag::class)->getByDolgozoAndIdoszak($dolgozo, $tol, $ig) as $szabadsag) {
+            if ($szabadsag->getTipus() !== Dolgozoszabadsag::TIPUS_SZABADSAG) {
+                continue;
+            }
             $sorTol = max($szabadsag->getDatumtol(), $tol);
             $sorIg = min($szabadsag->getDatumig(), $ig);
             $napok = $this->countMunkanapok($dolgozo, $sorTol, $sorIg, $unnepnapok);
-            $idoszaki[$szabadsag->getTipus()] = ($idoszaki[$szabadsag->getTipus()] ?? 0) + $napok;
-            $tavolletek[] = [
+            $idoszakiszabadsag += $napok;
+            $szabadsagok[] = [
                 'datumtol' => $sorTol->format(\mkw\store::$DateFormat),
                 'datumig' => $sorIg->format(\mkw\store::$DateFormat),
-                'tipusnev' => t($szabadsag->getTipusNev()),
                 'napok' => $napok,
                 'megjegyzes' => $szabadsag->getMegjegyzes(),
             ];
@@ -99,26 +102,12 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
         return [
             'dolgozonev' => $dolgozo->getNev(),
             'munkakornev' => $dolgozo->getMunkakorNev(),
-            'tavolletek' => $tavolletek,
-            'idoszaki' => $idoszaki,
-            'idoszakiszabadsag' => $idoszaki[Dolgozoszabadsag::TIPUS_SZABADSAG],
-            'idoszakiegyeb' => $this->getEgyebTavolletek($idoszaki),
+            'szabadsagok' => $szabadsagok,
+            'idoszakiszabadsag' => $idoszakiszabadsag,
             'evesmax' => $evesmax,
             'evbenkivett' => $evbenkivett,
             'marad' => $evesmax - $evbenkivett,
         ];
-    }
-
-    /** The other absence types of the period, only listed: they do not use up the yearly allowance. */
-    private function getEgyebTavolletek(array $idoszaki)
-    {
-        $res = [];
-        foreach (Dolgozoszabadsag::getTipusok() as $tipus => $nev) {
-            if ($tipus !== Dolgozoszabadsag::TIPUS_SZABADSAG && $idoszaki[$tipus]) {
-                $res[] = ['tipusnev' => t($nev), 'napok' => $idoszaki[$tipus]];
-            }
-        }
-        return $res;
     }
 
     /** Az éves keretet fogyasztó (szabadság típusú) munkanapok száma az évben. */

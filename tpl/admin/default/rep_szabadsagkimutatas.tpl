@@ -23,39 +23,30 @@
                 <tr>
                     <th>Ettől</th>
                     <th>Eddig</th>
-                    <th>Típus</th>
                     <th class="textalignright">Nap</th>
                     <th>Megjegyzés</th>
                 </tr>
                 </thead>
                 <tbody>
-                {foreach $_sor.tavolletek as $_t}
+                {foreach $_sor.szabadsagok as $_t}
                     <tr>
                         <td>{$_t.datumtol}</td>
                         <td>{$_t.datumig}</td>
-                        <td>{$_t.tipusnev}</td>
                         <td class="textalignright">{$_t.napok}</td>
                         <td>{$_t.megjegyzes}</td>
                     </tr>
                 {foreachelse}
                     <tr>
-                        <td colspan="5">Ebben az időszakban nem volt távolléte.</td>
+                        <td colspan="4">Ebben az időszakban nem volt szabadságon.</td>
                     </tr>
                 {/foreach}
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th colspan="3">Az időszakban kivett szabadság</th>
+                    <th colspan="2">Az időszakban kivett szabadság</th>
                     <th class="textalignright">{$_sor.idoszakiszabadsag}</th>
                     <th></th>
                 </tr>
-                {foreach $_sor.idoszakiegyeb as $_e}
-                    <tr>
-                        <td colspan="3">{$_e.tipusnev} (a keretből nem vonódik le)</td>
-                        <td class="textalignright">{$_e.napok}</td>
-                        <td></td>
-                    </tr>
-                {/foreach}
                 </tfoot>
             </table>
             <table class="szabadsag-egyenleg">
