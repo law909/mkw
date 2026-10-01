@@ -810,6 +810,11 @@ select.tetelszamhiba,
     min-width: 0;
 }
 
+/* a változat cikkszámának helye üresen ne vegyen el a cikkszám mező szélességéből */
+.tetel-mezok .mezo-ertek > span:empty {
+    display: none;
+}
+
 /* a változat választója a JS által újratöltött helyőrzőben van */
 .tetel-mezok .mezo-ertek > div {
     flex: 1 1 100%;
