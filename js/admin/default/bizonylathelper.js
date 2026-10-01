@@ -2662,7 +2662,7 @@ let bizonylathelper = function ($) {
                         $('.js-printbizonylat, .js-printbizonylat2, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
-                            '.js-kiegyenlit, .js-mirexport, .js-cimkenyomtatas').button();
+                            '.js-kiegyenlit, .js-mirexport, .js-cimkenyomtatas, .js-recheck').button();
                     },
                     onDoEditLink: function () {
                         $('.js-inheritbizonylat').each(function () {
@@ -3101,6 +3101,27 @@ let bizonylathelper = function ($) {
                                 $(this).dialog('close');
                             }
                         }
+                    });
+                })
+                .on('click', '.js-recheck', function (e) {
+                    e.preventDefault();
+                    const $this = $(this);
+                    $this.button('disable');
+                    $.ajax({
+                        url: '/admin/bizonylatfej/recheck',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: $this.data('egyedid')},
+                        success: (d) => {
+                            if (!d || !d.ok) {
+                                mkwUzenet((d && d.error) || 'Az újraellenőrzés nem sikerült.');
+                                return;
+                            }
+                            mkwUzenet(d.hibas ? 'A bizonylat továbbra is hibás.' : 'A bizonylat már nem hibás.');
+                            $('.mattable-tablerefresh').click();
+                        },
+                        error: () => mkwUzenet('Az újraellenőrzés nem sikerült.'),
+                        complete: () => $this.button('enable')
                     });
                 })
                 .on('click', '.js-slicemanufacturer', function (e) {

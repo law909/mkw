@@ -273,6 +273,7 @@
         </table>
         {if ($_egyed.hibas)}
             <div>{$_egyed.hibauzenetek}</div>
+            <a class="js-recheck" href="#" data-egyedid="{$_egyed.id}" title="{at('Újraellenőrzés')}">{at('Újraellenőrzés')}</a>
         {/if}
     </td>
     <td class="cell">

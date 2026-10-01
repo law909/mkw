@@ -2027,6 +2027,27 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    /**
+     * A hibásnak jelölt bizonylat ellenőrzésének újrafuttatása. A checkHibak() csak mentéskor fut,
+     * tehát egy azóta rendbe jött előzmény (pl. előleg) nem veszi le a jelzést. simpleedit: a
+     * listener ne számolja át a bizonylatot, csak az ellenőrzés eredménye íródjon ki.
+     */
+    public function recheck()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        /** @var Bizonylatfej $bf */
+        $bf = $this->getRepo(Bizonylatfej::class)->find($this->params->getStringRequestParam('id'));
+        if (!$bf) {
+            $this->jsonFail(t('Nincs ilyen bizonylat.'));
+            return;
+        }
+        $bf->setSimpleedit(true);
+        $bf->checkHibak();
+        $this->getEm()->persist($bf);
+        $this->getEm()->flush();
+        echo json_encode(['ok' => true, 'hibas' => (bool)$bf->getHibas()]);
+    }
+
     public function setStatusz()
     {
         /** @var Bizonylatfej $bf */
