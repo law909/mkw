@@ -1224,16 +1224,19 @@ body.modernui {
         background: transparent;
     }
 
+    /* a kártyák a lap hátterén ülnek, nem a panelén, különben összefolynak */
     .modernui .mattable-table > tbody {
-        padding: 0 8px;
+        padding: 2px 8px;
+        background: var(--mkw-bg);
     }
 
     .modernui .mattable-table > tbody > tr.ui-widget-content,
     .modernui .mattable-table > tbody > tr.ui-widget-content:nth-child(even) {
         position: relative;
         display: block;
-        margin: 8px 0;
+        margin: 12px 0;
         border: 1px solid var(--mkw-border-strong);
+        border-top: 3px solid var(--mkw-accent);
         border-radius: var(--mkw-radius);
         background: var(--mkw-surface);
         box-shadow: var(--mkw-shadow-sm);
