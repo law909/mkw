@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
-    <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
+    <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell">
         {if ($loggedinuser.admin || ($_egyed.id == $loggedinuser.id))}
             <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>

@@ -110,7 +110,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox"></th>
+                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Bizonylat')}</th>
                 <th>{at('Partner')}</th>
                 <th>{at('Kelt')}</th>

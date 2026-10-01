@@ -30,7 +30,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox"></th>
+                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Időpont')}</th>
                 <th>{at('Partner')}</th>
                 <th>{at('Termékkategória')}</th>

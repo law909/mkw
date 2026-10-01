@@ -1,6 +1,6 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
     <td class="cell">
-        <input class="maincheckbox" type="checkbox">
+        <input class="maincheckbox" type="checkbox" autocomplete="off">
     </td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.cim}</a>

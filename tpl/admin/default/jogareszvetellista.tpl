@@ -70,7 +70,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input class="js-maincheckbox" type="checkbox"></th>
+                <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Tisztázni kell')}</th>
                 <th>{at('Online')}</th>
                 <th>{at('Dátum')}</th>

@@ -41,7 +41,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input class="js-maincheckbox" type="checkbox"></th>
+                <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Oldal ID')}</th>
                 <th>{at('Kinek')}</th>
                 <th>{at('Megjegyzés')}</th>

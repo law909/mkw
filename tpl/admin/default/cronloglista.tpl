@@ -39,7 +39,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox"></th>
+                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Kezdet')}</th>
                 <th>{at('Feladat')}</th>
                 <th>{at('Állapot')}</th>

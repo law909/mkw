@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_partner.id}"{if ($_partner.vendeg)} class="guestpartner"{/if}>
-    <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
+    <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{t('Szerkeszt')}">{$_partner.nev}</a>
         <a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{t('Töröl')}"><span

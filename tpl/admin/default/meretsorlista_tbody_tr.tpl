@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_meretsor.id}" data-egyedid="{$_meretsor.id}">
-    <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
+    <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell">
         <a class="mattable-editlink" href="#" data-meretsorid="{$_meretsor.id}" data-oper="edit"
            title="{at('Szerkeszt')}">{$_meretsor.nev}</a>

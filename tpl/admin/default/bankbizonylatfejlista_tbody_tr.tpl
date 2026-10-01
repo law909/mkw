@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}"{if (!$_egyed.nemrossz)} class="rontott"{/if}>
-    <td class="cell"><input class="maincheckbox" type="checkbox"></td>
+    <td class="cell"><input class="maincheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell">
         {if ($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva))}
         <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.id}</a>

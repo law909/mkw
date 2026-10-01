@@ -36,7 +36,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox"></th>
+                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Azonosito')}</th>
                 <th>{at('Bank')}</th>
                 <th>{at('Könyvelés dátuma')}</th>

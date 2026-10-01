@@ -46,7 +46,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox"></th>
+                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Csomagszám')}</th>
                 <th>{at('Státusz')}</th>
                 <th>{at('Státusz dátuma')}</th>

@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_orarend.id}" data-egyedid="{$_orarend.id}">
-    <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
+    <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell">
         <table>
             <tbody>

@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
-    <td class="cell"><input class="js-egyedcheckbox" type="checkbox"></td>
+    <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell">{if ($_egyed.tisztaznikell)}Igen{/if}</td>
     <td class="cell">{if ($_egyed.online == 1)}Online{elseif ($_egyed.online == 2)}Élő{/if}</td>
     <td class="cell">

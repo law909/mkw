@@ -1,5 +1,5 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}"{if (!$_egyed.nemrossz)} class="rontott"{/if}>
-    <td class="cell"><input class="maincheckbox" type="checkbox"></td>
+    <td class="cell"><input class="maincheckbox" type="checkbox" autocomplete="off"></td>
     {if ($shownavallapot)}
         <td class="cell{if ($_egyed.naveredmeny=='DONE')} greentext{/if}{if ($_egyed.naveredmeny=='ABORTED')} redtext{/if}">{$_egyed.naveredmeny}</td>
     {/if}

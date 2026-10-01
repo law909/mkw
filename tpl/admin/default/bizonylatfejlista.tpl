@@ -225,7 +225,7 @@
         <table id="mattable-table" data-noversion="{$noversion}">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox"></th>
+                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 {if ($shownavallapot)}
                     <th>NAV állapot</th>
                 {/if}
