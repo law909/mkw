@@ -1804,6 +1804,13 @@ class store
         return self::getSetupValue('webshopnum', 1);
     }
 
+    /** az ebben a webshopban leadott rendelések raktára (Beállítások, webshoponként), üresen az alapértelmezett */
+    public static function getWebshopRaktarId()
+    {
+        return self::getParameter(\mkw\consts::WebshopRaktar . self::getWebshopNum())
+            ?: self::getParameter(\mkw\consts::Raktar);
+    }
+
     /** az ebben a webshopban regisztráló új partner címkéje (Beállítások, webshoponként) */
     public static function getNewPartnerCimke()
     {

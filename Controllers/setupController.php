@@ -807,9 +807,12 @@ class setupController extends \mkwhelpers\Controller
         $partnercimkec = new partnercimkeController();
         $p = $repo->find(\mkw\consts::KiskerCimke);
         $view->setVar('kiskercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+        $raktarc = new raktarController();
         for ($webshop = 1; $webshop <= \mkw\store::getEnabledWebshops(); $webshop++) {
             $p = $repo->find(\mkw\consts::NewPartnerCimke . $webshop);
             $view->setVar('ujpartnercimke' . $webshop . 'list', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
+            $p = $repo->find(\mkw\consts::WebshopRaktar . $webshop);
+            $view->setVar('webshopraktar' . $webshop . 'list', $raktarc->getSelectList(($p ? $p->getErtek() : 0)));
         }
         $p = $repo->find(\mkw\consts::NagykerCimke);
         $view->setVar('nagykercimkelist', $partnercimkec->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1383,6 +1386,10 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::NewPartnerCimke . '3',
             \mkw\consts::NewPartnerCimke . '4',
             \mkw\consts::NewPartnerCimke . '5',
+            \mkw\consts::WebshopRaktar . '2',
+            \mkw\consts::WebshopRaktar . '3',
+            \mkw\consts::WebshopRaktar . '4',
+            \mkw\consts::WebshopRaktar . '5',
             \mkw\consts::CanonicalBaseUrl . '2',
             \mkw\consts::CanonicalBaseUrl . '3',
             \mkw\consts::CanonicalBaseUrl . '4',
@@ -2553,6 +2560,8 @@ class setupController extends \mkwhelpers\Controller
         for ($webshop = 1; $webshop <= \mkw\store::getEnabledWebshops(); $webshop++) {
             $cimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('ujpartnercimke' . $webshop, 0));
             $this->setObj(\mkw\consts::NewPartnerCimke . $webshop, $cimke ? $cimke->getId() : '');
+            $raktar = \mkw\store::getEm()->getRepository(\Entities\Raktar::class)->find($this->params->getIntRequestParam('webshopraktar' . $webshop, 0));
+            $this->setObj(\mkw\consts::WebshopRaktar . $webshop, $raktar ? $raktar->getId() : '');
         }
 
         $nagykercimke = \mkw\store::getEm()->getRepository('Entities\Partnercimketorzs')->find($this->params->getIntRequestParam('nagykercimke', 0));

@@ -1136,6 +1136,17 @@
                                 {/foreach}
                             </select>
                         </div>
+                        {if (isset($webshopraktar1list))}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="WebshopRaktar1Edit">{at('Raktár')}:</label></span>
+                                <select id="WebshopRaktar1Edit" name="webshopraktar1">
+                                    <option value="">{at('az alapértelmezett raktár')}</option>
+                                    {foreach $webshopraktar1list as $_raktar}
+                                        <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        {/if}
                         {if (isset($ujpartnercimke1list))}
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="UjPartnerCimke1Edit">{at('Új partner címkéje')}:</label></span>
@@ -1562,6 +1573,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($webshopraktar2list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="WebshopRaktar2Edit">{at('Raktár')}:</label></span>
+                                    <select id="WebshopRaktar2Edit" name="webshopraktar2">
+                                        <option value="">{at('az alapértelmezett raktár')}</option>
+                                        {foreach $webshopraktar2list as $_raktar}
+                                            <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             {if (isset($ujpartnercimke2list))}
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UjPartnerCimke2Edit">{at('Új partner címkéje')}:</label></span>
@@ -1644,6 +1666,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($webshopraktar3list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="WebshopRaktar3Edit">{at('Raktár')}:</label></span>
+                                    <select id="WebshopRaktar3Edit" name="webshopraktar3">
+                                        <option value="">{at('az alapértelmezett raktár')}</option>
+                                        {foreach $webshopraktar3list as $_raktar}
+                                            <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             {if (isset($ujpartnercimke3list))}
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UjPartnerCimke3Edit">{at('Új partner címkéje')}:</label></span>
@@ -1726,6 +1759,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($webshopraktar4list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="WebshopRaktar4Edit">{at('Raktár')}:</label></span>
+                                    <select id="WebshopRaktar4Edit" name="webshopraktar4">
+                                        <option value="">{at('az alapértelmezett raktár')}</option>
+                                        {foreach $webshopraktar4list as $_raktar}
+                                            <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             {if (isset($ujpartnercimke4list))}
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UjPartnerCimke4Edit">{at('Új partner címkéje')}:</label></span>
@@ -1814,6 +1858,17 @@
                                     {/foreach}
                                 </select>
                             </div>
+                            {if (isset($webshopraktar5list))}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="WebshopRaktar5Edit">{at('Raktár')}:</label></span>
+                                    <select id="WebshopRaktar5Edit" name="webshopraktar5">
+                                        <option value="">{at('az alapértelmezett raktár')}</option>
+                                        {foreach $webshopraktar5list as $_raktar}
+                                            <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
                             {if (isset($ujpartnercimke5list))}
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UjPartnerCimke5Edit">{at('Új partner címkéje')}:</label></span>

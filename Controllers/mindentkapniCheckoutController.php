@@ -251,7 +251,7 @@ class mindentkapniCheckoutController extends checkoutController
             $valutanemid = \mkw\store::getParameter(\mkw\consts::Valutanem);
             $valutanem = $this->getRepo(Valutanem::class)->find($valutanemid);
             $megrendfej->setValutanem($valutanem);
-            $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
+            $raktarid = \mkw\store::getWebshopRaktarId();
             $megrendfej->setRaktar($this->getRepo(Raktar::class)->find($raktarid));
             $megrendfej->setBankszamla($valutanem->getBankszamla());
             $megrendfej->setWebshopmessage($webshopmessage);

@@ -118,7 +118,7 @@ class superzoneb2bCheckoutController extends checkoutController
             $megrendfej->setWebshopmessage($webshopmessage);
             $arf = $this->getEm()->getRepository(Arfolyam::class)->getActualArfolyam($valutanem, $megrendfej->getTeljesites());
             $megrendfej->setArfolyam($arf->getArfolyam());
-            $raktarid = \mkw\store::getParameter(\mkw\consts::Raktar);
+            $raktarid = \mkw\store::getWebshopRaktarId();
             $megrendfej->setRaktar($this->getRepo(Raktar::class)->find($raktarid));
             if ($valutanem) {
                 $megrendfej->setBankszamla($valutanem->getBankszamla());
