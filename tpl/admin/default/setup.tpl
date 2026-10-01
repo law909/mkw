@@ -2572,9 +2572,9 @@
                             </div>
                             <div class="setuprow">
                                 <span class="setuplabel">{at('Készlet raktárai')}:</span>
-                                <span>
+                                <span style="display:inline-block;vertical-align:top;">
                                     {foreach $unaskeszletraktarlist as $_r}
-                                        <label><input type="checkbox" name="unaskeszletraktar[]" value="{$_r.id}"{if ($_r.selected)} checked="checked"{/if}> {$_r.caption}</label>
+                                        <div><label><input type="checkbox" name="unaskeszletraktar[]" value="{$_r.id}"{if ($_r.selected)} checked="checked"{/if}> {$_r.caption}</label></div>
                                     {/foreach}
                                 </span>
                             </div>
