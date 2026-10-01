@@ -63,10 +63,10 @@ class ElolegService
 
     /**
      * Advances (see getAdvanceTypeFor()) still offsettable against this document: same partner, same currency,
-     * not voided, neither a reversal nor reversed, and with a remaining amount.
+     * not voided, neither a reversal nor reversed, and with a positive remaining gross amount.
      *
      * @return array<int, array{id: string, keltstr: string, teljesitesstr: string, egyenleg: float,
-     *                          netto: float, brutto: float}>
+     *                          beszamitott: float, netto: float, brutto: float}>
      */
     public static function getOffsettableAdvances(Bizonylatfej $szamla): array
     {
@@ -97,7 +97,7 @@ class ElolegService
                 $netto += $sor['netto'];
                 $brutto += $sor['brutto'];
             }
-            if (round($netto, 2) == 0 && round($brutto, 2) == 0) {
+            if (round($brutto, 2) <= 0) {
                 continue;
             }
             $ret[] = [
@@ -105,6 +105,8 @@ class ElolegService
                 'keltstr' => $eloleg->getKeltStr(),
                 'teljesitesstr' => $eloleg->getTeljesitesStr(),
                 'egyenleg' => $eloleg->getEgyenleg(),
+                // the offset lines are negative
+                'beszamitott' => -array_sum(array_column(self::getOffsetSums($eloleg, $szamla->getId()), 'brutto')),
                 'netto' => $netto,
                 'brutto' => $brutto,
             ];
@@ -155,9 +157,9 @@ class ElolegService
     }
 
     /**
-     * Amounts already offset against this advance, per VAT rate (negative). Lines of voided
-     * documents do not count; a reversal's mirror lines do, and they cancel the original out -
-     * that is what makes the advance offsettable again after the final invoice is reversed.
+     * Amounts already offset against this advance, per VAT rate (negative). Only lines of documents
+     * that are neither voided, nor a reversal, nor reversed count - so reversing the final invoice
+     * makes the advance offsettable again even if the reversal's lines do not carry the reference.
      *
      * @return array<int, array{afakulcs: float, afanev: string, netto: float, afa: float, brutto: float}>
      */
@@ -167,6 +169,8 @@ class ElolegService
         $filter->addFilter('bt.elolegbizonylat_id', '=', $eloleg->getId());
         $filter->addSql('((bt.rontott = 0) OR (bt.rontott IS NULL))');
         $filter->addSql('((bf.rontott = 0) OR (bf.rontott IS NULL))');
+        $filter->addSql('((bf.storno = 0) OR (bf.storno IS NULL))');
+        $filter->addSql('((bf.stornozott = 0) OR (bf.stornozott IS NULL))');
         if ($kivevebiz) {
             $filter->addFilter('bf.id', '<>', $kivevebiz);
         }
@@ -203,7 +207,8 @@ class ElolegService
     }
 
     /**
-     * The offset lines for one advance: one negative line per VAT rate that still has a remainder.
+     * The offset lines for one advance: one negative line per VAT rate that still has a positive
+     * remainder, for exactly that remainder.
      * The lines are NOT persisted - they are handed to the editor, which posts them back like any
      * other line, and setFields() re-derives everything server side.
      *
@@ -226,7 +231,7 @@ class ElolegService
         $ret = [];
         $cikl = 1;
         foreach (self::getRemainingByAfa($eloleg, $szamla->getId()) as $afaid => $sor) {
-            if (round($sor['netto'], 2) == 0 && round($sor['brutto'], 2) == 0) {
+            if (round($sor['brutto'], 2) <= 0) {
                 continue;
             }
             $ret[] = self::buildLine($szamla, $eloleg, $termek, $afaid, $sor, $cikl);
