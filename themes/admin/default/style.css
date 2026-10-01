@@ -309,11 +309,6 @@ img {
     text-align: right;
 }
 
-.tetelkeszletdoboz {
-    display: inline-block;
-    padding: 2px 4px;
-}
-
 .tetelkeszlettabla td {
     padding: 0 6px;
     white-space: nowrap;
@@ -836,13 +831,69 @@ select.tetelszamhiba,
     width: 9.5em;
 }
 
-.tetel-keszlet {
-    flex: 0 1 auto;
+/* a terméknek nincs változata: a helyőrző üres, a címke se látsszon */
+.tetel-valtozat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 6px;
+}
+
+.tetel-valtozat:not(:has(select)) {
+    display: none;
+}
+
+.tetel-valtozat select {
+    min-width: 20em;
     max-width: 100%;
 }
 
-.tetel-keszletcim {
-    margin-bottom: 4px;
+/* raktárkészlet: raktáranként egy csempe, felül a szabad készlet, alatta a részletek */
+.tetelkeszlet {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+}
+
+.tetelkeszlet-cim {
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.tetelkeszlet-raktarak {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+    gap: 10px 16px;
+}
+
+.tetelkeszlet-raktarnev {
+    font-size: .9em;
+}
+
+.tetelkeszlet-szabad {
+    display: flex;
+    flex-direction: column;
+}
+
+.tetelkeszlet-ertek {
+    font-weight: bold;
+}
+
+.tetelkeszlet-negativ {
+    color: #c00;
+}
+
+.tetelkeszlet-reszletek {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: 0 10px;
+    margin: 4px 0 0;
+    font-size: .9em;
+}
+
+.tetelkeszlet-reszletek dd {
+    margin: 0;
+    text-align: right;
 }
 
 .mezo-fontos > .mezo-cimke {

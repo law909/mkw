@@ -1007,16 +1007,60 @@ body.modernui {
     font-size: .9em;
 }
 
-.modernui .tetel-keszlet .tetelkeszlettabla {
-    font-size: .9em;
+.modernui .tetel-valtozat > label {
+    font-size: .85em;
 }
 
-.modernui .tetel-keszletcim {
-    color: var(--mkw-muted);
-    font-size: .8em;
+/* raktárkészlet: a bizonylat összesítő mintájára */
+.modernui .tetelkeszlet {
+    padding: 12px 16px;
+    border: 1px solid var(--mkw-border-strong);
+    border-radius: var(--mkw-radius);
+    background: var(--mkw-surface-2);
+}
+
+.modernui .tetelkeszlet-cim {
+    margin-bottom: 10px;
+    color: var(--mkw-accent);
+    font-size: .85em;
     font-weight: 600;
     letter-spacing: .05em;
     text-transform: uppercase;
+}
+
+.modernui .tetelkeszlet-raktarnev {
+    margin-bottom: 4px;
+    font-size: .85em;
+    font-weight: 600;
+}
+
+.modernui .tetelkeszlet-cimke,
+.modernui .tetelkeszlet-reszletek dt,
+.modernui .tetelkeszlet-uzenet {
+    color: var(--mkw-muted);
+}
+
+.modernui .tetelkeszlet-cimke {
+    font-size: .8em;
+}
+
+.modernui .tetelkeszlet-ertek {
+    font-size: 1.35em;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.modernui .tetelkeszlet-negativ {
+    color: var(--mkw-danger);
+}
+
+.modernui .tetelkeszlet-reszletek {
+    font-size: .85em;
+}
+
+.modernui .tetelkeszlet-reszletek dd {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
 }
 
 .modernui .tetel-mezok .mattkarb-szakaszcim {
@@ -1504,20 +1548,11 @@ body.modernui {
         padding: 1em;
     }
 
-    /* bizonylattétel: a készlet a mezők alá kerül, az ár-mátrix táblázat marad, és csak az görög */
+    /* bizonylattétel: az ár-mátrix táblázat marad, és csak az görög */
     .modernui .tetel-kep,
     .modernui .tetel-kep img {
         width: 48px;
         height: 48px;
-    }
-
-    .modernui [id^="teteltable_"] .tetelkeszletdoboz {
-        display: block;
-        overflow-x: auto;
-    }
-
-    .modernui .tetel-keszlet {
-        flex-basis: 100%;
     }
 
     /* fent a kép és a törlés, alattuk teljes szélességben a termék */

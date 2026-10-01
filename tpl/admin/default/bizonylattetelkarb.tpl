@@ -44,6 +44,11 @@
                     {include 'bizonylatteteltermekgombok.tpl'}
                 {/if}
             </div>
+            {* üres, ha a terméknek nincs változata; a JS termékváltáskor tölti újra a helyőrzőt *}
+            <div class="tetel-valtozat">
+                <label for="ValtozatSelect{$tetel.id}">{at('Változat')}:</label>
+                <div id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</div>
+            </div>
             <div class="tetel-termekinfo">
                 <a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a>
                 <a class="js-kartonlink" href="{$tetel.kartonurl|default:'#'}" target="_blank">Karton</a>
@@ -79,9 +84,6 @@
                 <input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}">
                 <span class="js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span>
             {/mezo}
-            {mezo cimke="Változat" for="ValtozatSelect{$tetel.id}"}
-                <div id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</div>
-            {/mezo}
             {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
             {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
                 <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
@@ -90,6 +92,13 @@
                        value="{if ($tetel.kellegyediazonosito|default)}1{else}0{/if}">
             {/mezo}
         {/mezocsoport}
+        {* a #RaktarKeszlet tartalmát termék- és változatváltáskor a JS cseréli (getraktarkeszlet) *}
+        <div class="tetelkeszlet">
+            <div class="tetelkeszlet-cim">{at('Raktárkészlet')}</div>
+            <div id="RaktarKeszlet{$tetel.id}">
+                {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet nemmozgat=$tetel.nemmozgat|default:false termekid=$tetel.termek valtozatid=$tetel.termekvaltozat}
+            </div>
+        </div>
         {mezocsoport cim="Adózás"}
             {mezo cimke="VTSZ" for="VtszSelect{$tetel.id}"}
                 <select id="VtszSelect{$tetel.id}" name="tetelvtsz_{$tetel.id}" class="js-vtszselect" required="required">
@@ -195,12 +204,6 @@
             </tr>
             </tbody>
         </table>
-        <div class="tetel-keszlet">
-            <div class="tetel-keszletcim">{at('Raktárkészlet')}</div>
-            <div class="ui-widget ui-widget-content ui-corner-all tetelkeszletdoboz" id="RaktarKeszlet{$tetel.id}">
-                {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet nemmozgat=$tetel.nemmozgat|default:false termekid=$tetel.termek valtozatid=$tetel.termekvaltozat}
-            </div>
-        </div>
     </div>
 </div>
 {if ($tetel.oper=='add')}
