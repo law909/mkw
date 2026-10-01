@@ -31,6 +31,20 @@ var boltieladas = (function ($) {
         return round2(n).toFixed(2);
     }
 
+    function round4(n) {
+        return Math.round((n + Number.EPSILON) * 10000) / 10000;
+    }
+
+    // The discount implied by a typed price, on 4 decimals as the server stores it (on 2 it would not
+    // give the price back and the line is flagged); empty when there is no list price or it is not below it.
+    function kedvezmenyFromNetto(netto, enetto) {
+        if (enetto <= 0 || netto >= enetto) {
+            return '';
+        }
+        const kedv = round4((1 - netto / enetto) * 100);
+        return kedv === round2(kedv) ? kedv.toFixed(2) : String(kedv);
+    }
+
     function recalcRow($row) {
         const menny = num($row.find('.js-be-mennyiseg').val());
         const netto = round2(num($row.find('.js-be-nettoegysar').val()));
@@ -70,7 +84,7 @@ var boltieladas = (function ($) {
         var enetto = num($row.data('enetto'));
         var netto = round2(num($row.find('.js-be-nettoegysar').val()));
         var brutto = round2(num($row.find('.js-be-bruttoegysar').val()));
-        var kedv = round2(num($row.find('.js-be-kedvezmeny').val()));
+        var kedv = round4(num($row.find('.js-be-kedvezmeny').val()));
 
         if (source === 'kedvezmeny') {
             netto = round2(enetto * (100 - kedv) / 100);
@@ -80,15 +94,11 @@ var boltieladas = (function ($) {
         } else if (source === 'netto') {
             brutto = round2(netto * (100 + afakulcs) / 100);
             $row.find('.js-be-bruttoegysar').val(fmt(brutto));
-            if (enetto > 0) {
-                $row.find('.js-be-kedvezmeny').val(fmt((1 - netto / enetto) * 100));
-            }
+            $row.find('.js-be-kedvezmeny').val(kedvezmenyFromNetto(netto, enetto));
         } else if (source === 'brutto') {
             netto = round2(brutto / (100 + afakulcs) * 100);
             $row.find('.js-be-nettoegysar').val(fmt(netto));
-            if (enetto > 0) {
-                $row.find('.js-be-kedvezmeny').val(fmt((1 - netto / enetto) * 100));
-            }
+            $row.find('.js-be-kedvezmeny').val(kedvezmenyFromNetto(netto, enetto));
         }
         recalcRow($row);
     }

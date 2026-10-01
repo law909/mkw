@@ -320,11 +320,12 @@ class boltieladasController extends \mkwhelpers\Controller
                 }
                 $t->setNettoegysarhuf($t->getNettoegysar());
                 $t->setBruttoegysarhuf($t->getBruttoegysar());
-                // a typed price comes with a 2-decimal discount that no longer gives the price back
+                // a typed price whose discount does not give it back: the discount follows the price
+                // (on 4 decimals, as the POS screen computes it), and is empty at or above the list price
                 $enetto = (float)$t->getEnettoegysar();
-                if ($enetto > 0
-                    && abs(round($enetto * (100 - (float)$t->getKedvezmeny()) / 100, 2) - (float)$t->getNettoegysar()) > 0.005) {
-                    $t->setKedvezmeny(round((1 - (float)$t->getNettoegysar() / $enetto) * 100, 4));
+                $netto = (float)$t->getNettoegysar();
+                if ($enetto > 0 && abs(round($enetto * (100 - (float)$t->getKedvezmeny()) / 100, 2) - $netto) > 0.005) {
+                    $t->setKedvezmeny($netto < $enetto ? round((1 - $netto / $enetto) * 100, 4) : 0);
                 }
                 $t->calc();
                 $this->getEm()->persist($t);
