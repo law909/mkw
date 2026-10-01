@@ -1723,7 +1723,10 @@ $(document).ready(function () {
             selectedColor = $szinedit.val(),
             termek = $szinedit.data('termek');
 
-        if (selectedColor) {
+        // the colour's image opens the gallery: the page is rendered for /product/{slug}/{szin_id}
+        if (selectedColor && $szinedit.data('url')) {
+            window.location.href = $szinedit.data('url') + selectedColor;
+        } else if (selectedColor) {
             let currentPath = window.location.pathname;
             let pathSegments = currentPath.split('/').filter(function (segment) {
                 return segment.length > 0;

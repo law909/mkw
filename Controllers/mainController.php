@@ -460,6 +460,10 @@ class mainController extends \mkwhelpers\Controller
                         $this->view->setVar('morzsa', $morzsa);
                     }
                     $this->view->setVar('szin_id', $szin_id);
+                    if ($szin_id && \mkw\store::isMugenrace2026()) {
+                        // after the JSON-LD and Open Graph: those keep the product's own main image
+                        $this->view->setVar('termek', $this->setSzinKepFirst($t['termek'], $termek, $szin_id));
+                    }
                     $statlap = $this->getRepo(Statlap::class)->find(\mkw\store::getParameter(\mkw\consts::SzallitasiFeltetelSablon, 0));
                     if ($statlap) {
                         $this->view->setVar('szallitasifeltetelsablon', $statlap->getSzoveg());
@@ -570,6 +574,72 @@ class mainController extends \mkwhelpers\Controller
             }
         }
         return false;
+    }
+
+    /**
+     * The product page opens on the colour's image: it becomes the main image, and the product's own
+     * main image moves to the front of the gallery.
+     */
+    private function setSzinKepFirst(array $lap, Termek $termek, $szinid)
+    {
+        $szinkep = $this->getSzinKep($termek, $szinid);
+        if (!$szinkep || $szinkep['kepurl'] === $lap['kepurl']) {
+            return $lap;
+        }
+        $fokep = [
+            'eredetikepurl' => $lap['eredetikepurl'],
+            'kepurl' => $lap['kepurl'],
+            'kozepeskepurl' => $lap['kozepeskepurl'],
+            'kiskepurl' => $termek->getKepurlSmall(),
+            'minikepurl' => $lap['minikepurl'],
+            'kepurl400' => $lap['kepurl400'],
+            'kepurl2000' => $lap['kepurl2000'],
+            'leiras' => '',
+        ];
+        $kepek = array_values(array_filter($lap['kepek'] ?? [], fn($kep) => $kep['kepurl'] !== $szinkep['kepurl']));
+        // the main image is often among the extra images too
+        if (!in_array($fokep['kepurl'], array_column($kepek, 'kepurl'), true)) {
+            array_unshift($kepek, $fokep);
+        }
+        $lap['kepek'] = $kepek;
+        foreach (['eredetikepurl', 'kepurl', 'kozepeskepurl', 'minikepurl', 'kepurl400', 'kepurl2000'] as $mezo) {
+            $lap[$mezo] = $szinkep[$mezo];
+        }
+        return $lap;
+    }
+
+    /**
+     * The colour's image: the first one on the product's Szín képek tab, else the image of a variant in
+     * that colour. Null when the colour shows the product's main image.
+     */
+    private function getSzinKep(Termek $termek, $szinid)
+    {
+        /** @var TermekSzinKep $szinkep */
+        foreach ($this->getRepo(TermekSzinKep::class)->getByTermekAndSzin($termek, $szinid) as $szinkep) {
+            // an entry without an image stands for the product's main image
+            return $szinkep->getKep() ? $this->getKepAdat($szinkep->getKep()) : null;
+        }
+        /** @var TermekValtozat $valt */
+        foreach ($termek->getValtozatok() ?? [] as $valt) {
+            if ($valt->getSzinId() == $szinid && $valt->getXElerheto() && $valt->getXLathato() && $valt->getKep()) {
+                return $this->getKepAdat($valt->getKep());
+            }
+        }
+        return null;
+    }
+
+    private function getKepAdat(\Entities\TermekKep $kep)
+    {
+        return [
+            'eredetikepurl' => $kep->getUrl(),
+            'kepurl' => $kep->getUrlLarge(),
+            'kozepeskepurl' => $kep->getUrlMedium(),
+            'kiskepurl' => $kep->getUrlSmall(),
+            'minikepurl' => $kep->getUrlMini(),
+            'kepurl400' => $kep->getUrl400(),
+            'kepurl2000' => $kep->getUrl2000(),
+            'leiras' => $kep->getLeiras(),
+        ];
     }
 
     /**

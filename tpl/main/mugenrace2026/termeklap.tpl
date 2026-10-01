@@ -126,11 +126,12 @@
                                                 <div class="pull-left gvaltozatselect">
                                                     <div class="option-selector color-selector" data-termek="{$termek.id}">
                                                         {foreach from=$termek.szinek item=$_v key=$_k}
-                                                            <div class="select-option {$_v|lower|replace:'/':'-'}" data-value="{$_k}" title="{$_v}"></div>
+                                                            <div class="select-option {$_v|lower|replace:'/':'-'}{if ($_k===$szin_id)} active{/if}" data-value="{$_k}" title="{$_v}"></div>
                                                         {/foreach}
                                                     </div>
 
-                                                    <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$termek.id}">
+                                                    <select class="js-szinvaltozatedit custom-select valtozatselect" data-termek="{$termek.id}"
+                                                            data-url="/product/{$termek.slug|escape:'url'}/">
                                                         <option value="">{t('Válasszon')}</option>
                                                         {foreach from=$termek.szinek item=$_v key=$_k}
                                                             <option value="{$_k}"{if ($_k===$szin_id)} selected="selected"{/if}>{$_v}</option>
