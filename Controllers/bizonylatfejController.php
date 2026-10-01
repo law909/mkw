@@ -1928,10 +1928,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('penztarlist', $penztar->getSelectList($penztarid));
 
             $szallitasimod = new szallitasimodController();
-            if (!$record || !$record->getSzallitasimodId()) {
+            if ($record && $record->getSzallitasimodId()) {
+                $szallmodid = $record->getSzallitasimodId();
+            } elseif (!$record || $oper === $this->inheritOperation) {
                 $szallmodid = \mkw\store::getParameter(\mkw\consts::Szallitasimod);
             } else {
-                $szallmodid = $record->getSzallitasimodId();
+                // a saved document without a shipping mode shows none, not the default it doesn't have
+                $szallmodid = null;
             }
             $view->setVar('szallitasimodlist', $szallitasimod->getSelectList($szallmodid, true));
 
@@ -1975,7 +1978,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $view->setVar('bizonylatnyelvlist', \mkw\store::getLocaleSelectList(($record ? $record->getBizonylatnyelv() : '')));
             $view->setVar('webshoplist', \mkw\store::getWebshopSelectList($record?->getWebshopnum()));
 
-            $szallitasimodobj = $this->getRepo(Szallitasimod::class)->find($szallmodid);
+            $szallitasimodobj = $szallmodid ? $this->getRepo(Szallitasimod::class)->find($szallmodid) : null;
             $terminaltipus = $szallitasimodobj ? $szallitasimodobj->getTerminaltipus() : null;
             $csomagpont = (new csomagterminalController())->getBizonylatSelectData($record?->getCsomagterminalId(), $terminaltipus);
             $view->setVar('csomagpontterminaltipus', (string)$terminaltipus);

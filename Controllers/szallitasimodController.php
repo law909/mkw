@@ -272,6 +272,8 @@ class szallitasimodController extends \mkwhelpers\MattableController
                 } else {
                     $r['selected'] = false;
                 }
+            } else {
+                $r['selected'] = false;
             }
 
             $res[] = $r;
