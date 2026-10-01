@@ -79,14 +79,10 @@ class BizonylatRontasVisszavetelService
             // pénztárbizonylatot keresi, és ha a régi még rontott, automatikus pénztárbizonylatos
             // típusnál egy másodikat képezne mellé.
             foreach ($penztarids as $pid) {
-                $pbiz = $em->find(Penztarbizonylatfej::class, $pid);
-                $pbiz->setRontott(false);
-                $em->persist($pbiz);
+                $this->restorePenzmozgas($em->find(Penztarbizonylatfej::class, $pid), $id);
             }
             foreach ($bankids as $bid) {
-                $bbiz = $em->find(Bankbizonylatfej::class, $bid);
-                $bbiz->setRontott(false);
-                $em->persist($bbiz);
+                $this->restorePenzmozgas($em->find(Bankbizonylatfej::class, $bid), $id);
             }
             if ($penztarids || $bankids) {
                 $em->flush();
@@ -112,14 +108,46 @@ class BizonylatRontasVisszavetelService
         return ['ok' => true, 'msg' => $msg];
     }
 
+    /**
+     * Csak a bizonylatra szóló tételek állnak vissza, és a fej, ha rontott: a rontás is csak ezeket
+     * rontotta (BizonylatfejListener::rontPenzmozgasTetelek()). A fej setRontott(false)-a minden
+     * tételt visszaállít, ezért a más bizonylat miatt rontottakat utána visszarontjuk.
+     *
+     * @param \Entities\Penztarbizonylatfej|\Entities\Bankbizonylatfej $fej
+     */
+    private function restorePenzmozgas($fej, string $bizszam): void
+    {
+        $em = \mkw\store::getEm();
+        $tobbirontott = [];
+        foreach ($fej->getBizonylattetelek() as $tetel) {
+            if ($tetel->getRontott() && (string)$tetel->getHivatkozottbizonylat() !== $bizszam) {
+                $tobbirontott[] = $tetel;
+            }
+        }
+        if ($fej->getRontott()) {
+            $fej->setRontott(false);
+            foreach ($tobbirontott as $tetel) {
+                $tetel->setRontott(true);
+            }
+        } else {
+            foreach ($fej->getBizonylattetelek() as $tetel) {
+                if ((string)$tetel->getHivatkozottbizonylat() === $bizszam) {
+                    $tetel->setRontott(false);
+                    $em->persist($tetel);
+                }
+            }
+        }
+        $em->persist($fej);
+    }
+
     private function find(string $id): ?Bizonylatfej
     {
         return $id === '' ? null : \mkw\store::getEm()->getRepository(Bizonylatfej::class)->find($id);
     }
 
     /**
-     * A bizonylatra hivatkozó rontott pénztár- és bankbizonylatok. A teljes fejet listázzuk, mert a
-     * rontás is az egész fejet rontotta – a más bizonylatra szóló tételeivel együtt.
+     * A pénztár- és bankbizonylatok, amelyeknek van a bizonylatra szóló rontott tétele. A `sajat` a
+     * rontott saját tételek összege, a `masik` a fejen lévő más bizonylatok.
      *
      * @return array<int, array{tipus: string, id: string, kelt: string, brutto: float, sajat: float,
      *                          masik: string[], zarolt: bool}>
@@ -136,11 +164,10 @@ class BizonylatRontasVisszavetelService
             $sorok = $conn->fetchAllAssociative(
                 "SELECT f.id, f.kelt, f.brutto, f.valutanemnev,"
                 . ($tipus === 'penztar' ? ' f.penztar_id,' : ' NULL AS penztar_id,')
-                . " SUM(CASE WHEN t.hivatkozottbizonylat = ? THEN t.brutto ELSE 0 END) AS sajat,"
+                . " SUM(CASE WHEN t.hivatkozottbizonylat = ? AND t.rontott = 1 THEN t.brutto ELSE 0 END) AS sajat,"
                 . " GROUP_CONCAT(DISTINCT CASE WHEN t.hivatkozottbizonylat <> ? THEN t.hivatkozottbizonylat END SEPARATOR ', ') AS masik"
                 . " FROM $fejtabla f JOIN $tetteltabla t ON t.$fk = f.id"
-                . " WHERE f.rontott = 1"
-                . " AND f.id IN (SELECT t2.$fk FROM $tetteltabla t2 WHERE t2.hivatkozottbizonylat = ?)"
+                . " WHERE f.id IN (SELECT t2.$fk FROM $tetteltabla t2 WHERE t2.hivatkozottbizonylat = ? AND t2.rontott = 1)"
                 . " GROUP BY f.id, f.kelt, f.brutto, f.valutanemnev" . ($tipus === 'penztar' ? ', f.penztar_id' : '')
                 . " ORDER BY f.kelt, f.id",
                 [$bf->getId(), $bf->getId(), $bf->getId()]

@@ -81,15 +81,21 @@ class PenztarbizonylatfejRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
-    public function getAllByHivatkozottBizonylat($filter)
+    /**
+     * Az élő tétellel a bizonylatra hivatkozó pénztárbizonylatok, a TELJES tételgyűjteményükkel.
+     * Nem fetch join: a tételre szűrő `SELECT _xx, pt` csak a szűrt tételeket töltené a gyűjteménybe,
+     * és a fej mentése a többi tétel folyószámla sorát is eltüntetné.
+     *
+     * @return \Entities\Penztarbizonylatfej[]
+     */
+    public function getByHivatkozottBizonylat(string $bizszam, bool $csakelofej = true): array
     {
-        $q = $this->_em->createQuery(
-            'SELECT _xx, pt'
-            . ' FROM Entities\Penztarbizonylatfej _xx'
-            . ' LEFT JOIN _xx.bizonylattetelek pt'
-            . $this->getFilterString($filter)
-        );
-        $q->setParameters($this->getQueryParameters($filter));
-        return $q->getResult();
+        return $this->_em->createQuery(
+            'SELECT _xx FROM Entities\Penztarbizonylatfej _xx'
+            . ' WHERE _xx.id IN (SELECT IDENTITY(t.bizonylatfej) FROM Entities\Penztarbizonylattetel t'
+            . ' WHERE t.hivatkozottbizonylat = :bizszam AND (t.rontott = false OR t.rontott IS NULL))'
+            . ($csakelofej ? ' AND (_xx.rontott = false OR _xx.rontott IS NULL)' : '')
+            . ' ORDER BY _xx.kelt, _xx.id'
+        )->setParameter('bizszam', $bizszam)->getResult();
     }
 }

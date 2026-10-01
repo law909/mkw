@@ -25,7 +25,7 @@
                 </div>
                 <p class="js-uzenet"></p>
                 <p class="mattkarb-hint">
-                    {at('A bizonylat és a tételei újra élők lesznek, a folyószámla sorai a mentéskor újraképződnek. A rontással együtt lerontott pénztár- és bankbizonylat nem áll vissza magától: a bizonylatra hivatkozó rontott pénzmozgások közül jelöld be, melyik álljon vissza. A pénzmozgás az egész fejével áll vissza, a más bizonylatra szóló tételeivel együtt. Ha az automatikus pénztárbizonylatos típusnál a pénztárbizonylatot nem állítod vissza, a mentés újat képez.')}
+                    {at('A bizonylat és a tételei újra élők lesznek, a folyószámla sorai a mentéskor újraképződnek. A rontással együtt lerontott pénztár- és bankbizonylat nem áll vissza magától: a bizonylatra hivatkozó rontott pénzmozgások közül jelöld be, melyik álljon vissza. A pénzmozgásnak csak a bizonylatra szóló tételei állnak vissza (és a fej, ha rontott), a más bizonylatra szóló tételeihez nem nyúl. Ha az automatikus pénztárbizonylatos típusnál a pénztárbizonylatot nem állítod vissza, a mentés újat képez.')}
                 </p>
             </div>
             <div class="admin-form-footer">

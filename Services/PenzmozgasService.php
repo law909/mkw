@@ -43,21 +43,9 @@ class PenzmozgasService
             return [];
         }
 
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter('pt.hivatkozottbizonylat', '=', $bizszam)
-            ->addFilter('rontott', '=', false);
-        $lista = $this->em->getRepository(Penztarbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
-
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter('bt.hivatkozottbizonylat', '=', $bizszam)
-            ->addFilter('bt.rontott', '=', false)
-            ->addFilter('rontott', '=', false);
-
         return array_merge(
-            $lista,
-            $this->em->getRepository(Bankbizonylatfej::class)->getAllByHivatkozottBizonylat($filter)
+            $this->em->getRepository(Penztarbizonylatfej::class)->getByHivatkozottBizonylat($bizszam),
+            $this->em->getRepository(Bankbizonylatfej::class)->getByHivatkozottBizonylat($bizszam)
         );
     }
 

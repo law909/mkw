@@ -57,19 +57,19 @@ class BankbizonylatfejRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * Egy bizonylatra hivatkozó bankbizonylatok (a szűrő a tételre is szólhat: bt.*).
-     * A PenztarbizonylatfejRepository azonos nevű metódusának párja.
+     * A PenztarbizonylatfejRepository::getByHivatkozottBizonylat() párja – ugyanazért nem fetch join.
+     *
+     * @return \Entities\Bankbizonylatfej[]
      */
-    public function getAllByHivatkozottBizonylat($filter)
+    public function getByHivatkozottBizonylat(string $bizszam, bool $csakelofej = true): array
     {
-        $q = $this->_em->createQuery(
-            'SELECT _xx, bt'
-            . ' FROM Entities\Bankbizonylatfej _xx'
-            . ' LEFT JOIN _xx.bizonylattetelek bt'
-            . $this->getFilterString($filter)
-        );
-        $q->setParameters($this->getQueryParameters($filter));
-        return $q->getResult();
+        return $this->_em->createQuery(
+            'SELECT _xx FROM Entities\Bankbizonylatfej _xx'
+            . ' WHERE _xx.id IN (SELECT IDENTITY(t.bizonylatfej) FROM Entities\Bankbizonylattetel t'
+            . ' WHERE t.hivatkozottbizonylat = :bizszam AND (t.rontott = false OR t.rontott IS NULL))'
+            . ($csakelofej ? ' AND (_xx.rontott = false OR _xx.rontott IS NULL)' : '')
+            . ' ORDER BY _xx.kelt, _xx.id'
+        )->setParameter('bizszam', $bizszam)->getResult();
     }
 
 }

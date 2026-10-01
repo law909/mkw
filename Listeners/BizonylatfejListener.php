@@ -451,24 +451,57 @@ class BizonylatfejListener
         }
     }
 
-    private function rontPenztarBizonylat($bizfej)
+    /**
+     * A bizonylatra szóló pénztár- és banktételek rontása. Csak a saját tételeit: egy bankbizonylat
+     * több számlát is kiegyenlíthet, azok kiegyenlítése él tovább. A fej akkor rontódik, ha már
+     * nincs élő tétele. A rontott fejen ragadt élő tételt is rontjuk (a 2026-10 előtti rontás így
+     * hagyhatta).
+     *
+     * @param \Entities\Bizonylatfej $bizfej
+     */
+    private function rontPenzmozgasTetelek($bizfej)
     {
-        /** @var \Entities\PenztarbizonylatfejRepository $prep */
-        $pfrep = $this->em->getRepository(Penztarbizonylatfej::class);
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId());
-        $pbizek = $pfrep->getAllByHivatkozottBizonylat($filter);
-        /** @var \Entities\Penztarbizonylatfej $pbiz */
-        foreach ($pbizek as $pbiz) {
-            $this->rontPenztarBizonylatfej($pbiz);
+        if ($this->uow->isScheduledForInsert($bizfej)) {
+            return;
+        }
+        foreach ($this->em->getRepository(Penztarbizonylatfej::class)->getByHivatkozottBizonylat($bizfej->getId(), false) as $pbiz) {
+            if ($this->rontSajatTetelek($pbiz, $bizfej, $this->penztarbizonylattetelmd)) {
+                $this->rontPenztarBizonylatfej($pbiz);
+            }
+        }
+        foreach ($this->em->getRepository(Bankbizonylatfej::class)->getByHivatkozottBizonylat($bizfej->getId(), false) as $bbiz) {
+            if ($this->rontSajatTetelek($bbiz, $bizfej, $this->bankbizonylattetelmd)) {
+                $this->rontBankBizonylatfej($bbiz);
+            }
         }
     }
 
-    private function rontBankBizonylat($bizfej)
+    /**
+     * A tétel változása a fej listenerét is mozgatja (tetelekBizonylatfejei), az képezi újra a
+     * fej folyószámláját – most már a teljes tételgyűjteményből.
+     *
+     * @param \Entities\Penztarbizonylatfej|\Entities\Bankbizonylatfej $fej
+     *
+     * @return bool nem maradt élő tétele, a fejet is rontani kell
+     */
+    private function rontSajatTetelek($fej, $bizfej, $tetelmd)
     {
-        foreach ($this->getEloBankBizonylatok($bizfej) as $bbiz) {
-            $this->rontBankBizonylatfej($bbiz);
+        $maradelo = false;
+        foreach ($fej->getBizonylattetelek() as $tetel) {
+            if ($tetel->getRontott()) {
+                continue;
+            }
+            if ((string)$tetel->getHivatkozottbizonylat() !== (string)$bizfej->getId()) {
+                $maradelo = true;
+                continue;
+            }
+            $tetel->setRontott(true);
+            $this->em->persist($tetel);
+            if (!$this->uow->isScheduledForInsert($tetel)) {
+                $this->uow->recomputeSingleEntityChangeSet($tetelmd, $tetel);
+            }
         }
+        return !$maradelo && !$fej->getRontott();
     }
 
     /**
@@ -725,7 +758,7 @@ class BizonylatfejListener
             if ($this->autoPenztarBizonylatEgyezik($regi, $bizfej, $irany, $osszeg, $penztar)) {
                 return;
             }
-            $this->rontPenztarBizonylatfej($regi);
+            $this->rontSajatPenztarTetelek($regi, $bizfej);
         }
         if (!$osszeg) {
             return;
@@ -779,7 +812,8 @@ class BizonylatfejListener
     /**
      * A bizonylathoz tartozó összes élő pénzmozgás (pénztár- ÉS bankbizonylat) rontása, mert a
      * felhasználó ezt kérte a fizetési mód / pénzmozgás jelölő átállításakor. A kézzel rögzítettre
-     * is vonatkozik – épp ez a kérdés értelme.
+     * is vonatkozik – épp ez a kérdés értelme. Ugyanaz, mint a bizonylat rontásakor: csak a
+     * bizonylatra szóló tételek, lásd rontPenzmozgasTetelek().
      *
      * Nem törlünk: a rontott bizonylat a sorszámával együtt megmarad, a listán és a naplóban
      * továbbra is látszik, csak a pénzmozgásból esik ki. Új bizonylathoz még nem tartozhat ilyen.
@@ -788,15 +822,7 @@ class BizonylatfejListener
      */
     private function rontKapcsolodoPenzmozgas($bizfej)
     {
-        if ($this->uow->isScheduledForInsert($bizfej)) {
-            return;
-        }
-        foreach ($this->getEloPenztarBizonylatok($bizfej) as $pbiz) {
-            $this->rontPenztarBizonylatfej($pbiz);
-        }
-        foreach ($this->getEloBankBizonylatok($bizfej) as $bbiz) {
-            $this->rontBankBizonylatfej($bbiz);
-        }
+        $this->rontPenzmozgasTetelek($bizfej);
     }
 
     /**
@@ -806,11 +832,7 @@ class BizonylatfejListener
      */
     private function getEloPenztarBizonylatok($bizfej)
     {
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId())
-            ->addFilter('rontott', '=', false);
-        return $this->em->getRepository(Penztarbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
+        return $this->em->getRepository(Penztarbizonylatfej::class)->getByHivatkozottBizonylat($bizfej->getId());
     }
 
     /**
@@ -820,12 +842,7 @@ class BizonylatfejListener
      */
     private function getEloBankBizonylatok($bizfej)
     {
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter('bt.hivatkozottbizonylat', '=', $bizfej->getId())
-            ->addFilter('bt.rontott', '=', false)
-            ->addFilter('rontott', '=', false);
-        return $this->em->getRepository(Bankbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
+        return $this->em->getRepository(Bankbizonylatfej::class)->getByHivatkozottBizonylat($bizfej->getId());
     }
 
     /**
@@ -859,14 +876,7 @@ class BizonylatfejListener
      */
     private function vanEloBankKiegyenlites($bizfej)
     {
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter('bt.hivatkozottbizonylat', '=', $bizfej->getId())
-            ->addFilter('bt.rontott', '=', false)
-            ->addFilter('rontott', '=', false);
-        return (bool)count(
-            $this->em->getRepository(Bankbizonylatfej::class)->getAllByHivatkozottBizonylat($filter)
-        );
+        return (bool)count($this->getEloBankBizonylatok($bizfej));
     }
 
     /**
@@ -880,19 +890,26 @@ class BizonylatfejListener
      */
     private function getAutoPenztarBizonylat($bizfej)
     {
-        $filter = new \mkwhelpers\FilterDescriptor();
-        $filter
-            ->addFilter('pt.hivatkozottbizonylat', '=', $bizfej->getId())
-            ->addFilter('rontott', '=', false);
-        $pbizek = $this->em->getRepository(Penztarbizonylatfej::class)->getAllByHivatkozottBizonylat($filter);
+        $pbizek = $this->getEloPenztarBizonylatok($bizfej);
         if (!count($pbizek)) {
             return null;
         }
         // elvileg csak egy lehet; ha mégis több, a fölöslegeseket rontjuk
         for ($i = 1; $i < count($pbizek); $i++) {
-            $this->rontPenztarBizonylatfej($pbizek[$i]);
+            $this->rontSajatPenztarTetelek($pbizek[$i], $bizfej);
         }
         return $pbizek[0];
+    }
+
+    /**
+     * A pénztárbizonylatnak csak a bizonylatra szóló tételei; a fej akkor, ha nem maradt élő tétele.
+     * Egy kézzel rögzített pénztárbizonylat több bizonylatot is kiegyenlíthet.
+     */
+    private function rontSajatPenztarTetelek($pbiz, $bizfej)
+    {
+        if ($this->rontSajatTetelek($pbiz, $bizfej, $this->penztarbizonylattetelmd)) {
+            $this->rontPenztarBizonylatfej($pbiz);
+        }
     }
 
     /**
@@ -916,13 +933,17 @@ class BizonylatfejListener
         if ($penztar && ($pbiz->getPenztarId() != $penztar->getId())) {
             return false;
         }
-        $tetelek = $pbiz->getBizonylattetelek();
+        // csak a bizonylatra szóló élő tételek: a pénztárbizonylaton más bizonylat tétele is lehet
+        $tetelek = array_values(array_filter(
+            $pbiz->getBizonylattetelek()->toArray(),
+            fn($t) => !$t->getRontott() && (string)$t->getHivatkozottbizonylat() === (string)$bizfej->getId()
+        ));
         if (count($tetelek) !== 1) {
             return false;
         }
         // a tétel bruttóját nézzük, mert a fejet a PenztarbizonylatfejListener::calcOsszesen()
         // címletre kerekíti, a folyószámla viszont a tétel összegével nettózik
-        return abs($tetelek->first()->getBrutto() * 1 - $osszeg) < 0.005;
+        return abs($tetelek[0]->getBrutto() * 1 - $osszeg) < 0.005;
     }
 
     /**
@@ -1287,8 +1308,7 @@ class BizonylatfejListener
                     // (a createPenztarBizonylat, ill. a PenzmozgasService::createStornoPenzmozgas).
                     if ($entity->getRontott()) {
                         if ($entity->isRontpenzmozgas() && $this->mostLettRontott($entity)) {
-                            $this->rontPenztarBizonylat($entity);
-                            $this->rontBankBizonylat($entity);
+                            $this->rontPenzmozgasTetelek($entity);
                         }
                     } else {
                         $this->igazitPenzmozgasOsszeget($entity);
