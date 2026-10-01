@@ -83,7 +83,7 @@
                         <td class="dashedline"></td>
                         <td colspan="8"
                             class="dashedline bold">{$tetel.cikkszam} {$tetel.termeknev} {foreach $tetel.valtozatok as $valtozat}{$valtozat.ertek}&nbsp;{/foreach}{if ($tetel.termekegyediazonosito|default)}({$tetel.termekegyediazonosito}) {/if}
-                            ({$tetel.vtszszam})
+                            {if ($showvtsz|default:true && $tetel.vtszszam|default)}({$tetel.vtszszam}){/if}
                         </td>
                     </tr>
                 {/for}

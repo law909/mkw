@@ -582,6 +582,7 @@ class consts
     const Napijelentes2DefaultRaktar = 'napijelentes2defaultraktar';
 
     const NyomtatasiKerdesMenteskor = 'nyomtatasikerdesmenteskor';
+    const BizonylatVtsz = 'bizonylatvtsz';
     // the upload's timestamp, empty when there is none; the file itself is in storage/
     const VonalkodHibaHang = 'vonalkodhibahang';
 

@@ -996,6 +996,10 @@
                                    type="checkbox"{if ($nyomtatasikerdesmenteskor)} checked="checked"{/if}>
                         </div>
                         <div class="setuprow">
+                            <span class="setuplabel"><label for="BizonylatVtszEdit">{at('VTSZ megjelenjen a bizonylatokon')}:</label></span>
+                            <input id="BizonylatVtszEdit" name="bizonylatvtsz" type="checkbox"{if ($bizonylatvtsz)} checked="checked"{/if}>
+                        </div>
+                        <div class="setuprow">
                             <span class="setuplabel"><label for="BizonylatMennyisegEdit">{at('Bizonylattétel alap mennyisége')}:</label></span>
                             <input id="BizonylatMennyisegEdit" name="bizonylatmennyiseg" type="text" value="{$bizonylatmennyiseg}">
                         </div>
