@@ -80,7 +80,7 @@
                 <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
                        required="required">
             {/mezo}
-            {mezo cimke="Cikkszám" for="CikkszamEdit{$tetel.id}"}
+            {mezo cimke="Cikkszám" for="CikkszamEdit{$tetel.id}" szeles=true}
                 <input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}">
                 <span class="js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span>
             {/mezo}
@@ -143,68 +143,73 @@
                 </select>
             {/mezo}
         {/mezocsoport}
-    </div>
-    <div class="tetel-also">
-        <table class="tetel-arak">
-            <tbody>
-            <tr>
-                <td></td>
-                <td>{at('Nettó')}</td>
-                <td>{at('Bruttó')}</td>
-                {if ($showhaszonszazalek)}
-                    <td>{at('Haszon %')}</td>
-                    <td>{at('Eladási br.ár')}</td>
-                {/if}
-                {if ($showvalutanem)}
-                    <td class="hufprice">{at('Nettó HUF')}</td>
-                    <td class="hufprice">{at('Bruttó HUF')}</td>
-                {/if}
-            </tr>
-            <tr>
-                <td><label>{at('Er.egységár')}:</label></td>
-                <td><input name="tetelenettoegysar_{$tetel.id}" type="text" value="{$tetel.enettoegysar}" readonly class="js-enettoegysarinput"></td>
-                <td><input name="tetelebruttoegysar_{$tetel.id}" type="text" value="{$tetel.ebruttoegysar}" readonly class="js-ebruttoegysarinput"></td>
-                {if ($showvalutanem)}
-                    <td><input name="tetelenettoegysarhuf_{$tetel.id}" type="text" value="{$tetel.enettoegysarhuf}" readonly></td>
-                    <td><input name="tetelebruttoegysarhuf_{$tetel.id}" type="text" value="{$tetel.ebruttoegysarhuf}" readonly></td>
-                {/if}
-            </tr>
-            <tr>
-                <td><label for="KedvezmenyEdit{$tetel.id}">{at('Kedvezmény %')}:</label></td>
-                <td><input id="KedvezmenyEdit{$tetel.id}" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
-            </tr>
-            <tr>
-                <td><label for="NettoegysarEdit{$tetel.id}">{at('Egységár')}:</label></td>
-                <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}"
-                           class="js-nettoegysarinput" required="required"></td>
-                <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput"
-                           required="required"></td>
-                {if ($showhaszonszazalek)}
-                    <td id="haszonszazalek_{$tetel.id}">{number_format($tetel.haszonszazalek,2,'.',' ')}</td>
-                    <td id="eladasibruttoar_{$tetel.id}" data-ertek="{$tetel.eladasibrutto}">{number_format($tetel.eladasibrutto,2,'.',' ')}</td>
-                {/if}
-                {if ($showvalutanem)}
-                    <td><input name="tetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
-                    <td><input name="tetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
-                {/if}
-            </tr>
-            <tr>
-                <td class="mattable-important"><label for="NettoEdit{$tetel.id}">{at('Érték')}:</label></td>
-                <td><input id="NettoEdit{$tetel.id}" name="tetelnetto_{$tetel.id}" type="number" step="any" value="{$tetel.netto}"
-                           class="mattable-important js-nettoinput"></td>
-                <td><input name="tetelbrutto_{$tetel.id}" type="number" step="any" value="{$tetel.brutto}" class="mattable-important js-bruttoinput"></td>
-                {if ($showhaszonszazalek)}
+        {* a mezőket a JS név, osztály és id alapján éri el, a táblázat szerkezetére nem épít *}
+        <div class="tetel-arcsoport">
+            <div class="mattkarb-szakaszcim">{at('Árak')}</div>
+            <table class="tetel-arak">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>{at('Nettó')}</th>
+                    <th>{at('Bruttó')}</th>
+                    {if ($showvalutanem)}
+                        <th class="tetel-arak-huf">{at('Nettó HUF')}</th>
+                        <th>{at('Bruttó HUF')}</th>
+                    {/if}
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><label>{at('Er.egységár')}:</label></td>
+                    <td><input name="tetelenettoegysar_{$tetel.id}" type="text" value="{$tetel.enettoegysar}" readonly class="js-enettoegysarinput"></td>
+                    <td><input name="tetelebruttoegysar_{$tetel.id}" type="text" value="{$tetel.ebruttoegysar}" readonly class="js-ebruttoegysarinput"></td>
+                    {if ($showvalutanem)}
+                        <td class="tetel-arak-huf"><input name="tetelenettoegysarhuf_{$tetel.id}" type="text" value="{$tetel.enettoegysarhuf}" readonly></td>
+                        <td><input name="tetelebruttoegysarhuf_{$tetel.id}" type="text" value="{$tetel.ebruttoegysarhuf}" readonly></td>
+                    {/if}
+                </tr>
+                <tr>
+                    <td><label for="KedvezmenyEdit{$tetel.id}">{at('Kedvezmény %')}:</label></td>
+                    <td><input id="KedvezmenyEdit{$tetel.id}" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
                     <td></td>
-                    <td></td>
-                {/if}
-                {if ($showvalutanem)}
-                    <td><input name="tetelnettohuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettohuf}" readonly></td>
-                    <td><input name="tetelbruttohuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttohuf}" readonly></td>
-                {/if}
-            </tr>
-            </tbody>
-        </table>
+                    {if ($showvalutanem)}
+                        <td class="tetel-arak-huf"></td>
+                        <td></td>
+                    {/if}
+                </tr>
+                <tr>
+                    <td><label for="NettoegysarEdit{$tetel.id}">{at('Egységár')}:</label></td>
+                    <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}"
+                               class="js-nettoegysarinput" required="required"></td>
+                    <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput"
+                               required="required"></td>
+                    {if ($showvalutanem)}
+                        <td class="tetel-arak-huf"><input name="tetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
+                        <td><input name="tetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
+                    {/if}
+                </tr>
+                <tr class="tetel-arak-ertek">
+                    <td class="mattable-important"><label for="NettoEdit{$tetel.id}">{at('Érték')}:</label></td>
+                    <td><input id="NettoEdit{$tetel.id}" name="tetelnetto_{$tetel.id}" type="number" step="any" value="{$tetel.netto}"
+                               class="mattable-important js-nettoinput"></td>
+                    <td><input name="tetelbrutto_{$tetel.id}" type="number" step="any" value="{$tetel.brutto}" class="mattable-important js-bruttoinput"></td>
+                    {if ($showvalutanem)}
+                        <td class="tetel-arak-huf"><input name="tetelnettohuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettohuf}" readonly></td>
+                        <td><input name="tetelbruttohuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttohuf}" readonly></td>
+                    {/if}
+                </tr>
+                </tbody>
+            </table>
+            {if ($showhaszonszazalek)}
+                <div class="tetel-arak-haszon">
+                    <span>{at('Haszon %')}: <strong id="haszonszazalek_{$tetel.id}">{number_format($tetel.haszonszazalek,2,'.',' ')}</strong></span>
+                    <span>{at('Eladási br.ár')}: <strong id="eladasibruttoar_{$tetel.id}"
+                                                         data-ertek="{$tetel.eladasibrutto}">{number_format($tetel.eladasibrutto,2,'.',' ')}</strong></span>
+                </div>
+            {/if}
+        </div>
     </div>
+
 </div>
 {if ($tetel.oper=='add')}
     <a class="js-tetelnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>

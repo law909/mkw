@@ -819,16 +819,62 @@ select.tetelszamhiba,
     width: 100%;
 }
 
-.tetel-also {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 12px 24px;
-    margin-top: 12px;
+/* árak: a csak olvasható értékek (eredeti egységár, HUF) keret nélküli számként, az írhatók mezőként látszanak */
+.tetel-arak {
+    border-collapse: collapse;
+}
+
+.tetel-arak th {
+    padding: 0 6px 4px 0;
+    font-size: .9em;
+    font-weight: normal;
+    text-align: right;
+}
+
+.tetel-arak td {
+    padding: 3px 6px 3px 0;
+}
+
+.tetel-arak td:first-child {
+    padding-right: 14px;
+    white-space: nowrap;
 }
 
 .tetel-arak input {
-    width: 9.5em;
+    width: 11em;
+    text-align: right;
+}
+
+.tetel-arak input[readonly] {
+    border-color: transparent;
+    background: transparent;
+}
+
+/* a hibás összeg jelölése (checkTetelOsszegek) a keret nélküli értéken is látsszon */
+.tetel-arak input.tetelszamhiba {
+    border-color: red;
+    background-color: #ffd5d5;
+}
+
+.tetel-arak .tetel-arak-huf {
+    padding-left: 14px;
+    border-left: 1px solid #ccc;
+}
+
+.tetel-arak-ertek td {
+    padding-top: 6px;
+    border-top: 1px solid #ccc;
+}
+
+.tetel-arak-ertek input {
+    font-weight: bold;
+}
+
+.tetel-arak-haszon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+    margin-top: 8px;
 }
 
 /* a terméknek nincs változata: a helyőrző üres, a címke se látsszon */

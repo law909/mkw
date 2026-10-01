@@ -1071,19 +1071,64 @@ body.modernui {
     color: var(--mkw-text);
 }
 
-.modernui .tetel-also {
-    padding-top: 10px;
-    border-top: 1px solid var(--mkw-border);
-}
-
 .modernui .tetel-arak td {
-    padding: 3px 8px 3px 0;
+    padding: 3px 6px 3px 0;
 }
 
-.modernui .tetel-arak > tbody > tr:first-child > td {
+.modernui .tetel-arak td:first-child {
+    padding-right: 14px;
+}
+
+.modernui .tetel-arak th {
     color: var(--mkw-muted);
     font-size: .8em;
     font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.modernui .tetel-arak input {
+    font-variant-numeric: tabular-nums;
+}
+
+.modernui .tetel-arak input[readonly] {
+    padding-right: 9px;
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    color: var(--mkw-muted);
+}
+
+.modernui .tetel-arak .tetel-arak-huf {
+    border-left-color: var(--mkw-border);
+}
+
+.modernui .tetel-arak-ertek td {
+    border-top-color: var(--mkw-border);
+}
+
+.modernui .tetel-arak-ertek input {
+    font-size: 1.05em;
+    font-weight: 600;
+}
+
+.modernui .tetel-arak-ertek input[readonly] {
+    color: var(--mkw-text);
+}
+
+/* a hibás összeg jelölése (checkTetelOsszegek) a keret nélküli, csak olvasható értéken is látsszon */
+.modernui .tetel-arak input.tetelszamhiba {
+    border-color: var(--mkw-danger);
+    background: var(--mkw-danger-soft);
+}
+
+.modernui .tetel-arak-haszon {
+    color: var(--mkw-muted);
+}
+
+.modernui .tetel-arak-haszon strong {
+    color: var(--mkw-text);
+    font-variant-numeric: tabular-nums;
 }
 
 .modernui .bizonylatosszesito {
@@ -1582,12 +1627,8 @@ body.modernui {
         overflow-x: auto;
     }
 
-    .modernui .tetel-arak td {
-        padding-right: 6px;
-    }
-
     .modernui .tetel-arak input {
-        width: 6.5em;
+        width: 9em;
     }
 
     /* minden mező teljes szélességű; :where, hogy az ár-mátrix saját szélessége erősebb maradjon */
