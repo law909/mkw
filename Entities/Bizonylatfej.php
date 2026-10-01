@@ -924,9 +924,9 @@ class Bizonylatfej
      * Két összeg akkor tekinthető egyezőnek, ha az eltérés a kerekítésből adódó hibahatáron
      * belül van. A hibahatár a szorzótényezővel arányosan nő. (JS: egyezik())
      */
-    private static function osszegEgyezik($tenyleges, $elvart, $tenyezo)
+    private static function osszegEgyezik($tenyleges, $elvart, $tenyezo, $plusz = 0)
     {
-        $hibahatar = 0.1 + abs($tenyezo) * 0.01;
+        $hibahatar = 0.1 + abs($tenyezo) * 0.01 + abs($plusz);
         return abs($tenyleges - $elvart) <= $hibahatar;
     }
 
@@ -1046,11 +1046,12 @@ class Bizonylatfej
             }
 
             // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár (csak ha van eredeti egységár)
+            //    A kedvezmény 4 tizedesre van tárolva: nagy eredeti árnál ennek kerekítése is számít.
             if ($kedv) {
-                if ($enettoegysar && !self::osszegEgyezik($nettoegysar, $enettoegysar * (100 - $kedv) / 100, 1)) {
+                if ($enettoegysar && !self::osszegEgyezik($nettoegysar, $enettoegysar * (100 - $kedv) / 100, 1, $enettoegysar * 0.0000005)) {
                     $hibak[] = $cimke . ' nettó egységára nem egyezik az eredeti egységár és a kedvezmény alapján számolt értékkel.';
                 }
-                if ($ebruttoegysar && !self::osszegEgyezik($bruttoegysar, $ebruttoegysar * (100 - $kedv) / 100, 1)) {
+                if ($ebruttoegysar && !self::osszegEgyezik($bruttoegysar, $ebruttoegysar * (100 - $kedv) / 100, 1, $ebruttoegysar * 0.0000005)) {
                     $hibak[] = $cimke . ' bruttó egységára nem egyezik az eredeti egységár és a kedvezmény alapján számolt értékkel.';
                 }
             }

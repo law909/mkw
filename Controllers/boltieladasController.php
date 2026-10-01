@@ -320,6 +320,12 @@ class boltieladasController extends \mkwhelpers\Controller
                 }
                 $t->setNettoegysarhuf($t->getNettoegysar());
                 $t->setBruttoegysarhuf($t->getBruttoegysar());
+                // a typed price comes with a 2-decimal discount that no longer gives the price back
+                $enetto = (float)$t->getEnettoegysar();
+                if ($enetto > 0
+                    && abs(round($enetto * (100 - (float)$t->getKedvezmeny()) / 100, 2) - (float)$t->getNettoegysar()) > 0.005) {
+                    $t->setKedvezmeny(round((1 - (float)$t->getNettoegysar() / $enetto) * 100, 4));
+                }
                 $t->calc();
                 $this->getEm()->persist($t);
                 $vantetel = true;

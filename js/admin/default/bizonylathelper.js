@@ -406,8 +406,8 @@ let bizonylathelper = function ($) {
 
         // Két összeg akkor tekinthető egyezőnek, ha az eltérés a kerekítésből
         // adódó hibahatáron belül van. A hibahatár a szorzótényezővel arányosan nő.
-        function egyezik(tenyleges, elvart, tenyezo) {
-            let hibahatar = 0.1 + Math.abs(tenyezo) * 0.01;
+        function egyezik(tenyleges, elvart, tenyezo, plusz = 0) {
+            let hibahatar = 0.1 + Math.abs(tenyezo) * 0.01 + Math.abs(plusz);
             return Math.abs(tenyleges - elvart) <= hibahatar;
         }
 
@@ -446,11 +446,11 @@ let bizonylathelper = function ($) {
             // 2. Eredeti egységár * (100 - Kedvezmény%) = Egységár
             //    (csak akkor, ha van eredeti egységár)
             if (kedv !== 0) {
-                if (enettoegysar && !egyezik(nettoegysar, enettoegysar * (100 - kedv) / 100, 1)) {
+                if (enettoegysar && !egyezik(nettoegysar, enettoegysar * (100 - kedv) / 100, 1, enettoegysar * 0.0000005)) {
                     jelol('tetelnettoegysar_' + sorId);
                     jelol('tetelkedvezmeny_' + sorId);
                 }
-                if (ebruttoegysar && !egyezik(bruttoegysar, ebruttoegysar * (100 - kedv) / 100, 1)) {
+                if (ebruttoegysar && !egyezik(bruttoegysar, ebruttoegysar * (100 - kedv) / 100, 1, ebruttoegysar * 0.0000005)) {
                     jelol('tetelbruttoegysar_' + sorId);
                     jelol('tetelkedvezmeny_' + sorId);
                 }
