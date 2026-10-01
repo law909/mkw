@@ -42,12 +42,6 @@
                 {$egyed.partnerszamlaegyeb}
             {/if}
             {if ($showszallitasicim|default)}
-                {if ($egyed.telephelynev || $egyed.telephelyirszam)}
-                    <br /><br /><span class="bold">Telephely:</span><br />
-                    {$egyed.telephelynev}<br />
-                    {$egyed.telephelyirszam} {$egyed.telephelyvaros}, {$egyed.telephelyutca}
-                    {if ($egyed.telephelyorszag)}<br />{$egyed.telephelyorszag}{/if}
-                {/if}
                 {if ($egyed.szallnev || $egyed.szallirszam)}
                     <br /><br /><span class="bold">Szállítási cím:</span><br />
                     {$egyed.szallnev}<br />

@@ -26,11 +26,6 @@
             <p>EU adószám / EU tax number: {$egyed.partnereuadoszam}</p>
         {/if}
         {if ($showszallitasicim|default)}
-            {if ($egyed.telephelynev || $egyed.telephelyirszam)}
-                <p class="bold">Telephely / Site:</p>
-                <p>{$egyed.telephelynev}</p>
-                <p>{$egyed.telephelyirszam} {$egyed.telephelyvaros}, {$egyed.telephelyutca}{if ($egyed.telephelyorszag)}, {$egyed.telephelyorszag}{/if}</p>
-            {/if}
             {if ($egyed.szallnev || $egyed.szallirszam)}
                 <p class="bold">Szállítási cím / Delivery address:</p>
                 <p>{$egyed.szallnev}</p>

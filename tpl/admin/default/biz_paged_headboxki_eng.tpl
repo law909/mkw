@@ -22,12 +22,6 @@
             {if ($egyed.partneradoszam)}<br />Adószám / Tax number: {$egyed.partneradoszam}{/if}
             {if ($egyed.partnereuadoszam)}<br />EU adószám / EU tax number: {$egyed.partnereuadoszam}{/if}
             {if ($showszallitasicim|default)}
-                {if ($egyed.telephelynev || $egyed.telephelyirszam)}
-                    <br /><br /><span class="bold">Telephely / Site:</span><br />
-                    {$egyed.telephelynev}<br />
-                    {$egyed.telephelyirszam} {$egyed.telephelyvaros}, {$egyed.telephelyutca}
-                    {if ($egyed.telephelyorszag)}<br />{$egyed.telephelyorszag}{/if}
-                {/if}
                 {if ($egyed.szallnev || $egyed.szallirszam)}
                     <br /><br /><span class="bold">Szállítási cím / Delivery address:</span><br />
                     {$egyed.szallnev}<br />

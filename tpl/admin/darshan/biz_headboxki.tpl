@@ -33,11 +33,6 @@
                 <p>{$egyed.partnerszamlaegyeb}</p>
             {/if}
             {if ($showszallitasicim|default)}
-                {if ($egyed.telephelynev || $egyed.telephelyirszam)}
-                    <p class="bold">Telephely:</p>
-                    <p>{$egyed.telephelynev}</p>
-                    <p>{$egyed.telephelyirszam} {$egyed.telephelyvaros}, {$egyed.telephelyutca}{if ($egyed.telephelyorszag)}, {$egyed.telephelyorszag}{/if}</p>
-                {/if}
                 {if ($egyed.szallnev || $egyed.szallirszam)}
                     <p class="bold">Szállítási cím:</p>
                     <p>{$egyed.szallnev}</p>
