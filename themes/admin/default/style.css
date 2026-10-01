@@ -818,8 +818,16 @@ select.tetelszamhiba,
     min-width: 0;
 }
 
-/* a változat cikkszámának helye üresen ne vegyen el a cikkszám mező szélességéből */
-.tetel-mezok .mezo-ertek > span:empty {
+/* a cikkszám kiírva, mellette (ha van) a változat cikkszáma; az üres változat-felirat ne foglaljon helyet */
+.tetel-cikkszam {
+    font-weight: bold;
+}
+
+.tetel-cikkszam:empty::before {
+    content: "–";
+}
+
+.tetel-valtozatcikkszam:empty {
     display: none;
 }
 

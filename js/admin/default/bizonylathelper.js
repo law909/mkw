@@ -1040,6 +1040,7 @@ let bizonylathelper = function ($) {
         valtozatplace.empty();
         $('input[name="tetelnev_' + sorid + '"]').val(termek.value);
         $('input[name="tetelcikkszam_' + sorid + '"]').val(termek.cikkszam);
+        $('.js-cikkszamszoveg_' + sorid).text(termek.cikkszam || '');
         $('.js-valtozatcikkszam_' + sorid).text('');
         $('select[name="tetelme_' + sorid + '"]').val(termek.me);
         if (!$('input[name="tetelmennyiseg_' + sorid + '"]').val() && termek.defaultmennyiseg) {

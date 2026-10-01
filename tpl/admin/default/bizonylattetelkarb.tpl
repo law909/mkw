@@ -80,9 +80,11 @@
                 <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
                        required="required">
             {/mezo}
-            {mezo cimke="Cikkszám" for="CikkszamEdit{$tetel.id}" szeles=true}
-                <input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}">
-                <span class="js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span>
+            {* nem írható: a termékből jön, a rejtett mezőt a JS tölti termékváltáskor, a mentés onnan olvassa *}
+            {mezo cimke="Cikkszám" szeles=true}
+                <span class="tetel-cikkszam js-cikkszamszoveg_{$tetel.id}">{$tetel.cikkszam|escape}</span>
+                <input name="tetelcikkszam_{$tetel.id}" type="hidden" value="{$tetel.cikkszam|escape}">
+                <span class="tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span>
             {/mezo}
             {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
             {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
