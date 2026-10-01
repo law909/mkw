@@ -824,8 +824,9 @@ select.tetelszamhiba,
     border-collapse: collapse;
 }
 
+/* a fejléc jobb széle a számokéval egy vonalban: cella + mezőkeret + mező belső margója */
 .tetel-arak th {
-    padding: 0 6px 4px 0;
+    padding: 0 15px 4px 0;
     font-size: .9em;
     font-weight: normal;
     text-align: right;
@@ -840,9 +841,26 @@ select.tetelszamhiba,
     white-space: nowrap;
 }
 
-.tetel-arak input {
+/* az oszlop szélessége a cellán van, nem a mezőn: a nagyobb betűs Érték sor mezője se lógjon ki az oszlopból */
+.tetel-arak td:not(:first-child) {
     width: 11em;
+}
+
+.tetel-arak input {
+    box-sizing: border-box;
+    width: 100%;
     text-align: right;
+}
+
+/* a léptető nyilak helye a szám típusú mezőben beljebb tolná az összeget, mint a szövegesben */
+.tetel-arak input[type="number"] {
+    appearance: textfield;
+}
+
+.tetel-arak input[type="number"]::-webkit-inner-spin-button,
+.tetel-arak input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
 }
 
 .tetel-arak input[readonly] {

@@ -978,6 +978,11 @@ body.modernui {
     box-shadow: var(--mkw-shadow-sm);
 }
 
+/* a bizonylattétel doboza levegősebb, mint a többi ismétlődő blokk (mobilon visszaáll 1em-re) */
+.modernui [id^="teteltable_"] {
+    padding: 2em;
+}
+
 .modernui .mattable-repeatable:hover {
     border-color: var(--mkw-accent-border);
 }
@@ -1594,6 +1599,10 @@ body.modernui {
     }
 
     /* bizonylattétel: az ár-mátrix táblázat marad, és csak az görög */
+    .modernui [id^="teteltable_"] {
+        padding: 1em;
+    }
+
     .modernui .tetel-kep,
     .modernui .tetel-kep img {
         width: 48px;
@@ -1627,7 +1636,7 @@ body.modernui {
         overflow-x: auto;
     }
 
-    .modernui .tetel-arak input {
+    .modernui .tetel-arak td:not(:first-child) {
         width: 9em;
     }
 
