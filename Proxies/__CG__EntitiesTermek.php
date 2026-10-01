@@ -1669,6 +1669,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getRendezettValtozatok()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezettValtozatok', []);
+
+        return parent::getRendezettValtozatok();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getTermekSzinKepek()
     {
 

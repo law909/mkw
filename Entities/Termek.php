@@ -2037,6 +2037,18 @@ class Termek
         return $this->termekkepek;
     }
 
+    /** The variants, by colour and size when the Beállítások line order is "név, szín, méret". */
+    public function getRendezettValtozatok()
+    {
+        $valtozatok = $this->getValtozatok() ? $this->getValtozatok()->toArray() : [];
+        if (!Bizonylatfej::isNevSzinMeretSorrend()) {
+            return $valtozatok;
+        }
+        $kulcsok = array_map(fn(TermekValtozat $valtozat) => $valtozat->getSzinMeretKulcs(), $valtozatok);
+        uksort($valtozatok, fn($i, $j) => TermekValtozat::compareKulcs($kulcsok[$i], $kulcsok[$j]));
+        return array_values($valtozatok);
+    }
+
     public function getTermekSzinKepek()
     {
         return $this->termekszinkepek;

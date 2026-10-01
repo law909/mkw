@@ -1505,9 +1505,8 @@ class Bizonylattetel
     }
 
     /**
-     * The keys of the "név, szín, méret" line order: [név, szín helye, szín, méret helye, méret]. The colour's
-     * place is its sorrend in the Szín törzs; the size's is its sorrend in the Méret törzs, else its position
-     * in the Beállítások value order, else the usual clothing size order. Without any of them: last.
+     * The keys of the "név, szín, méret" line order: [név, szín helye, szín, méret helye, méret], from the values
+     * stored on the line (the variant may be gone since). See TermekValtozat::getSzinMeretKulcs().
      */
     public function getNevSzinMeretKulcs()
     {
@@ -1541,29 +1540,11 @@ class Bizonylattetel
             }
         }
         if ($meret !== '' && $meretsorrend === PHP_INT_MAX) {
-            $sorrend = array_map('trim', explode(',', (string)\mkw\store::getParameter(\mkw\consts::ValtozatSorrend, '')));
-            $hely = array_search($meret, $sorrend, true);
-            $meretsorrend = $hely !== false ? $hely + 1 : self::getSzokasosMeretHely($meret);
+            $meretsorrend = TermekValtozat::getMeretHely($meret);
         }
         return [(string)$this->getTermeknev(), $szinsorrend, $szin, $meretsorrend, $meret];
     }
 
-    /** XS < S < M < L < XL < XXL (= 2XL) …, the youth sizes (YS, YM …) before the adult ones. */
-    private static function getSzokasosMeretHely($meret)
-    {
-        $helyek = [
-            'XXXS' => 1, 'XXS' => 2, 'XS' => 3, 'S' => 4, 'M' => 5, 'L' => 6, 'XL' => 7,
-            'XXL' => 8, '2XL' => 8, 'XXXL' => 9, '3XL' => 9, '4XL' => 10, '5XL' => 11, '6XL' => 12,
-        ];
-        $meret = strtoupper(trim($meret));
-        if (isset($helyek[$meret])) {
-            return 1000000 + $helyek[$meret];
-        }
-        if (str_starts_with($meret, 'Y') && isset($helyek[substr($meret, 1)])) {
-            return 999000 + $helyek[substr($meret, 1)];
-        }
-        return PHP_INT_MAX;
-    }
 
     public function getValtozatadattipus1()
     {

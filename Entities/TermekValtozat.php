@@ -755,6 +755,67 @@ class TermekValtozat
         return null;
     }
 
+    /**
+     * [szín helye, szín, méret helye, méret] for the Beállítások "név, szín, méret" order. The colour's place is
+     * its sorrend in the Szín törzs; the size's is its sorrend in the Méret törzs, else getMeretHely(). Without
+     * one: last.
+     */
+    public function getSzinMeretKulcs()
+    {
+        $szin = $this->szin ? (string)$this->szin->getNev() : (string)$this->getSzin();
+        $szinsorrend = $this->szin ? ((int)$this->szin->getSorrend() ?: PHP_INT_MAX) : PHP_INT_MAX;
+        $meret = $this->meret ? (string)$this->meret->getNev() : (string)$this->getMeret();
+        $meretsorrend = $this->meret ? ((int)$this->meret->getSorrend() ?: PHP_INT_MAX) : PHP_INT_MAX;
+        if ($meret !== '' && $meretsorrend === PHP_INT_MAX) {
+            $meretsorrend = self::getMeretHely($meret);
+        }
+        return [$szinsorrend, $szin, $meretsorrend, $meret];
+    }
+
+    /** A size's place: its position in the Beállítások value order, else the usual clothing size order. */
+    public static function getMeretHely($meret)
+    {
+        $sorrend = array_map('trim', explode(',', (string)\mkw\store::getParameter(\mkw\consts::ValtozatSorrend, '')));
+        $hely = array_search($meret, $sorrend, true);
+        return $hely !== false ? $hely + 1 : self::getSzokasosMeretHely($meret);
+    }
+
+    /** XS < S < M < L < XL < XXL (= 2XL) …, the youth sizes (YS, YM …) before the adult ones. */
+    private static function getSzokasosMeretHely($meret)
+    {
+        $helyek = [
+            'XXXS' => 1, 'XXS' => 2, 'XS' => 3, 'S' => 4, 'M' => 5, 'L' => 6, 'XL' => 7,
+            'XXL' => 8, '2XL' => 8, 'XXXL' => 9, '3XL' => 9, '4XL' => 10, '5XL' => 11, '6XL' => 12,
+        ];
+        $meret = strtoupper(trim($meret));
+        if (isset($helyek[$meret])) {
+            return 1000000 + $helyek[$meret];
+        }
+        if (str_starts_with($meret, 'Y') && isset($helyek[substr($meret, 1)])) {
+            return 999000 + $helyek[substr($meret, 1)];
+        }
+        return PHP_INT_MAX;
+    }
+
+    /** Key arrays compared item by item: numbers as numbers, texts in Hungarian alphabetical order. */
+    public static function compareKulcs(array $a, array $b)
+    {
+        static $collator = false;
+        if ($collator === false) {
+            $collator = class_exists(\Collator::class) ? new \Collator('hu_HU') : null;
+            $collator?->setAttribute(\Collator::NUMERIC_COLLATION, \Collator::ON);
+        }
+        foreach ($a as $i => $ertek) {
+            $r = is_int($ertek)
+                ? $ertek <=> $b[$i]
+                : ($collator ? $collator->compare($ertek, $b[$i]) : strnatcasecmp($ertek, $b[$i]));
+            if ($r) {
+                return $r;
+            }
+        }
+        return 0;
+    }
+
     public function getMeret()
     {
         // TODO: meret

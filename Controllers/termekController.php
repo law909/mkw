@@ -142,7 +142,7 @@ class termekController extends \mkwhelpers\MattableController
         $x['szabadkeszlet'] = $t->getFreeStock();
         $x['erkezik'] = $t->getIncomingStock();
         if (\mkw\store::getSetupValue('termekvaltozat')) {
-            foreach ($t->getValtozatok() as $tvaltozat) {
+            foreach ($t->getRendezettValtozatok() as $tvaltozat) {
                 // a listán az inaktív változat sora nem kell, a karbantartó Készlet fülén igen
                 if (!$forKarb && $tvaltozat->getInaktiv()) {
                     continue;
@@ -185,7 +185,7 @@ class termekController extends \mkwhelpers\MattableController
             }
 
             if (\mkw\store::getSetupValue('termekvaltozat')) {
-                foreach ($t->getValtozatok() as $tvaltozat) {
+                foreach ($t->getRendezettValtozatok() as $tvaltozat) {
                     $valtozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
                 }
                 //$valtozat[]=$valtozatCtrl->loadVars(null);
@@ -285,9 +285,7 @@ class termekController extends \mkwhelpers\MattableController
         $termekid = $t->getId();
         $valtozatok = [];
         if ($termekid && \mkw\store::getSetupValue('termekvaltozat')) {
-            foreach ($t->getValtozatok() as $valtozat) {
-                $valtozatok[] = $valtozat;
-            }
+            $valtozatok = $t->getRendezettValtozatok();
         }
         $valtozatids = array_map(static fn($valtozat) => $valtozat->getId(), $valtozatok);
 

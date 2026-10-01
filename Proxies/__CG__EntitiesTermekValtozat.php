@@ -987,6 +987,17 @@ class TermekValtozat extends \Entities\TermekValtozat implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getSzinMeretKulcs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSzinMeretKulcs', []);
+
+        return parent::getSzinMeretKulcs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getMeret()
     {
 

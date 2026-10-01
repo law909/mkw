@@ -2946,8 +2946,6 @@ class Bizonylatfej
         if (!self::isNevSzinMeretSorrend()) {
             return $tetelek;
         }
-        $collator = class_exists(\Collator::class) ? new \Collator('hu_HU') : null;
-        $compare = fn($a, $b) => $collator ? $collator->compare($a, $b) : strcasecmp($a, $b);
         $kulcsok = array_map(fn(Bizonylattetel $tetel) => $tetel->getNevSzinMeretKulcs(), $tetelek);
         // the shipping and cash-on-delivery cost lines stay at the end
         $ktg = array_map(
@@ -2956,16 +2954,7 @@ class Bizonylatfej
             $tetelek
         );
         $sorrend = array_keys($tetelek);
-        usort($sorrend, function ($i, $j) use ($kulcsok, $ktg, $compare) {
-            [$anev, $aszinsorrend, $aszin, $ameretsorrend, $ameret] = $kulcsok[$i];
-            [$bnev, $bszinsorrend, $bszin, $bmeretsorrend, $bmeret] = $kulcsok[$j];
-            return ($ktg[$i] <=> $ktg[$j])
-                ?: $compare($anev, $bnev)
-                ?: ($aszinsorrend <=> $bszinsorrend)
-                ?: $compare($aszin, $bszin)
-                ?: ($ameretsorrend <=> $bmeretsorrend)
-                ?: strnatcasecmp($ameret, $bmeret);
-        });
+        usort($sorrend, fn($i, $j) => ($ktg[$i] <=> $ktg[$j]) ?: TermekValtozat::compareKulcs($kulcsok[$i], $kulcsok[$j]));
         return array_map(fn($i) => $tetelek[$i], $sorrend);
     }
 
