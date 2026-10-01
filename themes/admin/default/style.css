@@ -358,6 +358,7 @@ img {
 }
 
 .bizonylatosszesito-ertek > span:last-child {
+    white-space: nowrap;
     font-weight: bold;
 }
 

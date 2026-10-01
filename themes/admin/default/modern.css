@@ -982,10 +982,11 @@ body.modernui {
     border-color: var(--mkw-accent-border);
 }
 
+/* az oszlop minimuma a nagy betűs, 8+2 jegyű Bruttóhoz (10,3em) igazodik; mobilon így is két oszlop fér ki */
 .modernui .bizonylatosszesito {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9em, 1fr));
-    gap: 12px 20px;
+    grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+    gap: 12px 16px;
     margin-top: 1em;
     padding: 12px 16px;
     border: 1px solid var(--mkw-border-strong);
@@ -1012,6 +1013,7 @@ body.modernui {
 }
 
 .modernui .bizonylatosszesito-ertek > span:last-child {
+    white-space: nowrap;
     font-size: 1.15em;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
