@@ -1160,6 +1160,7 @@
                                         <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
                                     {/foreach}
                                 </select>
+                                <span>{at('Az ebben a webshopban leadott rendelések raktára; üresen az alapértelmezett raktár.')}</span>
                             </div>
                         {/if}
                         {if (isset($ujpartnercimke1list))}
@@ -1597,6 +1598,7 @@
                                             <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
                                         {/foreach}
                                     </select>
+                                    <span>{at('Az ebben a webshopban leadott rendelések raktára; üresen az alapértelmezett raktár.')}</span>
                                 </div>
                             {/if}
                             {if (isset($ujpartnercimke2list))}
@@ -1690,6 +1692,7 @@
                                             <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
                                         {/foreach}
                                     </select>
+                                    <span>{at('Az ebben a webshopban leadott rendelések raktára; üresen az alapértelmezett raktár.')}</span>
                                 </div>
                             {/if}
                             {if (isset($ujpartnercimke3list))}
@@ -1783,6 +1786,7 @@
                                             <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
                                         {/foreach}
                                     </select>
+                                    <span>{at('Az ebben a webshopban leadott rendelések raktára; üresen az alapértelmezett raktár.')}</span>
                                 </div>
                             {/if}
                             {if (isset($ujpartnercimke4list))}
@@ -1882,6 +1886,7 @@
                                             <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
                                         {/foreach}
                                     </select>
+                                    <span>{at('Az ebben a webshopban leadott rendelések raktára; üresen az alapértelmezett raktár.')}</span>
                                 </div>
                             {/if}
                             {if (isset($ujpartnercimke5list))}
