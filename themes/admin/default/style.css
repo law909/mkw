@@ -766,23 +766,17 @@ select.tetelszamhiba,
     margin-left: auto;
 }
 
-/* a mezők csoportokban (azonosítás, adózás, mennyiség); egy csoportban legfeljebb két mező áll egymás mellett,
-   címkével felül, a csoportok pedig egymás mellé kerülnek, ha kiférnek */
+/* a mezők egymás alatti csoportokban (azonosítás, adózás, mennyiség); egy csoportban legfeljebb két mező áll
+   egymás mellett, címkével felül, és a csoport nem nyúlik a teljes szélességre */
 .tetel-mezok {
     display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: 12px 32px;
+    flex-direction: column;
+    gap: 12px;
     margin-top: 12px;
 }
 
 .tetel-mezok .mezocsoport {
-    flex: 1 1 18em;
-    min-width: 0;
-}
-
-.tetel-mezok .tetel-csoport-szeles {
-    flex: 2 1 28em;
+    max-width: 44em;
 }
 
 .tetel-mezok .mattkarb-szakaszcim {

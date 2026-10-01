@@ -58,7 +58,7 @@
     </div>
     <div class="tetel-mezok">
         {if ($showgarancialisadatok)}
-            {mezocsoport cim="Garanciális adatok" class="tetel-csoport-szeles"}
+            {mezocsoport cim="Garanciális adatok"}
                 {mezo cimke="Termék leírás" for="MegjegyzesEdit{$tetel.id}" szeles=true}
                     <input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes|escape}">
                 {/mezo}
@@ -70,7 +70,7 @@
                 {/mezo}
             {/mezocsoport}
         {/if}
-        {mezocsoport cim="Azonosítás" class="tetel-csoport-szeles"}
+        {mezocsoport cim="Azonosítás"}
             {mezo cimke="Név" for="NevEdit{$tetel.id}" szeles=true}
                 <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
                        required="required">
