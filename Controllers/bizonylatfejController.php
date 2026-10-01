@@ -796,26 +796,38 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     /**
      * The karb data of a document made from another one: a new id pointing back at the source, and every source line
      * as a new line. Without it the save edits the SOURCE document's lines and the new document stays empty.
+     *
+     * @param bool $teljesites false keeps the source's fulfilment date (e.g. a delivery note made from an order)
      */
-    protected function inheritEgyed(array $egyed, $record, $id): array
+    protected function inheritEgyed(array $egyed, $record, $id, bool $teljesites = true): array
     {
         $egyed['id'] = \mkw\store::createUID();
         $egyed['parentid'] = $id;
         $kelt = date(\mkw\store::$DateFormat);
         $egyed['keltstr'] = $kelt;
-        $egyed['teljesitesstr'] = $kelt;
+        if ($teljesites) {
+            $egyed['teljesitesstr'] = $kelt;
+        }
         $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+        // the print form is chosen from the new type's own list, see getkarb()
+        $egyed['reportfile'] = '';
+        $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'] ?? [], $this->inheritOperation);
+        return $egyed;
+    }
+
+    /** The lines as new lines of the new (inherited or storno) document, each pointing back at its original. */
+    protected function copyTetelek(array $tetelek, string $oper): array
+    {
         $ttk = [];
         $cikl = 1;
-        foreach ($egyed['tetelek'] ?? [] as $tetel) {
+        foreach ($tetelek as $tetel) {
             $tetel['parentid'] = $tetel['id'];
             $tetel['id'] = \mkw\store::createUID($cikl);
-            $tetel['oper'] = $this->inheritOperation;
+            $tetel['oper'] = $oper;
             $ttk[] = $tetel;
             $cikl++;
         }
-        $egyed['tetelek'] = $ttk;
-        return $egyed;
+        return $ttk;
     }
 
     protected function elodPenztmozgat($bizonylat)

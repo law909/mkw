@@ -22,15 +22,7 @@ class elolegszamlafejController extends bizonylatfejController
     {
         switch ($oper) {
             case 'inherit':
-                $egyed['id'] = \mkw\store::createUID();
-                $egyed['parentid'] = $id;
-                $kelt = date(\mkw\store::$DateFormat);
-                $egyed['keltstr'] = $kelt;
-                $egyed['teljesitesstr'] = $kelt;
-                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-                $egyed['reportfile'] = '';
-                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
-                $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'], 'inherit');
+                $egyed = $this->inheritEgyed($egyed, $record, $id);
                 break;
             case 'storno':
                 // without new ids the save would overwrite the ORIGINAL advance's lines with the negated ones
@@ -41,25 +33,10 @@ class elolegszamlafejController extends bizonylatfejController
                 $egyed['megjegyzes'] = $id . (\mkw\store::getTheme() === 'mkwcansas'
                     ? ' stornó bizonylata. Stornózás oka:'
                     : ' stornó bizonylata');
-                $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'], 'storno');
+                $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'], $this->stornoOperation);
                 break;
         }
         return $egyed;
-    }
-
-    /** The lines as new lines of the new document, each pointing back at its original. */
-    private function copyTetelek(array $tetelek, $oper)
-    {
-        $ttk = [];
-        $cikl = 1;
-        foreach ($tetelek as $tetel) {
-            $tetel['parentid'] = $tetel['id'];
-            $tetel['id'] = \mkw\store::createUID($cikl);
-            $tetel['oper'] = $oper;
-            $ttk[] = $tetel;
-            $cikl++;
-        }
-        return $ttk;
     }
 
 }

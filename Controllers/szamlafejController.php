@@ -28,14 +28,7 @@ class szamlafejController extends bizonylatfejController
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
-                $egyed['id'] = \mkw\store::createUID();
-                $egyed['parentid'] = $id;
-                $kelt = date(\mkw\store::$DateFormat);
-                $egyed['keltstr'] = $kelt;
-                $egyed['teljesitesstr'] = $kelt;
-                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
-                $egyed['reportfile'] = '';
-                $view->setVar('reportfilelist', $this->getRepo()->getReportfileSelectList('', $this->getBiztipusId()));
+                $egyed = $this->inheritEgyed($egyed, $record, $id);
                 if ($this->isOrderSource($source)) {
                     $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
                     $arf = $this->getRepo(Arfolyam::class)->getActualArfolyam(
@@ -58,23 +51,17 @@ class szamlafejController extends bizonylatfejController
                 } elseif ($source === 'munkalap') {
                     $egyed['megjegyzes'] = \mkw\store::translate('Munkalap', $record->getBizonylatnyelv()) . ': ' . $id;
                 }
-                $ttk = [];
-                $cikl = 1;
-                foreach ($egyed['tetelek'] as $tetel) {
-                    $tetel['parentid'] = $tetel['id'];
-                    $tetel['id'] = \mkw\store::createUID($cikl);
-                    $tetel['oper'] = 'inherit';
-                    if ($this->isOrderSource($source)) {
+                if ($this->isOrderSource($source)) {
+                    // the order's lines at the exchange rate of today, not of the order
+                    foreach ($egyed['tetelek'] as &$tetel) {
                         $tetel['nettoegysarhuf'] = $tetel['nettoegysar'] * $egyed['arfolyam'];
                         $tetel['bruttoegysarhuf'] = $tetel['bruttoegysar'] * $egyed['arfolyam'];
                         $tetel['nettohuf'] = $tetel['netto'] * $egyed['arfolyam'];
                         $tetel['bruttohuf'] = $tetel['brutto'] * $egyed['arfolyam'];
                         $tetel['afahuf'] = $tetel['afa'] * $egyed['arfolyam'];
                     }
-                    $ttk[] = $tetel;
-                    $cikl++;
+                    unset($tetel);
                 }
-                $egyed['tetelek'] = $ttk;
                 break;
             case 'storno':
                 $egyed['id'] = \mkw\store::createUID();
@@ -91,16 +78,7 @@ class szamlafejController extends bizonylatfejController
                     default:
                         $egyed['megjegyzes'] = $id . ' stornó bizonylata';
                 }
-                $ttk = [];
-                $cikl = 1;
-                foreach ($egyed['tetelek'] as $tetel) {
-                    $tetel['parentid'] = $tetel['id'];
-                    $tetel['id'] = \mkw\store::createUID($cikl);
-                    $tetel['oper'] = 'storno';
-                    $ttk[] = $tetel;
-                    $cikl++;
-                }
-                $egyed['tetelek'] = $ttk;
+                $egyed['tetelek'] = $this->copyTetelek($egyed['tetelek'], $this->stornoOperation);
                 break;
         }
         return $egyed;

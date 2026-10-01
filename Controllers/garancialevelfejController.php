@@ -18,24 +18,10 @@ class garancialevelfejController extends bizonylatfejController
         $source = $this->params->getStringRequestParam('source', '');
         switch ($oper) {
             case 'inherit':
-                $egyed['id'] = \mkw\store::createUID();
-                $egyed['parentid'] = $id;
-                $kelt = date(\mkw\store::$DateFormat);
-                $egyed['keltstr'] = $kelt;
-                $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+                $egyed = $this->inheritEgyed($egyed, $record, $id, false);
                 if ($this->isOrderSource($source)) {
                     $egyed['megjegyzes'] = \mkw\store::translate('Rendelés', $record->getBizonylatnyelv()) . ': ' . $id;
                 }
-                $ttk = [];
-                $cikl = 1;
-                foreach ($egyed['tetelek'] as $tetel) {
-                    $tetel['parentid'] = $tetel['id'];
-                    $tetel['id'] = \mkw\store::createUID($cikl);
-                    $tetel['oper'] = 'inherit';
-                    $ttk[] = $tetel;
-                    $cikl++;
-                }
-                $egyed['tetelek'] = $ttk;
                 break;
         }
         return $egyed;
