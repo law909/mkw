@@ -35,16 +35,6 @@ var boltieladas = (function ($) {
         return Math.round((n + Number.EPSILON) * 10000) / 10000;
     }
 
-    // The discount implied by a typed price, on 4 decimals as the server stores it (on 2 it would not
-    // give the price back and the line is flagged); empty when there is no list price or it is not below it.
-    function kedvezmenyFromNetto(netto, enetto) {
-        if (enetto <= 0 || netto >= enetto) {
-            return '';
-        }
-        const kedv = round4((1 - netto / enetto) * 100);
-        return kedv === round2(kedv) ? kedv.toFixed(2) : String(kedv);
-    }
-
     function recalcRow($row) {
         const menny = num($row.find('.js-be-mennyiseg').val());
         const netto = round2(num($row.find('.js-be-nettoegysar').val()));
@@ -94,11 +84,12 @@ var boltieladas = (function ($) {
         } else if (source === 'netto') {
             brutto = round2(netto * (100 + afakulcs) / 100);
             $row.find('.js-be-bruttoegysar').val(fmt(brutto));
-            $row.find('.js-be-kedvezmeny').val(kedvezmenyFromNetto(netto, enetto));
+            // a typed price is not a discount: no discount is derived from it
+            $row.find('.js-be-kedvezmeny').val('');
         } else if (source === 'brutto') {
             netto = round2(brutto / (100 + afakulcs) * 100);
             $row.find('.js-be-nettoegysar').val(fmt(netto));
-            $row.find('.js-be-kedvezmeny').val(kedvezmenyFromNetto(netto, enetto));
+            $row.find('.js-be-kedvezmeny').val('');
         }
         recalcRow($row);
     }
