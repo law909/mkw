@@ -6,6 +6,10 @@
             width: 25%;
         }
 
+        .jelenletiiv-pihenonap td {
+            color: #777;
+        }
+
         .jelenletiiv-alairassor {
             margin-top: 40px;
         }
@@ -32,26 +36,26 @@
                     <th>Munkakezdés</th>
                     <th>Munka vége</th>
                     <th class="textalignright">Óra</th>
-                    <th>Távollét</th>
+                    <th>Nap típusa</th>
                     <th class="jelenletiiv-alairas">Aláírás</th>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach $_iv.napok as $_nap}
-                    <tr>
+                    <tr{if (!$_nap.dolgozik && !$_nap.tavollet)} class="jelenletiiv-pihenonap"{/if}>
                         <td>{$_nap.datum}</td>
                         <td>{$_nap.napnev}</td>
                         <td>{$_nap.kezdes}</td>
                         <td>{$_nap.vege}</td>
                         <td class="textalignright">{$_nap.orastr}</td>
-                        <td class="redtext">{$_nap.tavollet}</td>
+                        <td{if ($_nap.tavollet)} class="redtext"{/if}>{$_nap.tipus}</td>
                         <td class="jelenletiiv-alairas">&nbsp;</td>
                     </tr>
                 {/foreach}
                 </tbody>
                 <tfoot>
                 <tr>
-                    <th colspan="7">Munkanap: {$_iv.napok|@count} &nbsp;&nbsp; Ledolgozott: {$_iv.ledolgozott} &nbsp;&nbsp;
+                    <th colspan="7">Munkanap: {$_iv.munkanap} &nbsp;&nbsp; Ledolgozott: {$_iv.ledolgozott} &nbsp;&nbsp;
                         Távollét: {$_iv.tavollet} &nbsp;&nbsp; Ledolgozott óra: {$_iv.oraosszesenstr}
                     </th>
                 </tr>

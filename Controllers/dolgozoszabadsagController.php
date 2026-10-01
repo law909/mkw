@@ -104,7 +104,7 @@ class dolgozoszabadsagController extends \mkwhelpers\MattableController
             return '';
         }
         if ($t->isMunkanap()) {
-            return $tol->diff($ig)->days + 1;
+            return $this->countMunkanapok($dolgozo, $tol, $ig, [], $this->getMunkanapBejegyzesNapok([$t]));
         }
         $munkanapok = $this->munkanapok !== null
             ? ($this->munkanapok[$dolgozo->getId()] ?? [])

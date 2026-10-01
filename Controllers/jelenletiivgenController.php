@@ -10,9 +10,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Traits\Munkanap;
 
 /**
- * Munkaidő összesítő: aláírásra kész ív a dolgozó rögzített munkarendjéből: azok a napok kerülnek rá,
- * amikor dolgoznia kell (munkanapok, ünnepnap nélkül, plusz a munkanap típusú bejegyzések napjai),
- * a távollétek megjelölve.
+ * Munkaidő összesítő: aláírásra kész ív a dolgozó rögzített munkarendjéből. Az időszak minden napja
+ * rákerül: a munkanapon (a munkarendben bepipált nap ünnepnap nélkül, vagy munkanap típusú bejegyzés)
+ * a munkaidő vagy a távollét, a többi nap pihenőnap, ill. ünnepnap. A vasárnap mindig pihenőnap.
  *
  * Nem keverendő a {@see jelenletiivController} képernyőjével: az a tényleges be- és kilépéseket
  * tartja nyilván, ez a munkarendből képzett ívet adja.
@@ -112,7 +112,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
                 ->setCellValue('C5', t('Munkakezdés'))
                 ->setCellValue('D5', t('Munka vége'))
                 ->setCellValue('E5', t('Óra'))
-                ->setCellValue('F5', t('Távollét'))
+                ->setCellValue('F5', t('Nap típusa'))
                 ->setCellValue('G5', t('Aláírás'));
 
             $sor = 6;
@@ -122,11 +122,11 @@ class jelenletiivgenController extends \mkwhelpers\Controller
                     ->setCellValue('C' . $sor, $_nap['kezdes'])
                     ->setCellValue('D' . $sor, $_nap['vege'])
                     ->setCellValue('E' . $sor, $_nap['ora'] ?: '')
-                    ->setCellValue('F' . $sor, $_nap['tavollet']);
+                    ->setCellValue('F' . $sor, $_nap['tipus']);
                 $sor++;
             }
             $sor++;
-            $lap->setCellValue('A' . $sor, t('Munkanap'))->setCellValue('B' . $sor, count($_iv['napok']));
+            $lap->setCellValue('A' . $sor, t('Munkanap'))->setCellValue('B' . $sor, $_iv['munkanap']);
             $sor++;
             $lap->setCellValue('A' . $sor, t('Ledolgozott'))->setCellValue('B' . $sor, $_iv['ledolgozott']);
             $sor++;
@@ -216,30 +216,37 @@ class jelenletiivgenController extends \mkwhelpers\Controller
 
         $napok = [];
         $ledolgozottnapok = [];
+        $munkanapdb = 0;
         $ledolgozott = 0;
         $tavollet = 0;
         $oraosszesen = 0;
         $nap = clone $tol;
         while ($nap <= $ig) {
-            if ($this->isMunkanap($dolgozo, $nap, $unnepnapok, $munkanapok)) {
-                $tavolletnev = $this->getTavolletNev($szabadsagok, $nap);
-                $ora = $tavolletnev ? 0 : $napiora;
-                $napok[] = [
-                    'datum' => $nap->format(\mkw\store::$DateFormat),
-                    'napnev' => $napnevek[(int)$nap->format('N')],
-                    'kezdes' => $tavolletnev ? '' : $kezdes,
-                    'vege' => $tavolletnev ? '' : $vege,
-                    'tavollet' => $tavolletnev,
-                    'ora' => $ora,
-                    'orastr' => $this->formatOra($ora),
-                ];
-                $oraosszesen += $ora;
-                if ($tavolletnev) {
-                    $tavollet++;
-                } else {
-                    $ledolgozott++;
-                    $ledolgozottnapok[$nap->format(\mkw\store::$SQLDateFormat)] = true;
-                }
+            $munkanap = $this->isMunkanap($dolgozo, $nap, $unnepnapok, $munkanapok);
+            // an absence entry only counts on a workday, on a rest day the day stays a rest day
+            $tavolletnev = $munkanap ? $this->getTavolletNev($szabadsagok, $nap) : '';
+            $dolgozik = $munkanap && !$tavolletnev;
+            $ora = $dolgozik ? $napiora : 0;
+            $napok[] = [
+                'datum' => $nap->format(\mkw\store::$DateFormat),
+                'napnev' => $napnevek[(int)$nap->format('N')],
+                'kezdes' => $dolgozik ? $kezdes : '',
+                'vege' => $dolgozik ? $vege : '',
+                'tipus' => $dolgozik ? t('munkanap') : ($tavolletnev ?: $this->getPihenonapNev($nap, $unnepnapok)),
+                'tavollet' => (bool)$tavolletnev,
+                'dolgozik' => $dolgozik,
+                'ora' => $ora,
+                'orastr' => $this->formatOra($ora),
+            ];
+            $oraosszesen += $ora;
+            if ($munkanap) {
+                $munkanapdb++;
+            }
+            if ($tavolletnev) {
+                $tavollet++;
+            } elseif ($dolgozik) {
+                $ledolgozott++;
+                $ledolgozottnapok[$nap->format(\mkw\store::$SQLDateFormat)] = true;
             }
             $nap->modify('+1 day');
         }
@@ -249,6 +256,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             'munkakornev' => $dolgozo->getMunkakorNev(),
             'munkaido' => ($kezdes && $vege) ? $kezdes . ' - ' . $vege : '',
             'napok' => $napok,
+            'munkanap' => $munkanapdb,
             'ledolgozottnapok' => $ledolgozottnapok,
             'ledolgozott' => $ledolgozott,
             'tavollet' => $tavollet,
@@ -283,6 +291,14 @@ class jelenletiivgenController extends \mkwhelpers\Controller
             return '';
         }
         return rtrim(rtrim(number_format($ora, 2, ',', ''), '0'), ',');
+    }
+
+    private function getPihenonapNev(\DateTime $nap, array $unnepnapok)
+    {
+        if ((int)$nap->format('N') !== 7 && isset($unnepnapok[$nap->format(\mkw\store::$SQLDateFormat)])) {
+            return t('ünnepnap');
+        }
+        return t('pihenőnap');
     }
 
     /**

@@ -11,6 +11,7 @@ use mkwhelpers\FilterDescriptor;
  * „Melyik nap munkanap” – a jelenléti ív és a szabadság kimutatás közös szabálya: a dolgozó
  * munkanapja (`munkanap1`–`munkanap7`), ha nincs rá `unnepnap` rekord, valamint minden nap,
  * amire munkanap típusú bejegyzése van (`Dolgozoszabadsag::TIPUS_MUNKANAP`), ünnepnapon is.
+ * A vasárnap sosem munkanap, akkor sem, ha a munkarendben be van pipálva.
  */
 trait Munkanap
 {
@@ -53,6 +54,9 @@ trait Munkanap
     /** @param array $munkanapok {@see getMunkanapBejegyzesNapok()} */
     protected function isMunkanap(Dolgozo $dolgozo, \DateTime $nap, array $unnepnapok, array $munkanapok = [])
     {
+        if ((int)$nap->format('N') === 7) {
+            return false;
+        }
         $kulcs = $nap->format(\mkw\store::$SQLDateFormat);
         return isset($munkanapok[$kulcs])
             || ($dolgozo->isMunkanap($nap) && !isset($unnepnapok[$kulcs]));
