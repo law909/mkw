@@ -2029,8 +2029,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     /**
      * A hibásnak jelölt bizonylat ellenőrzésének újrafuttatása. A checkHibak() csak mentéskor fut,
-     * tehát egy azóta rendbe jött előzmény (pl. előleg) nem veszi le a jelzést. simpleedit: a
-     * listener ne számolja át a bizonylatot, csak az ellenőrzés eredménye íródjon ki.
+     * tehát egy azóta rendbe jött előzmény (pl. előleg) nem veszi le a jelzést.
+     * Nem mentés: a NAV-hoz beküldött számlát is újra kell tudni ellenőrizni, ezért se listener,
+     * se napló, se lastmod – csak a két jelzőmező íródik ki, nyers UPDATE-tel.
      */
     public function recheck()
     {
@@ -2041,10 +2042,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $this->jsonFail(t('Nincs ilyen bizonylat.'));
             return;
         }
-        $bf->setSimpleedit(true);
         $bf->checkHibak();
-        $this->getEm()->persist($bf);
-        $this->getEm()->flush();
+        $this->getEm()->getConnection()->executeStatement(
+            'UPDATE bizonylatfej SET hibas = ?, hibauzenetek = ? WHERE id = ?',
+            [$bf->getHibas() ? 1 : 0, $bf->getHibauzenetek(), $bf->getId()]
+        );
+        // a memóriában átírt entitás ne kerülhessen egy későbbi flush-ba
+        $this->getEm()->clear();
         echo json_encode(['ok' => true, 'hibas' => (bool)$bf->getHibas()]);
     }
 
