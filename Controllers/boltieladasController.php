@@ -270,6 +270,8 @@ class boltieladasController extends \mkwhelpers\Controller
             $fej->setEsedekesseg('');
             $fej->setHatarido('');
             $fej->setArfolyam(1);
+            // no shipping mode here: without this the listener adds the shipping cost line
+            $fej->setKellszallitasikoltsegetszamolni(false);
             $fej->setPartner($partner);
             if ($fizmod) {
                 $fej->setFizmod($fizmod);
