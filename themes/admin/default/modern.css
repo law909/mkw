@@ -1312,6 +1312,46 @@ body.modernui {
         min-width: 0;
     }
 
+    /* a mappafül forma tördelve nem köt a laphoz: a fülek gombsor, a kiválasztott kitöltve */
+    .modernui .ui-tabs .ui-tabs-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px;
+        background: var(--mkw-surface-2);
+    }
+
+    .modernui .ui-tabs .ui-tabs-nav::before,
+    .modernui .ui-tabs .ui-tabs-nav::after {
+        display: none;
+    }
+
+    .modernui .ui-tabs .ui-tabs-nav li,
+    .modernui .ui-tabs .ui-tabs-nav li.ui-state-hover {
+        float: none;
+        margin: 0;
+        padding: 0;
+        border: 1px solid var(--mkw-border-strong);
+        border-radius: 999px;
+        background: var(--mkw-surface);
+    }
+
+    .modernui .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+        float: none;
+        display: block;
+        padding: 6px 12px;
+        color: var(--mkw-text);
+    }
+
+    .modernui .ui-tabs .ui-tabs-nav li.ui-tabs-active {
+        border-color: var(--mkw-accent);
+        background: var(--mkw-accent);
+    }
+
+    .modernui .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+        color: var(--mkw-accent-text);
+    }
+
     /* a lábléc a lapon kívül van, így ragadós marad */
     .modernui .mattkarb-page {
         overflow-x: auto;
