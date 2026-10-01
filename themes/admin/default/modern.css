@@ -1641,14 +1641,49 @@ body.modernui {
         flex-basis: 5.25em;
     }
 
-    .modernui .tetel-arak {
+    /* két számoszlop: a sorcímke a számok fölött, a HUF értékek a saját nettó/bruttó értékük alatt */
+    .modernui .tetel-arak,
+    .modernui .tetel-arak > thead,
+    .modernui .tetel-arak > tbody {
         display: block;
-        max-width: 100%;
-        overflow-x: auto;
     }
 
-    .modernui .tetel-arak td:not(:first-child) {
-        width: 9em;
+    .modernui .tetel-arak tr {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px 8px;
+        padding: 4px 0;
+    }
+
+    .modernui .tetel-arak tr > :first-child {
+        grid-column: 1 / -1;
+    }
+
+    .modernui .tetel-arak th:first-child,
+    .modernui .tetel-arak td:empty {
+        display: none;
+    }
+
+    .modernui .tetel-arak td,
+    .modernui .tetel-arak td:first-child,
+    .modernui .tetel-arak td:not(:first-child),
+    .modernui .tetel-arak th {
+        width: auto;
+        padding: 0;
+    }
+
+    .modernui .tetel-arak .tetel-arak-huf {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .modernui .tetel-arak-ertek {
+        padding-top: 8px;
+        border-top: 1px solid var(--mkw-border);
+    }
+
+    .modernui .tetel-arak-ertek td {
+        border-top: 0;
     }
 
     /* minden mező teljes szélességű; :where, hogy az ár-mátrix saját szélessége erősebb maradjon */
