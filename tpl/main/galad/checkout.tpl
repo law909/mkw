@@ -50,7 +50,7 @@
                                 <select id="TelephelyEdit" class="form-control" name="telephely">
                                     <option value="">válasszon</option>
                                     {foreach $telephelylist as $_tp}
-                                        <option value="{$_tp.id}"{if ($_tp.selected)} selected{/if}>{$_tp.caption|escape}</option>
+                                        <option value="{$_tp.id}"{if ($_tp.selected)} selected{/if} data-szallnev="{$_tp.szallnev|escape}" data-irszam="{$_tp.irszam|escape}" data-varos="{$_tp.varos|escape}" data-utca="{$_tp.utca|escape}">{$_tp.caption|escape}</option>
                                     {/foreach}
                                 </select>
                             </div>

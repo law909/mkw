@@ -51,7 +51,7 @@ class superzoneb2bCheckoutController extends checkoutController
             $szallutca = $szamlautca;
         }
 
-        // akinek van telephelye, annak választania kell közülük; a szállítási címtől független
+        // akinek van telephelye, annak választania kell közülük; a címét az űrlap a szállítási címbe másolja, de az átírható
         $telephely = $this->getTelephely();
 
         $ok = ($szallnev && $szallirszam && $szallvaros && $szallutca &&

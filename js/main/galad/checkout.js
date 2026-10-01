@@ -40,6 +40,19 @@ var checkout = (function($) {
 
         loadTetelList();
 
+        telephelyselect.on('change', function() {
+            const telephely = $(this).find('option:selected');
+            if (!telephely.val()) {
+                return;
+            }
+            $('input[name="szalleqszamla"]').prop('checked', false);
+            // attr(), not data(): data() would turn a postal code like "0123" into a number
+            szallnevinput.val(telephely.attr('data-szallnev'));
+            szallirszaminput.val(telephely.attr('data-irszam'));
+            szallvarosinput.val(telephely.attr('data-varos'));
+            szallutcainput.val(telephely.attr('data-utca'));
+        });
+
         $('.js-chkaszf, .js-chkhelp').magnificPopup({
             type: 'ajax',
             closeBtnInside: false
