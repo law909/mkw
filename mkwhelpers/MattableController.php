@@ -4,6 +4,8 @@ namespace mkwhelpers;
 
 class MattableController extends Controller
 {
+    // above this the "mind" checkbox lists everything only once the user has confirmed that row count
+    public const SHOW_ALL_CONFIRM_LIMIT = 300;
 
     protected $operationName = 'oper';
     protected $idName = 'id';
@@ -14,6 +16,7 @@ class MattableController extends Controller
     protected $inheritOperation = 'inherit';
     protected $stornoOperation = 'storno';
     private $pager;
+    private $showAll = false;
     private $listBodyRowTplName;
     private $listBodyRowVarName;
     private $karbFormTplName;
@@ -291,6 +294,13 @@ class MattableController extends Controller
         if (!$elemperpage) {
             $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Termeklistatermekdb, 30));
         }
+        // the storefront product list goes through here too
+        if (\mkw\store::isAdminMode() && $this->params->getIntRequestParam('mind')
+            && ($elemcount <= self::SHOW_ALL_CONFIRM_LIMIT || $elemcount <= $this->params->getIntRequestParam('mindok'))) {
+            $this->showAll = true;
+            $elemperpage = max($elemcount, 1);
+            $pageno = 1;
+        }
         if (!$pageno) {
             $pageno = $this->params->getIntRequestParam('pageno', 1);
         }
@@ -300,6 +310,7 @@ class MattableController extends Controller
     protected function loadPagerValues($ide)
     {
         if ($this->pager) {
+            $ide['mind'] = $this->showAll;
             return $this->pager->loadValues($ide);
         }
         return $ide;

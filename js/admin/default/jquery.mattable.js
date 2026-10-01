@@ -83,7 +83,8 @@
             pageno: setup.name + 'pageno',
             pagecount: setup.name + 'pagecount',
             elemperpage: setup.name + 'elemperpage',
-            elemcountinfo: setup.name + 'elemcountinfo'
+            elemcountinfo: setup.name + 'elemcountinfo',
+            showAll: setup.name + 'mind'
         };
 
         let _dataattr = {
@@ -100,6 +101,7 @@
 
         let pagerhtml = '<div class="mattable-pager"><table><tbody>' +
             '<tr>' +
+            '<td><label class="mattable-pager-mind"><input class="' + _pagerIds.showAll + '" type="checkbox"/> mind</label></td>' +
             '<td class="' + _pagerIds.first + ' ui-corner-all"><span class="ui-icon ui-icon-seek-first"></span></td>' +
             '<td class="' + _pagerIds.prev + ' ui-corner-all"><span class="ui-icon ui-icon-seek-prev"></span></td>' +
             '<td>' +
@@ -114,6 +116,8 @@
         let pagerhidehtml = '<div class="mattable-pager"></div>';
 
         let defaultOrder, defaultOrderdir;
+        // the row count the user said yes to; the server lists everything above the limit only up to this
+        let showAllConfirmed = 0;
 
         // a karbból visszatérve a böngésző még az üres (AJAX-ra váró) táblára állítaná vissza a görgetést
         const scrollStorageKey = `mattable-scroll:${window.location.pathname}`;
@@ -308,6 +312,11 @@
                         event.preventDefault();
                     }
                 });
+                $('.' + _pagerIds.showAll).on('change', function () {
+                    $('.' + _pagerIds.showAll).prop('checked', this.checked);
+                    showAllConfirmed = 0;
+                    gettbody(1, $('.' + _pagerIds.elemperpage).val());
+                });
                 $('.' + _pagerIds.elemperpage).keypress(function (event) {
                     if (event.keyCode == '13') {
                         $('.' + _pagerIds.elemperpage).val($(this).val());
@@ -344,7 +353,7 @@
         var managedUrlKeys = function () {
             return getFilterFieldNames()
                 .concat(getExtraFieldNames())
-                .concat(['pageno', 'elemperpage', 'order', 'orderdir']);
+                .concat(['pageno', 'elemperpage', 'order', 'orderdir', 'mind', 'mindok']);
         };
 
         // máshonnan belinkelt, vezérlőelem nélküli paraméterek (pl. ?partnerid=5) – ezeket megőrizzük
@@ -565,6 +574,8 @@
             if (typeof setup.filter.onApplyUrl === 'function') {
                 setup.filter.onApplyUrl.call(this, urlParams);
             }
+            $('.' + _pagerIds.showAll).prop('checked', urlParams.has('mind'));
+            showAllConfirmed = parseInt(urlParams.get('mindok'), 10) || 0;
             if (orderselect && orderselect[0]) {
                 orderselect.val(urlParams.has('order') ? urlParams.get('order') : defaultOrder);
             }
@@ -587,6 +598,12 @@
             }
             if (orderdirselect && orderdirselect[0]) {
                 obj.orderdir = orderdirselect[0].options[orderdirselect[0].selectedIndex].value;
+            }
+            if ($('.' + _pagerIds.showAll).prop('checked')) {
+                obj.mind = 1;
+                if (showAllConfirmed) {
+                    obj.mindok = showAllConfirmed;
+                }
             }
             createFilterObject(obj);
             // az URL-be az onFilter egyedi szűrői közül csak az extraFields-ben deklaráltak kerülnek be;
@@ -627,7 +644,11 @@
                     }
                     $('.' + _pagerIds.pageno).val(resp.pageno);
                     $('.' + _pagerIds.pagecount).text(resp.pagecount).attr(_dataattr.pagecount, resp.pagecount);
-                    $('.' + _pagerIds.elemperpage).val(resp.elemperpage);
+                    // when listing everything the user's page size stays in the box for unticking
+                    if (!resp.mind) {
+                        $('.' + _pagerIds.elemperpage).val(resp.elemperpage);
+                    }
+                    $('.' + _pagerIds.elemperpage).prop('disabled', !!resp.mind);
                     $('.' + _pagerIds.elemcountinfo).text('Tétel ' + resp.firstelemno + ' - ' + resp.lastelemno + ' / ' + resp.elemcount);
                     if (pendingScrollY !== null) {
                         scrollToSaved(tbody, pendingScrollY);
@@ -650,6 +671,37 @@
                             $('.' + _pagerIds.first + ',.' + _pagerIds.prev).removeClass('ui-state-disabled');
                             $('.' + _pagerIds.next + ',.' + _pagerIds.end).addClass('ui-state-disabled');
                         }
+                    }
+                    if (resp.mind === false && $('.' + _pagerIds.showAll).prop('checked')) {
+                        confirmShowAll(resp.elemcount);
+                    }
+                }
+            });
+        };
+
+        const confirmShowAll = function (elemcount) {
+            let confirmed = false;
+            $('#dialogcenter').html('Sok tétel esetén a böngésző összeomolhat. Biztosan megjelenít minden adatot?').dialog({
+                resizable: false,
+                height: 'auto',
+                modal: true,
+                buttons: {
+                    'Igen': function () {
+                        confirmed = true;
+                        showAllConfirmed = elemcount;
+                        $(this).dialog('close');
+                        gettbody(1, $('.' + _pagerIds.elemperpage).val(), 'replace');
+                    },
+                    'Nem': function () {
+                        $(this).dialog('close');
+                    }
+                },
+                // #dialogcenter is shared, the handler must not stay for the next dialog
+                close: function () {
+                    $(this).dialog('option', 'close', null);
+                    if (!confirmed) {
+                        $('.' + _pagerIds.showAll).prop('checked', false);
+                        reloadTbody('replace');
                     }
                 }
             });

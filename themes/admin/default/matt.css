@@ -76,6 +76,12 @@
     padding-top: 1px;
 }
 
+.mattable-pager-mind {
+    margin-right: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
 .mattable-order {
     float: left;
     margin-right: 5px;
