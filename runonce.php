@@ -3157,10 +3157,10 @@ if ($DBVersion < '0211' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
 }
 
 if ($DBVersion < '0212' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0211') {
-    // Csak egy országos (nem OSS-es) telepítésen a 18/20/25%-os kulcs magyar, nem külföldi: a 0199 a 0098-ban magyarnak
-    // nem jelölt 18%-ot is EUE-re állította, a NAV pedig így vatOutOfScope-ként kapná.
+    // Legfeljebb egy országos (nem OSS-es) telepítésen a 18/20/25%-os kulcs magyar, nem külföldi: a 0199 a 0098-ban
+    // magyarnak nem jelölt 18%-ot is EUE-re állította, a NAV pedig így vatOutOfScope-ként kapná.
     $conn = \mkw\store::getEm()->getConnection();
-    if ((int)$conn->fetchOne('SELECT COUNT(*) FROM orszag') === 1) {
+    if ((int)$conn->fetchOne('SELECT COUNT(*) FROM orszag') <= 1) {
         $conn->executeStatement('UPDATE afa SET navcase = NULL WHERE ertek IN (18, 20, 25)');
         $conn->executeStatement('UPDATE afa SET magyar = 1 WHERE ertek = 18');
     }
