@@ -159,11 +159,16 @@ class termekfaController extends \mkwhelpers\MattableController
         $view->printTemplateResult();
     }
 
+    protected function afterSave($o, $parancs = null)
+    {
+        if ($parancs !== $this->delOperation) {
+            $this->getRepo()->fixKarKod($o);
+        }
+    }
+
     public function save()
     {
         $ret = $this->saveData();
-        // TODO ettol faszom lassu a mentes
-//		$this->getRepo()->regenerateKarKod();
         switch ($ret['operation']) {
             case $this->addOperation:
             case $this->editOperation:
@@ -184,7 +189,7 @@ class termekfaController extends \mkwhelpers\MattableController
             $fa->setParent($ide);
             $this->getEm()->persist($fa);
             $this->getEm()->flush();
-//			$this->getRepo()->regenerateKarKod();
+            $this->getRepo()->fixKarKod($fa, true);
         }
     }
 

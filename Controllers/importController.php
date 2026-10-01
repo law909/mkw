@@ -147,6 +147,7 @@ class importController extends \mkwhelpers\Controller
                 $me->setMenu4lathato(false);
                 \mkw\store::getEm()->persist($me);
                 \mkw\store::getEm()->flush();
+                \mkw\store::getEm()->getRepository(TermekFa::class)->fixKarKod($me);
             } else {
                 $me = $me[0];
             }

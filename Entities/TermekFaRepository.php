@@ -89,39 +89,47 @@ class TermekFaRepository extends \mkwhelpers\Repository
         $this->_regenerateKarKod(0, '');
     }
 
+    /**
+     * Re-derives the code of one category and its subtree, with the products and posts in them, when it is
+     * not its parent's code + its padded id: a new category gets its parent's code (no id before the
+     * insert), and a moved one keeps its old subtree codes. $mindenkepp: also when its own code is right.
+     */
+    public function fixKarKod(TermekFa $fa, $mindenkepp = false)
+    {
+        $szulokarkod = $fa->getParent() ? (string)$fa->getParent()->getKarkod() : '';
+        $karkod = $szulokarkod . sprintf('%05d', $fa->getId());
+        if (!$mindenkepp && $fa->getKarkod() === $karkod) {
+            return;
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('parent_id', 'parent_id');
+        $this->fatomb = $this->_em->createNativeQuery('SELECT id,parent_id FROM termekfa ORDER BY parent_id,id', $rsm)->getScalarResult();
+        $this->updateKarKod($fa->getId(), $karkod);
+        $this->_regenerateKarKod($fa->getId(), $karkod);
+        $fa->setKarkod($karkod);
+    }
+
     private function _regenerateKarKod($szuloid, $szulokarkod)
     {
         foreach ($this->fatomb as $key => $val) {
             if ($val['parent_id'] == $szuloid) {
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\TermekFa x SET x.karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.id=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Termek x SET x.termekfa1karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa1=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Termek x SET x.termekfa2karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa2=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Termek x SET x.termekfa3karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa3=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Blogposzt x SET x.termekfa1karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa1=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Blogposzt x SET x.termekfa2karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa2=' . $val['id']
-                );
-                $q->Execute();
-                $q = $this->_em->createQuery(
-                    'UPDATE Entities\Blogposzt x SET x.termekfa3karkod=\'' . $szulokarkod . sprintf('%05d', $val['id']) . '\' WHERE x.termekfa3=' . $val['id']
-                );
-                $q->Execute();
+                $this->updateKarKod($val['id'], $szulokarkod . sprintf('%05d', $val['id']));
                 $this->_regenerateKarKod($val['id'], $szulokarkod . sprintf('%05d', $val['id']));
+            }
+        }
+    }
+
+    /** The category's code, and the copy of it on the products and posts in it. */
+    private function updateKarKod($id, $karkod)
+    {
+        $id = (int)$id;
+        $this->_em->createQuery("UPDATE Entities\\TermekFa x SET x.karkod='$karkod' WHERE x.id=$id")->execute();
+        foreach (['Termek', 'Blogposzt'] as $entitas) {
+            foreach ([1, 2, 3] as $n) {
+                $this->_em->createQuery(
+                    "UPDATE Entities\\$entitas x SET x.termekfa{$n}karkod='$karkod' WHERE x.termekfa$n=$id"
+                )->execute();
             }
         }
     }

@@ -3199,6 +3199,12 @@ if ($DBVersion < '0216' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0216');
 }
 
+if ($DBVersion < '0217' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0216') {
+    // a new category got its parent's code, so filtering on it listed the whole parent branch
+    \mkw\store::getEm()->getRepository(\Entities\TermekFa::class)->regenerateKarKod();
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0217');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
