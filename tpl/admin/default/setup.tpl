@@ -971,6 +971,13 @@
                             </select>
                             <span>{at('új termék felvitelekor ez kerül a VTSZ mezőbe')}</span>
                         </div>
+                        <div class="setuprow">
+                            <span class="setuplabel"><label for="TermekValtozatSorrendEdit">{at('Változatok sorrendje a terméklistán és a karbantartón')}:</label></span>
+                            <select id="TermekValtozatSorrendEdit" name="termekvaltozatsorrend">
+                                <option value="">{at('természetes')}</option>
+                                <option value="szinmeret"{if ($termekvaltozatsorrend == 'szinmeret')} selected="selected"{/if}>{at('szín, méret')}</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <div class="setuprow"><b>{at('Bizonylat beállítások')}</b></div>

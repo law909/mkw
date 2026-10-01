@@ -300,6 +300,8 @@ class consts
     const BizonylatMennyiseg = 'bizonylatmennyiseg';
     const BizonylattetelSorrend = 'bizonylattetelsorrend';
     const BizonylattetelSorrendNevSzinMeret = 'nevszinmeret';
+    const TermekValtozatSorrend = 'termekvaltozatsorrend';
+    const TermekValtozatSorrendSzinMeret = 'szinmeret';
 
     const GyartoKreativ = 'gyartokreativ';
     const GyartoDelton = 'gyartodelton';

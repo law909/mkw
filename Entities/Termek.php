@@ -2037,11 +2037,11 @@ class Termek
         return $this->termekkepek;
     }
 
-    /** The variants, by colour and size when the Beállítások line order is "név, szín, méret". */
+    /** The variants for the admin product list and editor, by colour and size when Beállítások says so. */
     public function getRendezettValtozatok()
     {
         $valtozatok = $this->getValtozatok() ? $this->getValtozatok()->toArray() : [];
-        if (!Bizonylatfej::isNevSzinMeretSorrend()) {
+        if (\mkw\store::getParameter(\mkw\consts::TermekValtozatSorrend, '') !== \mkw\consts::TermekValtozatSorrendSzinMeret) {
             return $valtozatok;
         }
         $kulcsok = array_map(fn(TermekValtozat $valtozat) => $valtozat->getSzinMeretKulcs(), $valtozatok);
