@@ -19,7 +19,7 @@
 {/block}
 
 {block "body"}
-    <h4>Munkaidő összesítő</h4>
+    <h4>Munkaidő nyilvántartás</h4>
     <h5>{$tolstr} - {$igstr}</h5>
     <table class="jelenletimatrix">
         <thead>

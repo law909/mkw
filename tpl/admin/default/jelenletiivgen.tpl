@@ -8,11 +8,11 @@
 {block "kozep"}
     <div id="mattkarb">
         <div id="mattkarb-header">
-            <h3>{at('Munkaidő összesítő')}</h3>
+            <h3>{at('Munkaidő nyilvántartás')}</h3>
         </div>
         <div id="mattkarb-tabs">
             <ul>
-                <li><a href="#DefaTab">{at('Munkaidő összesítő')}</a></li>
+                <li><a href="#DefaTab">{at('Munkaidő nyilvántartás')}</a></li>
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="jelenletiivgen" action="" target="_blank">
@@ -30,7 +30,7 @@
                     <span>{at('Ha nincs munkakör kipipálva, minden munkakör dolgozója látszik.')}</span>
                     <div class="matt-hseparator"></div>
                     {include "comp_dolgozoselect.tpl"}
-                    <span>{at('Dolgozó nélkül a kiválasztott munkakörök minden aktív dolgozójának összesítője elkészül.')}</span>
+                    <span>{at('Dolgozó nélkül a kiválasztott munkakörök minden aktív dolgozójának nyilvántartása elkészül.')}</span>
                     <div class="matt-hseparator"></div>
                     <div>
                         <a href="/admin/jelenletiivgen/get" class="js-okbutton">{at('OK')}</a>

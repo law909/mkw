@@ -3192,6 +3192,13 @@ if ($DBVersion < '0215' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0215');
 }
 
+if ($DBVersion < '0216' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0215') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE menu SET nev = "Munkaidő nyilvántartás" WHERE url = "/admin/jelenletiivgen/view"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0216');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
