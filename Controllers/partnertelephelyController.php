@@ -72,6 +72,12 @@ class partnertelephelyController extends \mkwhelpers\MattableController
                 'id' => $telephely->getId(),
                 'caption' => $telephely->getNevCim(),
                 'selected' => ($telephely->getId() == $selid),
+                // choosing the telephely copies these into the delivery address
+                'szallnev' => $telephely->getNev() ?: $telephely->getPartnerNev(),
+                'irszam' => $telephely->getIrszam(),
+                'varos' => $telephely->getVaros(),
+                'utca' => $telephely->getUtca(),
+                'orszag' => $telephely->getOrszagId(),
             ];
         }
         return $res;

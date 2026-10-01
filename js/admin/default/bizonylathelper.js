@@ -2089,10 +2089,34 @@ let bizonylathelper = function ($) {
                             const list = JSON.parse(data);
                             sel.find('option:not(:first)').remove();
                             list.forEach((item) => {
-                                sel.append($('<option>', { value: item.id, text: item.caption, selected: item.selected }));
+                                sel.append($('<option>', {
+                                    value: item.id,
+                                    text: item.caption,
+                                    selected: item.selected,
+                                    'data-szallnev': item.szallnev,
+                                    'data-irszam': item.irszam,
+                                    'data-varos': item.varos,
+                                    'data-utca': item.utca,
+                                    'data-orszag': item.orszag
+                                }));
                             });
                         }
                     });
+                });
+                $('#TelephelyEdit').on('change', function () {
+                    const telephely = $(this).find('option:selected');
+                    if (!telephely.val()) {
+                        return;
+                    }
+                    // attr(), not data(): data() would turn a postal code like "0123" into a number
+                    $('#SzallnevEdit').val(telephely.attr('data-szallnev'));
+                    $('#SzallirszamEdit').val(telephely.attr('data-irszam'));
+                    $('input[name="szallvaros"]').val(telephely.attr('data-varos'));
+                    $('input[name="szallutca"]').val(telephely.attr('data-utca'));
+                    $('input[name="szallhazszam"]').val('');
+                    if (telephely.attr('data-orszag')) {
+                        $('#SzallOrszagEdit').val(telephely.attr('data-orszag'));
+                    }
                 });
                 $('#ValutanemEdit').change(function () {
                     valutanemChange();

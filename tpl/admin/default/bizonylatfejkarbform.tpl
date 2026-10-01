@@ -236,7 +236,7 @@
                         <td colspan="7"><select id="TelephelyEdit" name="telephely">
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $telephelylist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-szallnev="{$_mk.szallnev|escape}" data-irszam="{$_mk.irszam|escape}" data-varos="{$_mk.varos|escape}" data-utca="{$_mk.utca|escape}" data-orszag="{$_mk.orszag}">{$_mk.caption|escape}</option>
                                 {/foreach}
                             </select>
                             {if ($egyed.telephelynev && !$egyed.telephely)}<span class="mattable-important">{at('Mentett telephely')}: {$egyed.telephelynev|escape}</span>{/if}
