@@ -23,10 +23,18 @@
                     <li><a href="#TulajTab">{at('Tulajdonos adatai')}</a></li>
                     {if ($setup.multishop)}
                         <li><a href="#WebTab">{$webshop1name} {at('beállítások')}</a></li>
-                        <li><a href="#Web2Tab">{$webshop2name} {at('beállítások')}</a></li>
-                        <li><a href="#Web3Tab">{$webshop3name} {at('beállítások')}</a></li>
-                        <li><a href="#Web4Tab">{$webshop4name} {at('beállítások')}</a></li>
-                        <li><a href="#Web5Tab">{$webshop5name} {at('beállítások')}</a></li>
+                        {if ($enabledwebshops >= 2)}
+                            <li><a href="#Web2Tab">{$webshop2name} {at('beállítások')}</a></li>
+                        {/if}
+                        {if ($enabledwebshops >= 3)}
+                            <li><a href="#Web3Tab">{$webshop3name} {at('beállítások')}</a></li>
+                        {/if}
+                        {if ($enabledwebshops >= 4)}
+                            <li><a href="#Web4Tab">{$webshop4name} {at('beállítások')}</a></li>
+                        {/if}
+                        {if ($enabledwebshops >= 5)}
+                            <li><a href="#Web5Tab">{$webshop5name} {at('beállítások')}</a></li>
+                        {/if}
                         <li><a href="#WebshopSetupTab">{at('Webshopok beállításai')}</a></li>
                     {else}
                         <li><a href="#WebTab">{at('Web beállítások')}</a></li>
@@ -1555,7 +1563,7 @@
                     </table>
                 </div>
                 {if ($setup.multishop)}
-                    <div id="Web2Tab" class="mattkarb-page" data-visible="visible">
+                    <div id="Web2Tab" class="mattkarb-page" data-visible="visible"{if ($enabledwebshops < 2)} style="display:none;"{/if}>
                         <input name="multishopfulvan" type="hidden" value="1">
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
@@ -1649,7 +1657,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="Web3Tab" class="mattkarb-page" data-visible="visible">
+                    <div id="Web3Tab" class="mattkarb-page" data-visible="visible"{if ($enabledwebshops < 3)} style="display:none;"{/if}>
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off3Edit">{at('Publikus felület kikapcsolva')}:</label></span>
@@ -1742,7 +1750,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="Web4Tab" class="mattkarb-page" data-visible="visible">
+                    <div id="Web4Tab" class="mattkarb-page" data-visible="visible"{if ($enabledwebshops < 4)} style="display:none;"{/if}>
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off4Edit">{at('Publikus felület kikapcsolva')}:</label></span>
@@ -1841,7 +1849,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="Web5Tab" class="mattkarb-page" data-visible="visible">
+                    <div id="Web5Tab" class="mattkarb-page" data-visible="visible"{if ($enabledwebshops < 5)} style="display:none;"{/if}>
                         <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                             <div class="setuprow">
                                 <span class="setuplabel"><label for="Off5Edit">{at('Publikus felület kikapcsolva')}:</label></span>

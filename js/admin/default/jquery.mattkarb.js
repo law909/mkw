@@ -101,8 +101,11 @@
             // a hibás mező másik fülön is lehet
             let lap = elso.closest(setup.page),
                 tabs = $(setup.tab);
-            if (lap.length && tabs.hasClass('ui-tabs')) {
-                tabs.tabs('option', 'active', tabs.children('div').index(lap));
+            // by the tab header, not the panel's position: a panel may have no header (setup: disabled webshops)
+            const fulak = tabs.find('> ul > li'),
+                ful = fulak.index(fulak.has('a[href="#' + lap.attr('id') + '"]'));
+            if (lap.length && tabs.hasClass('ui-tabs') && ful > -1) {
+                tabs.tabs('option', 'active', ful);
             }
             elso.trigger('focus');
         };
