@@ -17,6 +17,7 @@
                     <td><label for="BizonylattipusEdit">{at('Bizonylattípus')}:</label></td>
                     <td><select id="BizonylattipusEdit" name="bizonylattipus">
                             <option value="">{at('mindegyik')}</option>
+                            <option value="kozos"{if ($egyed.kozos)} selected="selected"{/if}>{at('közös')}</option>
                             {foreach $bizonylattipuslist as $_mk}
                                 <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                             {/foreach}

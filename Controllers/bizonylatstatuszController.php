@@ -11,6 +11,8 @@ use mkwhelpers\FilterDescriptor;
 
 class bizonylatstatuszController extends \mkwhelpers\MattableController
 {
+    const KOZOS = 'kozos';
+
 
     public function __construct()
     {
@@ -36,7 +38,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $x['szallitasimod'] = $t->getSzallitasimodId();
         $x['szallitasimodnev'] = $t->getSzallitasimodnev();
         $x['bizonylattipus'] = $t->getBizonylattipusId();
-        $x['bizonylattipusnev'] = $t->getBizonylattipusnev();
+        $x['bizonylattipusnev'] = $t->isKozos() ? t('közös') : $t->getBizonylattipusnev();
         return $x;
     }
 
@@ -62,7 +64,10 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         } else {
             $obj->removeSzallitasimod();
         }
-        $obj->setBizonylattipus($this->params->getStringRequestParam('bizonylattipus'));
+        // the type select carries the "közös" option too: then the status has no type of its own
+        $tipus = $this->params->getStringRequestParam('bizonylattipus');
+        $obj->setKozos($tipus === self::KOZOS);
+        $obj->setBizonylattipus($tipus === self::KOZOS ? null : $tipus);
         return $obj;
     }
 
@@ -139,6 +144,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
      * @param string|null $biztipusid a bizonylat típusa. Ha a törzsben van ehhez a típushoz kötött
      *                                státusz, csak azok kerülnek a listába; ha nincs egy sem, akkor
      *                                a típushoz nem kötött státuszok. Más típus státusza sosem.
+     *                                A közös státuszok mindig benne vannak.
      */
     public function getSelectList($selid = null, $fizmodid = null, $szallmodid = null, $biztipusid = null)
     {
@@ -173,6 +179,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
         $res = [];
         foreach ($rec as $sor) {
             if ($biztipusid
+                && !$sor->isKozos()
                 && ($vansajat ? ($sor->getBizonylattipusId() != $biztipusid) : (bool)$sor->getBizonylattipusId())
                 // a bizonylaton éppen beállított státusz akkor is kell, különben a mentés kinullázná
                 && ($sor->getId() != $selid)) {
@@ -184,6 +191,7 @@ class bizonylatstatuszController extends \mkwhelpers\MattableController
                 'selected' => ($sor->getId() == $selid),
                 // a kliens ez alapján szűri a listát a bizonylattípus szűrőhöz (üres = bármelyiken)
                 'bizonylattipus' => $sor->getBizonylattipusId(),
+                'kozos' => $sor->isKozos(),
                 // a státuszváltáskor csak akkor van értelme email értesítést kérdezni,
                 // ha a státuszhoz be van állítva email sablon
                 'vanemailtemplate' => (bool)$sor->getEmailtemplateId(),

@@ -327,6 +327,17 @@ class Dolgozoszabadsag extends \Entities\Dolgozoszabadsag implements \Doctrine\O
     /**
      * {@inheritDoc}
      */
+    public function isMunkanap()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isMunkanap', []);
+
+        return parent::isMunkanap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setTipus($tipus)
     {
 

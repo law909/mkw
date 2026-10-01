@@ -40,9 +40,9 @@ class Bizonylatstatusz
     private $mozgat;
 
     /**
-     * A státuszt használó bizonylattípus. Üresen hagyva minden bizonylattípuson választható –
-     * a bizonylat státuszválasztójába a saját típusához tartozó és a típus nélküli státuszok
-     * kerülnek (lásd bizonylatstatuszController::getSelectList()).
+     * A státuszt használó bizonylattípus. Üresen hagyva csak azon a típuson választható, amelynek
+     * nincs saját státusza; a közös ({@see $kozos}) státusz viszont minden típuson
+     * (lásd bizonylatstatuszController::getSelectList()).
      *
      * @ORM\ManyToOne(targetEntity="Bizonylattipus")
      * @ORM\JoinColumn(name="bizonylattipus_id", referencedColumnName="id",nullable=true,onDelete="restrict")
@@ -73,6 +73,9 @@ class Bizonylatstatusz
 
     /** @ORM\Column(type="boolean") */
     private $nemertekelheto;
+
+    /** @ORM\Column(type="boolean",nullable=false,options={"default"=false}) */
+    private $kozos = false;
 
     public function __construct()
     {
@@ -119,6 +122,16 @@ class Bizonylatstatusz
         if ($this->bizonylattipus !== $val) {
             $this->bizonylattipus = $val;
         }
+    }
+
+    public function isKozos()
+    {
+        return $this->kozos;
+    }
+
+    public function setKozos($val)
+    {
+        $this->kozos = (bool)$val;
     }
 
     public function removeBizonylattipus()

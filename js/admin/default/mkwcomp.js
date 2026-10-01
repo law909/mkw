@@ -421,9 +421,10 @@ var mkwcomp = (function ($) {
                 $statusz.empty();
                 osszes.each(function () {
                     const tipus = String($(this).attr('data-bizonylattipus') || '');
-                    const latszik = tipus
-                        ? (!kivalasztott.length || kivalasztott.indexOf(tipus) > -1)
-                        : kellTipusnelkuli;
+                    const latszik = $(this).attr('data-kozos')
+                        || (tipus
+                            ? (!kivalasztott.length || kivalasztott.indexOf(tipus) > -1)
+                            : kellTipusnelkuli);
                     if (latszik) {
                         $statusz.append($(this).clone());
                     }

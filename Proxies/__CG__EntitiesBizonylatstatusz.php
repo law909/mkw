@@ -67,10 +67,10 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'kozos'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nev', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'csoport', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'foglal', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'erkezik', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'mozgat', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylattipus', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'emailtemplate', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'bizonylatfejek', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'fizmod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'szallitasimod', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'nemertekelheto', '' . "\0" . 'Entities\\Bizonylatstatusz' . "\0" . 'kozos'];
     }
 
     /**
@@ -256,6 +256,28 @@ class Bizonylatstatusz extends \Entities\Bizonylatstatusz implements \Doctrine\O
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylattipus', [$val]);
 
         return parent::setBizonylattipus($val);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isKozos()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isKozos', []);
+
+        return parent::isKozos();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setKozos($val)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setKozos', [$val]);
+
+        return parent::setKozos($val);
     }
 
     /**
