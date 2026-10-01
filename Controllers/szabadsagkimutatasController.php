@@ -9,11 +9,11 @@ use Traits\Munkanap;
 
 /**
  * Szabadság kimutatás: ki mikor volt szabadságon, hány munkanapot vett ki az időszakban, és
- * mennyi maradt az éves keretéből. A szabadnap nem szerepel rajta.
+ * mennyi maradt az éves keretéből. A pihenőnap és a munkanap nem szerepel rajta.
  *
  * A nap ugyanúgy számít, mint a jelenléti íven ({@see jelenletiivgenController}): csak a dolgozó
  * munkanapja, ünnepnap nélkül. Az éves keretet ({@see Dolgozo::getEvesmaxszabi()}) csak a
- * „szabadság” típus fogyasztja, a betegszabadság, a fizetetlen és a szabadnap nem.
+ * „szabadság” típus fogyasztja, a betegszabadság, a fizetetlen és a pihenőnap nem.
  */
 class szabadsagkimutatasController extends \mkwhelpers\Controller
 {
@@ -76,16 +76,19 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
 
     private function createSor(Dolgozo $dolgozo, \DateTime $tol, \DateTime $ig, \DateTime $evtol, \DateTime $evig, array $unnepnapok)
     {
+        $munkanapok = $this->getMunkanapBejegyzesNapok(
+            $this->getRepo(Dolgozoszabadsag::class)->getByDolgozoAndIdoszak($dolgozo, min($tol, $evtol), max($ig, $evig))
+        );
         $tavolletek = [];
         $idoszaki = array_fill_keys(array_keys(Dolgozoszabadsag::getTipusok()), 0);
         /** @var Dolgozoszabadsag $szabadsag */
         foreach ($this->getRepo(Dolgozoszabadsag::class)->getByDolgozoAndIdoszak($dolgozo, $tol, $ig) as $szabadsag) {
-            if ($szabadsag->getTipus() === Dolgozoszabadsag::TIPUS_SZABADNAP) {
+            if (in_array($szabadsag->getTipus(), [Dolgozoszabadsag::TIPUS_PIHENONAP, Dolgozoszabadsag::TIPUS_MUNKANAP], true)) {
                 continue;
             }
             $sorTol = max($szabadsag->getDatumtol(), $tol);
             $sorIg = min($szabadsag->getDatumig(), $ig);
-            $napok = $this->countMunkanapok($dolgozo, $sorTol, $sorIg, $unnepnapok);
+            $napok = $this->countMunkanapok($dolgozo, $sorTol, $sorIg, $unnepnapok, $munkanapok);
             $idoszaki[$szabadsag->getTipus()] = ($idoszaki[$szabadsag->getTipus()] ?? 0) + $napok;
             $tavolletek[] = [
                 'datumtol' => $sorTol->format(\mkw\store::$DateFormat),
@@ -97,7 +100,7 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
         }
 
         $evesmax = (int)$dolgozo->getEvesmaxszabi();
-        $evbenkivett = $this->countSzabadsag($dolgozo, $evtol, $evig, $unnepnapok);
+        $evbenkivett = $this->countSzabadsag($dolgozo, $evtol, $evig, $unnepnapok, $munkanapok);
 
         return [
             'dolgozonev' => $dolgozo->getNev(),
@@ -125,7 +128,7 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
     }
 
     /** Az éves keretet fogyasztó (szabadság típusú) munkanapok száma az évben. */
-    private function countSzabadsag(Dolgozo $dolgozo, \DateTime $evtol, \DateTime $evig, array $unnepnapok)
+    private function countSzabadsag(Dolgozo $dolgozo, \DateTime $evtol, \DateTime $evig, array $unnepnapok, array $munkanapok)
     {
         $db = 0;
         /** @var Dolgozoszabadsag $szabadsag */
@@ -137,7 +140,8 @@ class szabadsagkimutatasController extends \mkwhelpers\Controller
                 $dolgozo,
                 max($szabadsag->getDatumtol(), $evtol),
                 min($szabadsag->getDatumig(), $evig),
-                $unnepnapok
+                $unnepnapok,
+                $munkanapok
             );
         }
         return $db;

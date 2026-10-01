@@ -17,7 +17,9 @@ class Dolgozoszabadsag
     const TIPUS_SZABADSAG = 'szabadsag';
     const TIPUS_BETEGSZABADSAG = 'betegszabadsag';
     const TIPUS_FIZETETLEN = 'fizetetlen';
-    const TIPUS_SZABADNAP = 'szabadnap';
+    const TIPUS_PIHENONAP = 'pihenonap';
+    // not an absence: the day counts as a ticked workday of the employee, even on a holiday
+    const TIPUS_MUNKANAP = 'munkanap';
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
@@ -52,7 +54,8 @@ class Dolgozoszabadsag
             self::TIPUS_SZABADSAG => 'szabadság',
             self::TIPUS_BETEGSZABADSAG => 'betegszabadság',
             self::TIPUS_FIZETETLEN => 'fizetetlen szabadság',
-            self::TIPUS_SZABADNAP => 'szabadnap',
+            self::TIPUS_PIHENONAP => 'pihenőnap',
+            self::TIPUS_MUNKANAP => 'munkanap',
         ];
     }
 
@@ -123,6 +126,11 @@ class Dolgozoszabadsag
     {
         $tipusok = self::getTipusok();
         return $tipusok[$this->tipus] ?? $this->tipus;
+    }
+
+    public function isMunkanap()
+    {
+        return $this->tipus === self::TIPUS_MUNKANAP;
     }
 
     public function setTipus($tipus)

@@ -3185,6 +3185,13 @@ if ($DBVersion < '0214' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0214');
 }
 
+if ($DBVersion < '0215' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0214') {
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE dolgozoszabadsag SET tipus = "pihenonap" WHERE tipus = "szabadnap"'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0215');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

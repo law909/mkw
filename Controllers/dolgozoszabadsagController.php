@@ -12,6 +12,8 @@ class dolgozoszabadsagController extends \mkwhelpers\MattableController
 
     /** the holidays of the listed page, loaded once; null = look them up per row */
     private $unnepnapok = null;
+    /** the munkanap entries' days of the listed page by dolgozo id; null = look them up per row */
+    private $munkanapok = null;
 
     public function __construct()
     {
@@ -88,6 +90,7 @@ class dolgozoszabadsagController extends \mkwhelpers\MattableController
         );
 
         $this->unnepnapok = $this->getUnnepnapokFor($egyedek);
+        $this->munkanapok = $this->getMunkanapokFor($egyedek);
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
@@ -100,7 +103,36 @@ class dolgozoszabadsagController extends \mkwhelpers\MattableController
         if (!$dolgozo || !$tol || !$ig) {
             return '';
         }
-        return $this->countMunkanapok($dolgozo, $tol, $ig, $this->unnepnapok ?? $this->getUnnepnapok($tol, $ig));
+        if ($t->isMunkanap()) {
+            return $tol->diff($ig)->days + 1;
+        }
+        $munkanapok = $this->munkanapok !== null
+            ? ($this->munkanapok[$dolgozo->getId()] ?? [])
+            : $this->getMunkanapBejegyzesNapok($this->getRepo()->getByDolgozoAndIdoszak($dolgozo, $tol, $ig));
+        return $this->countMunkanapok($dolgozo, $tol, $ig, $this->unnepnapok ?? $this->getUnnepnapok($tol, $ig), $munkanapok);
+    }
+
+    /**
+     * @param Dolgozoszabadsag[] $egyedek
+     *
+     * @return array dolgozo id => {@see getMunkanapBejegyzesNapok()}
+     */
+    private function getMunkanapokFor(array $egyedek)
+    {
+        $tolok = array_filter(array_map(fn($e) => $e->getDatumtol(), $egyedek));
+        $igek = array_filter(array_map(fn($e) => $e->getDatumig(), $egyedek));
+        if (!$tolok || !$igek) {
+            return [];
+        }
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('tipus', '=', Dolgozoszabadsag::TIPUS_MUNKANAP);
+        $filter->addFilter('datumtol', '<=', max($igek)->format(\mkw\store::$SQLDateFormat));
+        $filter->addFilter('datumig', '>=', min($tolok)->format(\mkw\store::$SQLDateFormat));
+        $bejegyzesek = [];
+        foreach ($this->getRepo()->getAll($filter) as $bejegyzes) {
+            $bejegyzesek[$bejegyzes->getDolgozoId()][] = $bejegyzes;
+        }
+        return array_map(fn($b) => $this->getMunkanapBejegyzesNapok($b), $bejegyzesek);
     }
 
     /** @param Dolgozoszabadsag[] $egyedek */

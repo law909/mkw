@@ -11,7 +11,8 @@ use Traits\Munkanap;
 
 /**
  * Munkaidő összesítő: aláírásra kész ív a dolgozó rögzített munkarendjéből: azok a napok kerülnek rá,
- * amikor dolgoznia kell (munkanapok, ünnepnap nélkül), a távollétek megjelölve.
+ * amikor dolgoznia kell (munkanapok, ünnepnap nélkül, plusz a munkanap típusú bejegyzések napjai),
+ * a távollétek megjelölve.
  *
  * Nem keverendő a {@see jelenletiivController} képernyőjével: az a tényleges be- és kilépéseket
  * tartja nyilván, ez a munkarendből képzett ívet adja.
@@ -211,6 +212,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $kezdes = $dolgozo->getMunkakezdesStr();
         $vege = $dolgozo->getMunkavegeStr();
         $napiora = $this->getNapiOra($dolgozo);
+        $munkanapok = $this->getMunkanapBejegyzesNapok($szabadsagok);
 
         $napok = [];
         $ledolgozottnapok = [];
@@ -219,7 +221,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
         $oraosszesen = 0;
         $nap = clone $tol;
         while ($nap <= $ig) {
-            if ($this->isMunkanap($dolgozo, $nap, $unnepnapok)) {
+            if ($this->isMunkanap($dolgozo, $nap, $unnepnapok, $munkanapok)) {
                 $tavolletnev = $this->getTavolletNev($szabadsagok, $nap);
                 $ora = $tavolletnev ? 0 : $napiora;
                 $napok[] = [
@@ -291,7 +293,7 @@ class jelenletiivgenController extends \mkwhelpers\Controller
     private function getTavolletNev(array $szabadsagok, \DateTime $nap)
     {
         foreach ($szabadsagok as $szabadsag) {
-            if ($szabadsag->tartalmazzaNapot($nap)) {
+            if (!$szabadsag->isMunkanap() && $szabadsag->tartalmazzaNapot($nap)) {
                 return t($szabadsag->getTipusNev());
             }
         }
