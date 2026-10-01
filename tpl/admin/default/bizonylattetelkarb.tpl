@@ -81,10 +81,13 @@
                        required="required">
             {/mezo}
             {* nem írható: a termékből jön, a rejtett mezőt a JS tölti termékváltáskor, a mentés onnan olvassa *}
-            {mezo cimke="Cikkszám" szeles=true}
+            {mezo cimke="Cikkszám"}
                 <span class="tetel-cikkszam js-cikkszamszoveg_{$tetel.id}">{$tetel.cikkszam|escape}</span>
                 <input name="tetelcikkszam_{$tetel.id}" type="hidden" value="{$tetel.cikkszam|escape}">
-                <span class="tetel-cikkszam tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}" title="{at('Változat cikkszáma')}">{$tetel.valtozatcikkszam|default|escape}</span>
+            {/mezo}
+            {* a változat cikkszámát a JS írja változatváltáskor; üresen az egész pár rejtve (style.css) *}
+            {mezo cimke="Változat"}
+                <span class="tetel-cikkszam tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}">{$tetel.valtozatcikkszam|default|escape}</span>
             {/mezo}
             {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
             {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
