@@ -642,6 +642,7 @@
                     if (typeof setup.onGetTBody === 'function') {
                         setup.onGetTBody.call(this, resp);
                     }
+                    markEmptyCells();
                     $('.' + _pagerIds.pageno).val(resp.pageno);
                     $('.' + _pagerIds.pagecount).text(resp.pagecount).attr(_dataattr.pagecount, resp.pagecount);
                     // when listing everything the user's page size stays in the box for unticking
@@ -762,6 +763,14 @@
             if (typeof setup.tablebody.onStyle === 'function') {
                 setup.tablebody.onStyle.call(this);
             }
+        };
+
+        // the mobile card layout (modern.css) hides them; the template whitespace defeats :empty
+        const markEmptyCells = function () {
+            $(setup.table + ' > tbody > tr > td.cell').each(function () {
+                const empty = !this.textContent.trim() && !this.querySelector('img, input, select, textarea, button, svg, canvas, iframe, .ui-icon');
+                this.classList.toggle('mattable-urescella', empty);
+            });
         };
 
         var doEditLink = function (obj) {

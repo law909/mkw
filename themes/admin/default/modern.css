@@ -1206,6 +1206,10 @@ body.modernui {
         display: block;
     }
 
+    .modernui .mattable-table > tbody > tr > td.mattable-urescella {
+        display: none;
+    }
+
     /* a fejlécből csak a mindent kijelölő pipa marad */
     .modernui .mattable-table > thead > tr > th {
         display: none;
