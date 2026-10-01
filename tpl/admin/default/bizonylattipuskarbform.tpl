@@ -83,6 +83,10 @@
                         <td><input id="KellkapcsolodokoltsegetszamolniEdit" name="kellkapcsolodokoltsegetszamolni" type="checkbox"{if ($egyed.kellkapcsolodokoltsegetszamolni)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="TetelkotelezoEdit">Tétel nélkül nem menthető:</label></td>
+                        <td><input id="TetelkotelezoEdit" name="tetelkotelezo" type="checkbox"{if ($egyed.tetelkotelezo)} checked="checked"{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="RogzitvestatuszEdit">{at('"Rögzítve" státusz')}:</label></td>
                         <td colspan="3">
                             <select id="RogzitvestatuszEdit" name="rogzitvestatusz">

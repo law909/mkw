@@ -633,6 +633,8 @@
             </div>
         </div>
         <input name="quick" type="hidden" value="{$quick}">
+        {* no name: only the item check reads it, it is not saved *}
+        <input id="BizTetelkotelezo" type="hidden" value="{if ($tetelkotelezo|default:true)}1{else}0{/if}">
         <input name="pos" type="hidden" value="{if ($pos|default)}1{else}0{/if}">
         <input name="oper" type="hidden" value="{$oper}">
         <input name="id" type="hidden" value="{$egyed.id}">

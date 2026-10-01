@@ -340,7 +340,9 @@ let bizonylathelper = function ($) {
             form = $('#mattkarb-form'),
             keltchanged = keltedit.attr('data-datum') !== keltedit.val(),
             keltok = (!keltchanged) || (keltchanged && checkKelt(keltedit.val(), biztipus, bizszam)),
-            tetelok = ($('.js-termekid').length !== 0) && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
+            // the document type decides whether a document may be saved without items; a line without a product is never valid
+            tetelok = ($('.js-termekid').length !== 0 || $('#BizTetelkotelezo').val() === '0')
+                && ($('.js-termekid[value=""]').length === 0) && ($('.js-termekid[value="0"]').length === 0),
             partnerok = (isPartnerAutocomplete() && ((partnerselect.val() !== '') || (partnerselect.val() === '' && $('.js-ujpartnercb').val() === '1'))) || (!isPartnerAutocomplete()),
             partnernevok = $('input[name="partnernev"]').val() !== '' || $('input[name="partnerkeresztnev"]').val() !== '' || $('input[name="partnervezeteknev"]').val() !== '',
             funnypartnermessage = form.data('funnypartnermessage'),
