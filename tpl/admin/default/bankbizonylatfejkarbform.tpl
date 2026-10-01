@@ -47,20 +47,10 @@
 			{/foreach}
 			<a class="{if ($quick)}js-quicktetelnewbutton{else}js-tetelnewbutton{/if}" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
 			</div>
-            <table class="js-bizonylatosszesito ui-widget-content bizonylatosszesito">
-                <thead>
-                    <tr>
-                        <th class="mattable-cell mattable-rborder"></th>
-                        <th class="mattable-cell mattable-rborder">{at('Összesen')}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th class="mattable-cell mattable-rborder mattable-tborder">{at('Összesen')}</th>
-                        <td class="js-osszegsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="js-bizonylatosszesito ui-widget-content ui-corner-all bizonylatosszesito">
+                <div class="bizonylatosszesito-cim">{at('Összesen')}</div>
+                <div class="bizonylatosszesito-ertek bizonylatosszesito-fo"><span class="bizonylatosszesito-cimke">{at('Összeg')}</span><span class="js-osszegsum"></span></div>
+            </div>
 		</div>
 	</div>
     <input name="quick" type="hidden" value="{$quick}">

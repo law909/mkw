@@ -333,8 +333,32 @@ img {
     margin: 5px;
 }
 
+/* Bizonylat összesítő: címkés értékek, amelyek keskeny képernyőn tördelődnek */
 .bizonylatosszesito {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 24px;
     margin-top: 5px;
+    padding: 6px 8px;
+}
+
+.bizonylatosszesito-cim {
+    flex-basis: 100%;
+    font-weight: bold;
+}
+
+.bizonylatosszesito-ertek {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.bizonylatosszesito-cimke {
+    font-size: .9em;
+}
+
+.bizonylatosszesito-ertek > span:last-child {
+    font-weight: bold;
 }
 
 .headercell {

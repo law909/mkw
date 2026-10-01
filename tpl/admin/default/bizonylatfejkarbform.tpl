@@ -595,34 +595,17 @@
                                 class="ui-icon ui-icon-circle-plus"></span></a>
                     </div>
                 {/if}
-                <table class="js-bizonylatosszesito ui-widget-content bizonylatosszesito">
-                    <thead>
-                    <tr>
-                        <th class="mattable-cell mattable-rborder"></th>
-                        <th class="mattable-cell mattable-rborder">{at('Tételszám')}</th>
-                        <th class="mattable-cell mattable-rborder">{at('Mennyiség')}</th>
-                        <th class="mattable-cell mattable-rborder">{at('Nettó')}</th>
-                        <th class="mattable-cell mattable-rborder">{at('Bruttó')}</th>
-                        {if ($showvalutanem)}
-                            <th class="mattable-cell mattable-rborder">{at('Nettó HUF')}</th>
-                            <th class="mattable-cell">{at('Bruttó HUF')}</th>
-                        {/if}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th class="mattable-cell mattable-rborder mattable-tborder">{at('Összesen')}</th>
-                        <td class="js-tetelszamsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
-                        <td class="js-mennyisegsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
-                        <td class="js-nettosum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
-                        <td class="js-bruttosum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
-                        {if ($showvalutanem)}
-                            <td class="js-nettohufsum mattable-cell mattable-rborder mattable-tborder textalignright"></td>
-                            <td class="js-bruttohufsum mattable-cell mattable-tborder textalignright"></td>
-                        {/if}
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="js-bizonylatosszesito ui-widget-content ui-corner-all bizonylatosszesito">
+                    <div class="bizonylatosszesito-cim">{at('Összesen')}</div>
+                    <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Tételszám')}</span><span class="js-tetelszamsum"></span></div>
+                    <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Mennyiség')}</span><span class="js-mennyisegsum"></span></div>
+                    <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Nettó')}</span><span class="js-nettosum"></span></div>
+                    <div class="bizonylatosszesito-ertek bizonylatosszesito-fo"><span class="bizonylatosszesito-cimke">{at('Bruttó')}</span><span class="js-bruttosum"></span></div>
+                    {if ($showvalutanem)}
+                        <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Nettó HUF')}</span><span class="js-nettohufsum"></span></div>
+                        <div class="bizonylatosszesito-ertek"><span class="bizonylatosszesito-cimke">{at('Bruttó HUF')}</span><span class="js-bruttohufsum"></span></div>
+                    {/if}
+                </div>
             </div>
             <div id="DokTab" class="mattkarb-page" data-visible="visible">
                 {include 'dokumentumfeltoltes.tpl'}

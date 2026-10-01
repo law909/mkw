@@ -239,6 +239,7 @@
             // A beforeShow után jön, mert az köt fel gombokat és rajzol újra sorokat –
             // azoknak is tiltva kell lenniük.
             applyReadonly();
+            groupFooterExtras();
             karbContainer.show();
             $(document).scrollTop(0);
         };
@@ -267,6 +268,30 @@
             $(setup.ok).hide();
             karbContainer.find('.ui-icon-circle-plus, .ui-icon-circle-minus').closest('a').hide();
             karbContainer.find('.js-karbmodosito').hide();
+        };
+
+        // Mobilon (modern.css) az OK/Mégsem melletti gombok a sáv fölé nyíló "Továbbiak" menübe kerülnek;
+        // asztalon a csoport display: contents, így ott semmi sem változik. Egyetlen plusz gomb kifér, az kint marad.
+        const groupFooterExtras = function () {
+            const $footer = karbContainer.find('.mattkarb-footer').first();
+            if (!document.body.classList.contains('modernui') || !$footer.length) {
+                return;
+            }
+            const $extras = $footer.children().not(setup.ok).not(cancelbtn).not('input[type="hidden"]');
+            if ($extras.length < 2) {
+                return;
+            }
+            const $group = $('<div class="mattkarb-footer-tobbi">').append($extras);
+            const $toggle = $('<button type="button" class="mattkarb-footer-tobbigomb">Továbbiak</button>')
+                .button({icon: 'ui-icon-triangle-1-n', iconPosition: 'end'})
+                .on('click', () => $footer.toggleClass('mattkarb-footer-nyitva'));
+            $footer.append($toggle, $group);
+            $group.on('click', 'a, button, input', () => $footer.removeClass('mattkarb-footer-nyitva'));
+            $(document).on('click', (e) => {
+                if (!$(e.target).closest($footer).length) {
+                    $footer.removeClass('mattkarb-footer-nyitva');
+                }
+            });
         };
 
         var initialize = function () {
