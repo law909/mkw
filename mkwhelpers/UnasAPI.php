@@ -87,6 +87,8 @@ class UnasAPI
      */
     private const ROOTELEMENT = [
         'setOrder' => 'Orders',
+        'setProduct' => 'Products',
+        'setStock' => 'Products',
     ];
 
     private $apiurl;

@@ -580,10 +580,18 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::UnasVisszairasCsomag,
             \mkw\consts::UnasStatuszEmail,
             \mkw\consts::UnasModositasEngedve,
+            \mkw\consts::UnasKeszletFeltoltes,
+            \mkw\consts::UnasArFeltoltes,
         ] as $par) {
             $p = $repo->find($par);
             $view->setVar($par, ($p ? (bool)$p->getErtek() : false));
         }
+        $p = $repo->find(\mkw\consts::UnasKeszletRaktar);
+        $view->setVar('unaskeszletraktarlist', (new raktarController())->getSelectList(($p ? $p->getErtek() : 0)));
+        $p = $repo->find(\mkw\consts::UnasArsav);
+        $view->setVar('unasarsavlist', (new arsavController())->getSelectList(($p ? $p->getErtek() : '')));
+        $p = $repo->find(\mkw\consts::UnasValutanem);
+        $view->setVar('unasvalutanemlist', (new valutanemController())->getSelectList(($p ? $p->getErtek() : 0)));
 
         $p = $repo->find(\mkw\consts::SzamlaOrzesAlap);
         $view->setVar(\mkw\consts::SzamlaOrzesAlap, ($p ? $p->getErtek() : 0));
@@ -1488,6 +1496,11 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::UnasVisszairasCsomag,
             \mkw\consts::UnasStatuszEmail,
             \mkw\consts::UnasModositasEngedve,
+            \mkw\consts::UnasKeszletFeltoltes,
+            \mkw\consts::UnasArFeltoltes,
+            \mkw\consts::UnasKeszletRaktar,
+            \mkw\consts::UnasArsav,
+            \mkw\consts::UnasValutanem,
         ],
     ];
 
@@ -1545,8 +1558,21 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::UnasVisszairasCsomag,
             \mkw\consts::UnasStatuszEmail,
             \mkw\consts::UnasModositasEngedve,
+            \mkw\consts::UnasKeszletFeltoltes,
+            \mkw\consts::UnasArFeltoltes,
         ] as $par) {
             $this->setObj($par, $this->params->getBoolRequestParam($par, false));
+        }
+        $raktar = \mkw\store::getEm()->getRepository(\Entities\Raktar::class)
+            ->find($this->params->getIntRequestParam(\mkw\consts::UnasKeszletRaktar, 0));
+        $this->setObj(\mkw\consts::UnasKeszletRaktar, $raktar ? $raktar->getId() : '');
+        if (\mkw\store::isArsavok()) {
+            $arsav = \mkw\store::getEm()->getRepository(Arsav::class)
+                ->find($this->params->getIntRequestParam(\mkw\consts::UnasArsav, 0));
+            $this->setObj(\mkw\consts::UnasArsav, $arsav ? $arsav->getId() : '');
+            $valutanem = \mkw\store::getEm()->getRepository(Valutanem::class)
+                ->find($this->params->getIntRequestParam(\mkw\consts::UnasValutanem, 0));
+            $this->setObj(\mkw\consts::UnasValutanem, $valutanem ? $valutanem->getId() : '');
         }
     }
 

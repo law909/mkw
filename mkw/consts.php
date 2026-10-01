@@ -502,6 +502,15 @@ class consts
     const UnasImportWindow = 'unasimportwindow';
     const UnasUtolsoCron = 'unasutolsocron';
 
+    // készlet és ár feltöltés az UNAS-ba (Services\UnasKeszletArService)
+    const UnasKeszletFeltoltes = 'unaskeszletfeltoltes';
+    // üresen az UNAS webshopjában látható raktárak készlete megy ki
+    const UnasKeszletRaktar = 'unaskeszletraktar';
+    const UnasArFeltoltes = 'unasarfeltoltes';
+    // ársávos telepítésen ennek az ársávnak és valutanemnek az ára megy ki, üresen az alapértelmezett
+    const UnasArsav = 'unasarsav';
+    const UnasValutanem = 'unasvalutanem';
+
     const SzamlaOrzesAlap = 'szamlaorzesalap';
     const SzamlaOrzesEv = 'szamlaorzesev';
 

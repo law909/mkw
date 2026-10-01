@@ -29,6 +29,7 @@ class CronService
     private const TASKS = [
         'unasgetorder' => Cron\UnasGetOrderTask::class,
         'unassetorder' => Cron\UnasSetOrderTask::class,
+        'unaskeszletar' => Cron\UnasKeszletArTask::class,
         'cleanup' => Cron\CleanupTask::class,
         'joga' => Cron\JogaBejelentkezesTask::class,
         'arfolyam' => Cron\ArfolyamTask::class,

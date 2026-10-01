@@ -70,6 +70,12 @@ class UnasService
 
         // az 1. fázishoz ez a két végpont kell
         $required = ['getProductDB', 'getProduct'];
+        if (UnasKeszletArService::isKeszletEnabled()) {
+            $required[] = 'setStock';
+        }
+        if (UnasKeszletArService::isArEnabled()) {
+            $required[] = 'setProduct';
+        }
         $lowerCased = array_map('strtolower', $info['permissions']);
         $missing = [];
         foreach ($required as $k) {

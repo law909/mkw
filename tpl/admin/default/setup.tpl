@@ -2482,6 +2482,60 @@
                                        type="checkbox"{if ($unasstatuszemail)} checked="checked"{/if}>
                             </div>
                         </div>
+
+                        <div class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                            <div class="setuprow">
+                                <span><b>{at('Készlet és ár feltöltés az UNAS-ba')}</b> –
+                                    {at('a párosított termékekre, csak a változást küldi; cron feladat: unaskeszletar')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasKeszletFeltoltesEdit">{at('Készlet feltöltése')}:</label></span>
+                                <input id="UnasKeszletFeltoltesEdit" name="unaskeszletfeltoltes"
+                                       type="checkbox"{if ($unaskeszletfeltoltes)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasKeszletRaktarEdit">{at('Készlet raktára')}:</label></span>
+                                <select id="UnasKeszletRaktarEdit" name="unaskeszletraktar">
+                                    <option value="">{at('a rendelések webshopjában látható raktárak')}</option>
+                                    {foreach $unaskeszletraktarlist as $_r}
+                                        <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel">&nbsp;</span>
+                                <span>{at('A szabad készlet megy ki: készlet − foglalás − min. bolti készlet. Nem a rendelések raktára: oda csak a beérkező UNAS rendelések kerülnek.')}</span>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="UnasArFeltoltesEdit">{at('Ár feltöltése')}:</label></span>
+                                <input id="UnasArFeltoltesEdit" name="unasarfeltoltes"
+                                       type="checkbox"{if ($unasarfeltoltes)} checked="checked"{/if}>
+                            </div>
+                            <div class="setuprow">
+                                <span class="setuplabel">&nbsp;</span>
+                                <span>{at('Csak a normál ár megy ki, az akciós ár az UNAS-ban marad.')}</span>
+                            </div>
+                            {if ($setup.arsavok)}
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UnasArsavEdit">{at('Ársáv')}:</label></span>
+                                    <select id="UnasArsavEdit" name="unasarsav">
+                                        <option value="">{at('az alapértelmezett ársáv')}</option>
+                                        {foreach $unasarsavlist as $_r}
+                                            <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <div class="setuprow">
+                                    <span class="setuplabel"><label for="UnasValutanemEdit">{at('Valutanem')}:</label></span>
+                                    <select id="UnasValutanemEdit" name="unasvalutanem">
+                                        <option value="">{at('az alapértelmezett valutanem')}</option>
+                                        {foreach $unasvalutanemlist as $_r}
+                                            <option value="{$_r.id}"{if ($_r.selected)} selected="selected"{/if}>{$_r.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            {/if}
+                        </div>
                     </div>
                 {/if}
 

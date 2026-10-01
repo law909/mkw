@@ -1,0 +1,556 @@
+<?php
+
+namespace Services;
+
+use Entities\Termek;
+use Entities\TermekAr;
+use Entities\TermekValtozat;
+
+/**
+ * Készlet (`setStock`) és ár (`setProduct`) feltöltés az UNAS-ba a párosított termékekre és
+ * változatokra (`Termek.unasid` / `TermekValtozat.unasid`).
+ *
+ * Nincs változásfigyelő listener: a készlet számított érték, ami kód nélkül is változik (jövőbeli
+ * teljesítés, akció vége), ezért minden futás mindent újraszámol, és az `unastermekszinkron`
+ * táblában tárolt, legutóbb kiküldött értékkel összevetve csak az eltérést küldi.
+ * Lásd docs/unas-termek-visszairas.md (5. és 7. pont).
+ */
+class UnasKeszletArService
+{
+
+    /** ≤100 termékes hívásnál él a bő (1000/óra) keret */
+    public const KOTEGMERET = 100;
+
+    /** ennyi egymás utáni sikertelen küldés után a tétel csak teljes futással megy újra */
+    public const MAXHIBA = 5;
+
+    private const MINTA = 20;
+
+    /** @var UnasService */
+    private $unas;
+
+    public function __construct(?UnasService $unas = null)
+    {
+        $this->unas = $unas ?: new UnasService();
+    }
+
+    public static function isKeszletEnabled()
+    {
+        return (bool)\mkw\store::getParameter(\mkw\consts::UnasKeszletFeltoltes);
+    }
+
+    public static function isArEnabled()
+    {
+        return (bool)\mkw\store::getParameter(\mkw\consts::UnasArFeltoltes);
+    }
+
+    /**
+     * Szándékosan nem a rendelés-import raktára (UnasRaktar): oda csak az UNAS rendelések kerülnek,
+     * a valódi készlet máshol van. Üresen az UNAS webshopjában látható raktárak – null, ha mind.
+     *
+     * @return int|int[]|null
+     */
+    public static function getKeszletRaktar()
+    {
+        $raktarid = (int)\mkw\store::getParameter(\mkw\consts::UnasKeszletRaktar);
+        if ($raktarid) {
+            return $raktarid;
+        }
+        return KeszletService::getWebshopRaktarIds((int)\mkw\store::getParameter(\mkw\consts::UnasWebshopnum) ?: null);
+    }
+
+    /**
+     * @param array $opts `szaraz` – csak számol, nem küld; `teljes` – a legutóbb kiküldött értéktől
+     *                    és a hibaszámlálótól függetlenül mindent küld; `keszlet`/`ar` – felülírja a
+     *                    beállítás szerinti kapcsolót
+     *
+     * @return array a riport
+     */
+    public function sync(array $opts = [])
+    {
+        $keszletBe = (bool)($opts['keszlet'] ?? self::isKeszletEnabled());
+        $arBe = (bool)($opts['ar'] ?? self::isArEnabled());
+        $report = $this->emptyReport(!empty($opts['szaraz']), $keszletBe, $arBe);
+        if (!UnasService::isEnabled() || (!$keszletBe && !$arBe)) {
+            return $report;
+        }
+        $teljes = !empty($opts['teljes']);
+
+        $celok = $this->loadTargets($report);
+        $report['celok'] = count($celok);
+        $valtozatos = $this->loadUnasValtozatosTermekIds();
+        $raktarid = self::getKeszletRaktar();
+
+        $em = \mkw\store::getEm();
+        foreach (array_chunk($celok, self::KOTEGMERET) as $koteg) {
+            $tetelek = $this->calcKoteg($koteg, $raktarid, $valtozatos, $keszletBe, $arBe, $report);
+            $state = $this->loadState(array_column($koteg, 'unasid'));
+
+            $keszletKuldendo = [];
+            $arKuldendo = [];
+            foreach ($tetelek as $unasid => $t) {
+                $s = $state[$unasid] ?? null;
+                if (!$teljes && $s && (int)$s['hibadb'] >= self::MAXHIBA) {
+                    $report['kihagyva_hiba']++;
+                    continue;
+                }
+                if (array_key_exists('keszlet', $t) && ($teljes || !$s || !$this->egyezik($s['keszlet'], $t['keszlet']))) {
+                    $keszletKuldendo[$unasid] = $t;
+                }
+                if (array_key_exists('brutto', $t) && ($teljes || !$s
+                        || !$this->egyezik($s['netto'], $t['netto'], 2) || !$this->egyezik($s['brutto'], $t['brutto'], 2))
+                ) {
+                    $arKuldendo[$unasid] = $t;
+                }
+            }
+            $report['keszlet']['valtozott'] += count($keszletKuldendo);
+            $report['ar']['valtozott'] += count($arKuldendo);
+            $this->addMinta($report, $keszletKuldendo, $arKuldendo, $state);
+
+            if (!$report['szaraz']) {
+                if ($keszletKuldendo && !$this->sendKeszlet($keszletKuldendo, $report)) {
+                    break;
+                }
+                if ($arKuldendo && !$this->sendAr($arKuldendo, $report)) {
+                    break;
+                }
+            }
+
+            if (!$em->isOpen()) {
+                break;
+            }
+            // a kötegek nem hivatkoznak egymás entitásaira; enélkül a teljes katalógus a memóriában maradna
+            $em->clear();
+            KeszletService::clearKeszletCache();
+        }
+
+        if ($report['keszlet']['hiba'] || $report['ar']['hiba'] || $report['hivashiba'] !== '') {
+            $this->unas->logApiError($this->hibaUzenet($report));
+        }
+        return $report;
+    }
+
+    // ------------------------------------------------------------------
+    // Célok és számítás
+    // ------------------------------------------------------------------
+
+    /**
+     * @return array<int, array{unasid: string, termekid: int, valtozatid: int|null}>
+     */
+    private function loadTargets(array &$report)
+    {
+        $sorok = \mkw\store::getEm()->getConnection()->fetchAllAssociative(
+            "SELECT TRIM(t.unasid) AS unasid, t.id AS termekid, NULL AS valtozatid FROM termek t WHERE TRIM(t.unasid) <> ''"
+            . " UNION ALL"
+            . " SELECT TRIM(v.unasid), v.termek_id, v.id FROM termekvaltozat v WHERE TRIM(v.unasid) <> ''"
+            . " ORDER BY termekid, valtozatid"
+        );
+        $celok = [];
+        foreach ($sorok as $sor) {
+            if (isset($celok[$sor['unasid']])) {
+                $report['duplikalt']++;
+                continue;
+            }
+            $celok[$sor['unasid']] = [
+                'unasid' => $sor['unasid'],
+                'termekid' => (int)$sor['termekid'],
+                'valtozatid' => $sor['valtozatid'] ? (int)$sor['valtozatid'] : null,
+            ];
+        }
+        return array_values($celok);
+    }
+
+    /**
+     * Az UNAS-változatos termékek (`unasvaltozat` kitöltve): ott a készlet változat-kombinációnként
+     * menne, `Variants` blokkal – az még nincs megírva, és egyetlen Qty-vel felülírnánk.
+     *
+     * @return array<int, true>
+     */
+    private function loadUnasValtozatosTermekIds()
+    {
+        $ids = \mkw\store::getEm()->getConnection()->fetchFirstColumn(
+            "SELECT DISTINCT termek_id FROM termekvaltozat WHERE TRIM(unasvaltozat) <> ''"
+        );
+        return array_fill_keys(array_map('intval', $ids), true);
+    }
+
+    /**
+     * @return array<string, array> unasid => ['termekid', 'valtozatid', 'keszlet'?, 'netto'?, 'brutto'?]
+     */
+    private function calcKoteg(array $koteg, $raktarid, array $valtozatos, $keszletBe, $arBe, array &$report)
+    {
+        $termekids = array_values(array_unique(array_column($koteg, 'termekid')));
+        $valtozatids = array_values(array_filter(array_column($koteg, 'valtozatid')));
+        $termekek = $this->loadEntities(Termek::class, $termekids);
+        $valtozatok = $this->loadEntities(TermekValtozat::class, $valtozatids);
+
+        if ($keszletBe) {
+            $termekCelids = array_column(array_filter($koteg, static fn($c) => !$c['valtozatid']), 'termekid');
+            KeszletService::preloadStock($termekCelids, $valtozatids, null, $raktarid);
+            if (!is_array($raktarid)) {
+                KeszletService::preload($termekids, $valtozatids, $raktarid);
+            }
+        }
+        $arak = $arBe ? $this->loadArak($termekek) : [];
+
+        $result = [];
+        foreach ($koteg as $cel) {
+            /** @var Termek|null $termek */
+            $termek = $termekek[$cel['termekid']] ?? null;
+            /** @var TermekValtozat|null $valtozat */
+            $valtozat = $cel['valtozatid'] ? ($valtozatok[$cel['valtozatid']] ?? null) : null;
+            if (!$termek || ($cel['valtozatid'] && !$valtozat)) {
+                continue;
+            }
+            $t = ['termekid' => $cel['termekid'], 'valtozatid' => $cel['valtozatid']];
+
+            if ($keszletBe) {
+                if (!$termek->getMozgat()) {
+                    $report['keszlet']['nemkeszletes']++;
+                } elseif (!$valtozat && isset($valtozatos[$cel['termekid']])) {
+                    $report['keszlet']['unasvaltozatos']++;
+                } else {
+                    $t['keszlet'] = $this->calcKeszlet($termek, $valtozat, $raktarid);
+                }
+            }
+
+            if ($arBe) {
+                $ar = $this->calcAr($termek, $valtozat, $arak);
+                if ($ar) {
+                    $t['netto'] = $ar['netto'];
+                    $t['brutto'] = $ar['brutto'];
+                } else {
+                    $report['ar']['nincsar']++;
+                }
+            }
+            $result[$cel['unasid']] = $t;
+        }
+        return $result;
+    }
+
+    /**
+     * A KeszletService::calcAvailableStock() képlete: készlet − foglalás − min. bolti készlet, nullára
+     * vágva. A foglalás levonása kell, mert az UNAS a rendeléskor már csökkentette a saját készletét.
+     * Raktárlistánál a min. készlet létrája raktár nélkül megy, az csak egy raktárt ismer.
+     */
+    private function calcKeszlet(Termek $termek, ?TermekValtozat $valtozat, $raktarid)
+    {
+        $o = $valtozat ?: $termek;
+        $keszlet = KeszletService::getKeszlet($o, null, $raktarid)
+            - KeszletService::getFoglaltMennyiseg($o, null, null, $raktarid)
+            - KeszletService::getMinKeszlet($termek, $valtozat, is_array($raktarid) ? null : $raktarid);
+        return round(max((float)$keszlet, 0), 4);
+    }
+
+    private function loadEntities($class, array $ids)
+    {
+        if (!$ids) {
+            return [];
+        }
+        $rows = \mkw\store::getEm()->createQuery('SELECT x FROM ' . $class . ' x WHERE x.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getResult();
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row->getId()] = $row;
+        }
+        return $result;
+    }
+
+    /**
+     * Ársávos telepítésen a beállított (vagy az alapértelmezett) ársáv sora – szándékosan NEM az
+     * akciós sávok láncán át: az UNAS normál árába az alapár való.
+     *
+     * @return array<int, TermekAr>
+     */
+    private function loadArak(array $termekek)
+    {
+        if (!\mkw\store::isArsavok() || !$termekek) {
+            return [];
+        }
+        $arsav = \mkw\store::getParameter(\mkw\consts::UnasArsav) ?: \mkw\store::getParameter(\mkw\consts::Arsav);
+        $valutanem = \mkw\store::getParameter(\mkw\consts::UnasValutanem) ?: null;
+        return \mkw\store::getEm()->getRepository(TermekAr::class)
+            ->getArsavArByTermek(array_keys($termekek), $valutanem, $arsav ?: null);
+    }
+
+    /**
+     * Az akció nélküli normál ár; ársáv nélkül a változat felára is hozzáadódik, mint a
+     * Termek::getKedvezmenynelkuliNettoAr()-ban.
+     *
+     * @return array{netto: float, brutto: float}|null null, ha nincs ár
+     */
+    private function calcAr(Termek $termek, ?TermekValtozat $valtozat, array $arak)
+    {
+        if (\mkw\store::isArsavok()) {
+            $ar = $arak[$termek->getId()] ?? null;
+            $netto = $ar ? (float)$ar->getNetto() : 0.0;
+            $brutto = $ar ? (float)$ar->getBrutto() : 0.0;
+        } else {
+            $netto = (float)$termek->getNetto() + ($valtozat ? (float)$valtozat->getNetto() : 0);
+            $brutto = (float)$termek->getBrutto() + ($valtozat ? (float)$valtozat->getBrutto() : 0);
+        }
+        if ($brutto <= 0) {
+            return null;
+        }
+        return ['netto' => round($netto, 2), 'brutto' => round($brutto, 2)];
+    }
+
+    // ------------------------------------------------------------------
+    // Küldés
+    // ------------------------------------------------------------------
+
+    /** @return bool folytatható-e a menet */
+    private function sendKeszlet(array $tetelek, array &$report)
+    {
+        $products = [];
+        foreach ($tetelek as $unasid => $t) {
+            // modify: abszolút mennyiség, tehát egy megismételt hívás sem viszi el duplán a készletet
+            $products[] = [
+                'Id' => $unasid,
+                'Action' => 'modify',
+                'Stocks' => ['Stock' => ['Qty' => $this->formatSzam($t['keszlet'])]],
+            ];
+        }
+        $api = $this->unas->getApi();
+        $report['hivasok']++;
+        $xml = $api->setStock(['Product' => $products]);
+        if (!$xml) {
+            return $this->hivasHiba($api, 'setStock', $report);
+        }
+        $now = date('Y-m-d H:i:s');
+        foreach ($this->itemResults($xml, array_keys($tetelek), $report) as $unasid => $hiba) {
+            $t = $tetelek[$unasid];
+            if ($hiba === '') {
+                $report['keszlet']['kuldve']++;
+                $this->saveState($unasid, $t, ['keszlet' => $t['keszlet'], 'keszletkuldve' => $now]);
+            } else {
+                $report['keszlet']['hiba']++;
+                $this->saveHiba($unasid, $t, 'setStock: ' . $hiba, $report);
+            }
+        }
+        return true;
+    }
+
+    /** @return bool folytatható-e a menet */
+    private function sendAr(array $tetelek, array &$report)
+    {
+        $products = [];
+        foreach ($tetelek as $unasid => $t) {
+            // csak a normál ár: az akciós ár (sale) az UNAS-ban marad, ahol beállították
+            $products[] = [
+                'Id' => $unasid,
+                'Action' => 'modify',
+                'Prices' => ['Price' => [
+                    'Type' => 'normal',
+                    'Net' => $this->formatSzam($t['netto']),
+                    'Gross' => $this->formatSzam($t['brutto']),
+                ]],
+            ];
+        }
+        $api = $this->unas->getApi();
+        $report['hivasok']++;
+        $xml = $api->setProduct(['Product' => $products]);
+        if (!$xml) {
+            return $this->hivasHiba($api, 'setProduct', $report);
+        }
+        $now = date('Y-m-d H:i:s');
+        foreach ($this->itemResults($xml, array_keys($tetelek), $report) as $unasid => $hiba) {
+            $t = $tetelek[$unasid];
+            if ($hiba === '') {
+                $report['ar']['kuldve']++;
+                $this->saveState($unasid, $t, ['netto' => $t['netto'], 'brutto' => $t['brutto'], 'arkuldve' => $now]);
+            } else {
+                $report['ar']['hiba']++;
+                $this->saveHiba($unasid, $t, 'setProduct: ' . $hiba, $report);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Az egész hívás elbukott. A menet mindenképp megáll: ha a hiba jogosultsági, a többi köteg is
+     * elbukna, és 20 egymás utáni hibás hívás egy órára kizárja az IP-t.
+     *
+     * @return false
+     */
+    private function hivasHiba($api, $endpoint, array &$report)
+    {
+        $report['fek'] = true;
+        $report['hivashiba'] = $endpoint . ': ' . $api->getLasterrorsAsString();
+        if (array_intersect(array_column($api->getLasterrors(), 'code'), ['RATELIMIT', 'MAINTENANCE', 'NOTCONFIGURED'])) {
+            // el sem indult a hívás
+            $report['hivasok']--;
+        }
+        return false;
+    }
+
+    /**
+     * A válasz `Product` node-jai tételenként: `Id` szerint párosítva, ennek hiányában sorrendben.
+     * A gyökérszintű hibát az UnasAPI már kiszűrte; a beágyazottat itt kell elkapni.
+     *
+     * @return array<string, string> unasid => hibaüzenet ('' ha rendben)
+     */
+    private function itemResults(\SimpleXMLElement $xml, array $unasids, array &$report)
+    {
+        $nodes = [];
+        if ($xml->getName() === 'Product') {
+            $nodes[] = $xml;
+        } elseif (isset($xml->Product)) {
+            foreach ($xml->Product as $node) {
+                $nodes[] = $node;
+            }
+        }
+        if (!$nodes) {
+            // tételes válasz nélkül, de hiba nélkül: elfogadjuk, de a riportban látsszon
+            $report['valasz_tetel_nelkul']++;
+            return array_fill_keys($unasids, '');
+        }
+
+        $result = [];
+        foreach ($nodes as $i => $node) {
+            $id = isset($node->Id) ? trim((string)$node->Id) : '';
+            if ($id === '' || !in_array($id, $unasids, true)) {
+                $id = $unasids[$i] ?? '';
+            }
+            if ($id === '' || isset($result[$id])) {
+                continue;
+            }
+            $result[$id] = $this->nodeError($node);
+        }
+        foreach ($unasids as $unasid) {
+            if (!isset($result[$unasid])) {
+                $result[$unasid] = 'a válaszban nincs ilyen termék';
+            }
+        }
+        return $result;
+    }
+
+    private function nodeError(\SimpleXMLElement $node)
+    {
+        if (isset($node->Error)) {
+            $code = isset($node->Error->Code) ? trim((string)$node->Error->Code) : '';
+            $message = isset($node->Error->Message) ? trim((string)$node->Error->Message) : trim((string)$node->Error);
+            return trim($code . ' ' . $message) ?: 'ERROR';
+        }
+        $statusz = isset($node->Status) ? strtolower(trim((string)$node->Status)) : '';
+        if ($statusz !== '' && $statusz !== 'ok' && $statusz !== 'success') {
+            return 'elutasítva: ' . trim((string)$node->Status);
+        }
+        return '';
+    }
+
+    // ------------------------------------------------------------------
+    // Állapot – nyers DBAL, lásd Entities\Unastermekszinkron
+    // ------------------------------------------------------------------
+
+    /** @return array<string, array> unasid => sor */
+    private function loadState(array $unasids)
+    {
+        if (!$unasids) {
+            return [];
+        }
+        $rows = \mkw\store::getEm()->getConnection()->fetchAllAssociative(
+            'SELECT unasid, keszlet, netto, brutto, hibadb FROM unastermekszinkron WHERE unasid IN (?)',
+            [$unasids],
+            [\Doctrine\DBAL\ArrayParameterType::STRING]
+        );
+        return array_column($rows, null, 'unasid');
+    }
+
+    private function saveState($unasid, array $t, array $mezok)
+    {
+        $this->ensureRow($unasid, $t);
+        $mezok += ['hibadb' => 0, 'hiba' => null, 'hibaido' => null];
+        \mkw\store::getEm()->getConnection()->update('unastermekszinkron', $mezok, ['unasid' => $unasid]);
+    }
+
+    private function saveHiba($unasid, array $t, $hiba, array &$report)
+    {
+        $this->ensureRow($unasid, $t);
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'UPDATE unastermekszinkron SET hibadb = hibadb + 1, hiba = ?, hibaido = ? WHERE unasid = ?',
+            [mb_substr($hiba, 0, 2000), date('Y-m-d H:i:s'), $unasid]
+        );
+        if (count($report['hibak']) < self::MINTA) {
+            $report['hibak'][] = ['unasid' => $unasid, 'hiba' => $hiba];
+        }
+    }
+
+    private function ensureRow($unasid, array $t)
+    {
+        \mkw\store::getEm()->getConnection()->executeStatement(
+            'INSERT INTO unastermekszinkron (unasid, termek_id, termekvaltozat_id, hibadb) VALUES (?, ?, ?, 0)'
+            . ' ON DUPLICATE KEY UPDATE termek_id = VALUES(termek_id), termekvaltozat_id = VALUES(termekvaltozat_id)',
+            [$unasid, $t['termekid'], $t['valtozatid']]
+        );
+    }
+
+    // ------------------------------------------------------------------
+    // Segédek
+    // ------------------------------------------------------------------
+
+    private function egyezik($regi, $uj, $tizedes = 4)
+    {
+        return $regi !== null && round((float)$regi, $tizedes) === round((float)$uj, $tizedes);
+    }
+
+    /** Tizedespont, felesleges nullák nélkül: 12.5000 → 12.5, -0 → 0 */
+    private function formatSzam($n)
+    {
+        $s = rtrim(rtrim(number_format((float)$n, 4, '.', ''), '0'), '.');
+        return $s === '-0' || $s === '' ? '0' : $s;
+    }
+
+    private function addMinta(array &$report, array $keszlet, array $ar, array $state)
+    {
+        foreach ($keszlet as $unasid => $t) {
+            if (count($report['minta']) >= self::MINTA) {
+                return;
+            }
+            $report['minta'][] = ['unasid' => $unasid, 'mezo' => 'keszlet', 'regi' => $state[$unasid]['keszlet'] ?? null, 'uj' => $t['keszlet']];
+        }
+        foreach ($ar as $unasid => $t) {
+            if (count($report['minta']) >= self::MINTA) {
+                return;
+            }
+            $report['minta'][] = ['unasid' => $unasid, 'mezo' => 'brutto', 'regi' => $state[$unasid]['brutto'] ?? null, 'uj' => $t['brutto']];
+        }
+    }
+
+    private function hibaUzenet(array $report)
+    {
+        $t = [sprintf(
+            'UNAS készlet/ár feltöltés: készlet %d hiba, ár %d hiba',
+            $report['keszlet']['hiba'],
+            $report['ar']['hiba']
+        )];
+        if ($report['hivashiba'] !== '') {
+            $t[] = 'a menet leállt: ' . $report['hivashiba'];
+        }
+        foreach (array_slice($report['hibak'], 0, 5) as $h) {
+            $t[] = $h['unasid'] . ': ' . $h['hiba'];
+        }
+        return implode("\n", $t);
+    }
+
+    private function emptyReport($szaraz, $keszletBe, $arBe)
+    {
+        return [
+            'szaraz' => $szaraz,
+            'keszletbe' => $keszletBe,
+            'arbe' => $arBe,
+            'celok' => 0,
+            'duplikalt' => 0,
+            'kihagyva_hiba' => 0,
+            'keszlet' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nemkeszletes' => 0, 'unasvaltozatos' => 0],
+            'ar' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nincsar' => 0],
+            'hivasok' => 0,
+            'valasz_tetel_nelkul' => 0,
+            'fek' => false,
+            'hivashiba' => '',
+            'hibak' => [],
+            'minta' => [],
+        ];
+    }
+}
