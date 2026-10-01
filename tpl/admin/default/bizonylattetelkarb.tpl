@@ -9,35 +9,17 @@
     {* The offset advance invoice. Hidden: the server re-derives it on save
        (bizonylatfejController::setTetelEloleg()); the posted value is never trusted. *}
     <input name="tetelelolegbizonylat_{$tetel.id}" type="hidden" value="{$tetel.elolegbizonylatszam|default}">
-    <table>
-        <tbody>
-        {if ($tetel.elolegbizonylatszam|default)}
-            <tr>
-                <td>{at('Beszámított előleg')}:</td>
-                <td>{$tetel.elolegbizonylatszam}
-                    {if ($tetel.elolegfizetesdatumstr|default)}({$tetel.elolegfizetesdatumstr}){/if}</td>
-            </tr>
-        {/if}
-        {if ($showgarancialisadatok)}
-            <tr>
-                <td><label for="MegjegyzesEdit{$tetel.id}">{at('Termék leírás')}</label></td>
-                <td><input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes|escape}"></td>
-            </tr>
-            <tr>
-                <td><label for="Megjegyzes2Edit{$tetel.id}">{at('Hiba leírás')}</label></td>
-                <td><input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2|escape}"></td>
-            </tr>
-            <tr>
-                <td><label for="VasarlasdatumEdit{$tetel.id}">{at('Vásárlás dátuma')}</label></td>
-                <td><input id="VasarlasdatumEdit{$tetel.id}" type="text" name="tetelvasarlasdatum_{$tetel.id}" value="{$tetel.vasarlasdatum}"></td>
-            </tr>
-        {/if}
-        <tr>
-            <td class="mattable-important"><label for="TermekSelect{$tetel.id}">{at('Termék')}:</label></td>
-            {if ($setup.termekautocomplete)}
-                {* A választó a már mentett tételen is ott van, hogy a termék cserélhető legyen.
-                   Stornón nem: a stornó tételnek az eredetit kell tükröznie. *}
-                <td colspan="5">
+    {* fejléc: a termék és a hozzá tartozó linkek; a js-termekpicturerow_ alatt keresi a JS a képet, a linket és a kartont *}
+    <div class="tetel-fej js-termekpicturerow_{$tetel.id}">
+        <a class="js-toflyout tetel-kep" href="{$mainurl}{$tetel.kepurl|default:'/themes/main/empty.jpg'}" target="_blank"><img
+                    src="{$mainurl}{$tetel.kiskepurl|default:'/themes/main/empty.jpg'}" alt=""/></a>
+        <div class="tetel-termek">
+            <label class="mattable-important" for="TermekSelect{$tetel.id}">{at('Termék')}:</label>
+            {* a termékválasztó és a js-termekid testvér marad: a választás a siblings()-be írja az id-t *}
+            <div class="tetel-termekmezo">
+                {if ($setup.termekautocomplete)}
+                    {* A választó a már mentett tételen is ott van, hogy a termék cserélhető legyen.
+                       Stornón nem: a stornó tételnek az eredetit kell tükröznie. *}
                     {if ($tetel.oper === 'storno')}
                         {$tetel.termeknev}
                     {else}
@@ -46,9 +28,7 @@
                     {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
                     {include 'bizonylatteteltermekgombok.tpl'}
-                </td>
-            {else}
-                <td colspan="5">
+                {else}
                     {if ($tetel.oper === 'storno')}
                         {$tetel.termeknev}
                         <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
@@ -61,147 +41,158 @@
                         </select>
                     {/if}
                     {include 'bizonylatteteltermekgombok.tpl'}
-                </td>
+                {/if}
+            </div>
+            <div class="tetel-termekinfo">
+                <a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a>
+                <a class="js-kartonlink" href="{$tetel.kartonurl|default:'#'}" target="_blank">Karton</a>
+                {if ($tetel.elolegbizonylatszam|default)}
+                    <span>{at('Beszámított előleg')}: {$tetel.elolegbizonylatszam}
+                        {if ($tetel.elolegfizetesdatumstr|default)}({$tetel.elolegfizetesdatumstr}){/if}</span>
+                {/if}
+            </div>
+        </div>
+        <a class="js-teteldelbutton tetel-torles" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if}
+           title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+    </div>
+    <div class="tetel-mezok">
+        {mezocsoport}
+            {if ($showgarancialisadatok)}
+                {mezo cimke="Termék leírás" for="MegjegyzesEdit{$tetel.id}"}
+                    <input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes|escape}">
+                {/mezo}
+                {mezo cimke="Hiba leírás" for="Megjegyzes2Edit{$tetel.id}"}
+                    <input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2|escape}">
+                {/mezo}
+                {mezo cimke="Vásárlás dátuma" for="VasarlasdatumEdit{$tetel.id}" szeles=true}
+                    <input id="VasarlasdatumEdit{$tetel.id}" type="text" name="tetelvasarlasdatum_{$tetel.id}" value="{$tetel.vasarlasdatum}">
+                {/mezo}
             {/if}
-        </tr>
-        <tr class="js-termekpicturerow_{$tetel.id}">
-            <td><a class="js-toflyout" href="{$mainurl}{$tetel.kepurl|default:'/themes/main/empty.jpg'}" target="_blank"><img
-                        src="{$mainurl}{$tetel.kiskepurl|default:'/themes/main/empty.jpg'}"/></a></td>
-            <td>{at('Link')}:<a class="js-termeklink" href="{$tetel.link}" target="_blank">{$tetel.link}</a></td>
-            <td><a class="js-kartonlink" href="{$tetel.kartonurl|default:'#'}" target="_blank">Karton</a></td>
-        </tr>
-        <tr>
-            <td><label for="NevEdit{$tetel.id}">{at('Név')}:</label></td>
-            <td colspan="5"><input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
-                                   required="required"></td>
-        </tr>
-        <tr>
-            <td><label for="ValtozatSelect{$tetel.id}">{at('Változat')}:</label></td>
-            <td id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</td>
-        </tr>
-        <tr>
-            <td><label>{at('Raktárkészlet')}:</label></td>
-            <td colspan="5">
-                <div class="ui-widget ui-widget-content ui-corner-all tetelkeszletdoboz" id="RaktarKeszlet{$tetel.id}">
-                    {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet nemmozgat=$tetel.nemmozgat|default:false termekid=$tetel.termek valtozatid=$tetel.termekvaltozat}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td><label for="CikkszamEdit{$tetel.id}">{at('Cikkszám')}:</label></td>
-            <td><input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}">
-                <span class="js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span></td>
-            <td><label for="VtszSelect{$tetel.id}">{at('VTSZ')}:</label></td>
-            <td><select id="VtszSelect{$tetel.id}" name="tetelvtsz_{$tetel.id}" class="js-vtszselect" required="required">
+            {mezo cimke="Név" for="NevEdit{$tetel.id}" szeles=true}
+                <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
+                       required="required">
+            {/mezo}
+            {mezo cimke="Cikkszám" for="CikkszamEdit{$tetel.id}"}
+                <input id="CikkszamEdit{$tetel.id}" name="tetelcikkszam_{$tetel.id}" type="text" size="30" maxlength="50" value="{$tetel.cikkszam|escape}">
+                <span class="js-valtozatcikkszam_{$tetel.id}">{if ($tetel.valtozatcikkszam|default)}{at('Változat')}: {$tetel.valtozatcikkszam|escape}{/if}</span>
+            {/mezo}
+            {mezo cimke="Változat" for="ValtozatSelect{$tetel.id}"}
+                <div id="ValtozatPlaceholder{$tetel.id}">{include "bizonylatteteltermekvaltozatselect.tpl"}</div>
+            {/mezo}
+            {mezo cimke="VTSZ" for="VtszSelect{$tetel.id}"}
+                <select id="VtszSelect{$tetel.id}" name="tetelvtsz_{$tetel.id}" class="js-vtszselect" required="required">
                     <option value="">{at('válasszon')}</option>
                     {foreach $tetel.vtszlist as $_vtsz}
                         <option value="{$_vtsz.id}"{if ($_vtsz.selected)} selected="selected"{/if} data-afa="{$_vtsz.afa}">{$_vtsz.caption}</option>
                     {/foreach}
-                </select></td>
-            <td><label for="AfaSelect{$tetel.id}">{at('ÁFA')}:</label></td>
-            <td><select id="AfaSelect{$tetel.id}" name="tetelafa_{$tetel.id}" class="js-afaselect" required="required">
+                </select>
+            {/mezo}
+            {mezo cimke="ÁFA" for="AfaSelect{$tetel.id}"}
+                <select id="AfaSelect{$tetel.id}" name="tetelafa_{$tetel.id}" class="js-afaselect" required="required">
                     <option value="">{at('válasszon')}</option>
                     {foreach $tetel.afalist as $_afa}
                         <option value="{$_afa.id}"{if ($_afa.selected)} selected="selected"{/if} data-afakulcs="{$_afa.afakulcs}"
                                 data-magyar="{if ($_afa.magyar)}1{else}0{/if}" data-navcase="{$_afa.navcase}">{$_afa.caption}</option>
                     {/foreach}
-                </select></td>
-        </tr>
-        <tr class="js-kiszerelesrow_{$tetel.id}"{if (!$tetel.gyujto && !$tetel.sordoboz)} style="display:none;"{/if}>
-            <td><label for="GyujtomennyisegEdit{$tetel.id}">{at('Gyűjtő')}:</label></td>
-            <td colspan="5">
-                <input id="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelgyujtomennyiseg_{$tetel.id}" type="number"
-                       step="any" value="{$tetel.gyujtomennyiseg}" size="6">
-                <label for="SordobozmennyisegEdit{$tetel.id}">{at('Sor/doboz')}:</label>
-                <input id="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelsordobozmennyiseg_{$tetel.id}" type="number"
-                       step="any" value="{$tetel.sordobozmennyiseg}" size="6">
-                <input class="js-kiszerelesgyujto" name="tetelgyujto_{$tetel.id}" type="hidden" value="{$tetel.gyujto}">
-                <input class="js-kiszerelessordoboz" name="tetelsordoboz_{$tetel.id}" type="hidden" value="{$tetel.sordoboz}">
-            </td>
-        </tr>
-        <tr>
-            <td class="mattable-important"><label for="MennyisegEdit{$tetel.id}">{at('Mennyiség')}:</label></td>
-            <td colspan="5"><input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number"
-                                   step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required"{if (!$tetel.bonthato)} readonly="readonly"{/if}>
+                </select>
+            {/mezo}
+            {mezo cimke="Mennyiség" for="MennyisegEdit{$tetel.id}" class="mezo-fontos" szeles=true}
+                <input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number"
+                       step="any" value="{$tetel.mennyiseg}" maxlength="20" size="10" required="required"{if (!$tetel.bonthato)} readonly="readonly"{/if}>
                 <select id="MESelect{$tetel.id}" name="tetelme_{$tetel.id}" required="required">
                     <option value="">{at('válasszon')}</option>
                     {foreach $tetel.melist as $_me}
                         <option value="{$_me.id}"{if ($_me.selected)} selected="selected"{/if}>{$_me.caption}</option>
                     {/foreach}
                 </select>
-        </tr>
-        <tr class="js-egyediazonositorow_{$tetel.id}"{if (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))} style="display:none;"{/if}>
-            <td class="mattable-important"><label for="TermekegyediazonositoEdit{$tetel.id}">{at('Egyedi azonosító')}:</label></td>
-            <td colspan="5">
+            {/mezo}
+            {$_kiszerelesrejtve = (!$tetel.gyujto && !$tetel.sordoboz)}
+            {mezo cimke="Gyűjtő" for="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesrow_{$tetel.id}" rejtve=$_kiszerelesrejtve}
+                <input id="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelgyujtomennyiseg_{$tetel.id}" type="number"
+                       step="any" value="{$tetel.gyujtomennyiseg}" size="6">
+                <input class="js-kiszerelesgyujto" name="tetelgyujto_{$tetel.id}" type="hidden" value="{$tetel.gyujto}">
+                <input class="js-kiszerelessordoboz" name="tetelsordoboz_{$tetel.id}" type="hidden" value="{$tetel.sordoboz}">
+            {/mezo}
+            {mezo cimke="Sor/doboz" for="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesrow_{$tetel.id}" rejtve=$_kiszerelesrejtve}
+                <input id="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelsordobozmennyiseg_{$tetel.id}" type="number"
+                       step="any" value="{$tetel.sordobozmennyiseg}" size="6">
+            {/mezo}
+            {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
+            {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
                 <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
                        value="{$tetel.termekegyediazonosito|default|escape}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
                 <input class="js-egyediazonositokell" name="tetelkellegyediazonosito_{$tetel.id}" type="hidden"
                        value="{if ($tetel.kellegyediazonosito|default)}1{else}0{/if}">
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <table>
-        <tbody>
-        <tr>
-            <td></td>
-            <td>{at('Nettó')}</td>
-            <td>{at('Bruttó')}</td>
-            {if ($showhaszonszazalek)}
-                <td>{at('Haszon %')}</td>
-                <td>{at('Eladási br.ár')}</td>
-            {/if}
-            {if ($showvalutanem)}
-                <td class="hufprice">{at('Nettó HUF')}</td>
-                <td class="hufprice">{at('Bruttó HUF')}</td>
-            {/if}
-        </tr>
-        <tr>
-            <td><label>{at('Er.egységár')}:</label></td>
-            <td><input name="tetelenettoegysar_{$tetel.id}" type="text" value="{$tetel.enettoegysar}" readonly class="js-enettoegysarinput"></td>
-            <td><input name="tetelebruttoegysar_{$tetel.id}" type="text" value="{$tetel.ebruttoegysar}" readonly class="js-ebruttoegysarinput"></td>
-            {if ($showvalutanem)}
-                <td><input name="tetelenettoegysarhuf_{$tetel.id}" type="text" value="{$tetel.enettoegysarhuf}" readonly></td>
-                <td><input name="tetelebruttoegysarhuf_{$tetel.id}" type="text" value="{$tetel.ebruttoegysarhuf}" readonly></td>
-            {/if}
-        </tr>
-        <tr>
-            <td><label for="KedvezmenyEdit{$tetel.id}">{at('Kedvezmény %')}:</label></td>
-            <td><input id="KedvezmenyEdit{$tetel.id}" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
-        </tr>
-        <tr>
-            <td><label for="NettoegysarEdit{$tetel.id}">{at('Egységár')}:</label></td>
-            <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}"
-                       class="js-nettoegysarinput" required="required"></td>
-            <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput"
-                       required="required"></td>
-            {if ($showhaszonszazalek)}
-                <td id="haszonszazalek_{$tetel.id}">{number_format($tetel.haszonszazalek,2,'.',' ')}</td>
-                <td id="eladasibruttoar_{$tetel.id}" data-ertek="{$tetel.eladasibrutto}">{number_format($tetel.eladasibrutto,2,'.',' ')}</td>
-            {/if}
-            {if ($showvalutanem)}
-                <td><input name="tetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
-                <td><input name="tetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
-            {/if}
-        </tr>
-        <tr>
-            <td class="mattable-important"><label for="NettoEdit{$tetel.id}">{at('Érték')}:</label></td>
-            <td><input id="NettoEdit{$tetel.id}" name="tetelnetto_{$tetel.id}" type="number" step="any" value="{$tetel.netto}"
-                       class="mattable-important js-nettoinput"></td>
-            <td><input name="tetelbrutto_{$tetel.id}" type="number" step="any" value="{$tetel.brutto}" class="mattable-important js-bruttoinput"></td>
-            {if ($showhaszonszazalek)}
+            {/mezo}
+        {/mezocsoport}
+    </div>
+    <div class="tetel-also">
+        <table class="tetel-arak">
+            <tbody>
+            <tr>
                 <td></td>
-                <td></td>
-            {/if}
-            {if ($showvalutanem)}
-                <td><input name="tetelnettohuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettohuf}" readonly></td>
-                <td><input name="tetelbruttohuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttohuf}" readonly></td>
-            {/if}
-        </tr>
-        </tbody>
-    </table>
-    <a class="js-teteldelbutton" href="#" data-id="{$tetel.id}"{if (($tetel.oper=='add')||($tetel.oper=='inherit'))} data-source="client"{/if}
-       title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                <td>{at('Nettó')}</td>
+                <td>{at('Bruttó')}</td>
+                {if ($showhaszonszazalek)}
+                    <td>{at('Haszon %')}</td>
+                    <td>{at('Eladási br.ár')}</td>
+                {/if}
+                {if ($showvalutanem)}
+                    <td class="hufprice">{at('Nettó HUF')}</td>
+                    <td class="hufprice">{at('Bruttó HUF')}</td>
+                {/if}
+            </tr>
+            <tr>
+                <td><label>{at('Er.egységár')}:</label></td>
+                <td><input name="tetelenettoegysar_{$tetel.id}" type="text" value="{$tetel.enettoegysar}" readonly class="js-enettoegysarinput"></td>
+                <td><input name="tetelebruttoegysar_{$tetel.id}" type="text" value="{$tetel.ebruttoegysar}" readonly class="js-ebruttoegysarinput"></td>
+                {if ($showvalutanem)}
+                    <td><input name="tetelenettoegysarhuf_{$tetel.id}" type="text" value="{$tetel.enettoegysarhuf}" readonly></td>
+                    <td><input name="tetelebruttoegysarhuf_{$tetel.id}" type="text" value="{$tetel.ebruttoegysarhuf}" readonly></td>
+                {/if}
+            </tr>
+            <tr>
+                <td><label for="KedvezmenyEdit{$tetel.id}">{at('Kedvezmény %')}:</label></td>
+                <td><input id="KedvezmenyEdit{$tetel.id}" name="tetelkedvezmeny_{$tetel.id}" type="text" value="{$tetel.kedvezmeny}" class="js-kedvezmeny"></td>
+            </tr>
+            <tr>
+                <td><label for="NettoegysarEdit{$tetel.id}">{at('Egységár')}:</label></td>
+                <td><input id="NettoegysarEdit{$tetel.id}" name="tetelnettoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysar}"
+                           class="js-nettoegysarinput" required="required"></td>
+                <td><input name="tetelbruttoegysar_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysar}" class="js-bruttoegysarinput"
+                           required="required"></td>
+                {if ($showhaszonszazalek)}
+                    <td id="haszonszazalek_{$tetel.id}">{number_format($tetel.haszonszazalek,2,'.',' ')}</td>
+                    <td id="eladasibruttoar_{$tetel.id}" data-ertek="{$tetel.eladasibrutto}">{number_format($tetel.eladasibrutto,2,'.',' ')}</td>
+                {/if}
+                {if ($showvalutanem)}
+                    <td><input name="tetelnettoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettoegysarhuf}" readonly></td>
+                    <td><input name="tetelbruttoegysarhuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttoegysarhuf}" readonly></td>
+                {/if}
+            </tr>
+            <tr>
+                <td class="mattable-important"><label for="NettoEdit{$tetel.id}">{at('Érték')}:</label></td>
+                <td><input id="NettoEdit{$tetel.id}" name="tetelnetto_{$tetel.id}" type="number" step="any" value="{$tetel.netto}"
+                           class="mattable-important js-nettoinput"></td>
+                <td><input name="tetelbrutto_{$tetel.id}" type="number" step="any" value="{$tetel.brutto}" class="mattable-important js-bruttoinput"></td>
+                {if ($showhaszonszazalek)}
+                    <td></td>
+                    <td></td>
+                {/if}
+                {if ($showvalutanem)}
+                    <td><input name="tetelnettohuf_{$tetel.id}" type="number" step="any" value="{$tetel.nettohuf}" readonly></td>
+                    <td><input name="tetelbruttohuf_{$tetel.id}" type="number" step="any" value="{$tetel.bruttohuf}" readonly></td>
+                {/if}
+            </tr>
+            </tbody>
+        </table>
+        <div class="tetel-keszlet">
+            <div class="tetel-keszletcim">{at('Raktárkészlet')}</div>
+            <div class="ui-widget ui-widget-content ui-corner-all tetelkeszletdoboz" id="RaktarKeszlet{$tetel.id}">
+                {include 'bizonylattetelraktarkeszlet.tpl' lista=$tetel.raktarkeszlet nemmozgat=$tetel.nemmozgat|default:false termekid=$tetel.termek valtozatid=$tetel.termekvaltozat}
+            </div>
+        </div>
+    </div>
 </div>
 {if ($tetel.oper=='add')}
     <a class="js-tetelnewbutton" href="#" title="{at('Új')}"><span class="ui-icon ui-icon-circle-plus"></span></a>

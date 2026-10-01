@@ -718,6 +718,125 @@ select.tetelszamhiba,
     grid-column: 2 / -1;
 }
 
+/* Bizonylattétel rögzítő (bizonylattetelkarb.tpl): fejlécben a termék, alatta a mezők, legalul az árak és a raktárkészlet egymás mellett */
+.tetel-fej {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.tetel-kep {
+    flex: 0 0 auto;
+    display: block;
+    width: 64px;
+    height: 64px;
+}
+
+.tetel-kep img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.tetel-termek {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.tetel-termekmezo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.tetel-termekmezo .termekselect {
+    max-width: 100%;
+}
+
+.tetel-termekinfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 4px;
+}
+
+.tetel-torles {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+/* a címke a mező fölött, és annyi mező áll egy sorban, amennyi kifér: így a tétel alacsony marad */
+.tetel-mezok {
+    margin-top: 12px;
+}
+
+.tetel-mezok .mezok {
+    grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
+    gap: 8px 16px;
+    align-items: start;
+}
+
+.tetel-mezok .mezo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.tetel-mezok .mezo-szeles {
+    grid-column: span 2;
+}
+
+.tetel-mezok .mezo-ertek {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    padding: 0;
+}
+
+.tetel-mezok .mezo-ertek > input:not([type="checkbox"]):not([type="radio"]),
+.tetel-mezok .mezo-ertek > select {
+    flex: 1 1 8em;
+    width: auto;
+    min-width: 0;
+}
+
+/* a változat választója a JS által újratöltött helyőrzőben van */
+.tetel-mezok .mezo-ertek > div {
+    flex: 1 1 100%;
+}
+
+.tetel-mezok .mezo-ertek > div > select {
+    width: 100%;
+}
+
+.tetel-also {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px 24px;
+    margin-top: 12px;
+}
+
+.tetel-arak input {
+    width: 9.5em;
+}
+
+.tetel-keszlet {
+    flex: 0 1 auto;
+    max-width: 100%;
+}
+
+.tetel-keszletcim {
+    margin-bottom: 4px;
+}
+
+.mezo-fontos > .mezo-cimke {
+    font-weight: bold;
+}
+
 /* rövid értékű mező (azonosító, darabszám); inline width helyett, hogy mobilon a modern téma teljes szélességre nyújthassa */
 .mezo-rovid {
     width: 10em;

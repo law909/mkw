@@ -2198,7 +2198,7 @@ let bizonylathelper = function ($) {
                     })
                     .on('click', '.js-termekadatlap', function (e) {
                         // a sor terméke a betöltés után is változhat, ezért a href kattintáskor áll össze
-                        let termekid = $(this).closest('td').find('.js-termekid').val();
+                        let termekid = $(this).closest('.tetel-termekmezo, td').find('.js-termekid').val();
                         if (!termekid) {
                             e.preventDefault();
                             dialogcenter.html('Előbb válasszon terméket.').dialog({

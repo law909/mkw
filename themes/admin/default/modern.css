@@ -983,6 +983,61 @@ body.modernui {
 }
 
 /* az oszlop minimuma a nagy betűs, 8+2 jegyű Bruttóhoz (10,3em) igazodik; mobilon így is két oszlop fér ki */
+/* Bizonylattétel rögzítő: a szerkezet a style.css-ben, itt a megjelenés */
+.modernui .tetel-fej {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--mkw-border);
+}
+
+.modernui .tetel-kep {
+    overflow: hidden;
+    border: 1px solid var(--mkw-border);
+    border-radius: var(--mkw-radius-sm);
+    background: var(--mkw-surface);
+}
+
+.modernui .tetel-termek > label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: .85em;
+}
+
+.modernui .tetel-termekinfo {
+    color: var(--mkw-muted);
+    font-size: .9em;
+}
+
+.modernui .tetel-keszlet .tetelkeszlettabla {
+    font-size: .9em;
+}
+
+.modernui .tetel-keszletcim {
+    color: var(--mkw-muted);
+    font-size: .8em;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.modernui .mezo-fontos > .mezo-cimke {
+    color: var(--mkw-text);
+}
+
+.modernui .tetel-also {
+    padding-top: 10px;
+    border-top: 1px solid var(--mkw-border);
+}
+
+.modernui .tetel-arak td {
+    padding: 3px 8px 3px 0;
+}
+
+.modernui .tetel-arak > tbody > tr:first-child > td {
+    color: var(--mkw-muted);
+    font-size: .8em;
+    font-weight: 600;
+}
+
 .modernui .bizonylatosszesito {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
@@ -1445,41 +1500,11 @@ body.modernui {
         padding: 1em;
     }
 
-    /* bizonylattétel: a mezőpárok egymás alá, az ár-mátrix táblázat marad, de kitölti a szélességet */
-    .modernui [id^="teteltable_"] {
-        overflow-x: auto;
-    }
-
-    .modernui [id^="teteltable_"] > table:first-of-type,
-    .modernui [id^="teteltable_"] > table:first-of-type > tbody,
-    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr,
-    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td {
-        display: block;
-    }
-
-    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td {
-        padding-right: 0;
-    }
-
-    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td:has(> label) {
-        padding-top: 8px;
-        padding-bottom: 0;
-    }
-
-    /* a mező után álló címke (Gyűjtő sor: Sor/doboz) is a saját mezője fölé kerül */
-    .modernui [id^="teteltable_"] > table:first-of-type > tbody > tr > td > input + label {
-        display: block;
-        margin-top: 8px;
-    }
-
-    .modernui [id^="teteltable_"] input:not([type="checkbox"]):not([type="radio"]),
-    .modernui [id^="teteltable_"] select {
-        max-width: 100%;
-    }
-
-    .modernui [id^="teteltable_"] input[size="103"],
-    .modernui [id^="teteltable_"] .termekselect {
-        width: 100%;
+    /* bizonylattétel: a készlet a mezők alá kerül, az ár-mátrix táblázat marad, és csak az görög */
+    .modernui .tetel-kep,
+    .modernui .tetel-kep img {
+        width: 48px;
+        height: 48px;
     }
 
     .modernui [id^="teteltable_"] .tetelkeszletdoboz {
@@ -1487,17 +1512,42 @@ body.modernui {
         overflow-x: auto;
     }
 
-    /* blokként csak az ár-mátrix görög (a valutás oszlopokkal szélesebb lehet), nem az egész tétel */
-    .modernui [id^="teteltable_"] > table + table {
+    .modernui .tetel-keszlet {
+        flex-basis: 100%;
+    }
+
+    /* fent a kép és a törlés, alattuk teljes szélességben a termék */
+    .modernui .tetel-fej {
+        flex-wrap: wrap;
+    }
+
+    .modernui .tetel-termek {
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .modernui .tetel-mezok .mezo-szeles {
+        grid-column: 1 / -1;
+    }
+
+    .modernui .tetel-mezok .mezo-ertek > input:not([type="checkbox"]):not([type="radio"]),
+    .modernui .tetel-mezok .mezo-ertek > select,
+    .modernui .tetel-termekmezo > .termekselect,
+    .modernui .tetel-termekmezo > select {
+        flex: 1 1 100%;
+    }
+
+    .modernui .tetel-arak {
         display: block;
+        max-width: 100%;
         overflow-x: auto;
     }
 
-    .modernui [id^="teteltable_"] > table + table td {
+    .modernui .tetel-arak td {
         padding-right: 6px;
     }
 
-    .modernui [id^="teteltable_"] > table + table input {
+    .modernui .tetel-arak input {
         width: 6.5em;
     }
 
