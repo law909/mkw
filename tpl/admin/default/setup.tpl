@@ -2538,7 +2538,7 @@
                                 </div>
                                 <div class="setuprow">
                                     <span class="setuplabel">&nbsp;</span>
-                                    <span>{at('Ha a termék ára ebben az ársávban kisebb a normál árnál, az UNAS-ba akciós árként megy ki. Ha megszűnik, az UNAS-ban lejárttá tesszük; ársáv nélkül az UNAS-beli akciós árhoz nem nyúlunk.')}</span>
+                                    <span>{at('Ha a termék ára ebben az ársávban kisebb a normál árnál, az UNAS-ba akciós árként megy ki. Ha megszűnik, az UNAS-ban lejárttá tesszük; az UNAS-ban kézzel felvitt akciós árhoz nem nyúlunk.')}</span>
                                 </div>
                                 <div class="setuprow">
                                     <span class="setuplabel"><label for="UnasValutanemEdit">{at('Valutanem')}:</label></span>

@@ -68,7 +68,7 @@ class UnasKeszletArService
     /**
      * @param array $opts `szaraz` – csak számol, nem küld; `teljes` – a legutóbb kiküldött értéktől
      *                    és a hibaszámlálótól függetlenül mindent küld; `keszlet`/`ar` – felülírja a
-     *                    beállítás szerinti kapcsolót
+     *                    beállítás szerinti kapcsolót; `unasid` – csak ezek az UNAS termékek (tömb vagy vesszős lista)
      *
      * @return array a riport
      */
@@ -83,6 +83,9 @@ class UnasKeszletArService
         $teljes = !empty($opts['teljes']);
 
         $celok = $this->loadTargets($report);
+        if (!empty($opts['unasid'])) {
+            $celok = $this->filterTargets($celok, $opts['unasid'], $report);
+        }
         $report['celok'] = count($celok);
         $valtozatos = $this->loadUnasValtozatosTermekIds();
         $raktarid = self::getKeszletRaktar();
@@ -103,18 +106,9 @@ class UnasKeszletArService
                 if (array_key_exists('keszlet', $t) && ($teljes || !$s || !$this->egyezik($s['keszlet'], $t['keszlet']))) {
                     $keszletKuldendo[$unasid] = $t;
                 }
-                if (array_key_exists('brutto', $t)) {
-                    $normal = $teljes || !$s || $s['arkuldve'] === null
-                        || !$this->egyezik($s['netto'], $t['netto'], 2) || !$this->egyezik($s['brutto'], $t['brutto'], 2);
-                    $t['akciokuld'] = array_key_exists('akcio', $t)
-                        && ($teljes || !$s || $s['akcioskuldve'] === null || !$this->egyezikAkcio($s, $t['akcio']));
-                    if ($normal || $t['akciokuld']) {
-                        // a lejárttá tételhez a legutóbb kiküldött akciós ár kell
-                        $t['akcioregi'] = $s && $s['akciosbrutto'] !== null
-                            ? ['netto' => (float)$s['akciosnetto'], 'brutto' => (float)$s['akciosbrutto']]
-                            : null;
-                        $arKuldendo[$unasid] = $t;
-                    }
+                $ar = array_key_exists('brutto', $t) ? $this->arKuldendo($t, $s, $teljes) : null;
+                if ($ar) {
+                    $arKuldendo[$unasid] = $ar;
                 }
             }
             $report['keszlet']['valtozott'] += count($keszletKuldendo);
@@ -172,6 +166,16 @@ class UnasKeszletArService
             ];
         }
         return array_values($celok);
+    }
+
+    /** Próbafutáshoz: csak a megadott UNAS termékek. A nem párosított azonosítót a riport jelzi. */
+    private function filterTargets(array $celok, $unasids, array &$report)
+    {
+        $kert = is_array($unasids) ? $unasids : explode(',', (string)$unasids);
+        $kert = array_values(array_unique(array_filter(array_map('trim', $kert), static fn($v) => $v !== '')));
+        $celok = array_values(array_filter($celok, static fn($c) => in_array($c['unasid'], $kert, true)));
+        $report['ismeretlen_unasid'] = array_values(array_diff($kert, array_column($celok, 'unasid')));
+        return $celok;
     }
 
     /**
@@ -258,6 +262,29 @@ class UnasKeszletArService
             - KeszletService::getFoglaltMennyiseg($o, null, null, $raktarid)
             - KeszletService::getMinKeszlet($termek, $valtozat, is_array($raktarid) ? null : $raktarid);
         return round(max((float)$keszlet, 0), 4);
+    }
+
+    /**
+     * @param array|null $s az állapotsor
+     *
+     * @return array|null a tétel `akciokuld`/`akcioregi` kulccsal, vagy null, ha nincs mit küldeni
+     */
+    private function arKuldendo(array $t, ?array $s, $teljes)
+    {
+        $normal = $teljes || !$s || $s['arkuldve'] === null
+            || !$this->egyezik($s['netto'], $t['netto'], 2) || !$this->egyezik($s['brutto'], $t['brutto'], 2);
+        $t['akcioregi'] = $s && $s['akciosbrutto'] !== null
+            ? ['netto' => (float)$s['akciosnetto'], 'brutto' => (float)$s['akciosbrutto']]
+            : null;
+        if (!array_key_exists('akcio', $t)) {
+            $t['akciokuld'] = false;
+        } elseif ($t['akcio']) {
+            $t['akciokuld'] = $teljes || !$s || $s['akcioskuldve'] === null || !$this->egyezikAkcio($s, $t['akcio']);
+        } else {
+            // csak a mi kiküldött akciónkat tesszük lejárttá, az UNAS-ban kézzel felvitthez nem nyúlunk
+            $t['akciokuld'] = $t['akcioregi'] !== null;
+        }
+        return $normal || $t['akciokuld'] ? $t : null;
     }
 
     private function loadEntities($class, array $ids)
@@ -423,8 +450,8 @@ class UnasKeszletArService
     }
 
     /**
-     * Az UNAS-ban akciós árat törölni nem lehet, csak lejárttá tenni: megszűnt akciónál a legutóbbi
-     * akciós árat tegnapi lejárattal küldjük. Az ársávos akciónak nincs dátuma, ezért ma kezdődik.
+     * Az UNAS-ban akciós árat törölni nem lehet, csak lejárttá tenni: a megszűnt (általunk kiküldött)
+     * akciót a legutóbbi akciós árral és tegnapi lejárattal küldjük. Az ársávos akciónak nincs dátuma, ezért ma kezdődik.
      */
     private function salePrice(array $t)
     {
@@ -436,11 +463,10 @@ class UnasKeszletArService
                 'Start' => date('Y.m.d'),
             ];
         }
-        $regi = $t['akcioregi'] ?: ['netto' => $t['netto'], 'brutto' => $t['brutto']];
         return [
             'Type' => 'sale',
-            'Net' => $this->formatSzam($regi['netto']),
-            'Gross' => $this->formatSzam($regi['brutto']),
+            'Net' => $this->formatSzam($t['akcioregi']['netto']),
+            'Gross' => $this->formatSzam($t['akcioregi']['brutto']),
             'Start' => date('Y.m.d', strtotime('-2 days')),
             'End' => date('Y.m.d', strtotime('-1 day')),
         ];
@@ -637,6 +663,7 @@ class UnasKeszletArService
             'arbe' => $arBe,
             'celok' => 0,
             'duplikalt' => 0,
+            'ismeretlen_unasid' => [],
             'kihagyva_hiba' => 0,
             'keszlet' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nemkeszletes' => 0, 'unasvaltozatos' => 0],
             'ar' => ['valtozott' => 0, 'kuldve' => 0, 'hiba' => 0, 'nincsar' => 0, 'akcios' => 0, 'akciolejarat' => 0],

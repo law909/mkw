@@ -7,7 +7,8 @@ use Services\UnasService;
 
 /**
  * Készlet és ár feltöltés az UNAS-ba. Minden futás újraszámol és csak az eltérést küldi, tehát a
- * sűrű ütemezés olcsó. Kapcsolók: `--szaraz` (csak számol), `--teljes` (mindent újraküld).
+ * sűrű ütemezés olcsó. Kapcsolók: `--szaraz` (csak számol), `--teljes` (mindent újraküld),
+ * `--unasid=123,456` (csak ezek az UNAS termékek – az első éles próbához).
  */
 class UnasKeszletArTask implements CronTask
 {
@@ -25,9 +26,14 @@ class UnasKeszletArTask implements CronTask
 
     public function run(array $options = []): string
     {
+        $unasid = $options['unasid'] ?? '';
+        if ($unasid === true) {
+            throw new \InvalidArgumentException('Az --unasid kapcsolóhoz azonosító kell, pl. --unasid=123456,123457');
+        }
         $r = (new UnasKeszletArService())->sync([
             'szaraz' => !empty($options['szaraz']),
             'teljes' => !empty($options['teljes']),
+            'unasid' => $unasid,
         ]);
 
         $uzenet = sprintf(
@@ -56,6 +62,9 @@ class UnasKeszletArTask implements CronTask
         if ($r['keszlet']['unasvaltozatos']) {
             $uzenet .= sprintf('; %d UNAS-változatos termék készlete nem megy ki', $r['keszlet']['unasvaltozatos']);
         }
+        if ($r['ismeretlen_unasid']) {
+            $uzenet .= '; nincs ilyen párosított UNAS azonosító: ' . implode(', ', $r['ismeretlen_unasid']);
+        }
         if ($r['duplikalt']) {
             $uzenet .= sprintf('; %d ismétlődő UNAS azonosító', $r['duplikalt']);
         }
@@ -74,7 +83,7 @@ class UnasKeszletArTask implements CronTask
             }
         }
 
-        if ($r['fek'] || $r['keszlet']['hiba'] || $r['ar']['hiba']) {
+        if ($r['fek'] || $r['keszlet']['hiba'] || $r['ar']['hiba'] || $r['ismeretlen_unasid']) {
             throw new CronWarning($uzenet);
         }
         return $uzenet;
