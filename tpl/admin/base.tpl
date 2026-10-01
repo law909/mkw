@@ -36,7 +36,7 @@
 </head>
 <body{if ($modernui|default:false)} class="modernui{if ($oldalsavrejtve|default:false)} oldalsav-rejtve{/if}"{/if} data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
 {if ($modernui|default:false) && ($userloggedin)}
-    <header class="topbar">
+    <header class="topbar{if ($teszt)} topbar-teszt{/if}">
         <button type="button" class="topbar-gomb js-oldalsavkapcsolo" title="{at('Menü megjelenítése/elrejtése')}">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>

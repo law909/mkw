@@ -161,6 +161,29 @@ body.modernui {
     padding: 2px 8px;
 }
 
+/* Teszt üzemben az egész sáv piros. Nem a --mkw-danger: a sötét témáé túl világos a fehér szöveghez. */
+.modernui .topbar.topbar-teszt {
+    border-bottom-color: #7f1d1d;
+    background: #b91c1c;
+    color: #fff;
+}
+
+.modernui .topbar-teszt .topbar-ceg,
+.modernui .topbar-teszt .topbar-felhasznalo,
+.modernui .topbar-teszt .topbar-gomb {
+    color: #fff;
+}
+
+.modernui .topbar-teszt .topbar-gomb:hover {
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+}
+
+.modernui .topbar-teszt .teszt-uzemmod {
+    background: #fff;
+    color: #b91c1c;
+}
+
 .modernui .topbar-kereso {
     display: flex;
     align-items: center;
