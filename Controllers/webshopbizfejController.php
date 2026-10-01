@@ -34,6 +34,14 @@ class webshopbizfejController extends bizonylatfejController
         $view->setVar('datumtolfilter', null);
     }
 
+    public function onGetKarb($view, $record, $egyed, $oper, $id)
+    {
+        if ($oper === $this->inheritOperation) {
+            $egyed = $this->inheritEgyed($egyed, $record, $id);
+        }
+        return $egyed;
+    }
+
     public function getszamlakarb()
     {
         $megrendszam = $this->params->getStringRequestParam('id');

@@ -793,6 +793,31 @@ class bizonylatfejController extends \mkwhelpers\MattableController
      *
      * @return bool
      */
+    /**
+     * The karb data of a document made from another one: a new id pointing back at the source, and every source line
+     * as a new line. Without it the save edits the SOURCE document's lines and the new document stays empty.
+     */
+    protected function inheritEgyed(array $egyed, $record, $id): array
+    {
+        $egyed['id'] = \mkw\store::createUID();
+        $egyed['parentid'] = $id;
+        $kelt = date(\mkw\store::$DateFormat);
+        $egyed['keltstr'] = $kelt;
+        $egyed['teljesitesstr'] = $kelt;
+        $egyed['esedekessegstr'] = \mkw\store::calcEsedekesseg($kelt, $record->getFizmod(), $record->getPartner());
+        $ttk = [];
+        $cikl = 1;
+        foreach ($egyed['tetelek'] ?? [] as $tetel) {
+            $tetel['parentid'] = $tetel['id'];
+            $tetel['id'] = \mkw\store::createUID($cikl);
+            $tetel['oper'] = $this->inheritOperation;
+            $ttk[] = $tetel;
+            $cikl++;
+        }
+        $egyed['tetelek'] = $ttk;
+        return $egyed;
+    }
+
     protected function elodPenztmozgat($bizonylat)
     {
         // a láncot elvileg nem lehet körbekötni, de egy hibás adat ne fagyassza le a mentést
