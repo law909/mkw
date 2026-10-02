@@ -171,16 +171,12 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Cím')}</th>
+                <th>{at('Partner')}</th>
                 <th>{at('Elérhetőségek')}</th>
+                <th>{at('Adatok')}</th>
                 {if ($setup.mptngy)}
                     <th>{at('Befizetés')}</th>
                 {/if}
-                <th>{at('Megjegyzés')}</th>
-                <th>{at('Címkék')}</th>
-                <th>{at('Dokumentumok')}</th>
-                <th></th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>
