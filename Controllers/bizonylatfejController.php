@@ -1788,8 +1788,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                         'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
                     );
                     $body->setVar('szamla', $o->toLista());
+                    $body->setVar('rendeles', $this->findRendeles($o)?->toLista());
                     $body->setVar('megszolitas', $o->getPartner()->getSzamlalevelmegszolitas());
-
 
                     $mailer = \mkw\store::getMailer();
 
@@ -1804,6 +1804,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 }
             }
         }
+    }
+
+    /** A bizonylat lánca mentén az első megrendelés (a számla szülője lehet szállítólevél is). */
+    private function findRendeles(\Entities\Bizonylatfej $o): ?\Entities\Bizonylatfej
+    {
+        $biz = $o->getParbizonylatfej();
+        for ($i = 0; $biz && $i < 5; $i++) {
+            if (in_array($biz->getBizonylattipusId(), ['megrendeles', 'webshopbiz', 'b2brendeles'], true)) {
+                return $biz;
+            }
+            $biz = $biz->getParbizonylatfej();
+        }
+        return null;
     }
 
     public function getFiokList($forfouk = false)

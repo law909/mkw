@@ -3212,6 +3212,92 @@ if ($DBVersion < '0218' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0218');
 }
 
+if ($DBVersion < '0219' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0218') {
+    // galad számlalevél sablon a megrendelés adataival; csak akkor lesz a számlalevél, ha még nincs beállítva
+    if (\mkw\store::isGalad()) {
+        $szamlalevel = new \Entities\Emailtemplate();
+        $szamlalevel->setNev('Számlalevél');
+        $szamlalevel->setTargy('Számla - GALÁD-MOTOR Kft.');
+        $szamlalevel->setSzoveg(<<<'HTML'
+<p>Kedves [$megszolitas|default:$szamla.szamlanev]!</p>
+<p>Mellékelten küldjük a(z) <strong>[$szamla.id]</strong> számú számlánkat[if ($rendeles)] a(z) <strong>[$rendeles.id]</strong> számú rendeléséhez[/if].</p>
+<table cellpadding="4" cellspacing="0" style="border-collapse: collapse;">
+	<tbody>
+		<tr><td><strong>Számla száma:</strong></td><td>[$szamla.id]</td></tr>
+		<tr><td><strong>Kelt:</strong></td><td>[$szamla.keltstr]</td></tr>
+		<tr><td><strong>Teljesítés:</strong></td><td>[$szamla.teljesitesstr]</td></tr>
+		<tr><td><strong>Fizetési határidő:</strong></td><td>[$szamla.esedekessegstr]</td></tr>
+		<tr><td><strong>Fizetési mód:</strong></td><td>[$szamla.fizmodnev]</td></tr>
+		<tr><td><strong>Fizetendő:</strong></td><td><strong>[number_format($szamla.fizetendo, 2, ',', ' ')] [$szamla.valutanemnev]</strong></td></tr>
+	</tbody>
+</table>
+<!--[if ($rendeles)]-->
+<h3>A rendelés adatai</h3>
+<table cellpadding="4" cellspacing="0" style="border-collapse: collapse;">
+	<tbody>
+		<tr><td><strong>Rendelésszám:</strong></td><td>[$rendeles.id]</td></tr>
+		<tr><td><strong>Rendelés dátuma:</strong></td><td>[$rendeles.keltstr]</td></tr>
+		<tr><td><strong>Szállítási mód:</strong></td><td>[$rendeles.szallitasimodnev]</td></tr>
+		<!--[if ($rendeles.glspont|default:false)]-->
+		<tr><td><strong>Csomagpont:</strong></td><td>[$rendeles.glspont.nev], [$rendeles.glspont.cim]</td></tr>
+		<!--[elseif ($rendeles.foxpostterminal|default:false)]-->
+		<tr><td><strong>Csomagautomata:</strong></td><td>[$rendeles.foxpostterminal.nev], [$rendeles.foxpostterminal.cim]</td></tr>
+		<!--[elseif ($rendeles.szallirszam)]-->
+		<tr><td><strong>Szállítási cím:</strong></td><td>[$rendeles.szallnev], [$rendeles.szallirszam] [$rendeles.szallvaros], [$rendeles.szallutca] [$rendeles.szallhazszam]</td></tr>
+		<!--[/if]-->
+		<!--[if ($rendeles.fuvarlevelszam)]-->
+		<tr><td><strong>Fuvarlevélszám:</strong></td><td>[$rendeles.fuvarlevelszam]</td></tr>
+		<!--[/if]-->
+		<!--[if ($rendeles.webshopmessage)]-->
+		<tr><td><strong>Megjegyzés:</strong></td><td>[$rendeles.webshopmessage]</td></tr>
+		<!--[/if]-->
+	</tbody>
+</table>
+<!--[/if]-->
+[if ($rendeles)][$_tetelek = $rendeles.tetellista][$_osszesen = $rendeles.brutto][else][$_tetelek = $szamla.tetellista][$_osszesen = $szamla.brutto][/if]
+<h3>[if ($rendeles)]Megrendelt termékek[else]Tételek[/if]</h3>
+<table cellpadding="4" cellspacing="0" style="border-collapse: collapse; border: 1px solid #cccccc;">
+	<thead>
+		<tr style="background: #f2f2f2;">
+			<th style="text-align: left; border: 1px solid #cccccc;">Termék</th>
+			<th style="text-align: left; border: 1px solid #cccccc;">Cikkszám</th>
+			<th style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">Mennyiség</th>
+			<th style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">Bruttó egységár</th>
+			<th style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">Bruttó érték</th>
+		</tr>
+	</thead>
+	<tbody>
+		<!--[foreach $_tetelek as $_tetel]-->
+		<tr>
+			<td style="border: 1px solid #cccccc;">[$_tetel.termeknev][foreach $_tetel.valtozatok as $_valtozat]<br />[$_valtozat.nev]: [$_valtozat.ertek][/foreach]</td>
+			<td style="border: 1px solid #cccccc;">[$_tetel.cikkszam]</td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">[number_format($_tetel.mennyiseg, 0, ',', ' ')] [$_tetel.me]</td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">[number_format($_tetel.bruttoegysar, 2, ',', ' ')]</td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">[number_format($_tetel.brutto, 2, ',', ' ')]</td>
+		</tr>
+		<!--[/foreach]-->
+		<tr>
+			<td colspan="4" style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;"><strong>Összesen:</strong></td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;"><strong>[number_format($_osszesen, 2, ',', ' ')] [$szamla.valutanemnev]</strong></td>
+		</tr>
+	</tbody>
+</table>
+<p>Amennyiben kérdése merülne fel, kérjük, válaszoljon erre a levélre, vagy keressen minket elérhetőségeinken.</p>
+<p><strong>[$szamla.tulajnev]</strong><br />
+[$szamla.tulajirszam] [$szamla.tulajvaros], [$szamla.tulajutca]<br />
+Web: <a href="https://www.galadmotor.hu">www.galadmotor.hu</a></p>
+<p>Köszönjük, hogy nálunk vásárolt!</p>
+HTML
+        );
+        \mkw\store::getEm()->persist($szamlalevel);
+        \mkw\store::getEm()->flush();
+        if (!\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon)) {
+            \mkw\store::setParameter(\mkw\consts::SzamlalevelSablon, $szamlalevel->getId());
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0219');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
