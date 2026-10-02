@@ -136,6 +136,8 @@ class termekController extends \mkwhelpers\MattableController
 
         $x['gyartonev'] = $t->getGyartoNev();
         $x['doklinkek'] = $this->getDokLinkek($t->getTermekDokok());
+        // Termek::cimkenevek is the names joined with '; '
+        $x['cimkenevlista'] = $t->getCimkenevek() ? explode('; ', $t->getCimkenevek()) : [];
         $x['keszlet'] = $t->getKeszlet();
         $x['fifo'] = \mkw\store::isFifo() ? \Services\FifoService::getErtek($t) : null;
         $x['foglaltmennyiseg'] = $t->getFoglaltMennyiseg();

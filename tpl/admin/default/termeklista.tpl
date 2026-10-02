@@ -181,10 +181,9 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Címkék')}</th>
+                <th>{at('Termék')}</th>
+                <th>{at('Adatok')}</th>
                 <th>{at('Készlet')}</th>
-                <th>{at('Dokumentumok')}</th>
                 <th>{at('Jellemzők')}</th>
             </tr>
             </thead>

@@ -1032,6 +1032,95 @@ select.tetelszamhiba,
     padding: 1px 4px;
 }
 
+/* Termék lista sora (termeklista_tbody_tr.tpl): a bizlista-* elemekre épül, ezek csak a termék saját részei */
+.termeklista-fo {
+    min-width: 12em;
+}
+
+.termeklista-fej {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.termeklista-kep {
+    flex: 0 0 auto;
+}
+
+.termeklista-kep img {
+    display: block;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.termeklista-cim {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+
+.termeklista-nev.ui-button {
+    margin: 0;
+    font-weight: bold;
+    text-align: left;
+}
+
+.termeklista-link {
+    overflow-wrap: anywhere;
+}
+
+.termeklista-cimkek,
+.termeklista-jellemzocsoport {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* az 1fr oszlop minimuma 0 lenne, és az összeg kilógna a cellából */
+.termeklista-arak {
+    grid-template-columns: max-content max-content;
+}
+
+.termeklista-arak dd {
+    white-space: nowrap;
+}
+
+.termeklista-cimke {
+    padding: 1px 6px;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    font-size: .85em;
+}
+
+/* a hosszú cikkszám törhet, különben 1366 px-en a lista szélesebb a panelnél */
+.termeklista-keszletsorok tbody td:first-child {
+    min-width: 7em;
+    overflow-wrap: anywhere;
+}
+
+.termeklista-keszlet {
+    display: inline-block;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.termeklista-jellemzok {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 8em;
+}
+
+.termeklista-kapcsolo {
+    padding: 1px 6px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
 /* Bizonylattétel rögzítő (bizonylattetelkarb.tpl): fejlécben a termék, alatta a mezők, legalul az árak és a raktárkészlet egymás mellett */
 .tetel-fej {
     display: flex;

@@ -1039,6 +1039,43 @@ body.modernui {
     font-size: 1.05em;
 }
 
+/* Termék lista sora: a szerkezet a style.css-ben, itt a megjelenés */
+.modernui .termeklista-nev.mattable-editlink.ui-button {
+    padding: .25em .7em;
+    font-size: 1.05em;
+}
+
+.modernui .termeklista-kep img {
+    border: 1px solid var(--mkw-border);
+    border-radius: var(--mkw-radius-sm);
+    background: #fff;
+}
+
+.modernui .termeklista-cimke {
+    border-color: var(--mkw-border-strong);
+    border-radius: 999px;
+    background: var(--mkw-surface-2);
+}
+
+.modernui .termeklista-jellemzok a.termeklista-kapcsolo {
+    padding: 1px 8px;
+    border-color: var(--mkw-border-strong);
+    border-radius: var(--mkw-radius-sm);
+    color: var(--mkw-muted);
+    font-size: .9em;
+    text-decoration: none;
+}
+
+.modernui .termeklista-jellemzok a.termeklista-kapcsolo:hover {
+    border-color: var(--mkw-accent-border);
+    color: var(--mkw-text);
+}
+
+/* a bekapcsolt jelölés általános szabálya (a.ui-state-hover) csak a színeket adja, a forma ugyanaz marad */
+.modernui .termeklista-jellemzok a.termeklista-kapcsolo.ui-state-hover {
+    padding: 1px 8px;
+}
+
 /* Bizonylattétel rögzítő: a szerkezet a style.css-ben, itt a megjelenés */
 .modernui .tetel-fej {
     padding-bottom: 12px;
