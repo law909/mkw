@@ -51,8 +51,7 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Címkecsoport')}</th>
+                <th>{at('Címke')}</th>
                 <th>{at('Hol látható')}</th>
             </tr>
             </thead>
