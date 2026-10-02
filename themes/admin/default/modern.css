@@ -987,6 +987,58 @@ body.modernui {
     border-color: var(--mkw-accent-border);
 }
 
+/* Bizonylat lista sora: a szerkezet a style.css-ben, itt a megjelenés */
+.modernui .bizlista-szam.mattable-editlink.ui-button {
+    padding: .2em .7em;
+    font-size: 1.1em;
+}
+
+.modernui .bizlista-jelveny {
+    border-color: var(--mkw-accent-border);
+    border-radius: 999px;
+    background: var(--mkw-accent-soft);
+    color: var(--mkw-accent);
+    font-weight: 600;
+}
+
+.modernui .bizlista-muveletek .ui-button {
+    padding: .25em .5em;
+}
+
+.modernui .bizlista-cimke,
+.modernui .bizlista-halvany,
+.modernui .bizlista-adatok dt,
+.modernui .bizlista-meta,
+.modernui .bizlista-kapcs-cim {
+    color: var(--mkw-muted);
+    opacity: 1;
+}
+
+.modernui .bizlista-kapcs-cim {
+    font-size: .85em;
+}
+
+.modernui .bizlista-jelzesek,
+.modernui .bizlista-hiba {
+    padding: 6px 8px;
+    border-left: 3px solid var(--mkw-danger);
+    border-radius: var(--mkw-radius-sm);
+    background: var(--mkw-danger-soft);
+}
+
+.modernui .bizlista-nav {
+    font-weight: 600;
+}
+
+.modernui .bizlista-osszegek td:first-child {
+    color: var(--mkw-muted);
+}
+
+.modernui .bizlista-osszegek .mattable-important td {
+    color: var(--mkw-text);
+    font-size: 1.05em;
+}
+
 /* Bizonylattétel rögzítő: a szerkezet a style.css-ben, itt a megjelenés */
 .modernui .tetel-fej {
     padding-bottom: 12px;
@@ -1629,6 +1681,12 @@ body.modernui {
     /* az asztali 20em-es minimum a 16px-es mobil betűvel szélesebb lenne a képernyőnél */
     .modernui .tetel-valtozat select {
         width: 100%;
+        min-width: 0;
+    }
+
+    .modernui .bizlista-fo,
+    .modernui .bizlista-adatok,
+    .modernui .bizlista-kapcs {
         min-width: 0;
     }
 

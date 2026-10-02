@@ -750,7 +750,7 @@
             $(setup.table + ' > tbody > tr').addClass('ui-widget-content');
             // the mobile card layout (modern.css) shows each cell's column header above it
             const columnLabels = table.children('thead').children('tr').first().children('th')
-                .map((i, th) => $(th).text().trim()).get();
+                .map((i, th) => th.dataset.oszlop || $(th).text().trim()).get();
             $(setup.table + ' > tbody > tr').each(function () {
                 $(this).children('td.cell').each(function () {
                     const label = columnLabels[this.cellIndex];

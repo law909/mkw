@@ -721,6 +721,140 @@ select.tetelszamhiba,
     grid-column: 2 / -1;
 }
 
+/* Bizonylat lista sora (bizonylatfejlista_tbody_tr.tpl): szám és műveletek, partner, felirat–érték párok */
+/* a fejlécszövegek törhetnek, különben 1366 px-en a táblázat szélesebb a panelnél */
+.bizlista-tabla th.mattable-thcolumn {
+    white-space: normal;
+}
+
+.bizlista-fo {
+    min-width: 14em;
+}
+
+/* a leghosszabb státusznév ne szélesítse az oszlopot */
+#mattable-body .js-bizonylatstatuszedit {
+    max-width: 11em;
+}
+
+.bizlista-fej {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+    margin-bottom: 6px;
+}
+
+.bizlista-szam {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+.bizlista-jelveny {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    font-size: .85em;
+}
+
+.bizlista-muveletek {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-bottom: 8px;
+}
+
+.bizlista-muveletek > a {
+    margin: 0;
+}
+
+/* a hosszú e-mail-cím törhet, ne ez szabja meg az oszlop szélességét */
+.bizlista-partner {
+    overflow-wrap: anywhere;
+}
+
+.bizlista-partner > div {
+    margin: 1px 0;
+}
+
+.bizlista-partnernev {
+    font-size: 1.05em;
+}
+
+.bizlista-cimke,
+.bizlista-halvany,
+.bizlista-adatok dt {
+    opacity: .7;
+}
+
+/* a min-width nélkül a táblázat betűnyire nyomná az értékoszlopot */
+.bizlista-adatok {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 2px 10px;
+    min-width: 12em;
+    margin: 6px 0 0;
+}
+
+/* a pár elemei közvetlenül a rácsba kerülnek; az üres értékű pár nem látszik */
+.bizlista-sor {
+    display: contents;
+}
+
+.bizlista-sor:has(> dd:empty) {
+    display: none;
+}
+
+.bizlista-adatok dd {
+    margin: 0;
+}
+
+.bizlista-sor-teljes > dd {
+    grid-column: 1 / -1;
+}
+
+.bizlista-meta {
+    font-size: .9em;
+}
+
+.bizlista-jelzesek,
+.bizlista-hiba {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 6px;
+}
+
+.bizlista-hivatkozas {
+    margin-left: 8px;
+}
+
+.bizlista-kapcs {
+    min-width: 10em;
+}
+
+.bizlista-kapcs + .bizlista-kapcs {
+    margin-top: 8px;
+}
+
+.bizlista-kapcs-tetel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 6px;
+}
+
+.bizlista-halvany {
+    font-size: .9em;
+}
+
+.bizlista-megjegyzes {
+    margin-top: 4px;
+}
+
+.bizlista-osszegek td {
+    padding: 1px 4px;
+}
+
 /* Bizonylattétel rögzítő (bizonylattetelkarb.tpl): fejlécben a termék, alatta a mezők, legalul az árak és a raktárkészlet egymás mellett */
 .tetel-fej {
     display: flex;

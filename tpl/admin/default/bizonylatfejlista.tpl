@@ -222,7 +222,7 @@
             </select>
             <a href="#" class="mattable-batchbtn">{at('Futtat')}</a>
         </div>
-        <table id="mattable-table" data-noversion="{$noversion}">
+        <table id="mattable-table" class="bizlista-tabla" data-noversion="{$noversion}">
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
@@ -235,11 +235,11 @@
                 {if ($showmunkalapadatok)}
                     <th>{at('Munkalap')}</th>
                 {/if}
-                <th></th>
-                <th></th>
+                <th>{at('Bizonylat')}</th>
+                <th>{at('Adatok')}</th>
                 <th>{at('Kapcsolódó bizonylatok')}</th>
-                <th>{at('Dokumentumok')}</th>
-                <th class="js-sumcol"></th>
+                {* a fejlécbe a lista az összesítést írja, a kártyás nézet felirata ezért a data-oszlop *}
+                <th class="js-sumcol" data-oszlop="{at('Összegek')}"></th>
                 {if ($setup.osztottfizmod)}
                     <th></th>
                 {/if}
