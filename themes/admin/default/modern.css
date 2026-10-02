@@ -1690,6 +1690,11 @@ body.modernui {
         min-width: 0;
     }
 
+    .modernui #mattable-body .js-bizonylatstatuszedit {
+        width: 100%;
+        max-width: none;
+    }
+
     /* mobilon mindig két oszlop, a telefon szélességétől függetlenül */
     .modernui .bizonylatosszesito {
         display: grid;
