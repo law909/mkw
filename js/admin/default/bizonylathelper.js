@@ -759,6 +759,14 @@ let bizonylathelper = function ($) {
             menny = $('input[name="tetelmennyiseg_' + sorid + '"]');
         $('input[name="tetelgyujto_' + sorid + '"]').val(gyujto || 0);
         $('input[name="tetelsordoboz_' + sorid + '"]').val(sordoboz || 0);
+        // csak az a darabszám írható, amelyik kiszerelés megvan a terméknek; a letiltott 0, mert a mentés is annak veszi
+        [['tetelgyujtomennyiseg_', gyujto], ['tetelsordobozmennyiseg_', sordoboz]].forEach(([name, ertek]) => {
+            const $input = $('input[name="' + name + sorid + '"]');
+            $input.prop('disabled', !(ertek * 1));
+            if (!(ertek * 1)) {
+                $input.val(0);
+            }
+        });
         if ((gyujto * 1) || (sordoboz * 1)) {
             row.show();
         } else {

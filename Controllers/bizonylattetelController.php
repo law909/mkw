@@ -67,8 +67,10 @@ class bizonylattetelController extends \mkwhelpers\MattableController
 
         $term = $t->getTermek();
         $x['kellegyediazonosito'] = $term ? (bool)$term->getKellegyediazonosito() : false;
-        // a gyűjtő/sor-doboz mezők a termék kiszerelésétől látszanak, nem a tételben eltároltól
-        $x['termekkiszereles'] = $term && ((float)$term->getGyujto() || (float)$term->getSordoboz());
+        // a gyűjtő/sor-doboz mezők a termék kiszerelésétől látszanak és írhatók, nem a tételben eltároltól
+        $x['termekgyujto'] = $term ? (float)$term->getGyujto() : 0;
+        $x['termeksordoboz'] = $term ? (float)$term->getSordoboz() : 0;
+        $x['termekkiszereles'] = $x['termekgyujto'] || $x['termeksordoboz'];
         // a költségszámla importja minden tételre ezt a gyűjtőterméket teszi, az ár viszont a
         // bejövő számláról jön: termékcserekor nem szabad felülírni (lásd bizonylathelper.js)
         $x['koltsegtermek'] = $term && \mkw\store::getParameter(\mkw\consts::KoltsegTermek) == $term->getId();

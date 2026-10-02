@@ -127,14 +127,15 @@
         {mezocsoport cim="Mennyiség"}
             {$_kiszerelesrejtve = !($tetel.termekkiszereles|default:false)}
             {mezo cimke="Gyűjtő" for="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesrow_{$tetel.id}" rejtve=$_kiszerelesrejtve}
+                {* letiltva nem küldi a böngésző, a mentés ilyenkor 0-t ír: amelyik kiszerelés nincs meg a terméknek, annak 0 a darabszáma *}
                 <input id="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelgyujtomennyiseg_{$tetel.id}" type="number"
-                       step="any" value="{$tetel.gyujtomennyiseg}" size="6">
+                       step="any" value="{$tetel.gyujtomennyiseg}" size="6"{if (!($tetel.termekgyujto|default:0))} disabled{/if}>
                 <input class="js-kiszerelesgyujto" name="tetelgyujto_{$tetel.id}" type="hidden" value="{$tetel.gyujto}">
                 <input class="js-kiszerelessordoboz" name="tetelsordoboz_{$tetel.id}" type="hidden" value="{$tetel.sordoboz}">
             {/mezo}
             {mezo cimke="Sor/doboz" for="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesrow_{$tetel.id}" rejtve=$_kiszerelesrejtve}
                 <input id="SordobozmennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelsordobozmennyiseg_{$tetel.id}" type="number"
-                       step="any" value="{$tetel.sordobozmennyiseg}" size="6">
+                       step="any" value="{$tetel.sordobozmennyiseg}" size="6"{if (!($tetel.termeksordoboz|default:0))} disabled{/if}>
             {/mezo}
             {mezo cimke="Mennyiség" for="MennyisegEdit{$tetel.id}" class="mezo-fontos"}
                 <input id="MennyisegEdit{$tetel.id}" class="js-mennyiseginput mattable-important" name="tetelmennyiseg_{$tetel.id}" type="number"
