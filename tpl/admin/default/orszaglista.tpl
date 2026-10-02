@@ -26,11 +26,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('ISO 3166')}</th>
-                <th>{at('Valutanem')}</th>
-                <th>{at('Áfakulcs')}</th>
-                <th>{at('EU')}</th>
+                <th>{at('Ország')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

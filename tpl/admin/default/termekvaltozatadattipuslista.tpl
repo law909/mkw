@@ -26,7 +26,7 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
+                <th>{at('Adattípus')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

@@ -27,7 +27,7 @@
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Mit')}</th>
-                <th>{at('Mire')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

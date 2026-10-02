@@ -26,11 +26,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Kerekít')}</th>
-                <th>{at('Hivatalos')}</th>
-                <th>{at('Legkisebb címlet')}</th>
-                <th>{at('Bankszámla')}</th>
+                <th>{at('Valutanem')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>
