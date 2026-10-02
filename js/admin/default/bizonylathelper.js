@@ -3513,7 +3513,8 @@ let bizonylathelper = function ($) {
                 })
                 .on('click', '.js-szarmazotobbigomb', function (e) {
                     e.preventDefault();
-                    $(this).closest('.kapcsbiz-szarmazo').find('.js-szarmazotobbi').toggle();
+                    const bizonylat = this.dataset.bizonylat;
+                    $('.js-szarmazotobbi').filter((i, tetel) => tetel.dataset.bizonylat === bizonylat).toggle();
                 })
                 .on('click', '.js-printbizonylat, .js-printbizonylat2, .js-pdf', function (e) {
                     let $this = $(this);

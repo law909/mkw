@@ -287,8 +287,7 @@
         {/strip}
     </td>
     <td class="cell">
-        {* a JS a .kapcsbiz-szarmazo-n belül kapcsolja a .js-szarmazotobbi tételeket *}
-        <div class="kapcsbiz-szulo bizlista-kapcs">
+        <div class="bizlista-kapcs">
             <div class="bizlista-kapcs-cim">{at('Szülő bizonylat')}:{if (!$_egyed.parbizonylat)} <strong>{at('nincs')}</strong>{/if}</div>
             {if ($_egyed.parbizonylat)}
                 <div class="bizlista-kapcs-tetel">
@@ -303,7 +302,7 @@
             {/if}
         </div>
         {if ($_egyed.tarsbizonylat)}
-            <div class="kapcsbiz-szulo bizlista-kapcs">
+            <div class="bizlista-kapcs">
                 <div class="bizlista-kapcs-cim">{at('Társbizonylat')}:</div>
                 <div class="bizlista-kapcs-tetel">
                     {if ($_egyed.tarsbizonylat.listaurl)}
@@ -316,12 +315,13 @@
                 </div>
             </div>
         {/if}
-        <div class="kapcsbiz-szarmazo bizlista-kapcs">
+        <div class="bizlista-kapcs">
             <div class="bizlista-kapcs-cim">{at('Keletkezett bizonylatok')}:{if (!$_egyed.szarmazobizonylatcount)} <strong>{$_egyed.szarmazobizonylatcount}</strong>{/if}</div>
             {if ($_egyed.szarmazobizonylatcount > 0)}
                 {assign var="_rejtettdb" value=$_egyed.szarmazobizonylatcount-$szarmazobizonylatlimit}
                 {foreach $_egyed.szarmazobizonylatok as $_sb}
-                    <div class="bizlista-kapcs-tetel{if ($_sb@index >= $szarmazobizonylatlimit)} js-szarmazotobbi{/if}"{if ($_sb@index >= $szarmazobizonylatlimit)} style="display:none"{/if}>
+                    {* a "..." gomb a data-bizonylat alapján kapcsolja a rejtett tételeket, nem a DOM-szerkezet alapján *}
+                    <div class="bizlista-kapcs-tetel{if ($_sb@index >= $szarmazobizonylatlimit)} js-szarmazotobbi{/if}"{if ($_sb@index >= $szarmazobizonylatlimit)} data-bizonylat="{$_egyed.id|escape}" style="display:none"{/if}>
                         {if ($_sb.listaurl)}
                             <a href="{$_sb.listaurl}" target="_blank" title="{at('Ugrás a bizonylathoz')}">{$_sb.id}</a>
                         {else}
@@ -332,7 +332,7 @@
                     </div>
                 {/foreach}
                 {if ($_rejtettdb > 0)}
-                    <a class="js-szarmazotobbigomb" href="#" title="{at('További')} {$_rejtettdb} {at('bizonylat')}">...</a>
+                    <a class="js-szarmazotobbigomb" href="#" data-bizonylat="{$_egyed.id|escape}" title="{at('További')} {$_rejtettdb} {at('bizonylat')}">...</a>
                 {/if}
             {/if}
         </div>
