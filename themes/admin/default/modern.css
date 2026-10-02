@@ -446,6 +446,8 @@ body.modernui {
     position: sticky;
     top: var(--mkw-topbar-height);
     z-index: 49;
+    /* a sötét témában a danger-soft áttetsző */
+    background: linear-gradient(var(--mkw-danger-soft), var(--mkw-danger-soft)), var(--mkw-surface);
     box-sizing: border-box;
     height: var(--mkw-navriasztas-height);
     padding-top: 0;
