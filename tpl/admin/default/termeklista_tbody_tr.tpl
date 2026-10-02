@@ -8,6 +8,14 @@
             <div class="termeklista-cim">
                 <a class="mattable-editlink termeklista-nev" href="#" data-termekid="{$_termek.id}" data-oper="edit"
                    title="{at('Szerkeszt')}">{if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace2026' || $maintheme == 'superzonehu')}{$_termek.cikkszam}&nbsp;{/if}{$_termek.nev}</a>
+                <div class="bizlista-muveletek">
+                    {if (haveJog(20))}
+                        <a class="js-karton" href="#" data-termekid="{$_termek.id}" title="{at('Karton')}" target="_blank"><span
+                                class="ui-icon ui-icon-folder-collapsed"></span></a>
+                    {/if}
+                    <a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{at('Töröl')}"><span
+                            class="ui-icon ui-icon-circle-minus"></span></a>
+                </div>
                 <div class="bizlista-halvany">
                     {$_termek.termekfa1nev}{if ($_termek.termekfa1nev && $_termek.termekfa2nev)} · {/if}{$_termek.termekfa2nev}{if (($_termek.termekfa1nev || $_termek.termekfa2nev) && $_termek.termekfa3nev)} · {/if}{$_termek.termekfa3nev}
                 </div>
@@ -19,14 +27,6 @@
                     </div>
                 {/if}
             </div>
-        </div>
-        <div class="bizlista-muveletek">
-            {if (haveJog(20))}
-                <a class="js-karton" href="#" data-termekid="{$_termek.id}" title="{at('Karton')}" target="_blank"><span
-                        class="ui-icon ui-icon-folder-collapsed"></span></a>
-            {/if}
-            <a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a>
         </div>
         {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
         {strip}
