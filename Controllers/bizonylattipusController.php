@@ -54,7 +54,8 @@ class bizonylattipusController extends \mkwhelpers\MattableController
         }
         $bsc = new bizonylatstatuszController();
         return $this->getEntityFieldsArray($t, [
-            'pdflevelsablonlist' => (new emailtemplateController())->getSelectList($t->getPdflevelsablonId()),
+            'pdflevelsablonnev' => $t->getPdflevelsablon()?->getNev(),
+            'pdflevelsablonlist' => $forKarb ? (new emailtemplateController())->getSelectList($t->getPdflevelsablonId()) : [],
             'rogzitvestatuszlist' => $bsc->getSelectList($t->getRogzitvestatuszId(), null, null, $t->getId()),
             'teljesithetostatuszlist' => $bsc->getSelectList($t->getTeljesithetostatuszId(), null, null, $t->getId()),
             'backorderstatuszlist' => $bsc->getSelectList($t->getBackorderstatuszId(), null, null, $t->getId()),

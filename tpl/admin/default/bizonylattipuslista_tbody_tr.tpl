@@ -18,6 +18,7 @@
             <div class="bizlista-sor"><dt>{at('Irány')}:</dt><dd>{if ($_egyed.irany > 0)}{at('bevét')}{elseif ($_egyed.irany < 0)}{at('kivét')}{else}{at('nincs')}{/if}</dd></div>
             <div class="bizlista-sor"><dt>{at('Nyomtatási forma')}:</dt><dd>{$_egyed.tplname}</dd></div>
             <div class="bizlista-sor"><dt>{at('2. nyomtatási forma')}:</dt><dd>{$_egyed.tplname2}{if ($_egyed.tplname2)} ({$_egyed.tplcaption2}){/if}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Email küldés levele')}:</dt><dd>{$_egyed.pdflevelsablonnev}</dd></div>
         </dl>
         {/strip}
     </td>
