@@ -1626,6 +1626,12 @@ body.modernui {
         flex: 1 1 100%;
     }
 
+    /* az asztali 20em-es minimum a 16px-es mobil betűvel szélesebb lenne a képernyőnél */
+    .modernui .tetel-valtozat select {
+        width: 100%;
+        min-width: 0;
+    }
+
     /* mobilon mindig két oszlop, a telefon szélességétől függetlenül */
     .modernui .bizonylatosszesito {
         display: grid;
