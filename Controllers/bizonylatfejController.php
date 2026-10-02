@@ -856,6 +856,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
     protected function setFields(\Entities\Bizonylatfej $obj, $parancs)
     {
+        if (in_array($parancs, [$this->addOperation, $this->addreopenOperation, $this->inheritOperation], true)) {
+            $this->checkCanCreate($this->biztipus);
+        }
         $partnerkod = $this->params->getIntRequestParam('partner');
 
         if ($partnerkod == -1) {
@@ -1162,11 +1165,6 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         switch ($parancs) {
             case $this->inheritOperation:
-                if (!\mkw\store::canCreateBizonylat($this->biztipusid)) {
-                    throw new \mkwhelpers\Exceptions\UserMessageException(
-                        sprintf(t('Amíg van beküldetlen %s, nem képezhető újabb.'), $this->biztipus->getNev())
-                    );
-                }
                 $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
                 if ($parentbiz) {
                     if ($parentbiz->getRontott() || $parentbiz->getStorno() || $parentbiz->getStornozott()) {
@@ -1917,7 +1915,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $mehet = false;
             $view->setVar('noinherit', true);
         }
-        if (($oper === $this->inheritOperation) && $mehet && !\mkw\store::canCreateBizonylat($this->biztipusid)) {
+        if (in_array($oper, [$this->addOperation, $this->inheritOperation], true) && $mehet
+            && !\mkw\store::canCreateBizonylat($this->biztipusid)) {
             $mehet = false;
             $view->setVar('bekuldetlentipus', $this->biztipus->getNev());
         }
@@ -2355,6 +2354,16 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         \unlink($filepath);
     }
 
+    /** Szigorú módban nem készülhet új bizonylat abból a NAV-típusból, amelyikből van beküldetlen. */
+    private function checkCanCreate(?Bizonylattipus $biztipus)
+    {
+        if ($biztipus && !\mkw\store::canCreateBizonylat($biztipus->getId())) {
+            throw new \mkwhelpers\Exceptions\UserMessageException(
+                sprintf(t('Amíg van beküldetlen %s, nem képezhető újabb.'), $biztipus->getNev())
+            );
+        }
+    }
+
     public function quickAdd()
     {
         $biztipus = $this->params->getStringRequestParam('biztipus');
@@ -2381,6 +2390,8 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $penzirany = -1;
                 break;
         }
+
+        $this->checkCanCreate($obj->getBizonylattipus());
 
         $obj->setPersistentData(); // a biz. állandó adatait tölti fel (biz.tip-ból, tulaj adatok)
 
