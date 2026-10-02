@@ -1473,7 +1473,7 @@ class Bizonylatfej
         $fdspar = new \stdClass();
         $fdspar->StringValue = $this->getPartneremail();
         $sm2par = new \stdClass();
-        $sm2par->StringValue = $this->getPartnertelefon();
+        $sm2par->StringValue = $this->getGLSSMSTelefon();
         // a GLS az irányítószámot az országhoz validálja: fix HU-val a külföldi cím "Invalid data in 'Delivery Zip Code'"
         $szallorszag = ($this->getSzallirszam() ? $this->getPartnerszallorszag() : $this->getPartnerorszag())
             ?: $this->getPartnerSzallorszagOrOrszag();
@@ -1509,7 +1509,7 @@ class Bizonylatfej
             'ServiceList' => [
             ]
         ];
-        if (\mkw\store::getParameter(\mkw\consts::GLSSM2) && $this->getPartnertelefon()) {
+        if (\mkw\store::getParameter(\mkw\consts::GLSSM2) && $sm2par->StringValue) {
             $result['ServiceList'][] = [
                 'Code' => 'SM2',
                 'SM2Parameter' => $sm2par
@@ -1529,6 +1529,17 @@ class Bizonylatfej
             ];
         }
         return $this->decodeCourierPayload($result);
+    }
+
+    /** Az SMS-értesítés (SM2) száma +-os nemzetközi alakban, vagy null, ha nem mobilszám: vezetékesre a GLS elutasítja. */
+    private function getGLSSMSTelefon(): ?string
+    {
+        $telefon = preg_replace('/[^0-9+]/', '', (string)$this->getPartnertelefon());
+        $telefon = preg_replace(['/^00/', '/^06/', '/^36(?=\d{9}$)/'], ['+', '+36', '+36'], $telefon);
+        if (str_starts_with($telefon, '+36')) {
+            return preg_match('/^\+36(20|30|31|50|70)\d{7}$/', $telefon) ? $telefon : null;
+        }
+        return preg_match('/^\+\d{8,15}$/', $telefon) ? $telefon : null;
     }
 
     /**
