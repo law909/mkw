@@ -1769,6 +1769,39 @@ body.modernui {
         flex-basis: 100%;
     }
 
+    /* a rácsra át nem írt karbantartók címke–mező táblázatai is így törnek; az adattáblázat (th), a mátrix és a CKEditor táblázat marad */
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)),
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody,
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr,
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr > td {
+        display: block;
+    }
+
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr > td {
+        padding: 2px 0;
+    }
+
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr > td:first-child:not(:last-child) {
+        padding-top: 8px;
+    }
+
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr > td:empty {
+        display: none;
+    }
+
+    /* címke–jelölőnégyzet párok: a jelölő a címkéje mellett marad */
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr:has(> td:nth-child(2) > input[type="checkbox"]:only-child):not(:has(> td:nth-child(even) > :not(input[type="checkbox"]), > td:nth-child(even) > input:not(:only-child))) {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        padding-top: 8px;
+    }
+
+    .modernui .mattkarb-page table:not(.mattkarb-racs, .mattkarb-sor, .mattkarb-matrix, .tetel-arak, [class*="cke"], [class*="cke"] table, :has(> thead, > tbody > tr > th)) > tbody > tr:has(> td:nth-child(2) > input[type="checkbox"]:only-child):not(:has(> td:nth-child(even) > :not(input[type="checkbox"]), > td:nth-child(even) > input:not(:only-child))) > td {
+        padding: 0;
+    }
+
     .modernui .mattkarb-szakaszcim {
         max-width: none;
     }
