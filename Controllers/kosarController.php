@@ -140,7 +140,7 @@ class kosarController extends \mkwhelpers\MattableController
                     $megingyeneshez = $hatar - $osszeg;
                 }
                 return [
-                    'termekdb' => $m[0][1],
+                    'termekdb' => (float)$m[0][1],
                     'osszeg' => $osszeg,
                     'megingyeneshez' => $megingyeneshez,
                     'valutanem' => $valutanem
