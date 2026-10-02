@@ -173,6 +173,23 @@ class Bizonylattipus
      */
     public const SZAMLATIPUSOK = ['szamla', 'esetiszamla', 'keziszamla'];
 
+    /** A származtató gombok sablonváltozója => a létrehozott bizonylat típusa. */
+    private const INHERITBUTTONS = [
+        'showszamlabutton' => 'szamla',
+        'showkeziszamlabutton' => 'keziszamla',
+        'showszallitobutton' => 'szallito',
+        'showkivetbutton' => 'kivet',
+        'showbevetbutton' => 'bevet',
+        'showszallmegrbutton' => 'szallmegr',
+        'showboltieladasbutton' => 'boltieladas',
+        'showautokiserobutton' => 'autokisero',
+        'showmegrendelesbutton' => 'megrendeles',
+        'showb2bmegrendelesbutton' => 'b2brendeles',
+        'showwebshopmegrendelesbutton' => 'webshopbiz',
+        'showelolegbutton' => 'elolegszamla',
+        'showcsomagbutton' => 'csomag',
+    ];
+
     /** A szállítói megrendelés típusa: az ezen szereplő áru még úton van. */
     public const SZALLITOIMEGRENDELES = 'szallmegr';
 
@@ -193,7 +210,7 @@ class Bizonylattipus
 
     public function getTemplateVars()
     {
-        return [
+        $vars = [
             'showteljesites' => $this->getShowteljesites(),
             'showesedekesseg' => $this->getShowesedekesseg(),
             'showhatarido' => $this->getShowhatarido(),
@@ -243,6 +260,12 @@ class Bizonylattipus
             // a pénztár csak az automatikus pénztárbizonylatot képző típusokon szerkeszthető
             'showpenztar' => $this->getAutopenztarbizonylat(),
         ];
+        // szigorú módban a beküldetlen típusba származtató gomb sem látszik, ahogy az új felvétel sem
+        $tiltott = \mkw\store::isSzigoru() ? (new \Services\BizonylatNAVService())->getBekuldetlenTipusok() : [];
+        foreach (self::INHERITBUTTONS as $key => $tipusid) {
+            $vars[$key] = $vars[$key] && !in_array($tipusid, $tiltott, true);
+        }
+        return $vars;
     }
 
     public function getId()
