@@ -3,7 +3,7 @@
     <tr>
         <td width="60mm" class="topalign">
             Összes mennyiség / Total quantity: {bizformat($summennyiseg)}
-            {if (!$nemkellfizetesireszlet)}
+            {if (!($nemkellfizetesireszlet|default:false))}
                 {if ($egyed.esedekesseg1str || $egyed.esedekesseg2str || $egyed.esedekesseg3str)}
                     <br/>
                     <br/>
@@ -75,19 +75,22 @@
                         <td class="textalignright">{bizformat($e.brutto)}</td>
                     </tr>
                 {/foreach}
-                {if (!$nemkellfizetendo)}
+            </table>
+            {if (!($nemkellfizetendo|default:false))}
+                {* külön tábla: a fenti colspan-os cellában az mPDF nem tördeli a hosszú kiírt összeget, hanem a margón túlra szélesít *}
+                <table cellspacing="0" cellpadding="0" border="0" style="width: 130mm;">
                     <tr>
-                        <td colspan="4" class="textalignright osszesen bold" style="padding-top: 3mm;">
-                            azaz {$egyed.fizetendokiirva} {$egyed.valutanemnev}
+                        <td class="textalignright osszesen bold" style="padding-top: 3mm;">
+                            azaz {$egyed.fizetendokiirva}&nbsp;{$egyed.valutanemnev}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="textalignright osszesen bold">
+                        <td class="textalignright osszesen bold">
                             Fizetendő végösszeg / Total value to pay: {bizformat($egyed.fizetendo)} {$egyed.valutanemnev}
                         </td>
                     </tr>
-                {/if}
-            </table>
+                </table>
+            {/if}
         </td>
     </tr>
 </table>
