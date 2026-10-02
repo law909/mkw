@@ -124,12 +124,13 @@ class BizonylatNAVService
         return '';
     }
 
-    /** A riasztás közös szűrője: az online adatszolgáltatás kezdete óta kelt számlák. */
+    /** A riasztás közös szűrője: az online adatszolgáltatás kezdete óta kelt, beküldendő bizonylatok (lásd getBekuldendo). */
     private function alertFilter()
     {
         $filter = new FilterDescriptor();
         $filter->addFilter('kelt', '>=', self::RIASZTASKEZDET);
-        $filter->addFilter('bizonylattipus', 'IN', ['szamla', 'esetiszamla']);
+        $filter->addFilter('navbekuldendo', '=', true);
+        $filter->addSql('_xx.bizonylattipus IN (SELECT _bt FROM Entities\Bizonylattipus _bt WHERE _bt.navbekuldendo = 1)');
         return $filter;
     }
 
