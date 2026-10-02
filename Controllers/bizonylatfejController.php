@@ -1769,7 +1769,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $this->sendPDFTo($this->params->getStringRequestParam('id'));
     }
 
-    /** A bizonylat PDF-je a partner email címére, a számlalevél sablonnal. */
+    /** A bizonylat PDF-je a partner email címére, a bizonylattípus "Email küldés levele" sablonjával. */
     public function sendPDFTo($id)
     {
         /** @var \Entities\Bizonylatfej $o */
@@ -1777,7 +1777,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if ($o) {
             $email = $o->getPartneremail();
             if ($email) {
-                $emailtpl = $this->getRepo(Emailtemplate::class)->find(\mkw\store::getParameter(\mkw\consts::SzamlalevelSablon));
+                $emailtpl = $o->getBizonylattipus()?->getPdflevelsablon();
                 $pdf = $this->getPrintService()->createEngine($id);
                 if ($pdf && $emailtpl) {
                     $filepath = \mkw\store::storagePath(\mkw\store::urlize($id) . '.pdf');

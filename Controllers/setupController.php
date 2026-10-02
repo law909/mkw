@@ -185,10 +185,6 @@ class setupController extends \mkwhelpers\Controller
         $szallstatlap = new statlapController();
         $view->setVar('szallitasifeltetelstatlaplist', $szallstatlap->getSelectList(($p ? $p->getErtek() : 0)));
 
-        $p = $repo->find(\mkw\consts::SzamlalevelSablon);
-        $szamlalevelsablon = new emailtemplateController();
-        $view->setVar('szamlalevelsablonlist', $szamlalevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
-
         $p = $repo->find(\mkw\consts::KonyvelolevelSablon);
         $konyvelolevelsablon = new emailtemplateController();
         $view->setVar('konyvelolevelsablonlist', $konyvelolevelsablon->getSelectList(($p ? $p->getErtek() : 0)));
@@ -1968,12 +1964,6 @@ class setupController extends \mkwhelpers\Controller
             $this->setObj(\mkw\consts::JogaElmaradasKonyvelonekSablon, $tanarelszsablon->getId());
         } else {
             $this->setObj(\mkw\consts::JogaElmaradasKonyvelonekSablon, '');
-        }
-        $szamlalevelsablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('szamlalevelsablon', 0));
-        if ($szamlalevelsablon) {
-            $this->setObj(\mkw\consts::SzamlalevelSablon, $szamlalevelsablon->getId());
-        } else {
-            $this->setObj(\mkw\consts::SzamlalevelSablon, '');
         }
 
         $eesablon = \mkw\store::getEm()->getRepository(Emailtemplate::class)->find($this->params->getIntRequestParam('ertekelesertesitosablon', 0));

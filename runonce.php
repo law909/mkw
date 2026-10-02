@@ -3212,6 +3212,18 @@ if ($DBVersion < '0218' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0218');
 }
 
+if ($DBVersion < '0219' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0218') {
+    // a Beállítások "Számlalevél sablon"-ja a számla bizonylattípus saját email-levele lett, a paraméter kivezetve
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'UPDATE bizonylattipus SET pdflevelsablon_id ='
+        . ' (SELECT e.id FROM emailtemplate e INNER JOIN parameterek p ON p.ertek = e.id WHERE p.id = "szamlalevelsablon")'
+        . ' WHERE id = "szamla" AND pdflevelsablon_id IS NULL'
+    );
+    $conn->executeStatement('DELETE FROM parameterek WHERE id = "szamlalevelsablon"');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0219');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

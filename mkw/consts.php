@@ -178,7 +178,6 @@ class consts
     const ElallasElismervenySablon = 'elallaselismervenysablon';
     const PartnerJelszoSablon = 'partnerjelszosablon';
     const SzallitasiFeltetelSablon = 'szallfeltsablon';
-    const SzamlalevelSablon = 'szamlalevelsablon';
     const KonyvelolevelSablon = 'konyvelolevelsablon';
     const KonyveloEmail = 'konyveloemail';
 

@@ -241,7 +241,15 @@
                     <tr>
                         <td><label for="ShowpdfEdit">PDF / email küldés:</label></td>
                         <td><input id="ShowpdfEdit" name="showpdf" type="checkbox"{if ($egyed.showpdf)} checked="checked"{/if}></td>
-                        <td colspan="2"></td>
+                        <td><label for="PdflevelsablonEdit">{at('Email küldés levele')}:</label></td>
+                        <td>
+                            <select id="PdflevelsablonEdit" name="pdflevelsablon">
+                                <option value="">{at('nincs (nem küldhető emailben)')}</option>
+                                {foreach $egyed.pdflevelsablonlist as $_sablon}
+                                    <option value="{$_sablon.id}"{if ($_sablon.selected)} selected="selected"{/if}>{$_sablon.caption}</option>
+                                {/foreach}
+                            </select>
+                        </td>
                     </tr>
                 </tbody>
             </table>

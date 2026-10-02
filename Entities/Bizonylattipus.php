@@ -149,6 +149,13 @@ class Bizonylattipus
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showmunkalapadatok = false;
     /**
+     * A "Küldés emailben" levele (a bizonylat PDF-je mellékletként); üresen a típus bizonylatai így nem küldhetők.
+     *
+     * @ORM\ManyToOne(targetEntity="Emailtemplate")
+     * @ORM\JoinColumn(name="pdflevelsablon_id", referencedColumnName="id",nullable=true,onDelete="set null")
+     */
+    private $pdflevelsablon;
+    /**
      * A típus saját "rögzítve", "teljesíthető" és "backorder" státusza; üresen a Beállítások
      * szerinti közös státusz érvényes (getRogzitveStatuszOrDefault() és társai).
      *
@@ -248,6 +255,7 @@ class Bizonylattipus
             'showfoxpostterminaleditor' => $this->getShowfoxpostterminaleditor(),
             'showfelhasznalo' => $this->getShowfelhasznalo(),
             'showpdf' => $this->getShowpdf(),
+            'showemailpdf' => $this->getShowpdf() && $this->pdflevelsablon,
             'shownavallapot' => $this->getNavbekuldendo(),
             'showforditottadozas' => $this->getId() === 'szamla' || $this->getId() === 'esetiszamla',
             'showrendszeres' => $this->getId() === 'bizsablon',
@@ -973,6 +981,21 @@ class Bizonylattipus
     public function setShowgarancialisadatok($showgarancialisadatok): void
     {
         $this->showgarancialisadatok = $showgarancialisadatok;
+    }
+
+    public function getPdflevelsablon(): ?Emailtemplate
+    {
+        return $this->pdflevelsablon;
+    }
+
+    public function getPdflevelsablonId()
+    {
+        return $this->pdflevelsablon?->getId();
+    }
+
+    public function setPdflevelsablon(?Emailtemplate $val): void
+    {
+        $this->pdflevelsablon = $val;
     }
 
     public function getRogzitvestatusz(): ?Bizonylatstatusz
