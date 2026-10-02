@@ -296,4 +296,34 @@ class szallitasimodController extends \mkwhelpers\MattableController
         echo $ret;
     }
 
+    public function setflag()
+    {
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        /** @var \Entities\Szallitasimod $obj */
+        $obj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($obj) {
+            switch ($this->params->getStringRequestParam('flag')) {
+                case 'webes':
+                    $obj->setWebes($kibe);
+                    break;
+                case 'webes2':
+                    $obj->setWebes2($kibe);
+                    break;
+                case 'webes3':
+                    $obj->setWebes3($kibe);
+                    break;
+                case 'webes4':
+                    $obj->setWebes4($kibe);
+                    break;
+                case 'vanszallitasiktg':
+                    $obj->setVanszallitasiktg($kibe);
+                    break;
+                case 'csomagpont':
+                    $obj->setCsomagpont($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
 }

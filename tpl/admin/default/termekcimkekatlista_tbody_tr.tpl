@@ -14,8 +14,13 @@
         {strip}
         <dl class="bizlista-adatok">
             <div class="bizlista-sor"><dt>{at('Sorrend')}:</dt><dd>{$_egyed.sorrend}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Látható')}:</dt><dd>{if ($_egyed.lathato)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
         </dl>
         {/strip}
+    </td>
+    <td class="cell">
+        {* a bekapcsolt állapot jele a ui-state-hover, a termekcimkekat.js ezt váltja *}
+        <div class="bizlista-kapcsolocsoport">
+            <a href="#" data-id="{$_egyed.id}" data-flag="lathato" class="js-flagcheckbox bizlista-kapcsolo{if ($_egyed.lathato)} ui-state-hover{/if}">{at('Látható')}</a>
+        </div>
     </td>
 </tr>

@@ -173,4 +173,20 @@ class termekcimkekatController extends \mkwhelpers\MattableController
         unset($sid);
         return $res;
     }
+
+    public function setflag()
+    {
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        /** @var \Entities\Termekcimkekat $obj */
+        $obj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($obj) {
+            switch ($this->params->getStringRequestParam('flag')) {
+                case 'lathato':
+                    $obj->setLathato($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
 }

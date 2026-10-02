@@ -36,6 +36,7 @@
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Szállítási mód')}</th>
                 <th>{at('Adatok')}</th>
+                <th>{at('Jellemzők')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

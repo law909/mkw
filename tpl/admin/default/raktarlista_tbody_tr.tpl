@@ -3,9 +3,6 @@
     <td class="cell bizlista-fo">
         <div class="bizlista-fej">
             <a class="mattable-editlink bizlista-nev" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
-            {if ($_egyed.archiv)}
-                <span class="bizlista-jelveny">{at('Inaktív')}</span>
-            {/if}
         </div>
         <div class="bizlista-muveletek">
             <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
@@ -16,10 +13,15 @@
         {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
         {strip}
         <dl class="bizlista-adatok">
-            <div class="bizlista-sor"><dt>{at('Készletet mozgat')}:</dt><dd>{if ($_egyed.mozgat)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Inaktív')}:</dt><dd>{if ($_egyed.archiv)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
             <div class="bizlista-sor"><dt>{at('Idegen kód')}:</dt><dd>{$_egyed.idegenkod}</dd></div>
         </dl>
         {/strip}
+    </td>
+    <td class="cell">
+        {* a bekapcsolt állapot jele a ui-state-hover, a raktar.js ezt váltja *}
+        <div class="bizlista-kapcsolocsoport">
+            <a href="#" data-id="{$_egyed.id}" data-flag="mozgat" class="js-flagcheckbox bizlista-kapcsolo{if ($_egyed.mozgat)} ui-state-hover{/if}">{at('Készletet mozgat')}</a>
+            <a href="#" data-id="{$_egyed.id}" data-flag="archiv" class="js-flagcheckbox bizlista-kapcsolo{if ($_egyed.archiv)} ui-state-hover{/if}">{at('Inaktív')}</a>
+        </div>
     </td>
 </tr>

@@ -116,4 +116,23 @@ class raktarController extends \mkwhelpers\MattableController
         }
         return $res;
     }
+
+    public function setflag()
+    {
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        /** @var \Entities\Raktar $obj */
+        $obj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($obj) {
+            switch ($this->params->getStringRequestParam('flag')) {
+                case 'mozgat':
+                    $obj->setMozgat($kibe);
+                    break;
+                case 'archiv':
+                    $obj->setArchiv($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
 }

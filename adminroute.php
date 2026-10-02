@@ -167,6 +167,7 @@ $router->map('GET', '/admin/raktar/getkarb', 'raktarController#getkarb', 'adminr
 $router->map('GET', '/admin/raktar/viewkarb', 'raktarController#viewkarb', 'adminraktarviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/raktar/save', 'raktarController#save', 'adminraktarsave');
+    $router->map('POST', '/admin/raktar/setflag', 'raktarController#setflag', 'adminraktarsetflag');
 }
 $router->map('GET', '/admin/termekcimkekat/viewlist', 'termekcimkekatController#viewlist', 'admintermekcimkekatviewlist');
 $router->map('GET', '/admin/termekcimkekat/getlistbody', 'termekcimkekatController#getlistbody', 'admintermekcimkekatgetlistbody');
@@ -174,6 +175,7 @@ $router->map('GET', '/admin/termekcimkekat/getkarb', 'termekcimkekatController#g
 $router->map('GET', '/admin/termekcimkekat/viewkarb', 'termekcimkekatController#viewkarb', 'admintermekcimkekatviewkarb');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekcimkekat/save', 'termekcimkekatController#save', 'admintermekcimkekatsave');
+    $router->map('POST', '/admin/termekcimkekat/setflag', 'termekcimkekatController#setflag', 'admintermekcimkekatsetflag');
 }
 $router->map('GET', '/admin/termekvaltozatadattipus/viewlist', 'termekvaltozatadattipusController#viewlist', 'admintermekvaltozatadattipusviewlist');
 $router->map('GET', '/admin/termekvaltozatadattipus/getlistbody', 'termekvaltozatadattipusController#getlistbody', 'admintermekvaltozatadattipusgetlistbody');
@@ -189,6 +191,7 @@ $router->map('GET', '/admin/valutanem/viewkarb', 'valutanemController#viewkarb',
 $router->map('GET', '/admin/valutanem/htmllist', 'valutanemController#htmllist', 'adminvalutanemhtmllist');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/valutanem/save', 'valutanemController#save', 'adminvalutanemsave');
+    $router->map('POST', '/admin/valutanem/setflag', 'valutanemController#setflag', 'adminvalutanemsetflag');
 }
 $router->map('GET', '/admin/vtsz/viewlist', 'vtszController#viewlist', 'adminvtszviewlist');
 $router->map('GET', '/admin/vtsz/getlistbody', 'vtszController#getlistbody', 'adminvtszgetlistbody');
@@ -1288,6 +1291,7 @@ $router->map(
 );
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/szallitasimod/save', 'szallitasimodController#save', 'adminszallitasimodsave');
+    $router->map('POST', '/admin/szallitasimod/setflag', 'szallitasimodController#setflag', 'adminszallitasimodsetflag');
     $router->map('POST', '/admin/szallitasimodhatar/save', 'szallitasimodhatarController#save', 'adminszallitasimodhatarsave');
     $router->map('POST', '/admin/szallitasimodorszag/save', 'szallitasimodorszagController#save', 'adminszallitasimodorszagsave');
     $router->map('POST', '/admin/szallitasimodfizmodnovelo/save', 'szallitasimodfizmodnoveloController#save', 'adminszallitasimodfizmodnovelosave');

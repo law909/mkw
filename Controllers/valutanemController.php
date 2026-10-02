@@ -128,4 +128,23 @@ class valutanemController extends \mkwhelpers\MattableController
         $p = $this->getRepo()->find(store::getParameter(\mkw\consts::Valutanem));
         return $p;
     }
+
+    public function setflag()
+    {
+        $kibe = $this->params->getBoolRequestParam('kibe');
+        /** @var \Entities\Valutanem $obj */
+        $obj = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if ($obj) {
+            switch ($this->params->getStringRequestParam('flag')) {
+                case 'kerekit':
+                    $obj->setKerekit($kibe);
+                    break;
+                case 'hivatalos':
+                    $obj->setHivatalos($kibe);
+                    break;
+            }
+            $this->getEm()->persist($obj);
+            $this->getEm()->flush();
+        }
+    }
 }
