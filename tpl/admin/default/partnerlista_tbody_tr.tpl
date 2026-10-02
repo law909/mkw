@@ -12,11 +12,6 @@
             {if ($_partner.szallito)}
                 <span class="bizlista-jelveny">{at('Beszállító')}</span>
             {/if}
-            {* a bekapcsolt állapot jele a ui-state-hover, a partner.js ezt váltja *}
-            <span class="bizlista-kapcsolocsoport">
-                <a href="#" data-id="{$_partner.id}" data-flag="inaktiv"
-                   class="js-flagcheckbox bizlista-kapcsolo{if ($_partner.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a>
-            </span>
         </div>
         <div class="bizlista-muveletek">
             {if (!$_partner.anonym && !$_partner.anonymizalnikell)}
@@ -57,6 +52,36 @@
         {/if}
     </td>
     <td class="cell">
+        {strip}
+        <dl class="bizlista-adatok">
+            <div class="bizlista-sor"><dt>{at('Partner típus')}:</dt><dd>{$_partner.partnertipusnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Üzletkötő')}:</dt><dd>{$_partner.uzletkotonev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Adószám')}:</dt><dd>{$_partner.adoszam}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Csoportos adószám')}:</dt><dd>{$_partner.csoportosadoszam}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_partner.fizmodnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Szállítási mód')}:</dt><dd>{$_partner.szallitasimodnev}</dd></div>
+            {if ($setup.multilang)}
+                <div class="bizlista-sor"><dt>{at('Bizonylatok nyelve')}:</dt><dd>{$_partner.bizonylatnyelv}</dd></div>
+            {/if}
+            {if ($setup.arsavok)}
+                <div class="bizlista-sor"><dt>{at('Valutanem')}:</dt><dd>{$_partner.valutanemnev}</dd></div>
+                <div class="bizlista-sor"><dt>{at('Ársáv')}:</dt><dd>{$_partner.arsavnev}</dd></div>
+            {/if}
+            <div class="bizlista-sor"><dt>{at('API')}:</dt><dd>{$_partner.apinev}</dd></div>
+            {if ($setup.mptngy)}
+                <div class="bizlista-sor"><dt>{at('Egyetem')}:</dt><dd>{$_partner.mptngyegyetemnev}{if ($_partner.mptngyegyetemnev && $_partner.mptngykarnev)} - {/if}{$_partner.mptngykarnev}</dd></div>
+                <div class="bizlista-sor"><dt>{at('Egyetem egyéb')}:</dt><dd>{$_partner.mptngyegyetemegyeb}</dd></div>
+                {if ($_partner.mptngyphd)}
+                    <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Phd hallgató')}</dd></div>
+                {/if}
+                {if ($_partner.mptngydiak)}
+                    <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Hallgató')}</dd></div>
+                {/if}
+            {/if}
+        </dl>
+        {/strip}
+    </td>
+    <td class="cell">
         <div class="bizlista-partner">
             {if ($setup.mptngy && $_partner.szlanev)}
                 <div><span class="bizlista-cimke">{at('Számlázási név')}:</span> {$_partner.szlanev}</div>
@@ -87,36 +112,6 @@
             {/if}
         </div>
     </td>
-    <td class="cell">
-        {strip}
-        <dl class="bizlista-adatok">
-            <div class="bizlista-sor"><dt>{at('Partner típus')}:</dt><dd>{$_partner.partnertipusnev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Üzletkötő')}:</dt><dd>{$_partner.uzletkotonev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Adószám')}:</dt><dd>{$_partner.adoszam}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Csoportos adószám')}:</dt><dd>{$_partner.csoportosadoszam}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_partner.fizmodnev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Szállítási mód')}:</dt><dd>{$_partner.szallitasimodnev}</dd></div>
-            {if ($setup.multilang)}
-                <div class="bizlista-sor"><dt>{at('Bizonylatok nyelve')}:</dt><dd>{$_partner.bizonylatnyelv}</dd></div>
-            {/if}
-            {if ($setup.arsavok)}
-                <div class="bizlista-sor"><dt>{at('Valutanem')}:</dt><dd>{$_partner.valutanemnev}</dd></div>
-                <div class="bizlista-sor"><dt>{at('Ársáv')}:</dt><dd>{$_partner.arsavnev}</dd></div>
-            {/if}
-            <div class="bizlista-sor"><dt>{at('API')}:</dt><dd>{$_partner.apinev}</dd></div>
-            {if ($setup.mptngy)}
-                <div class="bizlista-sor"><dt>{at('Egyetem')}:</dt><dd>{$_partner.mptngyegyetemnev}{if ($_partner.mptngyegyetemnev && $_partner.mptngykarnev)} - {/if}{$_partner.mptngykarnev}</dd></div>
-                <div class="bizlista-sor"><dt>{at('Egyetem egyéb')}:</dt><dd>{$_partner.mptngyegyetemegyeb}</dd></div>
-                {if ($_partner.mptngyphd)}
-                    <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Phd hallgató')}</dd></div>
-                {/if}
-                {if ($_partner.mptngydiak)}
-                    <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Hallgató')}</dd></div>
-                {/if}
-            {/if}
-        </dl>
-        {/strip}
-    </td>
     {if ($setup.mptngy)}
         <td class="cell">
             {if ($_partner.mptngybefizetes > 0)}
@@ -130,4 +125,11 @@
             {/if}
         </td>
     {/if}
+    <td class="cell">
+        {* a bekapcsolt állapot jele a ui-state-hover, a partner.js ezt váltja *}
+        <div class="bizlista-kapcsolocsoport">
+            <a href="#" data-id="{$_partner.id}" data-flag="inaktiv"
+               class="js-flagcheckbox bizlista-kapcsolo{if ($_partner.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a>
+        </div>
+    </td>
 </tr>
