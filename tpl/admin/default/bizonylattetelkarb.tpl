@@ -89,7 +89,8 @@
             {mezo cimke="Változat"}
                 <span class="tetel-cikkszam tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}">{$tetel.valtozatcikkszam|default|escape}</span>
             {/mezo}
-            {$_egyedirejtve = (!($tetel.kellegyediazonosito|default) && !($tetel.termekegyediazonosito|default))}
+            {* csak a termék beállítása dönt (kellegyediazonosito a termékből jön); egy már beírt azonosító rejtve is mentődik *}
+            {$_egyedirejtve = !($tetel.kellegyediazonosito|default:false)}
             {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
                 <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
                        value="{$tetel.termekegyediazonosito|default|escape}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
