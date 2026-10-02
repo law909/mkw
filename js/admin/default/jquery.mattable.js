@@ -751,10 +751,13 @@
             // the mobile card layout (modern.css) shows each cell's column header above it
             const columnLabels = table.children('thead').children('tr').first().children('th')
                 .map((i, th) => th.dataset.oszlop || $(th).text().trim()).get();
+            // the column is counted with the colspans; a data-oszlop set by the template wins
             $(setup.table + ' > tbody > tr').each(function () {
-                $(this).children('td.cell').each(function () {
-                    const label = columnLabels[this.cellIndex];
-                    if (label) {
+                let column = 0;
+                $(this).children('td').each(function () {
+                    const label = columnLabels[column];
+                    column += this.colSpan;
+                    if (label && this.classList.contains('cell') && !('oszlop' in this.dataset)) {
                         this.dataset.oszlop = label;
                     }
                 });
