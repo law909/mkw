@@ -1,24 +1,36 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
-    <td class="cell">
-        <input class="maincheckbox" type="checkbox" autocomplete="off">
+    <td class="cell"><input class="maincheckbox" type="checkbox" autocomplete="off"></td>
+    <td class="cell bizlista-fo">
+        <div class="bizlista-fej">
+            <a class="mattable-editlink bizlista-nev" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
+        </div>
+        <div class="bizlista-muveletek">
+            <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                        class="ui-icon ui-icon-circle-minus"></span></a>
+        </div>
     </td>
     <td class="cell">
-        <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
-        <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a>
+        {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
+        {strip}
+        <dl class="bizlista-adatok">
+            <div class="bizlista-sor"><dt>{at('Bizonylattípus')}:</dt><dd>{$_egyed.bizonylattipusnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_egyed.fizmodnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Szállítási mód')}:</dt><dd>{$_egyed.szallitasimodnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Csoport')}:</dt><dd>{$_egyed.csoport}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Sorrend')}:</dt><dd>{$_egyed.sorrend}</dd></div>
+        </dl>
+        {/strip}
     </td>
     <td class="cell">
-        {$_egyed.bizonylattipusnev}
+        {strip}
+        <dl class="bizlista-adatok">
+            {if ($setup.foglalas)}
+                <div class="bizlista-sor"><dt>{at('Foglal')}:</dt><dd>{if ($_egyed.foglal)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
+            {/if}
+            <div class="bizlista-sor"><dt>{at('Mozgat')}:</dt><dd>{if ($_egyed.mozgat)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Érkezik')}:</dt><dd>{if ($_egyed.erkezik)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Értékelhető')}:</dt><dd>{if (!$_egyed.nemertekelheto)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
+        </dl>
+        {/strip}
     </td>
-    <td class="cell">
-        {$_egyed.fizmodnev} {$_egyed.szallitasimodnev}
-    </td>
-    {if ($setup.foglalas)}
-        <td class="cell">{if ($_egyed.foglal)}{at('foglal')}{else}{at('nem foglal')}{/if}</td>
-    {/if}
-    <td class="cell">{if ($_egyed.mozgat)}{at('mozgat')}{else}{at('nem mozgat')}{/if}</td>
-    <td class="cell">{if ($_egyed.erkezik)}{at('érkezik')}{else}{at('nem érkezik')}{/if}</td>
-    <td class="cell">{if ($_egyed.nemertekelheto)}{at('nem értékelhető')}{else}{at('értékelhető')}{/if}</td>
-    <td class="cell">{$_egyed.csoport}</td>
-    <td class="cell">{$_egyed.sorrend}</td>
 </tr>

@@ -26,10 +26,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Azonosító')}</th>
-                <th>{at('Irány')}</th>
-                <th>{at('Nyomtatási forma')}</th>
+                <th>{at('Bizonylattípus')}</th>
+                <th>{at('Adatok')}</th>
                 <th>{at('Viselkedés')}</th>
             </tr>
             </thead>

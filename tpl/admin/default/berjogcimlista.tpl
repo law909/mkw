@@ -26,8 +26,7 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Inaktív')}</th>
+                <th>{at('Bér jogcím')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

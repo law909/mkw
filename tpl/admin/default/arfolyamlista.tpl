@@ -23,8 +23,7 @@
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Dátum')}</th>
-                <th>{at('Valutanem')}</th>
-                <th>{at('Árfolyam')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

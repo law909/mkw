@@ -26,10 +26,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
                 <th>{at('ÁFA kulcs')}</th>
-                <th>{at('NAV case')}</th>
-                <th>{at('RLB kód')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

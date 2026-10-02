@@ -44,8 +44,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Sorrend')}</th>
+                <th>{at('Fizetési mód')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

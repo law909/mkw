@@ -34,17 +34,9 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Bizonylattípus')}</th>
-                <th>{at('Fiz.mód, száll.mód')}</th>
-                {if ($setup.foglalas)}
-                    <th>{at('Foglal')}</th>
-                {/if}
-                <th>{at('Mozgat')}</th>
-                <th>{at('Érkezik')}</th>
-                <th>{at('Értékelhető')}</th>
-                <th>{at('Csoport')}</th>
-                <th>{at('Sorrend')}</th>
+                <th>{at('Bizonylatstátusz')}</th>
+                <th>{at('Adatok')}</th>
+                <th>{at('Viselkedés')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

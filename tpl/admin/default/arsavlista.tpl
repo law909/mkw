@@ -26,8 +26,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Kerekítés képlettel')}</th>
+                <th>{at('Ársáv')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>
