@@ -220,6 +220,21 @@ $(document).ready(
             });
         });
         markActiveMenupont();
+        // the sidebar scrolls on its own (modern.css): the next page opens it where this one left it
+        const menuContainer = document.querySelector('.menu-container');
+        if (menuContainer) {
+            // without sessionStorage (e.g. private window) the menu simply starts at the top
+            try {
+                menuContainer.scrollTop = Number(sessionStorage.getItem('mkwMenuScroll')) || 0;
+            } catch (e) {
+            }
+            window.addEventListener('pagehide', () => {
+                try {
+                    sessionStorage.setItem('mkwMenuScroll', String(menuContainer.scrollTop));
+                } catch (e) {
+                }
+            });
+        }
         $('.js-gyakranhasznalttoggle').on('click', function (e) {
             e.preventDefault();
             const $szakasz = $('.js-gyakranhasznalt'),
