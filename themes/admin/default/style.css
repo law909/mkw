@@ -29,13 +29,190 @@ body {
     gap: 5px;
 }
 
-#loginform {
+/* Admin bejelentkezés (login.tpl): bejelentkezés előtt nincs dolgozói téma, ezért önálló színekkel, a rendszer sötét módját követve */
+.login-oldal {
+    --login-bg: #eef1f6;
+    --login-kartya: #fff;
+    --login-szoveg: #18181b;
+    --login-halvany: #6b7280;
+    --login-keret: #d4d4d8;
+    --login-kiemelo: #2563eb;
+    --login-kiemelo-hover: #1d4ed8;
+    --login-fokusz: rgba(37, 99, 235, .25);
+    --login-hiba: #b91c1c;
+    --login-hiba-bg: #fef2f2;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+    padding: 16px;
+    background: radial-gradient(circle at 20% 0%, rgba(37, 99, 235, .12), transparent 55%), var(--login-bg);
+    color: var(--login-szoveg);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    .login-oldal {
+        --login-bg: #09090b;
+        --login-kartya: #18181b;
+        --login-szoveg: #f4f4f5;
+        --login-halvany: #a1a1aa;
+        --login-keret: #3f3f46;
+        --login-kiemelo: #3b82f6;
+        --login-kiemelo-hover: #60a5fa;
+        --login-fokusz: rgba(59, 130, 246, .35);
+        --login-hiba: #fca5a5;
+        --login-hiba-bg: rgba(239, 68, 68, .15);
+    }
+}
+
+.login-oldal .login-kartya {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-    justify-content: center;
+    width: 100%;
+    max-width: 380px;
+    padding: 32px;
+    border: 1px solid var(--login-keret);
+    border-radius: 14px;
+    background: var(--login-kartya);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .12), 0 2px 8px rgba(0, 0, 0, .06);
+}
+
+.login-oldal .login-fej {
+    margin-bottom: 24px;
+}
+
+.login-oldal .login-alkalmazas {
+    color: var(--login-halvany);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.login-oldal .login-ceg {
+    margin: 4px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.login-oldal .login-teszt {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #b91c1c;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+}
+
+.login-oldal .login-hiba {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--login-hiba);
+    border-radius: 6px;
+    background: var(--login-hiba-bg);
+    color: var(--login-hiba);
+    font-size: 14px;
+}
+
+.login-oldal .login-cimke {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 16px: mobilon kisebb betűnél az iOS a mezőbe lépéskor ránagyít */
+.login-oldal .login-kartya .login-mezo {
+    box-sizing: border-box;
+    width: 100%;
+    height: 44px;
+    margin: 0 0 16px;
+    padding: 0 12px;
+    border: 1px solid var(--login-keret);
+    border-radius: 8px;
+    background: var(--login-kartya);
+    color: var(--login-szoveg);
+    font: inherit;
+    font-size: 16px;
+}
+
+.login-oldal .login-kartya .login-mezo:focus {
+    outline: none;
+    border-color: var(--login-kiemelo);
+    box-shadow: 0 0 0 3px var(--login-fokusz);
+}
+
+.login-oldal .login-jelszo {
+    position: relative;
+}
+
+.login-oldal .login-kartya .login-jelszo .login-mezo {
+    padding-right: 44px;
+}
+
+.login-oldal .login-mutat {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--login-halvany);
+    cursor: pointer;
+}
+
+.login-oldal .login-mutat:hover,
+.login-oldal .login-mutat[aria-pressed="true"] {
+    color: var(--login-kiemelo);
+}
+
+.login-oldal .login-mutat svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.login-oldal .login-gomb {
+    height: 44px;
+    margin-top: 8px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--login-kiemelo);
+    color: #fff;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.login-oldal .login-gomb:hover {
+    background: var(--login-kiemelo-hover);
+}
+
+.login-oldal .login-gomb:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--login-fokusz);
+}
+
+@media (max-width: 480px) {
+    .login-oldal .login-kartya {
+        padding: 24px 20px;
+    }
 }
 
 .textaligncenter {

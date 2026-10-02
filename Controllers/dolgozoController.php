@@ -246,6 +246,8 @@ class dolgozoController extends \mkwhelpers\MattableController
     {
         $v = $this->createView('login.tpl');
         $v->setVar('loginurl', \mkw\store::getRouter()->generate('adminlogin'));
+        $v->setVar('pagetitle', \t('Bejelentkezés'));
+        $v->setVar('hiba', $this->params->getIntRequestParam('hiba'));
         $v->printTemplateResult(false);
     }
 
@@ -284,10 +286,11 @@ class dolgozoController extends \mkwhelpers\MattableController
                 }
                 Header('Location: ' . \mkw\store::getRouter()->generate('adminview'));
             } else {
-                Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
+                // nem áruljuk el, hogy az e-mail vagy a jelszó volt rossz
+                Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin') . '?hiba=1');
             }
         } else {
-            Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin'));
+            Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin') . '?hiba=1');
         }
     }
 
