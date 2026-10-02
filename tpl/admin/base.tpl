@@ -37,7 +37,7 @@
     {/if}
     <title>{$pagetitle|default} - {t('Billy Admin')}</title>
 </head>
-<body{if ($modernui|default:false)} class="modernui{if ($oldalsavrejtve|default:false)} oldalsav-rejtve{/if}"{/if} data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
+<body{if ($modernui|default:false)} class="modernui{if ($oldalsavrejtve|default:false)} oldalsav-rejtve{/if}{if ($bekuldetlenszamlacnt > 0)} navriasztas{/if}"{/if} data-vonalkodhibahang="{$vonalkodhibahangurl|default}">
 {if ($modernui|default:false) && ($userloggedin)}
     <header class="topbar{if ($teszt)} topbar-teszt{/if}">
         <button type="button" class="topbar-gomb js-oldalsavkapcsolo" title="{at('Menü megjelenítése/elrejtése')}">

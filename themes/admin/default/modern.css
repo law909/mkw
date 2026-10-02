@@ -103,6 +103,13 @@ body.modernui {
 ----------------------------------*/
 .modernui {
     --mkw-topbar-height: 48px;
+    --mkw-navriasztas-height: 36px;
+    /* a felső sáv alá tapadó elemek innen indulnak; a NAV-riasztás is odatapad */
+    --mkw-sticky-top: var(--mkw-topbar-height);
+}
+
+.modernui.navriasztas {
+    --mkw-sticky-top: calc(var(--mkw-topbar-height) + var(--mkw-navriasztas-height));
 }
 
 .modernui .topbar {
@@ -317,10 +324,10 @@ body.modernui {
 ----------------------------------*/
 .modernui .menu-container {
     position: sticky;
-    top: var(--mkw-topbar-height);
+    top: var(--mkw-sticky-top);
     align-self: start;
     box-sizing: border-box;
-    max-height: calc(100vh - var(--mkw-topbar-height));
+    max-height: calc(100vh - var(--mkw-sticky-top));
     overflow-y: auto;
     margin: 0;
     padding: 12px 10px;
@@ -432,6 +439,21 @@ body.modernui {
     background: var(--mkw-danger-soft);
     color: var(--mkw-danger-text);
     font-size: 1.05em;
+}
+
+/* a --mkw-sticky-top ezzel a fix magassággal számol, ezért nem törhet több sorba */
+.modernui #naveredmenyriasztas {
+    position: sticky;
+    top: var(--mkw-topbar-height);
+    z-index: 49;
+    box-sizing: border-box;
+    height: var(--mkw-navriasztas-height);
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: calc(var(--mkw-navriasztas-height) - 1px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Értesítések: toast (mkwToast) és a régi #messagecenter is a jobb alsó sarokba kerül
@@ -731,7 +753,7 @@ body.modernui {
 ----------------------------------*/
 .modernui .mattable-table th.mattable-thcolumn {
     position: sticky;
-    top: var(--mkw-topbar-height);
+    top: var(--mkw-sticky-top);
     z-index: 1;
     padding: .55em .6em;
     border: 0;
@@ -1417,7 +1439,7 @@ body.modernui {
     .modernui .menu-container,
     .modernui.oldalsav-rejtve .menu-container {
         position: fixed;
-        top: var(--mkw-topbar-height);
+        top: var(--mkw-sticky-top);
         bottom: 0;
         left: 0;
         z-index: 45;
@@ -1445,7 +1467,7 @@ body.modernui {
     .modernui.oldalsav-mobilnyitva::after {
         content: "";
         position: fixed;
-        inset: var(--mkw-topbar-height) 0 0 0;
+        inset: var(--mkw-sticky-top) 0 0 0;
         z-index: 44;
         background: var(--mkw-overlay);
     }
