@@ -16,21 +16,17 @@
                     <a class="mattable-dellink" href="#" data-termekid="{$_termek.id}" data-oper="del" title="{at('Töröl')}"><span
                             class="ui-icon ui-icon-circle-minus"></span></a>
                 </div>
-                <div class="bizlista-halvany">
-                    {$_termek.termekfa1nev}{if ($_termek.termekfa1nev && $_termek.termekfa2nev)} · {/if}{$_termek.termekfa2nev}{if (($_termek.termekfa1nev || $_termek.termekfa2nev) && $_termek.termekfa3nev)} · {/if}{$_termek.termekfa3nev}
-                </div>
-                {if ($_termek.cimkenevlista)}
-                    <div class="termeklista-cimkek">
-                        {foreach $_termek.cimkenevlista as $_cimkenev}
-                            <span class="termeklista-cimke">{$_cimkenev}</span>
-                        {/foreach}
-                    </div>
-                {/if}
             </div>
         </div>
         {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
         {strip}
         <dl class="bizlista-adatok bizlista-meta">
+            <div class="bizlista-sor"><dt>{at('Kategória')}:</dt><dd>{$_termek.termekfa1nev}{if ($_termek.termekfa1nev && $_termek.termekfa2nev)} · {/if}{$_termek.termekfa2nev}{if (($_termek.termekfa1nev || $_termek.termekfa2nev) && $_termek.termekfa3nev)} · {/if}{$_termek.termekfa3nev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Címkék')}:</dt><dd class="termeklista-cimkek">
+                {foreach $_termek.cimkenevlista as $_cimkenev}
+                    <span class="termeklista-cimke">{$_cimkenev}</span>
+                {/foreach}
+            </dd></div>
             <div class="bizlista-sor"><dt>{at('Azonosító')}:</dt><dd>{$_termek.id}</dd></div>
             <div class="bizlista-sor"><dt>{at('Cikkszám')}:</dt><dd>{$_termek.cikkszam}</dd></div>
             <div class="bizlista-sor"><dt>{at('Gyártó')}:</dt><dd>{$_termek.gyartonev}</dd></div>
