@@ -27,9 +27,8 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Cím')}</th>
-                <th>{at('Sorrend')}</th>
-                <th>{at('Jelzők')}</th>
+                <th>{at('Körhinta')}</th>
+                <th>{at('Jellemzők')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

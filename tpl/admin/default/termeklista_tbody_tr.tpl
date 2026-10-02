@@ -44,7 +44,7 @@
                 </div>
                 <div class="bizlista-sor">
                     <dt>{at('Link')}:</dt>
-                    <dd class="termeklista-link"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></dd>
+                    <dd class="bizlista-link"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></dd>
                 </div>
                 <div class="bizlista-sor">
                     <dt>{at('Címkék')}:</dt>

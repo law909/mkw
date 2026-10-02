@@ -56,8 +56,7 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Cím')}</th>
-                <th>{at('Megjelenés')}</th>
+                <th>{at('Blogposzt')}</th>
                 <th>{at('Jellemzők')}</th>
             </tr>
             </thead>

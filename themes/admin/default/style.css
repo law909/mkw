@@ -1059,6 +1059,10 @@ select.tetelszamhiba,
     border-radius: 3px;
 }
 
+.bizlista-link {
+    overflow-wrap: anywhere;
+}
+
 /* Termék lista sora (termeklista_tbody_tr.tpl): a bizlista-* elemekre épül, ezek csak a termék saját részei */
 .termeklista-fo {
     min-width: 12em;
@@ -1092,10 +1096,6 @@ select.tetelszamhiba,
 
 .termeklista-cim > .bizlista-muveletek {
     margin-bottom: 0;
-}
-
-.termeklista-link {
-    overflow-wrap: anywhere;
 }
 
 /* az 1fr oszlop minimuma 0 lenne, és az összeg kilógna a cellából */

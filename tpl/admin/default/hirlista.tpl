@@ -34,8 +34,8 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Cím')}</th>
+                <th><input id="maincheckbox" class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
+                <th>{at('Hír')}</th>
                 <th>{at('Láthatóság')}</th>
             </tr>
             </thead>
