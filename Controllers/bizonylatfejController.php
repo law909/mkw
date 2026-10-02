@@ -115,6 +115,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('controllerscript', $this->biztipusid . 'fej.js');
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->setVar('csinalhatujbizonylatot', \mkw\store::canCreateBizonylat($this->biztipusid));
         $this->setVars($view);
         $view->printTemplateResult();
     }

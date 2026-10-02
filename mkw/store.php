@@ -1706,14 +1706,11 @@ class store
         return self::getSetupValue('szigoru', false);
     }
 
-    public static function csinalhatUjSzamlat($bekuldetlencnt = null)
+    /** Szigorú módban nem készülhet új bizonylat abból a NAV-nak beküldendő típusból, amelyikből van beküldetlen. */
+    public static function canCreateBizonylat($bizonylattipusid)
     {
-        $x = $bekuldetlencnt;
-        if ($bekuldetlencnt === null) {
-            $bizcnt = (new \Services\BizonylatNAVService())->countAlerts();
-            $x = $bizcnt['null'];
-        }
-        return !self::isSzigoru() || (self::isSzigoru() && !$x);
+        return !self::isSzigoru()
+            || !in_array($bizonylattipusid, (new \Services\BizonylatNAVService())->getBekuldetlenTipusok(), true);
     }
 
     public static function isMPT()

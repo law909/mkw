@@ -124,6 +124,19 @@ class BizonylatNAVService
         return '';
     }
 
+    /** @return string[] azok a bizonylattípusok, amelyekből van még be nem küldött bizonylat */
+    public function getBekuldetlenTipusok()
+    {
+        $filter = $this->alertFilter();
+        $filter->addSql('(_xx.naveredmeny IS NULL)');
+        $repo = $this->getRepo();
+        return \mkw\store::getEm()->createQuery(
+            'SELECT DISTINCT IDENTITY(_xx.bizonylattipus) FROM Entities\Bizonylatfej _xx' . $repo->getFilterString($filter)
+        )
+            ->setParameters($repo->getQueryParameters($filter))
+            ->getSingleColumnResult();
+    }
+
     /** A riasztás közös szűrője: az online adatszolgáltatás kezdete óta kelt, beküldendő bizonylatok (lásd getBekuldendo). */
     private function alertFilter()
     {

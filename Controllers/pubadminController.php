@@ -636,7 +636,7 @@ class pubadminController extends mkwhelpers\Controller
                 $termek = $this->getRepo(Termek::class)->find(\mkw\store::getParameter(\mkw\consts::JogaOrajegyTermek));
             }
             if ($rv->getOrarend()->getDolgozo()->isAutoszamla()) {
-                $akadaly = \mkw\store::csinalhatUjSzamlat()
+                $akadaly = \mkw\store::canCreateBizonylat('szamla')
                     ? $this->getSzamlazasiAkadaly($rvpartner)
                     : t('Van beküldetlen számla, ezért nem készülhet új.');
                 if ($akadaly) {

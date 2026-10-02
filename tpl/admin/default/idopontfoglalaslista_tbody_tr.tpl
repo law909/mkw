@@ -115,7 +115,7 @@
             <div><a class="js-lemond" href="#" data-id="{$_egyed.id}">{at('Lemond')}</a></div>
             {if (!$_egyed.fizetve)}
                 <div><a class="js-fizet" href="#" data-id="{$_egyed.id}">{at('Kifizet')}</a></div>
-            {elseif (!$_egyed.szamlazva && $szamlazhato && haveJog(20) && $csinalhatujszamlat)}
+            {elseif (!$_egyed.szamlazva && $szamlazhato && haveJog(20) && $csinalhatujbizonylatot)}
                 <div><a class="js-szamlaz" href="#" data-id="{$_egyed.id}">{at('Számláz')}</a></div>
             {/if}
         {/if}

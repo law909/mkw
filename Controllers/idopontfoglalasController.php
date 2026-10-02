@@ -123,6 +123,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         $view->setVar('emlekeztetosablonvan', (bool)\mkw\store::getParameter(\mkw\consts::IdopontfoglalasSablonEmlekezteto));
         // a rendezvény eredetű soroknál az időpont saját terméke is számlázhatóvá teszi a jelentkezést
         $view->setVar('szamlazhato', true);
+        $view->setVar(
+            'csinalhatujbizonylatot',
+            \mkw\store::canCreateBizonylat('szamla') || \mkw\store::canCreateBizonylat('egyeb')
+        );
         $view->setVar('dijbekerosablonvan', (bool)\mkw\store::getParameter(\mkw\consts::RendezvenySablonDijbekero));
         $view->setVar('kezdessablonvan', (bool)\mkw\store::getParameter(\mkw\consts::RendezvenySablonKezdesEmlekezteto));
     }
@@ -830,10 +834,6 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
      */
     public function szamlaz()
     {
-        if (!\mkw\store::csinalhatUjSzamlat()) {
-            echo json_encode(['result' => 'error', 'msg' => at('Amíg van beküldetlen számla, nem állíthat ki újat!')]);
-            return;
-        }
         /** @var \Entities\Idopontfoglalas $foglalas */
         $foglalas = $this->getRepo()->findWithJoins($this->params->getIntRequestParam('id'));
         $kelt = $this->params->getStringRequestParam('kelt');
@@ -867,6 +867,10 @@ class idopontfoglalasController extends \mkwhelpers\MattableController
         }
         if (!$biztipus || !$kelt || !$teljesites || !$osszeg) {
             echo json_encode(['result' => 'error', 'msg' => at('Nem adott meg minden adatot!')]);
+            return;
+        }
+        if (!\mkw\store::canCreateBizonylat($biztipus->getId())) {
+            echo json_encode(['result' => 'error', 'msg' => sprintf(at('Amíg van beküldetlen %s, nem állíthat ki újat!'), $biztipus->getNev())]);
             return;
         }
 
