@@ -124,8 +124,7 @@
             {/mezo}
         {/mezocsoport}
         {mezocsoport cim="Mennyiség"}
-            {* a decimális mező "0.00" szövegként jön, ami üresség-vizsgálatnál igaz lenne: számként hasonlítjuk *}
-            {$_kiszerelesrejtve = (($tetel.gyujto|default:0) == 0 && ($tetel.sordoboz|default:0) == 0)}
+            {$_kiszerelesrejtve = !($tetel.termekkiszereles|default:false)}
             {mezo cimke="Gyűjtő" for="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesrow_{$tetel.id}" rejtve=$_kiszerelesrejtve}
                 <input id="GyujtomennyisegEdit{$tetel.id}" class="js-kiszerelesinput" name="tetelgyujtomennyiseg_{$tetel.id}" type="number"
                        step="any" value="{$tetel.gyujtomennyiseg}" size="6">
