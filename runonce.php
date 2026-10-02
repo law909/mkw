@@ -3298,6 +3298,78 @@ HTML
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0219');
 }
 
+if ($DBVersion < '0220' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0219') {
+    // galad "kiszállítva" státuszlevél a számlalevél formájában; név szerint, mert élesen az id más lehet
+    if (\mkw\store::isGalad()) {
+        $conn = \mkw\store::getEm()->getConnection();
+        $ids = $conn->fetchFirstColumn('SELECT id FROM emailtemplate WHERE nev = ?', ['kiszállítva']);
+        if (count($ids) === 1) {
+            $conn->executeStatement('UPDATE emailtemplate SET szoveg = ? WHERE id = ?', [<<<'HTML'
+<p>Kedves [$rendeles.szamlanev|default:'Vásárló']!</p>
+<p>Értesítjük, hogy a(z) <strong>[$rendeles.id]</strong> számú rendelését feldolgoztuk, és a csomagot átadtuk a futárszolgálatnak.</p>
+<h3>A szállítás adatai</h3>
+<table cellpadding="4" cellspacing="0" style="border-collapse: collapse;">
+	<tbody>
+		<tr><td><strong>Rendelésszám:</strong></td><td>[$rendeles.id]</td></tr>
+		<tr><td><strong>Rendelés dátuma:</strong></td><td>[$rendeles.keltstr]</td></tr>
+		<tr><td><strong>Szállítási mód:</strong></td><td>[$rendeles.szallitasimodnev]</td></tr>
+		<!--[if ($rendeles.glspont|default:false)]-->
+		<tr><td><strong>Csomagpont:</strong></td><td>[$rendeles.glspont.nev], [$rendeles.glspont.cim]</td></tr>
+		<!--[elseif ($rendeles.foxpostterminal|default:false)]-->
+		<tr><td><strong>Csomagautomata:</strong></td><td>[$rendeles.foxpostterminal.nev], [$rendeles.foxpostterminal.cim]</td></tr>
+		<!--[elseif ($rendeles.szallirszam)]-->
+		<tr><td><strong>Szállítási cím:</strong></td><td>[$rendeles.szallnev], [$rendeles.szallirszam] [$rendeles.szallvaros], [$rendeles.szallutca] [$rendeles.szallhazszam]</td></tr>
+		<!--[/if]-->
+		<!--[if ($rendeles.fuvarlevelszam)]-->
+		<tr><td><strong>Fuvarlevélszám:</strong></td><td>[$rendeles.fuvarlevelszam]</td></tr>
+		<!--[/if]-->
+		<!--[if ($rendeles.csomagkovetolink|default:false)]-->
+		<tr><td><strong>Csomagkövetés:</strong></td><td><a href="[$rendeles.csomagkovetolink]">[$rendeles.csomagkovetolink]</a></td></tr>
+		<!--[/if]-->
+		<tr><td><strong>Fizetési mód:</strong></td><td>[$rendeles.fizmodnev]</td></tr>
+		<tr><td><strong>Fizetendő összeg:</strong></td><td><strong>[number_format($rendeles.fizetendo, 2, ',', ' ')] [$rendeles.valutanemnev]</strong></td></tr>
+	</tbody>
+</table>
+<h3>Megrendelt termékek</h3>
+<table cellpadding="4" cellspacing="0" style="border-collapse: collapse; border: 1px solid #cccccc;">
+	<thead>
+		<tr style="background: #f2f2f2;">
+			<th style="text-align: left; border: 1px solid #cccccc;">Termék</th>
+			<th style="text-align: left; border: 1px solid #cccccc;">Cikkszám</th>
+			<th style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">Mennyiség</th>
+			<th style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">Bruttó egységár</th>
+			<th style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">Bruttó érték</th>
+		</tr>
+	</thead>
+	<tbody>
+		<!--[foreach $rendeles.tetellista as $_tetel]-->
+		<tr>
+			<td style="border: 1px solid #cccccc;">[$_tetel.termeknev][foreach $_tetel.valtozatok as $_valtozat]<br />[$_valtozat.nev]: [$_valtozat.ertek][/foreach]</td>
+			<td style="border: 1px solid #cccccc;">[$_tetel.cikkszam]</td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">[number_format($_tetel.mennyiseg, 0, ',', ' ')] [$_tetel.me]</td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">[number_format($_tetel.bruttoegysar, 2, ',', ' ')]</td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;">[number_format($_tetel.brutto, 2, ',', ' ')]</td>
+		</tr>
+		<!--[/foreach]-->
+		<tr>
+			<td colspan="4" style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;"><strong>Összesen:</strong></td>
+			<td style="text-align: right; white-space: nowrap; border: 1px solid #cccccc;"><strong>[number_format($rendeles.brutto, 2, ',', ' ')] [$rendeles.valutanemnev]</strong></td>
+		</tr>
+	</tbody>
+</table>
+<p>A csomagot a futárszolgálat várhatóan 1–3 munkanapon belül kézbesíti. Kérjük, legyen elérhető a megadott telefonszámon[if ($rendeles.telefon)] ([$rendeles.telefon])[/if] a szállítás napján.</p>
+<p>Amennyiben kérdése merülne fel, kérjük, válaszoljon erre a levélre, vagy keressen minket elérhetőségeinken.</p>
+<p><strong>[$rendeles.tulajnev]</strong><br />
+[$rendeles.tulajirszam] [$rendeles.tulajvaros], [$rendeles.tulajutca]<br />
+Web: <a href="https://www.galadmotor.hu">www.galadmotor.hu</a></p>
+<p>Köszönjük, hogy nálunk vásárolt!</p>
+HTML
+                , $ids[0]]);
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0220');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
