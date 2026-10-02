@@ -27,8 +27,7 @@
         <table id="mattable-table">
             <thead>
             <tr>
-                <th>{at('Név')}</th>
-                <th>{at('Cím')}</th>
+                <th>{at('Üzletkötő')}</th>
                 <th>{at('Elérhetőségek')}</th>
             </tr>
             </thead>

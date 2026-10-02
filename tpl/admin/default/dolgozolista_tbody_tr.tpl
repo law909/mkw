@@ -1,71 +1,59 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
-    <td class="cell">
-        {if ($loggedinuser.admin || ($_egyed.id == $loggedinuser.id))}
-            <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
-        {else}
-            {$_egyed.nev}
-        {/if}
+    <td class="cell bizlista-fo">
+        <div class="bizlista-fej">
+            {if ($loggedinuser.admin || ($_egyed.id == $loggedinuser.id))}
+                <a class="mattable-editlink bizlista-nev" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
+            {else}
+                <span class="bizlista-partnernev mattable-important">{$_egyed.nev}</span>
+            {/if}
+        </div>
         {if ($loggedinuser.admin)}
-            <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                        class="ui-icon ui-icon-circle-minus"></span></a>
+            <div class="bizlista-muveletek">
+                <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                            class="ui-icon ui-icon-circle-minus"></span></a>
+            </div>
         {/if}
-        <table>
-            <tbody>
-            <tr>
-                <td>{$_egyed.szulidostr} {$_egyed.szulhely}</td>
-            </tr>
-            <tr>
-                <td>{$_egyed.munkakornev} {$_egyed.munkaviszonykezdetestr} {at('óta')}</td>
-            </tr>
-            {if ($_egyed.havilevonas)}
-                <tr>
-                    <td>{at('Havi levonás')}: {$_egyed.havilevonas}</td>
-                </tr>
+        {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
+        {strip}
+        <dl class="bizlista-adatok bizlista-meta">
+            <div class="bizlista-sor"><dt>{at('Születés')}:</dt><dd>{$_egyed.szulidostr}{if ($_egyed.szulidostr && $_egyed.szulhely)} {/if}{$_egyed.szulhely}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Munkakör')}:</dt><dd>{$_egyed.munkakornev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Munkaviszony kezdete')}:</dt><dd>{$_egyed.munkaviszonykezdetestr}</dd></div>
+            {if ($_egyed.havilevonas != 0)}
+                <div class="bizlista-sor"><dt>{at('Havi levonás')}:</dt><dd>{$_egyed.havilevonas}</dd></div>
             {/if}
-            {if ($_egyed.napilevonas)}
-                <tr>
-                    <td>{at('Napi levonás')}: {$_egyed.napilevonas}</td>
-                </tr>
+            {if ($_egyed.napilevonas != 0)}
+                <div class="bizlista-sor"><dt>{at('Napi levonás')}:</dt><dd>{$_egyed.napilevonas}</dd></div>
             {/if}
-            <tr>
-                <td>{$_egyed.fizmodnev}</td>
-            </tr>
+            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_egyed.fizmodnev}</dd></div>
             {if ($_egyed.szamlatad)}
-                <tr>
-                    <td>Számlát ad</td>
-                </tr>
+                <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Számlát ad')}</dd></div>
             {/if}
             {if ($_egyed.oraelmaradaskonyvelonek)}
-                <tr>
-                    <td>Óra elmaradásról értesítjük a könyvelőt</td>
-                </tr>
+                <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Óra elmaradásról értesítjük a könyvelőt')}</dd></div>
             {/if}
             {if ($_egyed.autoszamla)}
-                <tr>
-                    <td>Bérlet eladáskor automatikusan készül számla</td>
-                </tr>
+                <div class="bizlista-sor bizlista-sor-teljes"><dd>{at('Bérlet eladáskor automatikusan készül számla')}</dd></div>
             {/if}
-            </tbody>
-        </table>
+        </dl>
+        {/strip}
     </td>
     <td class="cell">
-        <table>
-            <tbody>
-            <tr>
-                <td>{$_egyed.irszam} {$_egyed.varos}, {$_egyed.utca}</td>
-            </tr>
-            <tr>
-                <td>{$_egyed.telefon}</td>
-            </tr>
+        <div class="bizlista-partner">
+            {if ($_egyed.irszam || $_egyed.varos || $_egyed.utca)}
+                <div><span class="bizlista-cimke">{at('Cím')}:</span> {$_egyed.irszam} {$_egyed.varos}{if ($_egyed.utca)}, {$_egyed.utca}{/if}</div>
+            {/if}
+            {if ($_egyed.telefon)}
+                <div>{$_egyed.telefon}</div>
+            {/if}
             {if ($_egyed.email!=='')}
-                <tr>
-                <td><a href="mailto:{$_egyed.email}" title="{at('Levélküldés')}">{$_egyed.email}</a></td></tr>{/if}
+                <div><a href="mailto:{$_egyed.email}" title="{at('Levélküldés')}">{$_egyed.email}</a></div>
+            {/if}
             {if ($_egyed.url!=='')}
-                <tr>
-                <td>{$_egyed.url}</td></tr>{/if}
-            </tbody>
-        </table>
+                <div>{$_egyed.url}</div>
+            {/if}
+        </div>
     </td>
     {if ($setup.mptngy)}
         <td class="cell">
@@ -74,8 +62,12 @@
             {/foreach}
         </td>
         <td class="cell">
-            <div>Maximum vállalt absztrakt: {$_egyed.mptngymaxdb}</div>
-            <div>Kiosztott absztrakt: {$_egyed.mptngykiosztottdb}</div>
+            {strip}
+            <dl class="bizlista-adatok">
+                <div class="bizlista-sor"><dt>{at('Maximum vállalt absztrakt')}:</dt><dd>{$_egyed.mptngymaxdb}</dd></div>
+                <div class="bizlista-sor"><dt>{at('Kiosztott absztrakt')}:</dt><dd>{$_egyed.mptngykiosztottdb}</dd></div>
+            </dl>
+            {/strip}
         </td>
     {/if}
 </tr>

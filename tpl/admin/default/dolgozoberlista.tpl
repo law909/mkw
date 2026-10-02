@@ -60,11 +60,8 @@
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
                 <th>{at('Dolgozó')}</th>
-                <th>{at('Dátum')}</th>
-                <th>{at('Jogcím')}</th>
+                <th>{at('Adatok')}</th>
                 <th class="textalignright">{at('Összeg')}</th>
-                <th>{at('Megjegyzés')}</th>
-                <th>{at('Rögzítés')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

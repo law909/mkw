@@ -40,7 +40,7 @@
             <thead>
             <tr>
                 <th><input class="js-maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
+                <th>{at('Dolgozó')}</th>
                 <th>{at('Elérhetőség')}</th>
                 {if ($setup.mptngy)}
                     <th>{at('Témakörök')}</th>
