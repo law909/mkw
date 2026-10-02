@@ -1162,6 +1162,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
 
         switch ($parancs) {
             case $this->inheritOperation:
+                if (!\mkw\store::canCreateBizonylat($this->biztipusid)) {
+                    throw new \mkwhelpers\Exceptions\UserMessageException(
+                        sprintf(t('Amíg van beküldetlen %s, nem képezhető újabb.'), $this->biztipus->getNev())
+                    );
+                }
                 $parentbiz = $this->getRepo()->find($this->params->getStringRequestParam('parentid'));
                 if ($parentbiz) {
                     if ($parentbiz->getRontott() || $parentbiz->getStorno() || $parentbiz->getStornozott()) {
@@ -1911,6 +1916,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             && ($record->getRontott() || $record->getStorno() || $record->getStornozott())) {
             $mehet = false;
             $view->setVar('noinherit', true);
+        }
+        if (($oper === $this->inheritOperation) && $mehet && !\mkw\store::canCreateBizonylat($this->biztipusid)) {
+            $mehet = false;
+            $view->setVar('bekuldetlentipus', $this->biztipus->getNev());
         }
 
         if ($mehet) {

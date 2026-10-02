@@ -2,6 +2,8 @@
     <h3>A számla még nincs beküldve a NAV-hoz, nem stornózhatja! Várja meg a beküldés eredményét.</h3>
 {elseif ($noinherit|default:false)}
     <h3>{at('Rontott vagy stornózott bizonylatból nem képezhető újabb bizonylat.')}</h3>
+{elseif ($bekuldetlentipus|default:false)}
+    <h3>{at('Amíg van beküldetlen')} {$bekuldetlentipus}, {at('nem képezhető újabb.')}</h3>
 {elseif ($nosource|default:false)}
     <h3>{at('A forrás bizonylat nem található, előbb mentse el.')}</h3>
 {else}

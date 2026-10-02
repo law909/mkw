@@ -36,6 +36,9 @@ class BizsablonSzamlazasService
         if (!$szamlatipus) {
             return $this->result([], 'Nincs számla bizonylattípus.');
         }
+        if (!\mkw\store::canCreateBizonylat($szamlatipus->getId())) {
+            return $this->result([], 'Amíg van beküldetlen számla, nem képezhető újabb.');
+        }
 
         $sablonok = $this->loadSablonok($sablonidk);
         if (!$sablonok) {
