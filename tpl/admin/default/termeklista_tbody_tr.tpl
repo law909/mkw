@@ -7,7 +7,7 @@
                                                                                                                alt=""></a>
             {/if}
             <div class="termeklista-cim">
-                <a class="mattable-editlink termeklista-nev" href="#" data-termekid="{$_termek.id}" data-oper="edit"
+                <a class="mattable-editlink bizlista-nev" href="#" data-termekid="{$_termek.id}" data-oper="edit"
                    title="{at('Szerkeszt')}">{if ($maintheme == 'superzoneb2b' || $maintheme == 'mugenrace2026' || $maintheme == 'superzonehu')}{$_termek.cikkszam}&nbsp;{/if}{$_termek.nev}</a>
                 <div class="bizlista-muveletek">
                     {if (haveJog(20))}
@@ -48,9 +48,9 @@
                 </div>
                 <div class="bizlista-sor">
                     <dt>{at('Címkék')}:</dt>
-                    <dd class="termeklista-cimkek">
+                    <dd class="bizlista-cimkek">
                         {foreach $_termek.cimkenevlista as $_cimkenev}
-                            <span class="termeklista-cimke">{$_cimkenev}</span>
+                            <span class="bizlista-cimkecsempe">{$_cimkenev}</span>
                         {/foreach}
                     </dd>
                 </div>
@@ -135,49 +135,49 @@
     <td class="cell">
         {* a bekapcsolt állapot jele a ui-state-hover, a termek.js ezt váltja *}
         <div class="termeklista-jellemzok">
-            <div class="termeklista-jellemzocsoport">
+            <div class="bizlista-kapcsolocsoport">
                 <a href="#" data-id="{$_termek.id}" data-flag="inaktiv"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="nemkaphato"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.nemkaphato)} ui-state-hover{/if}">{at('Nem kapható')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.nemkaphato)} ui-state-hover{/if}">{at('Nem kapható')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="fuggoben"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.fuggoben)} ui-state-hover{/if}">{at('Függőben')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.fuggoben)} ui-state-hover{/if}">{at('Függőben')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="kifuto"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.kifuto)} ui-state-hover{/if}">{at('Kifutó')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.kifuto)} ui-state-hover{/if}">{at('Kifutó')}</a>
             </div>
-            <div class="termeklista-jellemzocsoport">
+            <div class="bizlista-kapcsolocsoport">
                 <a href="#" data-id="{$_termek.id}" data-flag="lathato"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.lathato)} ui-state-hover{/if}">{at('Látható')} {$webshop1name}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.lathato)} ui-state-hover{/if}">{at('Látható')} {$webshop1name}</a>
                 {if ($setup.multishop)}
                     {for $cikl = 2 to $enabledwebshops}
                         <a href="#" data-id="{$_termek.id}" data-flag="lathato{$cikl}"
-                           class="js-flagcheckbox termeklista-kapcsolo{if ($_termek["lathato$cikl"])} ui-state-hover{/if}">{at('Látható')} {$webshop{$cikl}name}</a>
+                           class="js-flagcheckbox bizlista-kapcsolo{if ($_termek["lathato$cikl"])} ui-state-hover{/if}">{at('Látható')} {$webshop{$cikl}name}</a>
                     {/for}
                 {/if}
                 <a href="#" data-id="{$_termek.id}" data-flag="feltoltheto"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.feltoltheto)} ui-state-hover{/if}">{at('Feltölthető')} {$webshop1name}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.feltoltheto)} ui-state-hover{/if}">{at('Feltölthető')} {$webshop1name}</a>
                 {if ($setup.multishop)}
                     {for $cikl = 2 to $enabledwebshops}
                         <a href="#" data-id="{$_termek.id}" data-flag="feltoltheto{$cikl}"
-                           class="js-flagcheckbox termeklista-kapcsolo{if ($_termek["feltoltheto$cikl"])} ui-state-hover{/if}">{at('Feltölthető')} {$webshop{$cikl}name}</a>
+                           class="js-flagcheckbox bizlista-kapcsolo{if ($_termek["feltoltheto$cikl"])} ui-state-hover{/if}">{at('Feltölthető')} {$webshop{$cikl}name}</a>
                     {/for}
                 {/if}
             </div>
-            <div class="termeklista-jellemzocsoport">
+            <div class="bizlista-kapcsolocsoport">
                 <a href="#" data-id="{$_termek.id}" data-flag="ajanlott"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.ajanlott)} ui-state-hover{/if}">{at('Ajánlott')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="kiemelt"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.kiemelt)} ui-state-hover{/if}">{at('Kiemelt')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="uj"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.uj)} ui-state-hover{/if}">{at('Új')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.uj)} ui-state-hover{/if}">{at('Új')}</a>
             </div>
-            <div class="termeklista-jellemzocsoport">
+            <div class="bizlista-kapcsolocsoport">
                 <a href="#" data-id="{$_termek.id}" data-flag="hozzaszolas"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.hozzaszolas)} ui-state-hover{/if}">{at('Hozzá lehet szólni')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.hozzaszolas)} ui-state-hover{/if}">{at('Hozzá lehet szólni')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="mozgat"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.mozgat)} ui-state-hover{/if}">{at('Készletet mozgat')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.mozgat)} ui-state-hover{/if}">{at('Készletet mozgat')}</a>
                 <a href="#" data-id="{$_termek.id}" data-flag="termekexportbanszerepel"
-                   class="js-flagcheckbox termeklista-kapcsolo{if ($_termek.termekexportbanszerepel)} ui-state-hover{/if}">{at('Exportokban szerepel')}</a>
+                   class="js-flagcheckbox bizlista-kapcsolo{if ($_termek.termekexportbanszerepel)} ui-state-hover{/if}">{at('Exportokban szerepel')}</a>
             </div>
         </div>
     </td>
