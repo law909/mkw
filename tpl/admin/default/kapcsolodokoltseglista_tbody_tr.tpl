@@ -1,12 +1,23 @@
 <tr id="mattable-row_{$_egyed.id}" data-egyedid="{$_egyed.id}">
     <td class="cell"><input class="maincheckbox" type="checkbox" autocomplete="off"></td>
-    <td class="cell">
-        <a class="mattable-editlink" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
-        <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
-                    class="ui-icon ui-icon-circle-minus"></span></a>
+    <td class="cell bizlista-fo">
+        <div class="bizlista-fej">
+            <a class="mattable-editlink bizlista-nev" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.nev}</a>
+        </div>
+        <div class="bizlista-muveletek">
+            <a class="mattable-dellink" href="#" data-egyedid="{$_egyed.id}" data-oper="del" title="{at('Töröl')}"><span
+                        class="ui-icon ui-icon-circle-minus"></span></a>
+        </div>
     </td>
-    <td class="cell">{$_egyed.csoportnev}</td>
-    <td class="cell">{$_egyed.szamitasalapnev}</td>
-    <td class="cell mattable-rightaligned">{number_format($_egyed.ar|default:0, 4, '.', ' ')}</td>
-    <td class="cell">{if ($_egyed.navfeladando)}{at('igen')}{else}{at('nem')}{/if}</td>
+    <td class="cell">
+        {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
+        {strip}
+        <dl class="bizlista-adatok">
+            <div class="bizlista-sor"><dt>{at('Csoport')}:</dt><dd>{$_egyed.csoportnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Számítás alapja')}:</dt><dd>{$_egyed.szamitasalapnev}</dd></div>
+            <div class="bizlista-sor mattable-important"><dt>{at('Ár')}:</dt><dd>{number_format($_egyed.ar|default:0, 4, '.', ' ')}</dd></div>
+            <div class="bizlista-sor"><dt>{at('NAV-nak feladandó')}:</dt><dd>{if ($_egyed.navfeladando)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
+        </dl>
+        {/strip}
+    </td>
 </tr>

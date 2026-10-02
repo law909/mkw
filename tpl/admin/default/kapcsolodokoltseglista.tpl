@@ -33,11 +33,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Név')}</th>
-                <th>{at('Csoport')}</th>
-                <th>{at('Számítás alapja')}</th>
-                <th>{at('Ár')}</th>
-                <th>{at('NAV-nak feladandó')}</th>
+                <th>{at('Kapcsolódó költség')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>

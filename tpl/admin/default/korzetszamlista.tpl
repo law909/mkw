@@ -26,9 +26,8 @@
             <thead>
             <tr>
                 <th><input id="maincheckbox" type="checkbox" autocomplete="off"></th>
-                <th>{at('Szám')}</th>
-                <th>{at('Hossz')}</th>
-                <th>{at('Sorrend')}</th>
+                <th>{at('Körzetszám')}</th>
+                <th>{at('Adatok')}</th>
             </tr>
             </thead>
             <tbody id="mattable-body"></tbody>
