@@ -6,12 +6,6 @@
             {if ($_partner.vendeg)}
                 <span class="bizlista-jelveny">{at('Vendég')}</span>
             {/if}
-            {if ($_partner.gyarto)}
-                <span class="bizlista-jelveny">{at('Gyártó')}</span>
-            {/if}
-            {if ($_partner.szallito)}
-                <span class="bizlista-jelveny">{at('Beszállító')}</span>
-            {/if}
         </div>
         <div class="bizlista-muveletek">
             {if (!$_partner.anonym && !$_partner.anonymizalnikell)}
@@ -130,6 +124,10 @@
         <div class="bizlista-kapcsolocsoport">
             <a href="#" data-id="{$_partner.id}" data-flag="inaktiv"
                class="js-flagcheckbox bizlista-kapcsolo{if ($_partner.inaktiv)} ui-state-hover{/if}">{at('Inaktív')}</a>
+            <a href="#" data-id="{$_partner.id}" data-flag="gyarto"
+               class="js-flagcheckbox bizlista-kapcsolo{if ($_partner.gyarto)} ui-state-hover{/if}">{at('Gyártó')}</a>
+            <a href="#" data-id="{$_partner.id}" data-flag="szallito"
+               class="js-flagcheckbox bizlista-kapcsolo{if ($_partner.szallito)} ui-state-hover{/if}">{at('Beszállító')}</a>
         </div>
     </td>
 </tr>

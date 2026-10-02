@@ -72,6 +72,12 @@ trait PartnerBulkOps
                 case 'inaktiv':
                     $obj->setInaktiv($kibe);
                     break;
+                case 'gyarto':
+                    $obj->setGyarto($kibe);
+                    break;
+                case 'szallito':
+                    $obj->setSzallito($kibe);
+                    break;
             }
             $this->getEm()->persist($obj);
             $this->getEm()->flush();
