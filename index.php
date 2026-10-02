@@ -162,9 +162,10 @@ if (!$match) {
         }
     }
 }
+$routename = $match['name'] ?? '';
 if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
-    substr($match['name'], 0, 5) !== 'admin' &&
-    substr($match['name'], 0, 8) !== 'pubadmin'
+    substr($routename, 0, 5) !== 'admin' &&
+    substr($routename, 0, 8) !== 'pubadmin'
 ) {
     callTheController('mainController#showOff', []);
 } else {
