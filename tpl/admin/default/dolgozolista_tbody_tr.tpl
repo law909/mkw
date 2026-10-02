@@ -14,11 +14,15 @@
                             class="ui-icon ui-icon-circle-minus"></span></a>
             </div>
         {/if}
+        {if ($_egyed.munkakornev)}
+            <div class="bizlista-partner">
+                <div>{$_egyed.munkakornev}</div>
+            </div>
+        {/if}
         {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
         {strip}
         <dl class="bizlista-adatok bizlista-meta">
             <div class="bizlista-sor"><dt>{at('Születés')}:</dt><dd>{$_egyed.szulidostr}{if ($_egyed.szulidostr && $_egyed.szulhely)} {/if}{$_egyed.szulhely}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Munkakör')}:</dt><dd>{$_egyed.munkakornev}</dd></div>
             <div class="bizlista-sor"><dt>{at('Munkaviszony kezdete')}:</dt><dd>{$_egyed.munkaviszonykezdetestr}</dd></div>
             {if ($_egyed.havilevonas != 0)}
                 <div class="bizlista-sor"><dt>{at('Havi levonás')}:</dt><dd>{$_egyed.havilevonas}</dd></div>
