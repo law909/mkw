@@ -3,7 +3,8 @@
     <td class="cell bizlista-fo termeklista-fo">
         <div class="termeklista-fej">
             {if ($_termek.kepurl)}
-                <a class="termeklista-kep js-toflyout" href="{$mainurl}{$_termek.kepurl}" target="_blank"><img src="{$mainurl}{$_termek.kepurlsmall}" alt=""></a>
+                <a class="termeklista-kep js-toflyout" href="{$mainurl}{$_termek.kepurl}" target="_blank"><img src="{$mainurl}{$_termek.kepurlsmall}"
+                                                                                                               alt=""></a>
             {/if}
             <div class="termeklista-cim">
                 <a class="mattable-editlink termeklista-nev" href="#" data-termekid="{$_termek.id}" data-oper="edit"
@@ -20,21 +21,48 @@
         </div>
         {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
         {strip}
-        <dl class="bizlista-adatok bizlista-meta">
-            <div class="bizlista-sor"><dt>{at('Kategória')}:</dt><dd>{$_termek.termekfa1nev}{if ($_termek.termekfa1nev && $_termek.termekfa2nev)} · {/if}{$_termek.termekfa2nev}{if (($_termek.termekfa1nev || $_termek.termekfa2nev) && $_termek.termekfa3nev)} · {/if}{$_termek.termekfa3nev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Címkék')}:</dt><dd class="termeklista-cimkek">
-                {foreach $_termek.cimkenevlista as $_cimkenev}
-                    <span class="termeklista-cimke">{$_cimkenev}</span>
-                {/foreach}
-            </dd></div>
-            <div class="bizlista-sor"><dt>{at('Azonosító')}:</dt><dd>{$_termek.id}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Cikkszám')}:</dt><dd>{$_termek.cikkszam}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Gyártó')}:</dt><dd>{$_termek.gyartonev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('ME')}:</dt><dd>{$_termek.me}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Link')}:</dt><dd class="termeklista-link"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></dd></div>
-            <div class="bizlista-sor"><dt>{at('Létrehozva')}:</dt><dd>{$_termek.createdstr}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Módosítva')}:</dt><dd>{$_termek.lastmodstr}</dd></div>
-        </dl>
+            <dl class="bizlista-adatok bizlista-meta">
+                <div class="bizlista-sor">
+                    <dt>{at('Kategória')}:</dt>
+                    <dd>{$_termek.termekfa1nev}{if ($_termek.termekfa1nev && $_termek.termekfa2nev)} · {/if}{$_termek.termekfa2nev}{if (($_termek.termekfa1nev || $_termek.termekfa2nev) && $_termek.termekfa3nev)} · {/if}{$_termek.termekfa3nev}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Azonosító')}:</dt>
+                    <dd>{$_termek.id}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Cikkszám')}:</dt>
+                    <dd>{$_termek.cikkszam}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Gyártó')}:</dt>
+                    <dd>{$_termek.gyartonev}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('ME')}:</dt>
+                    <dd>{$_termek.me}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Link')}:</dt>
+                    <dd class="termeklista-link"><a href="{$mainurl}/termek/{$_termek.slug}" target="_blank">/termek/{$_termek.slug}</a></dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Címkék')}:</dt>
+                    <dd class="termeklista-cimkek">
+                        {foreach $_termek.cimkenevlista as $_cimkenev}
+                            <span class="termeklista-cimke">{$_cimkenev}</span>
+                        {/foreach}
+                    </dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Létrehozva')}:</dt>
+                    <dd>{$_termek.createdstr}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Módosítva')}:</dt>
+                    <dd>{$_termek.lastmodstr}</dd>
+                </div>
+            </dl>
         {/strip}
         {if ($_termek.doklinkek)}
             <div class="bizlista-kapcs">
@@ -45,22 +73,55 @@
     </td>
     <td class="cell">
         {strip}
-        <dl class="bizlista-adatok termeklista-arak">
-            {if (!$setup.arsavok)}
-                <div class="bizlista-sor"><dt>{at('Nettó ár')}:</dt><dd>{number_format($_termek.netto,4,'.',' ')}</dd></div>
-                <div class="bizlista-sor mattable-important"><dt>{at('Bruttó ár')}:</dt><dd>{number_format($_termek.brutto,4,'.',' ')}</dd></div>
-                <div class="bizlista-sor"><dt>{at('Akciós n.ár')}:</dt><dd>{number_format($_termek.akciosnetto,4,'.',' ')}</dd></div>
-                <div class="bizlista-sor"><dt>{at('Akciós b.ár')}:</dt><dd>{number_format($_termek.akciosbrutto,4,'.',' ')}</dd></div>
-            {else}
-                <div class="bizlista-sor"><dt>{at('Nettó ár')}:</dt><dd>{number_format($_termek.netto,2,'.',' ')}</dd></div>
-                <div class="bizlista-sor mattable-important"><dt>{at('Bruttó ár')}:</dt><dd>{number_format($_termek.brutto,2,'.',' ')}</dd></div>
-            {/if}
-            <div class="bizlista-sor"><dt>{at('Min. bolti készlet')}:</dt><dd>{number_format($_termek.minkeszlet|default:0, 2, '.', ' ')}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Garancia')}:</dt><dd>{$_termek.garancia}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Hűségpont arány')}:</dt><dd>{$_termek.hparany}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Megtekintve')}:</dt><dd>{$_termek.megtekintesdb}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Megvásárolva')}:</dt><dd>{$_termek.megvasarlasdb}</dd></div>
-        </dl>
+            <dl class="bizlista-adatok termeklista-arak">
+                {if (!$setup.arsavok)}
+                    <div class="bizlista-sor">
+                        <dt>{at('Nettó ár')}:</dt>
+                        <dd>{number_format($_termek.netto,4,'.',' ')}</dd>
+                    </div>
+                    <div class="bizlista-sor mattable-important">
+                        <dt>{at('Bruttó ár')}:</dt>
+                        <dd>{number_format($_termek.brutto,4,'.',' ')}</dd>
+                    </div>
+                    <div class="bizlista-sor">
+                        <dt>{at('Akciós n.ár')}:</dt>
+                        <dd>{number_format($_termek.akciosnetto,4,'.',' ')}</dd>
+                    </div>
+                    <div class="bizlista-sor">
+                        <dt>{at('Akciós b.ár')}:</dt>
+                        <dd>{number_format($_termek.akciosbrutto,4,'.',' ')}</dd>
+                    </div>
+                {else}
+                    <div class="bizlista-sor">
+                        <dt>{at('Nettó ár')}:</dt>
+                        <dd>{number_format($_termek.netto,2,'.',' ')}</dd>
+                    </div>
+                    <div class="bizlista-sor mattable-important">
+                        <dt>{at('Bruttó ár')}:</dt>
+                        <dd>{number_format($_termek.brutto,2,'.',' ')}</dd>
+                    </div>
+                {/if}
+                <div class="bizlista-sor">
+                    <dt>{at('Min. bolti készlet')}:</dt>
+                    <dd>{number_format($_termek.minkeszlet|default:0, 2, '.', ' ')}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Garancia')}:</dt>
+                    <dd>{$_termek.garancia}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Hűségpont arány')}:</dt>
+                    <dd>{$_termek.hparany}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Megtekintve')}:</dt>
+                    <dd>{$_termek.megtekintesdb}</dd>
+                </div>
+                <div class="bizlista-sor">
+                    <dt>{at('Megvásárolva')}:</dt>
+                    <dd>{$_termek.megvasarlasdb}</dd>
+                </div>
+            </dl>
         {/strip}
     </td>
     <td class="cell">
