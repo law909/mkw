@@ -415,7 +415,6 @@ class kosarController extends \mkwhelpers\MattableController
         $valutanem = null;
         $valutanemnev = 'Ft';
         if (\mkw\store::getTheme() !== 'mkwcansas') {
-            \mkw\store::writelog(\mkw\store::getParameter(\mkw\store::getWebshopFieldName('webshopvalutanem')));
             $valutanem = \mkw\store::getWebshopValutanem();
             $valutanemnev = $valutanem?->getNev();
         }
