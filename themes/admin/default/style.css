@@ -384,8 +384,9 @@ img {
     max-width: 80em;
 }
 
-.valtozatok-beallitas {
-    margin-bottom: 12px;
+/* termék karb: a fülek első sora (régi kép url, árak újraszámolása, látható tulajdonság) után térköz */
+.termekkarb-felsosor {
+    margin-bottom: 1.5em;
 }
 
 .valtozatok-beallitas .mezok {

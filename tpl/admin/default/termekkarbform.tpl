@@ -244,8 +244,10 @@
         {/if}
         {if ($setup.arsavok)}
             <div id="ArsavTab" class="mattkarb-page" data-visible="visible">
-                <a class="js-arrecalcbutton" href="#">{at('Árak újraszámolása')}</a>
-                <div class="js-arrecalchibak"></div>
+                <div class="termekkarb-felsosor">
+                    <a class="js-arrecalcbutton" href="#">{at('Árak újraszámolása')}</a>
+                    <div class="js-arrecalchibak"></div>
+                </div>
                 {foreach $egyed.arak as $ar}
                     {include 'termektermekarkarb.tpl'}
                 {/foreach}
@@ -304,7 +306,7 @@
         </div>
         {if ($setup.termekvaltozat)}
             <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
-                {mezocsoport class="valtozatok-beallitas ui-widget ui-widget-content ui-corner-all mattable-repeatable"}
+                {mezocsoport class="valtozatok-beallitas termekkarb-felsosor"}
                     {mezo cimke="Látható tulajdonság" for="ValtozatAdattipusEdit"}
                         <select id="ValtozatAdattipusEdit" name="valtozatadattipus">
                             <option value="">{at('válasszon')}</option>
@@ -658,7 +660,7 @@
             </table>
         </div>
         <div id="KepTab" class="mattkarb-page" data-visible="visible">
-            <div>
+            <div class="termekkarb-felsosor">
                 <label for="RegikepurlEdit">{at('Régi kép url')}:</label>
                 <input id="RegikepurlEdit" type="text" name="regikepurl" size=70 value="{$egyed.regikepurl}">
             </div>
