@@ -1348,6 +1348,30 @@ body.modernui {
     text-transform: uppercase;
 }
 
+/* termék karb, Változatok: a változat dobozának fejléce */
+.modernui .valtozat-fej {
+    border-bottom-color: var(--mkw-border);
+}
+
+.modernui .valtozat-cim {
+    color: var(--mkw-text);
+}
+
+.modernui .valtozat-jelveny {
+    border-color: var(--mkw-border-strong);
+    color: var(--mkw-muted);
+}
+
+.modernui .valtozat-jelveny-inaktiv {
+    border-color: var(--mkw-danger);
+    color: var(--mkw-danger);
+}
+
+.modernui .valtozat-mezok .mattkarb-szakaszcim {
+    max-width: none;
+    margin-top: .9em;
+}
+
 /* termék karb, Változatok és Szín képek: a kijelölt kép a dolgozó színével, a sárga kiemelés helyett */
 .modernui .valtozatkepedit li.ui-selected {
     border-color: var(--mkw-accent);

@@ -374,6 +374,86 @@ img {
     border: 1px solid #ccc;
 }
 
+/* Termék karb, Változatok fül: egy változat doboza – fejléc, alatta a mezőcsoportok egymás mellett */
+.valtozat-fej {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin-bottom: 4px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ccc;
+}
+
+.valtozat-cim {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+.valtozat-jelveny {
+    padding: 1px 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: .85em;
+}
+
+.valtozat-jelveny-inaktiv {
+    border-color: currentColor;
+    color: #cd0a0a;
+}
+
+.valtozat-torles {
+    margin-left: auto;
+}
+
+.valtozat-mezok {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24em), 1fr));
+    gap: 0 28px;
+    align-items: start;
+}
+
+.valtozat-mezok .mezok {
+    --mkw-cimkeoszlop: 9.5em;
+    grid-template-columns: var(--mkw-cimkeoszlop) minmax(0, 1fr);
+}
+
+.valtozat-mezok .mezo-ertek {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+}
+
+.valtozat-mezok .mezo-ertek > input:not([type="checkbox"]):not([type="radio"]),
+.valtozat-mezok .mezo-ertek > select {
+    flex: 1 1 7em;
+    min-width: 0;
+}
+
+.valtozat-mezok .mezo-ertek > .mezo-rovid {
+    flex: 0 0 auto;
+}
+
+.valtozat-mezok .valtozat-szeles {
+    grid-column: 1 / -1;
+}
+
+.valtozat-mezok .valtozat-szeles .mezok {
+    display: block;
+}
+
+.valtozat-fokep {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.valtozat-lab {
+    margin-top: 6px;
+    font-size: .85em;
+    opacity: .7;
+}
+
 .valtozatkepedit {
     list-style-type: none;
     margin: 0;
