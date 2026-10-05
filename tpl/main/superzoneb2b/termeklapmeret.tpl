@@ -34,11 +34,11 @@
                                 <span>{$termek.szin} - {$_valt.caption}</span>
                             </td>
                             <td class="textalignright">
-                                <span>{number_format($termek.eredetiar, 2, ',', ' ')} {$termek.valutanemnev}</span>
+                                <span>{number_format($_valt.eredetiar|default:$termek.eredetiar, 2, ',', ' ')} {$termek.valutanemnev}</span>
                             </td>
                             <td class="textalignright">
                                 {if ($uzletkoto.loggedin)}
-                                    <input name="kedvezmeny_{$_valt.id}" type="number" data-id="{$_valt.id}" data-eredetiar="{$termek.eredetiar}"
+                                    <input name="kedvezmeny_{$_valt.id}" type="number" data-id="{$_valt.id}" data-eredetiar="{$_valt.eredetiar|default:$termek.eredetiar}"
                                            data-eredetikedvezmeny="{$termek.kedvezmeny}" value="{$termek.kedvezmeny}" class="js-kedvezmenyinput">
                                     %
                                 {else}
@@ -46,7 +46,7 @@
                                 {/if}
                             </td>
                             <td class="textalignright">
-                                <span class="js-ar{$_valt.id}">{number_format($termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>
+                                <span class="js-ar{$_valt.id}">{number_format($_valt.ar|default:$termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>
                             </td>
                             {if ($showkeszlet)}
                                 <td class="textalignright">
