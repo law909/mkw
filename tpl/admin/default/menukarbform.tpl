@@ -36,6 +36,10 @@
                 {/mezo}
             {/mezocsoport}
             {mezocsoport cim="Ezek a munkakörök érhetik el"}
+                {mezo cimke="Mindenki elérheti" for="MindenkiEdit" szeles=true}
+                    <input id="MindenkiEdit" name="mindenki" type="checkbox"{if ($egyed.mindenki)} checked="checked"{/if}>
+                    {at('bármelyik munkakör és a munkakör nélküli dolgozó is, a pipáktól függetlenül')}
+                {/mezo}
                 {mezo cimke="Munkakörök" szeles=true}
                     <div class="mattkarb-checklist">
                         {foreach $egyed.munkakorlist as $_munkakor}

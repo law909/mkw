@@ -67,10 +67,10 @@ class Menu extends \Entities\Menu implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'munkakorok', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'munkakorok', '' . "\0" . 'Entities\\Menu' . "\0" . 'mindenki', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'munkakorok', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'munkakorok', '' . "\0" . 'Entities\\Menu' . "\0" . 'mindenki', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
     }
 
     /**
@@ -399,6 +399,28 @@ class Menu extends \Entities\Menu implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllMunkakor', []);
 
         return parent::removeAllMunkakor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMindenki()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMindenki', []);
+
+        return parent::getMindenki();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMindenki($mindenki)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMindenki', [$mindenki]);
+
+        return parent::setMindenki($mindenki);
     }
 
     /**

@@ -16,7 +16,7 @@
             <div class="bizlista-sor"><dt>{at('Menücsoport')}:</dt><dd>{$_egyed.menucsoportnev}</dd></div>
             <div class="bizlista-sor"><dt>{at('Sorrend')}:</dt><dd>{$_egyed.sorrend}</dd></div>
             <div class="bizlista-sor"><dt>{at('URL')}:</dt><dd>{$_egyed.url}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Munkakörök')}:</dt><dd>{$_egyed.munkakornevek}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Munkakörök')}:</dt><dd>{if ($_egyed.mindenki)}{at('mindenki')}{else}{$_egyed.munkakornevek}{/if}</dd></div>
             <div class="bizlista-sor"><dt>{at('Látható')}:</dt><dd>{if ($_egyed.lathato)}{at('igen')}{else}{at('nem')}{/if}</dd></div>
         </dl>
         {/strip}

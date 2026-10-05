@@ -40,6 +40,8 @@ class Menu {
      *  )
      */
     private $munkakorok;
+    /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
+    private $mindenki = false;
     /** @ORM\Column(type="boolean") */
     private $lathato;
     /** @ORM\Column(type="integer", nullable=true) */
@@ -179,6 +181,14 @@ class Menu {
         $this->munkakorok->clear();
     }
 
+    public function getMindenki() {
+        return $this->mindenki;
+    }
+
+    public function setMindenki($mindenki) {
+        $this->mindenki = (bool)$mindenki;
+    }
+
     public function getMunkakorIds() {
         $ids = [];
         foreach ($this->munkakorok as $munkakor) {
@@ -203,11 +213,11 @@ class Menu {
         return true;
     }
 
-    /** A beépített sysadmin minden menüpontot lát, más csak a munkaköréhez bepipáltakat. */
+    /** A beépített sysadmin minden menüpontot lát, más a mindenkinek szólókat és a munkaköréhez bepipáltakat. */
     public function isLathato(?int $munkakorId, bool $sysadmin = false) {
         return $this->getLathato()
             && $this->isMenucsoportLathato()
-            && ($sysadmin || ($munkakorId && in_array($munkakorId, $this->getMunkakorIds())));
+            && ($sysadmin || $this->getMindenki() || ($munkakorId && in_array($munkakorId, $this->getMunkakorIds())));
     }
 
     /**

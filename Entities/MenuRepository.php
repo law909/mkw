@@ -17,13 +17,13 @@ class MenuRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * Whether the munkakor may open the URL: true when a menu item pointing at it is ticked for the munkakor, null
-     * when no menu item points at it.
+     * Whether the munkakor may open the URL: true when a menu item pointing at it is open to everyone or ticked for
+     * the munkakor, null when no menu item points at it.
      */
     public function isMunkakorAllowedByUrl(string $url, ?int $munkakorId): ?bool
     {
         $row = $this->_em->getConnection()->fetchNumeric(
-            'SELECT COUNT(DISTINCT m.id), COUNT(mm.munkakor_id) FROM menu m'
+            'SELECT COUNT(DISTINCT m.id), COUNT(mm.munkakor_id) + SUM(m.mindenki) FROM menu m'
             . ' LEFT JOIN menu_munkakorok mm ON mm.menu_id = m.id AND mm.munkakor_id = ?'
             . ' WHERE m.url = ?',
             [(int)$munkakorId, $url]

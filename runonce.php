@@ -3339,6 +3339,12 @@ if ($DBVersion < '0228' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0228');
 }
 
+if ($DBVersion < '0229' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0228') {
+    // a Főoldal minden dolgozónak elérhető, munkakörtől függetlenül
+    \mkw\store::getEm()->getConnection()->executeStatement('UPDATE menu SET mindenki = 1 WHERE url IN ("/admin/", "/admin", "/admin/view")');
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0229');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
