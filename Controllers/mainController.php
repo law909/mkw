@@ -577,13 +577,13 @@ class mainController extends \mkwhelpers\Controller
     }
 
     /**
-     * The product page opens on the colour's image: it becomes the main image, and the product's own
-     * main image moves to the front of the gallery.
+     * The product page opens on the colour's images: they lead the gallery in their Szín képek order, the first
+     * one as the main image; the product's own main image and the other images follow.
      */
     private function setSzinKepFirst(array $lap, Termek $termek, $szinid)
     {
-        $szinkep = $this->getSzinKep($termek, $szinid);
-        if (!$szinkep || $szinkep['kepurl'] === $lap['kepurl']) {
+        $szinkepek = $this->getSzinKepek($termek, $szinid);
+        if (!$szinkepek) {
             return $lap;
         }
         $fokep = [
@@ -596,36 +596,41 @@ class mainController extends \mkwhelpers\Controller
             'kepurl2000' => $lap['kepurl2000'],
             'leiras' => '',
         ];
-        $kepek = array_values(array_filter($lap['kepek'] ?? [], fn($kep) => $kep['kepurl'] !== $szinkep['kepurl']));
-        // the main image is often among the extra images too
-        if (!in_array($fokep['kepurl'], array_column($kepek, 'kepurl'), true)) {
-            array_unshift($kepek, $fokep);
+        $galeria = [];
+        foreach (array_merge(array_map(fn($kep) => $kep ?? $fokep, $szinkepek), [$fokep], $lap['kepek'] ?? []) as $kep) {
+            // the main image is often among the extra images too
+            $galeria[$kep['kepurl']] ??= $kep;
         }
-        $lap['kepek'] = $kepek;
+        $galeria = array_values($galeria);
+        $elso = array_shift($galeria);
         foreach (['eredetikepurl', 'kepurl', 'kozepeskepurl', 'minikepurl', 'kepurl400', 'kepurl2000'] as $mezo) {
-            $lap[$mezo] = $szinkep[$mezo];
+            $lap[$mezo] = $elso[$mezo];
         }
+        $lap['kepek'] = $galeria;
         return $lap;
     }
 
     /**
-     * The colour's image: the first one on the product's Szín képek tab, else the image of a variant in
-     * that colour. Null when the colour shows the product's main image.
+     * The colour's images in the order of the product's Szín képek tab, else the images of the variants in that
+     * colour. Null stands for the product's main image.
      */
-    private function getSzinKep(Termek $termek, $szinid)
+    private function getSzinKepek(Termek $termek, $szinid)
     {
+        $kepek = [];
         /** @var TermekSzinKep $szinkep */
         foreach ($this->getRepo(TermekSzinKep::class)->getByTermekAndSzin($termek, $szinid) as $szinkep) {
-            // an entry without an image stands for the product's main image
-            return $szinkep->getKep() ? $this->getKepAdat($szinkep->getKep()) : null;
+            $kepek[] = $szinkep->getKep() ? $this->getKepAdat($szinkep->getKep()) : null;
+        }
+        if ($kepek) {
+            return $kepek;
         }
         /** @var TermekValtozat $valt */
         foreach ($termek->getValtozatok() ?? [] as $valt) {
             if ($valt->getSzinId() == $szinid && $valt->getXElerheto() && $valt->getXLathato() && $valt->getKep()) {
-                return $this->getKepAdat($valt->getKep());
+                $kepek[$valt->getKep()->getId()] ??= $this->getKepAdat($valt->getKep());
             }
         }
-        return null;
+        return array_values($kepek);
     }
 
     private function getKepAdat(\Entities\TermekKep $kep)
