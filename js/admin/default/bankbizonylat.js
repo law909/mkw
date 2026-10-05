@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     function calcOsszesen() {
         var osszeg = 0;
-        $('input[name^="tetelosszeg_"]').each(function () {
+        $('input[name^="tetelosszeg_"]').not('.js-torolttetel input').each(function () {
             var $this = $(this),
                 tetelid = $this.attr('name').split('_')[1];
             tetelertek = $('input[name="tetelirany_' + tetelid + '"]:checked').val() * 1 * $this.val();
@@ -115,18 +115,13 @@ $(document).ready(function () {
                             modal: true,
                             buttons: {
                                 'Igen': function () {
-                                    $.ajax({
-                                        url: '/admin/bankbizonylattetel/save',
-                                        type: 'POST',
-                                        data: {
-                                            id: removeid,
-                                            oper: 'del'
-                                        },
-                                        success: function (data) {
-                                            $('#teteltable_' + data).remove();
-                                            calcOsszesen();
-                                        }
-                                    });
+                                    // csak az OK-val együtt törlődik, így a Mégsem után a tétel megmarad
+                                    $(`input[name="teteloper_${removeid}"]`).val('del');
+                                    $(`#teteltable_${removeid}`)
+                                        .addClass('js-torolttetel')
+                                        .hide()
+                                        .find('[required]').prop('required', false);
+                                    calcOsszesen();
                                     $(this).dialog('close');
                                 },
                                 'Nem': function () {

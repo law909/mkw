@@ -97,6 +97,14 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
             case 'b':
                 $tetelids = $this->params->getArrayRequestParam('tetelid');
                 foreach ($tetelids as $tetelid) {
+                    // a törlést a form csak megjelöli, így Mégsemre a bizonylat érintetlen marad
+                    if ($this->params->getStringRequestParam('teteloper_' . $tetelid) === $this->delOperation) {
+                        $tetel = $this->getEm()->getRepository(Bankbizonylattetel::class)->find($tetelid);
+                        if ($tetel && $obj->removeBizonylattetel($tetel)) {
+                            $this->getEm()->remove($tetel);
+                        }
+                        continue;
+                    }
                     if (($this->params->getIntRequestParam('teteljogcim_' . $tetelid) > 0)) {
                         $oper = $this->params->getStringRequestParam('teteloper_' . $tetelid);
                         $irany = $this->params->getIntRequestParam('tetelirany_' . $tetelid);

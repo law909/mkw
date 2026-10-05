@@ -104,7 +104,7 @@ class BankbizonylatfejListener
         $bizonylat->clearFolyoszamlak();
 
         /** @var \Entities\Bankbizonylattetel $tetel */
-        foreach ($bizonylat->getBizonylattetelek() as $tetel) {
+        foreach ($this->liveTetelek($bizonylat) as $tetel) {
             $bf = null;
             $bbf = $tetel->getBizonylatfej();
             if ($tetel->getHivatkozottbizonylat()) {
@@ -137,6 +137,31 @@ class BankbizonylatfejListener
     }
 
     /**
+     * A törlésre ütemezett tétel nélkül. Id alapján, mert a Doctrine a törölt entitást kiveszi az
+     * identity map-ből, így a lusta gyűjtemény ugyanazt a sort új objektumként tölti vissza.
+     *
+     * @param \Entities\Bankbizonylatfej $entity
+     *
+     * @return \Entities\Bankbizonylattetel[]
+     */
+    private function liveTetelek($entity)
+    {
+        $toroltek = [];
+        foreach ($this->uow ? $this->uow->getScheduledEntityDeletions() : [] as $torolt) {
+            if ($torolt instanceof \Entities\Bankbizonylattetel && $torolt->getId()) {
+                $toroltek[$torolt->getId()] = true;
+            }
+        }
+        $result = [];
+        foreach ($entity->getBizonylattetelek() as $tetel) {
+            if (!isset($toroltek[$tetel->getId()])) {
+                $result[] = $tetel;
+            }
+        }
+        return $result;
+    }
+
+    /**
      * @param \Entities\Bankbizonylatfej $entity
      */
     public function calcOsszesen($entity)
@@ -148,7 +173,7 @@ class BankbizonylatfejListener
             $kerekit = $entity->getValutanem()->getKerekit();
         }
         $brutto = 0;
-        foreach ($entity->getBizonylattetelek() as $bt) {
+        foreach ($this->liveTetelek($entity) as $bt) {
             $brutto += $bt->getBrutto();
         }
         $entity->setBrutto($brutto);

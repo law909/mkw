@@ -3285,6 +3285,15 @@ if ($DBVersion < '0224' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0224');
 }
 
+if ($DBVersion < '0225' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0224') {
+    // a 0223 párja: a bankbizonylat karbantartójából azonnal törölt tétel összege is a fejen maradt
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE bankbizonylatfej f SET f.brutto = 0 WHERE f.brutto <> 0'
+        . ' AND NOT EXISTS (SELECT 1 FROM bankbizonylattetel t WHERE t.bankbizonylatfej_id = f.id)'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0225');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
