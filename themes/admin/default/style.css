@@ -464,8 +464,13 @@ img {
     color: #cd0a0a;
 }
 
-.valtozat-torles {
+.valtozat-torles,
+.valtozat-termekke {
     margin-left: auto;
+}
+
+.valtozat-termekke + .valtozat-torles {
+    margin-left: 0;
 }
 
 .valtozat-mezok {

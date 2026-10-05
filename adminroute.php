@@ -1293,7 +1293,9 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekvaltozat/cikkszamatiras', 'termekvaltozatController#cikkszamAtiras', 'admintermekvaltozatcikkszamatiras');
     $router->map('POST', '/admin/termekvaltozat/osszevonasstat', 'termekvaltozatController#osszevonasStat', 'admintermekvaltozatosszevonasstat');
     $router->map('POST', '/admin/termekvaltozat/osszevonas', 'termekvaltozatController#osszevonas', 'admintermekvaltozatosszevonas');
+    $router->map('POST', '/admin/termekvaltozat/termekke', 'termekvaltozatController#termekke', 'admintermekvaltozattermekke');
 }
+$router->map('GET', '/admin/termekvaltozat/termekkeinfo', 'termekvaltozatController#termekkeInfo', 'admintermekvaltozattermekkeinfo');
 $router->map('GET', '/admin/termekvaltozat/getkeszletbyraktar', 'termekvaltozatController#getKeszletByRaktar', 'admingetvaltozatkeszletbyraktar');
 $router->map('GET', '/admin/termekvaltozat/cikkszamreport', 'termekvaltozatController#cikkszamReport', 'admintermekvaltozatcikkszamreport');
 $router->map('GET', '/admin/termekvaltozat/cikkszamatirasview', 'termekvaltozatController#cikkszamAtirasView', 'admintermekvaltozatcikkszamatirasview');

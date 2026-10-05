@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Services\TermekValtozatCikkszamReportService;
 use Services\TermekValtozatCikkszamService;
 use Services\TermekValtozatMergeService;
+use Services\TermekValtozatToTermekService;
 
 class termekvaltozatController extends \mkwhelpers\MattableController
 {
@@ -198,6 +199,17 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     /** akit a menüpont nem enged be, annak a képernyő és a hozzá tartozó végpontok sem érhetők el */
     private const OSSZEVONASMENUURL = '/admin/termekvaltozat/osszevonasview';
     private const OSSZEVONASJOG = 40;
+
+    /** változatból termék: ez alatt a gomb sem látszik */
+    public const TERMEKKEJOG = 90;
+
+    private const TERMEKKEFELIRAT = [
+        'bizonylattetel' => 'Bizonylattétel',
+        'munkalap' => 'Munkalap (bizonylat feje)',
+        'kosar' => 'Kosár',
+        'leltartetel' => 'Leltártétel',
+        'unastermekszinkron' => 'UNAS szinkron állapot',
+    ];
 
     /**
      * Változat összevonás. A képernyő három lépésben dolgozik: termék- és változatválasztás,
@@ -722,4 +734,78 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         ]);
     }
 
+
+    /** A modal előtöltése és a második megerősítés számai. Nem módosít semmit. */
+    public function termekkeInfo()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!store::haveJog(self::TERMEKKEJOG)) {
+            $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
+            return;
+        }
+        /** @var TermekValtozat|null $valtozat */
+        $valtozat = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if (!$valtozat || !$valtozat->getTermek()) {
+            $this->jsonFail(t('A változat nem található.'));
+            return;
+        }
+        $adat = (new TermekValtozatToTermekService())->collect($valtozat);
+        if ($adat['ismeretlen']) {
+            $this->jsonFail(sprintf(t('Ismeretlen hivatkozás a változatra: %s. A művelet nem futtatható.'), implode(', ', $adat['ismeretlen'])));
+            return;
+        }
+        $sorok = [];
+        foreach ($adat['sorok'] as $kulcs => $db) {
+            if ($db) {
+                $sorok[] = ['nev' => t(self::TERMEKKEFELIRAT[$kulcs] ?? $kulcs), 'db' => $db];
+            }
+        }
+        echo json_encode([
+            'ok' => true,
+            'valtozatnev' => $valtozat->getNev(),
+            'nev' => $adat['nev'],
+            'cikkszam' => $adat['cikkszam'],
+            'vonalkod' => $adat['vonalkod'],
+            'sorok' => $sorok,
+        ]);
+    }
+
+    /** A két megerősítés után: a változatból termék lesz, a változat törlődik. */
+    public function termekke()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        if (!store::haveJog(self::TERMEKKEJOG)) {
+            $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
+            return;
+        }
+        /** @var TermekValtozat|null $valtozat */
+        $valtozat = $this->getRepo()->find($this->params->getIntRequestParam('id'));
+        if (!$valtozat || !$valtozat->getTermek()) {
+            $this->jsonFail(t('A változat nem található.'));
+            return;
+        }
+        $leiras = $valtozat->getTermek()->getNev() . ' / ' . $valtozat->getNev();
+        try {
+            $uj = (new TermekValtozatToTermekService())->convert(
+                $valtozat,
+                [
+                    'nev' => $this->params->getStringRequestParam('nev'),
+                    'cikkszam' => $this->params->getStringRequestParam('cikkszam'),
+                    'vonalkod' => $this->params->getStringRequestParam('vonalkod'),
+                ],
+                $this->params->getBoolRequestParam('kepek'),
+                $this->params->getBoolRequestParam('dokumentumok'),
+                $this->params->getBoolRequestParam('arak')
+            );
+        } catch (\Throwable $e) {
+            store::writelog('Változatból termék hiba: ' . $e->getMessage());
+            $this->jsonFail($e->getMessage());
+            return;
+        }
+        echo json_encode([
+            'ok' => true,
+            'msg' => sprintf(t('%s változatból elkészült a(z) %s termék.'), $leiras, $uj->getNev()),
+            'termekid' => $uj->getId(),
+        ]);
+    }
 }

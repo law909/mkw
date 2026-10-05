@@ -13,6 +13,10 @@
         {if ($valtozat.cikkszam)}<span class="valtozat-jelveny">{$valtozat.cikkszam}</span>{/if}
         {if ($valtozat.oper != 'add')}<span class="valtozat-jelveny">{at('Készlet')}: {$valtozat.keszlet}</span>{/if}
         {if ($valtozat.inaktiv)}<span class="valtozat-jelveny valtozat-jelveny-inaktiv">{at('inaktív')}</span>{/if}
+        {if ($valtozat.oper != 'add' && haveJog(90))}
+            <a class="js-valtozattermekkebutton valtozat-termekke" href="#" data-id="{$valtozat.id}"
+               title="{at('Önálló termék a változatból; a változat megszűnik')}">{at('Termék a változatból')}</a>
+        {/if}
         <a class="js-valtozatdelbutton valtozat-torles" href="#" data-id="{$valtozat.id}"{if ($valtozat.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span
                 class="ui-icon ui-icon-circle-minus"></span></a>
     </div>

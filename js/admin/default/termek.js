@@ -1,6 +1,125 @@
 $(document).ready(function () {
     const dialogcenter = $('#dialogcenter');
 
+    /** Saját elem: a #dialogcenter-en a beállított cím és szélesség a többi kérdésre is ráragadna. */
+    function sajatDialog(id) {
+        let $ablak = $('#' + id);
+        if (!$ablak.length) {
+            $ablak = $('<div>').attr('id', id).appendTo('body');
+        }
+        return $ablak.empty();
+    }
+
+    function valtozatTermekkeKerdes(cim, szoveg, igenre) {
+        sajatDialog('valtozattermekkekerdes')
+            .append($('<div>').text(szoveg))
+            .dialog({
+                title: cim,
+                resizable: false,
+                modal: true,
+                width: 480,
+                buttons: {
+                    'Igen': function () {
+                        $(this).dialog('close');
+                        igenre();
+                    },
+                    'Mégsem': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+    }
+
+    /** Változatból termék: az adatok, majd két megerősítés, mert a változat megszűnik és ez nem vonható vissza. */
+    function valtozatTermekkeDialog(vid, info) {
+        const mezo = (cimke, $input) => $('<div class="mezo">')
+            .append($('<label class="mezo-cimke">').text(cimke).attr('for', $input.attr('id')))
+            .append($('<div class="mezo-ertek">').append($input));
+        const pipa = (id, cimke) => $('<label>').append($('<input type="checkbox" checked>').attr('id', id)).append(' ' + cimke);
+        const $nev = $('<input type="text" id="ValtozatTermekkeNev" size="50" maxlength="255">').val(info.nev);
+        const $cikkszam = $('<input type="text" id="ValtozatTermekkeCikkszam" size="30" maxlength="255">').val(info.cikkszam);
+        const $vonalkod = $('<input type="text" id="ValtozatTermekkeVonalkod" size="30" maxlength="255">').val(info.vonalkod);
+        const $ablak = sajatDialog('valtozattermekkedialog')
+            .append($('<p>').text(`Változat: ${info.valtozatnev}. A változat megszűnik, a rá hivatkozó bizonylattételek és egyéb sorok az új termékre kerülnek.`))
+            .append($('<div class="mezocsoport">').append($('<div class="mezok">')
+                .append(mezo('Név', $nev))
+                .append(mezo('Cikkszám', $cikkszam))
+                .append(mezo('Vonalkód', $vonalkod))))
+            .append($('<div>')
+                .append(pipa('ValtozatTermekkeKepek', 'Képek másolása')).append('<br>')
+                .append(pipa('ValtozatTermekkeDokumentumok', 'Dokumentumok másolása')).append('<br>')
+                .append(pipa('ValtozatTermekkeArak', 'Árak másolása')));
+
+        const vegrehajt = () => {
+            $.ajax({
+                url: '/admin/termekvaltozat/termekke',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    id: vid,
+                    nev: $nev.val(),
+                    cikkszam: $cikkszam.val(),
+                    vonalkod: $vonalkod.val(),
+                    kepek: $('#ValtozatTermekkeKepek').is(':checked') ? 1 : 0,
+                    dokumentumok: $('#ValtozatTermekkeDokumentumok').is(':checked') ? 1 : 0,
+                    arak: $('#ValtozatTermekkeArak').is(':checked') ? 1 : 0
+                },
+                success: (d) => {
+                    if (!d || !d.ok) {
+                        mkwHiba(d && d.error);
+                        return;
+                    }
+                    $('#valtozattable_' + vid).remove();
+                    sajatDialog('valtozattermekkekesz')
+                        .append($('<div>').text(d.msg))
+                        .append($('<a target="_blank">').attr('href', `/admin/termek/viewkarb?id=${d.termekid}&oper=edit`).text('Az új termék megnyitása'))
+                        .dialog({
+                            title: 'Kész',
+                            resizable: false,
+                            modal: true,
+                            width: 480,
+                            buttons: {
+                                'OK': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                }
+            });
+        };
+
+        $ablak.dialog({
+            title: 'Termék a változatból',
+            resizable: false,
+            modal: true,
+            width: 560,
+            buttons: {
+                'OK': function () {
+                    if (!$nev.val().trim()) {
+                        mkwHiba('Az új termék nevét meg kell adni.');
+                        return;
+                    }
+                    $(this).dialog('close');
+                    const erintett = info.sorok.length
+                        ? info.sorok.map((sor) => `${sor.nev}: ${sor.db}`).join(', ')
+                        : 'nincs rá hivatkozó sor';
+                    valtozatTermekkeKerdes(
+                        'Biztos?',
+                        `Biztos, hogy a(z) ${info.valtozatnev} változatból „${$nev.val().trim()}” néven terméket csinál? Átírásra kerül: ${erintett}.`,
+                        () => valtozatTermekkeKerdes(
+                            'Végleges művelet',
+                            'A művelet végleges, nem visszavonható: a változat megszűnik. Biztosan folytatja?',
+                            vegrehajt
+                        )
+                    );
+                },
+                'Mégsem': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    }
+
     /** A szerkesztett termék id-ja; új, még nem mentett terméken üres. */
     function termekId() {
         const id = $('#mattkarb-form input[name="id"]').val();
@@ -686,7 +805,7 @@ $(document).ready(function () {
                     success: function (data) {
                         var tbody = $('#ValtozatTab');
                         tbody.append(data);
-                        $('.js-valtozatnewbutton,.js-valtozatdelbutton,.js-valtozatarnewbutton').button();
+                        $('.js-valtozatnewbutton,.js-valtozatdelbutton,.js-valtozattermekkebutton,.js-valtozatarnewbutton').button();
                         createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
                         createMultiImageSelectable('.js-szinkepedit');
                         $this.remove();
@@ -725,6 +844,23 @@ $(document).ready(function () {
                             }
                         });
                     }
+                })
+                .on('click', '.js-valtozattermekkebutton', function (e) {
+                    e.preventDefault();
+                    const vid = $(this).attr('data-id');
+                    $.ajax({
+                        url: '/admin/termekvaltozat/termekkeinfo',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {id: vid},
+                        success: (info) => {
+                            if (!info || !info.ok) {
+                                mkwHiba(info && info.error);
+                                return;
+                            }
+                            valtozatTermekkeDialog(vid, info);
+                        }
+                    });
                 })
                 .on('blur', '.js-valtozatnetto', function (e) {
                     e.preventDefault();
@@ -825,7 +961,7 @@ $(document).ready(function () {
                 success: function (data) {
                     $('.valtozattable').remove();
                     $('.js-valtozatokcim').after(data);
-                    $('.js-valtozatdelbutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
+                    $('.js-valtozatdelbutton,.js-valtozattermekkebutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
                 }
             });
             $('.js-valtozatdelallbutton').button().on('click', function (e) {
@@ -861,7 +997,7 @@ $(document).ready(function () {
 
             createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
             createMultiImageSelectable('.js-szinkepedit');
-            $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
+            $('.js-valtozatnewbutton,.js-valtozatdelbutton,.js-valtozattermekkebutton,#valtozatgeneratorbutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
 
             // Készletmátrix tömeges kitöltése: a sor eleji gomb a sort, a felső sor gombja az
             // oszlopot, a bal felső az egész rácsot tölti ki. A rejtett és a zárolt (változatos
