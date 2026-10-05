@@ -181,6 +181,14 @@ class Orarend
         return '';
     }
 
+    public function getJogahelyszinCim()
+    {
+        if ($this->jogahelyszin) {
+            return $this->jogahelyszin->getFullAddress();
+        }
+        return '';
+    }
+
     public function setJogahelyszin($jogahelyszin)
     {
         $this->jogahelyszin = $jogahelyszin;

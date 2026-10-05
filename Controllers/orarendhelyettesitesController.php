@@ -105,6 +105,8 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
                         'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
                     );
                     $body->setVar('oranev', $ora->getJogaoratipusNev());
+                    $body->setVar('helyszinnev', $ora->getJogahelyszinNev());
+                    $body->setVar('helyszincim', $ora->getJogahelyszinCim());
                     $body->setVar('tanarnev', $ora->getDolgozoNev());
                     $body->setVar('idopont', $ora->getKezdetStr());
                     if ($resztvevo) {
@@ -144,6 +146,8 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
                 );
                 $body->setVar('tanarnev', $o->getOrarend()->getDolgozoNev());
                 $body->setVar('datum', $o->getDatumStr());
+                $body->setVar('helyszinnev', $o->getOrarend()->getJogahelyszinNev());
+                $body->setVar('helyszincim', $o->getOrarend()->getJogahelyszinCim());
 
                 $mailer = \mkw\store::getMailer();
 

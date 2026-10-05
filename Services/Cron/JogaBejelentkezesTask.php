@@ -57,7 +57,9 @@ class JogaBejelentkezesTask implements CronTask
                 'megszolitas' => $ora->getDolgozoNev(),
                 'oranev' => $ora->getNev(),
                 'orakezdet' => $ora->getKezdetStr(),
-                'oradatum' => $ma->format(\mkw\store::$DateFormat)
+                'oradatum' => $ma->format(\mkw\store::$DateFormat),
+                'helyszinnev' => $ora->getJogahelyszinNev(),
+                'helyszincim' => $ora->getJogahelyszinCim()
             ];
 
             if ($bejcnt == 0) {

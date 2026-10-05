@@ -279,6 +279,17 @@ class Orarend extends \Entities\Orarend implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getJogahelyszinCim()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getJogahelyszinCim', []);
+
+        return parent::getJogahelyszinCim();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setJogahelyszin($jogahelyszin)
     {
 

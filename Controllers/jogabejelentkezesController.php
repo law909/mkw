@@ -294,6 +294,8 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                 'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
             );
             $body->setVar('oranev', $ora->getNev());
+            $body->setVar('helyszinnev', $ora->getJogahelyszinNev());
+            $body->setVar('helyszincim', $ora->getJogahelyszinCim());
             $body->setVar('tanarnev', $ora->getDolgozoNev());
             $body->setVar('idopont', $ora->getKezdetStr());
             if ($partner) {
@@ -322,6 +324,8 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
         if ($tanaremail && $emailtpl && $ora->isBejelentkezesertesitokell()) {
             $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
             $subject->setVar('oranev', $ora->getNev());
+            $subject->setVar('helyszinnev', $ora->getJogahelyszinNev());
+            $subject->setVar('helyszincim', $ora->getJogahelyszinCim());
             $subject->setVar('tanarnev', $ora->getDolgozoNev());
             $subject->setVar('idopont', $ora->getKezdetStr());
             if ($partner) {
@@ -337,6 +341,8 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                 'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
             );
             $body->setVar('oranev', $ora->getNev());
+            $body->setVar('helyszinnev', $ora->getJogahelyszinNev());
+            $body->setVar('helyszincim', $ora->getJogahelyszinCim());
             $body->setVar('tanarnev', $ora->getDolgozoNev());
             $body->setVar('idopont', $ora->getKezdetStr());
             if ($partner) {
@@ -401,6 +407,8 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                         'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
                     );
                     $body->setVar('oranev', $ora->getNev());
+                    $body->setVar('helyszinnev', $ora->getJogahelyszinNev());
+                    $body->setVar('helyszincim', $ora->getJogahelyszinCim());
                     $body->setVar('tanarnev', $ora->getDolgozoNev());
                     $body->setVar('idopont', $ora->getKezdetStr());
                     if ($partner) {
@@ -426,6 +434,8 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                 if ($tanaremail && $emailtpl && $ora->isBejelentkezesertesitokell()) {
                     $subject = \mkw\store::getTemplateFactory()->createMainView('string:' . $emailtpl->getTargy());
                     $subject->setVar('oranev', $ora->getNev());
+                    $subject->setVar('helyszinnev', $ora->getJogahelyszinNev());
+                    $subject->setVar('helyszincim', $ora->getJogahelyszinCim());
                     $subject->setVar('tanarnev', $ora->getDolgozoNev());
                     $subject->setVar('idopont', $ora->getKezdetStr());
                     if ($partner) {
@@ -439,6 +449,8 @@ class jogabejelentkezesController extends \mkwhelpers\MattableController
                         'string:' . str_replace('&#39;', '\'', html_entity_decode($emailtpl->getHTMLSzoveg()))
                     );
                     $body->setVar('oranev', $ora->getNev());
+                    $body->setVar('helyszinnev', $ora->getJogahelyszinNev());
+                    $body->setVar('helyszincim', $ora->getJogahelyszinCim());
                     $body->setVar('tanarnev', $ora->getDolgozoNev());
                     $body->setVar('idopont', $ora->getKezdetStr());
                     if ($partner) {
