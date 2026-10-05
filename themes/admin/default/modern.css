@@ -1367,9 +1367,9 @@ body.modernui {
     box-shadow: none;
 }
 
-/* a szakaszcím .85em-es betűjéhez arányítva olyan széles, mint a 80em-es változat doboz */
-.modernui .valtozatok-cim {
-    max-width: calc(80em / .85);
+.modernui .valtozatok-fej .valtozatok-cim {
+    max-width: none;
+    margin: 0;
 }
 
 .modernui .valtozat-jelveny {

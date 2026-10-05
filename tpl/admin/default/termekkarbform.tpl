@@ -304,18 +304,16 @@
         </div>
         {if ($setup.termekvaltozat)}
             <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
-                <div>
-                    <label for="ValtozatAdattipusEdit">{at('Látható tulajdonság')}:</label>
-                    <select id="ValtozatAdattipusEdit" name="valtozatadattipus">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $valtozatadattipuslist as $_valtozat}
-                            <option
-                                value="{$_valtozat.id}"{if ($_valtozat.selected)} selected="selected"{/if}>{$_valtozat.caption}</option>
-                        {/foreach}
-                    </select>
-                </div>
-                <a class="js-valtozatdelallbutton" href="#" title="{at('Mind törlése')}"
-                   data-termekid="{$egyed.id}"><span class="ui-button-text">{at('Mind törlése')}</span></a>
+                {mezocsoport class="valtozatok-beallitas ui-widget ui-widget-content ui-corner-all mattable-repeatable"}
+                    {mezo cimke="Látható tulajdonság" for="ValtozatAdattipusEdit"}
+                        <select id="ValtozatAdattipusEdit" name="valtozatadattipus">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $valtozatadattipuslist as $_valtozat}
+                                <option value="{$_valtozat.id}"{if ($_valtozat.selected)} selected="selected"{/if}>{$_valtozat.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/mezo}
+                {/mezocsoport}
                 <div id="valtozatgenerator" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable valtozatgenerator">
                     <div class="valtozat-fej">
                         <span class="valtozat-cim">{at('Változat generátor')}</span>
@@ -420,7 +418,11 @@
                     </div>
                 </div>
                 {* a generált változatok ez után kerülnek (termek.js) *}
-                <div class="mattkarb-szakaszcim valtozatok-cim js-valtozatokcim">{at('Változatok')}</div>
+                <div class="valtozatok-fej js-valtozatokcim">
+                    <div class="mattkarb-szakaszcim valtozatok-cim">{at('Változatok')}</div>
+                    <a class="js-valtozatdelallbutton" href="#" title="{at('Mind törlése')}"
+                       data-termekid="{$egyed.id}"><span class="ui-button-text">{at('Mind törlése')}</span></a>
+                </div>
                 {foreach $egyed.valtozatok as $valtozat}
                     {include 'termektermekvaltozatkarb.tpl'}
                 {/foreach}

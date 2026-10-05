@@ -375,9 +375,25 @@ img {
 }
 
 /* Termék karb, Változatok fül: egy változat doboza – fejléc, alatta a mezőcsoportok egymás mellett */
+/* border-box: a dobozok, a Változatok fejléc és a beállítás sor jobb széle egy vonalba esik */
 .valtozattable,
-.valtozatgenerator {
+.valtozatgenerator,
+.valtozatok-fej,
+.valtozatok-beallitas {
+    box-sizing: border-box;
     max-width: 80em;
+}
+
+.valtozatok-beallitas {
+    margin-bottom: 12px;
+}
+
+.valtozatok-beallitas .mezok {
+    grid-template-columns: max-content minmax(0, 24em);
+}
+
+.valtozatok-beallitas .mezo-ertek select {
+    width: 100%;
 }
 
 .valtozattable {
@@ -399,8 +415,18 @@ img {
     margin-top: 10px;
 }
 
-.valtozatok-cim {
-    max-width: 80em;
+/* a szakaszcím vonala a Mind törlése gombig fut, a gomb jobb széle a dobozokéval egy vonalban */
+.valtozatok-fej {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin: 1em 0 .5em;
+}
+
+.valtozatok-fej .valtozatok-cim {
+    flex: 1;
+    max-width: none;
+    margin: 0;
 }
 
 /* a sorszám számláló: új, törölt és átrendezett változatnál is magától helyes */
