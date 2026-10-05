@@ -707,6 +707,24 @@ $(document).ready(function () {
                     e.preventDefault();
                     getSorNetto($(this), 'valtozatnetto_');
                 })
+                .on('blur', '.js-valtozatarnetto, .js-valtozatarbrutto', function () {
+                    const $mezo = $(this);
+                    const $par = $('#' + $mezo.data('par'));
+                    if ($mezo.val() === '') {
+                        $par.val('');
+                        return;
+                    }
+                    $.ajax({
+                        url: $mezo.hasClass('js-valtozatarnetto') ? '/admin/termek/getbrutto' : '/admin/termek/getnetto',
+                        type: 'GET',
+                        data: {
+                            id: $('#mattkarb-form').attr('data-id'),
+                            value: $mezo.val(),
+                            afakod: $('#AfaEdit').val()
+                        },
+                        success: (data) => $par.val(data)
+                    });
+                })
                 .on('blur', '.js-valtozatnettogen', function (e) {
                     e.preventDefault();
                     getSorBrutto($(this), 'valtozatbruttogen');

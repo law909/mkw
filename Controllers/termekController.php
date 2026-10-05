@@ -151,7 +151,7 @@ class termekController extends \mkwhelpers\MattableController
                 }
                 $mozgasdb = $tvaltozat->getMozgasDb();
                 if ($mozgasdb) {
-                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, true);
+                    $lvaltozat[] = $valtozatCtrl->loadVars($tvaltozat, $t, $forKarb);
                 }
             }
         }
@@ -1164,6 +1164,11 @@ class termekController extends \mkwhelpers\MattableController
                     }
                 }
             }
+            if (\mkw\store::isArsavok()) {
+                foreach ($valtozatmap as $valtozatid => $valtozat) {
+                    $this->saveValtozatArak($valtozat, $valtozatid);
+                }
+            }
         }
 
         // A szín képek a változatok után: a szűrésük a változatok színéből indul, ami "mentés új
@@ -1722,6 +1727,43 @@ class termekController extends \mkwhelpers\MattableController
             $res[(int)$koltsegid] = ($ertek === '' ? null : \mkwhelpers\TypeConverter::toNum($ertek));
         }
         return $res;
+    }
+
+    /** Only the pairs rendered on the form are touched; an empty or zero price deletes the variant's own row. */
+    private function saveValtozatArak(TermekValtozat $valtozat, string $formkey)
+    {
+        $sajat = [];
+        foreach ($valtozat->getArak() as $va) {
+            $sajat[$va->getArsavId() . '_' . $va->getValutanemId()] = $va;
+        }
+        foreach ($this->params->getArrayRequestParam('valtozatarkulcs_' . $formkey) as $kulcs) {
+            if (!preg_match('/^(\d+)_(\d+)$/', $kulcs, $m)) {
+                continue;
+            }
+            $netto = (float)$this->params->getNumRequestParam('valtozatarnetto_' . $formkey . '_' . $kulcs);
+            $brutto = (float)$this->params->getNumRequestParam('valtozatarbrutto_' . $formkey . '_' . $kulcs);
+            $va = $sajat[$kulcs] ?? null;
+            if (!$netto && !$brutto) {
+                if ($va) {
+                    $valtozat->getArak()->removeElement($va);
+                    $this->getEm()->remove($va);
+                }
+                continue;
+            }
+            if (!$va) {
+                $va = new \Entities\TermekValtozatAr();
+                $va->setTermekvaltozat($valtozat);
+                $va->setArsav($m[1]);
+                $va->setValutanem($m[2]);
+                $valtozat->getArak()->add($va);
+            }
+            if ($brutto) {
+                $va->setBrutto($brutto);
+            } else {
+                $va->setNetto($netto);
+            }
+            $this->getEm()->persist($va);
+        }
     }
 
     private function getArsavSorokFromRequest(): array

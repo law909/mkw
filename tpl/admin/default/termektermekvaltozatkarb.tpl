@@ -139,6 +139,45 @@
             <input id="IdegenCikkszamEdit_{$valtozat.id}" name="valtozatidegencikkszam_{$valtozat.id}" type="text" value="{$valtozat.idegencikkszam}">
         </td>
     </tr>
+    {if ($setup.arsavok && $valtozat.arsavarak)}
+        <tr>
+            <td class="mattable-cell">{at('Ársávos ár')}:</td>
+            <td class="mattable-cell" colspan="3">
+                {* üres mező: a termék ára érvényes, azt mutatja a placeholder *}
+                <table class="valtozatarsavtable">
+                    <tr>
+                        <td></td>
+                        {foreach $valtozat.arsavarak as $ar}
+                            <th>{$ar.arsavnev} ({$ar.valutanemnev})</th>
+                        {/foreach}
+                    </tr>
+                    <tr>
+                        <td>{at('Nettó')}:</td>
+                        {foreach $valtozat.arsavarak as $ar}
+                            <td>
+                                <input name="valtozatarkulcs_{$valtozat.id}[]" type="hidden" value="{$ar.kulcs}">
+                                <input class="js-valtozatarnetto" id="VArNettoEdit_{$valtozat.id}_{$ar.kulcs}"
+                                       data-par="VArBruttoEdit_{$valtozat.id}_{$ar.kulcs}"
+                                       name="valtozatarnetto_{$valtozat.id}_{$ar.kulcs}" type="number" step="any"
+                                       value="{$ar.netto}" placeholder="{$ar.termeknetto}">
+                            </td>
+                        {/foreach}
+                    </tr>
+                    <tr>
+                        <td>{at('Bruttó')}:</td>
+                        {foreach $valtozat.arsavarak as $ar}
+                            <td>
+                                <input class="js-valtozatarbrutto" id="VArBruttoEdit_{$valtozat.id}_{$ar.kulcs}"
+                                       data-par="VArNettoEdit_{$valtozat.id}_{$ar.kulcs}"
+                                       name="valtozatarbrutto_{$valtozat.id}_{$ar.kulcs}" type="number" step="any"
+                                       value="{$ar.brutto}" placeholder="{$ar.termekbrutto}">
+                            </td>
+                        {/foreach}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    {/if}
     <tr>
         <td class="mattable-cell">
             <label for="VideolinkEdit_{$valtozat.id}">{at('Videó link')}:</label>
