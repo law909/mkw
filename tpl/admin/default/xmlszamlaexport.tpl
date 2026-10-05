@@ -19,7 +19,7 @@
                 <form id="xmlszamlaexport" action="" target="_blank">
                     {* a két doboz külön szűr: melyiknek a gombját nyomták, azt a szerver ebből tudja meg *}
                     <input name="szures" type="hidden" value="">
-                    <div class="mattkarb-doboz">
+                    <div>
                         <input id="TipusSzamlaEdit" class="js-tipus" name="tipus" type="radio" value="szamla" checked="checked">
                         <label for="TipusSzamlaEdit">{at('Számlák')}</label>
                         <input id="TipusElolegszamlaEdit" class="js-tipus" name="tipus" type="radio" value="elolegszamla">
