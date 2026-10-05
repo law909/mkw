@@ -492,6 +492,9 @@ class idopontController extends \mkwhelpers\MattableController
      */
     public function regView()
     {
+        if (!$this->mainTemplateOr404('rendezvenyreg.tpl')) {
+            return;
+        }
         $idopont = $this->findByUid($this->params->getStringRequestParam('r'));
         if (!$idopont) {
             return;
@@ -539,6 +542,9 @@ class idopontController extends \mkwhelpers\MattableController
      */
     public function regSave()
     {
+        if (!$this->mainTemplateOr404('rendezvenyreg.tpl')) {
+            return;
+        }
         $idopont = $this->findByUid($this->params->getStringRequestParam('r'));
         if (!$idopont) {
             return;
@@ -658,6 +664,9 @@ class idopontController extends \mkwhelpers\MattableController
 
     public function regLemond()
     {
+        if (!$this->mainTemplateOr404('rendezvenyregkoszono.tpl')) {
+            return;
+        }
         $idopont = $this->findByUid($this->params->getStringRequestParam('rid'));
         /** @var Idopontfoglalas $jel */
         $jel = $idopont

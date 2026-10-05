@@ -69,6 +69,10 @@ class mainController extends \mkwhelpers\Controller
 
     public function show404($head = null)
     {
+        if (!$this->getTemplateFactory()->mainTemplateExists('404.tpl')) {
+            \mkw\store::sendBare404($head);
+            return;
+        }
         $this->view = $this->getTemplateFactory()->createMainView('404.tpl');
         \mkw\store::fillTemplate($this->view);
         $tc = new termekController();
@@ -83,6 +87,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function view()
     {
+        if (!$this->mainTemplateOr404('main.tpl')) {
+            return;
+        }
         $toPrint = true;
 
         $this->view = $this->getTemplateFactory()->createMainView('main.tpl');
@@ -154,6 +161,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function termekfa()
     {
+        if (!$this->mainTemplateOr404('termeklista.tpl')) {
+            return;
+        }
         $tf = new termekfaController();
         $com = $this->params->getStringParam('slug');
         /** @var TermekFa $ag */
@@ -227,6 +237,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function termekmenu()
     {
+        if (!$this->mainTemplateOr404('termeklista.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('slug');
         // a slug a webshop menüjében keresendő; menü nélküli webshopon nincs kategórialap
         $tf = \mkw\store::getTermekmenuController();
@@ -264,6 +277,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function marka()
     {
+        if (!$this->mainTemplateOr404('termeklista.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('slug');
         $tf = new termekfaController();
         $tc = new termekcimkeController();
@@ -314,6 +330,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function szuro()
     {
+        if (!$this->mainTemplateOr404('termeklista.tpl')) {
+            return;
+        }
         $tf = new termekfaController();
         $this->view = $this->getTemplateFactory()->createMainView('termeklista.tpl');
         $t = $tf->gettermeklistaforparent(null, 'szuro');
@@ -328,6 +347,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function kereses()
     {
+        if (!$this->mainTemplateOr404('termeklista.tpl')) {
+            return;
+        }
         $term = trim($this->params->getStringRequestParam('term'));
         if ($term) {
             $r = \mkw\store::getEm()->getRepository(Termek::class);
@@ -868,6 +890,9 @@ class mainController extends \mkwhelpers\Controller
 
     public function kapcsolat()
     {
+        if (!$this->mainTemplateOr404('kapcsolat.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('todo');
         switch ($com) {
             case 'ment':

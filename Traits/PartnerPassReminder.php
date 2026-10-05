@@ -44,6 +44,9 @@ trait PartnerPassReminder
 
     public function showPassReminder()
     {
+        if (!$this->mainTemplateOr404('passreminder.tpl')) {
+            return;
+        }
         $route = \mkw\store::getRouter()->generate('show404');
         $pr = $this->params->getStringParam('id');
         if ($pr) {

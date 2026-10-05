@@ -825,6 +825,10 @@ class store
 
     public static function redirectTo404($keresendo, $head = null)
     {
+        if (!self::getTemplateFactory()->mainTemplateExists('404.tpl')) {
+            self::sendBare404($head);
+            return;
+        }
         $view = self::getTemplateFactory()->createMainView('404.tpl');
         $tc = new \Controllers\termekController();
         $view->setVar('ajanlotttermekek', $tc->getAjanlottLista());
@@ -835,6 +839,16 @@ class store
         $view->setVar('robots', 'noindex,follow');
         self::sendNotFoundHeaders($head);
         $view->printTemplateResult(false);
+    }
+
+    /** A témának nincs 404-es lapja (pl. mpt, mptngy): csak a státusz és egy sor szöveg. */
+    public static function sendBare404($head = null)
+    {
+        self::sendNotFoundHeaders($head);
+        if (!headers_sent()) {
+            header('Content-Type: text/plain; charset=utf-8');
+        }
+        echo '404 Not Found';
     }
 
     /**

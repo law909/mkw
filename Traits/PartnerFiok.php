@@ -16,6 +16,9 @@ trait PartnerFiok
 {
     public function showAccount()
     {
+        if (!$this->mainTemplateOr404('fiok.tpl')) {
+            return;
+        }
         /** @var \Entities\Partner $user */
         $user = $this->getRepo()->getLoggedInUser();
         if ($user) {

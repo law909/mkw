@@ -155,13 +155,15 @@ class sitemapController extends \mkwhelpers\Controller
 
         $router = \mkw\store::getRouter();
         $urls2 = [];
-        foreach ($this->getRepo(\Entities\Statlap::class)->getForSitemapXml() as $sor) {
-            $this->addUrl($urls2, $router->generate('showstatlap', false, ['lap' => $sor['slug']]), $sor['lastmod']);
+        if ($this->hasTemplate('statlap.tpl')) {
+            foreach ($this->getRepo(\Entities\Statlap::class)->getForSitemapXml() as $sor) {
+                $this->addUrl($urls2, $router->generate('showstatlap', false, ['lap' => $sor['slug']]), $sor['lastmod']);
+            }
         }
-        if ($this->hasBlog()) {
+        if ($this->hasTemplate('blogposztlist.tpl')) {
             $this->addUrl($urls2, $router->generate('showblogposztlist'), $this->getMaxLastmod($this->buildBlog()));
         }
-        if ($this->getTemplateFactory()->mainTemplateExists('markak.tpl')) {
+        if ($this->hasTemplate('markak.tpl')) {
             $this->addUrl($urls2, $router->generate('markak'), $this->getMaxLastmod($this->buildBrands()));
         }
         return array_merge($urls, $urls2);
@@ -171,6 +173,9 @@ class sitemapController extends \mkwhelpers\Controller
     private function buildCategories()
     {
         $urls = [];
+        if (!$this->hasTemplate('termeklista.tpl')) {
+            return $urls;
+        }
         $router = \mkw\store::getRouter();
         $menufa = \mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu();
         if ($menufa) {
@@ -222,6 +227,9 @@ class sitemapController extends \mkwhelpers\Controller
     private function buildBrands()
     {
         $urls = [];
+        if (!$this->hasTemplate('termeklista.tpl')) {
+            return $urls;
+        }
         $router = \mkw\store::getRouter();
         foreach ($this->getRepo(\Entities\Termekcimketorzs::class)->getForSitemapXml() as $sor) {
             $this->addUrl($urls, $router->generate('showmarka', false, ['slug' => $sor['slug']]), $sor['lastmod']);
@@ -229,15 +237,16 @@ class sitemapController extends \mkwhelpers\Controller
         return $urls;
     }
 
-    private function hasBlog()
+    // az oldal útvonala minden témán él, de a sablon nélküli témán 404-et ad, ezért a sitemapbe sem kerülhet
+    private function hasTemplate(string $tplfilename): bool
     {
-        return $this->getTemplateFactory()->mainTemplateExists('blogposztlist.tpl');
+        return $this->getTemplateFactory()->mainTemplateExists($tplfilename);
     }
 
     private function buildBlog()
     {
         $urls = [];
-        if (!$this->hasBlog()) {
+        if (!$this->hasTemplate('blogposzt.tpl')) {
             return $urls;
         }
         $router = \mkw\store::getRouter();

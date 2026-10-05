@@ -244,9 +244,7 @@ class termekcimkeController extends \mkwhelpers\MattableController
 
     public function showMarkak()
     {
-        // a /markak minden témán él, de sablonja csak a márkalistás témáknak van
-        if (!$this->getTemplateFactory()->mainTemplateExists('markak.tpl')) {
-            store::redirectTo404('');
+        if (!$this->mainTemplateOr404('markak.tpl')) {
             return;
         }
         $view = $this->getTemplateFactory()->createMainView('markak.tpl');

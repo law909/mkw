@@ -98,6 +98,9 @@ class statlapController extends \mkwhelpers\MattableController
 
     public function show()
     {
+        if (!$this->mainTemplateOr404('statlap.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('lap');
         /** @var Statlap $statlap */
         $statlap = $this->getRepo()->findOneBySlug($com);
@@ -116,6 +119,9 @@ class statlapController extends \mkwhelpers\MattableController
 
     public function showPopup()
     {
+        if (!$this->mainTemplateOr404('statlappopup.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('lap');
         /** @var Statlap $statlap */
         $statlap = $this->getRepo()->findOneBySlug($com);

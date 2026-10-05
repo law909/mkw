@@ -192,6 +192,9 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function get()
     {
+        if (!$this->mainTemplateOr404('kosar.tpl')) {
+            return;
+        }
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $v = $this->getTemplateFactory()->createMainView('kosar.tpl');
@@ -291,6 +294,9 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function add()
     {
+        if (!$this->mainTemplateOr404('minikosar.tpl')) {
+            return;
+        }
         $termek = $this->getRepo(Termek::class)->find($this->params->getIntRequestParam('id'));
         $vid = null;
         switch ($this->params->getIntRequestParam('jax', 0)) {
@@ -332,6 +338,9 @@ class kosarController extends \mkwhelpers\MattableController
     // Superzone
     public function multiAdd()
     {
+        if (!$this->mainTemplateOr404('minikosar.tpl')) {
+            return;
+        }
         $termekid = $this->params->getIntRequestParam('termek');
         if ($termekid) {
             $termek = $this->getRepo(Termek::class)->find($termekid);
@@ -368,6 +377,9 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function del()
     {
+        if (!$this->mainTemplateOr404('minikosar.tpl')) {
+            return;
+        }
         $id = $this->params->getIntRequestParam('id');
         if ($this->getRepo()->del($id)) {
             if ($this->params->getIntRequestParam('jax', 0) > 0) {
@@ -380,6 +392,9 @@ class kosarController extends \mkwhelpers\MattableController
 
     public function edit()
     {
+        if (!$this->mainTemplateOr404('minikosar.tpl')) {
+            return;
+        }
         $id = $this->params->getIntRequestParam('id');
         $menny = $this->params->getNumRequestParam('mennyiseg', false);
         $kedvezmeny = $this->params->getNumRequestParam('kedvezmeny', false);

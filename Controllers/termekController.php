@@ -1650,6 +1650,9 @@ class termekController extends \mkwhelpers\MattableController
 
     public function getMeretSzinhez()
     {
+        if (!$this->mainTemplateOr404('meretselect.tpl')) {
+            return;
+        }
         if (\mkw\store::isFixSzinMode()) {
             $this->_getMeretSzinhezFix();
         } else {
@@ -2222,6 +2225,9 @@ class termekController extends \mkwhelpers\MattableController
 
     public function feed()
     {
+        if (!$this->mainTemplateOr404('termekfeed.tpl')) {
+            return;
+        }
         $feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
         $view = $this->getTemplateFactory()->createMainView('termekfeed.tpl');
         $feedview->setVar('title', \mkw\store::getParameter(\mkw\consts::Feedtermektitle, t('Termékeink')));

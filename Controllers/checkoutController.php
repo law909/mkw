@@ -49,6 +49,9 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function getCheckout()
     {
+        if (!$this->mainTemplateOr404('checkout.tpl')) {
+            return;
+        }
         $p = \mkw\store::getMainSession()->params;
         if (!$p) {
             $p = new \mkwhelpers\ParameterHandler([]);
@@ -222,6 +225,9 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function getFizmodList()
     {
+        if (!$this->mainTemplateOr404('checkoutfizmodlist.tpl')) {
+            return;
+        }
         $kosarrepo = $this->getRepo(Kosar::class);
         $krepo = $this->getRepo(SzallitasimodFizmodNovelo::class);
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutfizmodlist.tpl');
@@ -267,6 +273,9 @@ class checkoutController extends \mkwhelpers\MattableController
      */
     public function getFedexRates()
     {
+        if (!$this->mainTemplateOr404('checkoutfedexratelist.tpl')) {
+            return;
+        }
         $szallitasimod = $this->params->getIntRequestParam('szallitasimod');
         if (!\mkw\store::isFedexSzallitasimod($szallitasimod)) {
             \mkw\store::getMainSession()->fedexrates = [];
@@ -321,6 +330,9 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function getTetelList()
     {
+        if (!$this->mainTemplateOr404('checkouttetellist.tpl')) {
+            return;
+        }
         $data = $this->_getTetelListData();
 
         $view = \mkw\store::getTemplateFactory()->createMainView('checkouttetellist.tpl');
@@ -416,6 +428,9 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function showCheckoutFizetes()
     {
+        if (!$this->mainTemplateOr404('checkoutfizetes.tpl')) {
+            return;
+        }
         $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
         $szallmod = \mkw\store::getMainSession()->lastszallmod;
         $fizmod = \mkw\store::getMainSession()->lastfizmod;
@@ -500,6 +515,9 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function thanks()
     {
+        if (!$this->mainTemplateOr404('checkoutkoszonjuk.tpl')) {
+            return;
+        }
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutkoszonjuk.tpl');
         \mkw\store::fillTemplate($view);
         $mrszam = \mkw\store::getMainSession()->lastmegrendeles;
@@ -542,6 +560,9 @@ class checkoutController extends \mkwhelpers\MattableController
 
     public function barionError()
     {
+        if (!$this->mainTemplateOr404('checkoutbarionerror.tpl')) {
+            return;
+        }
         $mrszam = $this->params->getStringRequestParam('mr');
         $view = \mkw\store::getTemplateFactory()->createMainView('checkoutbarionerror.tpl');
         \mkw\store::fillTemplate($view);

@@ -192,6 +192,19 @@ abstract class Controller
         }
     }
 
+    /**
+     * A storefront útvonalai minden témán élnek, sablonjuk viszont csak az őket használó témáknak van; hiányzó
+     * sablonnál 404 megy ki (és false jön vissza), nem Smarty fatal.
+     */
+    protected function mainTemplateOr404(string $tplfilename): bool
+    {
+        if ($this->getTemplateFactory()->mainTemplateExists($tplfilename)) {
+            return true;
+        }
+        \mkw\store::redirectTo404('');
+        return false;
+    }
+
     public function createMainView($tplfilename)
     {
         $view = $this->getTemplateFactory()->createMainView($tplfilename);

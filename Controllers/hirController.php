@@ -124,6 +124,9 @@ class hirController extends \mkwhelpers\MattableController
 
     public function show()
     {
+        if (!$this->mainTemplateOr404('hir.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('hir');
         $hir = $this->getRepo()->findOneBySlug($com);
         if ($hir) {
@@ -144,6 +147,9 @@ class hirController extends \mkwhelpers\MattableController
 
     public function showHirList()
     {
+        if (!$this->mainTemplateOr404('hirlist.tpl')) {
+            return;
+        }
         $view = $this->getTemplateFactory()->createMainView('hirlist.tpl');
         $t = [];
         $hirek = $this->getRepo()->getFeedHirek();
@@ -175,6 +181,9 @@ class hirController extends \mkwhelpers\MattableController
 
     public function feed()
     {
+        if (!$this->mainTemplateOr404('feed.tpl')) {
+            return;
+        }
         $feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
         $feedview->setVar('title', \mkw\store::getParameter(\mkw\consts::Feedhirtitle, t('Híreink')));
         $feedview->setVar('link', \mkw\store::getRouter()->generate('hirfeed', true));

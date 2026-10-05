@@ -109,6 +109,9 @@ trait PartnerRegistration
 
     public function saveRegistration()
     {
+        if (!$this->mainTemplateOr404('regisztracio.tpl')) {
+            return;
+        }
         $hibas = false;
         $hibak = [];
 

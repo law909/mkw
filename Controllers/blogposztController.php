@@ -216,10 +216,13 @@ class blogposztController extends \mkwhelpers\MattableController
 
     public function show()
     {
+        if (!$this->mainTemplateOr404('blogposzt.tpl')) {
+            return;
+        }
         $com = $this->params->getStringParam('blogposzt');
         /** @var \Entities\Blogposzt $blogposzt */
         $blogposzt = $this->getRepo()->findOneBySlug($com);
-        if ($blogposzt && $blogposzt->getLathato() && $this->getTemplateFactory()->mainTemplateExists('blogposzt.tpl')) {
+        if ($blogposzt && $blogposzt->getLathato()) {
             $view = $this->getTemplateFactory()->createMainView('blogposzt.tpl');
             \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $blogposzt->getShowCim());
@@ -245,9 +248,7 @@ class blogposztController extends \mkwhelpers\MattableController
 
         $pageno = $this->params->getIntRequestParam('pageno', 1);
 
-        // a /blog minden témán él, de sablonja csak a blogos témáknak van
-        if (!$this->getTemplateFactory()->mainTemplateExists('blogposztlist.tpl')) {
-            \mkw\store::redirectTo404('');
+        if (!$this->mainTemplateOr404('blogposztlist.tpl')) {
             return;
         }
 
@@ -302,6 +303,9 @@ class blogposztController extends \mkwhelpers\MattableController
 
     public function feed()
     {
+        if (!$this->mainTemplateOr404('feed.tpl')) {
+            return;
+        }
         $feedview = $this->getTemplateFactory()->createMainView('feed.tpl');
         $feedview->setVar('title', \mkw\store::getParameter(\mkw\consts::Feedblogtitle, t('Blog')));
         $feedview->setVar('link', \mkw\store::getRouter()->generate('blogposztfeed', true));

@@ -147,6 +147,9 @@ trait PartnerAuth
 
     public function showLoginForm()
     {
+        if (!$this->mainTemplateOr404('login.tpl')) {
+            return;
+        }
         if ($this->checkloggedin()) {
             \mkw\session::writeClose();
             if (\mkw\store::isMPTNGY()) {

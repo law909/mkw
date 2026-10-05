@@ -16,6 +16,9 @@ class adategyeztetoController extends \mkwhelpers\Controller
 
     public function view()
     {
+        if (!$this->mainTemplateOr404('adategyezteto.tpl')) {
+            return;
+        }
         $view = $this->getTemplateFactory()->createMainView('adategyezteto.tpl');
         $link = $this->getLinkParams();
         if ($link['e'] !== '' || $link['h'] !== '') {

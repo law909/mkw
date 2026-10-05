@@ -122,6 +122,9 @@ class termekertekelesController extends \mkwhelpers\MattableController
 
     public function showErtekelesForm()
     {
+        if (!$this->mainTemplateOr404('termekertekelesform.tpl')) {
+            return;
+        }
         $id = $this->params->getStringRequestParam('id');
         $bizid = $this->params->getStringRequestParam('b');
         if (!$id) {
@@ -220,6 +223,9 @@ class termekertekelesController extends \mkwhelpers\MattableController
 
     public function thanks()
     {
+        if (!$this->mainTemplateOr404('termekertekeleskoszonjuk.tpl')) {
+            return;
+        }
         $view = \mkw\store::getTemplateFactory()->createMainView('termekertekeleskoszonjuk.tpl');
         \mkw\store::fillTemplate($view);
 
