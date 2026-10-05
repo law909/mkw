@@ -729,9 +729,13 @@ $(document).ready(function () {
                         $par.val('');
                         return;
                     }
+                    // no "please wait" overlay: it would swallow the click that caused this blur (e.g. on OK);
+                    // synchronous, so a save started by that click already posts the converted pair
                     $.ajax({
                         url: $mezo.hasClass('js-valtozatarnetto') ? '/admin/termek/getbrutto' : '/admin/termek/getnetto',
                         type: 'GET',
+                        global: false,
+                        async: false,
                         data: {
                             id: $('#mattkarb-form').attr('data-id'),
                             value: $mezo.val(),
