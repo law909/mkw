@@ -13,7 +13,7 @@ class UiAppearanceService
 {
     const ACCENT_PARAM = 'uiaccent';
 
-    const DEFAULT_THEME = 'sunny';
+    const DEFAULT_THEME = 'modern';
 
     const DEFAULT_ACCENT = '#2563eb';
 
