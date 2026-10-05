@@ -81,7 +81,7 @@ class rewrite301Controller extends \mkwhelpers\MattableController
         $view = $this->createView($tplname);
 
         $view->setVar('pagetitle', t('Átirányítás'));
-        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminrw301save'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminrewrite301save'));
         $view->setVar('oper', $oper);
         $record = $this->getRepo()->find($id);
         $view->setVar('egyed', $this->loadVars($record, true));
