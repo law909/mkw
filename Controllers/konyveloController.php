@@ -126,12 +126,14 @@ class konyveloController extends \mkwhelpers\MattableController
         if ($f) {
             $filter->addFilter($mezo, '<=', $f);
         }
-        switch ($this->params->getIntRequestParam('bizonylatrontottfilter')) {
+        switch ($this->params->getIntRequestParam('bizonylatstornofilter')) {
             case 1:
-                $filter->addFilter('rontott', '=', false);
+                // külön feltételek: a tömbös mezőlistát a FilterDescriptor VAGY-gyal köti
+                $filter->addFilter('storno', '=', false);
+                $filter->addFilter('stornozott', '=', false);
                 break;
             case 2:
-                $filter->addFilter('rontott', '=', true);
+                $filter->addFilter(['storno', 'stornozott'], '=', true);
                 break;
         }
 

@@ -29,11 +29,11 @@
             </div>
             <div class="matt-hseparator"></div>
             <div>
-                <label for="bizonylatrontottfilter">{at('Rontott')}:</label>
-                <select id="bizonylatrontottfilter" name="bizonylatrontottfilter">
+                <label for="bizonylatstornofilter">{at('Stornó')}:</label>
+                <select id="bizonylatstornofilter" name="bizonylatstornofilter">
                     <option value="0">{at('Mindegy')}</option>
-                    <option value="1">{at('nem rontott')}</option>
-                    <option value="2">{at('rontott')}</option>
+                    <option value="1">{at('nem stornózott')}</option>
+                    <option value="2">{at('stornózott')}</option>
                 </select>
             </div>
         </div>

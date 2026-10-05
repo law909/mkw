@@ -11,7 +11,7 @@ $(document).ready(function () {
                 '#datumtipusfilter',
                 '#datumtolfilter',
                 '#datumigfilter',
-                '#bizonylatrontottfilter'
+                '#bizonylatstornofilter'
             ]
         },
         tablebody: {
