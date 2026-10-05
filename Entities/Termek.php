@@ -1133,6 +1133,19 @@ class Termek
                 $x['kepurl'] = $valtozat->getKepurlLarge();
                 $x['minikepurl'] = $valtozat->getKepurlMini();
             }
+            // b2b-n a színes terméklappal egyezően a színhez választott első kép; kép nélküli sor = főkép
+            $szinkep = \mkw\store::isB2B() && $valtozat->getSzinObject()
+                ? (\mkw\store::getEm()->getRepository(TermekSzinKep::class)->getByTermekAndSzin($this, $valtozat->getSzinObject())[0] ?? null)
+                : null;
+            if ($szinkep) {
+                $kep = $szinkep->getKep();
+                $x['kozepeskepurl'] = $kep ? $kep->getUrlMedium() : $this->getKepUrlMedium();
+                $x['kiskepurl'] = $kep ? $kep->getUrlSmall() : $this->getKepUrlSmall();
+                $x['kepurl'] = $kep ? $kep->getUrlLarge() : $this->getKepUrlLarge();
+                $x['minikepurl'] = $kep ? $kep->getUrlMini() : $this->getKepurlMini();
+                $x['kepurl400'] = $kep ? $kep->getUrl400() : $this->getKepurl400();
+                $x['kepurl2000'] = $kep ? $kep->getUrl2000() : $this->getKepurl2000();
+            }
         }
         $x['link'] = \mkw\store::getRouter()->generate('showtermek', false, ['slug' => $this->getSlug()]);
         return $x;
