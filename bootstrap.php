@@ -31,6 +31,7 @@ use Listeners\TermekListener;
 use Listeners\IdopontListener;
 use Listeners\MPTNGYSzakmaianyagListener;
 use Listeners\UnasOutboxListener;
+use Listeners\FourByteCharListener;
 use Doctrine\DBAL\Event\Listeners;
 
 $ini = parse_ini_file('config.ini');
@@ -132,6 +133,8 @@ $evm->addEventListener(['onFlush'], new ArsavListener());
 $evm->addEventListener(['onFlush'], new TermekListener());
 // A BizonylatfejListener UTÁN: a státusznaplózás és a költségsorok után nézzük a changesetet.
 $evm->addEventListener(['onFlush'], new UnasOutboxListener());
+// az utolsó: a fenti listenerek által beállított és létrehozott entitásokat is látnia kell
+$evm->addEventListener(['onFlush'], new FourByteCharListener());
 
 $connectionOptions = [
     'driver' => $ini['db.driver'],

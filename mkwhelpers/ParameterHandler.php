@@ -31,13 +31,20 @@ class ParameterHandler implements IParameterHandler
         }
     }
 
-    // a DB utf8 (3 bájtos) karakterkészletű, a 4 bájtos karakter (emoji) az INSERT-et 1366-tal megölné
     private static function cleanString($val)
     {
         if (!is_string($val)) {
             return is_null($val) ? '' : trim($val);
         }
-        return trim(preg_replace('/[\x{10000}-\x{10FFFF}]/u', '', $val) ?? $val);
+        return trim(self::stripFourByteChars($val));
+    }
+
+    // a DB és a kapcsolat utf8mb3: a 4 bájtos karakter (emoji) írásnál 1366-tal, keresésnél hibás
+    // összehasonlítással szállna el; a mentést a Listeners\FourByteCharListener is védi.
+    // Az U+FE0F az emoji után marad, egyedül láthatatlan szemét.
+    public static function stripFourByteChars(string $val): string
+    {
+        return preg_replace('/[\x{10000}-\x{10FFFF}\x{FE0F}]/u', '', $val) ?? $val;
     }
 
     public function asArray()
