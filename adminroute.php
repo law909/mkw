@@ -1686,6 +1686,9 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/import/szcolorimport', 'importController#szcolorimport', 'adminszcolorimport');
     $router->map('POST', '/admin/import/galadproductimport', 'galadProductImportController#import', 'admingaladproductimport');
     $router->map('POST', '/admin/import/galadkeszlet', 'galadKeszletImportController#import', 'admingaladkeszletimport');
+    if (\mkw\store::isGalad()) {
+        $router->map('POST', '/admin/import/galadvaltozatar', 'galadValtozatArImportController#import', 'admingaladvaltozatarimport');
+    }
     $router->map('POST', '/admin/import/fcmotoorderimport', 'importController#fcmotoorderimport', 'adminfcmotoorderimport');
     $router->map('POST', '/admin/import/foxpostterminal', 'csomagterminalController#downloadFoxpostTerminalList', 'admincsomagterminalfoxpostimport');
     $router->map('POST', '/admin/import/glsterminal', 'csomagterminalController#downloadGLSTerminalList', 'admincsomagterminalglsimport');

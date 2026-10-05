@@ -62,6 +62,11 @@
                         <a href="/admin/import/galadkeszlet" class="js-galadkeszletimport">Előző program készlete</a>
                     </div>
                     <div id="galadkeszlet-eredmeny"></div>
+                    <div class="matt-hseparator"></div>
+                    <div>
+                        <a href="/admin/import/galadvaltozatar" class="js-galadvaltozatarimport">Változat ár eltérések</a>
+                    </div>
+                    <div id="galadvaltozatar-eredmeny"></div>
                     <p>A "Termék lista (product export)" a product export XLSX-et várja. Az üres sorokat
                         átlépi. Az A oszlop "X" jele a változatos termék vezérsora, a B oszlop (Variáns
                         csoport) azonos száma köti össze egy termék változatait – a vezérsorból is változat
@@ -76,6 +81,10 @@
                         eladási ára. Raktáranként egy-egy készpénzes, az alapértelmezett pénztárra szóló, kintlévőséget nem képző bevét
                         készül a tulaj partnerre, "Induló készlet" belső megjegyzéssel; a raktárt a neve azonosítja, ha nincs ilyen, felveszi. A termék
                         keresése előbb vonalkód, aztán cikkszám alapján megy. A kimaradó sorok XLSX naplóba kerülnek.</p>
+                    <p>A "Változat ár eltérések" a product export ár eltérés XLSX első lapját várja (D: cikkszám, E: vonalkód,
+                        J: nettó ár). A változatot a vonalkód, ennek hiányában a cikkszám azonosítja. Ahol a J oszlop eltér a termék
+                        Kisker.ár (HUF) nettó árától, az a változat saját Kisker.ár (HUF) ára lesz; ahol egyezik, a változat
+                        nem kap saját árat.</p>
                 </div>
             </div>
         </form>

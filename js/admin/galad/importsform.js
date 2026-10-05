@@ -51,6 +51,22 @@ $(document).ready(function () {
                 });
             }).button();
 
+            $('.js-galadvaltozatarimport').on('click', function (e) {
+                e.preventDefault();
+                const eredmeny = $('#galadvaltozatar-eredmeny');
+                eredmeny.text('Feldolgozás folyamatban…');
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('href'),
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    data: new FormData($('#mattkarb-form')[0]),
+                    success: (msg) => eredmeny.empty().append(galadValtozatArRiport(msg)),
+                    error: () => eredmeny.text('Az import nem futott le.')
+                });
+            }).button();
+
             $('.js-termekfabutton').on('click', function (e) {
                 var edit = $(this);
                 e.preventDefault();
@@ -137,5 +153,32 @@ function galadKeszletRiport(msg) {
         doboz.append($('<p>').text('Minden sor betöltődött.'));
     }
 
+    return doboz;
+}
+
+/** A "Változat ár eltérések" import eredménye: darabszámok, alatta a kimaradt sorok. */
+function galadValtozatArRiport(msg) {
+    if (!msg || !msg.ok) {
+        return $('<div>').text((msg && msg.error) || 'Az import nem futott le.');
+    }
+    const doboz = $('<div>');
+    doboz.append($('<p>').text(`Új változat ár: ${msg.uj}, módosított: ${msg.modositott}, már ugyanennyi volt: ${msg.valtozatlan}, `
+        + `a termék árával egyezik (nem kapott saját árat): ${msg.egyezik}, kimaradt: ${msg.kimaradt.length}.`));
+    if (msg.kimaradt.length) {
+        const tabla = $('<table>');
+        tabla.append($('<tr>').append(
+            $('<th>').text('Sor'),
+            $('<th>').text('Cikkszám'),
+            $('<th>').text('Vonalkód'),
+            $('<th>').text('Ok')
+        ));
+        msg.kimaradt.forEach((k) => tabla.append($('<tr>').append(
+            $('<td>').text(k.sor),
+            $('<td>').text(k.cikkszam),
+            $('<td>').text(k.vonalkod),
+            $('<td>').text(k.ok)
+        )));
+        doboz.append(tabla);
+    }
     return doboz;
 }
