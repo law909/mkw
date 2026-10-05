@@ -3327,6 +3327,18 @@ if ($DBVersion < '0227' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0227');
 }
 
+if ($DBVersion < '0228' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0227') {
+    // A jogszint helyett a menüpontra pipált munkakörök adják a hozzáférést: minden menüpontra az a munkakör kerül,
+    // amelyik eddig látta (a jogszintje eléri a menüpontét és a menücsoportjáét is). A beépített sysadmin pipa nélkül is mindent lát.
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'INSERT IGNORE INTO menu_munkakorok (menu_id, munkakor_id)'
+        . ' SELECT m.id, k.id FROM menu m'
+        . ' LEFT JOIN menucsoport mcs ON mcs.id = m.menucsoport_id'
+        . ' INNER JOIN munkakor k ON k.jog >= GREATEST(COALESCE(m.jogosultsag, 0), COALESCE(mcs.jogosultsag, 0))'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0228');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
