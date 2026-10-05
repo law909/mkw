@@ -68,8 +68,15 @@ class TermekArRepository extends \mkwhelpers\Repository
         return $termekar && ((float)$termekar->getNetto() != 0 || (float)$termekar->getBrutto() != 0);
     }
 
-    public function getArsavAr($termek, $valutanem = null, $arsav = null)
+    /** A változat saját (nem üres) ára megelőzi a termékét, sávtól függetlenül. */
+    public function getArsavAr($termek, $valutanem = null, $arsav = null, $valtozat = null)
     {
+        if ($valtozat && \mkw\store::isArsavok()) {
+            $valtozatAr = $this->_em->getRepository(TermekValtozatAr::class)->getArsavAr($valtozat, $valutanem, $arsav);
+            if ($valtozatAr) {
+                return $valtozatAr;
+            }
+        }
         if (!$arsav) {
             // the discounted bands count only when the product has a price in them
             $defaults = self::getDefaultArsavIds();

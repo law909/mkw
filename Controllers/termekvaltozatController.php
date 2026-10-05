@@ -184,6 +184,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         'optkeszlet' => 'Raktáras optimális készlet',
         'fiforeteg' => 'FIFO réteg',
         'fifoertek' => 'FIFO készletérték',
+        'ar' => 'Ársávos ár',
     ];
 
     /** ez alatt a jog alatt a képernyő és a hozzá tartozó végpontok sem érhetők el */

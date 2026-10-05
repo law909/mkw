@@ -2592,7 +2592,7 @@ class Termek
                 $valutanem = $partner->getValutanem();
             }
             $netto = 0;
-            $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav);
+            $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav, $valtozat);
             if ($arsavAr) {
                 $netto = $arsavAr->getNetto();
             }
@@ -2735,7 +2735,7 @@ class Termek
         if (!\mkw\store::isArsavok()) {
             return $this->getBrutto();
         }
-        $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav);
+        $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav, $valtozat);
         if ($arsavAr) {
             $brutto = $arsavAr->getBrutto();
         } else {
@@ -2776,7 +2776,7 @@ class Termek
                 $valutanem = $partner->getValutanem();
             }
             $brutto = 0;
-            $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav);
+            $arsavAr = \mkw\store::getEm()->getRepository(TermekAr::class)->getArsavAr($this, $valutanem, $arsav, $valtozat);
             if ($arsavAr) {
                 $brutto = $arsavAr->getBrutto();
             }

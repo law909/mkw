@@ -170,6 +170,8 @@ class TermekValtozat
 
     /** @ORM\OneToMany(targetEntity="Leltartetel", mappedBy="termekvaltozat",cascade={"persist"}) */
     private $leltartetelek;
+    /** @ORM\OneToMany(targetEntity="TermekValtozatAr", mappedBy="termekvaltozat") */
+    private $arak;
 
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $vonalkod;
@@ -246,6 +248,13 @@ class TermekValtozat
         $this->kosarak = new \Doctrine\Common\Collections\ArrayCollection();
         $this->bizonylattetelek = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leltartetelek = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->arak = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /** @return \Doctrine\Common\Collections\Collection|TermekValtozatAr[] */
+    public function getArak()
+    {
+        return $this->arak;
     }
 
     public function getMozgasDb($datum = null, $raktarid = null)

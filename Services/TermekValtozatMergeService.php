@@ -39,7 +39,12 @@ class TermekValtozatMergeService
         'optkeszlet' => ['termekvaltozatoptkeszlet', 'termekvaltozat_id'],
         'fiforeteg' => ['fiforeteg', 'termekvaltozat_id'],
         'fifoertek' => ['fifoertek', 'termekvaltozat_id'],
+        'ar' => ['termekvaltozatar', 'termekvaltozat_id'],
     ];
+
+    /** a forrás ársávos árai, amelyekre (ársáv + valutanem) a célnak már van saját sora */
+    private const ARUTKOZES_SQL = 'SELECT COUNT(*) FROM termekvaltozatar f WHERE f.termekvaltozat_id = ? AND EXISTS'
+        . ' (SELECT 1 FROM termekvaltozatar c WHERE c.termekvaltozat_id = ? AND c.arsav_id = f.arsav_id AND c.valutanem_id = f.valutanem_id)';
 
     /** A két raktáras készletszint tábla ugyanúgy viselkedik, csak az entitás más. */
     private const KESZLETSZINTEK = [
@@ -65,7 +70,11 @@ class TermekValtozatMergeService
             $sorok[] = [
                 'kulcs' => $kulcs,
                 'db' => $db,
-                'utkozes' => isset(self::KESZLETSZINTEK[$kulcs]) ? $this->countUtkozes($kulcs, $forras, $cel) : 0,
+                'utkozes' => match (true) {
+                    isset(self::KESZLETSZINTEK[$kulcs]) => $this->countUtkozes($kulcs, $forras, $cel),
+                    $kulcs === 'ar' => (int)$conn->fetchOne(self::ARUTKOZES_SQL, [$forras->getId(), $cel->getId()]),
+                    default => 0,
+                },
             ];
         }
         return ['sorok' => $sorok, 'ismeretlen' => $this->getIsmeretlenHivatkozasok()];
@@ -112,6 +121,13 @@ class TermekValtozatMergeService
                 $atirt[$kulcs] = $eredmeny['atirt'];
                 $torolt[$kulcs] = $eredmeny['torolt'];
             }
+            // ahol a célnak van saját ára ugyanarra a sávra, az marad, a forrásé törlődik
+            $torolt['ar'] = (int)$conn->executeStatement(
+                'DELETE f FROM termekvaltozatar f INNER JOIN termekvaltozatar c ON c.termekvaltozat_id = ?'
+                . ' AND c.arsav_id = f.arsav_id AND c.valutanem_id = f.valutanem_id WHERE f.termekvaltozat_id = ?',
+                [$celid, $forrasid]
+            );
+            $atirt['ar'] = $this->moveRows('termekvaltozatar', 'termekvaltozat_id', $forrasid, $celid, []);
             $em->flush();
 
             // a forrásra már nincs bizonylattétel, így a FIFO újraszámolás sem nyúlna a sorokhoz
