@@ -66,6 +66,19 @@ function prefixUrl($prefix, $url)
     return \mkw\store::prefixUrl($prefix, $url);
 }
 
+// a 404 lap is a storefronton fut, ezért kell neki a main mód és a beállított ország
+// (enélkül az ajánlott termékek ÁFA nélkül szálltak el)
+function prepareStorefront404()
+{
+    store::setMainMode();
+    if (!store::getMainSession()->orszag) {
+        $orszag = store::getParameter(\mkw\consts::Orszag);
+        if ($orszag) {
+            (new \Controllers\mainController(null))->setOrszagFunc($orszag, false);
+        }
+    }
+}
+
 // TODO find an appropriate place
 function callTheController($target, $params)
 {
@@ -152,15 +165,7 @@ if ($webshopnum == '1') {
 // AltoRouter viszont a HEAD-et külön metódusnak látja, és találat híján a főoldal is 404 lett
 $match = $router->match(null, ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'HEAD' ? 'GET' : null);
 if (!$match) {
-    // ismeretlen útvonal: a 404 lap is a storefronton fut, ezért ugyanúgy kell neki a main
-    // mód és a beállított ország (enélkül az ajánlott termékek ÁFA nélkül szálltak el)
-    store::setMainMode();
-    if (!store::getMainSession()->orszag) {
-        $orszag = store::getParameter(\mkw\consts::Orszag);
-        if ($orszag) {
-            (new \Controllers\mainController(null))->setOrszagFunc($orszag, false);
-        }
-    }
+    prepareStorefront404();
 }
 $routename = $match['name'] ?? '';
 if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
@@ -207,6 +212,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                 } else {
                     $redirected = true;
                     header('HTTP/1.1 404 Not found');
+                    prepareStorefront404();
                     callTheController('mainController#show404', []);
                 }
                 break;
@@ -223,6 +229,7 @@ if (store::getParameter(\mkw\consts::Off . $webshopnum) &&
                 } else {
                     $redirected = true;
                     header('HTTP/1.1 404 Not found');
+                    prepareStorefront404();
                     callTheController('mainController#show404', []);
                 }
                 break;
