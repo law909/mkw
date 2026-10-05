@@ -1357,6 +1357,10 @@ body.modernui {
     color: var(--mkw-text);
 }
 
+.modernui .valtozat-sorszam {
+    color: var(--mkw-accent);
+}
+
 .modernui .valtozat-jelveny {
     border-color: var(--mkw-border-strong);
     color: var(--mkw-muted);

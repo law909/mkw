@@ -377,6 +377,18 @@ img {
 /* Termék karb, Változatok fül: egy változat doboza – fejléc, alatta a mezőcsoportok egymás mellett */
 .valtozattable {
     max-width: 80em;
+    counter-increment: valtozat;
+}
+
+/* a sorszám számláló: új, törölt és átrendezett változatnál is magától helyes */
+#ValtozatTab {
+    counter-reset: valtozat;
+}
+
+.valtozat-sorszam::before {
+    content: counter(valtozat) ".";
+    font-size: 1.15em;
+    font-weight: bold;
 }
 
 .valtozat-fej {

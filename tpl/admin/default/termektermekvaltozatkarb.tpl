@@ -2,6 +2,7 @@
     <input name="valtozatid[]" type="hidden" value="{$valtozat.id}">
     <input name="valtozatoper_{$valtozat.id}" type="hidden" value="{$valtozat.oper}">
     <div class="valtozat-fej">
+        <span class="valtozat-sorszam"></span>
         <span class="valtozat-cim">
             {if ($valtozat.oper == 'add')}
                 {at('Új változat')}
@@ -118,9 +119,6 @@
             {mezo cimke="Beérkezés" for="BeerkezesdatumEdit{$valtozat.id}"}
                 <input id="BeerkezesdatumEdit{$valtozat.id}" name="valtozatbeerkezesdatum_{$valtozat.id}"
                        class="js-valtozatbeerkezesdatumedit mezo-rovid" type="text" size="12" data-datum="{$valtozat.beerkezesdatumstr}">
-            {/mezo}
-            {mezo cimke="Készlet"}
-                {$valtozat.keszlet}
             {/mezo}
         {/mezocsoport}
         {if ($setup.arsavok)}
