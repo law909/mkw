@@ -323,6 +323,17 @@ class Termek extends \Entities\Termek implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getWebshopBruttoArak($valtozat = NULL): array
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getWebshopBruttoArak', [$valtozat]);
+
+        return parent::getWebshopBruttoArak($valtozat);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function toKapcsolodo($valtozat = NULL)
     {
 
