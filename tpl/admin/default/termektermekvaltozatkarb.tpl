@@ -16,7 +16,7 @@
                 class="ui-icon ui-icon-circle-minus"></span></a>
     </div>
     <div class="valtozat-mezok">
-        {mezocsoport cim="Tulajdonságok"}
+        {mezocsoport cim="Tulajdonságok" class="valtozat-sor"}
             {if ($setup.szinmode === 'fix')}
                 {mezo cimke="Szín"}
                     <select name="valtozatszin_{$valtozat.id}">

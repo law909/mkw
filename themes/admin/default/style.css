@@ -408,7 +408,7 @@ img {
 
 .valtozat-mezok {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24em), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 28px;
     align-items: start;
 }
@@ -431,12 +431,33 @@ img {
     min-width: 0;
 }
 
+/* tulajdonság: a típusválasztó keskenyebb, az érték kapja a hely nagyobb részét */
+.valtozat-mezok .valtozat-sor .mezo-ertek > select + input:not([type="checkbox"]):not([type="radio"]) {
+    flex-grow: 2;
+}
+
 .valtozat-mezok .mezo-ertek > .mezo-rovid {
     flex: 0 0 auto;
 }
 
-.valtozat-mezok .valtozat-szeles {
+.valtozat-mezok .valtozat-szeles,
+.valtozat-mezok .valtozat-sor {
     grid-column: 1 / -1;
+}
+
+/* a tulajdonságok a teljes sort kapják, két pár egy sorban, széles mezőkkel */
+.valtozat-mezok .valtozat-sor .mezok {
+    grid-template-columns: repeat(2, var(--mkw-cimkeoszlop) minmax(0, 1fr));
+}
+
+@media (max-width: 1000px) {
+    .valtozat-mezok {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .valtozat-mezok .valtozat-sor .mezok {
+        grid-template-columns: var(--mkw-cimkeoszlop) minmax(0, 1fr);
+    }
 }
 
 .valtozat-mezok .valtozat-szeles .mezok {
