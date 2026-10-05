@@ -77,7 +77,8 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $x['eladasibrutto'] = 0;
         $x['haszonszazalek'] = 0;
         if ($term) {
-            $eb = $term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
+            // ársávok nélkül a termék (akciós) bruttó ára nullable
+            $eb = (float)$term->getBruttoAr($t->getTermekvaltozat(), $t->getBizonylatfej()->getPartner());
             $x['eladasibrutto'] = $eb;
             if ($x['bruttoegysar'] != 0) {
                 $x['haszonszazalek'] = $eb / $x['bruttoegysar'] * 100 - 100;
