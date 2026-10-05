@@ -661,7 +661,7 @@ $(document).ready(function () {
                     success: function (data) {
                         var tbody = $('#ValtozatTab');
                         tbody.append(data);
-                        $('.js-valtozatnewbutton,.js-valtozatdelbutton').button();
+                        $('.js-valtozatnewbutton,.js-valtozatdelbutton,.js-valtozatarnewbutton').button();
                         createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
                         createMultiImageSelectable('.js-szinkepedit');
                         $this.remove();
@@ -720,6 +720,24 @@ $(document).ready(function () {
                             $gomb.before(data);
                             $('.js-valtozatardelbutton').button();
                         }
+                    });
+                })
+                .on('blur', '.js-valtozatarnetto, .js-valtozatarbrutto', function () {
+                    const $mezo = $(this);
+                    const $par = $('#' + $mezo.data('par'));
+                    if ($mezo.val() === '') {
+                        $par.val('');
+                        return;
+                    }
+                    $.ajax({
+                        url: $mezo.hasClass('js-valtozatarnetto') ? '/admin/termek/getbrutto' : '/admin/termek/getnetto',
+                        type: 'GET',
+                        data: {
+                            id: $('#mattkarb-form').attr('data-id'),
+                            value: $mezo.val(),
+                            afakod: $('#AfaEdit').val()
+                        },
+                        success: (data) => $par.val(data)
                     });
                 })
                 .on('click', '.js-valtozatardelbutton', function (e) {
@@ -797,7 +815,7 @@ $(document).ready(function () {
                 success: function (data) {
                     $('.valtozattable').remove();
                     $('#valtozatgenerator').after(data);
-                    $('.js-valtozatdelbutton').button();
+                    $('.js-valtozatdelbutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
                 }
             });
             $('.js-valtozatdelallbutton').button().on('click', function (e) {
@@ -833,7 +851,7 @@ $(document).ready(function () {
 
             createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
             createMultiImageSelectable('.js-szinkepedit');
-            $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton').button();
+            $('.js-valtozatnewbutton,.js-valtozatdelbutton,#valtozatgeneratorbutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
 
             // Készletmátrix tömeges kitöltése: a sor eleji gomb a sort, a felső sor gombja az
             // oszlopot, a bal felső az egész rácsot tölti ki. A rejtett és a zárolt (változatos

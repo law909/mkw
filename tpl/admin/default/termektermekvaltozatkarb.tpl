@@ -147,9 +147,7 @@
                 {foreach $valtozat.arak as $ar}
                     {include 'termekvaltozatarkarb.tpl'}
                 {/foreach}
-                <a class="js-valtozatarnewbutton" href="#" data-valtozatid="{$valtozat.id}" title="{at('Új ár')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
+                <a class="js-valtozatarnewbutton" href="#" data-valtozatid="{$valtozat.id}">{at('Új ár')}</a>
             </td>
         </tr>
     {/if}

@@ -20,9 +20,11 @@
             </select>
         </td>
         <td><label for="VArNettoEdit{$ar.id}">{at('Nettó')}:</label></td>
-        <td><input id="VArNettoEdit{$ar.id}" type="text" name="valtozatarnetto_{$ar.id}" value="{$ar.netto}"></td>
+        <td><input id="VArNettoEdit{$ar.id}" class="js-valtozatarnetto" data-par="VArBruttoEdit{$ar.id}" type="text"
+                   name="valtozatarnetto_{$ar.id}" value="{$ar.netto}"></td>
         <td><label for="VArBruttoEdit{$ar.id}">{at('Bruttó')}:</label></td>
-        <td><input id="VArBruttoEdit{$ar.id}" type="text" name="valtozatarbrutto_{$ar.id}" value="{$ar.brutto}"></td>
+        <td><input id="VArBruttoEdit{$ar.id}" class="js-valtozatarbrutto" data-par="VArNettoEdit{$ar.id}" type="text"
+                   name="valtozatarbrutto_{$ar.id}" value="{$ar.brutto}"></td>
         <td>
             <a class="js-valtozatardelbutton" href="#" data-id="{$ar.id}"{if ($ar.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a>
