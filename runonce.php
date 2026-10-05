@@ -3248,6 +3248,14 @@ if ($DBVersion < '0221' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0221');
 }
 
+if ($DBVersion < '0222' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0221') {
+    // a 0221 csak a sunny-t váltotta; a felhasználó kérésére minden dolgozó modern, aki nem a sötét változatot választotta
+    \mkw\store::getEm()->getConnection()->executeStatement(
+        'UPDATE dolgozo SET uitheme = "modern" WHERE COALESCE(uitheme, "") NOT IN ("modern", "modern-dark")'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0222');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
