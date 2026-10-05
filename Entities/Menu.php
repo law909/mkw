@@ -3,6 +3,7 @@
 
 namespace Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,8 +27,19 @@ class Menu {
     private $url;
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $routename;
-    /** @ORM\Column(type="integer", nullable=true) */
+    /**
+     * Régi jogszint, csak a runonce 0228 olvassa: a hozzáférést a munkakorok adja.
+     * @ORM\Column(type="integer", nullable=true)
+     */
     private $jogosultsag;
+    /**
+     * @ORM\ManyToMany(targetEntity="Munkakor")
+     * @ORM\JoinTable(name="menu_munkakorok",
+     *  joinColumns={@ORM\JoinColumn(name="menu_id",referencedColumnName="id",onDelete="cascade")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="munkakor_id",referencedColumnName="id",onDelete="cascade")}
+     *  )
+     */
+    private $munkakorok;
     /** @ORM\Column(type="boolean") */
     private $lathato;
     /** @ORM\Column(type="integer", nullable=true) */
@@ -35,6 +47,10 @@ class Menu {
     /** @ORM\Column(type="string",length=255,nullable=true) */
     private $class;
 
+
+    public function __construct() {
+        $this->munkakorok = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -149,15 +165,49 @@ class Menu {
         $this->sorrend = $sorrend;
     }
 
-    public function isMenucsoportLathato($jog) {
+    public function getMunkakorok() {
+        return $this->munkakorok;
+    }
+
+    public function addMunkakor(Munkakor $munkakor) {
+        if (!$this->munkakorok->contains($munkakor)) {
+            $this->munkakorok->add($munkakor);
+        }
+    }
+
+    public function removeAllMunkakor() {
+        $this->munkakorok->clear();
+    }
+
+    public function getMunkakorIds() {
+        $ids = [];
+        foreach ($this->munkakorok as $munkakor) {
+            $ids[] = $munkakor->getId();
+        }
+        return $ids;
+    }
+
+    public function getMunkakorNevek() {
+        $nevek = [];
+        foreach ($this->munkakorok as $munkakor) {
+            $nevek[] = $munkakor->getNev();
+        }
+        sort($nevek);
+        return implode(', ', $nevek);
+    }
+
+    public function isMenucsoportLathato() {
         if ($this->menucsoport) {
-            return $this->menucsoport->isLathato($jog);
+            return (bool)$this->menucsoport->getLathato();
         }
         return true;
     }
 
-    public function isLathato($jog = 0) {
-        return $this->getLathato() && ($this->getJogosultsag() <= $jog) && $this->isMenucsoportLathato($jog);
+    /** A beépített sysadmin minden menüpontot lát, más csak a munkaköréhez bepipáltakat. */
+    public function isLathato(?int $munkakorId, bool $sysadmin = false) {
+        return $this->getLathato()
+            && $this->isMenucsoportLathato()
+            && ($sysadmin || ($munkakorId && in_array($munkakorId, $this->getMunkakorIds())));
     }
 
     /**

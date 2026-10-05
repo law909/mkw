@@ -13,7 +13,7 @@ class berkimutatasController extends \mkwhelpers\Controller
     use \Traits\GroupedReport;
     use \Traits\SavedReportViews;
 
-    // the same right as the pay lines themselves
+    private const MENUURL = '/admin/berkimutatas/view';
     private const BERJOG = 40;
 
     private const MAXSZINT = 3;
@@ -30,7 +30,7 @@ class berkimutatasController extends \mkwhelpers\Controller
 
     public function view()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             return;
         }
         $view = $this->createView('berkimutatas.tpl');
@@ -46,7 +46,7 @@ class berkimutatasController extends \mkwhelpers\Controller
 
     protected function checkNezetJog(): bool
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
             return false;
         }
@@ -160,7 +160,7 @@ class berkimutatasController extends \mkwhelpers\Controller
 
     public function refresh()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
             return;
         }
@@ -170,7 +170,7 @@ class berkimutatasController extends \mkwhelpers\Controller
 
     public function pdf()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             return;
         }
         $szurok = [[t('Időszak'), $this->params->getStringRequestParam('tol') . ' – ' . $this->params->getStringRequestParam('ig')]];
@@ -184,7 +184,7 @@ class berkimutatasController extends \mkwhelpers\Controller
 
     public function export()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             return;
         }
         $szintek = $this->getSzintek();

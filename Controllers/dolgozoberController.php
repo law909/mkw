@@ -9,7 +9,8 @@ use Entities\Dolgozober;
 class dolgozoberController extends \mkwhelpers\MattableController
 {
 
-    // pay is personal data: the menu hides it below this, the endpoints refuse it too
+    // pay is personal data: the endpoints refuse whom the menu item does not let in
+    private const MENUURL = '/admin/dolgozober/viewlist';
     private const BERJOG = 40;
 
     public function __construct()
@@ -117,7 +118,7 @@ class dolgozoberController extends \mkwhelpers\MattableController
 
     public function getlistbody()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
             return;
         }
@@ -139,7 +140,7 @@ class dolgozoberController extends \mkwhelpers\MattableController
 
     public function viewlist()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             return;
         }
         $view = $this->createView('dolgozoberlista.tpl');
@@ -171,21 +172,21 @@ class dolgozoberController extends \mkwhelpers\MattableController
 
     public function getkarb()
     {
-        if (\mkw\store::haveJog(self::BERJOG)) {
+        if (\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             parent::getkarb();
         }
     }
 
     public function viewkarb()
     {
-        if (\mkw\store::haveJog(self::BERJOG)) {
+        if (\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             parent::viewkarb();
         }
     }
 
     public function save()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
             return;
         }
@@ -194,7 +195,7 @@ class dolgozoberController extends \mkwhelpers\MattableController
 
     public function ront()
     {
-        if (!\mkw\store::haveJog(self::BERJOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::BERJOG)) {
             $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
             return;
         }

@@ -195,7 +195,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         'ar' => 'Ársávos ár',
     ];
 
-    /** ez alatt a jog alatt a képernyő és a hozzá tartozó végpontok sem érhetők el */
+    /** akit a menüpont nem enged be, annak a képernyő és a hozzá tartozó végpontok sem érhetők el */
+    private const OSSZEVONASMENUURL = '/admin/termekvaltozat/osszevonasview';
     private const OSSZEVONASJOG = 40;
 
     /**
@@ -205,7 +206,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
      */
     public function osszevonasView()
     {
-        if (!store::haveJog(self::OSSZEVONASJOG)) {
+        if (!store::haveMenuJog(self::OSSZEVONASMENUURL, self::OSSZEVONASJOG)) {
             return;
         }
         $view = $this->createView('valtozatosszevonas.tpl');
@@ -217,7 +218,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     public function osszevonasTermekLista()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if (!store::haveJog(self::OSSZEVONASJOG)) {
+        if (!store::haveMenuJog(self::OSSZEVONASMENUURL, self::OSSZEVONASJOG)) {
             $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
             return;
         }
@@ -243,7 +244,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     public function osszevonasValtozatLista()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if (!store::haveJog(self::OSSZEVONASJOG)) {
+        if (!store::haveMenuJog(self::OSSZEVONASMENUURL, self::OSSZEVONASJOG)) {
             $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
             return;
         }
@@ -280,7 +281,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     public function osszevonasStat()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if (!store::haveJog(self::OSSZEVONASJOG)) {
+        if (!store::haveMenuJog(self::OSSZEVONASMENUURL, self::OSSZEVONASJOG)) {
             $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
             return;
         }
@@ -316,7 +317,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     public function osszevonas()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if (!store::haveJog(self::OSSZEVONASJOG)) {
+        if (!store::haveMenuJog(self::OSSZEVONASMENUURL, self::OSSZEVONASJOG)) {
             $this->jsonFail(t('Nincs jogosultsága a művelethez.'));
             return;
         }

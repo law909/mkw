@@ -1922,21 +1922,18 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekertekeles/save', 'termekertekelesController#save', 'admintermekertekelessave');
 }
 
-if (haveJog(\Controllers\rontasvisszavetelController::JOG)) {
-    $router->map('GET', '/admin/rontasvisszavetel/view', 'rontasvisszavetelController#view', 'adminrontasvisszavetelview');
-    $router->map('GET', '/admin/rontasvisszavetel/info', 'rontasvisszavetelController#info', 'adminrontasvisszavetelinfo');
-    if (!\mkw\store::isClosed()) {
-        $router->map('POST', '/admin/rontasvisszavetel/restore', 'rontasvisszavetelController#restore', 'adminrontasvisszavetelrestore');
-    }
+// a rontás visszavétele és a partner összefűzés jogát a controller nézi, a menüpont munkakörei szerint
+$router->map('GET', '/admin/rontasvisszavetel/view', 'rontasvisszavetelController#view', 'adminrontasvisszavetelview');
+$router->map('GET', '/admin/rontasvisszavetel/info', 'rontasvisszavetelController#info', 'adminrontasvisszavetelinfo');
+$router->map('GET', '/admin/partnermerge/view', 'partnermergeController#view', 'adminpartnermergeview');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/rontasvisszavetel/restore', 'rontasvisszavetelController#restore', 'adminrontasvisszavetelrestore');
+    $router->map('POST', '/admin/partnermerge', 'partnermergeController#doIt', 'adminpartnermerge');
 }
 
 if (haveJog(90)) {
     $router->map('GET', '/admin/bizvissza', 'bizonylatfejController#setNyomtatvaVissza', 'adminbizvissza');
 //    $router->map('GET', '/admin/bizpartnerjavit', 'bizonylatfejController#repairPartnerAdat', 'adminbizpartnerjavit');
-    $router->map('GET', '/admin/partnermerge/view', 'partnermergeController#view', 'adminpartnermergeview');
-    if (!\mkw\store::isClosed()) {
-        $router->map('POST', '/admin/partnermerge', 'partnermergeController#doIt', 'adminpartnermerge');
-    }
 }
 
 if (\mkw\store::isDarshan()) {

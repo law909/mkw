@@ -16,11 +16,34 @@ class MenuRepository extends \mkwhelpers\Repository
         ]);
     }
 
-    /** The lowest right of the menu items pointing at the URL, null when no menu item does. */
-    public function getJogosultsagByUrl(string $url): ?int
+    /**
+     * Whether the munkakor may open the URL: true when a menu item pointing at it is ticked for the munkakor, null
+     * when no menu item points at it.
+     */
+    public function isMunkakorAllowedByUrl(string $url, ?int $munkakorId): ?bool
     {
-        $jog = $this->_em->getConnection()->fetchOne('SELECT MIN(jogosultsag) FROM menu WHERE url = ?', [$url]);
-        return $jog === null || $jog === false ? null : (int)$jog;
+        $row = $this->_em->getConnection()->fetchNumeric(
+            'SELECT COUNT(DISTINCT m.id), COUNT(mm.munkakor_id) FROM menu m'
+            . ' LEFT JOIN menu_munkakorok mm ON mm.menu_id = m.id AND mm.munkakor_id = ?'
+            . ' WHERE m.url = ?',
+            [(int)$munkakorId, $url]
+        );
+        return $row[0] ? $row[1] > 0 : null;
+    }
+
+    public function getWithJoins($filter, $order, $offset = 0, $elemcount = 0): mixed
+    {
+        // no paging here: a fetch-joined collection would be cut by the row limit
+        return $this->_em->createQuery(
+            'SELECT _xx, m, mk'
+            . ' FROM Entities\Menu _xx'
+            . ' LEFT JOIN _xx.menucsoport m'
+            . ' LEFT JOIN _xx.munkakorok mk'
+            . $this->getFilterString($filter)
+            . $this->getOrderString($order)
+        )
+            ->setParameters($this->getQueryParameters($filter))
+            ->getResult();
     }
 
     public function getAll($filter = [], $order = [], $offset = 0, $elemcount = 0)

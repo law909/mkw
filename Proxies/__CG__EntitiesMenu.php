@@ -67,10 +67,10 @@ class Menu extends \Entities\Menu implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'munkakorok', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Menu' . "\0" . 'id', '' . "\0" . 'Entities\\Menu' . "\0" . 'menucsoport', '' . "\0" . 'Entities\\Menu' . "\0" . 'nev', '' . "\0" . 'Entities\\Menu' . "\0" . 'url', '' . "\0" . 'Entities\\Menu' . "\0" . 'routename', '' . "\0" . 'Entities\\Menu' . "\0" . 'jogosultsag', '' . "\0" . 'Entities\\Menu' . "\0" . 'munkakorok', '' . "\0" . 'Entities\\Menu' . "\0" . 'lathato', '' . "\0" . 'Entities\\Menu' . "\0" . 'sorrend', '' . "\0" . 'Entities\\Menu' . "\0" . 'class'];
     }
 
     /**
@@ -371,23 +371,78 @@ class Menu extends \Entities\Menu implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function isMenucsoportLathato($jog)
+    public function getMunkakorok()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isMenucsoportLathato', [$jog]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorok', []);
 
-        return parent::isMenucsoportLathato($jog);
+        return parent::getMunkakorok();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function isLathato($jog = 0)
+    public function addMunkakor(\Entities\Munkakor $munkakor)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isLathato', [$jog]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addMunkakor', [$munkakor]);
 
-        return parent::isLathato($jog);
+        return parent::addMunkakor($munkakor);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeAllMunkakor()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAllMunkakor', []);
+
+        return parent::removeAllMunkakor();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunkakorIds()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorIds', []);
+
+        return parent::getMunkakorIds();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMunkakorNevek()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMunkakorNevek', []);
+
+        return parent::getMunkakorNevek();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isMenucsoportLathato()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isMenucsoportLathato', []);
+
+        return parent::isMenucsoportLathato();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isLathato(?int $munkakorId, bool $sysadmin = false)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isLathato', [$munkakorId, $sysadmin]);
+
+        return parent::isLathato($munkakorId, $sysadmin);
     }
 
     /**

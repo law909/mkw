@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Entities\Menu;
 use Entities\Menucsoport;
+use Entities\Munkakor;
 
 class menuController extends \mkwhelpers\MattableController
 {
@@ -26,8 +27,11 @@ class menuController extends \mkwhelpers\MattableController
         }
         $x = $this->getEntityFieldsArray($t);
         $x['menucsoportnev'] = $t->getMenucsoportNev();
+        $x['munkakornevek'] = $t->getMunkakorNevek();
         if ($forKarb) {
             $x['menucsoportlist'] = (new menucsoportController())->getSelectList($t->getMenucsoportId());
+            $x['munkakorids'] = $t->getMunkakorIds();
+            $x['munkakorlist'] = (new munkakorController())->getSelectList();
         }
         return $x;
     }
@@ -41,6 +45,13 @@ class menuController extends \mkwhelpers\MattableController
     {
         $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['url']]);
         $obj->setMenucsoport($this->getRepo(Menucsoport::class)->find($this->params->getIntRequestParam('menucsoport')));
+        $obj->removeAllMunkakor();
+        foreach ($this->params->getArrayRequestParam('munkakorok', []) as $munkakorId) {
+            $munkakor = $this->getRepo(Munkakor::class)->find($munkakorId);
+            if ($munkakor) {
+                $obj->addMunkakor($munkakor);
+            }
+        }
         return $obj;
     }
 
@@ -119,7 +130,7 @@ class menuController extends \mkwhelpers\MattableController
      * ('mcsnyitva'), amit a dolgozó a fejlécre kattintva állít – az érték dolgozónként
      * tárolódik (\Services\DolgozoParameterService). Alapértelmezés a nyitott állapot,
      * így akinek nincs mentett beállítása, az a régi, teljesen nyitott menüt látja.
-     * Csoport nélküli menüpont mindig látszik.
+     * A menüpontot az látja, akinek a munkakörét bepipálták rajta (Menu::isLathato()).
      */
     public function getMenu()
     {
@@ -128,7 +139,9 @@ class menuController extends \mkwhelpers\MattableController
         $filter
             ->addFilter('lathato', '=', true)
             ->addSql('(m.lathato=1) OR (m.lathato IS NULL)');
-        $adat = $this->getRepo()->getAll($filter, ['m.sorrend' => 'ASC', 'sorrend' => 'ASC']);
+        $adat = $this->getRepo()->getWithJoins($filter, ['m.sorrend' => 'ASC', 'sorrend' => 'ASC']);
+        $munkakorId = \mkw\store::getAdminMunkakorId();
+        $sysadmin = \mkw\store::isSysadmin();
         /** @var \Entities\Menu $rek */
         foreach ($adat as $rek) {
             // a médiatár menüpontja mögött mediatar = 0 mellett route sincs
@@ -138,7 +151,7 @@ class menuController extends \mkwhelpers\MattableController
             if ($rek->getUrl() === '/admin/eppjelszo/viewlist' && !\mkw\store::isEpp()) {
                 continue;
             }
-            if ($rek->isLathato(\mkw\store::getJog())) {
+            if ($rek->isLathato($munkakorId, $sysadmin)) {
                 $mcsid = $rek->getMenucsoportId();
                 $menu[] = [
                     'mcsid' => $mcsid,

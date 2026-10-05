@@ -60,6 +60,7 @@ class store
     private static $loggedinuk;
     private static $loggedinukpartner;
     private static $routename;
+    private static $adminMunkakorIds = [];
     private static $daynames = ['hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat', 'vasárnap'];
     private static $BarionEnvironment = ['teszt', 'éles'];
     private static $FoxpostAPIVersions = ['v1', 'v2'];
@@ -1975,10 +1976,31 @@ class store
         return self::$routename;
     }
 
-    /** The right the admin menu asks for the screen, so that a direct URL is not more open than the menu. */
+    /**
+     * Whether the menu lets the user open the screen, so that a direct URL is not more open than the menu. The
+     * $default right applies when no menu item points at the URL.
+     */
     public static function haveMenuJog(string $url, int $default): bool
     {
-        return self::haveJog(self::getEm()->getRepository(\Entities\Menu::class)->getJogosultsagByUrl($url) ?? $default);
+        if (self::isSysadmin()) {
+            return true;
+        }
+        return self::getEm()->getRepository(\Entities\Menu::class)->isMunkakorAllowedByUrl($url, self::getAdminMunkakorId())
+            ?? self::haveJog($default);
+    }
+
+    /** Read from the DB, not from the login session, so that a munkakor change applies without a new login. */
+    public static function getAdminMunkakorId(): ?int
+    {
+        $pk = (int)self::getAdminSession()->pk;
+        if ($pk <= 0) {
+            return null;
+        }
+        if (!array_key_exists($pk, self::$adminMunkakorIds)) {
+            $id = self::getEm()->getConnection()->fetchOne('SELECT munkakor_id FROM dolgozo WHERE id = ?', [$pk]);
+            self::$adminMunkakorIds[$pk] = $id ? (int)$id : null;
+        }
+        return self::$adminMunkakorIds[$pk];
     }
 
     public static function haveJog($jog)

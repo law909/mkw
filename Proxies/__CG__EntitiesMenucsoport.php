@@ -280,15 +280,4 @@ class Menucsoport extends \Entities\Menucsoport implements \Doctrine\ORM\Proxy\P
         return parent::setSorrend($sorrend);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isLathato($jog = 0)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'isLathato', [$jog]);
-
-        return parent::isLathato($jog);
-    }
-
 }

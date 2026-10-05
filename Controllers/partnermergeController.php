@@ -7,6 +7,9 @@ use Entities\Partner;
 class partnermergeController extends \mkwhelpers\MattableController
 {
 
+    private const MENUURL = '/admin/partnermerge/view';
+    private const JOG = 90;
+
     public function __construct()
     {
         $this->setEntityName(Partner::class);
@@ -15,6 +18,9 @@ class partnermergeController extends \mkwhelpers\MattableController
 
     public function view()
     {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::JOG)) {
+            return;
+        }
         $view = $this->createView('partnermerge.tpl');
 
         $view->setVar('partnerbol', date(\mkw\store::$DateFormat));
@@ -30,6 +36,10 @@ class partnermergeController extends \mkwhelpers\MattableController
 
     public function doIt()
     {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::JOG)) {
+            $this->jsonError(t('Nincs jogosultsága a művelethez.'), 403);
+            return;
+        }
         $partnerrolid = $this->params->getIntRequestParam('partnerrol');
         $partnerreid = $this->params->getIntRequestParam('partnerre');
         if ($partnerreid != $partnerrolid) {

@@ -3,16 +3,20 @@
 namespace Controllers;
 
 /**
- * Rontott bizonylat rontásának visszavétele (Egyéb műveletek, jog 999); a munka a
+ * Rontott bizonylat rontásának visszavétele (Egyéb műveletek); a munka a
  * \Services\BizonylatRontasVisszavetelService-ben van.
  */
 class rontasvisszavetelController extends \mkwhelpers\Controller
 {
 
-    public const JOG = 999;
+    private const MENUURL = '/admin/rontasvisszavetel/view';
+    private const JOG = 999;
 
     public function view()
     {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::JOG)) {
+            return;
+        }
         $view = $this->createView('rontasvisszavetel.tpl');
         $view->setVar('pagetitle', t('Rontás visszavétele'));
         $view->printTemplateResult();
@@ -21,7 +25,7 @@ class rontasvisszavetelController extends \mkwhelpers\Controller
     public function info()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if (!\mkw\store::haveJog(self::JOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::JOG)) {
             $this->jsonFail(t('Nincs jogosultsága.'));
             return;
         }
@@ -33,7 +37,7 @@ class rontasvisszavetelController extends \mkwhelpers\Controller
     public function restore()
     {
         header('Content-Type: application/json; charset=utf-8');
-        if (!\mkw\store::haveJog(self::JOG)) {
+        if (!\mkw\store::haveMenuJog(self::MENUURL, self::JOG)) {
             $this->jsonFail(t('Nincs jogosultsága.'));
             return;
         }

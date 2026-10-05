@@ -31,11 +31,21 @@
                 {mezo cimke="CSS osztály" for="ClassEdit"}
                     <input id="ClassEdit" name="class" type="text" size="40" maxlength="255" value="{$egyed.class}">
                 {/mezo}
-                {mezo cimke="Jog" for="JogosultsagEdit"}
-                    <input id="JogosultsagEdit" name="jogosultsag" type="number" step="1" value="{$egyed.jogosultsag}">
-                {/mezo}
                 {mezo cimke="Látható" for="LathatoEdit"}
                     <input id="LathatoEdit" name="lathato" type="checkbox"{if ($egyed.lathato)} checked="checked"{/if}>
+                {/mezo}
+            {/mezocsoport}
+            {mezocsoport cim="Ezek a munkakörök érhetik el"}
+                {mezo cimke="Munkakörök" szeles=true}
+                    <div class="mattkarb-checklist">
+                        {foreach $egyed.munkakorlist as $_munkakor}
+                            <label class="mattkarb-checkitem">
+                                <input type="checkbox" name="munkakorok[]" value="{$_munkakor.id}"{if in_array($_munkakor.id, $egyed.munkakorids)} checked="checked"{/if}>
+                                {$_munkakor.caption}
+                            </label>
+                            <br>
+                        {/foreach}
+                    </div>
                 {/mezo}
             {/mezocsoport}
         </div>

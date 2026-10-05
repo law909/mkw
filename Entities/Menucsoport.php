@@ -17,7 +17,10 @@ class Menucsoport {
     private $id;
     /** @ORM\Column(type="string",length=255,nullable=false) */
     private $nev;
-    /** @ORM\Column(type="integer", nullable=true) */
+    /**
+     * Régi jogszint, csak a runonce 0228 olvassa: a menücsoport azt mutatja, amelyik menüpontja látszik.
+     * @ORM\Column(type="integer", nullable=true)
+     */
     private $jogosultsag;
     /** @ORM\Column(type="boolean") */
     private $lathato;
@@ -85,9 +88,5 @@ class Menucsoport {
      */
     public function setSorrend($sorrend) {
         $this->sorrend = $sorrend;
-    }
-
-    public function isLathato($jog = 0) {
-        return $this->getLathato() && $this->getJogosultsag() <= $jog;
     }
 }

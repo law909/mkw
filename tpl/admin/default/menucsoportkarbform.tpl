@@ -14,9 +14,6 @@
                 {mezo cimke="Sorrend" for="SorrendEdit"}
                     <input id="SorrendEdit" name="sorrend" type="number" step="1" value="{$egyed.sorrend}">
                 {/mezo}
-                {mezo cimke="Jog" for="JogosultsagEdit"}
-                    <input id="JogosultsagEdit" name="jogosultsag" type="number" step="1" value="{$egyed.jogosultsag}">
-                {/mezo}
                 {mezo cimke="Látható" for="LathatoEdit"}
                     <input id="LathatoEdit" name="lathato" type="checkbox"{if ($egyed.lathato)} checked="checked"{/if}>
                 {/mezo}
