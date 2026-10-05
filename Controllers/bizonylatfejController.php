@@ -624,6 +624,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $x['isbarion'] = \mkw\store::isBarionFizmod($t->getFizmod());
         $x['isstripe'] = \mkw\store::isStripeFizmod($t->getFizmod());
         $x['stripepaymentintentid'] = $t->getStripepaymentintentid();
+        $x['unasfizetesstatusz'] = $t->getUnasfizetesstatusz();
+        $x['unasfizetesstatusznev'] = $t->getUnasfizetesstatuszNev();
+        $x['unasfizetve'] = $t->isUnasFizetve();
         $x['glsparcellabelurl'] = $t->getGlsparcellabelurl();
         $x['isglsbekuldve'] = (bool)$t->getGlsparcelid();
         $x['glsparcelid'] = $t->getGlsparcelid();

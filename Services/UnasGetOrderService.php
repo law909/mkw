@@ -452,6 +452,7 @@ class UnasGetOrderService
             $fej->setBizonylatstatusz($bizonylatstatusz);
             $fej->setUnaskey($order['key']);
             $fej->setUnasinternalkey(mb_substr($order['internalkey'], 0, self::KEYMAXLENGTH));
+            $fej->setUnasfizetesstatusz($this->paymentStatus($order));
             $fej->setErbizonylatszam(mb_substr($order['key'], 0, 30));
             // ugyanaz a mező, amit a webshop saját checkoutja is tölt
             $fej->setReferrer($order['referer']);
@@ -533,6 +534,11 @@ class UnasGetOrderService
         }
         if ($order['internalkey'] !== '' && !$fej->getUnasinternalkey()) {
             $fej->setUnasinternalkey(mb_substr($order['internalkey'], 0, self::KEYMAXLENGTH));
+            $valtozott = true;
+        }
+        // a bankkártyás fizetés a rendelés beérkezése után is lezárulhat
+        if ($fej->getUnasfizetesstatusz() !== $this->paymentStatus($order)) {
+            $fej->setUnasfizetesstatusz($this->paymentStatus($order));
             $valtozott = true;
         }
 
@@ -621,6 +627,7 @@ class UnasGetOrderService
                 $fej->setCsomagterminal($terminal);
             }
             $this->fillCsomagadat($fej, $order);
+            $fej->setUnasfizetesstatusz($this->paymentStatus($order));
             $fej->setBelsomegjegyzes($this->buildBelsomegjegyzes($order, $items));
             $fej->calcOsszesen();
 
@@ -714,6 +721,12 @@ class UnasGetOrderService
             $valtozott = true;
         }
         return $valtozott;
+    }
+
+    private function paymentStatus(array $order)
+    {
+        $status = mb_strtolower(trim($order['payment']['status'] ?? ''));
+        return $status !== '' ? mb_substr($status, 0, 20) : null;
     }
 
     /**

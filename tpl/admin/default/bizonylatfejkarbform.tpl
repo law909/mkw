@@ -308,6 +308,9 @@
                                             data-nincspenzmozgas="{if ($_mk.nincspenzmozgas)}1{else}0{/if}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
+                            {if ($egyed.unasfizetesstatusz)}
+                                <span class="{if ($egyed.unasfizetve)}greentext{else}redtext{/if}">UNAS: {$egyed.unasfizetesstatusznev}</span>
+                            {/if}
                         </td>
                         <td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
                         <td><select id="SzallitasimodEdit" name="szallitasimod"

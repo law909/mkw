@@ -228,7 +228,7 @@
         {strip}
         <dl class="bizlista-adatok">
             <div class="bizlista-sor"><dt>{at('Raktár')}:</dt><dd>{$_egyed.raktarnev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}{if ($_egyed.isstripe)} <span class="barionstatus">({$_egyed.stripepaymentintentid})</span>{/if}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}{if ($_egyed.isstripe)} <span class="barionstatus">({$_egyed.stripepaymentintentid})</span>{/if}{if ($_egyed.unasfizetesstatusz)} <span class="{if ($_egyed.unasfizetve)}greentext{else}redtext{/if}">(UNAS: {$_egyed.unasfizetesstatusznev})</span>{/if}</dd></div>
             <div class="bizlista-sor bizlista-sor-teljes"><dd>{if ($_egyed.penztmozgat)}{at('Kintlévőséget/tartozást képez')}{else}{at('Kintlévőséget/tartozást NEM képez')}{/if}</dd></div>
             <div class="bizlista-sor"><dt>{at('Szállítási mód')}:</dt><dd>{$_egyed.szallitasimodnev}</dd></div>
             {if ($_egyed.fedexservicetype)}

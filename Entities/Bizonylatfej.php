@@ -230,6 +230,14 @@ class Bizonylatfej
      */
     private $unasinternalkey;
 
+    /**
+     * A getOrder `Payment.Status`-a: unpaid | paid | partly paid | overpaid. Csak online fizetésnél
+     * (bankkártya) jön, utánvétnél és átutalásnál üres.
+     *
+     * @ORM\Column(type="string",length=20,nullable=true)
+     */
+    private $unasfizetesstatusz;
+
     /** @ORM\Column(type="text",nullable=true) */
     private $fuvarlevelszam;
 
@@ -4430,6 +4438,33 @@ class Bizonylatfej
         $this->unasinternalkey = $val;
     }
 
+    public function getUnasfizetesstatusz()
+    {
+        return $this->unasfizetesstatusz;
+    }
+
+    public function setUnasfizetesstatusz($val)
+    {
+        $this->unasfizetesstatusz = $val;
+    }
+
+    public function getUnasfizetesstatuszNev()
+    {
+        return match ((string)$this->unasfizetesstatusz) {
+            '' => '',
+            'paid' => t('fizetve'),
+            'unpaid' => t('nincs fizetve'),
+            'partly paid' => t('részben fizetve'),
+            'overpaid' => t('túlfizetve'),
+            default => $this->unasfizetesstatusz,
+        };
+    }
+
+    public function isUnasFizetve()
+    {
+        return in_array($this->unasfizetesstatusz, ['paid', 'overpaid'], true);
+    }
+
     /** Az azonosító, amivel az UNAS API megszólítja a rendelést – mindig a `Key`. */
     public function getUnasApikey()
     {
@@ -5283,7 +5318,7 @@ class Bizonylatfej
         // Az UNAS rendelés azonosítója nem másolható: egyedi indexen van, és egy rendeléshez
         // egyetlen bizonylat tartozhat – különben a szétbontás/összefűzés flush-e elhasalna,
         // és a visszaírás sem tudná, melyik bizonylat a rendelés párja.
-        $kivetel = ['setParbizonylatfej', 'setUnaskey', 'setUnasinternalkey'];
+        $kivetel = ['setParbizonylatfej', 'setUnaskey', 'setUnasinternalkey', 'setUnasfizetesstatusz'];
         $methods = get_class_methods($this);
         foreach ($methods as $v) {
             if ((strpos($v, 'set') > -1) && (!in_array($v, $kivetel))) {
