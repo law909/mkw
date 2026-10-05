@@ -1094,6 +1094,9 @@ class store
 
     public static function changeDirSeparator($dir)
     {
+        if ($dir === null) {
+            return null;
+        }
         if (DIRECTORY_SEPARATOR === "\\") {
             $dir = str_replace("/", "\\", $dir);
         } else {
