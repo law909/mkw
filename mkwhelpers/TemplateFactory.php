@@ -141,6 +141,11 @@ class TemplateFactory
         return $view;
     }
 
+    public function mainTemplateExists($tplfilename)
+    {
+        return file_exists($this->getMainTemplate() . $tplfilename);
+    }
+
     public function createMainView($tplfilename)
     {
         $view = null;

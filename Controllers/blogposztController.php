@@ -219,7 +219,7 @@ class blogposztController extends \mkwhelpers\MattableController
         $com = $this->params->getStringParam('blogposzt');
         /** @var \Entities\Blogposzt $blogposzt */
         $blogposzt = $this->getRepo()->findOneBySlug($com);
-        if ($blogposzt && $blogposzt->getLathato()) {
+        if ($blogposzt && $blogposzt->getLathato() && $this->getTemplateFactory()->mainTemplateExists('blogposzt.tpl')) {
             $view = $this->getTemplateFactory()->createMainView('blogposzt.tpl');
             \mkw\store::fillTemplate($view);
             $view->setVar('pagetitle', $blogposzt->getShowCim());
@@ -244,6 +244,12 @@ class blogposztController extends \mkwhelpers\MattableController
         $elemperpage = $this->params->getIntRequestParam('elemperpage', \mkw\store::getParameter(\mkw\consts::Blogposztdb, 15));
 
         $pageno = $this->params->getIntRequestParam('pageno', 1);
+
+        // a /blog minden témán él, de sablonja csak a blogos témáknak van
+        if (!$this->getTemplateFactory()->mainTemplateExists('blogposztlist.tpl')) {
+            \mkw\store::redirectTo404('');
+            return;
+        }
 
         $view = $this->getTemplateFactory()->createMainView('blogposztlist.tpl');
 

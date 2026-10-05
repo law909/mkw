@@ -158,7 +158,9 @@ class sitemapController extends \mkwhelpers\Controller
         foreach ($this->getRepo(\Entities\Statlap::class)->getForSitemapXml() as $sor) {
             $this->addUrl($urls2, $router->generate('showstatlap', false, ['lap' => $sor['slug']]), $sor['lastmod']);
         }
-        $this->addUrl($urls2, $router->generate('showblogposztlist'), $this->getMaxLastmod($this->buildBlog()));
+        if ($this->hasBlog()) {
+            $this->addUrl($urls2, $router->generate('showblogposztlist'), $this->getMaxLastmod($this->buildBlog()));
+        }
         $this->addUrl($urls2, $router->generate('markak'), $this->getMaxLastmod($this->buildBrands()));
         return array_merge($urls, $urls2);
     }
@@ -225,9 +227,17 @@ class sitemapController extends \mkwhelpers\Controller
         return $urls;
     }
 
+    private function hasBlog()
+    {
+        return $this->getTemplateFactory()->mainTemplateExists('blogposztlist.tpl');
+    }
+
     private function buildBlog()
     {
         $urls = [];
+        if (!$this->hasBlog()) {
+            return $urls;
+        }
         $router = \mkw\store::getRouter();
         foreach ($this->getRepo(\Entities\Blogposzt::class)->getForSitemapXml() as $sor) {
             $this->addUrl($urls, $router->generate('showblogposzt', false, ['blogposzt' => $sor['slug']]), $sor['lastmod']);
