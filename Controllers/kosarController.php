@@ -404,12 +404,13 @@ class kosarController extends \mkwhelpers\MattableController
         $mennyisegsum = 0;
         $m = $this->getRepo()->calcSumBySessionId(\mkw\session::getId());
         if ($m) {
+            // üres kosárnál a SUM null, a sor mégis megjön
             if ($partner && $partner->getSzamlatipus()) {
-                $sum = $m['nettosum'];
+                $sum = $m['nettosum'] ?? 0;
             } else {
-                $sum = $m['bruttosum'];
+                $sum = $m['bruttosum'] ?? 0;
             }
-            $mennyisegsum = $m['mennyisegsum'];
+            $mennyisegsum = $m['mennyisegsum'] ?? 0;
         }
         $valutanem = null;
         $valutanemnev = 'Ft';
