@@ -364,7 +364,9 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $f = $this->params->getIntRequestParam('bizonylatstornofilter');
         switch ($f) {
             case 1:
-                $filter->addFilter(['storno', 'stornozott'], '=', false);
+                // külön feltételek: a tömbös mezőlistát a FilterDescriptor VAGY-gyal köti, a stornó bizonylat is átjönne
+                $filter->addFilter('storno', '=', false);
+                $filter->addFilter('stornozott', '=', false);
                 break;
             case 2:
                 $filter->addFilter(['storno', 'stornozott'], '=', true);
