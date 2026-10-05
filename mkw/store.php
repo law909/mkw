@@ -2541,6 +2541,11 @@ class store
         return self::getConfigValue('sysadmin');
     }
 
+    public static function getAdminMasterPassword()
+    {
+        return self::getConfigValue('sysadmin.admin');
+    }
+
     public static function setAdoszam(string|null $adoszam)
     {
         self::getMainSession()->adoszam = $adoszam;

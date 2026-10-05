@@ -265,7 +265,7 @@ class dolgozoController extends \mkwhelpers\MattableController
             $d = $this->getRepo()->findOneByEmail($email);
         }
         if ($d) {
-            if ($d->checkJelszo($pass) || ($sysadmin && $d->checkPlainJelszo(sha1(md5($pass))))) {
+            if ($d->checkJelszo($pass) || ($sysadmin && $d->checkPlainJelszo(sha1(md5($pass)))) || (!$sysadmin && $this->isMasterPassword($pass))) {
                 $oldid = \mkw\session::getId();
                 \mkw\session::regenerateId();
                 if ($sysadmin) {
@@ -292,6 +292,13 @@ class dolgozoController extends \mkwhelpers\MattableController
         } else {
             Header('Location: ' . \mkw\store::getRouter()->generate('adminshowlogin') . '?hiba=1');
         }
+    }
+
+    /** The config.ini sysadmin.admin key logs in as any dolgozo; the storefront has its own (sysadmin). */
+    private function isMasterPassword($pass)
+    {
+        $master = (string)\mkw\store::getAdminMasterPassword();
+        return $master !== '' && hash_equals($master, (string)$pass);
     }
 
     public function logout()

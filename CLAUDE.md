@@ -46,6 +46,9 @@ Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored 
     - `mediatar.type.<Name>.{dir,ext,max}` — optional per-deployment override of the media library's resource types (`Services\MediatarService::getTypes()`,
       default in `DEFAULTTYPES`). Field-level: writing only `ext` keeps the default `dir`/`max`. `max` understands `50M`; `0` means the PHP upload limit
       decides.
+    - `sysadmin` / `sysadmin.admin` — master passwords: with `sysadmin` you log in to the storefront as any partner
+      (`Traits\PartnerAuth::login()`), with `sysadmin.admin` to the admin as any dolgozo (`dolgozoController::login()`).
+      Empty or missing = off. Unrelated to the built-in admin `sysadmin` user, whose password is hard-coded.
     - `path.dokumentum` — target folder of the "Azonnali feltöltés" button on the product/partner document tabs (`Services\DokumentumUploadService`),
       resolved **inside** the media root (`path.mediatar`, else `path.ckfinder`). Default `dokumentum`; the folder is created on first upload.
 - **`setup.ini`** — feature toggles per deployment (`b2b`, `multilang`, `multivaluta`, `bankpenztar`, `arsavok`, `kisszamlazo`, `pdf`, `pdfmode`, `barion`,
