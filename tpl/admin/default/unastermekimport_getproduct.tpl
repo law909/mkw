@@ -100,5 +100,5 @@
     <strong>{at('Nyers válasz')}</strong>
     {if ($dumpfajl)}<span>({$dumpfajl|escape})</span>{/if}
     {if (!$nyersteljes)}<span class="ui-state-error-text">&mdash; {at('a válasz csonkolva, a teljes XML a storage/logs mappában van')}</span>{/if}
-    <pre style="max-height:400px;overflow:auto;background:#f5f5f5;padding:5px;border:1px solid #ddd;white-space:pre-wrap;word-break:break-all;">{$nyers|escape}</pre>
+    <pre style="max-height:400px;overflow:auto;background:var(--mkw-surface-2, #f5f5f5);padding:5px;border:1px solid var(--mkw-border, #ddd);white-space:pre-wrap;word-break:break-all;">{$nyers|escape}</pre>
 </div>
