@@ -11,6 +11,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
     private $files = [];
     private $mar;
     private $esetimar;
+    private $elolegmar;
 
     public function view()
     {
@@ -18,6 +19,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
         $view->setVar('utolsoszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoSzamlaszam));
         $view->setVar('utolsoesetiszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam));
+        $view->setVar('utolsoelolegszamla', \mkw\store::getParameter(\mkw\consts::PDFUtolsoElolegszamlaszam));
         $view->setVar('toldatum', date(\mkw\store::$DateFormat, strtotime('first day of previous month')));
         $view->setVar('igdatum', date(\mkw\store::$DateFormat, strtotime('last day of previous month')));
 
@@ -60,6 +62,11 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
      * a legutóbb feladott sorszám fölött. A teljesítés szerinti feladás ezért nem is lépteti a
      * sorszámokat — azok a sorszám szerinti feladás könyvelése.
      */
+    private function isEloleg()
+    {
+        return $this->params->getStringRequestParam('tipus') === 'elolegszamla';
+    }
+
     private function isTeljesitesSzures()
     {
         return $this->params->getStringRequestParam('szures') === 'teljesites';
@@ -80,11 +87,15 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
 
     protected function createZip()
     {
-        $this->mar = $this->getPDFs('szamla', $this->params->getStringRequestParam('utolsoszamla'));
-        $this->esetimar = $this->getPDFs('esetiszamla', $this->params->getStringRequestParam('utolsoesetiszamla'));
+        if ($this->isEloleg()) {
+            $this->elolegmar = $this->getPDFs('elolegszamla', $this->params->getStringRequestParam('utolsoelolegszamla'));
+        } else {
+            $this->mar = $this->getPDFs('szamla', $this->params->getStringRequestParam('utolsoszamla'));
+            $this->esetimar = $this->getPDFs('esetiszamla', $this->params->getStringRequestParam('utolsoesetiszamla'));
+        }
 
         if ($this->files) {
-            $zipname = 'konyvelonek.zip';
+            $zipname = ($this->isEloleg() ? 'eloleg' : '') . 'konyvelonek.zip';
             $zippath = \mkw\store::storagePath($zipname);
             $zip = new \ZipArchive();
             $zip->open($zippath, \ZipArchive::CREATE);
@@ -144,6 +155,10 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
         if ($this->isTeljesitesSzures()) {
             return;
         }
+        if ($this->isEloleg()) {
+            \mkw\store::setParameter(\mkw\consts::PDFUtolsoElolegszamlaszam, $this->elolegmar);
+            return;
+        }
         \mkw\store::setParameter(\mkw\consts::PDFUtolsoSzamlaszam, $this->mar);
         \mkw\store::setParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam, $this->esetimar);
     }
@@ -153,6 +168,7 @@ class pdfszamlaexportController extends \mkwhelpers\MattableController
         return [
             'utolsoszamla' => \mkw\store::getParameter(\mkw\consts::PDFUtolsoSzamlaszam),
             'utolsoesetiszamla' => \mkw\store::getParameter(\mkw\consts::PDFUtolsoEsetiSzamlaszam),
+            'utolsoelolegszamla' => \mkw\store::getParameter(\mkw\consts::PDFUtolsoElolegszamlaszam),
         ];
     }
 

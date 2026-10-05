@@ -251,6 +251,8 @@ class consts
     const PDFUtolsoEsetiSzamlaszam = 'pdfutolsoesetiszamlaszam';
     const XMLUtolsoSzamlaszam = 'xmlutolsoszamlaszam';
     const XMLUtolsoEsetiSzamlaszam = 'xmlutolsoesetiszamlaszam';
+    const PDFUtolsoElolegszamlaszam = 'pdfutolsoelolegszamlaszam';
+    const XMLUtolsoElolegszamlaszam = 'xmlutolsoelolegszamlaszam';
 
     const AKTrustedShopApiKey = 'aktrustedshopapikey';
 

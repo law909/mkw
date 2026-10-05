@@ -3294,6 +3294,23 @@ if ($DBVersion < '0225' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0225');
 }
 
+if ($DBVersion < '0226' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0225') {
+    // a Számla PDF és XML export a Kimutatásokból a Könyvelői felületre (0224), a két lista után
+    $conn = \mkw\store::getEm()->getConnection();
+    $csoportid = $conn->fetchOne('SELECT id FROM menucsoport WHERE nev = "Könyvelői felület"');
+    if ($csoportid) {
+        $conn->executeStatement(
+            'UPDATE menu SET menucsoport_id = ?, sorrend = 300 WHERE url = "/admin/pdfszamlaexport/view"',
+            [$csoportid]
+        );
+        $conn->executeStatement(
+            'UPDATE menu SET menucsoport_id = ?, sorrend = 400 WHERE url = "/admin/xmlszamlaexport/view"',
+            [$csoportid]
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0226');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
