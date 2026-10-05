@@ -9,5 +9,9 @@ class MenucsoportRepository extends \mkwhelpers\Repository
     {
         parent::__construct($em, $class);
         $this->setEntityname(Menucsoport::class);
+        $this->setOrders([
+            '1' => ['caption' => 'sorrend szerint', 'order' => ['_xx.sorrend' => 'ASC', '_xx.nev' => 'ASC']],
+            '2' => ['caption' => 'név szerint növekvő', 'order' => ['_xx.nev' => 'ASC']],
+        ]);
     }
 }

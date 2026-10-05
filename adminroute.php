@@ -147,6 +147,21 @@ $router->map('GET', '/admin/kapcsolatfelveteltema/viewkarb', 'kapcsolatfelvetelt
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/kapcsolatfelveteltema/save', 'kapcsolatfelveteltemaController#save', 'adminkapcsolatfelveteltemasave');
 }
+// a hozzáférést a controller ellenőrzi (csak sysadmin), ugyanazért, mint a bizonylattípusnál
+$router->map('GET', '/admin/menucsoport/viewlist', 'menucsoportController#viewlist', 'adminmenucsoportviewlist');
+$router->map('GET', '/admin/menucsoport/getlistbody', 'menucsoportController#getlistbody', 'adminmenucsoportgetlistbody');
+$router->map('GET', '/admin/menucsoport/getkarb', 'menucsoportController#getkarb', 'adminmenucsoportgetkarb');
+$router->map('GET', '/admin/menucsoport/viewkarb', 'menucsoportController#viewkarb', 'adminmenucsoportviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/menucsoport/save', 'menucsoportController#save', 'adminmenucsoportsave');
+}
+$router->map('GET', '/admin/menu/viewlist', 'menuController#viewlist', 'adminmenuviewlist');
+$router->map('GET', '/admin/menu/getlistbody', 'menuController#getlistbody', 'adminmenugetlistbody');
+$router->map('GET', '/admin/menu/getkarb', 'menuController#getkarb', 'adminmenugetkarb');
+$router->map('GET', '/admin/menu/viewkarb', 'menuController#viewkarb', 'adminmenuviewkarb');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/menu/save', 'menuController#save', 'adminmenusave');
+}
 $router->map('GET', '/admin/munkakor/viewlist', 'munkakorController#viewlist', 'adminmunkakorviewlist');
 $router->map('GET', '/admin/munkakor/getlistbody', 'munkakorController#getlistbody', 'adminmunkakorgetlistbody');
 $router->map('GET', '/admin/munkakor/getkarb', 'munkakorController#getkarb', 'adminmunkakorgetkarb');

@@ -32,20 +32,6 @@ class bizonylattipusController extends \mkwhelpers\MattableController
         return $res;
     }
 
-    /**
-     * A bizonylattípus a rendszer viselkedését szabályozza (készletmozgás, pénzmozgás, NAV
-     * beküldés), ezért csak a beépített sysadmin nyúlhat hozzá. A jog szintje nem elég: azt
-     * egy munkakörre is rá lehet állítani.
-     */
-    private function sysadminOnly()
-    {
-        if (\mkw\store::isSysadmin()) {
-            return true;
-        }
-        header('HTTP/1.1 403 Forbidden');
-        return false;
-    }
-
     public function loadVars($t, $forKarb = false)
     {
         if (!$t) {

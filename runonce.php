@@ -3311,6 +3311,22 @@ if ($DBVersion < '0226' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0226');
 }
 
+if ($DBVersion < '0227' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0226') {
+    // Menücsoportok és Menüpontok karbantartó az Egyebek csoportba, a Munkakörök mellé; csak sysadmin
+    $conn = \mkw\store::getEm()->getConnection();
+    $csoportid = $conn->fetchOne('SELECT menucsoport_id FROM menu WHERE url = "/admin/munkakor/viewlist" LIMIT 1');
+    foreach ([['Menücsoportok', 'menucsoport', 1850], ['Menüpontok', 'menu', 1860]] as [$nev, $entity, $sorrend]) {
+        $url = '/admin/' . $entity . '/viewlist';
+        if (!$conn->fetchOne('SELECT id FROM menu WHERE url = ?', [$url])) {
+            $conn->executeStatement(
+                'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class) VALUES (?, ?, ?, ?, 999, 1, ?, "")',
+                [$csoportid ?: null, $nev, $url, '/admin/' . $entity, $sorrend]
+            );
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0227');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

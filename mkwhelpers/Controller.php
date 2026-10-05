@@ -234,6 +234,19 @@ abstract class Controller
     }
 
     /**
+     * Csak a beépített sysadmin (bizonylattípus, menü): a jog szintje nem elég, azt egy munkakörre is rá
+     * lehet állítani.
+     */
+    protected function sysadminOnly()
+    {
+        if (\mkw\store::isSysadmin()) {
+            return true;
+        }
+        header('HTTP/1.1 403 Forbidden');
+        return false;
+    }
+
+    /**
      * Egységes hibaválasz az admin ajax hívásoknak: a JS oldalon a globális ajaxError
      * kezelő olvassa ki az `error` kulcsot (lásd appinit.js).
      *

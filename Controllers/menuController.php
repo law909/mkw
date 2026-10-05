@@ -18,37 +18,46 @@ class menuController extends \mkwhelpers\MattableController
         parent::__construct();
     }
 
-    protected function loadVars($t)
+    public function loadVars($t, $forKarb = false)
     {
         if (!$t) {
-            $t = new \Entities\Menu();
+            $t = new Menu();
             $this->getEm()->detach($t);
         }
-        return $this->getEntityFieldsArray($t);
+        $x = $this->getEntityFieldsArray($t);
+        $x['menucsoportnev'] = $t->getMenucsoportNev();
+        if ($forKarb) {
+            $x['menucsoportlist'] = (new menucsoportController())->getSelectList($t->getMenucsoportId());
+        }
+        return $x;
     }
 
     /**
      * @param \Entities\Menu $obj
      *
-     * @return mixed
+     * @return \Entities\Menu
      */
     protected function setFields($obj)
     {
         $obj = $this->setEntityFieldsFromRequest($obj, ['raw' => ['url']]);
-        $ck = $this->getRepo(Menucsoport::class)->find($this->params->getIntRequestParam('menucsoport'));
-        if ($ck) {
-            $obj->setMenucsoport($ck);
-        }
+        $obj->setMenucsoport($this->getRepo(Menucsoport::class)->find($this->params->getIntRequestParam('menucsoport')));
         return $obj;
     }
 
     public function getlistbody()
     {
+        if (!$this->sysadminOnly()) {
+            return;
+        }
         $view = $this->createView('menulista_tbody.tpl');
 
         $filter = new \mkwhelpers\FilterDescriptor();
         if (!is_null($this->params->getRequestParam('nevfilter', null))) {
-            $filter->addFilter('nev', 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+            $filter->addFilter(['nev', 'url'], 'LIKE', '%' . $this->params->getStringRequestParam('nevfilter') . '%');
+        }
+        $menucsoport = $this->params->getIntRequestParam('menucsoportfilter');
+        if ($menucsoport) {
+            $filter->addFilter('menucsoport', '=', $menucsoport);
         }
 
         $this->initPager(
@@ -57,7 +66,7 @@ class menuController extends \mkwhelpers\MattableController
             $this->params->getIntRequestParam('pageno', 1)
         );
 
-        $egyedek = $this->getRepo()->getWithJoins(
+        $egyedek = $this->getRepo()->getAll(
             $filter,
             $this->getOrderArray(),
             $this->getPager()->getOffset(),
@@ -67,35 +76,42 @@ class menuController extends \mkwhelpers\MattableController
         echo json_encode($this->loadDataToView($egyedek, 'egyedlista', $view));
     }
 
-    public function viewselect()
-    {
-        $view = $this->createView('menulista.tpl');
-
-        $view->setVar('pagetitle', t('Menü'));
-        $view->printTemplateResult();
-    }
-
     public function viewlist()
     {
+        if (!$this->sysadminOnly()) {
+            return;
+        }
         $view = $this->createView('menulista.tpl');
 
-        $view->setVar('pagetitle', t('Menü'));
+        $view->setVar('pagetitle', t('Menüpontok'));
         $view->setVar('orderselect', $this->getRepo()->getOrdersForTpl());
         $view->setVar('batchesselect', $this->getRepo()->getBatchesForTpl());
+        $view->setVar('menucsoportlist', (new menucsoportController())->getSelectList());
         $view->printTemplateResult();
     }
 
     protected function _getkarb($tplname)
     {
+        if (!$this->sysadminOnly()) {
+            return '';
+        }
         $id = $this->params->getRequestParam('id', 0);
         $oper = $this->params->getRequestParam('oper', '');
         $view = $this->createView($tplname);
 
-        $view->setVar('pagetitle', t('Menü'));
+        $view->setVar('pagetitle', t('Menüpont'));
+        $view->setVar('formaction', \mkw\store::getRouter()->generate('adminmenusave'));
         $view->setVar('oper', $oper);
-        $record = $this->getRepo()->findWithJoins($id);
-        $view->setVar('egyed', $this->loadVars($record));
+        $view->setVar('egyed', $this->loadVars($this->getRepo()->find($id), true));
         return $view->getTemplateResult();
+    }
+
+    public function save()
+    {
+        if (!$this->sysadminOnly()) {
+            return;
+        }
+        parent::save();
     }
 
     /**
