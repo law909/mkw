@@ -77,7 +77,22 @@ class TermekRepository extends \mkwhelpers\Repository
         foreach ($q->getScalarResult() as $sor) {
             $ids[] = $sor['id'];
         }
-        return $ids;
+        // a változat saját ára is beemeli a terméket
+        $q = $this->_em->createQuery(
+            'SELECT DISTINCT IDENTITY(v.termek) AS id FROM Entities\TermekValtozatAr tva JOIN tva.termekvaltozat v'
+            . ' WHERE (tva.valutanem = :valutanem) AND (tva.arsav = :arsav)'
+            . ' AND (tva.netto >= :minnetto) AND (tva.netto <= :maxnetto) AND (tva.netto <> 0)'
+        );
+        $q->setParameters([
+            'valutanem' => $arsav['valutanemid'],
+            'arsav' => $arsav['arsavid'],
+            'minnetto' => $minnetto,
+            'maxnetto' => $maxnetto
+        ]);
+        foreach ($q->getScalarResult() as $sor) {
+            $ids[] = $sor['id'];
+        }
+        return array_values(array_unique($ids));
     }
 
     public function getArsavosTermekIdsBruttoKozzel($minbrutto, $maxbrutto)
@@ -101,9 +116,15 @@ class TermekRepository extends \mkwhelpers\Repository
         if (!$arsav) {
             return false;
         }
-        return '(SELECT ta.netto FROM termekar ta'
+        $termekar = '(SELECT ta.netto FROM termekar ta'
             . ' WHERE (ta.termek_id = _xx.id) AND (ta.valutanem_id = ' . $arsav['valutanemid'] . ')'
             . ' AND (ta.arsav_id = ' . $arsav['arsavid'] . '))';
+        // the product sorts by its cheapest variant price, if lower than its own
+        $valtozatar = '(SELECT MIN(tva.netto) FROM termekvaltozatar tva'
+            . ' INNER JOIN termekvaltozat tv ON (tv.id = tva.termekvaltozat_id)'
+            . ' WHERE (tv.termek_id = _xx.id) AND (tva.valutanem_id = ' . $arsav['valutanemid'] . ')'
+            . ' AND (tva.arsav_id = ' . $arsav['arsavid'] . ') AND (tva.netto <> 0))';
+        return 'COALESCE(LEAST(' . $valtozatar . ', ' . $termekar . '), ' . $valtozatar . ', ' . $termekar . ')';
     }
 
     public function getAkciosFilterSQL($date = null)
@@ -531,7 +552,20 @@ class TermekRepository extends \mkwhelpers\Repository
                 . $this->getFilterString($filter)
             );
             $q->setParameters($this->getQueryParameters($filter));
-            return $q->getSingleScalarResult() * $arsav['afaszorzo'];
+            $max = $q->getSingleScalarResult();
+            $q = $this->_em->createQuery(
+                'SELECT MAX(va.netto)'
+                . ' FROM Entities\Termek _xx'
+                . ' LEFT JOIN _xx.termekfa1 fa1'
+                . ' LEFT JOIN _xx.termekfa2 fa2'
+                . ' LEFT JOIN _xx.termekfa3 fa3'
+                . ' JOIN _xx.valtozatok vv'
+                . ' JOIN vv.arak va WITH (va.valutanem = ' . $arsav['valutanemid'] . ')'
+                . ' AND (va.arsav = ' . $arsav['arsavid'] . ')'
+                . $this->getFilterString($filter)
+            );
+            $q->setParameters($this->getQueryParameters($filter));
+            return max((float)$max, (float)$q->getSingleScalarResult()) * $arsav['afaszorzo'];
         }
         $this->addAktivLathatoFilter($filter);
         $q = $this->_em->createQuery(

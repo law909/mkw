@@ -718,13 +718,19 @@ class mainController extends \mkwhelpers\Controller
         $t['valutanemnev'] = $valutanem ? $valutanem->getNev() : 'X';
 
         $afaoverride = $partner ? $partner->getAFAOverride() : false;
-        if ($afaoverride) {
-            $t['ar'] = $afaoverride->calcBrutto($termek->getNettoAr(null, $partner, $valutanem));
-            $t['eredetiar'] = $afaoverride->calcBrutto($termek->getKedvezmenynelkuliNettoAr(null, $partner, $valutanem));
-        } else {
-            $t['ar'] = $termek->getBruttoAr(null, $partner, $valutanem);
-            $t['eredetiar'] = $termek->getKedvezmenynelkuliBruttoAr(null, $partner, $valutanem);
-        }
+        $calcAr = function ($valt) use ($termek, $partner, $valutanem, $afaoverride) {
+            if ($afaoverride) {
+                return [
+                    'ar' => $afaoverride->calcBrutto($termek->getNettoAr($valt, $partner, $valutanem)),
+                    'eredetiar' => $afaoverride->calcBrutto($termek->getKedvezmenynelkuliNettoAr($valt, $partner, $valutanem)),
+                ];
+            }
+            return [
+                'ar' => $termek->getBruttoAr($valt, $partner, $valutanem),
+                'eredetiar' => $termek->getKedvezmenynelkuliBruttoAr($valt, $partner, $valutanem),
+            ];
+        };
+        $t = array_merge($t, $calcAr(null));
         $t['kedvezmeny'] = $termek->getKedvezmeny($partner);
 
         $vtt = [];
@@ -750,7 +756,7 @@ class mainController extends \mkwhelpers\Controller
                 'keszlet' => $valtkeszlet,
                 'beerkezesdatumstr' => $valt->getBeerkezesdatumStr(),
                 'bejon' => ($valtkeszlet <= 0) && $valt->isArrivalExpected()
-            ];
+            ] + $calcAr($valt);
         }
         $t['vanvaltozat'] = (bool)$vtt;
         if (!$vtt && !$szinid) {
