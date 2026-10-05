@@ -20,9 +20,11 @@
             </select>
         </td>
         <td><label for="NettoEdit{$ar.id}">{at('Nettó')}:</label></td>
-        <td><input id="NettoEdit{$ar.id}" type="text" name="arnetto_{$ar.id}" value="{$ar.netto}"></td>
+        <td><input id="NettoEdit{$ar.id}" class="js-arnetto" data-par="BruttoEdit{$ar.id}" type="text"
+                   name="arnetto_{$ar.id}" value="{$ar.netto}"></td>
         <td><label for="BruttoEdit{$ar.id}">{at('Bruttó')}:</label></td>
-        <td><input id="BruttoEdit{$ar.id}" type="text" name="arbrutto_{$ar.id}" value="{$ar.brutto}"></td>
+        <td><input id="BruttoEdit{$ar.id}" class="js-arbrutto" data-par="NettoEdit{$ar.id}" type="text"
+                   name="arbrutto_{$ar.id}" value="{$ar.brutto}"></td>
         <td>
             <a class="js-ardelbutton" href="#" data-id="{$ar.id}"{if ($ar.oper=='add')} data-source="client"{/if} title="{at('Töröl')}"><span
                     class="ui-icon ui-icon-circle-minus"></span></a>

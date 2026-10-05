@@ -295,6 +295,28 @@ $(document).ready(function () {
             var keptab = $('#KepTab');
             var kapcsolodotab = $('#KapcsolodoTab');
             var valtozattab = $('#ValtozatTab');
+            // an ársáv price pair: the edited field's pair is recalculated from the product's ÁFA
+            const syncArPar = ($mezo, nettoMezo) => {
+                const $par = $('#' + $mezo.data('par'));
+                if ($mezo.val() === '') {
+                    $par.val('');
+                    return;
+                }
+                // no "please wait" overlay: it would swallow the click that caused this blur (e.g. on OK);
+                // synchronous, so a save started by that click already posts the converted pair
+                $.ajax({
+                    url: nettoMezo ? '/admin/termek/getbrutto' : '/admin/termek/getnetto',
+                    type: 'GET',
+                    global: false,
+                    async: false,
+                    data: {
+                        id: $('#mattkarb-form').attr('data-id'),
+                        value: $mezo.val(),
+                        afakod: $('#AfaEdit').val()
+                    },
+                    success: (data) => $par.val(data)
+                });
+            };
             var doktab = $('#DokTab');
             initDokumentumUpload(doktab);
             bindKeszletRows($('#KeszletTab'));
@@ -510,6 +532,9 @@ $(document).ready(function () {
                     });
                 }
             });
+            artab.on('blur', '.js-arnetto, .js-arbrutto', function () {
+                syncArPar($(this), $(this).hasClass('js-arnetto'));
+            });
             artab.on('click', '.js-arnewbutton', function (e) {
                 var $this = $(this);
                 e.preventDefault();
@@ -723,26 +748,7 @@ $(document).ready(function () {
                     });
                 })
                 .on('blur', '.js-valtozatarnetto, .js-valtozatarbrutto', function () {
-                    const $mezo = $(this);
-                    const $par = $('#' + $mezo.data('par'));
-                    if ($mezo.val() === '') {
-                        $par.val('');
-                        return;
-                    }
-                    // no "please wait" overlay: it would swallow the click that caused this blur (e.g. on OK);
-                    // synchronous, so a save started by that click already posts the converted pair
-                    $.ajax({
-                        url: $mezo.hasClass('js-valtozatarnetto') ? '/admin/termek/getbrutto' : '/admin/termek/getnetto',
-                        type: 'GET',
-                        global: false,
-                        async: false,
-                        data: {
-                            id: $('#mattkarb-form').attr('data-id'),
-                            value: $mezo.val(),
-                            afakod: $('#AfaEdit').val()
-                        },
-                        success: (data) => $par.val(data)
-                    });
+                    syncArPar($(this), $(this).hasClass('js-valtozatarnetto'));
                 })
                 .on('click', '.js-valtozatardelbutton', function (e) {
                     e.preventDefault();
