@@ -6,6 +6,28 @@
 function createReportChart(canvasId, noteSelector, decimals) {
     let chart = null;
     const numFormat = new Intl.NumberFormat('hu-HU', {maximumFractionDigits: decimals || 0});
+    // the Chart.js defaults; the PDF image is always drawn with these, its page is white
+    const lightColors = {text: '#666', label: '#333', grid: 'rgba(0, 0, 0, 0.1)'};
+
+    // the modern themes' tokens, so the labels stay readable in the dark variant
+    const themeColors = () => {
+        const css = getComputedStyle(document.documentElement);
+        const text = css.getPropertyValue('--mkw-muted').trim();
+        if (!text) {
+            return lightColors;
+        }
+        return {text, label: css.getPropertyValue('--mkw-text').trim(), grid: css.getPropertyValue('--mkw-border').trim()};
+    };
+
+    const applyColors = (options, colors) => {
+        options.color = colors.text;
+        for (const axis of ['x', 'y']) {
+            options.scales[axis].ticks.color = colors.text;
+            options.scales[axis].grid.color = colors.grid;
+        }
+        options.plugins.valueLabels.color = colors.label;
+        return options;
+    };
 
     const draw = function (data) {
         const unit = data.unit || '';
@@ -21,19 +43,19 @@ function createReportChart(canvasId, noteSelector, decimals) {
             type: 'bar',
             data: {labels: data.labels, datasets: data.datasets},
             plugins: [chartValueLabels],
-            options: {
+            options: applyColors({
                 maintainAspectRatio: false,
                 layout: {padding: {top: 18}},
                 scales: {
-                    x: {stacked: data.stacked},
-                    y: {stacked: data.stacked, ticks: {callback: (value) => numFormat.format(value)}}
+                    x: {stacked: data.stacked, ticks: {}, grid: {}},
+                    y: {stacked: data.stacked, ticks: {callback: (value) => numFormat.format(value)}, grid: {}}
                 },
                 plugins: {
                     legend: {display: data.legend},
                     valueLabels: {format: (value) => numFormat.format(value)},
                     tooltip: {callbacks: {label: (ctx) => `${ctx.dataset.label}: ${numFormat.format(ctx.parsed.y)} ${unit}`.trim()}}
                 }
-            }
+            }, themeColors())
         });
     };
 
@@ -43,8 +65,12 @@ function createReportChart(canvasId, noteSelector, decimals) {
         }
         // the final frame, not one halfway through the animation
         chart.stop();
+        applyColors(chart.options, lightColors);
         chart.update('none');
-        return chart.toBase64Image('image/png');
+        const image = chart.toBase64Image('image/png');
+        applyColors(chart.options, themeColors());
+        chart.update('none');
+        return image;
     };
 
     return draw;

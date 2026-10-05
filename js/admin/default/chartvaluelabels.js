@@ -1,7 +1,7 @@
 /**
  * Chart.js plugin: writes the value on each bar. Stacked charts get the segment values inside
  * the segments (where they fit) and the column total above the column.
- * Usage: new Chart(el, {..., plugins: [chartValueLabels], options: {plugins: {valueLabels: {format: fn}}}})
+ * Usage: new Chart(el, {..., plugins: [chartValueLabels], options: {plugins: {valueLabels: {format: fn, color}}}})
  */
 const chartValueLabels = (function () {
 
@@ -27,7 +27,7 @@ const chartValueLabels = (function () {
 
             ctx.save();
             ctx.font = '11px sans-serif';
-            ctx.fillStyle = '#333';
+            ctx.fillStyle = (opts && opts.color) || '#333';
             ctx.textAlign = 'center';
 
             chart.data.datasets.forEach((dataset, i) => {
