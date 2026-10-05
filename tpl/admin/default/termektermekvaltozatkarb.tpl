@@ -80,13 +80,15 @@
         <td class="mattable-cell">
             <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" {if ($setup.szinmode != 'fix')}required="required"{/if}>
         </td>
-        <td class="mattable-cell">
-            <label for="NettoEdit_{$valtozat.id}">{at('Nettó')}:</label>
-        </td>
-        <td class="mattable-cell">
-            <input class="js-valtozatnetto" id="NettoEdit_{$valtozat.id}" name="valtozatnetto_{$valtozat.id}" type="number" step="any"
-                   value="{$valtozat.netto}">
-        </td>
+        {if (!$setup.arsavok)}
+            <td class="mattable-cell">
+                <label for="NettoEdit_{$valtozat.id}">{at('Nettó')}:</label>
+            </td>
+            <td class="mattable-cell">
+                <input class="js-valtozatnetto" id="NettoEdit_{$valtozat.id}" name="valtozatnetto_{$valtozat.id}" type="number" step="any"
+                       value="{$valtozat.netto}">
+            </td>
+        {/if}
     </tr>
     <tr>
         {if ($setup.szinmode === 'fix')}
@@ -113,13 +115,15 @@
         <td class="mattable-cell">
             <input name="valtozatertek2_{$valtozat.id}" type="text" value="{$valtozat.ertek2}">
         </td>
-        <td class="mattable-cell">
-            <label for="BruttoEdit_{$valtozat.id}">{at('Bruttó')}:</label>
-        </td>
-        <td class="mattable-cell">
-            <input class="js-valtozatbrutto" id="BruttoEdit_{$valtozat.id}" name="valtozatbrutto_{$valtozat.id}" type="number" step="any"
-                   value="{$valtozat.brutto}">
-        </td>
+        {if (!$setup.arsavok)}
+            <td class="mattable-cell">
+                <label for="BruttoEdit_{$valtozat.id}">{at('Bruttó')}:</label>
+            </td>
+            <td class="mattable-cell">
+                <input class="js-valtozatbrutto" id="BruttoEdit_{$valtozat.id}" name="valtozatbrutto_{$valtozat.id}" type="number" step="any"
+                       value="{$valtozat.brutto}">
+            </td>
+        {/if}
     </tr>
     <tr>
         <td class="mattable-cell">

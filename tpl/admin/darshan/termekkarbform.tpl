@@ -240,13 +240,15 @@
                         <td class="mattable-cell">
                             <input name="valtozatertek1" form="valtozatgeneratorform" type="text">
                         </td>
-                        <td class="mattable-cell">
-                            <label for="NettoEdit">{at('Nettó')}:</label>
-                        </td>
-                        <td class="mattable-cell">
-                            <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
-                                   name="valtozatnettogen">
-                        </td>
+                        {if (!$setup.arsavok)}
+                            <td class="mattable-cell">
+                                <label for="NettoEdit">{at('Nettó')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
+                                       name="valtozatnettogen">
+                            </td>
+                        {/if}
                     </tr>
                     <tr>
                         <td class="mattable-cell">
@@ -260,13 +262,15 @@
                         <td class="mattable-cell">
                             <input name="valtozatertek2" form="valtozatgeneratorform" type="text">
                         </td>
-                        <td class="mattable-cell">
-                            <label for="VBruttoEdit">{at('Bruttó')}:</label>
-                        </td>
-                        <td class="mattable-cell">
-                            <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
-                                   name="valtozatbruttogen">
-                        </td>
+                        {if (!$setup.arsavok)}
+                            <td class="mattable-cell">
+                                <label for="VBruttoEdit">{at('Bruttó')}:</label>
+                            </td>
+                            <td class="mattable-cell">
+                                <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
+                                       name="valtozatbruttogen">
+                            </td>
+                        {/if}
                     </tr>
                     <tr>
                         <td class="mattable-cell">

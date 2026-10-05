@@ -963,7 +963,9 @@ class termekController extends \mkwhelpers\MattableController
                     $valtozat->setElerheto14($this->params->getBoolRequestParam('valtozatelerheto14_' . $valtozatid));
                     $valtozat->setElerheto15($this->params->getBoolRequestParam('valtozatelerheto15_' . $valtozatid));
 //						$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
-                    $valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
+                    if (!\mkw\store::isArsavok()) {
+                        $valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
+                    }
                     $valtozat->setInaktiv($this->params->getBoolRequestParam('valtozatinaktiv_' . $valtozatid));
                     $valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
                     $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
@@ -1075,7 +1077,9 @@ class termekController extends \mkwhelpers\MattableController
                         $valtozat->setElerheto14($this->params->getBoolRequestParam('valtozatelerheto14_' . $valtozatid));
                         $valtozat->setElerheto15($this->params->getBoolRequestParam('valtozatelerheto15_' . $valtozatid));
 //							$valtozat->setBrutto($this->params->getNumRequestParam('valtozatbrutto_'.$valtozatid));
-                        $valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
+                        if (!\mkw\store::isArsavok()) {
+                            $valtozat->setNetto($this->params->getNumRequestParam('valtozatnetto_' . $valtozatid));
+                        }
                         $valtozat->setInaktiv($this->params->getBoolRequestParam('valtozatinaktiv_' . $valtozatid));
                         $valtozat->setTermekfokep($this->params->getBoolRequestParam('valtozattermekfokep_' . $valtozatid));
                         $valtozat->setCikkszam($this->params->getStringRequestParam('valtozatcikkszam_' . $valtozatid));
