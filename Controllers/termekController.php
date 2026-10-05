@@ -1729,40 +1729,40 @@ class termekController extends \mkwhelpers\MattableController
         return $res;
     }
 
-    /** Only the pairs rendered on the form are touched; an empty or zero price deletes the variant's own row. */
+    /** Like the product's own band price rows, without the formula. */
     private function saveValtozatArak(TermekValtozat $valtozat, string $formkey)
     {
-        $sajat = [];
-        foreach ($valtozat->getArak() as $va) {
-            $sajat[$va->getArsavId() . '_' . $va->getValutanemId()] = $va;
-        }
-        foreach ($this->params->getArrayRequestParam('valtozatarkulcs_' . $formkey) as $kulcs) {
-            if (!preg_match('/^(\d+)_(\d+)$/', $kulcs, $m)) {
+        foreach ($this->params->getArrayRequestParam('valtozatarid_' . $formkey) as $arid) {
+            $oper = $this->params->getStringRequestParam('valtozataroper_' . $arid);
+            if ($oper == 'add') {
+                $ar = new \Entities\TermekValtozatAr();
+                $ar->setTermekvaltozat($valtozat);
+                $valtozat->getArak()->add($ar);
+            } elseif ($oper == 'edit') {
+                $ar = $this->getEm()->getRepository(\Entities\TermekValtozatAr::class)->find($arid);
+                if (!$ar || $ar->getTermekvaltozat() !== $valtozat) {
+                    continue;
+                }
+            } else {
                 continue;
             }
-            $netto = (float)$this->params->getNumRequestParam('valtozatarnetto_' . $formkey . '_' . $kulcs);
-            $brutto = (float)$this->params->getNumRequestParam('valtozatarbrutto_' . $formkey . '_' . $kulcs);
-            $va = $sajat[$kulcs] ?? null;
-            if (!$netto && !$brutto) {
-                if ($va) {
-                    $valtozat->getArak()->removeElement($va);
-                    $this->getEm()->remove($va);
+            $arsav = $this->getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('valtozatarsav_' . $arid));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valtozatarvalutanem_' . $arid))
+                ?: $this->getEm()->getRepository(Valutanem::class)->find(\mkw\store::getParameter(\mkw\consts::Valutanem));
+            if (!$arsav || !$valutanem) {
+                if ($oper == 'add') {
+                    $valtozat->getArak()->removeElement($ar);
                 }
                 continue;
             }
-            if (!$va) {
-                $va = new \Entities\TermekValtozatAr();
-                $va->setTermekvaltozat($valtozat);
-                $va->setArsav($m[1]);
-                $va->setValutanem($m[2]);
-                $valtozat->getArak()->add($va);
+            $ar->setArsav($arsav);
+            $ar->setValutanem($valutanem);
+            $ar->setNetto($this->params->getNumRequestParam('valtozatarnetto_' . $arid));
+            $brutto = $this->params->getNumRequestParam('valtozatarbrutto_' . $arid);
+            if ($brutto != 0) {
+                $ar->setBrutto($brutto);
             }
-            if ($brutto) {
-                $va->setBrutto($brutto);
-            } else {
-                $va->setNetto($netto);
-            }
-            $this->getEm()->persist($va);
+            $this->getEm()->persist($ar);
         }
     }
 

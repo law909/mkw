@@ -307,6 +307,7 @@ $(document).ready(function () {
                 $('input[name^="valtozatoper_"]').val('add');
                 $('input[name^="kapcsolodooper_"]').val('add');
                 $('input[name^="aroper_"]').val('add');
+                $('input[name^="valtozataroper_"]').val('add');
                 // enélkül a dokumentum sorok edit operrel mennek, vagyis a RÉGI termék sorait írnák
                 $('input[name^="dokoper_"]').val('add');
                 $('table[id^="doktable_"]').attr('data-oper', 'add');
@@ -322,6 +323,7 @@ $(document).ready(function () {
                 $('table[id^="keptable_"]').attr('data-oper', '');
                 $('input[name^="valtozatoper_"]').val('');
                 $('input[name^="aroper_"]').val('');
+                $('input[name^="valtozataroper_"]').val('');
                 $('input[name^="kapcsolodooper_"]').val('add');
                 $('input[name^="dokoper_"]').val('add');
                 $('table[id^="doktable_"]').attr('data-oper', 'add');
@@ -707,22 +709,48 @@ $(document).ready(function () {
                     e.preventDefault();
                     getSorNetto($(this), 'valtozatnetto_');
                 })
-                .on('blur', '.js-valtozatarnetto, .js-valtozatarbrutto', function () {
-                    const $mezo = $(this);
-                    const $par = $('#' + $mezo.data('par'));
-                    if ($mezo.val() === '') {
-                        $par.val('');
+                .on('click', '.js-valtozatarnewbutton', function (e) {
+                    e.preventDefault();
+                    const $gomb = $(this);
+                    $.ajax({
+                        url: '/admin/termekvaltozatar/getemptyrow',
+                        type: 'GET',
+                        data: {valtozatid: $gomb.data('valtozatid')},
+                        success: (data) => {
+                            $gomb.before(data);
+                            $('.js-valtozatardelbutton').button();
+                        }
+                    });
+                })
+                .on('click', '.js-valtozatardelbutton', function (e) {
+                    e.preventDefault();
+                    const $gomb = $(this);
+                    const arid = $gomb.attr('data-id');
+                    if ($gomb.attr('data-source') === 'client') {
+                        $('#valtozatartable_' + arid).remove();
                         return;
                     }
-                    $.ajax({
-                        url: $mezo.hasClass('js-valtozatarnetto') ? '/admin/termek/getbrutto' : '/admin/termek/getnetto',
-                        type: 'GET',
-                        data: {
-                            id: $('#mattkarb-form').attr('data-id'),
-                            value: $mezo.val(),
-                            afakod: $('#AfaEdit').val()
-                        },
-                        success: (data) => $par.val(data)
+                    dialogcenter.html('Biztos, hogy törli a változat árát?').dialog({
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Igen': function () {
+                                $.ajax({
+                                    url: '/admin/termekvaltozatar/save',
+                                    type: 'POST',
+                                    data: {
+                                        id: arid,
+                                        oper: 'del'
+                                    },
+                                    success: (data) => $('#valtozatartable_' + data).remove()
+                                });
+                                $(this).dialog('close');
+                            },
+                            'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
                     });
                 })
                 .on('blur', '.js-valtozatnettogen', function (e) {

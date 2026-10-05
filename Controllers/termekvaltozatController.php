@@ -26,6 +26,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     private $tkepc;
     private $szinc;
     private $meretc;
+    private $varc;
 
     public function __construct()
     {
@@ -84,54 +85,16 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             }
         }
         if ($forKarb && store::isArsavok()) {
-            $x['arsavarak'] = $this->getArsavArak($t, $termek ?: $t->getTermek());
+            $varc = $this->varc ??= new termekvaltozatarController();
+            $x['arak'] = [];
+            foreach ($t->getId() ? $t->getArak() : [] as $ar) {
+                $x['arak'][] = $varc->loadVars($ar, true, $x['id']);
+            }
         }
         $x['lastmodstr'] = $t->getLastmodStr();
         $x['createdstr'] = $t->getCreatedStr();
 
         return $x;
-    }
-
-    /**
-     * The band price columns of a variant row: the product's own band+currency pairs plus the variant's; with neither,
-     * every band in the default currency. An empty input means the product price applies, shown as placeholder.
-     */
-    private function getArsavArak(TermekValtozat $t, ?Termek $termek): array
-    {
-        $termekArak = [];
-        foreach ($termek ? $termek->getTermekArak() : [] as $ta) {
-            if ($ta->getArsav() && $ta->getValutanem()) {
-                $termekArak[$ta->getArsav()->getId() . '_' . $ta->getValutanem()->getId()] ??= $ta;
-            }
-        }
-        $sajat = [];
-        foreach ($t->getId() ? $t->getArak() : [] as $va) {
-            $sajat[$va->getArsavId() . '_' . $va->getValutanemId()] ??= $va;
-        }
-        $parok = [];
-        foreach (array_merge($termekArak, $sajat) as $kulcs => $ar) {
-            $parok[$kulcs] = [$ar->getArsav(), $ar->getValutanem()];
-        }
-        if (!$parok) {
-            $valutanem = $this->getEm()->getRepository(\Entities\Valutanem::class)->find(store::getParameter(\mkw\consts::Valutanem));
-            foreach ($valutanem ? $this->getEm()->getRepository(\Entities\Arsav::class)->findAll() : [] as $arsav) {
-                $parok[$arsav->getId() . '_' . $valutanem->getId()] = [$arsav, $valutanem];
-            }
-        }
-        uksort($parok, fn($a, $b) => array_map('intval', explode('_', $a)) <=> array_map('intval', explode('_', $b)));
-        $ret = [];
-        foreach ($parok as $kulcs => [$arsav, $valutanem]) {
-            $ret[] = [
-                'kulcs' => $kulcs,
-                'arsavnev' => $arsav->getNev(),
-                'valutanemnev' => $valutanem->getNev(),
-                'netto' => isset($sajat[$kulcs]) ? $sajat[$kulcs]->getNetto() : '',
-                'brutto' => isset($sajat[$kulcs]) ? $sajat[$kulcs]->getBrutto() : '',
-                'termeknetto' => isset($termekArak[$kulcs]) ? $termekArak[$kulcs]->getNetto() : '',
-                'termekbrutto' => isset($termekArak[$kulcs]) ? $termekArak[$kulcs]->getBrutto() : '',
-            ];
-        }
-        return $ret;
     }
 
     protected function setFields($obj)

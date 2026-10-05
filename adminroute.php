@@ -1170,6 +1170,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekar/save', 'termekarController#save', 'admintermekarsave');
 }
 
+$router->map('GET', '/admin/termekvaltozatar/getemptyrow', 'termekvaltozatarController#getemptyrow', 'admintermekvaltozatargetemptyrow');
+if (!\mkw\store::isClosed()) {
+    $router->map('POST', '/admin/termekvaltozatar/save', 'termekvaltozatarController#save', 'admintermekvaltozatarsave');
+}
+
 $router->map(
     'GET',
     '/admin/partnertermekkategoriakedvezmeny/getemptyrow',
