@@ -287,6 +287,48 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         }
     }
 
+    /** @return array [termekvaltozat_id => true] for the variants that have a price of their own in any band */
+    private function getSajatArasValtozatIds(array $valtozatids): array
+    {
+        if (!$valtozatids) {
+            return [];
+        }
+        $ids = $this->getEm()->getConnection()->fetchFirstColumn(
+            'SELECT DISTINCT termekvaltozat_id FROM termekvaltozatar WHERE (netto <> 0 OR brutto <> 0) AND termekvaltozat_id IN (?)',
+            [array_map('intval', $valtozatids)],
+            [\Doctrine\DBAL\ArrayParameterType::INTEGER]
+        );
+        return array_fill_keys($ids, true);
+    }
+
+    /**
+     * The quick variant entry sets one price for all variants of a product; on save the variants with a band price
+     * of their own get it from here, in the getar() structure.
+     */
+    public function getValtozatArak()
+    {
+        $result = [];
+        $termek = $this->getEm()->getRepository(Termek::class)->find($this->params->getIntRequestParam('termek'));
+        $valtozatids = array_map('intval', $this->params->getArrayRequestParam('valtozatok'));
+        if ($termek && \mkw\store::isArsavok()) {
+            $partner = $this->getEm()->getRepository(Partner::class)->find($this->params->getIntRequestParam('partner'));
+            $valutanem = $this->getEm()->getRepository(Valutanem::class)->find($this->params->getIntRequestParam('valutanem'));
+            foreach (array_keys($this->getSajatArasValtozatIds($valtozatids)) as $vid) {
+                $valtozat = $this->getEm()->getRepository(TermekValtozat::class)->find($vid);
+                if ($valtozat && $valtozat->getTermek() === $termek) {
+                    $result[$vid] = [
+                        'netto' => $termek->getNettoAr($valtozat, $partner, $valutanem),
+                        'brutto' => $termek->getBruttoAr($valtozat, $partner, $valutanem),
+                        'kedvezmeny' => $termek->getKedvezmeny($partner),
+                        'enetto' => $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem),
+                        'ebrutto' => $termek->getKedvezmenynelkuliBruttoAr($valtozat, $partner, $valutanem)
+                    ];
+                }
+            }
+        }
+        echo json_encode((object)$result);
+    }
+
     public function calcAr($afaid, $arfolyam, $nettoegysar, $enettoegysar, $mennyiseg)
     {
         $afaent = $this->getEm()->getRepository(Afa::class)->find($afaid);
@@ -686,11 +728,13 @@ class bizonylattetelController extends \mkwhelpers\MattableController
         $tc = new termekController();
         $view = $this->createView('bizonylattetelquickvaltozatkarb.tpl');
         $valtozatlist = $tc->getValtozatList($termekid, 0);
+        $sajatar = \mkw\store::isArsavok() ? $this->getSajatArasValtozatIds(array_column($valtozatlist, 'id')) : [];
         $vlist = [];
         foreach ($valtozatlist as $v) {
             $v['tetelid'] = \mkw\store::createUID();
             $v['termekid'] = $termekid;
             $v['termektetelid'] = $termektetelid;
+            $v['sajatar'] = isset($sajatar[$v['id']]);
             $vlist[] = $v;
         }
         $view->setVar('valtozatlist', $vlist);

@@ -631,6 +631,7 @@ $router->map('GET', '/admin/navadatexport/get', 'navadatexportController#createL
 $router->map('GET', '/admin/navadatexport/check', 'navadatexportController#check', 'adminnavadatexportcheck');
 
 $router->map('GET', '/admin/bizonylattetel/getar', 'bizonylattetelController#getar', 'adminbizonylattetelgetar');
+$router->map('GET', '/admin/bizonylattetel/getvaltozatarak', 'bizonylattetelController#getValtozatArak', 'adminbizonylattetelgetvaltozatarak');
 $router->map('GET', '/admin/bizonylattetel/calcar', 'bizonylattetelController#calcarforclient', 'adminbizonylattetelcalcar');
 $router->map('GET', '/admin/bizonylattetel/getemptyrow', 'bizonylattetelController#getemptyrow', 'adminbizonylattetelgetemptyrow');
 $router->map('POST', '/admin/bizonylattetel/getelolegselect', 'bizonylattetelController#getElolegSelect', 'adminbizonylattetelgetelolegselect');

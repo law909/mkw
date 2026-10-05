@@ -279,10 +279,10 @@ class leltarfejController extends \mkwhelpers\MattableController
                 if ($t) {
                     switch ($nettobrutto) {
                         case 'netto':
-                            $sor['ar'] = $t->getNettoAr($sor['id'], null, $valutanem, $arsavobj);
+                            $sor['ar'] = $t->getNettoAr($sor['termekvaltozat_id'], null, $valutanem, $arsavobj);
                             break;
                         case 'brutto':
-                            $sor['ar'] = $t->getBruttoAr($sor['id'], null, $valutanem, $arsavobj);
+                            $sor['ar'] = $t->getBruttoAr($sor['termekvaltozat_id'], null, $valutanem, $arsavobj);
                             break;
                         default:
                             $sor['ar'] = 0;

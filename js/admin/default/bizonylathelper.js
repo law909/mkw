@@ -1560,6 +1560,34 @@ let bizonylathelper = function ($) {
         quickcalcArak(sorId);
     }
 
+    /** a gyors felvitel változatsorai közül a saját ársávos árúak ára, változat id szerint */
+    function getQuickValtozatArak() {
+        const termekenkent = {};
+        $('.js-quickmennyiseginput').each(function () {
+            const tetelid = $(this).attr('name').replace('tetelmennyiseg_', '');
+            const termek = $('input[name="teteltermek_' + tetelid + '"]').val();
+            (termekenkent[termek] ??= []).push($('input[name="tetelvaltozat_' + tetelid + '"]').val());
+        });
+        const partner = isPartnerAutocomplete() ? $('.js-partnerid').val() : $('#PartnerEdit option:selected').val();
+        let arak = {};
+        Object.entries(termekenkent).forEach(([termek, valtozatok]) => {
+            $.ajax({
+                async: false,
+                url: '/admin/bizonylattetel/getvaltozatarak',
+                data: {
+                    termek: termek,
+                    valtozatok: valtozatok,
+                    partner: partner,
+                    valutanem: $('#ValutanemEdit').val()
+                },
+                success: (data) => {
+                    arak = {...arak, ...JSON.parse(data)};
+                }
+            });
+        });
+        return arak;
+    }
+
     function loadquickValtozatList(id, sorid) {
         $.ajax({
             async: false,
@@ -2494,24 +2522,24 @@ let bizonylathelper = function ($) {
                             $(this).parents('tr').remove();
                         }
                     });
+                    const valtozatArak = getQuickValtozatArak();
                     $('input[name="tetelid[]"]').each(function () {
                         let $this = $(this),
                             parent = $this.parent(),
                             termeksorid = $this.parents('tbody').data('id');
-                        parent.append('<input name="tetelnettoegysar_' + $this.val() + '" type="hidden" value="' +
-                            $('input[name="qtetelnettoegysar_' + termeksorid + '"]').val() + '">');
-                        parent.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' +
-                            $('input[name="qtetelbruttoegysar_' + termeksorid + '"]').val() + '">');
+                        // a saját ársávos árú változat a sajátját kapja, a többi a termék sorában megadottat
+                        const sajat = valtozatArak[$('input[name="tetelvaltozat_' + $this.val() + '"]').val()];
+                        const ertek = (mezo) => (sajat ? sajat[mezo] : $('input[name="qtetel' + mezo + 'egysar_' + termeksorid + '"]').val());
+                        parent.append('<input name="tetelnettoegysar_' + $this.val() + '" type="hidden" value="' + ertek('netto') + '">');
+                        parent.append('<input name="tetelbruttoegysar_' + $this.val() + '" type="hidden" value="' + ertek('brutto') + '">');
 
                         parent.append('<input name="tetelafa_' + $this.val() + '" type="hidden" value="' + $('input[name="qtetelafa_' + termeksorid + '"]').val() + '">');
 
-                        parent.append('<input name="tetelenettoegysar_' + $this.val() + '" type="hidden" value="' +
-                            $('input[name="qtetelenettoegysar_' + termeksorid + '"]').val() + '">');
-                        parent.append('<input name="tetelebruttoegysar_' + $this.val() + '" type="hidden" value="' +
-                            $('input[name="qtetelebruttoegysar_' + termeksorid + '"]').val() + '">');
+                        parent.append('<input name="tetelenettoegysar_' + $this.val() + '" type="hidden" value="' + ertek('enetto') + '">');
+                        parent.append('<input name="tetelebruttoegysar_' + $this.val() + '" type="hidden" value="' + ertek('ebrutto') + '">');
 
                         parent.append('<input name="tetelkedvezmeny_' + $this.val() + '" type="hidden" value="' +
-                            $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val() + '">');
+                            (sajat ? sajat.kedvezmeny : $('input[name="qtetelkedvezmeny_' + termeksorid + '"]').val()) + '">');
                     });
                 }
 

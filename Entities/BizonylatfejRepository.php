@@ -495,15 +495,19 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $arsavsql = '';
                 break;
             case 5:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto) AS ertek';
-                $ertekmezo2 = ',SUM(bt.mennyiseg*ta.netto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*COALESCE(tva.netto, ta.netto)) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*COALESCE(tva.netto, ta.netto)) AS ertek';
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (ta.arsav_id=:arsav) '
+                    . ' LEFT OUTER JOIN termekvaltozatar tva ON (tva.termekvaltozat_id=bt.termekvaltozat_id) AND (tva.arsav_id=:arsav)'
+                    . ' AND (tva.valutanem_id=COALESCE(ta.valutanem_id, tva.valutanem_id)) AND (tva.netto<>0 OR tva.brutto<>0) ';
                 $plusparams['arsav'] = $arsav;
                 break;
             case 6:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto) AS ertek';
-                $ertekmezo2 = ',SUM(bt.mennyiseg*ta.brutto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*COALESCE(tva.brutto, ta.brutto)) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*COALESCE(tva.brutto, ta.brutto)) AS ertek';
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (ta.arsav_id=:arsav) '
+                    . ' LEFT OUTER JOIN termekvaltozatar tva ON (tva.termekvaltozat_id=bt.termekvaltozat_id) AND (tva.arsav_id=:arsav)'
+                    . ' AND (tva.valutanem_id=COALESCE(ta.valutanem_id, tva.valutanem_id)) AND (tva.netto<>0 OR tva.brutto<>0) ';
                 $plusparams['arsav'] = $arsav;
                 break;
             case 7:
@@ -1111,13 +1115,17 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                         $arsavsql = '';
                         break;
                     case 5:
-                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto)*-1 AS ertek,';
-                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*COALESCE(tva.netto, ta.netto))*-1 AS ertek,';
+                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (ta.arsav_id=:arsav) '
+                            . ' LEFT OUTER JOIN termekvaltozatar tva ON (tva.termekvaltozat_id=bt.termekvaltozat_id) AND (tva.arsav_id=:arsav)'
+                            . ' AND (tva.valutanem_id=COALESCE(ta.valutanem_id, tva.valutanem_id)) AND (tva.netto<>0 OR tva.brutto<>0) ';
                         $plusparams['arsav'] = $arsav;
                         break;
                     case 6:
-                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto)*-1 AS ertek,';
-                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                        $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*COALESCE(tva.brutto, ta.brutto))*-1 AS ertek,';
+                        $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (ta.arsav_id=:arsav) '
+                            . ' LEFT OUTER JOIN termekvaltozatar tva ON (tva.termekvaltozat_id=bt.termekvaltozat_id) AND (tva.arsav_id=:arsav)'
+                            . ' AND (tva.valutanem_id=COALESCE(ta.valutanem_id, tva.valutanem_id)) AND (tva.netto<>0 OR tva.brutto<>0) ';
                         $plusparams['arsav'] = $arsav;
                         break;
                     case 7:
@@ -1391,15 +1399,19 @@ class BizonylatfejRepository extends \mkwhelpers\Repository
                 $ertekmezo2 = ',SUM(bt.mennyiseg*bt.bruttoegysarhuf) AS ertek';
                 break;
             case 5:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.netto) AS ertek';
-                $ertekmezo2 = ',SUM(bt.mennyiseg*ta.netto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*COALESCE(tva.netto, ta.netto)) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*COALESCE(tva.netto, ta.netto)) AS ertek';
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (ta.arsav_id=:arsav) '
+                    . ' LEFT OUTER JOIN termekvaltozatar tva ON (tva.termekvaltozat_id=bt.termekvaltozat_id) AND (tva.arsav_id=:arsav)'
+                    . ' AND (tva.valutanem_id=COALESCE(ta.valutanem_id, tva.valutanem_id)) AND (tva.netto<>0 OR tva.brutto<>0) ';
                 $plusparams['arsav'] = $arsav;
                 break;
             case 6:
-                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*ta.brutto) AS ertek';
-                $ertekmezo2 = ',SUM(bt.mennyiseg*ta.brutto) AS ertek';
-                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (arsav_id=:arsav) ';
+                $ertekmezo1 = ',SUM(bt.mennyiseg*bt.irany*COALESCE(tva.brutto, ta.brutto)) AS ertek';
+                $ertekmezo2 = ',SUM(bt.mennyiseg*COALESCE(tva.brutto, ta.brutto)) AS ertek';
+                $arsavsql = ' LEFT OUTER JOIN termekar ta ON (bt.termek_id=ta.termek_id) AND (ta.arsav_id=:arsav) '
+                    . ' LEFT OUTER JOIN termekvaltozatar tva ON (tva.termekvaltozat_id=bt.termekvaltozat_id) AND (tva.arsav_id=:arsav)'
+                    . ' AND (tva.valutanem_id=COALESCE(ta.valutanem_id, tva.valutanem_id)) AND (tva.netto<>0 OR tva.brutto<>0) ';
                 $plusparams['arsav'] = $arsav;
                 break;
             case 7:
