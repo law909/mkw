@@ -375,6 +375,10 @@ img {
 }
 
 /* Termék karb, Változatok fül: egy változat doboza – fejléc, alatta a mezőcsoportok egymás mellett */
+.valtozattable {
+    max-width: 80em;
+}
+
 .valtozat-fej {
     display: flex;
     flex-wrap: wrap;
