@@ -161,7 +161,9 @@ class sitemapController extends \mkwhelpers\Controller
         if ($this->hasBlog()) {
             $this->addUrl($urls2, $router->generate('showblogposztlist'), $this->getMaxLastmod($this->buildBlog()));
         }
-        $this->addUrl($urls2, $router->generate('markak'), $this->getMaxLastmod($this->buildBrands()));
+        if ($this->getTemplateFactory()->mainTemplateExists('markak.tpl')) {
+            $this->addUrl($urls2, $router->generate('markak'), $this->getMaxLastmod($this->buildBrands()));
+        }
         return array_merge($urls, $urls2);
     }
 
