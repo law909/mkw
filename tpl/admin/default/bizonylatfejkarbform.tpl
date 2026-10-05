@@ -309,7 +309,7 @@
                                 {/foreach}
                             </select>
                             {if ($egyed.unasfizetesstatusz)}
-                                <span class="{if ($egyed.unasfizetve)}greentext{else}redtext{/if}">UNAS: {$egyed.unasfizetesstatusznev}</span>
+                                <span class="{if ($egyed.unasfizetve)}greentext{else}redtext{/if}">UNAS: {$egyed.unasfizetesstatusznev|escape:'html':'UTF-8':false}</span>
                             {/if}
                         </td>
                         <td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
