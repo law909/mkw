@@ -1361,10 +1361,9 @@ body.modernui {
     color: var(--mkw-accent);
 }
 
-/* a lista sorainak cellájával (.mattable-cell) azonos belső margó */
 .modernui .mattable-repeatable.valtozattable,
 .modernui .mattable-repeatable.valtozatgenerator {
-    padding: 2em 1em;
+    padding: 2em;
 }
 
 .modernui .mattable-repeatable.valtozatgenerator {
