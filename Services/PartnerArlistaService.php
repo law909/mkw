@@ -9,6 +9,7 @@ use Entities\PartnerArlistaSav;
 use Entities\Termek;
 use Entities\Termekcimketorzs;
 use Entities\TermekFa;
+use Entities\TermekValtozatAr;
 use mkwhelpers\FilterDescriptor;
 use mkwhelpers\ParameterHandler;
 
@@ -59,8 +60,12 @@ class PartnerArlistaService
                 $termekIds = array_column($em->getRepository(Termekcimketorzs::class)->getTermekIdsWithCimke($cimkeIds), 'id');
                 $filter->addFilter('id', 'IN', $termekIds ?: [0]);
             }
+            $termekek = $em->getRepository(Termek::class)->getAll($filter, ['cikkszam' => 'ASC']);
+            $sajatArasValtozatok = \mkw\store::isArsavok()
+                ? $em->getRepository(TermekValtozatAr::class)->getSajatArasValtozatok(array_map(fn($t) => $t->getId(), $termekek))
+                : [];
             /** @var Termek $termek */
-            foreach ($em->getRepository(Termek::class)->getAll($filter, ['cikkszam' => 'ASC']) as $termek) {
+            foreach ($termekek as $termek) {
                 $found = $this->findGroup($groups, $termek);
                 $netto = $found ? $termek->getKedvezmenynelkuliNettoAr(null, $partner) : 0;
                 if ($netto <= 0) {
@@ -69,12 +74,16 @@ class PartnerArlistaService
                 /** @var TermekFa $termekfa */
                 [$groupId, $termekfa] = $found;
                 $afa = $partnerAfa ?: $termek->getAfa();
-                $price = $afa ? $afa->calcBrutto($netto) : $netto;
-                $bandPrices = [];
-                foreach ($arlista['savok'] as $sav) {
-                    $kedvezmeny = $groups[$groupId]['kedvezmenyek'][$sav['id']] ?? null;
-                    $bandPrices[] = $kedvezmeny === null ? null : $price * (100 - $kedvezmeny) / 100;
-                }
+                $calcPrices = function ($netto) use ($afa, $arlista, $groups, $groupId) {
+                    $price = $afa ? $afa->calcBrutto($netto) : $netto;
+                    $bandPrices = [];
+                    foreach ($arlista['savok'] as $sav) {
+                        $kedvezmeny = $groups[$groupId]['kedvezmenyek'][$sav['id']] ?? null;
+                        $bandPrices[] = $kedvezmeny === null ? null : $price * (100 - $kedvezmeny) / 100;
+                    }
+                    return [$price, $bandPrices];
+                };
+                [$price, $bandPrices] = $calcPrices($netto);
                 $csoportId = $termekfa->getId();
                 if (!isset($csoportok[$csoportId])) {
                     $csoportok[$csoportId] = [
@@ -84,12 +93,26 @@ class PartnerArlistaService
                     ];
                     $treePaths[$csoportId] = $this->getTreePath($termekfa);
                 }
+                $nev = $termek->getLocalizedFieldValue('nev', $locale) ?: $termek->getNev();
                 $csoportok[$csoportId]['termekek'][] = [
                     'cikkszam' => $termek->getCikkszam(),
-                    'nev' => $termek->getLocalizedFieldValue('nev', $locale) ?: $termek->getNev(),
+                    'nev' => $nev,
                     'ar' => $price,
                     'savarak' => $bandPrices,
                 ];
+                // a saját árú változat külön sort kap, ha az ára eltér a termékétől
+                foreach ($sajatArasValtozatok[$termek->getId()] ?? [] as $valtozat) {
+                    $vnetto = $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner);
+                    if ($vnetto > 0 && round($vnetto, 2) != round($netto, 2)) {
+                        [$vprice, $vbandPrices] = $calcPrices($vnetto);
+                        $csoportok[$csoportId]['termekek'][] = [
+                            'cikkszam' => $valtozat->getCikkszam() ?: $termek->getCikkszam(),
+                            'nev' => $nev . ' ' . $valtozat->getNev(),
+                            'ar' => $vprice,
+                            'savarak' => $vbandPrices,
+                        ];
+                    }
+                }
             }
         }
         uksort($csoportok, fn($a, $b) => $this->compareTreePaths($treePaths[$a], $treePaths[$b]));

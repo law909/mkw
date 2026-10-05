@@ -107,11 +107,16 @@ class arlistaController extends \mkwhelpers\Controller
             0,
             'en_us'
         );
+        $sajatArasValtozatok = \mkw\store::isArsavok()
+            ? $this->getRepo(\Entities\TermekValtozatAr::class)->getSajatArasValtozatok(
+                array_map(fn($termek) => $termek->getId(), $termekek)
+            )
+            : [];
         /** @var Partner $partner */
         foreach ($partnerek as $partner) {
             /** @var Termek $termek */
             foreach ($termekek as $termek) {
-                $result[] = [
+                $sor = [
                     'partnernev' => $partner->getNev(),
                     'cikkszam' => $termek->getCikkszam(),
                     'termeknev' => $termek->getNev(),
@@ -119,6 +124,19 @@ class arlistaController extends \mkwhelpers\Controller
                     'brutto' => $termek->getBruttoAr(null, $partner),
                     'kedvezmeny' => $termek->getKedvezmeny($partner)
                 ];
+                $result[] = $sor;
+                // a saját árú változat külön sort kap, ha az ára eltér a termékétől
+                foreach ($sajatArasValtozatok[$termek->getId()] ?? [] as $valtozat) {
+                    $netto = $termek->getNettoAr($valtozat, $partner);
+                    if (round($netto, 2) != round($sor['netto'], 2)) {
+                        $result[] = [
+                            'cikkszam' => $valtozat->getCikkszam() ?: $termek->getCikkszam(),
+                            'termeknev' => $termek->getNev() . ' ' . $valtozat->getNev(),
+                            'netto' => $netto,
+                            'brutto' => $termek->getBruttoAr($valtozat, $partner),
+                        ] + $sor;
+                    }
+                }
             }
         }
         return $result;

@@ -18,6 +18,32 @@ class TermekValtozatArRepository extends \mkwhelpers\Repository
     }
 
     /**
+     * The variants that have a price of their own in any band, per product.
+     *
+     * @param int[] $termekids
+     * @return array [termek_id => TermekValtozat[]]
+     */
+    public function getSajatArasValtozatok(array $termekids): array
+    {
+        $ids = array_values(array_unique(array_filter(array_map('intval', $termekids))));
+        if (!$ids) {
+            return [];
+        }
+        $valtozatok = $this->_em->createQuery(
+            'SELECT v FROM Entities\TermekValtozat v WHERE IDENTITY(v.termek) IN (:ids) AND v.id IN'
+            . ' (SELECT IDENTITY(va.termekvaltozat) FROM Entities\TermekValtozatAr va WHERE va.netto <> 0 OR va.brutto <> 0)'
+            . ' ORDER BY v.id ASC'
+        )
+            ->setParameter('ids', $ids)
+            ->getResult();
+        $result = [];
+        foreach ($valtozatok as $v) {
+            $result[$v->getTermek()->getId()][] = $v;
+        }
+        return $result;
+    }
+
+    /**
      * The variant's own price in the band, or with no band the first default band it has a price in
      * (same order as TermekArRepository::getArsavAr). Rows without a price don't count.
      */
