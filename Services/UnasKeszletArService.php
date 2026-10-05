@@ -5,6 +5,7 @@ namespace Services;
 use Entities\Termek;
 use Entities\TermekAr;
 use Entities\TermekValtozat;
+use Entities\TermekValtozatAr;
 
 /**
  * Készlet (`setStock`) és ár (`setProduct`) feltöltés az UNAS-ba a párosított termékekre és
@@ -217,7 +218,7 @@ class UnasKeszletArService
                 KeszletService::preload($termekids, $valtozatids, $egyraktar);
             }
         }
-        $arak = $arBe ? $this->loadArak($termekek) : [];
+        $arak = $arBe ? $this->loadArak($termekek, $valtozatids) : [];
         $akcioBe = $arBe && self::isAkcioEnabled();
 
         $result = [];
@@ -247,7 +248,7 @@ class UnasKeszletArService
                     $t['netto'] = $ar['netto'];
                     $t['brutto'] = $ar['brutto'];
                     if ($akcioBe) {
-                        $t['akcio'] = $this->calcAkcio($termek, $arak, $ar['brutto']);
+                        $t['akcio'] = $this->calcAkcio($termek, $valtozat, $arak, $ar['brutto']);
                     }
                 } else {
                     $report['ar']['nincsar']++;
@@ -317,24 +318,26 @@ class UnasKeszletArService
      * Ársávos telepítésen a beállított (vagy az alapértelmezett) ársáv sora – szándékosan NEM az
      * akciós sávok láncán át: az UNAS normál árába az alapár való, az akciós a sajátjába.
      *
-     * @return array{normal: array<int, TermekAr>, akcios: array<int, TermekAr>}
+     * A változat saját ára ugyanígy, változat id szerint.
+     *
+     * @return array{normal: array<int, TermekAr>, akcios: array<int, TermekAr>, vnormal: array<int, TermekValtozatAr>, vakcios: array<int, TermekValtozatAr>}
      */
-    private function loadArak(array $termekek)
+    private function loadArak(array $termekek, array $valtozatids)
     {
-        $result = ['normal' => [], 'akcios' => []];
+        $result = ['normal' => [], 'akcios' => [], 'vnormal' => [], 'vakcios' => []];
         if (!\mkw\store::isArsavok() || !$termekek) {
             return $result;
         }
         $repo = \mkw\store::getEm()->getRepository(TermekAr::class);
         $valutanem = \mkw\store::getParameter(\mkw\consts::UnasValutanem) ?: null;
         $arsav = \mkw\store::getParameter(\mkw\consts::UnasArsav) ?: \mkw\store::getParameter(\mkw\consts::Arsav);
+        $vrepo = \mkw\store::getEm()->getRepository(TermekValtozatAr::class);
         $result['normal'] = $repo->getArsavArByTermek(array_keys($termekek), $valutanem, $arsav ?: null);
+        $result['vnormal'] = $vrepo->getArsavArByValtozat($valtozatids, $valutanem, $arsav ?: null);
         if (self::isAkcioEnabled()) {
-            $result['akcios'] = $repo->getArsavArByTermek(
-                array_keys($termekek),
-                $valutanem,
-                \mkw\store::getParameter(\mkw\consts::UnasAkciosArsav)
-            );
+            $akciosArsav = \mkw\store::getParameter(\mkw\consts::UnasAkciosArsav);
+            $result['akcios'] = $repo->getArsavArByTermek(array_keys($termekek), $valutanem, $akciosArsav);
+            $result['vakcios'] = $akciosArsav ? $vrepo->getArsavArByValtozat($valtozatids, $valutanem, $akciosArsav) : [];
         }
         return $result;
     }
@@ -348,7 +351,7 @@ class UnasKeszletArService
     private function calcAr(Termek $termek, ?TermekValtozat $valtozat, array $arak)
     {
         if (\mkw\store::isArsavok()) {
-            $ar = $arak['normal'][$termek->getId()] ?? null;
+            $ar = ($valtozat ? ($arak['vnormal'][$valtozat->getId()] ?? null) : null) ?? $arak['normal'][$termek->getId()] ?? null;
             $netto = $ar ? (float)$ar->getNetto() : 0.0;
             $brutto = $ar ? (float)$ar->getBrutto() : 0.0;
         } else {
@@ -363,12 +366,16 @@ class UnasKeszletArService
 
     /**
      * Az akciós ársáv ára, ha kisebb a normálnál – az akciós sávban sokszor a normál ár másolata áll.
+     * A saját normál árú változatnál csak a változat akciós ára számít, a termékét nem örökli.
      *
      * @return array{netto: float, brutto: float}|null null, ha nincs akció
      */
-    private function calcAkcio(Termek $termek, array $arak, $normalBrutto)
+    private function calcAkcio(Termek $termek, ?TermekValtozat $valtozat, array $arak, $normalBrutto)
     {
-        $ar = $arak['akcios'][$termek->getId()] ?? null;
+        $vid = $valtozat?->getId();
+        $ar = ($vid && isset($arak['vnormal'][$vid]))
+            ? ($arak['vakcios'][$vid] ?? null)
+            : ($arak['akcios'][$termek->getId()] ?? null);
         if (!$ar || (float)$ar->getBrutto() <= 0 || round((float)$ar->getBrutto(), 2) >= $normalBrutto) {
             return null;
         }

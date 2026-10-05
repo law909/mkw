@@ -262,17 +262,23 @@ class keszletlistaController extends \mkwhelpers\MattableController
 
         // Ársávos ár esetén (ársávos deployment) szintén egyetlen kötegelt lekérdezéssel
         // töltjük be az összes érintett termék árát (a getNettoAr/getBruttoAr -> getArsavAr
-        // soronkénti N+1 hívása helyett). Ársávnál az ár termékenként (nem változatonként) jön.
+        // soronkénti N+1 hívása helyett). A változat saját ára megelőzi a termékét.
         $fifomap = [];
         if ($arsav === '---fifo') {
             $fifomap = $this->getFifoMap($d);
         }
 
         $arsavarmap = [];
+        $valtozatarmap = [];
         if ($arsav !== '---utolsobeszar' && $arsav !== '---fifo' && \mkw\store::isArsavok()
             && ($nettobrutto === 'netto' || $nettobrutto === 'brutto')) {
             $arsavarmap = $this->getRepo(TermekAr::class)->getArsavArByTermek(
                 array_column($d, 'termek_id'),
+                $valutanem,
+                $arsavobj
+            );
+            $valtozatarmap = $this->getRepo(\Entities\TermekValtozatAr::class)->getArsavArByValtozat(
+                array_column($d, 'id'),
                 $valutanem,
                 $arsavobj
             );
@@ -294,7 +300,7 @@ class keszletlistaController extends \mkwhelpers\MattableController
             } else {
                 $sor['bizid'] = '';
                 if (\mkw\store::isArsavok()) {
-                    $ta = isset($arsavarmap[$sor['termek_id']]) ? $arsavarmap[$sor['termek_id']] : null;
+                    $ta = $valtozatarmap[$sor['id']] ?? $arsavarmap[$sor['termek_id']] ?? null;
                     switch ($nettobrutto) {
                         case 'netto':
                             $sor['ar'] = $ta ? $ta->getNetto() : 0;
