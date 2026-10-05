@@ -1361,6 +1361,12 @@ body.modernui {
     color: var(--mkw-accent);
 }
 
+/* a lista sorainak cellájával (.mattable-cell) azonos belső margó */
+.modernui .mattable-repeatable.valtozattable,
+.modernui .mattable-repeatable.valtozatgenerator {
+    padding: 2em 1em;
+}
+
 .modernui .mattable-repeatable.valtozatgenerator {
     border: 1px dashed var(--mkw-accent);
     background: var(--mkw-surface-2);
@@ -1756,6 +1762,11 @@ body.modernui {
 
     /* bizonylattétel: az ár-mátrix táblázat marad, és csak az görög */
     .modernui [id^="teteltable_"] {
+        padding: 1em;
+    }
+
+    .modernui .mattable-repeatable.valtozattable,
+    .modernui .mattable-repeatable.valtozatgenerator {
         padding: 1em;
     }
 
