@@ -23,12 +23,21 @@ class ParameterHandler implements IParameterHandler
     {
         if (is_array($arr)) {
             array_walk_recursive($arr, function (&$val) {
-                $val = trim($val);
+                $val = self::cleanString($val);
             });
             return $arr;
         } else {
-            return trim($arr);
+            return self::cleanString($arr);
         }
+    }
+
+    // a DB utf8 (3 bájtos) karakterkészletű, a 4 bájtos karakter (emoji) az INSERT-et 1366-tal megölné
+    private static function cleanString($val)
+    {
+        if (!is_string($val)) {
+            return is_null($val) ? '' : trim($val);
+        }
+        return trim(preg_replace('/[\x{10000}-\x{10FFFF}]/u', '', $val) ?? $val);
     }
 
     public function asArray()
