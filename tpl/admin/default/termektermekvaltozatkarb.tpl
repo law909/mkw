@@ -17,19 +17,12 @@
     </div>
     <div class="valtozat-mezok">
         {mezocsoport cim="Tulajdonságok" class="valtozat-sor"}
+            {* a rács soronként tölt: így bal oldalon a szín és a méret, jobb oldalon a két tulajdonság áll *}
             {if ($setup.szinmode === 'fix')}
                 {mezo cimke="Szín"}
                     <select name="valtozatszin_{$valtozat.id}">
                         <option value="">{at('válasszon')}</option>
                         {foreach $valtozat.szinlista as $at}
-                            <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
-                        {/foreach}
-                    </select>
-                {/mezo}
-                {mezo cimke="Méret"}
-                    <select name="valtozatmeret_{$valtozat.id}">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $valtozat.meretlista as $at}
                             <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
                         {/foreach}
                     </select>
@@ -44,6 +37,16 @@
                 </select>
                 <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" {if ($setup.szinmode != 'fix')}required="required"{/if}>
             {/mezo}
+            {if ($setup.szinmode === 'fix')}
+                {mezo cimke="Méret"}
+                    <select name="valtozatmeret_{$valtozat.id}">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $valtozat.meretlista as $at}
+                            <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+            {/if}
             {mezo cimke="2. tulajdonság"}
                 <select name="valtozatadattipus2_{$valtozat.id}">
                     <option value="">{at('válasszon')}</option>
