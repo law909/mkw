@@ -685,17 +685,11 @@ class Termek
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isSuperzoneHu():
-                /** @var \Entities\Afa $afa */
-                $afa = \mkw\store::getOrszag()?->getAfa();
-                $valutanem = \mkw\store::getWebshopValutanem();
-                $x['valutanemnev'] = $valutanem?->getNev();
-
-                $nettosale = $this->calcSalePrice($valutanem?->getId(), $valtozat);
-                $x['brutto'] = $afa->calcBrutto($nettosale);
+                $x['valutanemnev'] = \mkw\store::getWebshopValutanem()?->getNev();
+                $arak = $this->getWebshopBruttoArak($valtozat);
+                $x['brutto'] = $arak['brutto'];
                 $x['bruttohuf'] = $x['brutto'];
-
-                $nettoreg = $this->calcRegularPrice($valutanem?->getId(), $valtozat);
-                $x['eredetibrutto'] = $afa->calcBrutto($nettoreg);
+                $x['eredetibrutto'] = $arak['eredetibrutto'];
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
 
                 $x['akcios'] = (boolean)$x['eredetibrutto'];
@@ -903,17 +897,11 @@ class Termek
         switch (true) {
             case \mkw\store::isMugenrace2026():
             case \mkw\store::isSuperzoneHu():
-                /** @var \Entities\Afa $afa */
-                $afa = \mkw\store::getOrszag()?->getAfa();
-                $valutanem = \mkw\store::getWebshopValutanem();
-                $x['valutanemnev'] = $valutanem?->getNev();
-
-                $nettosale = $this->calcSalePrice($valutanem?->getId(), $valtozat);
-                $x['brutto'] = $afa->calcBrutto($nettosale);
+                $x['valutanemnev'] = \mkw\store::getWebshopValutanem()?->getNev();
+                $arak = $this->getWebshopBruttoArak($valtozat);
+                $x['brutto'] = $arak['brutto'];
                 $x['bruttohuf'] = $x['brutto'];
-
-                $nettoreg = $this->calcRegularPrice($valutanem?->getId(), $valtozat);
-                $x['eredetibrutto'] = $afa->calcBrutto($nettoreg);
+                $x['eredetibrutto'] = $arak['eredetibrutto'];
                 $x['eredetibruttohuf'] = $x['eredetibrutto'];
 
                 $x['akcios'] = (boolean)$x['eredetibrutto'];
@@ -1052,6 +1040,22 @@ class Termek
         $x['blogposztok'] = $bpt;
 
         return $x;
+    }
+
+    /**
+     * mugenrace2026 / superzonehu: the sale (discount band) and the regular (price band) gross price in the webshop
+     * currency with the country's VAT; the variant's own band price comes first.
+     *
+     * @return array{brutto: float, eredetibrutto: float}
+     */
+    public function getWebshopBruttoArak($valtozat = null): array
+    {
+        $afa = \mkw\store::getOrszag()?->getAfa();
+        $valutanemid = \mkw\store::getWebshopValutanem()?->getId();
+        return [
+            'brutto' => $afa->calcBrutto($this->calcSalePrice($valutanemid, $valtozat)),
+            'eredetibrutto' => $afa->calcBrutto($this->calcRegularPrice($valutanemid, $valtozat)),
+        ];
     }
 
     /** Egy változat bruttó ára a webshop pénznemében, a terméklapéval azonos szabály szerint. */

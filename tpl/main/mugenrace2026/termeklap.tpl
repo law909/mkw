@@ -102,7 +102,8 @@
                                             id="termekszallitasiido{$termek.id}">{$termek.szallitasiido}</span> {t('munkanap')}</div>
                                 {/if}
                                 {* az ár és a készlet strukturált adata a JSON-LD-ben van, itt csak a látható szöveg *}
-                                <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright">
+                                <div id="termekprice{$termek.id}" class="itemPrice product-datasheet__price textalignright"
+                                     data-eredetiarszoveg="{t('Eredeti ár')}" data-valutanem="{$valutanemnev}">
                                     {if (isset($termek.eredetibrutto) && $termek.eredetibrutto>0)}
                                         <span class="akciosarszoveg"><strong>{t('Eredeti ár')}:</strong>&nbsp;<span
                                                 class="akciosar">{number_format($termek.eredetibrutto,0,',',' ')} {$termek.valutanemnev}</span></span>

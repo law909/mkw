@@ -403,6 +403,36 @@ $(document).ready(function () {
 
     loadMeretSelect($('.js-szinvaltozatedit'));
 
+    // the chosen size's own price; without a size the product's price rendered with the page comes back
+    $(document).on('change', '.js-meretvaltozatedit', function () {
+        const $select = $(this);
+        const termek = $select.data('termek');
+        const $price = $('#termekprice' + termek);
+        const $option = $select.find('option:selected');
+        if (!$price.length) {
+            return;
+        }
+        if ($price.data('termekar') === undefined) {
+            $price.data('termekar', $price.html());
+        }
+        if (!$option.val() || !$option.data('brutto')) {
+            $price.html($price.data('termekar'));
+            return;
+        }
+        const valutanem = $price.data('valutanem');
+        const eredeti = $option.data('eredetibrutto');
+        $price.empty();
+        if (eredeti) {
+            $price.append($('<span class="akciosarszoveg">').append(
+                $('<strong>').text($price.data('eredetiarszoveg') + ':'),
+                '&nbsp;',
+                $('<span class="akciosar">').text(`${eredeti} ${valutanem}`)
+            ), ' ');
+        }
+        $price.append($('<span class="termekar">').text(`${$option.data('brutto')} ${valutanem}`));
+        $('.js-kosarbaszinvaltozat[data-termek="' + termek + '"]').attr('data-price', $option.data('brutto'));
+    });
+
     $('.color-selector .select-option').on('click', function () {
         var $option = $(this);
         var value = $option.data('value');

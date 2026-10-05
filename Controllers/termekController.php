@@ -1627,13 +1627,18 @@ class termekController extends \mkwhelpers\MattableController
                 if ($valt->getInaktiv()) {
                     continue;
                 }
-                $ret[] = [
+                $meret = [
                     'id' => $valt->getId(),
                     'caption' => $valt->getMeretNev(),
                     'selected' => false,
                     // a méretválasztó sablon keszlet <= 0-t tesztel, ezért itt nincs nullára vágás
                     'keszlet' => $valt->getAvailableStock(null, null, null, false)
                 ];
+                // méretválasztáskor a terméklap ezt az árat mutatja (a változatnak saját ára is lehet)
+                if (\mkw\store::isMugenrace2026() || \mkw\store::isSuperzoneHu()) {
+                    $meret += $valt->getTermek()->getWebshopBruttoArak($valt);
+                }
+                $ret[] = $meret;
             }
         }
         $v = $this->getTemplateFactory()->createMainView('meretselect.tpl');
