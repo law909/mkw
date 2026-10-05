@@ -824,7 +824,7 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     $('.valtozattable').remove();
-                    $('#valtozatgenerator').after(data);
+                    $('.js-valtozatokcim').after(data);
                     $('.js-valtozatdelbutton,.js-valtozatarnewbutton,.js-valtozatardelbutton').button();
                 }
             });

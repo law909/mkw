@@ -1361,6 +1361,17 @@ body.modernui {
     color: var(--mkw-accent);
 }
 
+.modernui .mattable-repeatable.valtozatgenerator {
+    border: 1px dashed var(--mkw-accent);
+    background: var(--mkw-surface-2);
+    box-shadow: none;
+}
+
+/* a szakaszcím .85em-es betűjéhez arányítva olyan széles, mint a 80em-es változat doboz */
+.modernui .valtozatok-cim {
+    max-width: calc(80em / .85);
+}
+
 .modernui .valtozat-jelveny {
     border-color: var(--mkw-border-strong);
     color: var(--mkw-muted);

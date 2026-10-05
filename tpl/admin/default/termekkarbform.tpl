@@ -320,8 +320,6 @@
                     <div class="valtozat-fej">
                         <span class="valtozat-cim">{at('Változat generátor')}</span>
                         <span class="valtozat-sugo">{at('a megadott adatokkal egyszerre hozza létre a változatokat')}</span>
-                        <input id="valtozatgeneratorbutton" class="valtozat-torles" form="valtozatgeneratorform" type="submit"
-                               value="{at('Generál')}">
                     </div>
                     <div class="valtozat-mezok">
                         {mezocsoport cim="Tulajdonságok" class="valtozat-sor"}
@@ -417,7 +415,12 @@
                             <input id="ValtozatKepId_gen" name="valtozatkepid" form="valtozatgeneratorform" type="hidden">
                         {/mezocsoport}
                     </div>
+                    <div class="valtozatgenerator-lab">
+                        <input id="valtozatgeneratorbutton" form="valtozatgeneratorform" type="submit" value="{at('Generál')}">
+                    </div>
                 </div>
+                {* a generált változatok ez után kerülnek (termek.js) *}
+                <div class="mattkarb-szakaszcim valtozatok-cim js-valtozatokcim">{at('Változatok')}</div>
                 {foreach $egyed.valtozatok as $valtozat}
                     {include 'termektermekvaltozatkarb.tpl'}
                 {/foreach}

@@ -389,6 +389,20 @@ img {
     opacity: .7;
 }
 
+/* a generátor eszköz, nem változat: szaggatott kerettel és térközzel elválik a változatok listájától */
+.valtozatgenerator {
+    border-style: dashed;
+    margin-bottom: 1.5em;
+}
+
+.valtozatgenerator-lab {
+    margin-top: 10px;
+}
+
+.valtozatok-cim {
+    max-width: 80em;
+}
+
 /* a sorszám számláló: új, törölt és átrendezett változatnál is magától helyes */
 #ValtozatTab {
     counter-reset: valtozat;
