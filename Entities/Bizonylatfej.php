@@ -1349,8 +1349,8 @@ class Bizonylatfej
                 $mailer = \mkw\store::getMailer();
                 if ($topartner) {
                     $mailer->addTo($bf->getPartneremail());
-                    $m = explode(',', $bf->getUzletkotoemail());
-                    $mailer->addTo($m);
+                    // the mailers split a comma list themselves and skip an empty one
+                    $mailer->addTo($bf->getUzletkotoemail());
                 }
                 if ($emailtpl->isAszfcsatolaskell()) {
                     $mailer->setAttachment(\mkw\store::mainStoragePath(\mkw\consts::ASZFPDFName));
@@ -1392,8 +1392,8 @@ class Bizonylatfej
                 $mailer = \mkw\store::getMailer();
                 if ($topartner) {
                     $mailer->addTo($bf->getPartneremail());
-                    $m = explode(',', $bf->getUzletkotoemail());
-                    $mailer->addTo($m);
+                    // the mailers split a comma list themselves and skip an empty one
+                    $mailer->addTo($bf->getUzletkotoemail());
                 }
                 if ($emailtpl->isAszfcsatolaskell()) {
                     $mailer->setAttachment(\mkw\store::mainStoragePath(\mkw\consts::ASZFPDFName));
