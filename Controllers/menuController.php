@@ -70,6 +70,10 @@ class menuController extends \mkwhelpers\MattableController
         if ($menucsoport) {
             $filter->addFilter('menucsoport', '=', $menucsoport);
         }
+        $lathato = $this->params->getNumRequestParam('lathatofilter', 9);
+        if ($lathato != 9) {
+            $filter->addFilter('lathato', '=', $lathato);
+        }
 
         $this->initPager(
             $this->getRepo()->getCount($filter),

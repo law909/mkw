@@ -18,6 +18,12 @@
                     <option value="{$_mcs.id}">{$_mcs.caption}</option>
                 {/foreach}
             </select>
+            <label for="lathatofilter">{at('Látható')}</label>
+            <select id="lathatofilter" name="lathatofilter">
+                <option value="9">{at('Mindegy')}</option>
+                <option value="1">{at('Igen')}</option>
+                <option value="0">{at('Nem')}</option>
+            </select>
         </div>
         <div class="mattable-pagerwrapper">
             <div class="mattable-order">

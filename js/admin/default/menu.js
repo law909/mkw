@@ -6,7 +6,7 @@ $(document).ready(function () {
     if ($.fn.mattable) {
         $('#mattable-select').mattable({
             filter: {
-                fields: ['#nevfilter', '#menucsoportfilter']
+                fields: ['#nevfilter', '#menucsoportfilter', '#lathatofilter']
             },
             tablebody: {
                 url: '/admin/menu/getlistbody'
