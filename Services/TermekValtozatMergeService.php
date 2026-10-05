@@ -42,6 +42,14 @@ class TermekValtozatMergeService
         'ar' => ['termekvaltozatar', 'termekvaltozat_id'],
     ];
 
+    /**
+     * Ismert, de nem átírandó hivatkozások. Az UNAS szinkron sora az UNAS azonosítóé, a termék/változat oszlopát a
+     * UnasKeszletArService minden futáskor újraírja; a forrás törlésekor az FK "set null"-ja üríti.
+     */
+    private const NEMATIRANDO = [
+        ['unastermekszinkron', 'termekvaltozat_id'],
+    ];
+
     /** a forrás ársávos árai, amelyekre (ársáv + valutanem) a célnak már van saját sora */
     private const ARUTKOZES_SQL = 'SELECT COUNT(*) FROM termekvaltozatar f WHERE f.termekvaltozat_id = ? AND EXISTS'
         . ' (SELECT 1 FROM termekvaltozatar c WHERE c.termekvaltozat_id = ? AND c.arsav_id = f.arsav_id AND c.valutanem_id = f.valutanem_id)';
@@ -196,7 +204,7 @@ class TermekValtozatMergeService
             ['termekvaltozat']
         );
         $ismert = [];
-        foreach (self::HIVATKOZASOK as [$tabla, $oszlop]) {
+        foreach ([...array_values(self::HIVATKOZASOK), ...self::NEMATIRANDO] as [$tabla, $oszlop]) {
             $ismert[strtolower($tabla . '.' . $oszlop)] = true;
         }
         $ret = [];
