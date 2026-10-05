@@ -84,7 +84,7 @@ class keresoszologController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', t('keresoszolog'));
         $view->setVar('formaction', '/admin/keresoszolog/save');
         $view->setVar('oper', $oper);
-        $record = $this->getRepo()->findWithJoins($id);
+        $record = $this->getRepo()->find($id);
         $view->setVar('egyed', $this->loadVars($record));
         return $view->getTemplateResult();
     }
