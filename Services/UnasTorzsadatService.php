@@ -466,7 +466,7 @@ class UnasTorzsadatService
         $this->fill($partner, 'Varos', $invoice['city'] ?? '', 40, $uj);
         $this->fill($partner, 'Utca', $this->utca($invoice), 60, $uj);
         $this->fill($partner, 'Hazszam', $invoice['streetnumber'] ?? '', 40, $uj);
-        $this->fill($partner, 'Telefon', $contact['phone'] ?? ($contact['mobile'] ?? ''), 60, $uj);
+        $this->fill($partner, 'Telefon', ($contact['phone'] ?? '') ?: ($contact['mobile'] ?? ''), 60, $uj);
         $this->fill($partner, 'Mobil', $contact['mobile'] ?? '', 60, $uj);
 
         $this->fill($partner, 'Szallnev', $shipping['nev'] ?? '', 255, $uj);

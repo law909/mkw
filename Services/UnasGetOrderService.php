@@ -659,7 +659,7 @@ class UnasGetOrderService
         $this->setIfNotEmpty($fej, 'Partnerutca', $this->utca($invoice), 60);
         $this->setIfNotEmpty($fej, 'Partnerhazszam', $invoice['streetnumber'] ?? '', 40);
         $this->setIfNotEmpty($fej, 'Partneremail', $order['customer']['email'] ?? '', 100);
-        $this->setIfNotEmpty($fej, 'Partnertelefon', $contact['phone'] ?? ($contact['mobile'] ?? ''), 40);
+        $this->setIfNotEmpty($fej, 'Partnertelefon', ($contact['phone'] ?? '') ?: ($contact['mobile'] ?? ''), 40);
 
         $szallnev = trim((string)($shipping['recipientname'] ?? '')) ?: trim((string)($shipping['nev'] ?? ''));
         $this->setIfNotEmpty($fej, 'Szallnev', $szallnev, 255);
