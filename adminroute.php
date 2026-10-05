@@ -916,6 +916,10 @@ if (!\mkw\store::isClosed()) {
 }
 $router->map('GET', '/admin/elolegszamlafej/print', 'elolegszamlafejController#doPrint', 'adminelolegszamlafejprint');
 
+$router->map('GET', '/admin/konyvelo/[szamla|elolegszamla:tipus]/viewlist', 'konyveloController#viewlist', 'adminkonyveloviewlist');
+$router->map('GET', '/admin/konyvelo/[szamla|elolegszamla:tipus]/getlistbody', 'konyveloController#getlistbody', 'adminkonyvelogetlistbody');
+$router->map('GET', '/admin/konyvelo/pdf', 'konyveloController#pdf', 'adminkonyvelopdf');
+
 $router->map('GET', '/admin/garanciaugyfej/viewlist', 'garanciaugyfejController#viewlist', 'admingaranciaugyfejviewlist');
 $router->map('GET', '/admin/garanciaugyfej/getlistbody', 'garanciaugyfejController#getlistbody', 'admingaranciaugyfejgetlistbody');
 $router->map('GET', '/admin/garanciaugyfej/getkarb', 'garanciaugyfejController#getkarb', 'admingaranciaugyfejgetkarb');

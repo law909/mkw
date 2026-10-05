@@ -3265,6 +3265,26 @@ if ($DBVersion < '0223' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0223');
 }
 
+if ($DBVersion < '0224' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0223') {
+    // Könyvelői felület: csak olvasható számla- és előlegszámla-lista külön menücsoportban, az "Egyéb műveletek" előtt
+    $conn = \mkw\store::getEm()->getConnection();
+    $csoportid = $conn->fetchOne('SELECT id FROM menucsoport WHERE nev = "Könyvelői felület"');
+    if (!$csoportid) {
+        $conn->executeStatement('INSERT INTO menucsoport (nev, lathato, sorrend) VALUES ("Könyvelői felület", 1, 85)');
+        $csoportid = $conn->lastInsertId();
+    }
+    foreach ([['Számlák', 'szamla', 100], ['Előlegszámlák', 'elolegszamla', 200]] as [$nev, $tipus, $sorrend]) {
+        $url = '/admin/konyvelo/' . $tipus . '/viewlist';
+        if (!$conn->fetchOne('SELECT id FROM menu WHERE url = ?', [$url])) {
+            $conn->executeStatement(
+                'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class) VALUES (?, ?, ?, ?, 50, 1, ?, "")',
+                [$csoportid, $nev, $url, '/admin/konyvelo/' . $tipus, $sorrend]
+            );
+        }
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0224');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
