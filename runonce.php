@@ -3224,6 +3224,21 @@ if ($DBVersion < '0219' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0219');
 }
 
+if ($DBVersion < '0220' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0219') {
+    // az UNAS-import az üres telefon helyett nem vette át a mobilszámot, a GLS csomagpontos címke telefon nélkül elbukik
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'UPDATE partner p SET p.telefon = p.mobil'
+        . ' WHERE COALESCE(p.telefon, "") = "" AND COALESCE(p.mobil, "") <> ""'
+        . ' AND EXISTS (SELECT 1 FROM bizonylatfej b WHERE b.partner_id = p.id AND b.unaskey IS NOT NULL)'
+    );
+    $conn->executeStatement(
+        'UPDATE bizonylatfej b INNER JOIN partner p ON p.id = b.partner_id SET b.partnertelefon = LEFT(p.telefon, 40)'
+        . ' WHERE b.unaskey IS NOT NULL AND COALESCE(b.partnertelefon, "") = "" AND COALESCE(p.telefon, "") <> ""'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0220');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
