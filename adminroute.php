@@ -1295,6 +1295,11 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termekvaltozat/osszevonas', 'termekvaltozatController#osszevonas', 'admintermekvaltozatosszevonas');
     $router->map('POST', '/admin/termekvaltozat/termekke', 'termekvaltozatController#termekke', 'admintermekvaltozattermekke');
 }
+// a napló csak nézhető, mentés útvonala nincs
+$router->map('GET', '/admin/valtozatboltermeknaplo/viewlist', 'valtozatboltermeknaploController#viewlist', 'adminvaltozatboltermeknaploviewlist');
+$router->map('GET', '/admin/valtozatboltermeknaplo/getlistbody', 'valtozatboltermeknaploController#getlistbody', 'adminvaltozatboltermeknaplogetlistbody');
+$router->map('GET', '/admin/valtozatboltermeknaplo/getkarb', 'valtozatboltermeknaploController#getkarb', 'adminvaltozatboltermeknaplogetkarb');
+$router->map('GET', '/admin/valtozatboltermeknaplo/viewkarb', 'valtozatboltermeknaploController#viewkarb', 'adminvaltozatboltermeknaploviewkarb');
 $router->map('GET', '/admin/termekvaltozat/termekkeinfo', 'termekvaltozatController#termekkeInfo', 'admintermekvaltozattermekkeinfo');
 $router->map('GET', '/admin/termekvaltozat/getkeszletbyraktar', 'termekvaltozatController#getKeszletByRaktar', 'admingetvaltozatkeszletbyraktar');
 $router->map('GET', '/admin/termekvaltozat/cikkszamreport', 'termekvaltozatController#cikkszamReport', 'admintermekvaltozatcikkszamreport');

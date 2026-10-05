@@ -3345,6 +3345,25 @@ if ($DBVersion < '0229' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0229');
 }
 
+if ($DBVersion < '0230' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0229') {
+    // Változatból termék napló az Egyéb műveletek csoportba, a Változat összevonás után; a 90-es jogú munkakörök érik el
+    $conn = \mkw\store::getEm()->getConnection();
+    $url = '/admin/valtozatboltermeknaplo/viewlist';
+    if (!$conn->fetchOne('SELECT id FROM menu WHERE url = ?', [$url])) {
+        $csoportid = $conn->fetchOne('SELECT menucsoport_id FROM menu WHERE url = "/admin/termekvaltozat/osszevonasview" LIMIT 1')
+            ?: $conn->fetchOne('SELECT menucsoport_id FROM menu WHERE url = "/admin/import/view" LIMIT 1');
+        $conn->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class, mindenki) VALUES (?, ?, ?, ?, 90, 1, 585, "", 0)',
+            [$csoportid ?: null, 'Változatból termék napló', $url, '/admin/valtozatboltermeknaplo']
+        );
+        $conn->executeStatement(
+            'INSERT IGNORE INTO menu_munkakorok (menu_id, munkakor_id) SELECT ?, k.id FROM munkakor k WHERE k.jog >= 90',
+            [$conn->lastInsertId()]
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0230');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

@@ -1599,3 +1599,16 @@ select.tetelszamhiba,
     margin: 0;
     background: #fff;
 }
+
+/* Változatból termék napló: az entitások JSON-ja */
+.naplo-json {
+    max-height: 60vh;
+    overflow: auto;
+    margin: 0;
+    padding: 6px;
+    border: 1px solid var(--mkw-border, #ccc);
+    background: var(--mkw-surface-2, #f5f5f5);
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-size: .9em;
+}

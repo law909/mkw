@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Termékváltozatból készült termék naplója (Services\TermekValtozatToTermekService). A változat a művelet végén
  * törlődik, ezért az azonosítója szám, és a három entitás a művelet előtti / utáni teljes állapotában JSON-ban áll.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Entities\ValtozatbolTermekNaploRepository")
  * @ORM\Table(name="valtozatboltermeknaplo",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"})
  */
 class ValtozatbolTermekNaplo
@@ -82,6 +82,11 @@ class ValtozatbolTermekNaplo
     public function getCreated()
     {
         return $this->created;
+    }
+
+    public function getCreatedStr()
+    {
+        return $this->created ? $this->created->format(\mkw\store::$DateTimeFormat) : '';
     }
 
     public function getCreatedby()

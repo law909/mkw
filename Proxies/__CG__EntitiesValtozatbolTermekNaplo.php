@@ -206,6 +206,17 @@ class ValtozatbolTermekNaplo extends \Entities\ValtozatbolTermekNaplo implements
     /**
      * {@inheritDoc}
      */
+    public function getCreatedStr()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreatedStr', []);
+
+        return parent::getCreatedStr();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getCreatedby()
     {
 
