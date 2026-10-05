@@ -3225,17 +3225,19 @@ if ($DBVersion < '0219' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
 }
 
 if ($DBVersion < '0220' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0219') {
-    // az UNAS-import az üres telefon helyett nem vette át a mobilszámot, a GLS csomagpontos címke telefon nélkül elbukik
-    $conn = \mkw\store::getEm()->getConnection();
-    $conn->executeStatement(
-        'UPDATE partner p SET p.telefon = p.mobil'
-        . ' WHERE COALESCE(p.telefon, "") = "" AND COALESCE(p.mobil, "") <> ""'
-        . ' AND EXISTS (SELECT 1 FROM bizonylatfej b WHERE b.partner_id = p.id AND b.unaskey IS NOT NULL)'
-    );
-    $conn->executeStatement(
-        'UPDATE bizonylatfej b INNER JOIN partner p ON p.id = b.partner_id SET b.partnertelefon = LEFT(p.telefon, 40)'
-        . ' WHERE b.unaskey IS NOT NULL AND COALESCE(b.partnertelefon, "") = "" AND COALESCE(p.telefon, "") <> ""'
-    );
+    if (\mkw\store::isGalad()) {
+        // az UNAS-import az üres telefon helyett nem vette át a mobilszámot, a GLS csomagpontos címke telefon nélkül elbukik
+        $conn = \mkw\store::getEm()->getConnection();
+        $conn->executeStatement(
+            'UPDATE partner p SET p.telefon = p.mobil'
+            . ' WHERE COALESCE(p.telefon, "") = "" AND COALESCE(p.mobil, "") <> ""'
+            . ' AND EXISTS (SELECT 1 FROM bizonylatfej b WHERE b.partner_id = p.id AND b.unaskey IS NOT NULL)'
+        );
+        $conn->executeStatement(
+            'UPDATE bizonylatfej b INNER JOIN partner p ON p.id = b.partner_id SET b.partnertelefon = LEFT(p.telefon, 40)'
+            . ' WHERE b.unaskey IS NOT NULL AND COALESCE(b.partnertelefon, "") = "" AND COALESCE(p.telefon, "") <> ""'
+        );
+    }
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0220');
 }
 
