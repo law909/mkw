@@ -906,7 +906,7 @@ class mainController extends \mkwhelpers\Controller
                     $hibas = true;
                     $hibak['nev'] = t('Üres a név');
                 }
-                if ($tema == '') {
+                if (!$tema) {
                     $hibas = true;
                     $hibak['tema'] = t('Nincs megadva téma');
                 }
@@ -941,7 +941,7 @@ class mainController extends \mkwhelpers\Controller
                     $view->setVar('email2', $email2);
                     $view->setVar('telefon', $telefon);
                     $view->setVar('rendelesszam', $rendelesszam);
-                    $view->setVar('temalista', $kftc->getSelectList($tema));
+                    $view->setVar('temalista', $kftc->getSelectList($tema?->getId()));
                     $view->setVar('szoveg', $szoveg);
                     $view->setVar('hibak', $hibak);
                     $view->setVar('formtoken', $formToken);
