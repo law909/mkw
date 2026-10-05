@@ -773,12 +773,17 @@ class TermekValtozat
     {
         $szin = $this->szin ? (string)$this->szin->getNev() : (string)$this->getSzin();
         $szinsorrend = $this->szin ? ((int)$this->szin->getSorrend() ?: PHP_INT_MAX) : PHP_INT_MAX;
-        $meret = $this->meret ? (string)$this->meret->getNev() : (string)$this->getMeret();
-        $meretsorrend = $this->meret ? ((int)$this->meret->getSorrend() ?: PHP_INT_MAX) : PHP_INT_MAX;
-        if ($meret !== '' && $meretsorrend === PHP_INT_MAX) {
-            $meretsorrend = self::getMeretHely($meret);
-        }
+        [$meretsorrend, $meret] = $this->meret ? $this->meret->getRendezesKulcs() : self::getMeretKulcs((string)$this->getMeret(), 0);
         return [$szinsorrend, $szin, $meretsorrend, $meret];
+    }
+
+    /** [place, name] of a size: its sorrend in the Méret törzs, else getMeretHely(); without one: last. */
+    public static function getMeretKulcs(string $meret, int $sorrend)
+    {
+        if (!$sorrend) {
+            $sorrend = $meret !== '' ? self::getMeretHely($meret) : PHP_INT_MAX;
+        }
+        return [$sorrend, $meret];
     }
 
     /** A size's place: its position in the Beállítások value order, else the usual clothing size order. */

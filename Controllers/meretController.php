@@ -114,7 +114,7 @@ class meretController extends MattableController
     public function getSelectList($selid = null)
     {
         // a termék karbantartón változatonként hívódik, mindig ugyanazzal a tartalommal
-        $rec = $this->lista ??= $this->getRepo()->getAll();
+        $rec = $this->lista ??= $this->getRendezettMeretek();
         $res = [];
         foreach ($rec as $sor) {
             $res[] = [
@@ -126,9 +126,19 @@ class meretController extends MattableController
         return $res;
     }
 
+    /** In the size order of the variants when Beállítások asks for "szín, méret", else as stored. */
+    private function getRendezettMeretek()
+    {
+        $meretek = $this->getRepo()->getAll();
+        if (\mkw\store::getParameter(\mkw\consts::TermekValtozatSorrend, '') === \mkw\consts::TermekValtozatSorrendSzinMeret) {
+            usort($meretek, fn(Meret $a, Meret $b) => TermekValtozat::compareKulcs($a->getRendezesKulcs(), $b->getRendezesKulcs()));
+        }
+        return $meretek;
+    }
+
     public function htmllist()
     {
-        $rec = $this->getRepo()->getAll();
+        $rec = $this->getRendezettMeretek();
         $ret = '<select>';
         foreach ($rec as $sor) {
             $ret .= '<option value="' . $sor->getId() . '">' . $sor->getNev() . '</option>';

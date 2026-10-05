@@ -261,6 +261,17 @@ class Meret extends \Entities\Meret implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getRendezesKulcs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRendezesKulcs', []);
+
+        return parent::getRendezesKulcs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getKepurl($pre = '/')
     {
 

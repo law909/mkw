@@ -62,6 +62,12 @@ class Meret
         $this->sorrend = $val;
     }
 
+    /** [place, name] for the "szín, méret" order: its sorrend, else TermekValtozat::getMeretHely(). */
+    public function getRendezesKulcs()
+    {
+        return TermekValtozat::getMeretKulcs((string)$this->getNev(), (int)$this->getSorrend());
+    }
+
     public function getKepurl($pre = '/')
     {
         if ($this->kepurl) {
