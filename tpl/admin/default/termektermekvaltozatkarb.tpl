@@ -139,18 +139,6 @@
             <input id="IdegenCikkszamEdit_{$valtozat.id}" name="valtozatidegencikkszam_{$valtozat.id}" type="text" value="{$valtozat.idegencikkszam}">
         </td>
     </tr>
-    {if ($setup.arsavok)}
-        <tr>
-            <td class="mattable-cell">{at('Ársávos ár')}:</td>
-            <td class="mattable-cell" colspan="3">
-                {* a változat saját ára megelőzi a termékét; ahol nincs, a termék ára érvényes *}
-                {foreach $valtozat.arak as $ar}
-                    {include 'termekvaltozatarkarb.tpl'}
-                {/foreach}
-                <a class="js-valtozatarnewbutton" href="#" data-valtozatid="{$valtozat.id}">{at('Új ár')}</a>
-            </td>
-        </tr>
-    {/if}
     <tr>
         <td class="mattable-cell">
             <label for="VideolinkEdit_{$valtozat.id}">{at('Videó link')}:</label>
@@ -185,6 +173,18 @@
             </td>
             <td class="mattable-cell">
                 <input id="VUnasalaptipusEdit_{$valtozat.id}" name="valtozatunasalaptipus_{$valtozat.id}" type="text" value="{$valtozat.unasalaptipus}">
+            </td>
+        </tr>
+    {/if}
+    {if ($setup.arsavok)}
+        <tr>
+            <td class="mattable-cell">{at('Ársávos ár')}:</td>
+            <td class="mattable-cell" colspan="3">
+                {* a változat saját ára megelőzi a termékét; ahol nincs, a termék ára érvényes *}
+                {foreach $valtozat.arak as $ar}
+                    {include 'termekvaltozatarkarb.tpl'}
+                {/foreach}
+                <a class="js-valtozatarnewbutton" href="#" data-valtozatid="{$valtozat.id}">{at('Új ár')}</a>
             </td>
         </tr>
     {/if}
