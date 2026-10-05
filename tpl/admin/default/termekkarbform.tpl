@@ -316,170 +316,97 @@
                 </div>
                 <a class="js-valtozatdelallbutton" href="#" title="{at('Mind törlése')}"
                    data-termekid="{$egyed.id}"><span class="ui-button-text">{at('Mind törlése')}</span></a>
-                <table id="valtozatgenerator" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                    <tbody>
-                    <tr>
-                        <td class="mattable-cell">
-                            <label for="VElerhetoEdit">{at('Elérhető')} {$webshop1name}:
-                                <input id="VElerhetoEdit" form="valtozatgeneratorform" name="valtozatelerheto"
-                                       type="checkbox">
-                            </label>
-                        </td>
-                        <td class="mattable-cell">
-                            <label for="VLathatoEdit">{at('Látható')} {$webshop1name}:
-                                <input id="VLathatoEdit" form="valtozatgeneratorform" name="valtozatlathato"
-                                       type="checkbox">
-                            </label>
-                        </td>
-                        <td class="mattable-cell">
-                            <label for="VElorendelhetoEdit">{at('Előrendelhető')}:
-                                <input id="VElorendelhetoEdit" form="valtozatgeneratorform" name="valtozatelorendelheto"
-                                       type="checkbox">
-                            </label>
-                        </td>
-                    </tr>
-                    {if ($setup.multishop)}
-                        {for $cikl = 2 to $enabledwebshops}
-                            <tr>
-                                <td class="mattable-cell">
-                                    <label for="VElerheto{$cikl}Edit">{at('Elérhető')} {$webshop{$cikl}name}:
-                                        <input id="VElerheto{$cikl}Edit" form="valtozatgeneratorform" name="valtozatelerheto{$cikl}"
-                                               type="checkbox">
-                                    </label>
-                                </td>
-                                <td class="mattable-cell">
-                                    <label for="VLathato{$cikl}Edit">{at('Látható')} {$webshop{$cikl}name}:
-                                        <input id="VLathato{$cikl}Edit" form="valtozatgeneratorform" name="valtozatlathato{$cikl}"
-                                               type="checkbox">
-                                    </label>
-                                </td>
-                            </tr>
-                        {/for}
-                    {/if}
-                    {if ($setup.szinmode === 'fix')}
-                        <tr>
-                            <td class="mattable-cell">
-                                <label for="ValtozatSzinEdit">{at('Szín')}:</label>
-                            </td>
-                            <td class="mattable-cell">
-                                <input id="ValtozatSzinEdit" type="text" name="valtozatszinautocomplete"
-                                       class="js-szinautocomplete" form="valtozatgeneratorform">
-                                <input class="js-szinid" name="valtozatszinid" type="hidden"
-                                       form="valtozatgeneratorform">
-                            </td>
-                            <td class="mattable-cell">
-                                <label for="ValtozatMeretsorEdit">{at('Méret sor')}:</label>
-                            </td>
-                            <td class="mattable-cell">
-                                <select id="ValtozatMeretsorEdit" name="valtozatmeretsorid" form="valtozatgeneratorform">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $meretsorlist as $meretsor}
-                                        <option value="{$meretsor.id}">{$meretsor.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                        </tr>
-                        {if (!$setup.arsavok)}
-                            <tr>
-                                <td class="mattable-cell">
-                                    <label for="NettoEdit">{at('Nettó')}:</label>
-                                </td>
-                                <td class="mattable-cell">
-                                    <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
-                                           name="valtozatnettogen">
-                                </td>
-                                <td class="mattable-cell">
-                                    <label for="VBruttoEdit">{at('Bruttó')}:</label>
-                                </td>
-                                <td class="mattable-cell">
-                                    <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
-                                           name="valtozatbruttogen">
-                                </td>
-                            </tr>
-                        {/if}
-                    {else}
-                        <tr>
-                            <td class="mattable-cell">
-                                <select name="valtozatadattipus1" form="valtozatgeneratorform">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $valtozatadattipuslist as $at}
-                                        <option value="{$at.id}">{$at.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                            <td class="mattable-cell">
-                                <input name="valtozatertek1" form="valtozatgeneratorform" type="text">
-                            </td>
-                            {if (!$setup.arsavok)}
-                                <td class="mattable-cell">
-                                    <label for="NettoEdit">{at('Nettó')}:</label>
-                                </td>
-                                <td class="mattable-cell">
-                                    <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit"
-                                           name="valtozatnettogen">
-                                </td>
+                <div id="valtozatgenerator" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable valtozatgenerator">
+                    <div class="valtozat-fej">
+                        <span class="valtozat-cim">{at('Változat generátor')}</span>
+                        <span class="valtozat-sugo">{at('a megadott adatokkal egyszerre hozza létre a változatokat')}</span>
+                        <input id="valtozatgeneratorbutton" class="valtozat-torles" form="valtozatgeneratorform" type="submit"
+                               value="{at('Generál')}">
+                    </div>
+                    <div class="valtozat-mezok">
+                        {mezocsoport cim="Tulajdonságok" class="valtozat-sor"}
+                            {if ($setup.szinmode === 'fix')}
+                                {mezo cimke="Szín" for="ValtozatSzinEdit"}
+                                    <input id="ValtozatSzinEdit" type="text" name="valtozatszinautocomplete"
+                                           class="js-szinautocomplete" form="valtozatgeneratorform">
+                                    <input class="js-szinid" name="valtozatszinid" type="hidden" form="valtozatgeneratorform">
+                                {/mezo}
+                                {mezo cimke="Méret sor" for="ValtozatMeretsorEdit"}
+                                    <select id="ValtozatMeretsorEdit" name="valtozatmeretsorid" form="valtozatgeneratorform">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $meretsorlist as $meretsor}
+                                            <option value="{$meretsor.id}">{$meretsor.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                {/mezo}
+                            {else}
+                                {mezo cimke="1. tulajdonság"}
+                                    <select name="valtozatadattipus1" form="valtozatgeneratorform">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $valtozatadattipuslist as $at}
+                                            <option value="{$at.id}">{$at.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                    <input name="valtozatertek1" form="valtozatgeneratorform" type="text">
+                                {/mezo}
+                                {mezo cimke="2. tulajdonság"}
+                                    <select name="valtozatadattipus2" form="valtozatgeneratorform">
+                                        <option value="">{at('válasszon')}</option>
+                                        {foreach $valtozatadattipuslist as $at}
+                                            <option value="{$at.id}">{$at.caption}</option>
+                                        {/foreach}
+                                    </select>
+                                    <input name="valtozatertek2" form="valtozatgeneratorform" type="text">
+                                {/mezo}
                             {/if}
-                        </tr>
-                        <tr>
-                            <td class="mattable-cell">
-                                <select name="valtozatadattipus2" form="valtozatgeneratorform">
-                                    <option value="">{at('válasszon')}</option>
-                                    {foreach $valtozatadattipuslist as $at}
-                                        <option value="{$at.id}">{$at.caption}</option>
-                                    {/foreach}
-                                </select>
-                            </td>
-                            <td class="mattable-cell">
-                                <input name="valtozatertek2" form="valtozatgeneratorform" type="text">
-                            </td>
                             {if (!$setup.arsavok)}
-                                <td class="mattable-cell">
-                                    <label for="VBruttoEdit">{at('Bruttó')}:</label>
-                                </td>
-                                <td class="mattable-cell">
-                                    <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform"
-                                           name="valtozatbruttogen">
-                                </td>
+                                {mezo cimke="Nettó" for="NettoEdit"}
+                                    <input class="js-valtozatnettogen" form="valtozatgeneratorform" id="NettoEdit" name="valtozatnettogen">
+                                {/mezo}
+                                {mezo cimke="Bruttó" for="VBruttoEdit"}
+                                    <input class="js-valtozatbruttogen" id="VBruttoEdit" form="valtozatgeneratorform" name="valtozatbruttogen">
+                                {/mezo}
                             {/if}
-                        </tr>
-                    {/if}
-                    <tr>
-                        <td class="mattable-cell">
-                            <label for="VCikkszamEdit">{at('Cikkszám')}:</label>
-                        </td>
-                        <td class="mattable-cell">
-                            <input id="VCikkszamEdit" name="valtozatcikkszamgen" type="text" size="50"
-                                   form="valtozatgeneratorform">
-                        </td>
-                        <td class="mattable-cell">
-                            <label for="VIdegenCikkszamEdit">{at('Szállítói cikkszám')}:</label>
-                        </td>
-                        <td class="mattable-cell">
-                            <input id="VIdegenCikkszamEdit" name="valtozatidegencikkszamgen" type="text"
-                                   form="valtozatgeneratorform">
-                        </td>
-                    </tr>
-                    {if ($setup.unas)}
-                        <tr>
-                            <td class="mattable-cell">
-                                <label for="VUnasalaptipusGenEdit">{at('UNAS alap típus')}:</label>
-                            </td>
-                            <td class="mattable-cell" colspan="3">
-                                <input id="VUnasalaptipusGenEdit" name="valtozatunasalaptipusgen" type="text"
-                                       maxlength="255" form="valtozatgeneratorform">
-                            </td>
-                        </tr>
-                    {/if}
-                    <tr>
-                        <td>
-                            <label for="ValtozatTermekKepCB">{at('A kép a termék főképe')}:</label>
-                            <input id="ValtozatTermekKepCB" form="valtozatgeneratorform" name="valtozattermekfokep"
-                                   type="checkbox">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="ValtozatKepEdit_gen">{at('Kép')}:</label></td>
-                        <td colspan="3">
+                        {/mezocsoport}
+                        {mezocsoport cim="Azonosítók"}
+                            {mezo cimke="Cikkszám" for="VCikkszamEdit"}
+                                <input id="VCikkszamEdit" name="valtozatcikkszamgen" type="text" form="valtozatgeneratorform">
+                            {/mezo}
+                            {mezo cimke="Szállítói cikkszám" for="VIdegenCikkszamEdit"}
+                                <input id="VIdegenCikkszamEdit" name="valtozatidegencikkszamgen" type="text" form="valtozatgeneratorform">
+                            {/mezo}
+                            {if ($setup.unas)}
+                                {mezo cimke="UNAS alap típus" for="VUnasalaptipusGenEdit"}
+                                    <input id="VUnasalaptipusGenEdit" name="valtozatunasalaptipusgen" type="text"
+                                           maxlength="255" form="valtozatgeneratorform">
+                                {/mezo}
+                            {/if}
+                        {/mezocsoport}
+                        {mezocsoport cim="Elérhetőség"}
+                            {mezo cimke=$webshop1name nyers=true}
+                                <label><input id="VElerhetoEdit" form="valtozatgeneratorform" name="valtozatelerheto" type="checkbox"> {at('elérhető')}</label>
+                                <label><input id="VLathatoEdit" form="valtozatgeneratorform" name="valtozatlathato" type="checkbox"> {at('látható')}</label>
+                            {/mezo}
+                            {if ($setup.multishop)}
+                                {for $cikl = 2 to $enabledwebshops}
+                                    {capture assign="_webshopnev"}{$webshop{$cikl}name}{/capture}
+                                    {mezo cimke=$_webshopnev nyers=true}
+                                        <label><input id="VElerheto{$cikl}Edit" form="valtozatgeneratorform" name="valtozatelerheto{$cikl}"
+                                                      type="checkbox"> {at('elérhető')}</label>
+                                        <label><input id="VLathato{$cikl}Edit" form="valtozatgeneratorform" name="valtozatlathato{$cikl}"
+                                                      type="checkbox"> {at('látható')}</label>
+                                    {/mezo}
+                                {/for}
+                            {/if}
+                            {mezo cimke="Előrendelhető" for="VElorendelhetoEdit"}
+                                <input id="VElorendelhetoEdit" form="valtozatgeneratorform" name="valtozatelorendelheto" type="checkbox">
+                            {/mezo}
+                        {/mezocsoport}
+                        {mezocsoport cim="Kép" class="valtozat-szeles"}
+                            <label class="valtozat-fokep">
+                                <input id="ValtozatTermekKepCB" form="valtozatgeneratorform" name="valtozattermekfokep" type="checkbox">
+                                {at('A kép a termék főképe')}
+                            </label>
                             <ul id="ValtozatKepEdit_gen" class="valtozatkepedit js-valtozatkepedit">
                                 {foreach $keplist as $kep}
                                     <li data-value="{$kep.id}" data-valtozatid="gen" class="ui-state-default">
@@ -487,18 +414,10 @@
                                     </li>
                                 {/foreach}
                             </ul>
-                            <input id="ValtozatKepId_gen" name="valtozatkepid" form="valtozatgeneratorform"
-                                   type="hidden">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input id="valtozatgeneratorbutton" form="valtozatgeneratorform" type="submit"
-                                   value="{at('Generál')}">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            <input id="ValtozatKepId_gen" name="valtozatkepid" form="valtozatgeneratorform" type="hidden">
+                        {/mezocsoport}
+                    </div>
+                </div>
                 {foreach $egyed.valtozatok as $valtozat}
                     {include 'termektermekvaltozatkarb.tpl'}
                 {/foreach}
