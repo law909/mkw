@@ -384,10 +384,6 @@ img {
     max-width: 80em;
 }
 
-/* termék karb: a fülek első sora (régi kép url, árak újraszámolása, látható tulajdonság) után térköz */
-.termekkarb-felsosor {
-    margin-bottom: 1.5em;
-}
 
 .valtozatok-beallitas .mezok {
     grid-template-columns: max-content minmax(0, 24em);
@@ -1055,6 +1051,11 @@ select.tetelszamhiba,
 
 .mezo {
     display: contents;
+}
+
+/* a fül mezőcsoportja után álló doboz vagy táblázat ne tapadjon a mezőkhöz */
+.mattkarb-page > .mezocsoport + :not(.mezocsoport) {
+    margin-top: 1.5em;
 }
 
 .mezo-szeles > .mezo-cimke {

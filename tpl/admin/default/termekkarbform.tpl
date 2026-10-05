@@ -244,10 +244,12 @@
         {/if}
         {if ($setup.arsavok)}
             <div id="ArsavTab" class="mattkarb-page" data-visible="visible">
-                <div class="termekkarb-felsosor">
-                    <a class="js-arrecalcbutton" href="#">{at('Árak újraszámolása')}</a>
-                    <div class="js-arrecalchibak"></div>
-                </div>
+                {mezocsoport}
+                    {mezo cimke="Képlettel számolt árak" szeles=true}
+                        <a class="js-arrecalcbutton" href="#">{at('Árak újraszámolása')}</a>
+                        <div class="js-arrecalchibak"></div>
+                    {/mezo}
+                {/mezocsoport}
                 {foreach $egyed.arak as $ar}
                     {include 'termektermekarkarb.tpl'}
                 {/foreach}
@@ -306,7 +308,7 @@
         </div>
         {if ($setup.termekvaltozat)}
             <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
-                {mezocsoport class="valtozatok-beallitas termekkarb-felsosor"}
+                {mezocsoport class="valtozatok-beallitas"}
                     {mezo cimke="Látható tulajdonság" for="ValtozatAdattipusEdit"}
                         <select id="ValtozatAdattipusEdit" name="valtozatadattipus">
                             <option value="">{at('válasszon')}</option>
@@ -660,10 +662,11 @@
             </table>
         </div>
         <div id="KepTab" class="mattkarb-page" data-visible="visible">
-            <div class="termekkarb-felsosor">
-                <label for="RegikepurlEdit">{at('Régi kép url')}:</label>
-                <input id="RegikepurlEdit" type="text" name="regikepurl" size=70 value="{$egyed.regikepurl}">
-            </div>
+            {mezocsoport}
+                {mezo cimke="Régi kép url" for="RegikepurlEdit" szeles=true}
+                    <input id="RegikepurlEdit" type="text" name="regikepurl" size="70" value="{$egyed.regikepurl}">
+                {/mezo}
+            {/mezocsoport}
             {include 'termekimagekarb.tpl'}
             {foreach $egyed.kepek as $kep}
                 {include 'termektermekkepkarb.tpl'}
