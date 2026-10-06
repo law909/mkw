@@ -143,7 +143,8 @@ class TemplateFactory
 
     public function mainTemplateExists($tplfilename)
     {
-        return file_exists($this->getMainTemplate() . $tplfilename);
+        // the Smarty template_dir works without a trailing slash too, a bare concatenation would not
+        return file_exists(rtrim($this->getMainTemplate(), '/\\') . '/' . $tplfilename);
     }
 
     public function createMainView($tplfilename)
