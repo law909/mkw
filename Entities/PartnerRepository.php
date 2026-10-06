@@ -7,6 +7,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class PartnerRepository extends \mkwhelpers\Repository
 {
 
+    /** @var array<string, array<int, true>>|null normalizált számlaszám => partner id-k, kérésenként egyszer töltve */
+    private $szamlaszamPartnerek = null;
+
     public function __construct($em, \Doctrine\ORM\Mapping\ClassMetadata $class)
     {
         parent::__construct($em, $class);
@@ -343,5 +346,48 @@ class PartnerRepository extends \mkwhelpers\Repository
                 $this->_em->flush();
             }
         }
+    }
+
+    /**
+     * Bankszámlaszám összehasonlítható alakja: szóköz és kötőjel nélkül; a magyar IBAN-ból (HU + 2 ellenőrző jegy) és a
+     * 16 jegyű számlaszámból is a 24 jegyű belföldi számlaszám. A külföldi IBAN egészében marad. Üres, ha nem számlaszám.
+     */
+    public static function normalizeSzamlaszam(?string $szamlaszam): string
+    {
+        $n = strtoupper(preg_replace('/[\s-]+/', '', (string)$szamlaszam));
+        if (preg_match('/^HU\d{26}$/', $n)) {
+            return substr($n, 4);
+        }
+        if (preg_match('/^\d{16}$/', $n)) {
+            return $n . '00000000';
+        }
+        if (preg_match('/^\d{24}$/', $n) || preg_match('/^[A-Z]{2}\d{2}[A-Z0-9]{8,30}$/', $n)) {
+            return $n;
+        }
+        return '';
+    }
+
+    /**
+     * A számlaszámhoz tartozó partner id-ja a törzs `iban` mezője alapján, akármilyen alakban áll ott (kötőjeles
+     * belföldi szám vagy IBAN). Ha több partnernél is szerepel, nincs találat: egy rossz partner rossz párosítást adna.
+     */
+    public function findIdBySzamlaszam(?string $szamlaszam): ?int
+    {
+        $keresett = self::normalizeSzamlaszam($szamlaszam);
+        if ($keresett === '') {
+            return null;
+        }
+        if ($this->szamlaszamPartnerek === null) {
+            $this->szamlaszamPartnerek = [];
+            $sorok = $this->_em->getConnection()->fetchAllAssociative("SELECT id, iban FROM partner WHERE iban IS NOT NULL AND iban <> ''");
+            foreach ($sorok as $sor) {
+                $kulcs = self::normalizeSzamlaszam($sor['iban']);
+                if ($kulcs !== '') {
+                    $this->szamlaszamPartnerek[$kulcs][(int)$sor['id']] = true;
+                }
+            }
+        }
+        $idk = array_keys($this->szamlaszamPartnerek[$keresett] ?? []);
+        return count($idk) === 1 ? $idk[0] : null;
     }
 }

@@ -395,9 +395,9 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             $o->setKonyvelesdatum($sor['konyvelesdatum']);
             $o->setErteknap($sor['erteknap']);
 
-            $partner = $sor['szamlaszam'] ? $partnerrepo->findOneBy(['iban' => $sor['szamlaszam']]) : null;
-            if ($partner) {
-                $o->setPartner($partner);
+            $partnerid = $partnerrepo->findIdBySzamlaszam($sor['szamlaszam']);
+            if ($partnerid) {
+                $o->setPartner($partnerrepo->find($partnerid));
             }
 
             $bizszamarr = $this->keresBizonylatszamok($o);
@@ -461,8 +461,17 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $filter->addSql("(_xx.bizonylatszamok IS NULL) OR (_xx.bizonylatszamok = '')");
         $trs = $this->getRepo()->getAll($filter, ['erteknap' => 'ASC']);
         $talalt = 0;
+        $partnerrepo = $this->getRepo(Partner::class);
         /** @var BankTranzakcio $tr */
         foreach ($trs as $tr) {
+            // a régebben betöltött tétel partnere a pontos számlaszám-egyezés miatt maradhatott üresen
+            $szamlaszamMezo = self::getSzamlaszamKozlemenyMezo($tr->getBank());
+            if (!$tr->getPartner() && $szamlaszamMezo) {
+                $partnerid = $partnerrepo->findIdBySzamlaszam($tr->{'get' . ucfirst($szamlaszamMezo)}());
+                if ($partnerid) {
+                    $tr->setPartner($partnerrepo->find($partnerid));
+                }
+            }
             $bizszamarr = $this->keresBizonylatszamok($tr);
             if ($bizszamarr) {
                 $tr->setBizonylatszamok(implode(';', $bizszamarr));
@@ -476,6 +485,21 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             'talalt' => $talalt,
             'msg' => count($trs) . ' párosítatlan tétel közül ' . $talalt . ' kapott bizonylatszámot.',
         ]);
+    }
+
+    /**
+     * Melyik közlemény mezőben tároljuk a bank ellenoldali számlaszámát – csak ott, ahol a formátum a számlaszám
+     * oszlopát egy közlemény mezőbe is betölti (az ERSTE-nél nem tároljuk), egyébként null.
+     */
+    private static function getSzamlaszamKozlemenyMezo($bank): ?string
+    {
+        $oszlop = self::IMPORTFORMATUMOK[$bank]['oszlop'] ?? [];
+        foreach (['kozlemeny1', 'kozlemeny2', 'kozlemeny3'] as $mezo) {
+            if (isset($oszlop['szamlaszam'], $oszlop[$mezo]) && $oszlop[$mezo] === $oszlop['szamlaszam']) {
+                return $mezo;
+            }
+        }
+        return null;
     }
 
     /**
