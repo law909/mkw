@@ -26,6 +26,9 @@
         {if (isset($egyed.menucsoportok))}
             <div id="MenuTab" class="mattkarb-page" data-visible="visible">
                 <input type="hidden" name="menujogok" value="1">
+                {if ($egyed.menukorlatozott)}
+                    <p class="munkakormenu-megj">{at('Csak azokat a menüpontokat adhatja meg vagy veheti el, amelyeket a saját munkaköre is elér; a többi nem módosítható.')}</p>
+                {/if}
                 {foreach $egyed.menucsoportok as $_csoport}
                     <div class="munkakormenu-csoport js-munkakormenucsoport">
                         <div class="mattkarb-szakaszcim">
@@ -39,7 +42,7 @@
                                         <input type="checkbox" checked="checked" disabled="disabled"> {$_menu.nev}
                                         <span class="munkakormenu-megj">({at('mindenki eléri')})</span>
                                     {else}
-                                        <input type="checkbox" name="menuk[]" value="{$_menu.id}"{if ($_menu.checked)} checked="checked"{/if}> {$_menu.nev}
+                                        <input type="checkbox" name="menuk[]" value="{$_menu.id}"{if ($_menu.checked)} checked="checked"{/if}{if (!$_menu.szerkesztheto)} disabled="disabled" title="{at('Csak olyan menüpontot adhat vagy vehet el, amelyet a saját munkaköre is elér.')}"{/if}> {$_menu.nev}
                                     {/if}
                                     {if (!$_menu.lathato)}<span class="munkakormenu-megj">({at('rejtett')})</span>{/if}
                                 </label>

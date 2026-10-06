@@ -2,7 +2,7 @@ $(document).ready(function () {
     // a karb ajaxszal töltődik, ezért delegált esemény
     $(document).on('click', '.js-munkakormenumind', function (e) {
         e.preventDefault();
-        const $pipak = $(this).closest('.js-munkakormenucsoport').find('input[name="menuk[]"]');
+        const $pipak = $(this).closest('.js-munkakormenucsoport').find('input[name="menuk[]"]:not(:disabled)');
         $pipak.prop('checked', $pipak.filter(':checked').length < $pipak.length);
     });
 
