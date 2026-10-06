@@ -850,6 +850,35 @@ table.termekkarton td.kartonfejsor {
     margin-top: 8px;
 }
 
+/* csomagolasilista.tpl */
+.csomagolas-oldal {
+    padding: 8px;
+}
+
+.csomagolas-tetelek,
+.csomagolas-dobozok {
+    border-collapse: collapse;
+}
+
+.csomagolas-tetelek th,
+.csomagolas-tetelek td,
+.csomagolas-dobozok th,
+.csomagolas-dobozok td {
+    padding: 3px 6px;
+    vertical-align: top;
+}
+
+.csomagolas-darabok {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+.csomagolas-szam,
+.csomagolas-dobozok input {
+    width: 5em;
+}
+
 .setuplabel {
     display: inline-block;
     min-width: 120px;

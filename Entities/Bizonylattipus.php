@@ -106,6 +106,8 @@ class Bizonylattipus
     private $tetelkotelezo = true;
     /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
     private $showpenztmozgat = false;
+    /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
+    private $showcsomagolasilista = false;
     /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
     private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
@@ -255,6 +257,7 @@ class Bizonylattipus
             'showkupon' => $this->getShowkupon(),
             'tetelkotelezo' => $this->getTetelkotelezo(),
             'showpenztmozgat' => $this->getShowpenztmozgat(),
+            'showcsomagolasilista' => $this->getShowcsomagolasilista(),
             'showfoxpostterminaleditor' => $this->getShowfoxpostterminaleditor(),
             'showfelhasznalo' => $this->getShowfelhasznalo(),
             'showpdf' => $this->getShowpdf(),
@@ -834,6 +837,16 @@ class Bizonylattipus
     public function setShowpenztmozgat($val)
     {
         $this->showpenztmozgat = $val;
+    }
+
+    public function getShowcsomagolasilista()
+    {
+        return $this->showcsomagolasilista;
+    }
+
+    public function setShowcsomagolasilista($val)
+    {
+        $this->showcsomagolasilista = $val;
     }
 
     /**

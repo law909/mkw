@@ -89,6 +89,10 @@
                         <td><input id="ShowpenztmozgatEdit" name="showpenztmozgat" type="checkbox"{if ($egyed.showpenztmozgat)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
+                        <td><label for="ShowcsomagolasilistaEdit">Csomagolási lista:</label></td>
+                        <td><input id="ShowcsomagolasilistaEdit" name="showcsomagolasilista" type="checkbox"{if ($egyed.showcsomagolasilista)} checked="checked"{/if}></td>
+                    </tr>
+                    <tr>
                         <td><label for="RogzitvestatuszEdit">{at('"Rögzítve" státusz')}:</label></td>
                         <td colspan="3">
                             <select id="RogzitvestatuszEdit" name="rogzitvestatusz">

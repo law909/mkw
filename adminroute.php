@@ -716,6 +716,9 @@ $router->map('GET', '/admin/bizonylatellenorzes/view', 'bizonylatellenorzesContr
 $router->map('GET', '/admin/bizonylatellenorzes/findtermek', 'bizonylatellenorzesController#findtermek', 'adminbizonylatellenorzesfindtermek');
 $router->map('GET', '/admin/bizonylatellenorzes/kereses', 'bizonylatellenorzesController#kereses', 'adminbizonylatellenorzeskereses');
 $router->map('GET', '/admin/bizonylatellenorzes/gettermek', 'bizonylatellenorzesController#gettermek', 'adminbizonylatellenorzesgettermek');
+$router->map('GET', '/admin/csomagolasilista/view', 'csomagolasilistaController#view', 'admincsomagolasilistaview');
+$router->map('POST', '/admin/csomagolasilista/save', 'csomagolasilistaController#save', 'admincsomagolasilistasave');
+$router->map('GET', '/admin/csomagolasilista/print', 'csomagolasilistaController#doPrint', 'admincsomagolasilistaprint');
 
 $router->map('GET', '/admin/megrendelesfej/viewlist', 'megrendelesfejController#viewlist', 'adminmegrendelesfejviewlist');
 $router->map('GET', '/admin/megrendelesfej/getlistbody', 'megrendelesfejController#getlistbody', 'adminmegrendelesfejgetlistbody');
