@@ -2699,6 +2699,7 @@ let bizonylathelper = function ($) {
                         '#bizonylatstatuszcsoportfilter',
                         '#munkalapegyediazonositofilter',
                         '#bizonylatrontottfilter',
+                        '#bizonylatstornofilter',
                         '#egyenlegfilter',
                         '#lejartfilter',
                         '#fizmodfilter',
