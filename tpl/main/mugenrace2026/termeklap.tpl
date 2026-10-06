@@ -51,7 +51,8 @@
                                     <img src="{$imagepath}{$termek.minikepurl}" class="active" alt="{$termek.caption|escape}"
                                          title="{$termek.caption|escape}">
                                     {foreach $termek.kepek as $_kep}
-                                        <img src="{$imagepath}{$_kep.minikepurl}" alt="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}"
+                                        <img src="{$imagepath}{$_kep.minikepurl}"
+                                             alt="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}"
                                              title="{if ($_kep.leiras)}{$_kep.leiras|escape}{else}{$termek.caption|escape}{/if}">
                                     {/foreach}
                                 </div>
@@ -127,7 +128,8 @@
                                                 <div class="pull-left gvaltozatselect">
                                                     <div class="option-selector color-selector" data-termek="{$termek.id}">
                                                         {foreach from=$termek.szinek item=$_v key=$_k}
-                                                            <div class="select-option {$_v|lower|replace:'/':'-'}{if ($_k===$szin_id)} active{/if}" data-value="{$_k}" title="{$_v}"></div>
+                                                            <div class="select-option {$_v|lower|replace:'/':'-'}{if ($_k===$szin_id)} active{/if}"
+                                                                 data-value="{$_k}" title="{$_v}"></div>
                                                         {/foreach}
                                                     </div>
 
@@ -154,7 +156,8 @@
                                     {else}
                                         {if ($hidecart != 1) && ($termek.brutto > 0)}
                                             <div class="textalignright">
-                                                <button type="button" class="{$_kosarbaclass} button primary full-width cartbtn" data-url="/kosar/add?id={$termek.id}"
+                                                <button type="button" class="{$_kosarbaclass} button primary full-width cartbtn"
+                                                        data-url="/kosar/add?id={$termek.id}"
                                                         data-termek="{$termek.id}" data-id="{$termek.id}" data-price="{number_format($termek.brutto,0,',',' ')}"
                                                         data-currency="{$valutanemnev}" data-name="{$termek.caption|escape:'javascript'}">
                                                     {t('Kosárba')}
@@ -166,7 +169,7 @@
                                 <div class="accordion">
                                     <div class="accordion-item">
                                         <div class="accordion-header">{t('Leírás')}<span class="arrow"></span></div>
-                                        <div class="accordion-content">
+                                        <div class="accordion-content termeklap-details">
                                             {$termek.leiras|demoteh1}
                                         </div>
                                     </div>
