@@ -704,6 +704,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['kiegyenlitesurl'] = $this->kiegyenlitesUrl($t, $x['egyenleg']);
             $x['ujpenztarbizonylaturl'] = $this->kiegyenlitesUrl($t, $x['egyenleg'], 'P');
             $x['ujbankbizonylaturl'] = $this->kiegyenlitesUrl($t, $x['egyenleg'], 'B');
+            $x['penztmozgatkapcsolo'] = $this->canTogglePenztmozgat($t);
             if (\mkw\store::isOsztottFizmod()) {
                 $ma = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
                 $egyenlegek = [];
@@ -2145,6 +2146,38 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 }
             }
         }
+    }
+
+    /**
+     * A listán csak kiegyenlítetlen bizonylaton állítható: a meglévő pénzmozgásról a karbantartó
+     * kérdez, a lista nem.
+     */
+    private function canTogglePenztmozgat(Bizonylatfej $t): bool
+    {
+        return $t->getBizonylattipus()?->getShowpenztmozgat()
+            && !$t->getRontott()
+            && !$t->getStorno()
+            && !$t->getStornozott()
+            && !$this->isReadonly($t)
+            && !($t->getBizonylattipus()->getShowmunkalapadatok() && $t->isKiszamlazva())
+            && !$t->getFizmod()?->getNincspenzmozgas()
+            && !(new PenzmozgasService())->getEloPenzmozgas($t);
+    }
+
+    public function setPenztmozgat()
+    {
+        /** @var Bizonylatfej $bf */
+        $bf = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if (!$bf || !$this->canTogglePenztmozgat($bf)) {
+            $this->jsonError(t('A bizonylat kintlévőség/tartozás jelölője itt nem állítható.'), 409);
+            return;
+        }
+        // a karbantartó mentésével azonos út (folyószámla, automatikus pénztárbizonylat, napló),
+        // csak a szállítási költséget nem számoljuk újra
+        $bf->setKellszallitasikoltsegetszamolni(false);
+        $bf->setPenztmozgat($this->params->getBoolRequestParam('kibe'));
+        $this->getEm()->persist($bf);
+        $this->getEm()->flush();
     }
 
     public function setNyomtatva()

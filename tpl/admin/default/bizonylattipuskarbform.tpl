@@ -85,6 +85,8 @@
                     <tr>
                         <td><label for="TetelkotelezoEdit">Tétel nélkül nem menthető:</label></td>
                         <td><input id="TetelkotelezoEdit" name="tetelkotelezo" type="checkbox"{if ($egyed.tetelkotelezo)} checked="checked"{/if}></td>
+                        <td><label for="ShowpenztmozgatEdit">Kintlévőség/tartozás kapcsoló a listán:</label></td>
+                        <td><input id="ShowpenztmozgatEdit" name="showpenztmozgat" type="checkbox"{if ($egyed.showpenztmozgat)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
                         <td><label for="RogzitvestatuszEdit">{at('"Rögzítve" státusz')}:</label></td>

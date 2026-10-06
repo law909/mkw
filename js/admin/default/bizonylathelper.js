@@ -3132,6 +3132,22 @@ let bizonylathelper = function ($) {
 
             });
             $('#mattable-body')
+                .on('click', '.js-penztmozgatkapcsolo', function (e) {
+                    e.preventDefault();
+                    const $this = $(this);
+                    $.ajax({
+                        url: '/admin/bizonylatfej/setpenztmozgat',
+                        type: 'POST',
+                        data: {
+                            id: $this.data('id'),
+                            kibe: !$this.is('.ui-state-hover')
+                        },
+                        success: function () {
+                            // az egyenleg és a kiegyenlítő gombok is változnak
+                            $('.mattable-tablerefresh').click();
+                        }
+                    });
+                })
                 .on('change', '.js-bizonylatstatuszedit', function (e) {
                     e.preventDefault();
 
