@@ -528,15 +528,29 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             $bizszamarr = $this->keresKoltsegszamlaErbizonylatszam($trimmedbizsz);
         } elseif ($biz = $bizrepo->find($trimmedbizsz)) {
             $bizszamarr[] = $biz->getId();
+        } elseif (is_numeric($trimmedbizsz) && $partner) {
+            // csak egy sorszám: ismert partnernél a számla és az előlegszámla is szóba jön – ha csak az egyik az övé, az a pár
+            $jeloltek = [];
+            foreach ([$szamlatipus, $this->getBizonylattipus('elolegszamla')] as $tipus) {
+                if (!$tipus) {
+                    continue;
+                }
+                /** @var Bizonylatfej $biz */
+                $biz = $bizrepo->find($tipus->getAzonosito() . $o->getErteknap()->format('Y') . '/' . str_pad($trimmedbizsz, 6, '0', STR_PAD_LEFT));
+                if ($biz && $biz->getPartnerId() == $partner->getId()) {
+                    $jeloltek[] = $biz->getId();
+                }
+            }
+            if (count($jeloltek) === 1) {
+                $bizszamarr = $jeloltek;
+            }
         } elseif (is_numeric($trimmedbizsz)) {
             $convertedB = $szamlatipus->getAzonosito() . $o->getErteknap()->format('Y') . '/' . str_pad($trimmedbizsz, 6, '0', STR_PAD_LEFT);
 
             /** @var Bizonylatfej $biz */
             $biz = $bizrepo->find($convertedB);
             if ($biz) {
-                if (!$partner || ($partner && $partner->getId() == $biz->getPartnerId())) {
-                    $bizszamarr[] = $biz->getId();
-                }
+                $bizszamarr[] = $biz->getId();
             }
         } else {
             // '/(?<![\p{L}\d])[Ss]?[Zz]?\s*\d{4}\s*\/\s*\d{1,6}(?!\d)/u': a szám nem lehet egy másik szó vagy szám
