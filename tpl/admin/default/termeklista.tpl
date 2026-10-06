@@ -11,130 +11,159 @@
 {block "kozep"}
     <div id="mattable-select" data-theme="{$theme}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Termékek')}"></div>
-        <div id="mattable-filterwrapper">
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="idfilter">{at('Id')}: </label>
-                <input id="idfilter" name="idfilter" type="text" size="15" maxlength="1000" placeholder="12, 34"
-                       title="{at('Pontos egyezés, több termék vesszővel elválasztva')}">
-                <label for="egyediazonositofilter">{at('Egyedi azonosító')}: </label>
-                <input id="egyediazonositofilter" name="egyediazonositofilter" type="text" size="20" maxlength="255"
-                       title="{at('Azok a termékek, amelyek bizonylatán (tételben vagy munkalap fejben) szerepel')}">
-                <label for="nevfilter">{at('Név')} {at('(cikkszám, vonalkód)')}: </label>
-                <input id="nevfilter" name="nevfilter" type="text" size="30" maxlength="255">
-                <label for="kepurlfilter">{at('Főkép url')}: </label>
-                <input id="kepurlfilter" name="kepurlfilter" type="text" size="30" maxlength="255">
-                <label for="gyartofilter">{at('Gyártó')}: </label>
-                <select id="gyartofilter" name="gyartofilter">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $gyartolist as $_gyarto}
-                        <option
-                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                    {/foreach}
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <select id="lathatofilter" name="lathatofilter">
-                    {if ($maintheme == 'mkwcansas')}
-                        <option value="1">{at('Látható')}</option>
-                        <option value="0">{at('Nem látható')}</option>
-                        <option value="9">{at('Mindegy')}</option>
-                    {else}
-                        <option value="9">{at('Mindegy')} {$webshop1name}</option>
-                        <option value="1">{at('Látható')} {$webshop1name}</option>
-                        <option value="0">{at('Nem látható')} {$webshop1name}</option>
-                    {/if}
-                </select>
-                {if ($setup.multishop)}
-                    {for $cikl = 2 to $enabledwebshops}
-                        <select id="lathato{$cikl}filter" name="lathato{$cikl}filter">
-                            <option value="9">{at('Mindegy')} {$webshop{$cikl}name}</option>
-                            <option value="1">{at('Látható')} {$webshop{$cikl}name}</option>
-                            <option value="0">{at('Nem látható')} {$webshop{$cikl}name}</option>
-                        </select>
-                    {/for}
-                {/if}
-                <select id="nemkaphatofilter" name="nemkaphatofilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="1">{at('Nem kapható')}</option>
-                    <option value="0">{at('Kapható')}</option>
-                </select>
-                <select id="fuggobenfilter" name="fuggobenfilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="1">{at('Függőben')}</option>
-                    <option value="0">{at('Nincs függőben')}</option>
-                </select>
-                <select id="inaktivfilter" name="inaktivfilter">
-                    <option value="0">{at('Aktív')}</option>
-                    <option value="1">{at('Inaktív')}</option>
-                    <option value="9">{at('Mindegy')}</option>
-                </select>
-                <select id="ajanlottfilter" name="ajanlottfilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="1">{at('Ajánlott')}</option>
-                    <option value="0">{at('Nem ajánlott')}</option>
-                </select>
-                <select id="kiemeltfilter" name="kiemeltfilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="1">{at('Kiemelt')}</option>
-                    <option value="0">{at('Nem kiemelt')}</option>
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <select id="akciosfilter" name="akciosfilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="1">{at('Akciós')}</option>
-                    <option value="0">{at('Nem akciós')}</option>
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="keszletfilter">{at('Készlet szűrő')}: </label>
-                <select id="keszletmezofilter" name="keszletmezofilter">
-                    <option value="keszlet">{at('Készlet')}</option>
-                    <option value="szabad">{at('Szabad készlet')}</option>
-                    <option value="foglalt">{at('Foglalt')}</option>
-                    <option value="erkezik">{at('Érkezik')}</option>
-                </select>
-                <select id="keszletfilter" name="keszletfilter">
-                    <option value="">{at('Mindegy')}</option>
-                    <option value="van">{at('Van')}</option>
-                    <option value="nulla">{at('Nulla')}</option>
-                    <option value="negativ">{at('Negatív')}</option>
-                </select>
-                <select id="keszletraktarfilter" name="keszletraktarfilter">
-                    <option value="0">{at('Céges szint')}</option>
-                    {foreach $raktarlist as $_r}
-                        <option value="{$_r.id}">{$_r.caption}</option>
-                    {/foreach}
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
-            <div class="matt-hseparator"></div>
-            {if (count($termekmenufalist) > 1)}
-                <div>
-                    <label for="TermekMenuFaFilterEdit">{at('Menü')}:</label>
-                    <select id="TermekMenuFaFilterEdit" class="js-termekmenufafilter">
-                        {foreach $termekmenufalist as $_fa}
-                            <option value="{$_fa.id}">{$_fa.caption|escape}</option>
+        <div id="mattable-filterwrapper" class="termekszuro">
+            <div class="termekszuro-sor">
+                <div class="termekszuro-mezo termekszuro-nev">
+                    <label for="nevfilter">{at('Név, cikkszám, vonalkód')}</label>
+                    <input id="nevfilter" name="nevfilter" type="text" maxlength="255">
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="idfilter">{at('Id')}</label>
+                    <input id="idfilter" name="idfilter" type="text" size="10" maxlength="1000" placeholder="12, 34"
+                           title="{at('Pontos egyezés, több termék vesszővel elválasztva')}">
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="egyediazonositofilter">{at('Egyedi azonosító')}</label>
+                    <input id="egyediazonositofilter" name="egyediazonositofilter" type="text" size="16" maxlength="255"
+                           title="{at('Azok a termékek, amelyek bizonylatán (tételben vagy munkalap fejben) szerepel')}">
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="kepurlfilter">{at('Főkép url')}</label>
+                    <input id="kepurlfilter" name="kepurlfilter" type="text" size="16" maxlength="255">
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="gyartofilter">{at('Gyártó')}</label>
+                    <select id="gyartofilter" name="gyartofilter">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $gyartolist as $_gyarto}
+                            <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
                         {/foreach}
                     </select>
                 </div>
-            {/if}
-            <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"
-                 data-url="/admin/termekmenu/jsonlist?fa={$termekmenufalist[0].id|default:''}"></div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="cimkefilternincs">{at('Címkeszűrő')}: </label>
-                <select id="cimkefilternincs" name="cimkefilternincs">
-                    <option value="">{at('van valamelyik kiválasztott címkéje')}</option>
-                    <option value="1">{at('nincs egyik kiválasztott címkéje sem')}</option>
-                </select>
             </div>
-            <div class="matt-hseparator"></div>
+            <div class="termekszuro-sor">
+                <div class="termekszuro-mezo">
+                    <label for="lathatofilter">{at('Látható')} {$webshop1name}</label>
+                    <select id="lathatofilter" name="lathatofilter">
+                        {if ($maintheme == 'mkwcansas')}
+                            <option value="1">{at('Igen')}</option>
+                            <option value="0">{at('Nem')}</option>
+                            <option value="9">{at('Mindegy')}</option>
+                        {else}
+                            <option value="9">{at('Mindegy')}</option>
+                            <option value="1">{at('Igen')}</option>
+                            <option value="0">{at('Nem')}</option>
+                        {/if}
+                    </select>
+                </div>
+                {if ($setup.multishop)}
+                    {for $cikl = 2 to $enabledwebshops}
+                        <div class="termekszuro-mezo">
+                            <label for="lathato{$cikl}filter">{at('Látható')} {$webshop{$cikl}name}</label>
+                            <select id="lathato{$cikl}filter" name="lathato{$cikl}filter">
+                                <option value="9">{at('Mindegy')}</option>
+                                <option value="1">{at('Igen')}</option>
+                                <option value="0">{at('Nem')}</option>
+                            </select>
+                        </div>
+                    {/for}
+                {/if}
+                <div class="termekszuro-mezo">
+                    <label for="inaktivfilter">{at('Aktív')}</label>
+                    <select id="inaktivfilter" name="inaktivfilter">
+                        <option value="0">{at('Igen')}</option>
+                        <option value="1">{at('Nem')}</option>
+                        <option value="9">{at('Mindegy')}</option>
+                    </select>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="nemkaphatofilter">{at('Kapható')}</label>
+                    <select id="nemkaphatofilter" name="nemkaphatofilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="0">{at('Igen')}</option>
+                        <option value="1">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="fuggobenfilter">{at('Függőben')}</label>
+                    <select id="fuggobenfilter" name="fuggobenfilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('Igen')}</option>
+                        <option value="0">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="akciosfilter">{at('Akciós')}</label>
+                    <select id="akciosfilter" name="akciosfilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('Igen')}</option>
+                        <option value="0">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="ajanlottfilter">{at('Ajánlott')}</label>
+                    <select id="ajanlottfilter" name="ajanlottfilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('Igen')}</option>
+                        <option value="0">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="kiemeltfilter">{at('Kiemelt')}</label>
+                    <select id="kiemeltfilter" name="kiemeltfilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('Igen')}</option>
+                        <option value="0">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="keszletfilter">{at('Készlet')}</label>
+                    <span class="termekszuro-csoport">
+                        <select id="keszletmezofilter" name="keszletmezofilter" title="{at('Melyik készletre szűrjön')}">
+                            <option value="keszlet">{at('Készlet')}</option>
+                            <option value="szabad">{at('Szabad készlet')}</option>
+                            <option value="foglalt">{at('Foglalt')}</option>
+                            <option value="erkezik">{at('Érkezik')}</option>
+                        </select>
+                        <select id="keszletfilter" name="keszletfilter">
+                            <option value="">{at('Mindegy')}</option>
+                            <option value="van">{at('Van')}</option>
+                            <option value="nulla">{at('Nulla')}</option>
+                            <option value="negativ">{at('Negatív')}</option>
+                        </select>
+                        <select id="keszletraktarfilter" name="keszletraktarfilter" title="{at('Raktár')}">
+                            <option value="0">{at('Céges szint')}</option>
+                            {foreach $raktarlist as $_r}
+                                <option value="{$_r.id}">{$_r.caption}</option>
+                            {/foreach}
+                        </select>
+                    </span>
+                </div>
+                <div class="termekszuro-mezo">
+                    <label for="cimkefilternincs">{at('Címkék')}</label>
+                    <select id="cimkefilternincs" name="cimkefilternincs">
+                        <option value="">{at('van valamelyik kiválasztott címkéje')}</option>
+                        <option value="1">{at('nincs egyik kiválasztott címkéje sem')}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="termekszuro-fak">
+                <div id="termekfa" class="mattable-filterwrapper ui-widget-content"></div>
+                <div>
+                    {if (count($termekmenufalist) > 1)}
+                        <div class="termekszuro-mezo termekszuro-menufa">
+                            <label for="TermekMenuFaFilterEdit">{at('Menü')}</label>
+                            <select id="TermekMenuFaFilterEdit" class="js-termekmenufafilter">
+                                {foreach $termekmenufalist as $_fa}
+                                    <option value="{$_fa.id}">{$_fa.caption|escape}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    {/if}
+                    <div id="termekmenu" class="mattable-filterwrapper ui-widget-content"
+                         data-url="/admin/termekmenu/jsonlist?fa={$termekmenufalist[0].id|default:''}"></div>
+                </div>
+            </div>
             <div id="cimkefiltercontainer">
                 <div id="cimkefiltercontainerhead"><a id="cimkefiltercollapse" href="#"
                                                       data-visible="visible">{at('Kinyit/becsuk')}</a></div>
