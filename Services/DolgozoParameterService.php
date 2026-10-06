@@ -29,6 +29,9 @@ class DolgozoParameterService
     /** A mattable listák "Mindig nyitva" (szűrő nyitva tartása) pipája */
     const MINDIGNYITVA = 'mindignyitva';
 
+    /** A mattable listák alapértelmezésként mentett szűrője (a lista URL-jének query része) */
+    const ALAPSZURO = 'alapszuro';
+
     /** A bal oldali menü egy menücsoportjának nyitott/zárt állapota */
     const MENUCSOPORT = 'menucsoportnyitva';
 
@@ -65,6 +68,26 @@ class DolgozoParameterService
             return (int)$pk;
         }
         return null;
+    }
+
+    /** The saved default filter of a list; the sysadmin, who has no dolgozo row, keeps it in parameterek. */
+    public static function getListFilter($path)
+    {
+        $key = self::getListKey($path, self::ALAPSZURO);
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            return (string)\mkw\store::getParameter('sysadmin' . $key, '');
+        }
+        return (string)self::getParameter($key, '');
+    }
+
+    public static function setListFilter($path, $value)
+    {
+        $key = self::getListKey($path, self::ALAPSZURO);
+        if (\mkw\store::getAdminSession()->pk == -1) {
+            \mkw\store::setParameter('sysadmin' . $key, $value);
+            return;
+        }
+        self::setParameter($key, $value);
     }
 
     public static function getParameter($par, $default = null)

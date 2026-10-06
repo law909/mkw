@@ -31,6 +31,7 @@
                 extraFields: [],
                 clearButton: '.mattable-filterclear',
                 refreshButton: '.mattable-filterrefresh',
+                saveButton: '.mattable-filtersave',
                 onClear: false,
                 onFilter: false,
                 // az extraFields szűrők visszaállítása az URL-ből (paraméter: URLSearchParams)
@@ -63,6 +64,9 @@
                 filterRefreshTitle: 'Szűrő bekapcsolása',
                 filterClear: 'Töröl',
                 filterClearTitle: 'Szűrőfeltételek tölése',
+                filterSave: 'Mentés alapértelmezésként',
+                filterSaveTitle: 'A lista üres címmel megnyitva ezzel a szűrővel indul',
+                filterSaved: 'Mentve',
                 filterOpenTitle: 'Szűrőt kinyit',
                 filterCloseTitle: 'Szűrőt becsuk',
                 filterOpenCloseTitle: 'Szűrő kinyit/becsuk',
@@ -165,7 +169,8 @@
                 header.append('<a id="_filtercloseupbutton" class="mattedit-titlebar-close" title="' + setup.txt.filterOpenTitle + '" href="#"><span class="ui-icon ui-icon-circle-triangle-s"></span></a>');
                 var _filtercloseupbutton = $('#_filtercloseupbutton');
                 filterwrapper.prepend('<a class="mattable-filterrefresh" href="#" title="' + setup.txt.filterRefreshTitle + '">' + setup.txt.filterRefresh + '</a>' +
-                    '<a class="mattable-filterclear" href="#" title="' + setup.txt.filterClearTitle + '">' + setup.txt.filterClear + '</a>');
+                    '<a class="mattable-filterclear" href="#" title="' + setup.txt.filterClearTitle + '">' + setup.txt.filterClear + '</a>' +
+                    '<a class="mattable-filtersave" href="#" title="' + setup.txt.filterSaveTitle + '">' + setup.txt.filterSave + '</a>');
                 filterwrapper.addClass('ui-widget ui-widget-content mattable-filterwrapper').hide();
                 _filtercloseupbutton.on('click', function (e) {
                     e.preventDefault();
@@ -248,6 +253,33 @@
                             setup.filter.onClear.call(this);
                         }
                         reloadTbody();
+                    })
+                    .button();
+                $(setup.filter.saveButton)
+                    .on('click', function (e) {
+                        e.preventDefault();
+                        const $btn = $(this);
+                        // a reload írja az URL-be a szűrő aktuális állapotát, onnan mentjük
+                        reloadTbody();
+                        const params = new URLSearchParams(window.location.search);
+                        ['pageno', 'elemperpage', 'order', 'orderdir', 'mind', 'mindok'].forEach(function (k) {
+                            params.delete(k);
+                        });
+                        $.ajax({
+                            url: '/admin/setlistfilter',
+                            type: 'POST',
+                            data: {
+                                key: window.location.pathname,
+                                value: params.toString()
+                            },
+                            success: function () {
+                                window.mattableAlapszuro = params.toString();
+                                $btn.button('option', 'label', setup.txt.filterSaved);
+                                setTimeout(function () {
+                                    $btn.button('option', 'label', setup.txt.filterSave);
+                                }, 1500);
+                            }
+                        });
                     })
                     .button();
                 if (Array.isArray(setup.filter.fields)) {
@@ -881,6 +913,10 @@
             pendingScrollY = takeSavedScrollY();
             // megosztható / könyvjelzőzhető nézet visszaállítása az URL alapján
             // (kezdeti betöltés: csak az aktuális előzmény-bejegyzést cseréljük, nem hozunk létre újat)
+            // üres címmel nyitva a dolgozó alapértelmezésként mentett szűrője indul
+            if (!window.location.search && window.mattableAlapszuro && window.history.replaceState) {
+                window.history.replaceState(null, '', window.location.pathname + '?' + window.mattableAlapszuro + window.location.hash);
+            }
             var initState = applyUrlToControls();
             gettbody(initState.pageno, initState.elemperpage, 'replace');
 

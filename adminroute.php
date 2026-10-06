@@ -623,6 +623,7 @@ $router->map('POST', '/admin/setuipref', 'adminController#setUIPref', 'adminsetu
 $router->map('POST', '/admin/menuhasznalat', 'adminController#recordMenuHasznalat', 'adminmenuhasznalat');
 $router->map('POST', '/admin/setsysadminappearance', 'adminController#setSysadminAppearance', 'adminsetsysadminappearance');
 $router->map('POST', '/admin/setlistparam', 'adminController#setListParam', 'adminsetlistparam');
+$router->map('POST', '/admin/setlistfilter', 'adminController#setListFilter', 'adminsetlistfilter');
 $router->map(
     'POST',
     '/admin/setmenucsoportnyitva',

@@ -440,6 +440,20 @@ class adminController extends mkwhelpers\Controller
     }
 
     /**
+     * A lista szűrőjének mentése alapértelmezésként: a lista query stringje, amit a mattable üres
+     * URL-lel nyitott listára tölt vissza. Üres érték = nincs alapszűrő.
+     */
+    public function setListFilter()
+    {
+        $key = $this->params->getStringRequestParam('key', '');
+        // a query string & jeleit a sanitizer nem rághatja szét; kiírni a sablon escape-eli
+        $value = $this->params->getOriginalStringRequestParam('value', '');
+        if (preg_match('#^/[A-Za-z0-9/_-]+$#', $key) && strlen($value) <= 4000) {
+            \Services\DolgozoParameterService::setListFilter($key, $value);
+        }
+    }
+
+    /**
      * A bal oldali menü egy menücsoportjának nyitott/zárt állapota, a bejelentkezett
      * dolgozóhoz mentve. A menü kirajzolásakor a menuController::getMenu() olvassa vissza.
      */

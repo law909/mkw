@@ -189,6 +189,7 @@ abstract class Controller
                     )
                 ) ? 1 : 0
             );
+            $view->setVar('alapszuro', \Services\DolgozoParameterService::getListFilter($path));
         }
     }
 
