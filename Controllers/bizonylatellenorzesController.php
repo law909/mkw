@@ -24,22 +24,34 @@ class bizonylatellenorzesController extends \mkwhelpers\Controller
             return;
         }
 
+        // the same product/variant may sit on several lines (a barcode scanned three times in the
+        // POS entry gives three lines): the check counts against their total, in one row
         $tetelek = [];
         foreach ($bizonylat->getBizonylattetelek() as $tetel) {
             /** @var \Entities\Bizonylattetel $tetel */
             $termek = $tetel->getTermek();
             $valtozat = $tetel->getTermekvaltozat();
-            $tetelek[] = [
+            $termekid = $termek ? $termek->getId() : 0;
+            $valtozatid = $valtozat ? $valtozat->getId() : 0;
+            $key = $termekid ? $termekid . '-' . $valtozatid : 'tetel-' . $tetel->getId();
+            if (isset($tetelek[$key])) {
+                $tetelek[$key]['mennyiseg'] += (float)$tetel->getMennyiseg();
+                $tetelek[$key]['sordb']++;
+                continue;
+            }
+            $tetelek[$key] = [
                 'id' => $tetel->getId(),
-                'termekid' => $termek ? $termek->getId() : 0,
-                'valtozatid' => $valtozat ? $valtozat->getId() : 0,
+                'termekid' => $termekid,
+                'valtozatid' => $valtozatid,
                 'cikkszam' => $tetel->getDisplayCikkszam(),
                 'nev' => $tetel->getTermeknev(),
                 'valtozatnev' => $valtozat ? trim($valtozat->getNev(), ' -') : '',
                 'vonalkod' => ($valtozat && $valtozat->getVonalkod()) ? $valtozat->getVonalkod() : ($termek ? $termek->getVonalkod() : ''),
                 'mennyiseg' => (float)$tetel->getMennyiseg(),
+                'sordb' => 1,
             ];
         }
+        $tetelek = array_values($tetelek);
 
         $view = $this->createView('bizonylatellenorzes.tpl');
         $view->setVar('pagetitle', t('Tételek ellenőrzése'));

@@ -22,7 +22,7 @@
             <td class="datacell textalignright">{$tetel.mennyiseg|string_format:"%g"}</td>
             <td class="datacell textalignright"><input class="js-ellszamolt" type="number" step="any" value="0" size="6"></td>
             <td class="datacell textalignright js-ellelteres"></td>
-            <td class="datacell"></td>
+            <td class="datacell">{if ($tetel.sordb > 1)}{$tetel.sordb} {at('sorban')}{/if}</td>
         </tr>
     {/foreach}
     </tbody>
