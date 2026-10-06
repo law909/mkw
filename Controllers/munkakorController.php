@@ -24,7 +24,7 @@ class munkakorController extends \mkwhelpers\MattableController
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
-        if ($forKarb && \mkw\store::isSysadmin()) {
+        if ($forKarb && self::canEditMenuJog()) {
             $x['menucsoportok'] = $this->getMenuLista($t->getId());
         }
         return $x;
@@ -52,10 +52,16 @@ class munkakorController extends \mkwhelpers\MattableController
         return array_values($csoportok);
     }
 
-    /** A menüjogok csak akkor íródnak, ha a fül a formon volt (sysadmin), különben a meglévők maradnak. */
+    /** Aki a munkaköröket karbantarthatja, az a menüjogaikat is (a saját munkaköréét is). */
+    private static function canEditMenuJog(): bool
+    {
+        return \mkw\store::haveMenuJog('/admin/munkakor/viewlist', 90);
+    }
+
+    /** A menüjogok csak akkor íródnak, ha a fül a formon volt, különben a meglévők maradnak. */
     protected function afterSave($o, $parancs = null)
     {
-        if ($parancs === $this->delOperation || !\mkw\store::isSysadmin() || !$this->params->getBoolRequestParam('menujogok')) {
+        if ($parancs === $this->delOperation || !self::canEditMenuJog() || !$this->params->getBoolRequestParam('menujogok')) {
             return;
         }
         $conn = $this->getEm()->getConnection();
