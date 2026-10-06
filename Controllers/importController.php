@@ -5847,7 +5847,23 @@ class importController extends \mkwhelpers\Controller
         $reader = IOFactory::createReader($filetype);
         $reader->setReadDataOnly(true);
         $excel = $reader->load($filenev);
+        // a "Változatok" munkalap (Termék ár export) a változatok saját ára; ha mentéskor az volt az aktív, a termékek
+        // akkor is a változatkód nélküli munkalapról jönnek
+        $valtozatSheetek = array_values(array_filter($excel->getAllSheets(), fn($s) => self::isValtozatArSheet($s)));
         $sheet = $excel->getActiveSheet();
+        if (self::isValtozatArSheet($sheet)) {
+            $sheet = null;
+            foreach ($excel->getAllSheets() as $s) {
+                if (!self::isValtozatArSheet($s)) {
+                    $sheet = $s;
+                    break;
+                }
+            }
+        }
+        if (!$sheet) {
+            $this->importValtozatArak($valtozatSheetek);
+            return;
+        }
         $maxrow = (int)$sheet->getHighestRow();
         if (!$dbig) {
             $dbig = $maxrow;
@@ -6019,8 +6035,123 @@ class importController extends \mkwhelpers\Controller
                 \mkw\store::getEm()->flush();
             }
         }
+        $this->importValtozatArak($valtozatSheetek);
     }
 
+    private static function isValtozatArSheet($sheet): bool
+    {
+        $maxcol = Coordinate::columnIndexFromString($sheet->getHighestColumn());
+        for ($col = 1; $col <= $maxcol; ++$col) {
+            if (trim((string)$sheet->getCell([$col, 1])->getValue()) === 'valtozatkod') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * A változatok saját ársávos ára a "Változatok" munkalapokról. A lap a saját árat mutatja, ahogy az export kiírta:
+     * szám = saját ár, üres cella vagy 0 = nincs saját ár (a változat a termék árát kapja, a meglévő sajátja törlődik).
+     * Csak a lapon szereplő sor és oszlop számít. Ha ugyanarra a sávra bruttó és nettó oszlop is van, a bruttó számít.
+     * A kimaradt sorokat a válasz sorolja fel – a kliens csak hibát jelez, ezért sikernél nincs kimenet.
+     */
+    private function importValtozatArak(array $sheetek): void
+    {
+        if (!$sheetek) {
+            return;
+        }
+        $em = \mkw\store::getEm();
+        $valtozatrepo = $em->getRepository(TermekValtozat::class);
+        $arrepo = $em->getRepository(\Entities\TermekValtozatAr::class);
+        $arsavok = [];
+        foreach ($em->getRepository(Arsav::class)->findAll() as $arsav) {
+            $arsavok[$arsav->getNev()] = $arsav;
+        }
+        $valutanemek = [];
+        foreach ($em->getRepository(Valutanem::class)->findAll() as $vn) {
+            $valutanemek[strtoupper($vn->getNev())] = $vn;
+        }
+        $hibak = [];
+        foreach ($sheetek as $sheet) {
+            $maxcol = Coordinate::columnIndexFromString($sheet->getHighestColumn());
+            $maxrow = (int)$sheet->getHighestRow();
+            $fej = [];
+            for ($col = 1; $col <= $maxcol; ++$col) {
+                $fej[$col] = trim((string)$sheet->getCell([$col, 1])->getValue());
+            }
+            $kodOszlop = array_search('kod', $fej, true);
+            $valtozatOszlop = array_search('valtozatkod', $fej, true);
+            for ($row = 2; $row <= $maxrow; ++$row) {
+                $valtozatkod = (int)$sheet->getCell([$valtozatOszlop, $row])->getValue();
+                $kod = $kodOszlop ? (int)$sheet->getCell([$kodOszlop, $row])->getValue() : 0;
+                if (!$valtozatkod) {
+                    continue;
+                }
+                /** @var TermekValtozat $valtozat */
+                $valtozat = $valtozatrepo->find($valtozatkod);
+                if (!$valtozat || !$valtozat->getTermek()) {
+                    $hibak[] = $sheet->getTitle() . ' ' . $row . '. sor: nincs ' . $valtozatkod . ' azonosítójú változat';
+                    continue;
+                }
+                if ($kod && $valtozat->getTermek()->getId() !== $kod) {
+                    $hibak[] = $sheet->getTitle() . ' ' . $row . '. sor: a ' . $valtozatkod . ' változat nem a ' . $kod . ' termékhez tartozik';
+                    continue;
+                }
+                $ertekek = [];
+                foreach ($fej as $col => $nev) {
+                    if (!preg_match('/^(netto|brutto)_([^_]+)_(.+)$/', $nev, $m)) {
+                        continue;
+                    }
+                    $ertek = $sheet->getCell([$col, $row])->getValue();
+                    if ($ertek === null || trim((string)$ertek) === '') {
+                        $ertek = 0;
+                    }
+                    if (!is_numeric($ertek)) {
+                        $hibak[] = $sheet->getTitle() . ' ' . $row . '. sor, ' . $nev . ': nem szám (' . $ertek . ')';
+                        continue;
+                    }
+                    $kulcs = strtoupper($m[2]) . '|' . $m[3];
+                    // az üres bruttó ne írja felül a kitöltött nettót, és fordítva
+                    if (!isset($ertekek[$kulcs]) || ((float)$ertek && ($m[1] === 'brutto' || !$ertekek[$kulcs][1]))) {
+                        $ertekek[$kulcs] = [$m[1], (float)$ertek, $nev];
+                    }
+                }
+                foreach ($ertekek as $kulcs => [$tipus, $ertek, $nev]) {
+                    [$valutanemnev, $arsavnev] = explode('|', $kulcs, 2);
+                    $valutanem = $valutanemek[$valutanemnev] ?? null;
+                    $arsav = $arsavok[$arsavnev] ?? null;
+                    if (!$valutanem || !$arsav) {
+                        $hibak[] = $sheet->getTitle() . ' ' . $row . '. sor, ' . $nev . ': ismeretlen ársáv vagy valutanem';
+                        continue;
+                    }
+                    $ar = $arrepo->findOneBy(['termekvaltozat' => $valtozat, 'valutanem' => $valutanem, 'arsav' => $arsav]);
+                    if ($ertek == 0) {
+                        if ($ar) {
+                            $em->remove($ar);
+                        }
+                        continue;
+                    }
+                    if (!$ar) {
+                        $ar = new \Entities\TermekValtozatAr();
+                        $ar->setTermekvaltozat($valtozat);
+                        $ar->setValutanem($valutanem);
+                        $ar->setArsav($arsav);
+                    }
+                    if ($tipus === 'brutto') {
+                        $ar->setBrutto($ertek);
+                    } else {
+                        $ar->setNetto($ertek);
+                    }
+                    $em->persist($ar);
+                }
+            }
+            $em->flush();
+        }
+        if ($hibak) {
+            echo 'A változatárak közül ' . count($hibak) . ' tétel kimaradt: ' . implode('; ', array_slice($hibak, 0, 20))
+                . (count($hibak) > 20 ? '; …' : '');
+        }
+    }
     public function szcimkeimport()
     {
 //        $translaterepo = \mkw\store::getEm()->getRepository('Gedmo\Translatable\Entity\Translation');

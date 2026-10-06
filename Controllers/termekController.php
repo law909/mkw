@@ -2380,9 +2380,20 @@ class termekController extends \mkwhelpers\MattableController
         $ids = explode(',', $ids);
 
         $arsavok = $this->getRepo(TermekAr::class)->getExistingArsavok();
+        if (\mkw\store::isArsavok()) {
+            // a csak változatárban szereplő sáv is kapjon oszlopot, a két munkalapon ugyanazok az oszlopok
+            $kulcsok = array_map(fn($a) => $a['id'] . '|' . $a['valutanemid'], $arsavok);
+            foreach ($this->getRepo(\Entities\TermekValtozatAr::class)->getExistingArsavok() as $a) {
+                if (!in_array($a['id'] . '|' . $a['valutanemid'], $kulcsok)) {
+                    $arsavok[] = $a;
+                }
+            }
+            usort($arsavok, fn($a, $b) => strcmp((string)$a['azonosito'], (string)$b['azonosito']));
+        }
         $defavaluta = \mkw\store::getParameter(\mkw\consts::Valutanem);
 
         $excel = new Spreadsheet();
+        $excel->getActiveSheet()->setTitle('Termékek');
         $excel->setActiveSheetIndex(0)
             ->setCellValue('A1', 'kod');
         $oszlop = 3;
@@ -2430,6 +2441,10 @@ class termekController extends \mkwhelpers\MattableController
             }
             $sor++;
         }
+        if (\mkw\store::isArsavok()) {
+            $this->writeValtozatArSheet($excel, $termekek, $arsavok, $defavaluta);
+            $excel->setActiveSheetIndex(0);
+        }
 
         $writer = IOFactory::createWriter($excel, 'Xlsx');
 
@@ -2448,6 +2463,59 @@ class termekController extends \mkwhelpers\MattableController
         readfile($filepath);
 
         \unlink($filepath);
+    }
+
+    /**
+     * A "Változatok" munkalap: a termékek változatai egymás alatt, csak a változat saját árával; az üres cella azt
+     * jelenti, hogy a változat a termék árát kapja. Az árazás import (importController::szimport) a `valtozatkod`
+     * oszlopról ismeri fel, és ugyanígy olvassa vissza: az üres cella ott a saját ár törlése.
+     */
+    private function writeValtozatArSheet(Spreadsheet $excel, array $termekek, array $arsavok, $defavaluta): void
+    {
+        $sheet = $excel->createSheet();
+        $sheet->setTitle('Változatok');
+        $sheet->setCellValue('A1', 'kod');
+        $sheet->setCellValue('B1', 'valtozatkod');
+        $oszlopok = [];
+        foreach (array_values($arsavok) as $i => $arsav) {
+            $nettobrutto = $arsav['valutanemid'] == $defavaluta ? 'brutto' : 'netto';
+            $sheet->setCellValue(\mkw\store::getExcelCoordinate(4 + $i) . '1', $nettobrutto . '_' . $arsav['valutanem'] . '_' . $arsav['azonosito']);
+            $oszlopok[$arsav['id'] . '|' . $arsav['valutanemid']] = [4 + $i, $nettobrutto === 'brutto'];
+        }
+
+        $valtozatids = [];
+        foreach ($termekek as $termek) {
+            foreach ($termek->getValtozatok() ?? [] as $valtozat) {
+                $valtozatids[] = $valtozat->getId();
+            }
+        }
+        $arak = [];
+        if ($valtozatids) {
+            /** @var \Entities\TermekValtozatAr $ar */
+            foreach ($this->getRepo(\Entities\TermekValtozatAr::class)->findBy(['termekvaltozat' => $valtozatids]) as $ar) {
+                if ($ar->hasPrice()) {
+                    $arak[$ar->getTermekvaltozat()->getId()][$ar->getArsavId() . '|' . $ar->getValutanemId()] = $ar;
+                }
+            }
+        }
+
+        $sor = 2;
+        foreach ($termekek as $termek) {
+            /** @var \Entities\TermekValtozat $valtozat */
+            foreach ($termek->getRendezettValtozatok() as $valtozat) {
+                $sheet->setCellValue('A' . $sor, $termek->getId());
+                $sheet->setCellValue('B' . $sor, $valtozat->getId());
+                $sheet->setCellValue('C' . $sor, $valtozat->getCikkszam());
+                $sheet->setCellValue('D' . $sor, $termek->getNev() . ' - ' . $valtozat->getNev());
+                foreach ($arak[$valtozat->getId()] ?? [] as $kulcs => $ar) {
+                    if (isset($oszlopok[$kulcs])) {
+                        [$oszlop, $brutto] = $oszlopok[$kulcs];
+                        $sheet->setCellValue(\mkw\store::getExcelCoordinate($oszlop) . $sor, $brutto ? $ar->getBrutto() : $ar->getNetto());
+                    }
+                }
+                $sor++;
+            }
+        }
     }
 
     public function fcmotoexport()

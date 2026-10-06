@@ -92,4 +92,16 @@ class TermekValtozatArRepository extends \mkwhelpers\Repository
         }
         return $result;
     }
+
+    /** A változatárakban előforduló ársáv + valutanem párok, a TermekArRepository::getExistingArsavok() alakjában. */
+    public function getExistingArsavok(): array
+    {
+        return $this->_em->getConnection()->fetchAllAssociative(
+            'SELECT DISTINCT a.id, a.nev AS azonosito, v.nev AS valutanem, t.valutanem_id AS valutanemid'
+            . ' FROM termekvaltozatar t'
+            . ' LEFT OUTER JOIN valutanem v ON t.valutanem_id = v.id'
+            . ' LEFT OUTER JOIN arsav a ON t.arsav_id = a.id'
+            . ' ORDER BY azonosito'
+        );
+    }
 }
