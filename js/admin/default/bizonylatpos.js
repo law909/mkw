@@ -236,13 +236,48 @@ var bizonylatpos = (function ($) {
 
         $cont.on('click', '.js-postetheldel', function (e) {
             e.preventDefault();
-            $(this).closest('.js-postetel').remove();
-            onChange();
+            const $row = $(this).closest('.js-postetel');
+            if ($row.data('teteloper') !== 'edit') {
+                $row.remove();
+                onChange();
+                return;
+            }
+            // a már mentett tétel a klasszikus rögzítőhöz hasonlóan azonnal törlődik a szerveren
+            $('#dialogcenter').html('Biztos, hogy törli a tételt?').dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    'Igen': function () {
+                        $.ajax({
+                            url: '/admin/bizonylattetel/save',
+                            type: 'POST',
+                            data: {
+                                id: $row.data('tetelid'),
+                                oper: 'del'
+                            },
+                            success: function () {
+                                $row.remove();
+                                onChange();
+                            }
+                        });
+                        $(this).dialog('close');
+                    },
+                    'Nem': function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
         });
 
-        // Betöltéskor a partner a soron következő, nem a vonalkód: a fej kitöltése az első lépés.
+        // Új bizonylatnál a partner a soron következő, nem a vonalkód: a fej kitöltése az első lépés.
+        // Meglévő bizonylat szerkesztésekor a fej kész, mehet a beolvasás.
         // A keresőre az első beolvasás után magától visszaáll a fókusz (addTetelRow).
-        $('#PartnerEdit').focus();
+        if (vanTetel()) {
+            $cont.find('.js-poskereso').focus();
+        } else {
+            $('#PartnerEdit').focus();
+        }
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace Controllers;
 
 use Entities\Afa;
+use Entities\Bizonylatfej;
+use Entities\Bizonylattetel;
 use Entities\Bizonylattipus;
 use Entities\Partner;
 use Entities\Raktar;
@@ -146,15 +148,12 @@ class bizonylatposController extends \mkwhelpers\Controller
     {
         $partner = $this->getPartner();
         $valutanem = $this->getValutanem();
-        $raktar = $this->getRaktar();
 
         /** @var Afa|null $afa */
         $afa = $termek->getAfa();
-        $afakulcs = $afa ? $afa->getErtek() : 0;
 
         $enetto = $termek->getKedvezmenynelkuliNettoAr($valtozat, $partner, $valutanem);
         $netto = $termek->getNettoAr($valtozat, $partner, $valutanem);
-        $kedvezmeny = $termek->getKedvezmeny($partner);
         $brutto = $afa ? $afa->calcBrutto($netto) : $netto;
         $ebrutto = $afa ? $afa->calcBrutto($enetto) : $enetto;
 
@@ -162,32 +161,75 @@ class bizonylatposController extends \mkwhelpers\Controller
         if ($valtozat && $valtozat->getNev() && trim($valtozat->getNev(), ' -')) {
             $nev .= ' (' . $valtozat->getNev() . ')';
         }
-        $cikkszam = ($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam();
-
-        $keszlet = $termek->getMozgat() ? ($valtozat ?: $termek)->getAvailableStock(datum: null, raktarid: $raktar?->getId()) : null;
-
-        $view = $this->createView('bizonylattetelposkarb.tpl');
-        $view->setVar('tetelid', \mkw\store::createUID());
-        $view->setVar('termekid', $termek->getId());
-        $view->setVar('valtozatid', $valtozat ? $valtozat->getId() : 0);
-        $view->setVar('afaid', $afa ? $afa->getId() : 0);
-        $view->setVar('afakulcs', $afakulcs);
-        $view->setVar('nev', $nev);
-        $view->setVar('cikkszam', $cikkszam);
-        $view->setVar('mozgat', $keszlet !== null);
-        $view->setVar('raktaron', ($keszlet > 0));
-        $view->setVar('keszlet', (float)$keszlet);
-        $view->setVar('enettoegysar', number_format((float)$enetto, 2, '.', ''));
-        $view->setVar('ebruttoegysar', number_format((float)$ebrutto, 2, '.', ''));
-        $view->setVar('nettoegysar', number_format((float)$netto, 2, '.', ''));
-        $view->setVar('bruttoegysar', number_format((float)$brutto, 2, '.', ''));
-        $view->setVar('kedvezmeny', number_format((float)$kedvezmeny, 2, '.', ''));
 
         /** @var Bizonylattipus|null $biztipus */
         $biztipus = $this->getRepo(Bizonylattipus::class)->find($this->params->getStringRequestParam('type'));
-        if ($biztipus) {
-            $biztipus->setTemplateVars($view);
+        return $this->renderRow($biztipus, $termek, $valtozat, $this->getRaktar(), [
+            'tetelid' => \mkw\store::createUID(),
+            'teteloper' => 'add',
+            'afaid' => $afa ? $afa->getId() : 0,
+            'afakulcs' => $afa ? $afa->getErtek() : 0,
+            'nev' => $nev,
+            'cikkszam' => ($valtozat && $valtozat->getCikkszam()) ? $valtozat->getCikkszam() : $termek->getCikkszam(),
+            'mennyiseg' => 1,
+            'enettoegysar' => $enetto,
+            'ebruttoegysar' => $ebrutto,
+            'nettoegysar' => $netto,
+            'bruttoegysar' => $brutto,
+            'kedvezmeny' => $termek->getKedvezmeny($partner),
+        ]);
+    }
+
+    /**
+     * A meglévő bizonylat vonalkódos szerkesztésekor a már rögzített tételek sorai, a tétel saját
+     * áraival – a mentés a gyorsrögzítő edit ágán írja vissza őket.
+     *
+     * @return string[]
+     */
+    public function renderExistingTetelRows(Bizonylatfej $bizonylat)
+    {
+        $rows = [];
+        /** @var Bizonylattetel $tetel */
+        foreach ($bizonylat->getRendezettTetelek() as $tetel) {
+            $termek = $tetel->getTermek();
+            if (!$termek) {
+                continue;
+            }
+            $rows[] = $this->renderRow($bizonylat->getBizonylattipus(), $termek, $tetel->getTermekvaltozat(), $bizonylat->getRaktar(), [
+                'tetelid' => $tetel->getId(),
+                'teteloper' => 'edit',
+                'afaid' => $tetel->getAfaId() ?: 0,
+                'afakulcs' => $tetel->getAfakulcs(),
+                'nev' => $tetel->getFullTermeknev(),
+                'cikkszam' => $tetel->getDisplayCikkszam(),
+                'mennyiseg' => $tetel->getMennyiseg(),
+                'enettoegysar' => $tetel->getEnettoegysar(),
+                'ebruttoegysar' => $tetel->getEbruttoegysar(),
+                'nettoegysar' => $tetel->getNettoegysar(),
+                'bruttoegysar' => $tetel->getBruttoegysar(),
+                'kedvezmeny' => $tetel->getKedvezmeny(),
+            ]);
         }
+        return $rows;
+    }
+
+    private function renderRow(?Bizonylattipus $biztipus, Termek $termek, ?TermekValtozat $valtozat, ?Raktar $raktar, array $vars)
+    {
+        $keszlet = $termek->getMozgat() ? ($valtozat ?: $termek)->getAvailableStock(datum: null, raktarid: $raktar?->getId()) : null;
+
+        $view = $this->createView('bizonylattetelposkarb.tpl');
+        foreach ($vars as $key => $value) {
+            $view->setVar($key, $value);
+        }
+        foreach (['enettoegysar', 'ebruttoegysar', 'nettoegysar', 'bruttoegysar', 'kedvezmeny'] as $key) {
+            $view->setVar($key, number_format((float)$vars[$key], 2, '.', ''));
+        }
+        $view->setVar('termekid', $termek->getId());
+        $view->setVar('valtozatid', $valtozat ? $valtozat->getId() : 0);
+        $view->setVar('mozgat', $keszlet !== null);
+        $view->setVar('raktaron', ($keszlet > 0));
+        $view->setVar('keszlet', (float)$keszlet);
+        $biztipus?->setTemplateVars($view);
         return $view->getTemplateResult();
     }
 

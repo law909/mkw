@@ -21,6 +21,7 @@
             quickAddLink: '.mattable-quickaddlink',
             quickAddVisible: false,
             posAddLink: '.mattable-posaddlink',
+            posEditLink: '.mattable-poseditlink',
             posAddVisible: false,
             filter: {
                 selector: '#mattable-filterwrapper',
@@ -763,6 +764,7 @@
                 });
             });
             $('.mattable-editlink').button();
+            $(setup.posEditLink).button();
             $('.mattable-dellink').button();
             if (typeof setup.tablebody.onStyle === 'function') {
                 setup.tablebody.onStyle.call(this);
@@ -780,6 +782,9 @@
         var doEditLink = function (obj) {
             $(setup.editLink, obj).each(function (i) {
                 $(this).attr('href', setup.karb.newWindowUrl + '?id=' + $(this).attr(_dataattr.recordid) + '&oper=' + $(this).attr(_dataattr.oper));
+            });
+            $(setup.posEditLink, obj).each(function (i) {
+                $(this).attr('href', setup.karb.newWindowUrl + '?id=' + $(this).attr(_dataattr.recordid) + '&oper=edit&pos=1');
             });
             if (typeof setup.tablebody.onDoEditLink === 'function') {
                 setup.tablebody.onDoEditLink.call(this);

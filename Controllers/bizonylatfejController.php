@@ -1951,6 +1951,13 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 && ($oper !== $this->stornoOperation)
                 && $this->isReadonly($record)
             );
+            if ($pos && $record && $oper === $this->editOperation) {
+                if ($this->isReadonly($record)) {
+                    $view->setVar('pos', false);
+                } else {
+                    $view->setVar('postetelek', (new bizonylatposController())->renderExistingTetelRows($record));
+                }
+            }
 
             $this->biztipus->setTemplateVars($view);
             // a mentés utáni nyomtatás/küldés kérdése beállítás mögött van

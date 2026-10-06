@@ -566,7 +566,7 @@
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody class="js-postetelek"></tbody>
+                            <tbody class="js-postetelek">{foreach $postetelek|default:[] as $_postetel}{$_postetel}{/foreach}</tbody>
                         </table>
                         {* a kereső a tételek alatt, mint a bolti eladáson – a felvett sorok fölé nőnek *}
                         <div class="bizonylatpos-keresosor">

@@ -38,6 +38,9 @@
         <div class="bizlista-fej">
             {if (($_egyed.editprinted || (!$_egyed.editprinted && !$_egyed.nyomtatva)) && !($showmunkalapadatok && $_egyed.munkalapkiszamlazva))}
                 <a class="mattable-editlink bizlista-szam" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{at('Szerkeszt')}">{$_egyed.id}</a>
+                {if ($setup.vonalkod|default)}
+                    <a class="mattable-poseditlink" href="#" data-egyedid="{$_egyed.id}" title="{at('Módosítás vonalkódos tételfelvitellel')}">V</a>
+                {/if}
             {else}
                 <span class="bizlista-szam">{$_egyed.id}</span>
             {/if}
