@@ -1933,6 +1933,8 @@ if (!\mkw\store::isClosed()) {
 
 // a rontás visszavétele és a partner összefűzés jogát a controller nézi, a menüpont munkakörei szerint
 $router->map('GET', '/admin/rontasvisszavetel/view', 'rontasvisszavetelController#view', 'adminrontasvisszavetelview');
+$router->map('GET', '/admin/pagecache/view', 'pagecacheController#view', 'adminpagecacheview');
+$router->map('POST', '/admin/pagecache/clear', 'pagecacheController#clear', 'adminpagecacheclear');
 $router->map('GET', '/admin/rontasvisszavetel/info', 'rontasvisszavetelController#info', 'adminrontasvisszavetelinfo');
 $router->map('GET', '/admin/partnermerge/view', 'partnermergeController#view', 'adminpartnermergeview');
 if (!\mkw\store::isClosed()) {

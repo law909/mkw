@@ -141,6 +141,29 @@ final class pagecache
     }
 
     /**
+     * Empty the cache by hand (admin "Pagecache törlés"): every page file goes, and the version bump also
+     * misses a page a running request is just writing.
+     *
+     * @return int the number of deleted page files
+     */
+    public static function clear(): int
+    {
+        $count = 0;
+        foreach (glob(self::dir() . '*.{html,tmp}', GLOB_BRACE) ?: [] as $f) {
+            if (@unlink($f) && str_ends_with($f, '.html')) {
+                $count++;
+            }
+        }
+        self::bumpVersion();
+        return $count;
+    }
+
+    public static function countFiles(): int
+    {
+        return count(glob(self::dir() . '*.html') ?: []);
+    }
+
+    /**
      * Drop expired page files and abandoned .tmp writes. The reader already treats
      * anything older than the TTL as a miss, so this can never remove a live hit --
      * but without it the directory grows forever, and one bumpVersion() orphans

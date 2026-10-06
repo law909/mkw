@@ -3382,6 +3382,24 @@ if ($DBVersion < '0231' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0231');
 }
 
+if ($DBVersion < '0232' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0231') {
+    // Pagecache törlés az Egyéb műveletek csoportba, a Rontás visszavétele után; a 90-es jogú munkakörök érik el
+    $conn = \mkw\store::getEm()->getConnection();
+    $url = '/admin/pagecache/view';
+    if (!$conn->fetchOne('SELECT id FROM menu WHERE url = ?', [$url])) {
+        $csoportid = $conn->fetchOne('SELECT menucsoport_id FROM menu WHERE url = "/admin/import/view" LIMIT 1');
+        $conn->executeStatement(
+            'INSERT INTO menu (menucsoport_id, nev, url, routename, jogosultsag, lathato, sorrend, class, mindenki) VALUES (?, ?, ?, ?, 90, 1, 830, "", 0)',
+            [$csoportid ?: null, 'Pagecache törlés', $url, '/admin/pagecache']
+        );
+        $conn->executeStatement(
+            'INSERT IGNORE INTO menu_munkakorok (menu_id, munkakor_id) SELECT ?, k.id FROM munkakor k WHERE k.jog >= 90',
+            [$conn->lastInsertId()]
+        );
+    }
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0232');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.
