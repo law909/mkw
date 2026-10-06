@@ -3364,6 +3364,24 @@ if ($DBVersion < '0230' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') 
     \mkw\store::setParameter(\mkw\consts::DBVersion, '0230');
 }
 
+if ($DBVersion < '0231' && \mkw\store::getParameter(\mkw\consts::DBVersion, '') >= '0230') {
+    // Az OTP kivonatot egy oszloppal elcsúszva olvastuk: az azonosítóba a közlemény, a közlemény mezőkbe az azonosító,
+    // a számlaszám és a név került. Visszaforgatjuk; MySQL-ben a SET balról jobbra a már átírt értéket látná, ezért
+    // a régi értékek egy származtatott táblából jönnek.
+    $conn = \mkw\store::getEm()->getConnection();
+    $conn->executeStatement(
+        'UPDATE banktranzakcio t INNER JOIN (SELECT id, azonosito, kozlemeny1, kozlemeny2, kozlemeny3 FROM banktranzakcio'
+        . ' WHERE bank = "otp") r ON r.id = t.id'
+        . ' SET t.azonosito = TRIM(r.kozlemeny1), t.kozlemeny1 = r.kozlemeny2, t.kozlemeny2 = r.kozlemeny3, t.kozlemeny3 = r.azonosito'
+    );
+    // a partnert az import az ellenoldali számlaszámból keresi, ez most került a helyére
+    $conn->executeStatement(
+        'UPDATE banktranzakcio t INNER JOIN partner p ON p.iban = TRIM(t.kozlemeny1) AND p.iban <> ""'
+        . ' SET t.partner_id = p.id WHERE t.bank = "otp" AND t.partner_id IS NULL'
+    );
+    \mkw\store::setParameter(\mkw\consts::DBVersion, '0231');
+}
+
 // A partner termékcsoport kedvezmény → termékkategória (termékfa) kedvezmény migráció, csak superzoneb2b-n. Nem
 // verzióblokk: a superzoneb2b a mugenrace deploymentekkel közös DB-n van, ott a DBVersion is közös, és egy mugenrace
 // admin kérés átléptetné. Saját jelzővel fut.

@@ -152,18 +152,20 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             'nev' => 'OTP',
             'elsosor' => 17,
             'datum' => 'szoveg',
+            // F = tranzakció azonosító, G = ellenoldali számlaszám, H = ellenoldali név, I = közlemény
+            // (2026-10-06-ig egy oszloppal elcsúszva olvastuk, a runonce 0231 javítja a már betöltötteket)
             'oszlop' => [
                 'konyvelesdatum' => 'C',
                 'erteknap' => 'D',
-                'azonosito' => 'I',
+                'azonosito' => 'F',
                 'osszeg' => 'E',
-                'kozlemeny1' => 'F',
-                'kozlemeny2' => 'G',
-                'kozlemeny3' => 'H',
-                'szamlaszam' => 'F',
-                'bizonylatszam' => 'H',
+                'kozlemeny1' => 'G',
+                'kozlemeny2' => 'H',
+                'kozlemeny3' => 'I',
+                'szamlaszam' => 'G',
+                'bizonylatszam' => 'I',
                 // az ellenoldali (partner) neve – a bizonylatszám nélküli tételek párosításához
-                'partnernev' => 'G',
+                'partnernev' => 'H',
             ],
         ],
         'erste' => [
