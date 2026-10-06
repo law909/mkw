@@ -967,10 +967,16 @@ class termekfaController extends \mkwhelpers\MattableController
                     $keresofilter->addFilter('_xx.gyarto', '=', $gyartoid);
                 }
                 $termekek = $termekrepo->getTermekLista($keresofilter->merge($kategoriafilter), ['_xx.cikkszam' => 'DESC']);
+                // galad: the tile shows how many variants are behind the product
+                $valtozatdbk = \mkw\store::isGalad()
+                    ? $termekrepo->getValtozatDbByTermekIds(array_map(fn($te) => $te->getId(), $termekek))
+                    : [];
                 $termeklista = [];
                 foreach ($termekek as $te) {
                     $tete = $te->toMenu();
                     $tete['kiemelt'] = false;
+                    $tete['valtozatdb'] = $valtozatdbk[$te->getId()]['valtozatdb'] ?? 0;
+                    $tete['szindb'] = $valtozatdbk[$te->getId()]['szindb'] ?? 0;
                     $termeklista[] = $tete;
                 }
                 return $termeklista;

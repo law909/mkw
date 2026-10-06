@@ -357,6 +357,24 @@ fieldset[disabled] .btn-red.active {
 }
 
 .szindoboz > a {
+    position: relative;
+    display: block;
+}
+
+/* product tile: tells that a click leads to several variants */
+.valtozatjelveny {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background-color: #fe0000;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.szindoboz > a {
     color: #777;
 }
 

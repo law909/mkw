@@ -1106,6 +1106,37 @@ class TermekRepository extends \mkwhelpers\Repository
         return array_map('intval', array_column($q->getScalarResult(), 'id'));
     }
 
+    /**
+     * @param int[] $ids
+     *
+     * @return array<int,array{valtozatdb:int,szindb:int}> the visible, available variants of the products by id
+     */
+    public function getValtozatDbByTermekIds(array $ids)
+    {
+        if (!$ids) {
+            return [];
+        }
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('termek_id', 'termek_id');
+        $rsm->addScalarResult('valtozatdb', 'valtozatdb');
+        $rsm->addScalarResult('szindb', 'szindb');
+        $q = $this->_em->createNativeQuery(
+            'SELECT v.termek_id, COUNT(*) AS valtozatdb, COUNT(DISTINCT v.szin_id) AS szindb'
+            . ' FROM termekvaltozat v'
+            . ' WHERE v.termek_id IN (:ids) AND v.inaktiv=0'
+            . ' AND ' . \mkw\store::getWebshopFieldName('v.lathato') . '=1'
+            . ' AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1'
+            . ' GROUP BY v.termek_id',
+            $rsm
+        );
+        $q->setParameter('ids', $ids);
+        $ret = [];
+        foreach ($q->getScalarResult() as $sor) {
+            $ret[(int)$sor['termek_id']] = ['valtozatdb' => (int)$sor['valtozatdb'], 'szindb' => (int)$sor['szindb']];
+        }
+        return $ret;
+    }
+
     public function getNevek($keresett)
     {
         $filter = new FilterDescriptor();
