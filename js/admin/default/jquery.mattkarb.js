@@ -25,6 +25,24 @@
             return setup.independent && window.location.pathname.indexOf('/viewkarb') !== -1;
         };
 
+        // A karbantartott entitás neve a fejlécbe, ha a sablon maga nem ír oda alcímet (h4).
+        const showNevInHeader = function () {
+            const $nev = karbContainer.find('#mattkarb-form').find('input[name="nev"], textarea[name="nev"]').first();
+            if (!$nev.length || header.find('h4').length) {
+                return;
+            }
+            const $h4 = $('<h4 class="mattkarb-headernev"></h4>').text($nev.val());
+            const $h3 = header.find('h3').first();
+            if ($h3.length) {
+                $h3.after($h4);
+            } else {
+                header.append($h4);
+            }
+            $nev.on('input change', function () {
+                $h4.text($nev.val());
+            });
+        };
+
         // Visszatérés az előző URL-re (a lista nézetre) a karb bezárásakor. A showSuccess csak
         // tényleges mentés után igaz – Mégsem esetén nem jelenítjük meg a "A mentés sikerült" üzenetet.
         var returnToPreviousUrl = function (showSuccess) {
@@ -185,6 +203,7 @@
             });
             karbContainer.addClass('ui-widget ui-widget-content ui-corner-all mattkarb');
             header.addClass('mattable-titlebar ui-widget-header ui-corner-top ui-helper-clearfix');
+            showNevInHeader();
             titlebar.addClass('mattedit-titlebar ui-widget-header ui-helper-clearfix');
             titlebar.each(function () {
                 $this = $(this);
