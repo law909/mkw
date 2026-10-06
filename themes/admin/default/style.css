@@ -788,6 +788,68 @@ table.termekkarton td.kartonfejsor {
     columns: 2;
 }
 
+/* grouped report filter (bizonylattetellista.tpl): one box per topic, label column aligned inside */
+.szuropanel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 10px;
+}
+
+.szurodoboz-fo {
+    grid-row: span 3;
+}
+
+@media (max-width: 900px) {
+    .szuropanel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .szurodoboz-fo {
+        grid-row: auto;
+    }
+}
+
+.szurodoboz {
+    min-width: 0;
+    margin: 0;
+    padding: 6px 10px 10px;
+}
+
+.szurodoboz-szeles {
+    grid-column: 1 / -1;
+}
+
+.szurodoboz > div:not(.bizonylattipuslist):not(#cimkefiltercontainer):not(#termekfa) {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+}
+
+.szurodoboz > div > label:first-child {
+    flex: 0 0 8.5em;
+}
+
+.szurodoboz input[type="text"],
+.szurodoboz select {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.szurodoboz #PartnerEdit {
+    flex: 1 1 12em;
+}
+
+.szurodoboz #TolEdit,
+.szurodoboz #IgEdit {
+    width: 7.5em;
+}
+
+.szurodoboz-alcim {
+    margin-top: 8px;
+}
+
 .setuplabel {
     display: inline-block;
     min-width: 120px;
