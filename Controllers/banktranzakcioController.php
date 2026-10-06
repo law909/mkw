@@ -152,12 +152,12 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             'nev' => 'OTP',
             'elsosor' => 17,
             'datum' => 'szoveg',
-            // F = tranzakció azonosító, G = ellenoldali számlaszám, H = ellenoldali név, I = közlemény
-            // (2026-10-06-ig egy oszloppal elcsúszva olvastuk, a runonce 0231 javítja a már betöltötteket)
+            // F = új könyvelt egyenleg (nem kell), G = ellenoldali számlaszám, H = ellenoldali név, I = közlemény,
+            // J = banki tranzakció azonosító (2026-10-06-ig egy oszloppal elcsúszva olvastuk, a runonce 0231 javítja a már betöltötteket)
             'oszlop' => [
                 'konyvelesdatum' => 'C',
                 'erteknap' => 'D',
-                'azonosito' => 'F',
+                'azonosito' => 'J',
                 'osszeg' => 'E',
                 'kozlemeny1' => 'G',
                 'kozlemeny2' => 'H',
