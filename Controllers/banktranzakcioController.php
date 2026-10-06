@@ -515,12 +515,13 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                 }
             }
         } else {
-            // '/[Ss]?[Zz]?\d{4}\/\d{1,6}/'
-            $regexp = '/' . $szamlatipus->getAzonositoForRegexp() . '\d{4}\/\d{1,6}/';
-            $matchcnt = preg_match_all($regexp, str_replace(' ', '', $trimmedbizsz), $bizsz);
+            // '/(?<![\p{L}\d])[Ss]?[Zz]?\s*\d{4}\s*\/\s*\d{1,6}(?!\d)/u': a szám nem lehet egy másik szó vagy szám
+            // része – az "EL02026/000002" közleményből különben az SZ2026/000002 egy idegen partner számlája lett
+            $regexp = '/(?<![\p{L}\d])' . $szamlatipus->getAzonositoForRegexp() . '\s*\d{4}\s*\/\s*\d{1,6}(?!\d)/u';
+            $matchcnt = preg_match_all($regexp, $trimmedbizsz, $bizsz);
             if ($matchcnt) {
                 foreach ($bizsz[0] as $b) {
-                    $convertedB = strtoupper($b);
+                    $convertedB = strtoupper(preg_replace('/\s+/', '', $b));
                     $szamlatipusAzonosito = $szamlatipus->getAzonosito();
 
                     if (substr($convertedB, 0, 2) !== $szamlatipusAzonosito) {
