@@ -564,6 +564,10 @@ class banktranzakcioController extends \mkwhelpers\MattableController
                     }
                 }
             }
+            $bizszamarr = array_values(array_unique(array_merge(
+                $bizszamarr,
+                $this->keresElolegszamlaKozlemenybol($trimmedbizsz, $partner)
+            )));
         }
         if (!$bizszamarr) {
             $bizszamarr = $this->keresBizonylatPartnerEsOsszeg(
@@ -574,6 +578,40 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             );
         }
         return $bizszamarr;
+    }
+
+    /**
+     * Előlegszámla száma a közleményben (pl. "ELO2026/000002"). A számlától eltérően az előtag itt kötelező – a puszta
+     * "2026/000002" továbbra is számlának számít –, viszont az O helyett nulla is állhat ("EL02026/000002"), mert a
+     * kettőt gyakran összekeverik. Ismert partnernél csak az ő előlegszámlája jöhet szóba.
+     *
+     * @return array a megtalált előlegszámla-számok
+     */
+    private function keresElolegszamlaKozlemenybol($kozlemeny, $partner): array
+    {
+        $tipus = $this->getBizonylattipus('elolegszamla');
+        $azonosito = $tipus ? strtoupper((string)$tipus->getAzonosito()) : '';
+        if ($azonosito === '') {
+            return [];
+        }
+        $elotag = implode('\s*', array_map(
+            fn($betu) => $betu === 'O' ? '[O0]' : preg_quote($betu, '/'),
+            str_split($azonosito)
+        ));
+        if (!preg_match_all('/(?<![\p{L}\d])' . $elotag . '\s*(\d{4})\s*\/\s*(\d{1,6})(?!\d)/iu', (string)$kozlemeny, $talalatok, PREG_SET_ORDER)) {
+            return [];
+        }
+        $bizrepo = $this->getRepo(Bizonylatfej::class);
+        $ret = [];
+        foreach ($talalatok as $talalat) {
+            /** @var Bizonylatfej $biz */
+            $biz = $bizrepo->find($azonosito . $talalat[1] . '/' . sprintf('%06d', (int)$talalat[2]));
+            if ($biz && $biz->getBizonylattipusId() === 'elolegszamla'
+                && (!$partner || $partner->getId() == $biz->getPartnerId())) {
+                $ret[] = $biz->getId();
+            }
+        }
+        return $ret;
     }
 
     /** @return \Entities\Bizonylattipus */
