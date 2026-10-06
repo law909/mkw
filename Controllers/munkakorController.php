@@ -24,7 +24,50 @@ class munkakorController extends \mkwhelpers\MattableController
             $this->getEm()->detach($t);
         }
         $x = $this->getEntityFieldsArray($t);
+        if ($forKarb && \mkw\store::isSysadmin()) {
+            $x['menucsoportok'] = $this->getMenuLista($t->getId());
+        }
         return $x;
+    }
+
+    /**
+     * A menüpontok menücsoportonként, bepipálva, amit a munkakör elér. A "mindenki" menüpontot pipa nélkül is
+     * mindenki eléri, ezért az nem állítható.
+     */
+    private function getMenuLista($munkakorId)
+    {
+        $csoportok = [];
+        /** @var \Entities\Menu $menu */
+        foreach ($this->getRepo(\Entities\Menu::class)->getWithJoins([], ['m.sorrend' => 'ASC', 'sorrend' => 'ASC']) as $menu) {
+            $mcsid = $menu->getMenucsoportId() ?: 0;
+            $csoportok[$mcsid] ??= ['id' => $mcsid, 'nev' => $menu->getMenucsoportNev() ?: t('Csoport nélkül'), 'menuk' => []];
+            $csoportok[$mcsid]['menuk'][] = [
+                'id' => $menu->getId(),
+                'nev' => $menu->getNev(),
+                'lathato' => (bool)$menu->getLathato() && $menu->isMenucsoportLathato(),
+                'mindenki' => (bool)$menu->getMindenki(),
+                'checked' => $munkakorId && in_array($munkakorId, $menu->getMunkakorIds()),
+            ];
+        }
+        return array_values($csoportok);
+    }
+
+    /** A menüjogok csak akkor íródnak, ha a fül a formon volt (sysadmin), különben a meglévők maradnak. */
+    protected function afterSave($o, $parancs = null)
+    {
+        if ($parancs === $this->delOperation || !\mkw\store::isSysadmin() || !$this->params->getBoolRequestParam('menujogok')) {
+            return;
+        }
+        $conn = $this->getEm()->getConnection();
+        $conn->executeStatement('DELETE FROM menu_munkakorok WHERE munkakor_id = ?', [$o->getId()]);
+        $menuIds = array_map('intval', $this->params->getArrayRequestParam('menuk', []));
+        if ($menuIds) {
+            $conn->executeStatement(
+                'INSERT INTO menu_munkakorok (menu_id, munkakor_id) SELECT id, ? FROM menu WHERE id IN (?)',
+                [$o->getId(), $menuIds],
+                [\Doctrine\DBAL\ParameterType::INTEGER, \Doctrine\DBAL\ArrayParameterType::INTEGER]
+            );
+        }
     }
 
     /**

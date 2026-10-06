@@ -1679,3 +1679,34 @@ select.tetelszamhiba,
 .listaszuro-menufa {
     margin-bottom: 4px;
 }
+
+/* Munkakör karb, Menüpontok fül: menücsoportonként oszlopokba tördelt pipalista */
+.munkakormenu-csoport {
+    margin-bottom: 1em;
+}
+
+.munkakormenu-mind {
+    margin-left: 1em;
+    font-size: .85em;
+    font-weight: normal;
+}
+
+.munkakormenu-lista {
+    columns: 16em auto;
+    column-gap: 2em;
+}
+
+.munkakormenu-pont {
+    display: block;
+    padding: 2px 0;
+    break-inside: avoid;
+}
+
+.munkakormenu-rejtett {
+    opacity: .6;
+}
+
+.munkakormenu-megj {
+    font-size: .85em;
+    opacity: .8;
+}

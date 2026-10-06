@@ -5,6 +5,9 @@
     <div id="mattkarb-tabs">
         <ul>
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
+            {if (isset($egyed.menucsoportok))}
+                <li><a href="#MenuTab">{at('Menüpontok')}</a></li>
+            {/if}
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <table>
@@ -20,6 +23,32 @@
                 </tbody>
             </table>
         </div>
+        {if (isset($egyed.menucsoportok))}
+            <div id="MenuTab" class="mattkarb-page" data-visible="visible">
+                <input type="hidden" name="menujogok" value="1">
+                {foreach $egyed.menucsoportok as $_csoport}
+                    <div class="munkakormenu-csoport js-munkakormenucsoport">
+                        <div class="mattkarb-szakaszcim">
+                            {$_csoport.nev}
+                            <a href="#" class="munkakormenu-mind js-munkakormenumind">{at('mind / egyik sem')}</a>
+                        </div>
+                        <div class="munkakormenu-lista">
+                            {foreach $_csoport.menuk as $_menu}
+                                <label class="munkakormenu-pont{if (!$_menu.lathato)} munkakormenu-rejtett{/if}">
+                                    {if ($_menu.mindenki)}
+                                        <input type="checkbox" checked="checked" disabled="disabled"> {$_menu.nev}
+                                        <span class="munkakormenu-megj">({at('mindenki eléri')})</span>
+                                    {else}
+                                        <input type="checkbox" name="menuk[]" value="{$_menu.id}"{if ($_menu.checked)} checked="checked"{/if}> {$_menu.nev}
+                                    {/if}
+                                    {if (!$_menu.lathato)}<span class="munkakormenu-megj">({at('rejtett')})</span>{/if}
+                                </label>
+                            {/foreach}
+                        </div>
+                    </div>
+                {/foreach}
+            </div>
+        {/if}
     </div>
     <input name="oper" type="hidden" value="{$oper}">
     <input name="id" type="hidden" value="{$egyed.id}">
