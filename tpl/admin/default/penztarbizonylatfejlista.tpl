@@ -8,61 +8,66 @@
 {block "kozep"}
     <div id="mattable-select" data-theme="{$theme}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{$pagetitle}"></div>
-        <div id="mattable-filterwrapper">
-            <label for="idfilter">{at('Sorszám')}:</label>
-            <input id="idfilter" name="idfilter" type="text" size="20" maxlength="20">
-            <label for="vevonevfilter">{at('Vevőnév')}:</label>
-            <input id="vevonevfilter" name="vevonevfilter" type="text">
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="datumtipusfilter">{at('Dátum')}:</label>
-                <input id="datumtolfilter" name="datumtolfilter" type="text" size="12" data-datum="{$datumtolfilter|default}">
-                <input id="datumigfilter" name="datumigfilter" type="text" size="12">
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="bizonylatrontottfilter">{at('Rontott')}:</label>
-                <select id="bizonylatrontottfilter" name="bizonylatrontottfilter">
-                    <option value="0">{at('Mindegy')}</option>
-                    <option value="1"{if ($bizonylatrontottfilter === 1)} selected="selected"{/if}>{at('nem rontott')}</option>
-                    <option value="2"{if ($bizonylatrontottfilter === 2)} selected="selected"{/if}>{at('rontott')}</option>
-                </select>
-            </div>
-            {if ($showerbizonylatszam)}
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="erbizonylatszamfilter">{at('Er.biz.szám')}:</label>
-                    <input id="erbizonylatszamfilter" name="erbizonylatszamfilter" type="text" size="20">
+        <div id="mattable-filterwrapper" class="listaszuro">
+            <div class="listaszuro-sor">
+                <div class="listaszuro-mezo">
+                    <label for="idfilter">{at('Sorszám')}</label>
+                    <input id="idfilter" name="idfilter" type="text" size="16" maxlength="20">
                 </div>
-            {/if}
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="valutanemfilter">{at('Valutanem')}:</label>
-                <select id="valutanemfilter" name="valutanemfilter">
-                    <option value="0">{at('válasszon')}</option>
-                    {foreach $valutanemlist as $valutanem}
-                        <option value="{$valutanem.id}"{if ($valutanem.selected)} selected="selected"{/if}>{$valutanem.caption}</option>
-                    {/foreach}
-                </select>
+                <div class="listaszuro-mezo listaszuro-szeles">
+                    <label for="vevonevfilter">{at('Vevőnév')}</label>
+                    <input id="vevonevfilter" name="vevonevfilter" type="text">
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="datumtolfilter">{at('Dátum')}</label>
+                    <span class="listaszuro-csoport">
+                        <input id="datumtolfilter" name="datumtolfilter" type="text" size="10" data-datum="{$datumtolfilter|default}">
+                        <label for="datumigfilter" class="listaszuro-rejtettcimke">{at('Dátum')} {at('-ig')}</label>
+                        <input id="datumigfilter" name="datumigfilter" type="text" size="10">
+                    </span>
+                </div>
+                {if ($showerbizonylatszam)}
+                <div class="listaszuro-mezo">
+                    <label for="erbizonylatszamfilter">{at('Er.biz.szám')}</label>
+                    <input id="erbizonylatszamfilter" name="erbizonylatszamfilter" type="text" size="16">
+                </div>
+                {/if}
             </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="penztarfilter">{at('Pénztár')}:</label>
-                <select id="penztarfilter" name="penztarfilter">
-                    <option value="0">{at('válasszon')}</option>
-                    {foreach $penztarlist as $penztar}
-                        <option value="{$penztar.id}"{if ($penztar.selected)} selected="selected"{/if}>{$penztar.caption}</option>
-                    {/foreach}
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="iranyfilter">{at('Irány')}:</label>
-                <select id="iranyfilter" name="iranyfilter">
-                    <option value="0">{at('Mindegy')}</option>
-                    <option value="1"{if ($iranyfilter === 1)} selected="selected"{/if}>{at('befizetés')}</option>
-                    <option value="-1"{if ($iranyfilter === -1)} selected="selected"{/if}>{at('kifizetés')}</option>
-                </select>
+            <div class="listaszuro-sor">
+                <div class="listaszuro-mezo">
+                    <label for="bizonylatrontottfilter">{at('Rontott')}</label>
+                    <select id="bizonylatrontottfilter" name="bizonylatrontottfilter">
+                        <option value="0">{at('Mindegy')}</option>
+                        <option value="1"{if ($bizonylatrontottfilter === 1)} selected="selected"{/if}>{at('nem rontott')}</option>
+                        <option value="2"{if ($bizonylatrontottfilter === 2)} selected="selected"{/if}>{at('rontott')}</option>
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="iranyfilter">{at('Irány')}</label>
+                    <select id="iranyfilter" name="iranyfilter">
+                        <option value="0">{at('Mindegy')}</option>
+                        <option value="1"{if ($iranyfilter === 1)} selected="selected"{/if}>{at('befizetés')}</option>
+                        <option value="-1"{if ($iranyfilter === -1)} selected="selected"{/if}>{at('kifizetés')}</option>
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="valutanemfilter">{at('Valutanem')}</label>
+                    <select id="valutanemfilter" name="valutanemfilter">
+                        <option value="0">{at('válasszon')}</option>
+                        {foreach $valutanemlist as $valutanem}
+                            <option value="{$valutanem.id}"{if ($valutanem.selected)} selected="selected"{/if}>{$valutanem.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="penztarfilter">{at('Pénztár')}</label>
+                    <select id="penztarfilter" name="penztarfilter">
+                        <option value="0">{at('válasszon')}</option>
+                        {foreach $penztarlist as $penztar}
+                            <option value="{$penztar.id}"{if ($penztar.selected)} selected="selected"{/if}>{$penztar.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
             </div>
         </div>
         <div class="mattable-pagerwrapper">
