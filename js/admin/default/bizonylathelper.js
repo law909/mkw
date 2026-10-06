@@ -1078,16 +1078,20 @@ let bizonylathelper = function ($) {
         jelolDefaultTetelek();
     }
 
-    // Megváltozott-e a fizetési mód vagy a pénzmozgás jelölő a betöltés óta. A kiinduló értéket a
-    // form data attribútumai őrzik (a select/checkbox aktuális állapota nem elég, mert a
-    // felhasználó oda-vissza is válthat).
-    function penzugyiMezoValtozott() {
+    // A fizetési mód vagy a pénzmozgás jelölő változásához illő kérdés, vagy null, ha egyik sem
+    // változott a betöltés óta. A kiinduló értéket a form data attribútumai őrzik (a select/checkbox
+    // aktuális állapota nem elég, mert a felhasználó oda-vissza is válthat). A fizetési mód nyer:
+    // a "nincs pénzmozgás" fizetési mód a jelölőt is átállítja.
+    function penzugyiMezoKerdes() {
         const $form = $('#mattkarb-form'),
             $pm = $('#PenztmozgatEdit');
         if (String($form.data('eredetifizmod')) !== String($('#FizmodEdit').val())) {
-            return true;
+            return PENZMOZGASKERDESEK.fizmod;
         }
-        return $pm.length && ((String($form.data('eredetipenztmozgat')) === '1') !== $pm.prop('checked'));
+        if ($pm.length && ((String($form.data('eredetipenztmozgat')) === '1') !== $pm.prop('checked'))) {
+            return $pm.prop('checked') ? PENZMOZGASKERDESEK.penztmozgatbe : PENZMOZGASKERDESEK.penztmozgatki;
+        }
+        return null;
     }
 
     // A bizonylathoz tartozó pénzmozgásról feltehető kérdések. A szerver oldalán mindegyikhez
@@ -1097,6 +1101,24 @@ let bizonylathelper = function ($) {
             cim: 'Kapcsolódó pénzmozgás',
             bevezeto: 'A fizetési mód megváltozott. A bizonylathoz az alábbi pénzmozgás(ok) tartoznak:',
             kerdes: 'Rontsuk ezeket, és képződjön az új fizetési módnak megfelelő pénzügyi teljesítés?'
+                + ' A rontott bizonylat megmarad, csak kikerül a pénzmozgásból.',
+            igen: 'Rontsa és képezzen újat',
+            nem: 'Maradjanak'
+        },
+        penztmozgatki: {
+            cim: 'Kapcsolódó pénzmozgás',
+            bevezeto: 'A bizonylat mostantól nem képez kintlévőséget/tartozást. A bizonylathoz az alábbi'
+                + ' pénzmozgás(ok) tartoznak:',
+            kerdes: 'Rontsuk ezeket? Ha maradnak, a partner egyenlegében túlfizetésként jelennek meg.'
+                + ' A rontott bizonylat megmarad, csak kikerül a pénzmozgásból.',
+            igen: 'Rontsa',
+            nem: 'Maradjanak'
+        },
+        penztmozgatbe: {
+            cim: 'Kapcsolódó pénzmozgás',
+            bevezeto: 'A bizonylat mostantól kintlévőséget/tartozást képez. A bizonylathoz az alábbi'
+                + ' pénzmozgás(ok) tartoznak:',
+            kerdes: 'Rontsuk ezeket, és képződjön a bizonylatnak megfelelő pénzügyi teljesítés?'
                 + ' A rontott bizonylat megmarad, csak kikerül a pénzmozgásból.',
             igen: 'Rontsa és képezzen újat',
             nem: 'Maradjanak'
@@ -2637,10 +2659,11 @@ let bizonylathelper = function ($) {
                         });
                     } else if (bizszam) {
                         // új bizonylatnál nincs mit rontani vagy igazítani
-                        if (penzugyiMezoValtozott()) {
+                        const penzugyiKerdes = penzugyiMezoKerdes();
+                        if (penzugyiKerdes) {
                             kerdesek.push({
                                 bizszam: bizszam,
-                                kerdes: PENZMOZGASKERDESEK.fizmod,
+                                kerdes: penzugyiKerdes,
                                 mezo: '#RontkapcsolodopenzmozgasEdit'
                             });
                         }
