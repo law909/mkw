@@ -726,6 +726,7 @@ class setupController extends \mkwhelpers\Controller
         $p = $repo->find(\mkw\consts::NyomtatasiKerdesMenteskor);
         $view->setVar(\mkw\consts::NyomtatasiKerdesMenteskor, ($p ? $p->getErtek() : 0));
         $view->setVar(\mkw\consts::BizonylatVtsz, \mkw\store::getParameter(\mkw\consts::BizonylatVtsz, 1));
+        $view->setVar(\mkw\consts::TermekAutocompleteCikkszam, \mkw\store::getParameter(\mkw\consts::TermekAutocompleteCikkszam, 0));
         $view->setVar('vonalkodhibahangfeltoltve', self::getBarcodeSoundUrl() !== '');
 
         $p = $repo->find(\mkw\consts::Arsav);
@@ -2428,6 +2429,10 @@ class setupController extends \mkwhelpers\Controller
             $this->params->getBoolRequestParam(\mkw\consts::NyomtatasiKerdesMenteskor)
         );
         $this->setObj(\mkw\consts::BizonylatVtsz, $this->params->getBoolRequestParam(\mkw\consts::BizonylatVtsz));
+        $this->setObj(
+            \mkw\consts::TermekAutocompleteCikkszam,
+            $this->params->getBoolRequestParam(\mkw\consts::TermekAutocompleteCikkszam)
+        );
 
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
         if ($arsav) {

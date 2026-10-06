@@ -241,7 +241,7 @@ class termekvaltozatController extends \mkwhelpers\MattableController
             foreach ($this->getRepo(Termek::class)->getBizonylattetelLista($term) as $termek) {
                 $ret[] = [
                     'id' => $termek->getId(),
-                    'label' => trim($termek->getCikkszam() . ' ' . $termek->getNev()),
+                    'label' => \Entities\TermekValtozatRepository::termekLabel($termek->getCikkszam(), $termek->getNev()),
                     'value' => $termek->getNev(),
                 ];
             }

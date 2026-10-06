@@ -584,6 +584,7 @@ class consts
 
     const NyomtatasiKerdesMenteskor = 'nyomtatasikerdesmenteskor';
     const BizonylatVtsz = 'bizonylatvtsz';
+    const TermekAutocompleteCikkszam = 'termekautocompletecikkszam';
     // the upload's timestamp, empty when there is none; the file itself is in storage/
     const VonalkodHibaHang = 'vonalkodhibahang';
 

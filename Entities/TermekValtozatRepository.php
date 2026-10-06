@@ -93,8 +93,8 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
     }
 
     /**
-     * Product autocomplete row labels: a product without variants shows its cikkszam, one with variants
-     * only its name (its own cikkszam identifies no variant), followed by the variant codes matching the term.
+     * Product autocomplete row labels: the name (with the cikkszam, see termekLabel()), followed by the
+     * variant codes matching the term.
      *
      * @param array<int,array{nev:string,cikkszam:?string}> $termekek by termek id
      * @param array|null $matches getCikkszamMatches() of the same ids, when the caller already has it
@@ -105,20 +105,20 @@ class TermekValtozatRepository extends \mkwhelpers\Repository
     {
         $ids = array_keys($termekek);
         $matches ??= $this->getCikkszamMatches($ids, $keresett);
-        $valtozatos = [];
-        if ($ids) {
-            $q = $this->_em->createQuery(
-                'SELECT DISTINCT IDENTITY(v.termek) AS termekid FROM Entities\TermekValtozat v WHERE IDENTITY(v.termek) IN (:ids)'
-            );
-            $q->setParameter('ids', $ids);
-            $valtozatos = array_flip(array_column($q->getScalarResult(), 'termekid'));
-        }
         $ret = [];
         foreach ($termekek as $id => $t) {
-            $ret[$id] = (isset($valtozatos[$id]) ? $t['nev'] : trim($t['cikkszam'] . ' ' . $t['nev']))
-                . self::cikkszamMatchLabel($matches[$id] ?? []);
+            $ret[$id] = self::termekLabel($t['cikkszam'], $t['nev']) . self::cikkszamMatchLabel($matches[$id] ?? []);
         }
         return $ret;
+    }
+
+    /** A product's autocomplete label: its cikkszam is shown only with the TermekAutocompleteCikkszam setting. */
+    public static function termekLabel($cikkszam, $nev)
+    {
+        if (\mkw\store::getParameter(\mkw\consts::TermekAutocompleteCikkszam, 0)) {
+            return trim($cikkszam . ' ' . $nev);
+        }
+        return (string)$nev;
     }
 
     /**
