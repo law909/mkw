@@ -25,22 +25,32 @@
             return setup.independent && window.location.pathname.indexOf('/viewkarb') !== -1;
         };
 
-        // A karbantartott entitás neve a fejlécbe, ha a sablon maga nem ír oda alcímet (h4).
+        // A karbantartott entitás neve a címsorba, a bizonylat karbantartók mintájára ("Termék - név"). Amelyik
+        // sablon saját h4-ben írja ki, annak a tartalma (pl. a termék linkje) kerül át; a többinél a nev mező.
         const showNevInHeader = function () {
-            const $nev = karbContainer.find('#mattkarb-form').find('input[name="nev"], textarea[name="nev"]').first();
-            if (!$nev.length || header.find('h4').length) {
+            const $h3 = header.find('h3').first();
+            if (!$h3.length) {
                 return;
             }
-            const $h4 = $('<h4 class="mattkarb-headernev"></h4>').text($nev.val());
-            const $h3 = header.find('h3').first();
-            if ($h3.length) {
-                $h3.after($h4);
-            } else {
-                header.append($h4);
+            const $h4 = header.children('h4').first();
+            if ($h4.length) {
+                if ($.trim($h4.text())) {
+                    $('<span class="mattkarb-headernev"> - </span>').append($h4.contents()).appendTo($h3);
+                }
+                $h4.remove();
+                return;
             }
-            $nev.on('input change', function () {
-                $h4.text($nev.val());
-            });
+            const $nev = karbContainer.find('#mattkarb-form').find('input[name="nev"], textarea[name="nev"]').first();
+            if (!$nev.length) {
+                return;
+            }
+            const $span = $('<span class="mattkarb-headernev"></span>').appendTo($h3);
+            const frissit = function () {
+                const nev = $.trim($nev.val());
+                $span.text(nev ? ' - ' + nev : '');
+            };
+            frissit();
+            $nev.on('input change', frissit);
         };
 
         // Visszatérés az előző URL-re (a lista nézetre) a karb bezárásakor. A showSuccess csak
