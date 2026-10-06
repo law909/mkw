@@ -473,6 +473,20 @@ img {
     margin-left: 0;
 }
 
+/* "Termék a változatból" modal: a karb két páros rácsa a dialógusban összenyomná a mezőket */
+.valtozattermekke-mezok {
+    margin: 1em 0;
+}
+
+.valtozattermekke-mezok .mezok {
+    grid-template-columns: 7em minmax(0, 1fr);
+}
+
+.valtozattermekke-mezok .mezo-ertek input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
 .valtozat-mezok {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

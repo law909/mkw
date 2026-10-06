@@ -41,7 +41,7 @@ $(document).ready(function () {
         const $vonalkod = $('<input type="text" id="ValtozatTermekkeVonalkod" size="30" maxlength="255">').val(info.vonalkod);
         const $ablak = sajatDialog('valtozattermekkedialog')
             .append($('<p>').text(`Változat: ${info.valtozatnev}. A változat megszűnik, a rá hivatkozó bizonylattételek és egyéb sorok az új termékre kerülnek.`))
-            .append($('<div class="mezocsoport">').append($('<div class="mezok">')
+            .append($('<div class="mezocsoport valtozattermekke-mezok">').append($('<div class="mezok">')
                 .append(mezo('Név', $nev))
                 .append(mezo('Cikkszám', $cikkszam))
                 .append(mezo('Vonalkód', $vonalkod))))
@@ -92,7 +92,7 @@ $(document).ready(function () {
             title: 'Termék a változatból',
             resizable: false,
             modal: true,
-            width: 560,
+            width: Math.min(720, $(window).width() - 32),
             buttons: {
                 'OK': function () {
                     if (!$nev.val().trim()) {
