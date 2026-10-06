@@ -1132,6 +1132,13 @@
                             <span class="setuplabel"><label for="OffEdit">{at('Publikus felület kikapcsolva')}:</label></span>
                             <input id="OffEdit" name="off" type="checkbox"{if ($off)} checked="checked"{/if}>
                         </div>
+                        {if ($maintheme == 'mkwcansas')}
+                            <div class="setuprow">
+                                <span class="setuplabel"><label for="AutomatikusMenupontElrejtesEdit">{at('Automatikus menüpont elrejtés')}:</label></span>
+                                <input id="AutomatikusMenupontElrejtesEdit" name="automatikusmenupontelrejtes" type="checkbox"{if ($automatikusmenupontelrejtes)} checked="checked"{/if}>
+                                <span>{at('A menükből kimarad az a termékkategória, amelyben (az alkategóriáival együtt) csak függőben lévő, inaktív vagy nem látható termék van.')}</span>
+                            </div>
+                        {/if}
                         <div class="setuprow">
                             <span class="setuplabel"><label for="LocaleEdit">{at('Publikus felület nyelve')}:</label></span>
                             <select id="LocaleEdit" name="locale">

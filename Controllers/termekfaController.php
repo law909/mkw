@@ -209,12 +209,27 @@ class termekfaController extends \mkwhelpers\MattableController
         }
     }
 
+    /**
+     * mkwcansas, AutomatikusMenupontElrejtes: the categories with only pending, inactive or hidden products (or none)
+     * stay out of the public menus.
+     *
+     * @param array $agak getForMenu()/getForParent() rows
+     */
+    private function hideEmptyAgak(array $agak): array
+    {
+        if (!\mkw\store::getParameter(\mkw\consts::AutomatikusMenupontElrejtes)) {
+            return $agak;
+        }
+        $lathatok = $this->getRepo()->getLathatoTermekesIds();
+        return array_values(array_filter($agak, fn($ag) => isset($lathatok[(int)$ag['id']])));
+    }
+
     public function getformenu($menunum, $almenunum = 0)
     {
         switch (true) {
             case \mkw\store::isMindentkapni():
                 $repo = $this->getRepo();
-                $f = $repo->getForMenu($menunum);
+                $f = $this->hideEmptyAgak($repo->getForMenu($menunum));
                 $t = [];
                 foreach ($f as $o) {
                     $o['kozepeskepurl'] = \mkw\store::createMediumImageUrl($o['kepurl']);
@@ -222,12 +237,12 @@ class termekfaController extends \mkwhelpers\MattableController
                     $o['kepurl'] = \mkw\store::createBigImageUrl($o['kepurl']);
                     if ($almenunum > 0) { // mkw lebegő menüje
                         $o['children'] = [];
-                        $children = $repo->getForParent($o['id'], $almenunum);
+                        $children = $this->hideEmptyAgak($repo->getForParent($o['id'], $almenunum));
                         foreach ($children as $child) {
                             $child['kozepeskepurl'] = \mkw\store::createMediumImageUrl($child['kepurl']);
                             $child['kiskepurl'] = \mkw\store::createSmallImageUrl($child['kepurl']);
                             $child['kepurl'] = \mkw\store::createBigImageUrl($child['kepurl']);
-                            $chchildren = $repo->getForParent($child['id'], $almenunum);
+                            $chchildren = $this->hideEmptyAgak($repo->getForParent($child['id'], $almenunum));
                             $child['childcount'] = count($chchildren);
                             foreach ($chchildren as $chchild) {
                                 $chchild['kozepeskepurl'] = \mkw\store::createMediumImageUrl($chchild['kepurl']);
@@ -431,6 +446,9 @@ class termekfaController extends \mkwhelpers\MattableController
         }
         $repo = $this->getRepo();
         $children = $repo->getForParent($parent->getId(), 4);
+        if (\mkw\store::isMindentkapni()) {
+            $children = $this->hideEmptyAgak($children);
+        }
         $t = [];
         foreach ($children as $child) {
             $child['kozepeskepurl'] = \mkw\store::createMediumImageUrl($child['kepurl']);

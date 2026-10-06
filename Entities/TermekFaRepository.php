@@ -281,6 +281,43 @@ class TermekFaRepository extends \mkwhelpers\Repository
         return $q->getScalarResult();
     }
 
+    private static ?array $lathatoTermekesIds = null;
+
+    /**
+     * The categories whose subtree holds at least one product the webshop shows (active, not pending, visible),
+     * by id, for the AutomatikusMenupontElrejtes setting. Built from the products' karkod prefixes, once a request.
+     *
+     * @return array<int,true>
+     */
+    public function getLathatoTermekesIds(): array
+    {
+        if (self::$lathatoTermekesIds !== null) {
+            return self::$lathatoTermekesIds;
+        }
+        $conn = $this->_em->getConnection();
+        $faByKarkod = [];
+        foreach ($conn->fetchAllAssociative('SELECT id, karkod FROM termekfa WHERE karkod <> ""') as $row) {
+            $faByKarkod[$row['karkod']] = (int)$row['id'];
+        }
+        $lathato = \mkw\store::getWebshopFieldName('lathato');
+        $karkodok = $conn->fetchFirstColumn(
+            'SELECT termekfa1karkod FROM termek WHERE inaktiv=0 AND fuggoben=0 AND ' . $lathato . '=1'
+            . ' UNION SELECT termekfa2karkod FROM termek WHERE inaktiv=0 AND fuggoben=0 AND ' . $lathato . '=1'
+            . ' UNION SELECT termekfa3karkod FROM termek WHERE inaktiv=0 AND fuggoben=0 AND ' . $lathato . '=1'
+        );
+        $ids = [];
+        foreach ($karkodok as $karkod) {
+            // a karkod a fa útvonala: a termék ágának minden őse a karkodja egy előtagja
+            for ($len = strlen((string)$karkod); $len > 0; $len--) {
+                $elotag = substr($karkod, 0, $len);
+                if (isset($faByKarkod[$elotag])) {
+                    $ids[$faByKarkod[$elotag]] = true;
+                }
+            }
+        }
+        return self::$lathatoTermekesIds = $ids;
+    }
+
     public function getKarkod($id)
     {
         $o = $this->find($id);

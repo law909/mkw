@@ -727,6 +727,7 @@ class setupController extends \mkwhelpers\Controller
         $view->setVar(\mkw\consts::NyomtatasiKerdesMenteskor, ($p ? $p->getErtek() : 0));
         $view->setVar(\mkw\consts::BizonylatVtsz, \mkw\store::getParameter(\mkw\consts::BizonylatVtsz, 1));
         $view->setVar(\mkw\consts::TermekAutocompleteCikkszam, \mkw\store::getParameter(\mkw\consts::TermekAutocompleteCikkszam, 0));
+        $view->setVar(\mkw\consts::AutomatikusMenupontElrejtes, \mkw\store::getParameter(\mkw\consts::AutomatikusMenupontElrejtes, 0));
         $view->setVar('vonalkodhibahangfeltoltve', self::getBarcodeSoundUrl() !== '');
 
         $p = $repo->find(\mkw\consts::Arsav);
@@ -2433,6 +2434,13 @@ class setupController extends \mkwhelpers\Controller
             \mkw\consts::TermekAutocompleteCikkszam,
             $this->params->getBoolRequestParam(\mkw\consts::TermekAutocompleteCikkszam)
         );
+        // csak az mkwcansas űrlapján van ott, máshol a mentés nem írhatja ki
+        if (\mkw\store::isMindentkapni()) {
+            $this->setObj(
+                \mkw\consts::AutomatikusMenupontElrejtes,
+                $this->params->getBoolRequestParam(\mkw\consts::AutomatikusMenupontElrejtes)
+            );
+        }
 
         $arsav = \mkw\store::getEm()->getRepository(Arsav::class)->find($this->params->getIntRequestParam('arsav'));
         if ($arsav) {
