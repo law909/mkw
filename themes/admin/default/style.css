@@ -1627,8 +1627,8 @@ select.tetelszamhiba,
     font-size: .9em;
 }
 
-/* Terméklista szűrő: rövid címke a mező fölött, a mezők soronként tördelve */
-.termekszuro-sor {
+/* Lista szűrők (termék, partner, bizonylat): rövid címke a mező fölött, a mezők soronként tördelve */
+.listaszuro-sor {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
@@ -1636,36 +1636,46 @@ select.tetelszamhiba,
     margin-bottom: 8px;
 }
 
-.termekszuro-mezo {
+.listaszuro-mezo {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-.termekszuro-mezo > label {
+.listaszuro-mezo > label {
     font-size: .85em;
     opacity: .8;
     white-space: nowrap;
 }
 
-.termekszuro-nev input {
+.listaszuro-szeles input {
     width: 22em;
     max-width: 100%;
 }
 
-.termekszuro-csoport {
+.listaszuro-csoport {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
 }
 
-.termekszuro-fak {
+/* a csoport második, harmadik mezőjének címkéje: a szűrő chip ebből veszi a nevet, látni nem kell */
+.listaszuro-rejtettcimke {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.listaszuro-fak {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 8px 12px;
     margin-bottom: 8px;
 }
 
-.termekszuro-menufa {
+.listaszuro-menufa {
     margin-bottom: 4px;
 }

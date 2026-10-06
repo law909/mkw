@@ -15,115 +15,129 @@
     </form>
     <div id="mattable-select" data-theme="{$theme}">
         <div id="mattable-header" data-title="{at('Frissítés')}" data-caption="{at('Partnerek')}"></div>
-        <div id="mattable-filterwrapper">
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="idfilter">{at('Id')}:</label>
-                <input id="idfilter" name="idfilter" type="text" size="8" maxlength="10">
-                <label for="nevfilter">{at('Név')}:</label>
-                <input id="nevfilter" name="nevfilter" type="text" maxlength="255">
-                <label for="emailfilter">{at('Email')}:</label>
-                <input id="emailfilter" name="emailfilter" type="text" maxlength="255">
+        <div id="mattable-filterwrapper" class="listaszuro">
+            <div class="listaszuro-sor">
+                <div class="listaszuro-mezo listaszuro-szeles">
+                    <label for="nevfilter">{at('Név')}</label>
+                    <input id="nevfilter" name="nevfilter" type="text" maxlength="255">
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="emailfilter">{at('Email')}</label>
+                    <input id="emailfilter" name="emailfilter" type="text" size="20" maxlength="255">
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="idfilter">{at('Id')}</label>
+                    <input id="idfilter" name="idfilter" type="text" size="8" maxlength="10">
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="szallitasiirszamfilter">{at('Szállítási cím')}</label>
+                    <span class="listaszuro-csoport">
+                        <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="6" placeholder="{at('irsz.')}">
+                        <label for="szallitasivarosfilter" class="listaszuro-rejtettcimke">{at('Szállítási város')}</label>
+                        <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text" size="14" placeholder="{at('város')}">
+                        <label for="szallitasiutcafilter" class="listaszuro-rejtettcimke">{at('Szállítási utca')}</label>
+                        <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text" size="16" placeholder="{at('utca')}">
+                    </span>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="szamlazasiirszamfilter">{at('Számlázási cím')}</label>
+                    <span class="listaszuro-csoport">
+                        <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="6" placeholder="{at('irsz.')}">
+                        <label for="szamlazasivarosfilter" class="listaszuro-rejtettcimke">{at('Számlázási város')}</label>
+                        <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text" size="14" placeholder="{at('város')}">
+                        <label for="szamlazasiutcafilter" class="listaszuro-rejtettcimke">{at('Számlázási utca')}</label>
+                        <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text" size="16" placeholder="{at('utca')}">
+                    </span>
+                </div>
             </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="szallitasiirszamfilter">{at('Szállítási cím')}:</label>
-                <input id="szallitasiirszamfilter" name="szallitasiirszamfilter" type="text" size="8">
-                <input id="szallitasivarosfilter" name="szallitasivarosfilter" type="text">
-                <input id="szallitasiutcafilter" name="szallitasiutcafilter" type="text">
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="szamlazasiirszamfilter">{at('Számlázási cím')}:</label>
-                <input id="szamlazasiirszamfilter" name="szamlazasiirszamfilter" type="text" size="8">
-                <input id="szamlazasivarosfilter" name="szamlazasivarosfilter" type="text">
-                <input id="szamlazasiutcafilter" name="szamlazasiutcafilter" type="text">
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="beszallitofilter">{at('Beszállító')}:</label>
-                <select id="beszallitofilter" name="beszallitofilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="0">{at('Nem')}</option>
-                    <option value="1">{at('Igen')}</option>
-                </select>
-                <label for="gyartofilter">{at('Gyártó')}:</label>
-                <select id="gyartofilter" name="gyartofilter">
-                    <option value="9">{at('Mindegy')}</option>
-                    <option value="0">{at('Nem')}</option>
-                    <option value="1">{at('Igen')}</option>
-                </select>
-                <label for="partnertipusfilter">{at('Partner típus')}: </label>
-                <select id="partnertipusfilter" name="partnertipusfilter">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $partnertipuslist as $_gyarto}
-                        <option
-                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                    {/foreach}
-                </select>
-                <label for="orszagfilter">{at('Ország')}: </label>
-                <select id="orszagfilter" name="orszagfilter">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $orszaglist as $_gyarto}
-                        <option
-                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                    {/foreach}
-                </select>
-                <label for="szallorszagfilter">{at('Szállítási ország')}: </label>
-                <select id="szallorszagfilter" name="szallorszagfilter">
-                    <option value="">{at('válasszon')}</option>
-                    {foreach $szallorszaglist as $_gyarto}
-                        <option
-                            value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
-                    {/foreach}
-                </select>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <select id="inaktivfilter" name="inaktivfilter">
-                    <option value="0">{at('Aktív')}</option>
-                    <option value="1">{at('Inaktív')}</option>
-                    <option value="9">{at('Mindegy')}</option>
-                </select>
+            <div class="listaszuro-sor">
+                <div class="listaszuro-mezo">
+                    <label for="inaktivfilter">{at('Aktív')}</label>
+                    <select id="inaktivfilter" name="inaktivfilter">
+                        <option value="0">{at('Igen')}</option>
+                        <option value="1">{at('Nem')}</option>
+                        <option value="9">{at('Mindegy')}</option>
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="beszallitofilter">{at('Beszállító')}</label>
+                    <select id="beszallitofilter" name="beszallitofilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('Igen')}</option>
+                        <option value="0">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="gyartofilter">{at('Gyártó')}</label>
+                    <select id="gyartofilter" name="gyartofilter">
+                        <option value="9">{at('Mindegy')}</option>
+                        <option value="1">{at('Igen')}</option>
+                        <option value="0">{at('Nem')}</option>
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="partnertipusfilter">{at('Partner típus')}</label>
+                    <select id="partnertipusfilter" name="partnertipusfilter">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $partnertipuslist as $_gyarto}
+                            <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="orszagfilter">{at('Ország')}</label>
+                    <select id="orszagfilter" name="orszagfilter">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $orszaglist as $_gyarto}
+                            <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="listaszuro-mezo">
+                    <label for="szallorszagfilter">{at('Szállítási ország')}</label>
+                    <select id="szallorszagfilter" name="szallorszagfilter">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $szallorszaglist as $_gyarto}
+                            <option value="{$_gyarto.id}"{if ($_gyarto.selected)} selected="selected"{/if}>{$_gyarto.caption}</option>
+                        {/foreach}
+                    </select>
+                </div>
             </div>
             {if ($setup.mptngy)}
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="munkahelynevfilter">{at('Munkahely')}:</label>
-                    <input id="munkahelynevfilter" name="munkahelynevfilter" type="text" maxlength="255">
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="szlanevfilter">{at('Számlázási név')}:</label>
-                    <input id="szlanevfilter" name="szlanevfilter" type="text" maxlength="255">
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="mptngyreszvetelfilter">{at('Részvétel')}: </label>
-                    <select id="mptngyreszvetelfilter" name="mptngyreszvetelfilter">
-                        <option value="9">{at('mindegy')}</option>
-                        <option value="1">{at('1. nap részt vesz')}</option>
-                        <option value="2">{at('1. nap állófogadáson részt vesz')}</option>
-                        <option value="3">{at('2. nap részt vesz')}</option>
-                        <option value="4">{at('2. nap banketten részt vesz')}</option>
-                        <option value="5">{at('3. nap részt vesz')}</option>
-                        <option value="6">{at('nem vesz részt, csak szerző')}</option>
-                        <option value="7">{at('nem jelölt meg semmit')}</option>
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="mptngydiakfilter">{at('Diák/nyugdíjas')}: </label>
-                    <select id="mptngydiakfilter" name="mptngydiakfilter">
-                        <option value="9">{at('mindegy')}</option>
-                        <option value="1">{at('diák')}</option>
-                        <option value="2">{at('nyugdíjas')}</option>
-                        <option value="3">{at('diák vagy nyugdíjas')}</option>
-                        <option value="4">{at('nem diák és nem nyugdíjas')}</option>
-                    </select>
+                <div class="listaszuro-sor">
+                    <div class="listaszuro-mezo">
+                        <label for="munkahelynevfilter">{at('Munkahely')}</label>
+                        <input id="munkahelynevfilter" name="munkahelynevfilter" type="text" maxlength="255">
+                    </div>
+                    <div class="listaszuro-mezo">
+                        <label for="szlanevfilter">{at('Számlázási név')}</label>
+                        <input id="szlanevfilter" name="szlanevfilter" type="text" maxlength="255">
+                    </div>
+                    <div class="listaszuro-mezo">
+                        <label for="mptngyreszvetelfilter">{at('Részvétel')}</label>
+                        <select id="mptngyreszvetelfilter" name="mptngyreszvetelfilter">
+                            <option value="9">{at('mindegy')}</option>
+                            <option value="1">{at('1. nap részt vesz')}</option>
+                            <option value="2">{at('1. nap állófogadáson részt vesz')}</option>
+                            <option value="3">{at('2. nap részt vesz')}</option>
+                            <option value="4">{at('2. nap banketten részt vesz')}</option>
+                            <option value="5">{at('3. nap részt vesz')}</option>
+                            <option value="6">{at('nem vesz részt, csak szerző')}</option>
+                            <option value="7">{at('nem jelölt meg semmit')}</option>
+                        </select>
+                    </div>
+                    <div class="listaszuro-mezo">
+                        <label for="mptngydiakfilter">{at('Diák/nyugdíjas')}</label>
+                        <select id="mptngydiakfilter" name="mptngydiakfilter">
+                            <option value="9">{at('mindegy')}</option>
+                            <option value="1">{at('diák')}</option>
+                            <option value="2">{at('nyugdíjas')}</option>
+                            <option value="3">{at('diák vagy nyugdíjas')}</option>
+                            <option value="4">{at('nem diák és nem nyugdíjas')}</option>
+                        </select>
+                    </div>
                 </div>
             {/if}
-            <div class="matt-hseparator"></div>
             <div id="cimkefiltercontainer">
                 {foreach $cimkekat as $_cimkekat}
                     <div class="mattedit-titlebar ui-widget-header ui-helper-clearfix cimkefiltercloseupbutton"
