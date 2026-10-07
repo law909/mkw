@@ -49,6 +49,9 @@ Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored 
     - `sysadmin` / `sysadmin.admin` — master passwords: with `sysadmin` you log in to the storefront as any partner
       (`Traits\PartnerAuth::login()`), with `sysadmin.admin` to the admin as any dolgozo (`dolgozoController::login()`).
       Empty or missing = off. Unrelated to the built-in admin `sysadmin` user, whose password is hard-coded.
+    - `mainpagecachepath` — the storefront's page cache folder when the admin runs from another install than the
+      storefront (mkwcansas: admin on a subdomain, e.g. `../www/storage/pagecache`); the admin "Pagecache törlés"
+      empties that one. Relative to the app root, trailing `/` optional. Empty = the own `path.storage`/pagecache.
     - `path.dokumentum` — target folder of the "Azonnali feltöltés" button on the product/partner document tabs (`Services\DokumentumUploadService`),
       resolved **inside** the media root (`path.mediatar`, else `path.ckfinder`). Default `dokumentum`; the folder is created on first upload.
 - **`setup.ini`** — feature toggles per deployment (`b2b`, `multilang`, `multivaluta`, `bankpenztar`, `arsavok`, `kisszamlazo`, `pdf`, `pdfmode`, `barion`,

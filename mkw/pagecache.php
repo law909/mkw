@@ -131,9 +131,9 @@ final class pagecache
     }
 
     /** Invalidate the whole page cache (call on deploy / mass content change). */
-    public static function bumpVersion(): void
+    public static function bumpVersion(?string $dir = null): void
     {
-        $dir = self::dir();
+        $dir ??= self::dir();
         if (!is_dir($dir)) {
             @mkdir($dir, 0775, true);
         }
@@ -141,26 +141,53 @@ final class pagecache
     }
 
     /**
+     * The storefront's cache folder as the admin sees it: config `mainpagecachepath` when the storefront runs from
+     * another folder than the admin (mkwcansas: admin on a subdomain), else the own one. A relative path starts
+     * from the app root, a trailing / is optional.
+     */
+    public static function mainDir(): string
+    {
+        $path = trim((string)store::getConfigValue('mainpagecachepath', ''));
+        if ($path === '') {
+            return self::dir();
+        }
+        if (strncmp($path, '/', 1) !== 0) {
+            $path = dirname(__DIR__) . '/' . $path;
+        }
+        return rtrim($path, '/') . '/';
+    }
+
+    public static function hasMainDirConfig(): bool
+    {
+        return trim((string)store::getConfigValue('mainpagecachepath', '')) !== '';
+    }
+
+    /**
      * Empty the cache by hand (admin "Pagecache törlés"): every page file goes, and the version bump also
      * misses a page a running request is just writing.
      *
-     * @return int the number of deleted page files
+     * @return int|null the number of deleted page files, null when the configured mainpagecachepath does not exist
      */
-    public static function clear(): int
+    public static function clear(): ?int
     {
+        $dir = self::mainDir();
+        // a mistyped mainpagecachepath must not create a stray folder
+        if (self::hasMainDirConfig() && !is_dir($dir)) {
+            return null;
+        }
         $count = 0;
-        foreach (glob(self::dir() . '*.{html,tmp}', GLOB_BRACE) ?: [] as $f) {
+        foreach (glob($dir . '*.{html,tmp}', GLOB_BRACE) ?: [] as $f) {
             if (@unlink($f) && str_ends_with($f, '.html')) {
                 $count++;
             }
         }
-        self::bumpVersion();
+        self::bumpVersion($dir);
         return $count;
     }
 
     public static function countFiles(): int
     {
-        return count(glob(self::dir() . '*.html') ?: []);
+        return count(glob(self::mainDir() . '*.html') ?: []);
     }
 
     /**
