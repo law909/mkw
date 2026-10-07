@@ -25,8 +25,8 @@
                 </div>
 
                 <fieldset class="mattkarb-doboz">
-                    <legend>{at('1. Melyik darab melyik dobozba került')}</legend>
-                    <p class="mattkarb-hint">{at('Minden darabhoz a doboz számát írja be. A "Mind" mezővel a sor összes darabja egyszerre kitölthető.')}</p>
+                    <legend>{at('1. Melyik tételből mennyi került az egyes dobozokba')}</legend>
+                    <p class="mattkarb-hint">{at('Tételenként a doboz számát és a beletett mennyiséget írja be. Ha a tétel több dobozba kerül, a + gomb új sort ad a még ki nem osztott mennyiséggel.')}</p>
                     <table class="csomagolas-tetelek">
                         <thead>
                         <tr>
@@ -34,25 +34,33 @@
                             <th>{at('Termék')}</th>
                             <th>{at('Méret')}</th>
                             <th class="textalignright">{at('Mennyiség')}</th>
-                            <th>{at('Mind')}</th>
-                            <th>{at('Dobozszám darabonként')}</th>
+                            <th>{at('Doboz × mennyiség')}</th>
+                            <th class="textalignright">{at('Maradék')}</th>
                         </tr>
                         </thead>
                         <tbody>
                         {foreach $tetelek as $_tetel}
-                            <tr class="js-csomagtetel" data-suly="{$_tetel.suly}" data-darabonkent="{if ($_tetel.darabonkent)}1{else}0{/if}"
-                                data-mennyiseg="{$_tetel.mennyiseg}">
+                            <tr class="js-csomagtetel" data-id="{$_tetel.id}" data-suly="{$_tetel.suly}" data-mennyiseg="{$_tetel.mennyiseg}">
                                 <td>{$_tetel.cikkszam|escape}</td>
                                 <td>{$_tetel.nev|escape}</td>
                                 <td>{$_tetel.meret|escape}</td>
                                 <td class="textalignright">{$_tetel.mennyiseg*1}</td>
-                                <td><input class="js-csomagmind csomagolas-szam" type="number" min="1" step="1"></td>
-                                <td class="csomagolas-darabok">
-                                    {foreach $_tetel.mezok as $_szam}
-                                        <input class="js-csomagdarab csomagolas-szam" name="doboz_{$_tetel.id}[]" type="number" min="1" step="1"
-                                               value="{$_szam}"{if (!$_tetel.darabonkent)} title="{at('A teljes mennyiség egy dobozba')}"{/if}>
-                                    {/foreach}
+                                <td>
+                                    <div class="csomagolas-parok">
+                                        {foreach $_tetel.parok as $_par}
+                                            <span class="js-csomagpar csomagolas-par">
+                                                <input class="js-csomagpardoboz csomagolas-szam" name="tetel[{$_tetel.id}][{$_par@index}][doboz]" type="number" min="1" step="1"
+                                                       value="{$_par.doboz}" title="{at('Doboz')}">
+                                                ×
+                                                <input class="js-csomagpardb csomagolas-szam" name="tetel[{$_tetel.id}][{$_par@index}][db]" type="number" min="0" step="any"
+                                                       value="{if ($_par.db !== '')}{$_par.db*1}{/if}" title="{at('Mennyiség')}">
+                                                <a class="js-csomagpardel" href="#" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
+                                            </span>
+                                        {/foreach}
+                                        <a class="js-csomagparadd" href="#" title="{at('Újabb doboz')}"><span class="ui-icon ui-icon-circle-plus"></span></a>
+                                    </div>
                                 </td>
+                                <td class="textalignright js-csomagmaradek"></td>
                             </tr>
                         {foreachelse}
                             <tr><td colspan="6">{at('A bizonylaton nincs dobozba tehető (készletet mozgató) tétel.')}</td></tr>
@@ -64,7 +72,7 @@
 
                 <fieldset class="mattkarb-doboz">
                     <legend>{at('2. Dobozok')}</legend>
-                    <p class="mattkarb-hint">{at('A nettó súlyt a tételek súlyából előre kitöltjük, felülírható. Súly kg-ban, méret cm-ben. A törlés a dobozba tett darabokat is kiveszi.')}</p>
+                    <p class="mattkarb-hint">{at('A nettó súlyt a tételek súlyából előre kitöltjük, felülírható. Súly kg-ban, méret cm-ben. A törlés a dobozba tett tételeket is kiveszi.')}</p>
                     <table class="csomagolas-dobozok">
                         <thead>
                         <tr>

@@ -1,5 +1,5 @@
 /**
- * Csomagolási lista: a darabokhoz írt dobozszámokból épül a dobozok táblája, a nettó súly a tételek
+ * Csomagolási lista: tételenként doboz × mennyiség párok, ezekből épül a dobozok táblája; a nettó súly a tételek
  * súlyából számolódik, amíg a felhasználó felül nem írja. A mentés a teljes állapotot küldi.
  */
 $(document).ready(function () {
@@ -9,32 +9,71 @@ $(document).ready(function () {
     }
     const $dobozok = $form.find('.js-csomagdobozok');
     const MEZOK = ['bruttosuly', 'szelesseg', 'magassag', 'melyseg'];
+    let pairIndex = $form.find('.js-csomagpar').length;
 
     function num(v) {
         const n = parseFloat(('' + (v ?? '')).replace(',', '.'));
         return isNaN(n) ? 0 : n;
     }
 
-    // dobozszám → nettó súly (kg), és a még dobozba nem tett darabok száma
+    function round(n) {
+        return Math.round(n * 10000) / 10000;
+    }
+
+    // a tétel párjai: doboz (0 = nincs megadva) és mennyiség
+    function getPairs($sor) {
+        return $sor.find('.js-csomagpar').map(function () {
+            return {
+                doboz: parseInt($(this).find('.js-csomagpardoboz').val(), 10) || 0,
+                db: num($(this).find('.js-csomagpardb').val())
+            };
+        }).get();
+    }
+
+    function addPair($sor, db) {
+        const id = $sor.data('id'),
+            i = pairIndex++;
+        const $par = $('<span class="js-csomagpar csomagolas-par"></span>').append(
+            $('<input class="js-csomagpardoboz csomagolas-szam" type="number" min="1" step="1">')
+                .attr({name: `tetel[${id}][${i}][doboz]`, title: 'Doboz'}),
+            ' × ',
+            $('<input class="js-csomagpardb csomagolas-szam" type="number" min="0" step="any">')
+                .attr({name: `tetel[${id}][${i}][db]`, title: 'Mennyiség'}).val(db > 0 ? round(db) : ''),
+            ' ',
+            $('<a class="js-csomagpardel" href="#"><span class="ui-icon ui-icon-circle-minus"></span></a>').attr('title', 'Töröl')
+        );
+        $par.insertBefore($sor.find('.js-csomagparadd'));
+        return $par;
+    }
+
+    // az utolsó pár helyére üres kerül a tétel teljes mennyiségével, hogy a sor ne maradjon beviteli mező nélkül
+    function removePair($par) {
+        const $sor = $par.closest('.js-csomagtetel');
+        $par.remove();
+        if (!$sor.find('.js-csomagpar').length) {
+            addPair($sor, num($sor.data('mennyiseg')));
+        }
+    }
+
+    // dobozszám → nettó súly (kg); közben a tételsorok maradékát is kiírja
     function osszesit() {
         const netto = {};
         let hianyzik = 0;
         $form.find('.js-csomagtetel').each(function () {
             const $sor = $(this),
-                suly = num($sor.data('suly')),
-                darabonkent = $sor.data('darabonkent') == 1,
-                mennyiseg = num($sor.data('mennyiseg'));
-            $sor.find('.js-csomagdarab').each(function () {
-                const szam = parseInt(this.value, 10),
-                    db = darabonkent ? 1 : mennyiseg;
-                if (szam > 0) {
-                    netto[szam] = (netto[szam] || 0) + suly * db;
-                } else {
-                    hianyzik += db;
+                suly = num($sor.data('suly'));
+            let maradek = num($sor.data('mennyiseg'));
+            getPairs($sor).forEach(function (par) {
+                if (par.doboz > 0 && par.db > 0) {
+                    netto[par.doboz] = (netto[par.doboz] || 0) + suly * par.db;
+                    maradek -= par.db;
                 }
             });
+            maradek = round(maradek);
+            $sor.find('.js-csomagmaradek').text(maradek).toggleClass('redtext', maradek < 0);
+            hianyzik += Math.max(maradek, 0);
         });
-        return {netto: netto, hianyzik: hianyzik};
+        return {netto: netto, hianyzik: round(hianyzik)};
     }
 
     function ujDobozSor(szam) {
@@ -103,18 +142,29 @@ $(document).ready(function () {
         });
     }
 
-    $form.on('input change', '.js-csomagdarab', frissit);
-    $form.on('change', '.js-csomagmind', function () {
-        $(this).closest('.js-csomagtetel').find('.js-csomagdarab').val(this.value);
+    $form.on('input change', '.js-csomagpardoboz, .js-csomagpardb', frissit);
+    // az új pár a még ki nem osztott mennyiséget kapja
+    $form.on('click', '.js-csomagparadd', function (e) {
+        e.preventDefault();
+        const $sor = $(this).closest('.js-csomagtetel');
+        const kiosztott = getPairs($sor).reduce((ossz, par) => ossz + par.db, 0);
+        addPair($sor, num($sor.data('mennyiseg')) - kiosztott).find('.js-csomagpardoboz').trigger('focus');
         frissit();
     });
-    // the box row disappears in frissit() once no piece refers to its number
+    $form.on('click', '.js-csomagpardel', function (e) {
+        e.preventDefault();
+        removePair($(this).closest('.js-csomagpar'));
+        frissit();
+    });
+    // a doboz sora frissit()-ben tűnik el, amikor már egy pár sem hivatkozik rá
     $form.on('click', '.js-csomagdobozdel', function (e) {
         e.preventDefault();
         const szam = Number($(this).closest('.js-csomagdoboz').data('szam'));
-        $form.find('.js-csomagdarab, .js-csomagmind').filter(function () {
-            return parseInt(this.value, 10) === szam;
-        }).val('');
+        $form.find('.js-csomagpar').filter(function () {
+            return parseInt($(this).find('.js-csomagpardoboz').val(), 10) === szam;
+        }).each(function () {
+            removePair($(this));
+        });
         frissit();
     });
     $form.on('input', '.js-csomagnetto', function () {

@@ -13,9 +13,6 @@ use Entities\Csomagolasitetel;
  */
 class csomagolasilistaController extends \mkwhelpers\Controller
 {
-    // above this a line gets one box field for the whole quantity instead of one per piece
-    private const MAXDARABMEZO = 200;
-
     public function view()
     {
         $bizonylat = $this->findBizonylat();
@@ -41,26 +38,18 @@ class csomagolasilistaController extends \mkwhelpers\Controller
 
         $tetelek = [];
         foreach ($this->getCsomagolandoTetelek($bizonylat) as $tetel) {
-            $mennyiseg = (float)$tetel->getMennyiseg();
-            $darabonkent = $this->isDarabonkent($mennyiseg);
-            $mezok = [];
+            $parok = [];
             foreach ($hozzarendelt[$tetel->getId()] ?? [] as $dobozszam => $db) {
-                if ($darabonkent) {
-                    $mezok = array_merge($mezok, array_fill(0, (int)round($db), $dobozszam));
-                } else {
-                    $mezok[] = $dobozszam;
-                }
+                $parok[] = ['doboz' => $dobozszam, 'db' => $db];
             }
-            $mezok = array_pad(array_slice($mezok, 0, $darabonkent ? (int)$mennyiseg : 1), $darabonkent ? (int)$mennyiseg : 1, '');
             $tetelek[] = [
                 'id' => $tetel->getId(),
                 'cikkszam' => $tetel->getDisplayCikkszam(),
                 'nev' => $tetel->getTermeknev(),
                 'meret' => $this->getMeret($tetel),
-                'mennyiseg' => $mennyiseg,
+                'mennyiseg' => (float)$tetel->getMennyiseg(),
                 'suly' => (float)$tetel->getSuly(),
-                'darabonkent' => $darabonkent,
-                'mezok' => $mezok,
+                'parok' => $parok ?: [['doboz' => '', 'db' => (float)$tetel->getMennyiseg()]],
             ];
         }
 
@@ -79,8 +68,8 @@ class csomagolasilistaController extends \mkwhelpers\Controller
     }
 
     /**
-     * The whole packing of the document in one go: `doboz_<tetelid>[]` = the box number of each piece (one value for
-     * the whole line when it is not entered by piece), `dobozadat[<dobozszam>][<mezo>]` = the box data.
+     * The whole packing of the document in one go: `tetel[<tetelid>][][doboz|db]` = box number and quantity pairs,
+     * `dobozadat[<dobozszam>][<mezo>]` = the box data.
      */
     public function save()
     {
@@ -89,6 +78,7 @@ class csomagolasilistaController extends \mkwhelpers\Controller
             return;
         }
         $dobozadatok = $this->params->getArrayRequestParam('dobozadat');
+        $parok = $this->params->getArrayRequestParam('tetel');
         $em = $this->getEm();
         $em->getConnection()->beginTransaction();
         try {
@@ -101,15 +91,15 @@ class csomagolasilistaController extends \mkwhelpers\Controller
             foreach ($this->getCsomagolandoTetelek($bizonylat) as $tetel) {
                 $mennyiseg = (float)$tetel->getMennyiseg();
                 $darabok = [];
-                $mezok = $this->params->getArrayRequestParam('doboz_' . $tetel->getId());
-                foreach ($mezok as $dobozszam) {
-                    $dobozszam = (int)$dobozszam;
-                    if ($dobozszam > 0) {
-                        $darabok[$dobozszam] = ($darabok[$dobozszam] ?? 0) + ($this->isDarabonkent($mennyiseg) ? 1 : $mennyiseg);
+                foreach ((array)($parok[$tetel->getId()] ?? []) as $par) {
+                    $dobozszam = (int)($par['doboz'] ?? 0);
+                    $db = (float)str_replace(',', '.', (string)($par['db'] ?? ''));
+                    if ($dobozszam > 0 && $db > 0) {
+                        $darabok[$dobozszam] = ($darabok[$dobozszam] ?? 0) + $db;
                     }
                 }
                 if (array_sum($darabok) > $mennyiseg + 0.0001) {
-                    throw new \RuntimeException(sprintf(t('%s: több darab van dobozba téve, mint a tétel mennyisége.'), $tetel->getDisplayCikkszam()));
+                    throw new \RuntimeException(sprintf(t('%s: több van dobozba téve, mint a tétel mennyisége.'), $tetel->getDisplayCikkszam()));
                 }
                 foreach ($darabok as $dobozszam => $db) {
                     if (!isset($dobozok[$dobozszam])) {
@@ -226,11 +216,6 @@ class csomagolasilistaController extends \mkwhelpers\Controller
             }
         }
         return $ret;
-    }
-
-    private function isDarabonkent(float $mennyiseg): bool
-    {
-        return floor($mennyiseg) == $mennyiseg && $mennyiseg <= self::MAXDARABMEZO;
     }
 
     private function getMeret(Bizonylattetel $tetel): string

@@ -868,10 +868,18 @@ table.termekkarton td.kartonfejsor {
     vertical-align: top;
 }
 
-.csomagolas-darabok {
+.csomagolas-parok {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    gap: 3px 10px;
+}
+
+.csomagolas-par {
+    display: inline-flex;
+    align-items: center;
     gap: 3px;
+    white-space: nowrap;
 }
 
 .csomagolas-szam,
