@@ -189,7 +189,6 @@ class csomagolasilistaController extends \mkwhelpers\Controller
         $view->setVar('osszesen', $osszesen);
         $view->setVar('tartalom', $tartalom);
         $view->setVar('hianyzik', round($hianyzik, 4));
-        $view->setVar('printdatum', date(\mkw\store::$DateTimeFormat));
         $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
         $pdf->getEngine()->SetTitle(t('Csomagolási lista') . ' ' . $bizonylat->getId());
         $pdf->inline(\mkw\store::urlize($bizonylat->getId()) . '-csomagolasilista.pdf');

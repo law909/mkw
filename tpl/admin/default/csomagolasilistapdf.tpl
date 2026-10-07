@@ -56,7 +56,7 @@
 <htmlpagefooter name="lablec">
     <table width="100%" class="lablec">
         <tr>
-            <td>Csomagolási lista / Packing list · {$egyed.id|escape} · {$printdatum}</td>
+            <td>Csomagolási lista / Packing list · {$egyed.id|escape}</td>
             <td align="right">{literal}{PAGENO} / {nbpg}{/literal}</td>
         </tr>
     </table>
