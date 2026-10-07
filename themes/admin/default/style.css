@@ -883,13 +883,18 @@ table.termekkarton td.kartonfejsor {
 }
 
 .csomagolas-oldal .csomagolas-gomb.ui-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
-    min-width: 2.5em;
+    width: 2.5em;
     height: 2.5em;
     margin: 0;
-    padding: 0 .5em;
-    font-size: 1em;
-    font-weight: 600;
+    padding: 0;
+}
+
+.csomagolas-gomb .ui-button-text {
+    padding: 0;
 }
 
 .csomagolas-szam,

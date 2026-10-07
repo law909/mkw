@@ -26,7 +26,7 @@
 
                 <fieldset class="mattkarb-doboz">
                     <legend>{at('1. Melyik tételből mennyi került az egyes dobozokba')}</legend>
-                    <p class="mattkarb-hint">{at('Tételenként a doboz számát és a beletett mennyiséget írja be. Ha a tétel több dobozba kerül, a + gomb alá új sort ad a még ki nem osztott mennyiséggel.')}</p>
+                    <p class="mattkarb-hint">{at('Tételenként a doboz számát és a beletett mennyiséget írja be. Ha a tétel több dobozba kerül, a + gomb alá új sort ad a még ki nem osztott mennyiséggel. Enterrel a következő tétel dobozszámára ugrik.')}</p>
                     <table class="csomagolas-tetelek">
                         <thead>
                         <tr>
@@ -54,8 +54,8 @@
                                                 ×
                                                 <input class="js-csomagpardb csomagolas-szam" name="tetel[{$_tetel.id}][{$_par@index}][db]" type="number" min="0" step="any"
                                                        value="{if ($_par.db !== '')}{$_par.db*1}{/if}" title="{at('Mennyiség')}">
-                                                <button type="button" class="js-csomagpardel csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all" title="{at('Töröl')}">−</button>
-                                                <button type="button" class="js-csomagparadd csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all" title="{at('Újabb doboz ez alá')}">+</button>
+                                                <button type="button" class="js-csomagpardel csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all" title="{at('Töröl')}"><span class="ui-button-text"><span class="ui-icon ui-icon-circle-minus"></span></span></button>
+                                                <button type="button" class="js-csomagparadd csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all" title="{at('Újabb doboz ez alá')}"><span class="ui-button-text"><span class="ui-icon ui-icon-circle-plus"></span></span></button>
                                             </span>
                                         {/foreach}
                                     </div>
@@ -94,7 +94,7 @@
                                 <td><input name="dobozadat[{$_doboz.dobozszam}][szelesseg]" type="number" step="any" min="0" value="{if ($_doboz.szelesseg !== null)}{$_doboz.szelesseg*1}{/if}"></td>
                                 <td><input name="dobozadat[{$_doboz.dobozszam}][magassag]" type="number" step="any" min="0" value="{if ($_doboz.magassag !== null)}{$_doboz.magassag*1}{/if}"></td>
                                 <td><input name="dobozadat[{$_doboz.dobozszam}][melyseg]" type="number" step="any" min="0" value="{if ($_doboz.melyseg !== null)}{$_doboz.melyseg*1}{/if}"></td>
-                                <td><button type="button" class="js-csomagdobozdel csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all" title="{at('Töröl')}">−</button></td>
+                                <td><button type="button" class="js-csomagdobozdel csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all" title="{at('Töröl')}"><span class="ui-button-text"><span class="ui-icon ui-icon-circle-minus"></span></span></button></td>
                             </tr>
                         {/foreach}
                         </tbody>

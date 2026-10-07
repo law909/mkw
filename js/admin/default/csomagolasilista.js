@@ -30,9 +30,10 @@ $(document).ready(function () {
         }).get();
     }
 
-    function button(osztaly, felirat, title) {
+    function button(osztaly, ikon, title) {
         return $(`<button type="button" class="${osztaly} csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all"></button>`)
-            .text(felirat).attr('title', title);
+            .attr('title', title)
+            .append($('<span class="ui-button-text"></span>').append($(`<span class="ui-icon ${ikon}"></span>`)));
     }
 
     // $utan nélkül a sor végére kerül
@@ -46,9 +47,9 @@ $(document).ready(function () {
             $('<input class="js-csomagpardb csomagolas-szam" type="number" min="0" step="any">')
                 .attr({name: `tetel[${id}][${i}][db]`, title: 'Mennyiség'}).val(db > 0 ? round(db) : ''),
             ' ',
-            button('js-csomagpardel', '−', 'Töröl'),
+            button('js-csomagpardel', 'ui-icon-circle-minus', 'Töröl'),
             ' ',
-            button('js-csomagparadd', '+', 'Újabb doboz ez alá')
+            button('js-csomagparadd', 'ui-icon-circle-plus', 'Újabb doboz ez alá')
         );
         if ($utan) {
             $par.insertAfter($utan);
@@ -100,7 +101,7 @@ $(document).ready(function () {
             ));
         });
         $sor.append($('<td></td>').append(
-            button('js-csomagdobozdel', '−', 'Töröl')
+            button('js-csomagdobozdel', 'ui-icon-circle-minus', 'Töröl')
         ));
         return $sor;
     }
@@ -183,10 +184,15 @@ $(document).ready(function () {
     $form.on('input', '.js-csomagnetto', function () {
         $(this).attr('data-kezi', this.value === '' ? '0' : '1');
     });
-    // Enter egy mezőben ne küldje el félkészen
+    // Enter ne küldje el félkészen; a tételek párjaiban a következő tétel dobozszámára ugrik
     $form.on('keydown', 'input', function (e) {
-        if (e.which === 13) {
-            e.preventDefault();
+        if (e.which !== 13) {
+            return;
+        }
+        e.preventDefault();
+        const $sor = $(this).closest('.js-csomagtetel');
+        if ($sor.length) {
+            $sor.nextAll('.js-csomagtetel').first().find('.js-csomagpardoboz').first().trigger('focus').trigger('select');
         }
     });
     $form.on('submit', function (e) {
