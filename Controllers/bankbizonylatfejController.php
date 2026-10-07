@@ -346,6 +346,57 @@ class bankbizonylatfejController extends \mkwhelpers\MattableController
         return $tetel;
     }
 
+    /**
+     * The könyvelő screen links the payments of an invoice here; same structure as the cash document's print,
+     * with one line per item because a bank statement settles several partners.
+     */
+    public function renderBizonylat($id)
+    {
+        /** @var \Entities\Bankbizonylatfej $o */
+        $o = $this->getRepo()->find($id);
+        if (!$o) {
+            return null;
+        }
+
+        $bt = $o->getBizonylattipus();
+        $tplname = ($bt ? $bt->getTplname() : '') ?: 'biz_bank.tpl';
+
+        $x = $this->loadVars($o);
+        $x['bizonylatnev'] = $bt ? $bt->getNev() : t('Bankbizonylat');
+        // biz_base.tpl expects these keys
+        $x['szamlanev'] = $o->getPartnernev();
+        $x['nyomtatva'] = false;
+        $x['printrendelet'] = false;
+        $x['programnev'] = \mkw\store::getParameter(\mkw\consts::ProgramNev);
+        $x['tulajnev'] = \mkw\store::getParameter(\mkw\consts::Tulajnev);
+        $x['tulajirszam'] = \mkw\store::getParameter(\mkw\consts::Tulajirszam);
+        $x['tulajvaros'] = \mkw\store::getParameter(\mkw\consts::Tulajvaros);
+        $x['tulajutca'] = \mkw\store::getParameter(\mkw\consts::Tulajutca);
+        $x['tulajadoszam'] = \mkw\store::getParameter(\mkw\consts::Tulajadoszam);
+
+        $tetelCtrl = new bankbizonylattetelController();
+        $tetellista = [];
+        foreach ($o->getBizonylattetelek() as $tetel) {
+            $tetellista[] = $tetelCtrl->loadVars($tetel);
+        }
+        $x['tetellista'] = $tetellista;
+
+        $vars = ['egyed' => $x];
+        if ($bt) {
+            $vars = array_merge($bt->getTemplateVars(), $vars);
+        }
+        return (new \Services\BizonylatPrintService())->renderTemplate($tplname, $vars);
+    }
+
+    public function doPrint()
+    {
+        $id = $this->params->getStringRequestParam('id');
+        $r = $this->renderBizonylat($id);
+        if ($r) {
+            (new \Services\BizonylatPrintService())->outputResult($r, $id);
+        }
+    }
+
     public function ront()
     {
         $id = $this->params->getStringRequestParam('id');
