@@ -48,6 +48,9 @@ $(document).ready(function () {
                 $('<input type="number" step="any" min="0">').attr('name', `dobozadat[${szam}][${mezo}]`)
             ));
         });
+        $sor.append($('<td></td>').append(
+            $('<a class="js-csomagdobozdel" href="#"><span class="ui-icon ui-icon-circle-minus"></span></a>').attr('title', 'Töröl')
+        ));
         return $sor;
     }
 
@@ -103,6 +106,15 @@ $(document).ready(function () {
     $form.on('input change', '.js-csomagdarab', frissit);
     $form.on('change', '.js-csomagmind', function () {
         $(this).closest('.js-csomagtetel').find('.js-csomagdarab').val(this.value);
+        frissit();
+    });
+    // the box row disappears in frissit() once no piece refers to its number
+    $form.on('click', '.js-csomagdobozdel', function (e) {
+        e.preventDefault();
+        const szam = Number($(this).closest('.js-csomagdoboz').data('szam'));
+        $form.find('.js-csomagdarab, .js-csomagmind').filter(function () {
+            return parseInt(this.value, 10) === szam;
+        }).val('');
         frissit();
     });
     $form.on('input', '.js-csomagnetto', function () {

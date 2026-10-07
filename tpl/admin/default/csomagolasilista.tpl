@@ -64,7 +64,7 @@
 
                 <fieldset class="mattkarb-doboz">
                     <legend>{at('2. Dobozok')}</legend>
-                    <p class="mattkarb-hint">{at('A nettó súlyt a tételek súlyából előre kitöltjük, felülírható. Súly kg-ban, méret cm-ben.')}</p>
+                    <p class="mattkarb-hint">{at('A nettó súlyt a tételek súlyából előre kitöltjük, felülírható. Súly kg-ban, méret cm-ben. A törlés a dobozba tett darabokat is kiveszi.')}</p>
                     <table class="csomagolas-dobozok">
                         <thead>
                         <tr>
@@ -74,6 +74,7 @@
                             <th>{at('Szélesség')}</th>
                             <th>{at('Magasság')}</th>
                             <th>{at('Mélység')}</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody class="js-csomagdobozok">
@@ -85,6 +86,7 @@
                                 <td><input name="dobozadat[{$_doboz.dobozszam}][szelesseg]" type="number" step="any" min="0" value="{if ($_doboz.szelesseg !== null)}{$_doboz.szelesseg*1}{/if}"></td>
                                 <td><input name="dobozadat[{$_doboz.dobozszam}][magassag]" type="number" step="any" min="0" value="{if ($_doboz.magassag !== null)}{$_doboz.magassag*1}{/if}"></td>
                                 <td><input name="dobozadat[{$_doboz.dobozszam}][melyseg]" type="number" step="any" min="0" value="{if ($_doboz.melyseg !== null)}{$_doboz.melyseg*1}{/if}"></td>
+                                <td><a class="js-csomagdobozdel" href="#" title="{at('Töröl')}"><span class="ui-icon ui-icon-circle-minus"></span></a></td>
                             </tr>
                         {/foreach}
                         </tbody>
