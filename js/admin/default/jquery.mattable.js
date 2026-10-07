@@ -65,7 +65,7 @@
                 filterClear: 'Töröl',
                 filterClearTitle: 'Szűrőfeltételek tölése',
                 filterSave: 'Mentés alapértelmezésként',
-                filterSaveTitle: 'A lista üres címmel megnyitva ezzel a szűrővel indul',
+                filterSaveTitle: 'A lista üres címmel megnyitva ezzel a szűrővel és rendezéssel indul',
                 filterSaved: 'Mentve',
                 filterOpenTitle: 'Szűrőt kinyit',
                 filterCloseTitle: 'Szűrőt becsuk',
@@ -259,10 +259,10 @@
                     .on('click', function (e) {
                         e.preventDefault();
                         const $btn = $(this);
-                        // a reload írja az URL-be a szűrő aktuális állapotát, onnan mentjük
+                        // a reload írja az URL-be a szűrő és a rendezés aktuális állapotát, onnan mentjük
                         reloadTbody();
                         const params = new URLSearchParams(window.location.search);
-                        ['pageno', 'elemperpage', 'order', 'orderdir', 'mind', 'mindok'].forEach(function (k) {
+                        ['pageno', 'elemperpage', 'mind', 'mindok'].forEach(function (k) {
                             params.delete(k);
                         });
                         $.ajax({
