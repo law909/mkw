@@ -392,8 +392,8 @@ class KoltsegszamlaJSONImportService
 
     /**
      * Egy tételsor kiolvasása. Az egyszerűsített (lineAmountsSimplified) számlán az egységár
-     * bruttó, a normálon nettó – ezt a 'brutto' jelzi. Hiányzó egységárat a sorösszegből és a
-     * mennyiségből számolunk vissza.
+     * bruttó, a normálon nettó – ezt a 'brutto' jelzi. Az egységárat a sorösszegből és a
+     * mennyiségből számoljuk, az unitPrice csak akkor kell, ha nincs sorösszeg.
      */
     private function olvasTetel(array $line, array $fejadat): array
     {
@@ -407,23 +407,14 @@ class KoltsegszamlaJSONImportService
         $osszegek = $this->ag($line, $egyszerusitett ? 'lineAmountsSimplified' : 'lineAmountsNormal');
         $afaadat = $this->olvasAfakulcs($this->ag($osszegek, 'lineVatRate'));
 
-        $ar = $this->szam($line, 'unitPrice');
-        $arhuf = $this->szam($line, 'unitPriceHUF');
-        if ($egyszerusitett) {
-            if ($ar == 0) {
-                $ar = $this->szam($osszegek, 'lineGrossAmountSimplified') / $mennyiseg;
-            }
-            if ($arhuf == 0) {
-                $arhuf = $this->szam($osszegek, 'lineGrossAmountSimplifiedHUF') / $mennyiseg;
-            }
-        } else {
-            if ($ar == 0) {
-                $ar = $this->szam($osszegek, 'lineNetAmountData.lineNetAmount') / $mennyiseg;
-            }
-            if ($arhuf == 0) {
-                $arhuf = $this->szam($osszegek, 'lineNetAmountData.lineNetAmountHUF') / $mennyiseg;
-            }
-        }
+        // az unitPrice a sorkedvezmény (lineDiscountData) előtti ár, a NAV a sorösszeget adja össze
+        $sorosszeg = $egyszerusitett ? 'lineGrossAmountSimplified' : 'lineNetAmountData.lineNetAmount';
+        $ar = $this->mezo($osszegek, $sorosszeg) !== ''
+            ? $this->szam($osszegek, $sorosszeg) / $mennyiseg
+            : $this->szam($line, 'unitPrice');
+        $arhuf = $this->mezo($osszegek, $sorosszeg . 'HUF') !== ''
+            ? $this->szam($osszegek, $sorosszeg . 'HUF') / $mennyiseg
+            : $this->szam($line, 'unitPriceHUF');
         if ($arhuf == 0) {
             $arhuf = $ar * $fejadat['exchangeRate'];
         }
