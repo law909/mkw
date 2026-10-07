@@ -178,7 +178,7 @@ class csomagolasilistaController extends \mkwhelpers\Controller
         }
         $hianyzik -= $becsomagolt;
 
-        $view = $this->createView('rep_csomagolasilista.tpl');
+        $view = $this->createView('csomagolasilistapdf.tpl');
         $view->setVar('egyed', [
             'id' => $bizonylat->getId(),
             'partnernev' => $bizonylat->getPartnernev(),
@@ -190,7 +190,9 @@ class csomagolasilistaController extends \mkwhelpers\Controller
         $view->setVar('tartalom', $tartalom);
         $view->setVar('hianyzik', round($hianyzik, 4));
         $view->setVar('printdatum', date(\mkw\store::$DateTimeFormat));
-        $view->printTemplateResult();
+        $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
+        $pdf->getEngine()->SetTitle(t('Csomagolási lista') . ' ' . $bizonylat->getId());
+        $pdf->inline(\mkw\store::urlize($bizonylat->getId()) . '-csomagolasilista.pdf');
     }
 
     private function findBizonylat(): ?Bizonylatfej
