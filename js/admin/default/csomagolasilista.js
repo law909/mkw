@@ -69,6 +69,11 @@ $(document).ready(function () {
     }
 
     // dobozszám → nettó súly (kg); közben a tételsorok maradékát is kiírja
+    // a tétel párokba még be nem írt mennyisége
+    function getKiosztatlan($sor) {
+        return round(getPairs($sor).reduce((ossz, par) => ossz - par.db, num($sor.data('mennyiseg'))));
+    }
+
     function osszesit() {
         const netto = {};
         let hianyzik = 0;
@@ -85,6 +90,8 @@ $(document).ready(function () {
             maradek = round(maradek);
             $sor.find('.js-csomagmaradek').text(maradek).toggleClass('redtext', maradek < 0);
             hianyzik += Math.max(maradek, 0);
+            const nincsMit = getKiosztatlan($sor) <= 0;
+            $sor.find('.js-csomagparadd').prop('disabled', nincsMit).toggleClass('ui-state-disabled', nincsMit);
         });
         return {netto: netto, hianyzik: round(hianyzik)};
     }
@@ -160,9 +167,11 @@ $(document).ready(function () {
     $form.on('click', '.js-csomagparadd', function (e) {
         e.preventDefault();
         const $sor = $(this).closest('.js-csomagtetel');
-        const kiosztott = getPairs($sor).reduce((ossz, par) => ossz + par.db, 0);
-        addPair($sor, num($sor.data('mennyiseg')) - kiosztott, $(this).closest('.js-csomagpar'))
-            .find('.js-csomagpardoboz').trigger('focus');
+        const kiosztatlan = getKiosztatlan($sor);
+        if (kiosztatlan <= 0) {
+            return;
+        }
+        addPair($sor, kiosztatlan, $(this).closest('.js-csomagpar')).find('.js-csomagpardoboz').trigger('focus');
         frissit();
     });
     $form.on('click', '.js-csomagpardel', function (e) {
