@@ -54,7 +54,7 @@
                 <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$_egyed.id|escape:'url'}" target="_blank"
                    title="{at('Tételek ellenőrzése')}"><span class="ui-icon ui-icon-check"></span></a>
                 {if ($showcsomagolasilista|default)}
-                    <a href="/admin/csomagolasilista/view?id={$_egyed.id|escape:'url'}" target="_blank"
+                    <a class="js-csomagolasilista" href="/admin/csomagolasilista/view?id={$_egyed.id|escape:'url'}" target="_blank"
                        title="{at('Csomagolási lista')}"><span class="ui-icon ui-icon-suitcase"></span></a>
                 {/if}
             {/if}

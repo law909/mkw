@@ -2763,7 +2763,7 @@ let bizonylathelper = function ($) {
                 tablebody: {
                     url: '/admin/' + entityName + '/getlistbody',
                     onStyle: function () {
-                        $('.js-printbizonylat, .js-printbizonylat2, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, ' +
+                        $('.js-printbizonylat, .js-printbizonylat2, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, .js-csomagolasilista, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
                             '.js-kiegyenlit, .js-mirexport, .js-cimkenyomtatas, .js-recheck').button();
