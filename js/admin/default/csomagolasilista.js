@@ -30,7 +30,13 @@ $(document).ready(function () {
         }).get();
     }
 
-    function addPair($sor, db) {
+    function button(osztaly, felirat, title) {
+        return $(`<button type="button" class="${osztaly} csomagolas-gomb ui-button ui-widget ui-state-default ui-corner-all"></button>`)
+            .text(felirat).attr('title', title);
+    }
+
+    // $utan nélkül a sor végére kerül
+    function addPair($sor, db, $utan) {
         const id = $sor.data('id'),
             i = pairIndex++;
         const $par = $('<span class="js-csomagpar csomagolas-par"></span>').append(
@@ -40,9 +46,15 @@ $(document).ready(function () {
             $('<input class="js-csomagpardb csomagolas-szam" type="number" min="0" step="any">')
                 .attr({name: `tetel[${id}][${i}][db]`, title: 'Mennyiség'}).val(db > 0 ? round(db) : ''),
             ' ',
-            $('<a class="js-csomagpardel" href="#"><span class="ui-icon ui-icon-circle-minus"></span></a>').attr('title', 'Töröl')
+            button('js-csomagpardel', '−', 'Töröl'),
+            ' ',
+            button('js-csomagparadd', '+', 'Újabb doboz ez alá')
         );
-        $par.insertBefore($sor.find('.js-csomagparadd'));
+        if ($utan) {
+            $par.insertAfter($utan);
+        } else {
+            $sor.find('.csomagolas-parok').append($par);
+        }
         return $par;
     }
 
@@ -88,7 +100,7 @@ $(document).ready(function () {
             ));
         });
         $sor.append($('<td></td>').append(
-            $('<a class="js-csomagdobozdel" href="#"><span class="ui-icon ui-icon-circle-minus"></span></a>').attr('title', 'Töröl')
+            button('js-csomagdobozdel', '−', 'Töröl')
         ));
         return $sor;
     }
@@ -148,7 +160,8 @@ $(document).ready(function () {
         e.preventDefault();
         const $sor = $(this).closest('.js-csomagtetel');
         const kiosztott = getPairs($sor).reduce((ossz, par) => ossz + par.db, 0);
-        addPair($sor, num($sor.data('mennyiseg')) - kiosztott).find('.js-csomagpardoboz').trigger('focus');
+        addPair($sor, num($sor.data('mennyiseg')) - kiosztott, $(this).closest('.js-csomagpar'))
+            .find('.js-csomagpardoboz').trigger('focus');
         frissit();
     });
     $form.on('click', '.js-csomagpardel', function (e) {

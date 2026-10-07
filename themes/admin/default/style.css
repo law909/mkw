@@ -870,9 +870,9 @@ table.termekkarton td.kartonfejsor {
 
 .csomagolas-parok {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 3px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
 }
 
 .csomagolas-par {
@@ -880,6 +880,16 @@ table.termekkarton td.kartonfejsor {
     align-items: center;
     gap: 3px;
     white-space: nowrap;
+}
+
+.csomagolas-oldal .csomagolas-gomb.ui-button {
+    box-sizing: border-box;
+    min-width: 2.5em;
+    height: 2.5em;
+    margin: 0;
+    padding: 0 .5em;
+    font-size: 1em;
+    font-weight: 600;
 }
 
 .csomagolas-szam,
