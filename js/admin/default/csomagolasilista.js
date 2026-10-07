@@ -80,14 +80,13 @@ $(document).ready(function () {
     }
 
     function ment(siker, hiba) {
-        $form.find('.js-csomaguzenet').text('');
         $.ajax({
             url: $form.attr('action'),
             type: 'POST',
             data: $form.serialize(),
             dataType: 'json',
             success: function () {
-                $form.find('.js-csomaguzenet').text('Mentve.');
+                mkwUzenet('A mentés sikerült.');
                 if (siker) {
                     siker();
                 }

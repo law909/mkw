@@ -90,7 +90,6 @@
                         </tbody>
                     </table>
                 </fieldset>
-                <span class="js-csomaguzenet"></span>
             </div>
             <div class="admin-form-footer">
                 <button type="submit" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">{at('Mentés')}</button>
