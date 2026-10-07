@@ -4,6 +4,10 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>{$pagetitle|default:'Médiatár'}</title>
+    {* a sötét téma a világosra épül; nem @import, mert azt a kimeneti szűrő nem verziózza, és a böngésző a régit tartaná meg *}
+    {if ($uitheme == 'modern-dark')}
+        <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/modern/jquery-ui.css"/>
+    {/if}
     <link rel="stylesheet" type="text/css" media="screen" href="/themes/ui/{$uitheme}/jquery-ui.css"/>
     <link rel="stylesheet" type="text/css" href="/themes/admin/default/mediatar.css"/>
     <script type="text/javascript" src="/js/admin/default/jquery-3.7.1.min.js"></script>

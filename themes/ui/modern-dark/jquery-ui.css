@@ -1,5 +1,4 @@
-/* MKW "modern-dark": a modern téma sötét tokenekkel. */
-@import url("../modern/jquery-ui.css");
+/* MKW "modern-dark": a modern téma sötét tokenekkel. A modern/jquery-ui.css-t a sablon tölti be előtte (base.tpl). */
 
 :root {
 	--mkw-bg: #09090b;

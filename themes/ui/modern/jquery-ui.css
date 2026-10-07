@@ -1516,6 +1516,7 @@ body .ui-tooltip {
 .ui-icon.ui-icon-seek-first,
 .ui-icon.ui-icon-seek-next,
 .ui-icon.ui-icon-seek-prev,
+.ui-icon.ui-icon-suitcase,
 .ui-icon.ui-icon-tag,
 .ui-icon.ui-icon-transferthick-e-w,
 .ui-icon.ui-icon-trash,
@@ -1586,6 +1587,7 @@ body .ui-tooltip {
 .ui-icon-seek-first { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 6v12M17 6l-6 6 6 6'/%3E%3C/svg%3E"); }
 .ui-icon-seek-next { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E"); }
 .ui-icon-seek-prev { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E"); }
+.ui-icon-suitcase { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='7' width='18' height='13' rx='2'/%3E%3Cpath d='M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18'/%3E%3C/svg%3E"); }
 .ui-icon-tag { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3h8l10 10-8 8L3 11z'/%3E%3Ccircle cx='7.5' cy='7.5' r='1.25' fill='black'/%3E%3C/svg%3E"); }
 .ui-icon-transferthick-e-w { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 3l4 4-4 4M21 7H3M7 21l-4-4 4-4M3 17h18'/%3E%3C/svg%3E"); }
 .ui-icon-trash { --mkw-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14'/%3E%3C/svg%3E"); }
