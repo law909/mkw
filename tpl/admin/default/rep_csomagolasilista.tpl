@@ -67,7 +67,6 @@
             <th>Termék / Product</th>
             <th>Méret / Size</th>
             <th class="textalignright">Darab / Pcs</th>
-            <th class="textalignright">Termékből összesen / Product total</th>
         </tr>
         </thead>
         <tbody>
@@ -78,7 +77,6 @@
                 <td>{$_sor.nev|escape}</td>
                 <td>{$_sor.meret|escape}</td>
                 <td class="textalignright">{$_sor.mennyiseg*1}</td>
-                <td class="textalignright">{$_sor.termekosszesen*1}</td>
             </tr>
         {/foreach}
         </tbody>

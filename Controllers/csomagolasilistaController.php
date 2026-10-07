@@ -142,7 +142,7 @@ class csomagolasilistaController extends \mkwhelpers\Controller
         $meretek = [];
         $dobozlista = [];
         $tartalom = [];
-        $termekOsszesen = [];
+        $becsomagolt = 0;
         $osszesen = ['nettosuly' => 0, 'bruttosuly' => 0, 'terfogat' => 0];
         foreach ($this->getDobozok($bizonylat) as $doboz) {
             $meret = $this->formatMeret($doboz);
@@ -160,11 +160,9 @@ class csomagolasilistaController extends \mkwhelpers\Controller
             /** @var Csomagolasitetel $ct */
             foreach ($doboz->getTetelek() as $ct) {
                 $tetel = $ct->getBizonylattetel();
-                $termekkulcs = $tetel->getTermekId() ?: $tetel->getCikkszam();
-                $termekOsszesen[$termekkulcs] = ($termekOsszesen[$termekkulcs] ?? 0) + (float)$ct->getMennyiseg();
+                $becsomagolt += (float)$ct->getMennyiseg();
                 $tartalom[] = [
                     'dobozszam' => $doboz->getDobozszam(),
-                    'termekkulcs' => $termekkulcs,
                     'cikkszam' => $tetel->getDisplayCikkszam(),
                     'nev' => $tetel->getTermeknev(),
                     'meret' => $this->getMeret($tetel),
@@ -172,17 +170,13 @@ class csomagolasilistaController extends \mkwhelpers\Controller
                 ];
             }
         }
-        foreach ($tartalom as &$sor) {
-            $sor['termekosszesen'] = $termekOsszesen[$sor['termekkulcs']];
-        }
-        unset($sor);
         ksort($meretek, SORT_NATURAL);
 
         $hianyzik = 0;
         foreach ($this->getCsomagolandoTetelek($bizonylat) as $tetel) {
             $hianyzik += (float)$tetel->getMennyiseg();
         }
-        $hianyzik -= array_sum($termekOsszesen);
+        $hianyzik -= $becsomagolt;
 
         $view = $this->createView('rep_csomagolasilista.tpl');
         $view->setVar('egyed', [
