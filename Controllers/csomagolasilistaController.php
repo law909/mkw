@@ -46,6 +46,7 @@ class csomagolasilistaController extends \mkwhelpers\Controller
                 'id' => $tetel->getId(),
                 'cikkszam' => $tetel->getDisplayCikkszam(),
                 'nev' => $tetel->getTermeknev(),
+                'szin' => $this->getSzin($tetel),
                 'meret' => $this->getMeret($tetel),
                 'mennyiseg' => (float)$tetel->getMennyiseg(),
                 'suly' => (float)$tetel->getSuly(),
@@ -155,6 +156,7 @@ class csomagolasilistaController extends \mkwhelpers\Controller
                     'dobozszam' => $doboz->getDobozszam(),
                     'cikkszam' => $tetel->getDisplayCikkszam(),
                     'nev' => $tetel->getTermeknev(),
+                    'szin' => $this->getSzin($tetel),
                     'meret' => $this->getMeret($tetel),
                     'mennyiseg' => (float)$ct->getMennyiseg(),
                 ];
@@ -216,6 +218,15 @@ class csomagolasilistaController extends \mkwhelpers\Controller
             }
         }
         return $ret;
+    }
+
+    private function getSzin(Bizonylattetel $tetel): string
+    {
+        $valtozat = $tetel->getTermekvaltozat();
+        if (!$valtozat) {
+            return '';
+        }
+        return $valtozat->getSzinNev() ?: (string)$valtozat->getSzin();
     }
 
     private function getMeret(Bizonylattetel $tetel): string

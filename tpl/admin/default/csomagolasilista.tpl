@@ -32,6 +32,7 @@
                         <tr>
                             <th>{at('Cikkszám')}</th>
                             <th>{at('Termék')}</th>
+                            <th>{at('Szín')}</th>
                             <th>{at('Méret')}</th>
                             <th class="textalignright">{at('Mennyiség')}</th>
                             <th>{at('Doboz × mennyiség')}</th>
@@ -43,6 +44,7 @@
                             <tr class="js-csomagtetel" data-id="{$_tetel.id}" data-suly="{$_tetel.suly}" data-mennyiseg="{$_tetel.mennyiseg}">
                                 <td>{$_tetel.cikkszam|escape}</td>
                                 <td>{$_tetel.nev|escape}</td>
+                                <td>{$_tetel.szin|escape}</td>
                                 <td>{$_tetel.meret|escape}</td>
                                 <td class="textalignright">{$_tetel.mennyiseg*1}</td>
                                 <td>
@@ -63,7 +65,7 @@
                                 <td class="textalignright js-csomagmaradek"></td>
                             </tr>
                         {foreachelse}
-                            <tr><td colspan="6">{at('A bizonylaton nincs dobozba tehető (készletet mozgató) tétel.')}</td></tr>
+                            <tr><td colspan="7">{at('A bizonylaton nincs dobozba tehető (készletet mozgató) tétel.')}</td></tr>
                         {/foreach}
                         </tbody>
                     </table>

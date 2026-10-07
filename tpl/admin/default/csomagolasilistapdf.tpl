@@ -126,6 +126,7 @@
         <th>Doboz / Box</th>
         <th>Cikkszám / Item no.</th>
         <th>Termék / Product</th>
+        <th>Szín / Colour</th>
         <th>Méret / Size</th>
         <th class="jobb">Darab / Pcs</th>
     </tr>
@@ -136,6 +137,7 @@
             <td>{$_sor.dobozszam}</td>
             <td>{$_sor.cikkszam|escape}</td>
             <td>{$_sor.nev|escape}</td>
+            <td>{$_sor.szin|escape}</td>
             <td>{$_sor.meret|escape}</td>
             <td class="jobb">{$_sor.mennyiseg*1}</td>
         </tr>
