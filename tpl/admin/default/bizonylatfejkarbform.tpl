@@ -243,6 +243,7 @@
                         <td><label for="EmailEdit">{at('Email')}:</label></td>
                         <td colspan="5">
                             <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail|escape}">
+                            <span class="mattkarb-megjegyzes">{at('Létező partner emailjét nem írja felül, csak ha nála üres.')}</span>
                         </td>
                     </tr>
                     <tr>

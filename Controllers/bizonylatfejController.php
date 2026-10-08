@@ -932,6 +932,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $partnerobj->setThirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
                 $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
 
+                $this->fillEmptyPartnerEmail($partnerobj);
                 $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
                 $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
                 $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
@@ -2488,6 +2489,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
     }
 
     /** Szigorú módban nem készülhet új bizonylat abból a NAV-típusból, amelyikből van beküldetlen. */
+    /** an existing partner's email is never overwritten from the document (it is the webshop login), only an empty one is filled */
+    private function fillEmptyPartnerEmail(Partner $partner): void
+    {
+        $email = $this->params->getStringRequestParam('partneremail');
+        if ($email !== '' && trim((string)$partner->getEmail()) === '') {
+            $partner->setEmail($email);
+        }
+    }
+
     private function checkCanCreate(?Bizonylattipus $biztipus)
     {
         if ($biztipus && !\mkw\store::canCreateBizonylat($biztipus->getId())) {
@@ -2538,7 +2548,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                 $partnerobj->setThirdadoszam($this->params->getStringRequestParam('partnerthirdadoszam'));
                 $partnerobj->setVatstatus($this->params->getIntRequestParam('partnervatstatus'));
 
-                $partnerobj->setEmail($this->params->getStringRequestParam('partneremail'));
+                $this->fillEmptyPartnerEmail($partnerobj);
                 $partnerobj->setTelefon($this->params->getStringRequestParam('partnertelefon'));
                 $partnerobj->setVezeteknev($this->params->getStringRequestParam('partnervezeteknev'));
                 $partnerobj->setKeresztnev($this->params->getStringRequestParam('partnerkeresztnev'));
