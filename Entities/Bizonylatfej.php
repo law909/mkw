@@ -1494,7 +1494,7 @@ class Bizonylatfej
             'Content' => $this->getCouriermessage(),
             'Count' => $this->getCsomagcount() ? $this->getCsomagcount() : 1,
             'DeliveryAddress' => [
-                'Name' => ($this->getSzallirszam() ? $this->getSzallnev() : $this->getPartnernev()),
+                'Name' => ($this->getSzallirszam() ? $this->getSzallnev() : '') ?: $this->getPartnernev(),
                 'Street' => ($this->getSzallirszam() ? $this->getSzallutca() : $this->getPartnerutca()),
                 'City' => ($this->getSzallirszam() ? $this->getSzallvaros() : $this->getPartnervaros()),
                 'ZipCode' => ($this->getSzallirszam() ? $this->getSzallirszam() : $this->getPartnerirszam()),
