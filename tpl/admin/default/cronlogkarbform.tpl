@@ -26,7 +26,7 @@
                 {mezo cimke="Gép"}
                     {$egyed.host} (pid {$egyed.pid})
                 {/mezo}
-                {mezo cimke="Üzenet" for="UzenetEdit"}
+                {mezo cimke="Üzenet" for="UzenetEdit" szeles=true}
                     <textarea id="UzenetEdit" rows="8" cols="80" readonly="readonly">{$egyed.uzenet}</textarea>
                 {/mezo}
             {/mezocsoport}

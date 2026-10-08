@@ -28,10 +28,10 @@
                 {mezo cimke="Bizonylatszám" for="BizonylatszamEdit"}
                     <input id="BizonylatszamEdit" type="text" size="40" value="{$egyed.bizonylatszam}" disabled>
                 {/mezo}
-                {mezo cimke="Probléma a fej adatokkal" for="FejhibaEdit"}
+                {mezo cimke="Probléma a fej adatokkal" for="FejhibaEdit" szeles=true}
                     <textarea id="FejhibaEdit" rows="5" cols="80" disabled>{$egyed.fejhiba}</textarea>
                 {/mezo}
-                {mezo cimke="Probléma a tétel adatokkal" for="TetelhibaEdit"}
+                {mezo cimke="Probléma a tétel adatokkal" for="TetelhibaEdit" szeles=true}
                     <textarea id="TetelhibaEdit" rows="8" cols="80" disabled>{$egyed.tetelhiba}</textarea>
                 {/mezo}
             {/mezocsoport}

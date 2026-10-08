@@ -8,7 +8,7 @@
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			{mezocsoport}
-				{mezo cimke="Szöveg" for="LeirasEdit"}
+				{mezo cimke="Szöveg" for="LeirasEdit" szeles=true}
 					<textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea>
 				{/mezo}
 			{/mezocsoport}

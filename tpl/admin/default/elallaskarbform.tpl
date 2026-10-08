@@ -18,7 +18,7 @@
                 {mezo cimke="Bizonylat" for="BizonylatEdit"}
                     <input id="BizonylatEdit" name="bizonylat" type="text" size="30" maxlength="30" value="{$egyed.bizonylat}">
                 {/mezo}
-                {mezo cimke="Szöveg" for="SzovegEdit"}
+                {mezo cimke="Szöveg" for="SzovegEdit" szeles=true}
                     <textarea id="SzovegEdit" name="szoveg" rows="6" cols="80">{$egyed.szoveg}</textarea>
                 {/mezo}
             {/mezocsoport}

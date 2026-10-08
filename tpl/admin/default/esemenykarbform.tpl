@@ -22,7 +22,7 @@
 						{/foreach}
 					</select>
 				{/mezo}
-				{mezo cimke="Leírás" for="LeirasEdit"}
+				{mezo cimke="Leírás" for="LeirasEdit" szeles=true}
 					<textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea>
 				{/mezo}
 			{/mezocsoport}

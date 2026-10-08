@@ -11,7 +11,7 @@
                 {mezo cimke="Email/IP cím" for="EmailEdit"}
                     <input id="EmailEdit" name="email" type="text" size="80" maxlength="255" value="{$egyed.email}">
                 {/mezo}
-                {mezo cimke="OK" for="OkEdit"}
+                {mezo cimke="OK" for="OkEdit" szeles=true}
                     <textarea id="OkEdit" name="ok">{$egyed.ok}</textarea>
                 {/mezo}
             {/mezocsoport}

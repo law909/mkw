@@ -16,7 +16,7 @@
 				{mezo cimke="Tárgy" for="TargyEdit"}
 					<input id="TargyEdit" name="targy" type="text" size="80" maxlength="255" value="{$egyed.targy}">
 				{/mezo}
-				{mezo cimke="Szöveg" for="LeirasEdit"}
+				{mezo cimke="Szöveg" for="LeirasEdit" szeles=true}
 					<textarea id="LeirasEdit" name="szoveg" class="emailtemplateleiras">{$egyed.szoveg}</textarea>
 				{/mezo}
 			{/mezocsoport}
