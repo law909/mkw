@@ -530,7 +530,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
 
         $bizszamarr = [];
         if ($osszeg < 0) {
-            $bizszamarr = $this->keresKoltsegszamlaErbizonylatszam($trimmedbizsz);
+            $bizszamarr = $this->keresKoltsegszamlaErbizonylatszam($trimmedbizsz, $partner);
         } elseif ($biz = $bizrepo->find($trimmedbizsz)) {
             $bizszamarr[] = $biz->getId();
         } elseif (is_numeric($trimmedbizsz) && $partner) {
@@ -670,11 +670,13 @@ class banktranzakcioController extends \mkwhelpers\MattableController
      *
      * Egy utalással több szállítói számla is kiegyenlíthető, ezért – a vevőszámlás ághoz
      * hasonlóan – minden találatot visszaadunk. A LOCATE sima részstring-keresés, tehát az
-     * erbizonylatszamban lévő _ és % nem viselkedik joker karakterként.
+     * erbizonylatszamban lévő _ és % nem viselkedik joker karakterként. A rontott és a stornó
+     * költségszámla nem jön szóba; ismert partnernél csak az ő számlái, mert a rövid szállítói
+     * számlaszám (pl. "2026/03560") egy másik szállító közleményében is előfordulhat.
      *
      * @return array a megtalált költségszámla-számok
      */
-    private function keresKoltsegszamlaErbizonylatszam($kozlemeny): array
+    private function keresKoltsegszamlaErbizonylatszam($kozlemeny, $partner): array
     {
         $kozlemeny = trim($kozlemeny);
         if (mb_strlen($kozlemeny) < 4) {
@@ -684,11 +686,14 @@ class banktranzakcioController extends \mkwhelpers\MattableController
             . ' WHERE bf.bizonylattipus_id = :ktgtipus'
             . '   AND bf.erbizonylatszam IS NOT NULL'
             . '   AND CHAR_LENGTH(bf.erbizonylatszam) >= 4'
-            . '   AND LOCATE(bf.erbizonylatszam, :kozlemeny) > 0';
-        $talalatok = $this->getEm()->getConnection()->executeQuery(
-            $sql,
-            ['ktgtipus' => 'koltsegszamla', 'kozlemeny' => $kozlemeny]
-        )->fetchAllAssociative();
+            . '   AND bf.rontott = 0 AND bf.storno = 0 AND bf.stornozott = 0'
+            . '   AND LOCATE(bf.erbizonylatszam, :kozlemeny) > 0'
+            . ($partner ? '   AND bf.partner_id = :partnerid' : '');
+        $params = ['ktgtipus' => 'koltsegszamla', 'kozlemeny' => $kozlemeny];
+        if ($partner) {
+            $params['partnerid'] = $partner->getId();
+        }
+        $talalatok = $this->getEm()->getConnection()->executeQuery($sql, $params)->fetchAllAssociative();
         return array_column($talalatok, 'id');
     }
 
