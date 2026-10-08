@@ -35,6 +35,8 @@
     </table>
 {/block}
 
+{block "megjegyzescimke"}Megjegyzés{/block}
+
 {block "headextra"}
     <table class="fullwidth" cellspacing="0" cellpadding="0" border="0">
         <tr>
@@ -50,9 +52,6 @@
     {/if}
     {if ($egyed.munkalaphibaleiras)}
         <div style="padding: 0 5px;">Hiba leírása: {$egyed.munkalaphibaleiras|escape|nl2br}</div>
-    {/if}
-    {if ($egyed.megjegyzes)}
-        <div style="padding: 0 5px;">Megjegyzés: {$egyed.megjegyzes}</div>
     {/if}
     <div class="topline topbottommargin"></div>
 {/block}

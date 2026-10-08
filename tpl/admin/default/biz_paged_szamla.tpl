@@ -39,10 +39,6 @@
         <div style="padding: 0 5px;">Fuvarlevél száma: {$egyed.fuvarlevelszam}</div>
         <div class="topline topbottommargin"></div>
     {/if}
-    {if ($egyed.megjegyzes)}
-        <div style="padding: 0 5px;">Közlemény: {$egyed.megjegyzes}</div>
-        <div class="topline topbottommargin"></div>
-    {/if}
 {/block}
 
 {block "columnheaders"}

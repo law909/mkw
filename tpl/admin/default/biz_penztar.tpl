@@ -59,7 +59,7 @@
                 <p class="head2label pull-left">Er.biz.szám: {$egyed.erbizonylatszam}</p>
             {/if}
         </div>
-        {if ($egyed.megjegyzes|default)}
+        {if ($egyed.megjegyzes|default && ($egyed.megjegyzesnyomtatasban|default:true))}
             <div class="row pull-left">
                 <div class="border">
                     <div class="row-inner">

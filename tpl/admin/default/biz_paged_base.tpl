@@ -82,6 +82,10 @@
     {block "datesrow"}{/block}
     <div class="topline topbottommargin"></div>
     {block "headextra"}{/block}
+    {if ($egyed.megjegyzes && ($egyed.megjegyzesnyomtatasban|default:true))}
+        <div style="padding: 0 5px;">{block "megjegyzescimke"}Közlemény{/block}: {$egyed.megjegyzes}</div>
+        <div class="topline topbottommargin"></div>
+    {/if}
     {* a blokk egész <tr>-eket ad, mert a kétnyelvű változatoknál két fejlécsor kell *}
     <table class="tetelgrid fullwidth" cellspacing="0" cellpadding="0" border="0">
         {block "columnheaders"}{/block}

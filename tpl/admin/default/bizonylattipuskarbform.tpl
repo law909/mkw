@@ -91,6 +91,8 @@
                     <tr>
                         <td><label for="ShowcsomagolasilistaEdit">Csomagolási lista:</label></td>
                         <td><input id="ShowcsomagolasilistaEdit" name="showcsomagolasilista" type="checkbox"{if ($egyed.showcsomagolasilista)} checked="checked"{/if}></td>
+                        <td><label for="MegjegyzesnyomtatasbanEdit">Megjegyzés megjelenik nyomtatásban:</label></td>
+                        <td><input id="MegjegyzesnyomtatasbanEdit" name="megjegyzesnyomtatasban" type="checkbox"{if ($egyed.megjegyzesnyomtatasban)} checked="checked"{/if}></td>
                     </tr>
                     <tr>
                         <td><label for="RogzitvestatuszEdit">{at('"Rögzítve" státusz')}:</label></td>

@@ -1922,6 +1922,7 @@ class Bizonylatfej
         $ret['createdby'] = $this->getCreatedbyNev();
         $ret['kedvezmenycount'] = $this->getKedvezmenyCount();
         $ret['editprinted'] = $this->getBizonylattipus() ? $this->getBizonylattipus()->getEditprinted() : false;
+        $ret['megjegyzesnyomtatasban'] = $this->getBizonylattipus()?->getMegjegyzesnyomtatasban() ?? true;
         $ret['bizonylatnev'] = $this->getBizonylatnev();
         $ret['programnev'] = $this->getProgramnev();
         $ret['nyomtatva'] = $this->getNyomtatva();

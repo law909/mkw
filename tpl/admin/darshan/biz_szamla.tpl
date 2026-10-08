@@ -23,7 +23,7 @@
         <div class="fullwidth pull-left">
             <div class="border">
                 <div class="row-inner">
-                    {if ($egyed.megjegyzes|default)}
+                    {if ($egyed.megjegyzes|default && ($egyed.megjegyzesnyomtatasban|default:true))}
                         Közlemény: {$egyed.megjegyzes}
                     {/if}
                 </div>

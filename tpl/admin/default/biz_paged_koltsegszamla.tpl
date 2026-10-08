@@ -35,13 +35,6 @@
     </table>
 {/block}
 
-{block "headextra"}
-    {if ($egyed.megjegyzes)}
-        <div style="padding: 0 5px;">Közlemény: {$egyed.megjegyzes}</div>
-        <div class="topline topbottommargin"></div>
-    {/if}
-{/block}
-
 {block "columnheaders"}
     <tr class="bold">
         <td width="{$w.sorszam}">#</td>

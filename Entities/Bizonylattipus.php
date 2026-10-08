@@ -108,6 +108,8 @@ class Bizonylattipus
     private $showpenztmozgat = false;
     /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
     private $showcsomagolasilista = false;
+    /** @ORM\Column(type="boolean",nullable=false,options={"default":1}) */
+    private $megjegyzesnyomtatasban = true;
     /** @ORM\OneToMany(targetEntity="Bizonylatfej", mappedBy="bizonylattipus",cascade={"persist"}) */
     private $bizonylatfejek;
     /** @ORM\Column(type="string",length=200,nullable=true) */
@@ -847,6 +849,16 @@ class Bizonylattipus
     public function setShowcsomagolasilista($val)
     {
         $this->showcsomagolasilista = $val;
+    }
+
+    public function getMegjegyzesnyomtatasban()
+    {
+        return $this->megjegyzesnyomtatasban;
+    }
+
+    public function setMegjegyzesnyomtatasban($val)
+    {
+        $this->megjegyzesnyomtatasban = (bool)$val;
     }
 
     /**
