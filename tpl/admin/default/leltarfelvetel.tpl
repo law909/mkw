@@ -19,6 +19,15 @@
                 <div class="leltarfelvetel-hiba">{$leltarhiba}</div>
             {else}
                 <div class="js-leltarfelvetel leltarfelvetel" data-leltarid="{$leltarid}">
+                    <div class="leltarfelvetel-vonalkodsor">
+                        <label for="LeltarVonalkodEdit">{at('Vonalkód / keresés')}:</label>
+                        <input id="LeltarVonalkodEdit" class="js-leltarkereso" type="text" autocomplete="off">
+                        <span class="js-leltarkereshiba leltarfelvetel-hiba"></span>
+                    </div>
+                    <div class="js-leltarvaltozatvalaszto leltarfelvetel-valtozatvalaszto"></div>
+                    <p class="mattkarb-hint">
+                        {at('Minden beolvasás azonnal mentődik, és eggyel növeli a tény mennyiséget. Ugyanaz a termék többször beolvasva összeadódik.')}
+                    </p>
                     <table class="leltarfelvetel-tetelek ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                         <thead>
                         <tr>
@@ -36,16 +45,6 @@
                         {/foreach}
                         </tbody>
                     </table>
-
-                    <div class="leltarfelvetel-vonalkodsor">
-                        <label for="LeltarVonalkodEdit">{at('Vonalkód / keresés')}:</label>
-                        <input id="LeltarVonalkodEdit" class="js-leltarkereso" type="text" autocomplete="off">
-                        <span class="js-leltarkereshiba leltarfelvetel-hiba"></span>
-                    </div>
-                    <div class="js-leltarvaltozatvalaszto leltarfelvetel-valtozatvalaszto"></div>
-                    <p class="mattkarb-hint">
-                        {at('Minden beolvasás azonnal mentődik, és eggyel növeli a tény mennyiséget. Ugyanaz a termék többször beolvasva összeadódik.')}
-                    </p>
                 </div>
             {/if}
         </div>
