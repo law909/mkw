@@ -176,21 +176,6 @@ $(document).ready(function () {
         };
     }
 
-    function szinAutocompleteConfig() {
-        return {
-            minLength: 2,
-            autoFocus: true,
-            source: '/admin/szin/getautocomplete',
-            select: function (event, ui) {
-                let szin = ui.item;
-                if (szin) {
-                    let $this = $(this);
-                    $this.siblings('.js-szinid').val(szin.id);
-                }
-            }
-        };
-    }
-
     const torzsListak = {};
 
     // .done(), not .then(): once loaded it runs synchronously, so a blur right before a save click is settled in time
@@ -1036,7 +1021,7 @@ $(document).ready(function () {
                 return false;
             });
             $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
-            $('.js-szinautocomplete').autocomplete(szinAutocompleteConfig());
+            $('.js-szinautocomplete').autocomplete(valtozatTorzsAutocompleteConfig('/admin/szin/getautocomplete', '.js-szinid'));
             // on focus, so the rows added later (new, generated) get it too
             valtozattab.on('focusin', '.js-valtozatszinautocomplete:not(.ui-autocomplete-input)', function () {
                 $(this).autocomplete(valtozatTorzsAutocompleteConfig('/admin/szin/getautocomplete', '.js-valtozatszinid'));

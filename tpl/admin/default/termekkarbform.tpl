@@ -328,7 +328,7 @@
                             {if ($setup.szinmode === 'fix')}
                                 {mezo cimke="Szín" for="ValtozatSzinEdit"}
                                     <input id="ValtozatSzinEdit" type="text" name="valtozatszinautocomplete"
-                                           class="js-szinautocomplete" form="valtozatgeneratorform">
+                                           class="js-szinautocomplete" form="valtozatgeneratorform" autocomplete="off">
                                     <input class="js-szinid" name="valtozatszinid" type="hidden" form="valtozatgeneratorform">
                                 {/mezo}
                                 {mezo cimke="Méret sor" for="ValtozatMeretsorEdit"}
