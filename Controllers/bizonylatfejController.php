@@ -1727,6 +1727,12 @@ class bizonylatfejController extends \mkwhelpers\MattableController
      */
     public function preview()
     {
+        // the response renders the posted data (as HTML on the non-paged print path): a cross-site POST would be a reflected XSS
+        if (!$this->isSameOriginRequest()) {
+            http_response_code(403);
+            echo htmlspecialchars(t('Érvénytelen kérés eredete.'));
+            return;
+        }
         $biztipus = $this->params->getStringRequestParam('biztipus');
         $class = '\\Controllers\\' . $biztipus . 'fejController';
         if (!preg_match('/^[a-z0-9]+$/', $biztipus) || !class_exists($class) || !is_subclass_of($class, self::class)) {
@@ -1734,6 +1740,20 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             return;
         }
         (new $class())->renderPreview();
+    }
+
+    private function isSameOriginRequest(): bool
+    {
+        $src = ($_SERVER['HTTP_ORIGIN'] ?? '') ?: ($_SERVER['HTTP_REFERER'] ?? '');
+        if ($src === '' || $src === 'null') {
+            return false;
+        }
+        $host = parse_url($src, PHP_URL_HOST);
+        $port = parse_url($src, PHP_URL_PORT);
+        if ($host && $port) {
+            $host .= ':' . $port;
+        }
+        return $host && strcasecmp($host, $_SERVER['HTTP_HOST'] ?? '') === 0;
     }
 
     protected function renderPreview()
