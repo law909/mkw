@@ -51,7 +51,7 @@
                                     <span class="js-ar{$_valt.id}">{number_format($_valt.ar|default:$termek.ar, 2, ',', ' ')}</span><span> {$termek.valutanemnev}</span>
                                 </td>
                                 {if ($showkeszlet)}
-                                    <td class="textalignright">
+                                    <td class="textalignright {if ($_valt.keszlet > 0)}keszletvan{else}keszletnincs{/if}">
                                         {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} {t('db')}
                                     </td>
                                 {else}

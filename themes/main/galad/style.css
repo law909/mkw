@@ -548,6 +548,14 @@ thead.acc-megrendelestetellist td {
     color: #a45b13;
 }
 
+.keszletvan {
+    color: #3a8104;
+}
+
+.keszletnincs {
+    color: #d30000;
+}
+
 @media (min-width: 480px) {
 }
 
