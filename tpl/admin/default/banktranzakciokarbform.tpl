@@ -9,61 +9,46 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="AzonEdit">{at('Azonosító')}:</label></td>
-                    <td><input id="AzonEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.azonosito}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="KonyvelesdatumEdit">{at('Könyvelés dátuma')}:</label></td>
-                    <td><input id="KonyvelesdatumEdit" name="konyvelesdatum" type="text" value="{$egyed.konyvelesdatumstr}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="ErteknapEdit">{at('Értéknap')}:</label></td>
-                    <td><input id="ErteknapEdit" name="erteknapdatum" type="text" value="{$egyed.erteknapstr}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="OsszegEdit">{at('Összeg')}:</label></td>
-                    <td><input id="OsszegEdit" name="osszeg" type="text" value="{$egyed.osszeg}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="Kozl1Edit">{at('Közlemény 1')}:</label></td>
-                    <td><input id="Kozl1Edit" name="kozlemeny1" type="text" value="{$egyed.kozlemeny1}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="Kozl2Edit">{at('Közlemény 2')}:</label></td>
-                    <td><input id="Kozl2Edit" name="kozlemeny2" type="text" value="{$egyed.kozlemeny2}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="Kozl3Edit">{at('Közlemény 3')}:</label></td>
-                    <td><input id="Kozl3Edit" name="kozlemeny3" type="text" value="{$egyed.kozlemeny3}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="BizonylatszamokEdit">{at('Bizonylatszámok')}:</label></td>
-                    <td><input id="BizonylatszamokEdit" name="bizonylatszamok" type="text" value="{$egyed.bizonylatszamok}"></td>
-                </tr>
-                <tr>
-                    <td class="mattable-important"><label for="PartnerEdit">{at('Partner')}:</label></td>
+            {mezocsoport}
+                {mezo cimke="Azonosító" for="AzonEdit"}
+                    <input id="AzonEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.azonosito}" disabled>
+                {/mezo}
+                {mezo cimke="Könyvelés dátuma" for="KonyvelesdatumEdit"}
+                    <input id="KonyvelesdatumEdit" name="konyvelesdatum" type="text" value="{$egyed.konyvelesdatumstr}" disabled>
+                {/mezo}
+                {mezo cimke="Értéknap" for="ErteknapEdit"}
+                    <input id="ErteknapEdit" name="erteknapdatum" type="text" value="{$egyed.erteknapstr}" disabled>
+                {/mezo}
+                {mezo cimke="Összeg" for="OsszegEdit"}
+                    <input id="OsszegEdit" name="osszeg" type="text" value="{$egyed.osszeg}" disabled>
+                {/mezo}
+                {mezo cimke="Közlemény 1" for="Kozl1Edit"}
+                    <input id="Kozl1Edit" name="kozlemeny1" type="text" value="{$egyed.kozlemeny1}" disabled>
+                {/mezo}
+                {mezo cimke="Közlemény 2" for="Kozl2Edit"}
+                    <input id="Kozl2Edit" name="kozlemeny2" type="text" value="{$egyed.kozlemeny2}" disabled>
+                {/mezo}
+                {mezo cimke="Közlemény 3" for="Kozl3Edit"}
+                    <input id="Kozl3Edit" name="kozlemeny3" type="text" value="{$egyed.kozlemeny3}" disabled>
+                {/mezo}
+                {mezo cimke="Bizonylatszámok" for="BizonylatszamokEdit"}
+                    <input id="BizonylatszamokEdit" name="bizonylatszamok" type="text" value="{$egyed.bizonylatszamok}">
+                {/mezo}
+                {mezo cimke="Partner" for="PartnerEdit" szeles=true class="mezo-fontos"}
                     {if ($setup.partnerautocomplete)}
-                        <td colspan="7">
-                            <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
-                                   value="{$egyed.partnernev}" size=90>
-                            <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
-                        </td>
+                        <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
+                               value="{$egyed.partnernev}" size=90>
+                        <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
                     {else}
-                        <td colspan="7">
-                            <select id="PartnerEdit" name="partner" class="js-partnerid mattable-important">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $partnerlist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </td>
+                        <select id="PartnerEdit" name="partner" class="js-partnerid mattable-important">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $partnerlist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
                     {/if}
-                </tr>
-                </tbody>
-            </table>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

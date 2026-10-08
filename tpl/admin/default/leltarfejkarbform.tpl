@@ -8,21 +8,19 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-			<tr>
-				<td><label for="NevEdit">{at('Név')}:</label></td>
-				<td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$leltarfej.nev}" required="required" autofocus></td>
-			</tr>
-            <tr>
-                <td><label for="RaktarEdit">{at('Raktár')}:</label></td>
-                <td><select id="RaktarEdit" name="raktar">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $raktarlist as $_szt}
-                            <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
-                        {/foreach}
-                    </select></td>
-            </tr>
-			</tbody></table>
+			{mezocsoport}
+				{mezo cimke="Név" for="NevEdit" szeles=true}
+					<input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$leltarfej.nev}" required="required" autofocus>
+				{/mezo}
+				{mezo cimke="Raktár" for="RaktarEdit"}
+					<select id="RaktarEdit" name="raktar">
+					    <option value="">{at('válasszon')}</option>
+					    {foreach $raktarlist as $_szt}
+					        <option value="{$_szt.id}"{if ($_szt.selected)} selected="selected"{/if}>{$_szt.caption}</option>
+					    {/foreach}
+					</select>
+				{/mezo}
+			{/mezocsoport}
 		</div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">

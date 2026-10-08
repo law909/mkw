@@ -7,40 +7,35 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-			<tr>
-				<td class="mattable-important"><label for="KeltEdit">{at('Kelt')}:</label></td>
-				<td><input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required"></td>
-			</tr>
-			<tr>
-				<td><label for="ValutanemEdit">{at('Valutanem')}:</label></td>
-				<td><select id="ValutanemEdit" name="valutanem" required="required">
+			{mezocsoport}
+				{mezo cimke="Kelt" for="KeltEdit" class="mezo-fontos"}
+					<input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required">
+				{/mezo}
+				{mezo cimke="Valutanem" for="ValutanemEdit" ujsor=true}
+					<select id="ValutanemEdit" name="valutanem" required="required">
 					<option value="">{at('válasszon')}</option>
 					{foreach $valutanemlist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-bankszamla="{$_mk.bankszamla}">{$_mk.caption}</option>
 					{/foreach}
 					</select>
-				</td>
-				<td><label for="BankszamlaEdit">{at('Bankszámla')}:</label></td>
-				<td colspan="3"><select id="BankszamlaEdit" name="bankszamla">
+				{/mezo}
+				{mezo cimke="Bankszámla" for="BankszamlaEdit" szeles=true}
+					<select id="BankszamlaEdit" name="bankszamla">
 					<option value="">{at('válasszon')}</option>
 					{foreach $bankszamlalist as $_mk}
 					<option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
 					{/foreach}
 					</select>
-				</td>
-			</tr>
-            {if ($showerbizonylatszam)}
-            <tr>
-                <td><label for="ErbizonylatszamEdit">{at('Eredeti biz.szám')}:</label></td>
-                <td><input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}"></td>
-            </tr>
-            {/if}
-			<tr>
-				<td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
-				<td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea></td>
-			</tr>
-			</tbody></table>
+				{/mezo}
+				{if ($showerbizonylatszam)}
+					{mezo cimke="Eredeti biz.szám" for="ErbizonylatszamEdit"}
+						<input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}">
+					{/mezo}
+				{/if}
+				{mezo cimke="Megjegyzés" for="MegjegyzesEdit" szeles=true}
+					<textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea>
+				{/mezo}
+			{/mezocsoport}
 			<div>
 			{foreach $egyed.tetelek as $tetel}
 			{include 'bankbizonylattetelkarb.tpl'}

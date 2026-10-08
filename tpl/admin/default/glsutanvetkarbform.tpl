@@ -9,58 +9,44 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="CsomagszamEdit">{at('Csomagszám')}:</label></td>
-                    <td><input id="CsomagszamEdit" type="text" size="30" value="{$egyed.csomagszam}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="StatuszEdit">{at('Státusz')}:</label></td>
-                    <td><input id="StatuszEdit" type="text" size="30" value="{$egyed.statusz}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="FelvetelEdit">{at('Felvétel dátuma')}:</label></td>
-                    <td><input id="FelvetelEdit" type="text" value="{$egyed.felvetelstr}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="StatuszdatumEdit">{at('Státusz dátuma')}:</label></td>
-                    <td><input id="StatuszdatumEdit" type="text" value="{$egyed.statuszdatumstr}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="RegisztraltosszegEdit">{at('Regisztrált utánvét')}:</label></td>
-                    <td><input id="RegisztraltosszegEdit" type="text" value="{$egyed.regisztraltosszeg}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="OsszegEdit">{at('Beszedett utánvét')}:</label></td>
-                    <td><input id="OsszegEdit" type="text" value="{$egyed.osszeg}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="NevEdit">{at('Címzett neve')}:</label></td>
-                    <td><input id="NevEdit" type="text" size="60" value="{$egyed.nev}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="AtvevoEdit">{at('Átvevő neve')}:</label></td>
-                    <td><input id="AtvevoEdit" type="text" size="60" value="{$egyed.atvevo}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="CimEdit">{at('Cím')}:</label></td>
-                    <td><input id="CimEdit" type="text" size="60" value="{$egyed.cim}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="UgyfelhivatkozasEdit">{at('Ügyfél hivatkozás')}:</label></td>
-                    <td><input id="UgyfelhivatkozasEdit" type="text" size="60" value="{$egyed.ugyfelhivatkozas}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="UtanvethivatkozasEdit">{at('Utánvét hivatkozás')}:</label></td>
-                    <td><input id="UtanvethivatkozasEdit" type="text" size="60" value="{$egyed.utanvethivatkozas}" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="BizonylatszamokEdit">{at('Bizonylatszámok')}:</label></td>
-                    <td><input id="BizonylatszamokEdit" name="bizonylatszamok" type="text" size="60" value="{$egyed.bizonylatszamok}"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Csomagszám" for="CsomagszamEdit"}
+                    <input id="CsomagszamEdit" type="text" size="30" value="{$egyed.csomagszam}" disabled>
+                {/mezo}
+                {mezo cimke="Státusz" for="StatuszEdit"}
+                    <input id="StatuszEdit" type="text" size="30" value="{$egyed.statusz}" disabled>
+                {/mezo}
+                {mezo cimke="Felvétel dátuma" for="FelvetelEdit"}
+                    <input id="FelvetelEdit" type="text" value="{$egyed.felvetelstr}" disabled>
+                {/mezo}
+                {mezo cimke="Státusz dátuma" for="StatuszdatumEdit"}
+                    <input id="StatuszdatumEdit" type="text" value="{$egyed.statuszdatumstr}" disabled>
+                {/mezo}
+                {mezo cimke="Regisztrált utánvét" for="RegisztraltosszegEdit"}
+                    <input id="RegisztraltosszegEdit" type="text" value="{$egyed.regisztraltosszeg}" disabled>
+                {/mezo}
+                {mezo cimke="Beszedett utánvét" for="OsszegEdit"}
+                    <input id="OsszegEdit" type="text" value="{$egyed.osszeg}" disabled>
+                {/mezo}
+                {mezo cimke="Címzett neve" for="NevEdit"}
+                    <input id="NevEdit" type="text" size="60" value="{$egyed.nev}" disabled>
+                {/mezo}
+                {mezo cimke="Átvevő neve" for="AtvevoEdit"}
+                    <input id="AtvevoEdit" type="text" size="60" value="{$egyed.atvevo}" disabled>
+                {/mezo}
+                {mezo cimke="Cím" for="CimEdit"}
+                    <input id="CimEdit" type="text" size="60" value="{$egyed.cim}" disabled>
+                {/mezo}
+                {mezo cimke="Ügyfél hivatkozás" for="UgyfelhivatkozasEdit"}
+                    <input id="UgyfelhivatkozasEdit" type="text" size="60" value="{$egyed.ugyfelhivatkozas}" disabled>
+                {/mezo}
+                {mezo cimke="Utánvét hivatkozás" for="UtanvethivatkozasEdit"}
+                    <input id="UtanvethivatkozasEdit" type="text" size="60" value="{$egyed.utanvethivatkozas}" disabled>
+                {/mezo}
+                {mezo cimke="Bizonylatszámok" for="BizonylatszamokEdit"}
+                    <input id="BizonylatszamokEdit" name="bizonylatszamok" type="text" size="60" value="{$egyed.bizonylatszamok}">
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

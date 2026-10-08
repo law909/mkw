@@ -7,85 +7,74 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-            <tr>
-                <td><label>{at('Irány')}:</label></td>
-                <td>
-                    {if ($oper == 'add' || $oper == 'addreopen')}
-                    <input id="IranyEdit" type="radio" name="irany" value="1"{if ($egyed.irany >= 0)} checked="checked"{/if} autofocus required="required">{at('Befizetés')}
-                    <input id="IranyEdit" type="radio" name="irany" value="-1"{if ($egyed.irany < 0)} checked="checked"{/if}>{at('Kifizetés')}
-                    {else}
-                        {if ($egyed.irany<0)}
-                            <input type="hidden" name="irany" value="-1">
-                            {at('Kifizetés')}
-                            {else}
-                            <input type="hidden" name="irany" value="1">
-                            {at('Befizetés')}
-                        {/if}
-                    {/if}
-                </td>
-            </tr>
-			<tr>
-				<td class="mattable-important"><label for="KeltEdit">{at('Kelt')}:</label></td>
-				<td><input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required"></td>
-			</tr>
-			<tr>
-                <td><label for="PenztarEdit">{at('Pénztár')}:</label></td>
-                <td>
-                    {if ($oper == 'add' || $oper == 'addreopen')}
-                    <select id="PenztarEdit" name="penztar" required="required">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $penztarlist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
-                        {/foreach}
-                    </select>
-                    {else}
-                        <input type="hidden" name="penztar" value="{$egyed.penztarid}">
-                    {$egyed.penztarnev}
-                    {/if}
-                </td>
-			</tr>
-            <tr>
-                <td><label for="ValutanemEdit">{at('Valutanem')}:</label></td>
-                <td><input type="hidden" name="valutanem" value="{$egyed.valutanemid}">
-                    <select id="ValutanemEdit" name="valutanemselect" disabled="disabled">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $valutanemlist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                        {/foreach}
-                    </select>
-                </td>
-                <td><label for="ArfolyamEdit">{at('Árfolyam')}:</label></td>
-                <td><input id="ArfolyamEdit" name="arfolyam" type="text" value="{$egyed.arfolyam}"></td>
-            </tr>
-            <tr>
-                <td class="mattable-important"><label for="PartnerEdit">{at('Partner')}:</label></td>
-                <td colspan="3">
-                    {if ($setup.partnerautocomplete)}
-                        <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
-                               value="{$egyed.partnernev}" size=90 autocomplete="off">
-                        <input class="js-partnerid" name="partner" type="hidden" value="{if ($partnerid)}{$partnerid}{/if}">
-                    {else}
-                        <select id="PartnerEdit" name="partner" class="mattable-important" required="required">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $partnerlist as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                            {/foreach}
-                        </select>
-                    {/if}
-                </td>
-            </tr>
-            {if ($showerbizonylatszam)}
-            <tr>
-                <td><label for="ErbizonylatszamEdit">{at('Eredeti biz.szám')}:</label></td>
-                <td><input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}"></td>
-            </tr>
-            {/if}
-			<tr>
-				<td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
-				<td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea></td>
-			</tr>
-			</tbody></table>
+			{mezocsoport}
+				{mezo cimke="Irány"}
+					{if ($oper == 'add' || $oper == 'addreopen')}
+					<input id="IranyEdit" type="radio" name="irany" value="1"{if ($egyed.irany >= 0)} checked="checked"{/if} autofocus required="required">{at('Befizetés')}
+					<input id="IranyEdit" type="radio" name="irany" value="-1"{if ($egyed.irany < 0)} checked="checked"{/if}>{at('Kifizetés')}
+					{else}
+					    {if ($egyed.irany<0)}
+					        <input type="hidden" name="irany" value="-1">
+					        {at('Kifizetés')}
+					        {else}
+					        <input type="hidden" name="irany" value="1">
+					        {at('Befizetés')}
+					    {/if}
+					{/if}
+				{/mezo}
+				{mezo cimke="Kelt" for="KeltEdit" class="mezo-fontos"}
+					<input id="KeltEdit" name="kelt" type="text" size="12" data-datum="{$egyed.keltstr}" class="mattable-important" required="required">
+				{/mezo}
+				{mezo cimke="Pénztár" for="PenztarEdit"}
+					{if ($oper == 'add' || $oper == 'addreopen')}
+					<select id="PenztarEdit" name="penztar" required="required">
+					    <option value="">{at('válasszon')}</option>
+					    {foreach $penztarlist as $_mk}
+					        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-valutanem="{$_mk.valutanem}">{$_mk.caption}</option>
+					    {/foreach}
+					</select>
+					{else}
+					    <input type="hidden" name="penztar" value="{$egyed.penztarid}">
+					{$egyed.penztarnev}
+					{/if}
+				{/mezo}
+				{mezo cimke="Valutanem" for="ValutanemEdit" ujsor=true}
+					<input type="hidden" name="valutanem" value="{$egyed.valutanemid}">
+					<select id="ValutanemEdit" name="valutanemselect" disabled="disabled">
+					    <option value="">{at('válasszon')}</option>
+					    {foreach $valutanemlist as $_mk}
+					        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+					    {/foreach}
+					</select>
+				{/mezo}
+				{mezo cimke="Árfolyam" for="ArfolyamEdit"}
+					<input id="ArfolyamEdit" name="arfolyam" type="text" value="{$egyed.arfolyam}">
+				{/mezo}
+				{mezo cimke="Partner" for="PartnerEdit" szeles=true class="mezo-fontos"}
+					<div class="mattkarb-mezogomb">
+						{if ($setup.partnerautocomplete)}
+						    <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
+						           value="{$egyed.partnernev}" size=90 autocomplete="off">
+						    <input class="js-partnerid" name="partner" type="hidden" value="{if ($partnerid)}{$partnerid}{/if}">
+						{else}
+						    <select id="PartnerEdit" name="partner" class="mattable-important" required="required">
+						        <option value="">{at('válasszon')}</option>
+						        {foreach $partnerlist as $_mk}
+						            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+						        {/foreach}
+						    </select>
+						{/if}
+					</div>
+				{/mezo}
+				{if ($showerbizonylatszam)}
+					{mezo cimke="Eredeti biz.szám" for="ErbizonylatszamEdit"}
+						<input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}">
+					{/mezo}
+				{/if}
+				{mezo cimke="Megjegyzés" for="MegjegyzesEdit" szeles=true}
+					<textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea>
+				{/mezo}
+			{/mezocsoport}
 			<div>
 			{foreach $egyed.tetelek as $tetel}
 			{include 'penztarbizonylattetelkarb.tpl'}
