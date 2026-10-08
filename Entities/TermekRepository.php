@@ -1110,7 +1110,7 @@ class TermekRepository extends \mkwhelpers\Repository
     /**
      * @param int[] $ids
      *
-     * @return array<int,array{valtozatdb:int,szindb:int}> the visible, available variants of the products by id
+     * @return array<int,array{valtozatdb:int,szindb:int,meretdb:int}> the visible, available variants of the products by id
      */
     public function getValtozatDbByTermekIds(array $ids)
     {
@@ -1121,8 +1121,9 @@ class TermekRepository extends \mkwhelpers\Repository
         $rsm->addScalarResult('termek_id', 'termek_id');
         $rsm->addScalarResult('valtozatdb', 'valtozatdb');
         $rsm->addScalarResult('szindb', 'szindb');
+        $rsm->addScalarResult('meretdb', 'meretdb');
         $q = $this->_em->createNativeQuery(
-            'SELECT v.termek_id, COUNT(*) AS valtozatdb, COUNT(DISTINCT v.szin_id) AS szindb'
+            'SELECT v.termek_id, COUNT(*) AS valtozatdb, COUNT(DISTINCT v.szin_id) AS szindb, COUNT(DISTINCT v.meret_id) AS meretdb'
             . ' FROM termekvaltozat v'
             . ' WHERE v.termek_id IN (:ids) AND v.inaktiv=0'
             . ' AND ' . \mkw\store::getWebshopFieldName('v.lathato') . '=1'
@@ -1133,7 +1134,11 @@ class TermekRepository extends \mkwhelpers\Repository
         $q->setParameter('ids', $ids);
         $ret = [];
         foreach ($q->getScalarResult() as $sor) {
-            $ret[(int)$sor['termek_id']] = ['valtozatdb' => (int)$sor['valtozatdb'], 'szindb' => (int)$sor['szindb']];
+            $ret[(int)$sor['termek_id']] = [
+                'valtozatdb' => (int)$sor['valtozatdb'],
+                'szindb' => (int)$sor['szindb'],
+                'meretdb' => (int)$sor['meretdb'],
+            ];
         }
         return $ret;
     }

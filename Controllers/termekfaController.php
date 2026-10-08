@@ -995,6 +995,7 @@ class termekfaController extends \mkwhelpers\MattableController
                     $tete['kiemelt'] = false;
                     $tete['valtozatdb'] = $valtozatdbk[$te->getId()]['valtozatdb'] ?? 0;
                     $tete['szindb'] = $valtozatdbk[$te->getId()]['szindb'] ?? 0;
+                    $tete['meretdb'] = $valtozatdbk[$te->getId()]['meretdb'] ?? 0;
                     $termeklista[] = $tete;
                 }
                 return $termeklista;
