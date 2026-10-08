@@ -20,7 +20,7 @@
                         <td class="mattable-important"><label for="JRPartnerEdit_{$egyed.id}">{at('Résztvevő')}:</label></td>
                         <td colspan="3">
                             {if ($setup.partnerautocomplete)}
-                                <input id="JRPartnerEdit_{$egyed.id}" type="text" name="partnerautocomlete_{$egyed.id}" data-id="{$egyed.id}" class="js-jrpartnerautocomplete mattable-important" value="{$egyed.partnernev}" size=90 autofocus>
+                                <input id="JRPartnerEdit_{$egyed.id}" type="text" name="partnerautocomlete_{$egyed.id}" data-id="{$egyed.id}" class="js-jrpartnerautocomplete mattable-important" value="{$egyed.partnernev|escape}" size=90 autofocus>
                                 <input class="js-jrpartnerid" name="partner_{$egyed.id}" type="hidden" value="{$egyed.partner}" data-id="{$egyed.id}">
                                 <input class="js-ujpartnercb {$egyed.id}" type="checkbox">Új</input>
                             {else}

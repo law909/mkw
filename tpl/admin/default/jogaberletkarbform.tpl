@@ -12,7 +12,7 @@
 				<td><label for="NevEdit">{at('Partner')}:</label></td>
                 {if ($setup.partnerautocomplete)}
                     <td>
-                        <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" value="{$egyed.partnernev}" size=90 autofocus>
+                        <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" value="{$egyed.partnernev|escape}" size=90 autofocus>
                         <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
                         <input class="js-ujpartnercb" type="checkbox">Új</input>
                     </td>

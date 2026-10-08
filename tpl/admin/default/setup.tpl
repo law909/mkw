@@ -249,7 +249,7 @@
                         <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultpartnerEdit">{at('Partner')}:</label></span>
                             <input id="DefaultpartnerEdit" type="text" class="js-setuppartnerselect" data-target="defaultpartner"
-                                   value="{$defaultpartnernev}" size="60" autocomplete="off">
+                                   value="{$defaultpartnernev|escape}" size="60" autocomplete="off">
                             <input name="defaultpartner" type="hidden" value="{$defaultpartnerid}">
                         </div>
                         <div class="setuprow">

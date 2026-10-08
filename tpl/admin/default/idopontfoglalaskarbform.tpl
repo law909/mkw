@@ -31,7 +31,7 @@
                         {if ($setup.partnerautocomplete|default:0)}
                             <td colspan="3">
                                 <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete"
-                                       value="{$egyed.partnernev}" size="60">
+                                       value="{$egyed.partnernev|escape}" size="60">
                                 <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partnerid}">
                                 <input class="js-ujpartnercb" type="checkbox">{at('Új')}
                             </td>
@@ -48,7 +48,7 @@
                     </tr>
                     <tr>
                         <td><label for="PartnernevEdit">{at('Név')}:</label></td>
-                        <td><input id="PartnernevEdit" name="partnernev" value="{$egyed.partnernev}"></td>
+                        <td><input id="PartnernevEdit" name="partnernev" value="{$egyed.partnernev|escape}"></td>
                         <td><label for="PartnertelefonEdit">{at('Telefon')}:</label></td>
                         <td><input id="PartnertelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon}"></td>
                     </tr>
@@ -79,7 +79,7 @@
                         <td colspan="3">
                             {if ($setup.partnerautocomplete|default:0)}
                                 <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete"
-                                       value="{$egyed.partnernev}" size="60">
+                                       value="{$egyed.partnernev|escape}" size="60">
                                 <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partnerid}">
                             {else}
                                 <select id="PartnerEdit" name="partner" class="js-partnerid">
