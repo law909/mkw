@@ -128,6 +128,9 @@ class banktranzakcioController extends \mkwhelpers\MattableController
      * banktól nem kapunk tranzakcióazonosítót, tehát az egyezés csak valószínű – ahol a bank ad
      * azonosítót, ott a duplikátum biztos, azt néma kihagyni a helyes.
      */
+    /** a feltöltő "Negatív (terhelés) tételek is" pipájának utolsó állása, dolgozónként */
+    private const NEGATIVIS = 'banktranzakcionegativis';
+
     const IMPORTFORMATUMOK = [
         'raiffeisen' => [
             'nev' => 'Raiffeisen',
@@ -201,6 +204,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $view->setVar('formatumok', $formatumok);
         // a legutóbb használt bank legyen előre kiválasztva
         $view->setVar('valasztottformatum', \mkw\store::getParameter(\mkw\consts::LastBankiFormatum, ''));
+        $view->setVar('negativis', \Services\DolgozoParameterService::getBoolParameter(self::NEGATIVIS));
         $view->printTemplateResult();
     }
 
@@ -224,6 +228,7 @@ class banktranzakcioController extends \mkwhelpers\MattableController
         $formatum = self::IMPORTFORMATUMOK[$formatumkulcs];
         \mkw\store::setParameter(\mkw\consts::LastBankiFormatum, $formatumkulcs);
         $negativis = $this->params->getBoolRequestParam('negativis', false);
+        \Services\DolgozoParameterService::setParameter(self::NEGATIVIS, $negativis ? 1 : 0);
 
         $filenev = \mkw\store::moveUploadedFile('toimport', 'banktranzakcio');
         if (!$filenev) {

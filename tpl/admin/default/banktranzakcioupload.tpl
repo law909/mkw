@@ -27,7 +27,7 @@
                     <div class="matt-hseparator"></div>
                     <div>
                         <label for="negativisedit">{at('Negatív (terhelés) tételek is')}:</label>
-                        <input id="negativisedit" name="negativis" type="checkbox" value="1">
+                        <input id="negativisedit" name="negativis" type="checkbox" value="1"{if ($negativis)} checked="checked"{/if}>
                     </div>
                     <div class="matt-hseparator"></div>
                     <div>
