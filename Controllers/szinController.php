@@ -12,9 +12,6 @@ class szinController extends \mkwhelpers\MattableController
     use ValtozatTermekLista;
     use SorrendGenerator;
 
-    /** a getSelectList() sorai, kérésen belül egyszer olvasva */
-    private $lista;
-
     protected function getValtozatFieldName(): string
     {
         return 'szin';
@@ -100,37 +97,23 @@ class szinController extends \mkwhelpers\MattableController
         echo json_encode($this->loadDataToView($egyedek, 'szinlista', $view));
     }
 
-    public function getSelectList($selid = null)
-    {
-        // a termék karbantartón változatonként hívódik, mindig ugyanazzal a tartalommal
-        $rec = $this->lista ??= $this->getRepo()->getAll();
-        $res = [];
-        foreach ($rec as $sor) {
-            $res[] = [
-                'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
-                'selected' => ($sor->getId() == $selid)
-            ];
-        }
-        return $res;
-    }
-
+    /** Without a term: every colour, for the variant editor's autocomplete that filters on the client. */
     public function getAutocompleteList()
     {
         $term = trim($this->params->getStringRequestParam('term'));
-        $ret = [];
+        $filter = new FilterDescriptor();
         if ($term) {
-            $filter = new FilterDescriptor();
             $filter->addFilter(['nev'], 'LIKE', '%' . $term . '%');
-            $rec = $this->getRepo()->getAll($filter);
-            foreach ($rec as $sor) {
-                $ret[] = [
-                    'id' => $sor->getId(),
-                    'value' => $sor->getNev()
-                ];
-            }
         }
-        echo json_encode($ret);
+        $ret = [];
+        foreach ($this->getRepo()->getAll($filter, ['nev' => 'ASC']) as $sor) {
+            $ret[] = [
+                'id' => $sor->getId(),
+                // stored encoded by the HtmlPurifierSanitizer; the JS writes it as text
+                'value' => html_entity_decode($sor->getNev(), ENT_QUOTES | ENT_HTML5, 'UTF-8')
+            ];
+        }
+        echo json_encode($ret, JSON_HEX_TAG | JSON_HEX_AMP);
     }
 
     public function htmllist()

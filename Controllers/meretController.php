@@ -16,9 +16,6 @@ class meretController extends MattableController
     use ValtozatTermekLista;
     use SorrendGenerator;
 
-    /** a getSelectList() sorai, kérésen belül egyszer olvasva */
-    private $lista;
-
     protected function getValtozatFieldName(): string
     {
         return 'meret';
@@ -111,19 +108,17 @@ class meretController extends MattableController
         echo json_encode($this->loadDataToView($egyedek, 'meretlista', $view));
     }
 
-    public function getSelectList($selid = null)
+    /** Every size in variant order, for the variant editor's autocomplete that filters on the client. */
+    public function getAutocompleteList()
     {
-        // a termék karbantartón változatonként hívódik, mindig ugyanazzal a tartalommal
-        $rec = $this->lista ??= $this->getRendezettMeretek();
-        $res = [];
-        foreach ($rec as $sor) {
-            $res[] = [
+        $ret = [];
+        foreach ($this->getRendezettMeretek() as $sor) {
+            $ret[] = [
                 'id' => $sor->getId(),
-                'caption' => $sor->getNev(),
-                'selected' => ($sor->getId() == $selid)
+                'value' => html_entity_decode($sor->getNev(), ENT_QUOTES | ENT_HTML5, 'UTF-8')
             ];
         }
-        return $res;
+        echo json_encode($ret, JSON_HEX_TAG | JSON_HEX_AMP);
     }
 
     /** In the size order of the variants when Beállítások asks for "szín, méret", else as stored. */

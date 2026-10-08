@@ -1134,6 +1134,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/meret/viewlist', 'meretController#viewlist', 'adminmeretviewlist');
 $router->map('GET', '/admin/meret/htmllist', 'meretController#htmllist', 'adminmerethtmllist');
 $router->map('GET', '/admin/meret/getlistbody', 'meretController#getlistbody', 'adminmeretgetlistbody');
+$router->map('GET', '/admin/meret/getautocomplete', 'meretController#getAutocompleteList', 'adminmeretgetautocomplete');
 $router->map('GET', '/admin/meret/getkarb', 'meretController#getkarb', 'adminmeretgetkarb');
 $router->map('GET', '/admin/meret/viewkarb', 'meretController#viewkarb', 'adminmeretviewkarb');
 $router->map('GET', '/admin/meret/gettermeklista', 'meretController#getTermekList', 'adminmeretgettermeklista');

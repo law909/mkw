@@ -24,13 +24,10 @@
         {mezocsoport cim="Tulajdonságok" class="valtozat-sor"}
             {* a rács soronként tölt: így bal oldalon a szín és a méret, jobb oldalon a két tulajdonság áll *}
             {if ($setup.szinmode === 'fix')}
-                {mezo cimke="Szín"}
-                    <select name="valtozatszin_{$valtozat.id}">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $valtozat.szinlista as $at}
-                            <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
-                        {/foreach}
-                    </select>
+                {mezo cimke="Szín" for="VSzinEdit_{$valtozat.id}"}
+                    <input id="VSzinEdit_{$valtozat.id}" class="js-valtozatszinautocomplete" type="text" autocomplete="off"
+                           value="{$valtozat.szinnev}" placeholder="{at('válasszon')}">
+                    <input class="js-valtozatszinid" name="valtozatszin_{$valtozat.id}" type="hidden" value="{if ($valtozat.szinid)}{$valtozat.szinid}{/if}">
                 {/mezo}
             {/if}
             {mezo cimke="1. tulajdonság"}
@@ -43,13 +40,10 @@
                 <input name="valtozatertek1_{$valtozat.id}" type="text" value="{$valtozat.ertek1}" {if ($setup.szinmode != 'fix')}required="required"{/if}>
             {/mezo}
             {if ($setup.szinmode === 'fix')}
-                {mezo cimke="Méret"}
-                    <select name="valtozatmeret_{$valtozat.id}">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $valtozat.meretlista as $at}
-                            <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
-                        {/foreach}
-                    </select>
+                {mezo cimke="Méret" for="VMeretEdit_{$valtozat.id}"}
+                    <input id="VMeretEdit_{$valtozat.id}" class="js-valtozatmeretautocomplete" type="text" autocomplete="off"
+                           value="{$valtozat.meretnev}" placeholder="{at('válasszon')}">
+                    <input class="js-valtozatmeretid" name="valtozatmeret_{$valtozat.id}" type="hidden" value="{if ($valtozat.meretid)}{$valtozat.meretid}{/if}">
                 {/mezo}
             {/if}
             {mezo cimke="2. tulajdonság"}

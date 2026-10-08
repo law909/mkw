@@ -25,8 +25,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
      */
     private $tvatc;
     private $tkepc;
-    private $szinc;
-    private $meretc;
     private $varc;
 
     public function __construct()
@@ -43,8 +41,6 @@ class termekvaltozatController extends \mkwhelpers\MattableController
     {
         $tvatc = $this->tvatc ??= new termekvaltozatadattipusController();
         $tkepc = $this->tkepc ??= new termekkepController();
-        $szinc = $this->szinc ??= new szinController();
-        $meretc = $this->meretc ??= new meretController();
         $x = [];
         if (!$t) {
             $t = new \Entities\TermekValtozat();
@@ -80,10 +76,8 @@ class termekvaltozatController extends \mkwhelpers\MattableController
         if (\mkw\store::isFixSzinMode()) {
             $x['szinid'] = $t->getSzinId();
             $x['meretid'] = $t->getMeretId();
-            if ($forKarb) {
-                $x['szinlista'] = $szinc->getSelectList($t->getSzinId());
-                $x['meretlista'] = $meretc->getSelectList($t->getMeretId());
-            }
+            $x['szinnev'] = $t->getSzinNev();
+            $x['meretnev'] = $t->getMeretNev();
         }
         if ($forKarb && store::isArsavok()) {
             $varc = $this->varc ??= new termekvaltozatarController();

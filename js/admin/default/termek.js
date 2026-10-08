@@ -191,6 +191,49 @@ $(document).ready(function () {
         };
     }
 
+    const torzsListak = {};
+
+    // .done(), not .then(): once loaded it runs synchronously, so a blur right before a save click is settled in time
+    const loadTorzsLista = (url) => torzsListak[url]
+        ? $.Deferred().resolve(torzsListak[url])
+        : $.getJSON(url).done((data) => {
+            torzsListak[url] = data;
+        });
+
+    // the whole list is filtered here, so the down arrow opens it with nothing typed (minLength: 0)
+    const valtozatTorzsAutocompleteConfig = (url, idselector) => ({
+        minLength: 0,
+        delay: 0,
+        autoFocus: true,
+        source: (request, response) => {
+            loadTorzsLista(url)
+                .done((lista) => response($.ui.autocomplete.filter(lista, request.term)))
+                .fail(() => response([]));
+        },
+        select: function (event, ui) {
+            $(this).siblings(idselector).val(ui.item.id);
+        },
+        change: function (event, ui) {
+            if (ui.item) {
+                return;
+            }
+            const $input = $(this);
+            const $id = $input.siblings(idselector);
+            const nev = $input.val().trim().toLowerCase();
+            if (nev === '') {
+                $id.val('');
+                return;
+            }
+            // typed text that names no entry: back to the previous choice
+            loadTorzsLista(url).done((lista) => {
+                const item = lista.find((i) => i.value.toLowerCase() === nev)
+                    ?? lista.find((i) => String(i.id) === $id.val());
+                $input.val(item ? item.value : '');
+                $id.val(item ? item.id : '');
+            });
+        }
+    });
+
     function createImageSelectable(n, m) {
         $(n).selectable({
             unselected: function () {
@@ -994,6 +1037,13 @@ $(document).ready(function () {
             });
             $('.js-kapcsolodoselect').autocomplete(termekAutocompleteConfig());
             $('.js-szinautocomplete').autocomplete(szinAutocompleteConfig());
+            // on focus, so the rows added later (new, generated) get it too
+            valtozattab.on('focusin', '.js-valtozatszinautocomplete:not(.ui-autocomplete-input)', function () {
+                $(this).autocomplete(valtozatTorzsAutocompleteConfig('/admin/szin/getautocomplete', '.js-valtozatszinid'));
+            })
+                .on('focusin', '.js-valtozatmeretautocomplete:not(.ui-autocomplete-input)', function () {
+                    $(this).autocomplete(valtozatTorzsAutocompleteConfig('/admin/meret/getautocomplete', '.js-valtozatmeretid'));
+                });
 
             createImageSelectable('.js-valtozatkepedit', '#ValtozatKepId_');
             createMultiImageSelectable('.js-szinkepedit');
