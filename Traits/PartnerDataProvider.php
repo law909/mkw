@@ -77,7 +77,21 @@ trait PartnerDataProvider
                 $ret[] = $x;
             }
         }
-        echo json_encode($ret);
+        echo json_encode(self::decodeForJson($ret));
+    }
+
+    /**
+     * A HtmlPurifierSanitizer kódolva menti a bemenetet (&amp;); a JSON-t a JS szövegként (.val(), .text()) írja ki,
+     * ezért itt vissza kell kódolni, különben „K&amp;H” látszik.
+     */
+    private static function decodeForJson(array $data): array
+    {
+        array_walk_recursive($data, function (&$val) {
+            if (is_string($val)) {
+                $val = html_entity_decode($val, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
+        });
+        return $data;
     }
 
     public function getPartnerData()
@@ -160,7 +174,7 @@ trait PartnerDataProvider
                 $ret['afakulcs'] = $afaoverride->getErtek();
             }
         }
-        echo json_encode($ret);
+        echo json_encode(self::decodeForJson($ret));
     }
 
     public function getAFAOverride()
