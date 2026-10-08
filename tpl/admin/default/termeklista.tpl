@@ -242,6 +242,21 @@
                 netto_HUF_&lt;ársáv neve&gt; / brutto_HUF_&lt;ársáv neve&gt; alakú oszlopokból. A nem talált sor kimarad.</p>
         </div>
     {/if}
+    <div id="termekmenuset" class="hidden">
+        {if (count($termekmenufalist) > 1)}
+            <p>
+                <label>{at('Menü')}: </label>
+                <select class="js-termekmenusetfa">
+                    {foreach $termekmenufalist as $_fa}
+                        <option value="{$_fa.id}">{$_fa.caption|escape}</option>
+                    {/foreach}
+                </select>
+            </p>
+        {elseif (count($termekmenufalist) === 1)}
+            <input class="js-termekmenusetfa" type="hidden" value="{$termekmenufalist[0].id}">
+        {/if}
+        <div class="js-termekmenusettree"></div>
+    </div>
     <div id="cimkeset" class="hidden">
         <label>{at('Címke')}: </label>
         <select class="js-cimkeset">

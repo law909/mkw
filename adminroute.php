@@ -1181,6 +1181,7 @@ if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/termek/leirastisztitas', 'termekController#leirasTisztitas', 'admintermekleirastisztitas');
     $router->map('POST', '/admin/termek/cimkehozzaadas', 'termekController#addCimkeToTermekek', 'admintermekcimkehozzaadas');
     $router->map('POST', '/admin/termek/cimketorles', 'termekController#removeCimkeFromTermekek', 'admintermekcimketorles');
+    $router->map('POST', '/admin/termek/termekmenuset', 'termekController#setTermekMenuOnTermekek', 'admintermektermekmenuset');
     $router->map('POST', '/admin/nepszeruseg/clear', 'termekController#clearNepszeruseg', 'adminclearnepszeruseg');
 }
 

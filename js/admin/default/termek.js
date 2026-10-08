@@ -1520,6 +1520,88 @@ $(document).ready(function () {
                         });
                         break;
                     }
+                    case 'termekmenuset': {
+                        if (!$('#termekmenuset .js-termekmenusetfa').length) {
+                            dialogcenter.html('Nincs termékmenü.').dialog({
+                                resizable: false,
+                                modal: true,
+                                buttons: {
+                                    'OK': function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+                            break;
+                        }
+                        // a Termék kategória módosítás magára a dialogcenterre tesz fát, az elkapná a kattintásokat
+                        if ($.jstree._reference(dialogcenter)) {
+                            dialogcenter.jstree('destroy');
+                        }
+                        dialogcenter.html($('#termekmenuset').html());
+                        const fa = $('.js-termekmenusetfa', dialogcenter),
+                            tree = $('.js-termekmenusettree', dialogcenter),
+                            loadTree = () => {
+                                tree.jstree({
+                                    core: {animation: 100},
+                                    plugins: ['themeroller', 'json_data', 'ui'],
+                                    themeroller: {item: ''},
+                                    json_data: {
+                                        ajax: {url: `/admin/termekmenu/jsonlist?fa=${fa.val()}`}
+                                    },
+                                    ui: {select_limit: 1}
+                                })
+                                    .on('loaded.jstree', () => {
+                                        tree.jstree('open_node', tree.find('li').first());
+                                    });
+                            },
+                            send = (dia, node) => {
+                                $.ajax({
+                                    url: '/admin/termek/termekmenuset',
+                                    type: 'POST',
+                                    data: {
+                                        ids: tomb,
+                                        fa: fa.val(),
+                                        node: node
+                                    },
+                                    success: () => {
+                                        dia.dialog('close');
+                                        $('.mattable-tablerefresh').click();
+                                    }
+                                });
+                            };
+                        fa.on('change', () => {
+                            tree.jstree('destroy').empty();
+                            loadTree();
+                        });
+                        loadTree();
+                        dialogcenter.dialog({
+                            title: 'Termékmenü hozzárendelés',
+                            resizable: true,
+                            height: 450,
+                            width: 400,
+                            modal: true,
+                            buttons: {
+                                'OK': function () {
+                                    let node = 0;
+                                    tree.jstree('get_selected').each(function () {
+                                        node = $(this).children('a').attr('id').split('_')[1];
+                                    });
+                                    // a menü gyökere nem választható, ahogy a termék karbantartóban sem
+                                    if (!node || tree.find('li').first().children('a').attr('id') === `termekmenu_${node}`) {
+                                        return;
+                                    }
+                                    send($(this), node);
+                                },
+                                'Kivesz a menüből': function () {
+                                    send($(this), 0);
+                                },
+                                'Mégsem': function () {
+                                    $(this).dialog('close');
+                                }
+                            }
+                        });
+                        break;
+                    }
                     case 'leirastisztitas':
                         // A kijelölt termékek leírásából kiszedjük a html tag-eken lévő style és class attributumokat.
                         dialogcenter.html('Biztos, hogy tisztítja ' + tomb.length + ' termék leírását? A html tag-ekről lekerülnek a style és class attributumok.').dialog({

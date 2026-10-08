@@ -28,6 +28,7 @@ class TermekRepository extends \mkwhelpers\Repository
             'leirastisztitas' => 'Leírás tisztítása',
             'cimkehozzaadas' => 'Címke hozzáadása',
             'cimketorles' => 'Címke törlése',
+            'termekmenuset' => 'Termékmenü hozzárendelés',
         ]);
     }
 

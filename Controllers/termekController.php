@@ -3183,6 +3183,38 @@ class termekController extends \mkwhelpers\MattableController
         $this->getEm()->clear();
     }
 
+    public function setTermekMenuOnTermekek()
+    {
+        $ids = $this->params->getArrayRequestParam('ids');
+        /** @var TermekMenuFa $fa */
+        $fa = $this->getRepo(TermekMenuFa::class)->find($this->params->getIntRequestParam('fa'));
+        if (!$ids || !$fa) {
+            return;
+        }
+        // 0: a termékek kikerülnek ebből a menüből
+        $node = null;
+        $nodeid = $this->params->getIntRequestParam('node');
+        if ($nodeid) {
+            $node = $this->getRepo(TermekMenu::class)->find($nodeid);
+            if (!$node || $node->getTermekmenufa() !== $fa || !$node->getParent()) {
+                throw new \mkwhelpers\Exceptions\UserMessageException(sprintf(t('A(z) %s menüben érvénytelen a választott kategória.'), $fa->getNev()));
+            }
+        }
+        $filter = new \mkwhelpers\FilterDescriptor();
+        $filter->addFilter('id', 'IN', $ids);
+        $termekdb = 0;
+        /** @var Termek $termek */
+        foreach ($this->getRepo()->getAll($filter, []) as $termek) {
+            $termek->setTermekMenu($fa, $node);
+            $this->getEm()->persist($termek);
+            if ((++$termekdb % 20) === 0) {
+                $this->getEm()->flush();
+            }
+        }
+        $this->getEm()->flush();
+        $this->getEm()->clear();
+    }
+
     private function getLeirasTisztitoSanitizer()
     {
         return new \mkwhelpers\HtmlPurifierSanitizer([
