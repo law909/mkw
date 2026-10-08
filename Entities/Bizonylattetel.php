@@ -1545,6 +1545,12 @@ class Bizonylattetel
         return [(string)$this->getTermeknev(), $szinsorrend, $szin, $meretsorrend, $meret];
     }
 
+    /** The "cikkszám, név, szín, méret" order: the product's cikkszám, so a product's variants stay together. */
+    public function getCikkszamNevSzinMeretKulcs()
+    {
+        return array_merge([(string)$this->getCikkszam()], $this->getNevSzinMeretKulcs());
+    }
+
 
     public function getValtozatadattipus1()
     {

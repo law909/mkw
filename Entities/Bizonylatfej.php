@@ -2115,7 +2115,7 @@ class Bizonylatfej
             $ret['vanmitertekelni'] = false;
         }
         switch (true) {
-            case \mkw\store::isSuperzoneB2B() && !self::isNevSzinMeretSorrend():
+            case \mkw\store::isSuperzoneB2B() && !self::getTetelSorrend():
                 $s = \mkw\store::getParameter(\mkw\consts::ValtozatSorrend);
                 $rendezendo = \mkw\store::getParameter(\mkw\consts::RendezendoValtozat);
                 $sorrend = explode(',', $s);
@@ -2965,10 +2965,16 @@ class Bizonylatfej
     public function getRendezettTetelek()
     {
         $tetelek = $this->bizonylattetelek->toArray();
-        if (!self::isNevSzinMeretSorrend()) {
+        $sorrend = self::getTetelSorrend();
+        if (!$sorrend) {
             return $tetelek;
         }
-        $kulcsok = array_map(fn(Bizonylattetel $tetel) => $tetel->getNevSzinMeretKulcs(), $tetelek);
+        $kulcsok = array_map(
+            fn(Bizonylattetel $tetel) => $sorrend === \mkw\consts::BizonylattetelSorrendCikkszamNevSzinMeret
+                ? $tetel->getCikkszamNevSzinMeretKulcs()
+                : $tetel->getNevSzinMeretKulcs(),
+            $tetelek
+        );
         // the shipping and cash-on-delivery cost lines stay at the end
         $ktg = array_map(
             fn(Bizonylattetel $tetel) => \mkw\store::isSzallitasiKtgTermek($tetel->getTermekId())
@@ -2980,9 +2986,14 @@ class Bizonylatfej
         return array_map(fn($i) => $tetelek[$i], $sorrend);
     }
 
-    public static function isNevSzinMeretSorrend()
+    /** the Beállítások line order, '' for the natural order */
+    public static function getTetelSorrend(): string
     {
-        return \mkw\store::getParameter(\mkw\consts::BizonylattetelSorrend, '') === \mkw\consts::BizonylattetelSorrendNevSzinMeret;
+        $sorrend = (string)\mkw\store::getParameter(\mkw\consts::BizonylattetelSorrend, '');
+        return in_array($sorrend, [
+            \mkw\consts::BizonylattetelSorrendNevSzinMeret,
+            \mkw\consts::BizonylattetelSorrendCikkszamNevSzinMeret,
+        ], true) ? $sorrend : '';
     }
 
     public function addBizonylattetel(Bizonylattetel $val)

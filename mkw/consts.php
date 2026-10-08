@@ -301,6 +301,7 @@ class consts
     const BizonylatMennyiseg = 'bizonylatmennyiseg';
     const BizonylattetelSorrend = 'bizonylattetelsorrend';
     const BizonylattetelSorrendNevSzinMeret = 'nevszinmeret';
+    const BizonylattetelSorrendCikkszamNevSzinMeret = 'cikkszamnevszinmeret';
     const TermekValtozatSorrend = 'termekvaltozatsorrend';
     const TermekValtozatSorrendSzinMeret = 'szinmeret';
 

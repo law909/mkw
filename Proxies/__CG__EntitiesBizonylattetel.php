@@ -1834,6 +1834,17 @@ class Bizonylattetel extends \Entities\Bizonylattetel implements \Doctrine\ORM\P
     /**
      * {@inheritDoc}
      */
+    public function getCikkszamNevSzinMeretKulcs()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCikkszamNevSzinMeretKulcs', []);
+
+        return parent::getCikkszamNevSzinMeretKulcs();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getValtozatadattipus1()
     {
 

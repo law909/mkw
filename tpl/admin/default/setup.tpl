@@ -1003,6 +1003,7 @@
                             <select id="BizonylattetelSorrendEdit" name="bizonylattetelsorrend">
                                 <option value="">{at('természetes')}</option>
                                 <option value="nevszinmeret"{if ($bizonylattetelsorrend == 'nevszinmeret')} selected="selected"{/if}>{at('név, szín, méret')}</option>
+                                <option value="cikkszamnevszinmeret"{if ($bizonylattetelsorrend == 'cikkszamnevszinmeret')} selected="selected"{/if}>{at('cikkszám, név, szín, méret')}</option>
                             </select>
                         </div>
                     </div>
