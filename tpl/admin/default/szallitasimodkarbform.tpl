@@ -37,7 +37,7 @@
                     <input id="SorrendEdit" name="sorrend" type="number" value="{$egyed.sorrend}">
                 {/mezo}
                 {if ($setup.multishop)}
-                    {mezo cimke="Webes" for="WebesEdit"}
+                    {mezo cimke="Webes" for="WebesEdit" ujsor=true}
                         <input id="WebesEdit" name="webes" type="checkbox"{if ($egyed.webes)} checked="checked"{/if}>
                     {/mezo}
                     {mezo cimke="Webes 2" for="Webes2Edit"}

@@ -88,7 +88,7 @@
                         </div>
                     {/mezo}
                 {/if}
-                {mezo cimke="Havi levonás" for="HavilevonasEdit"}
+                {mezo cimke="Havi levonás" for="HavilevonasEdit" ujsor=true}
                     <input id="HavilevonasEdit" name="havilevonas" type="number" step="any" value="{$egyed.havilevonas}">
                 {/mezo}
                 {mezo cimke="Napi levonás" for="NapilevonasEdit"}
