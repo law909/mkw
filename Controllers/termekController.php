@@ -620,6 +620,19 @@ class termekController extends \mkwhelpers\MattableController
         return implode(', ', $nevek) . (count($sorok) === 5 ? ' …' : '');
     }
 
+    /** Clears ertek1/ertek2 too when it holds the copy of the colour/size being removed. */
+    private function clearMirroredErtek(TermekValtozat $valtozat, int $slot, string $typeParam)
+    {
+        $typeId = store::getParameter($typeParam);
+        if ($slot === 1 && $typeId && $valtozat->getAdatTipus1Id() == $typeId) {
+            $valtozat->setAdatTipus1(null);
+            $valtozat->setErtek1(null);
+        } elseif ($slot === 2 && $typeId && $valtozat->getAdatTipus2Id() == $typeId) {
+            $valtozat->setAdatTipus2(null);
+            $valtozat->setErtek2(null);
+        }
+    }
+
     protected function setFields($obj)
     {
         $oldnemkaphato = $obj->getNemkaphato();
@@ -1108,6 +1121,9 @@ class termekController extends \mkwhelpers\MattableController
                                     $valtozat->setAdatTipus1($at);
                                     $valtozat->setErtek1($szin->getNev());
                                 }
+                            } elseif ($this->params->existsRequestParam('valtozatszin_' . $valtozatid) && $valtozat->getSzinObject()) {
+                                $this->clearMirroredErtek($valtozat, 1, \mkw\consts::ValtozatTipusSzin);
+                                $valtozat->setSzin(null);
                             }
                             $meret = $this->getEm()->getRepository(Meret::class)->find(
                                 $this->params->getIntRequestParam('valtozatmeret_' . $valtozatid)
@@ -1121,6 +1137,9 @@ class termekController extends \mkwhelpers\MattableController
                                     $valtozat->setAdatTipus2($at);
                                     $valtozat->setErtek2($meret->getNev());
                                 }
+                            } elseif ($this->params->existsRequestParam('valtozatmeret_' . $valtozatid) && $valtozat->getMeretObject()) {
+                                $this->clearMirroredErtek($valtozat, 2, \mkw\consts::ValtozatTipusMeret);
+                                $valtozat->setMeret(null);
                             }
                         } else {
                             $at = $this->getEm()->getRepository(TermekValtozatAdatTipus::class)->find(

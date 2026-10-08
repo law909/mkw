@@ -31,7 +31,8 @@
                 {/mezo}
             {/if}
             {mezo cimke="1. tulajdonság"}
-                <select name="valtozatadattipus1_{$valtozat.id}" required="required">
+                {* fix módban a mentés a színből tölti, ezért ott nem kötelező *}
+                <select name="valtozatadattipus1_{$valtozat.id}"{if ($setup.szinmode != 'fix')} required="required"{/if}>
                     <option value="">{at('válasszon')}</option>
                     {foreach $valtozat.adattipus1lista as $at}
                         <option value="{$at.id}"{if ($at.selected)} selected="selected"{/if}>{$at.caption}</option>
