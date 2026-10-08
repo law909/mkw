@@ -41,7 +41,7 @@
                        Bizonylattétel nélküli (külső) azonosító is beírható, akkor a jármű kézzel választható. *}
                     <fieldset class="mattkarb-doboz">
                         <legend>{at('Munkalap adatok')}</legend>
-                        <table class="mattkarb-racs">
+                        <table class="mattkarb-racs mattkarb-racs-kitolt">
                             <tbody>
                             <tr>
                                 <td class="mattable-important"><label for="MunkalapTermekEdit">{at('Jármű')}:</label></td>
@@ -81,11 +81,15 @@
                                 <td><input id="MunkalapKmoraallasEdit" name="munkalapkmoraallas" type="number" step="1" min="0" size="10"
                                            value="{$egyed.munkalapkmoraallas}"></td>
                                 <td><label for="MunkalapKovetkezoSzervizEdit">{at('Következő szerviz')}:</label></td>
-                                <td><input id="MunkalapKovetkezoSzervizEdit" name="munkalapkovetkezoszerviz" type="text" size="12"
-                                           data-datum="{$egyed.munkalapkovetkezoszervizstr}">
-                                    <label for="MunkalapKovetkezoSzervizKmEdit">{at('km')}:</label>
-                                    <input id="MunkalapKovetkezoSzervizKmEdit" name="munkalapkovetkezoszervizkm" type="number" step="1" min="0"
-                                           size="10" value="{$egyed.munkalapkovetkezoszervizkm}"></td>
+                                <td>
+                                    <div class="mattkarb-mezogomb">
+                                        <input id="MunkalapKovetkezoSzervizEdit" name="munkalapkovetkezoszerviz" type="text" size="12"
+                                               data-datum="{$egyed.munkalapkovetkezoszervizstr}">
+                                        <label for="MunkalapKovetkezoSzervizKmEdit">{at('km')}:</label>
+                                        <input id="MunkalapKovetkezoSzervizKmEdit" name="munkalapkovetkezoszervizkm" type="number" step="1" min="0"
+                                               size="10" value="{$egyed.munkalapkovetkezoszervizkm}">
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td><label for="MunkalapHibaleirasEdit">{at('Hiba leírása')}:</label></td>
@@ -95,7 +99,7 @@
                         </table>
                     </fieldset>
                 {/if}
-                <table class="mattkarb-racs mattkarb-racs-4">
+                <table class="mattkarb-racs mattkarb-racs-4 mattkarb-racs-kitolt">
                     <tbody>
                     {if ($showforditottadozas)}
                         <tr>
@@ -187,10 +191,12 @@
                     <tr>
                         <td>{at('Számlázási cím')}:</td>
                         <td colspan="7">
-                            <input id="IrszamEdit" name="partnerirszam" value="{$egyed.partnerirszam}" size="6" maxlength="10">
-                            <input id="VarosEdit" name="partnervaros" value="{$egyed.partnervaros}" size="20" maxlength="40">
-                            <input id="UtcaEdit" name="partnerutca" value="{$egyed.partnerutca}" size="40" maxlength="60">
-                            <input id="HazszamEdit" name="partnerhazszam" value="{$egyed.partnerhazszam}" size="40" maxlength="40">
+                            <div class="mattkarb-mezogomb">
+                                <input id="IrszamEdit" name="partnerirszam" value="{$egyed.partnerirszam}" size="6" maxlength="10">
+                                <input id="VarosEdit" name="partnervaros" value="{$egyed.partnervaros}" size="20" maxlength="40">
+                                <input id="UtcaEdit" name="partnerutca" value="{$egyed.partnerutca}" size="40" maxlength="60">
+                                <input id="HazszamEdit" name="partnerhazszam" value="{$egyed.partnerhazszam}" size="40" maxlength="40">
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -270,10 +276,12 @@
                         <tr>
                             <td><label for="SzallirszamEdit">{at('Szállítási cím')}:</label></td>
                             <td colspan="7">
-                                <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
-                                <input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
-                                <input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
-                                <input name="szallhazszam" value="{$egyed.szallhazszam}" size="40" maxlength="40">
+                                <div class="mattkarb-mezogomb">
+                                    <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
+                                    <input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
+                                    <input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
+                                    <input name="szallhazszam" value="{$egyed.szallhazszam}" size="40" maxlength="40">
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -328,18 +336,20 @@
                     <tr class="js-csomagpontrow" data-terminaltipus="{$csomagpontterminaltipus}"{if ($csomagpontterminaltipus == '')} style="display: none;"{/if}>
                         <td><label for="CsomagTerminalCsoportEdit">{at('Csomagpont')}:</label></td>
                         <td colspan="7">
-                            <select id="CsomagTerminalCsoportEdit">
-                                <option value="">{at('város')}</option>
-                                {foreach $csomagterminalcsoportlist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                                {/foreach}
-                            </select>
-                            <select id="CsomagTerminalEdit" name="csomagterminal">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $csomagterminallist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                                {/foreach}
-                            </select>
+                            <div class="mattkarb-mezogomb">
+                                <select id="CsomagTerminalCsoportEdit">
+                                    <option value="">{at('város')}</option>
+                                    {foreach $csomagterminalcsoportlist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                                <select id="CsomagTerminalEdit" name="csomagterminal">
+                                    <option value="">{at('válasszon')}</option>
+                                    {foreach $csomagterminallist as $_mk}
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
                         </td>
                     </tr>
                     {if ($showpenztar)}

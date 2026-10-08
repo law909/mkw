@@ -937,7 +937,8 @@ body.modernui {
 }
 
 .modernui table.mattkarb-racs-kitolt > tbody > tr > td > input:not([type="checkbox"]):not([type="radio"]),
-.modernui table.mattkarb-racs-kitolt > tbody > tr > td > select {
+.modernui table.mattkarb-racs-kitolt > tbody > tr > td > select,
+.modernui table.mattkarb-racs-kitolt > tbody > tr > td > textarea {
     width: 100%;
     box-sizing: border-box;
 }
@@ -949,7 +950,8 @@ body.modernui {
     gap: 6px;
 }
 
-.modernui .mattkarb-mezogomb > input {
+.modernui .mattkarb-mezogomb > input,
+.modernui .mattkarb-mezogomb > select {
     flex: 1 1 auto;
     min-width: 0;
 }

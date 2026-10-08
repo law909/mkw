@@ -39,7 +39,7 @@
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($partner.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <div class="mattkarb-szakaszcim">{at('Alapadatok')}</div>
-            <table class="mattkarb-racs">
+            <table class="mattkarb-racs mattkarb-racs-kitolt">
                 <tbody>
                 {if ($setup.mptngy)}
                     <tr>
@@ -109,12 +109,14 @@
                 <tr>
                     <td><label for="IrszamEdit">{at('Cím')}:</label></td>
                     <td colspan="3">
-                        <input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{at('ir.szám')}"
-                               required="required">
-                        <input id="VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{at('város')}"
-                               required="required">
-                        <input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{at('utca')}">
-                        <input id="HazszamEdit" name="hazszam" type="text" size="20" maxlength="40" value="{$partner.hazszam}" placeholder="{at('házszám')}">
+                        <div class="mattkarb-mezogomb">
+                            <input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{at('ir.szám')}"
+                                   required="required">
+                            <input id="VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{at('város')}"
+                                   required="required">
+                            <input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{at('utca')}">
+                            <input id="HazszamEdit" name="hazszam" type="text" size="20" maxlength="40" value="{$partner.hazszam}" placeholder="{at('házszám')}">
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -152,10 +154,13 @@
                 </tr>
                 <tr>
                     <td><label for="AdoszamEdit">{at('Adószám')}:</label></td>
-                    <td><input id="AdoszamEdit" name="adoszam" type="text" size="13" maxlength="13" value="{$partner.adoszam}">
-                        {if ($oper === 'add')}
-                            <button class="js-querytaxpayer">NAV</button>
-                        {/if}
+                    <td>
+                        <div class="mattkarb-mezogomb">
+                            <input id="AdoszamEdit" name="adoszam" type="text" size="13" maxlength="13" value="{$partner.adoszam}">
+                            {if ($oper === 'add')}
+                                <button class="js-querytaxpayer">NAV</button>
+                            {/if}
+                        </div>
                     </td>
                     <td><label for="CsoportosAdoszamEdit">{at('Csoportos adószám')}:</label></td>
                     <td><input id="CsoportosAdoszamEdit" name="csoportosadoszam" type="text" size="13" maxlength="50" value="{$partner.csoportosadoszam}"></td>
@@ -282,7 +287,7 @@
         </div>
         {if ($setup.mpt)}
             <div id="MPTTab" class="mattkarb-page" data-visible="visible">
-                <table class="mattkarb-racs">
+                <table class="mattkarb-racs mattkarb-racs-kitolt">
                     <tbody>
                     <tr>
                         <td>{at('Felhasználónév')}:</td>
@@ -338,22 +343,27 @@
                     </tr>
                     <tr>
                         <td><label for="mpt_AdoszamEdit">{at('Adószám')}:</label></td>
-                        <td><input id="mpt_AdoszamEdit" name="adoszam" type="text" size="13" maxlength="13" value="{$partner.adoszam}">
-                            {if ($oper === 'add')}
-                                <button class="js-querytaxpayer">NAV</button>
-                            {/if}
+                        <td>
+                            <div class="mattkarb-mezogomb">
+                                <input id="mpt_AdoszamEdit" name="adoszam" type="text" size="13" maxlength="13" value="{$partner.adoszam}">
+                                {if ($oper === 'add')}
+                                    <button class="js-querytaxpayer">NAV</button>
+                                {/if}
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td><label for="mpt_IrszamEdit">{at('Cím')}:</label></td>
                         <td colspan="3">
-                            <input id="mpt_IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{at('ir.szám')}"
-                                   required="required">
-                            <input id="mpt_VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{at('város')}"
-                                   required="required">
-                            <input id="mpt_UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{at('utca')}">
-                            <input id="mpt_HazszamEdit" name="hazszam" type="text" size="20" maxlength="40" value="{$partner.hazszam}"
-                                   placeholder="{at('házszám')}">
+                            <div class="mattkarb-mezogomb">
+                                <input id="mpt_IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$partner.irszam}" placeholder="{at('ir.szám')}"
+                                       required="required">
+                                <input id="mpt_VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$partner.varos}" placeholder="{at('város')}"
+                                       required="required">
+                                <input id="mpt_UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$partner.utca}" placeholder="{at('utca')}">
+                                <input id="mpt_HazszamEdit" name="hazszam" type="text" size="20" maxlength="40" value="{$partner.hazszam}"
+                                       placeholder="{at('házszám')}">
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -363,27 +373,31 @@
                     <tr>
                         <td><label for="MPTMunkahelyIrszamEdit">{at('Munkahely címe')}:</label></td>
                         <td colspan="3">
-                            <input id="MPTMunkahelyIrszamEdit" name="mpt_munkahelyirszam" type="text" size="6" maxlength="10"
-                                   value="{$partner.mpt_munkahelyirszam}" placeholder="{at('ir.szám')}">
-                            <input id="MPTMunkahelyVarosEdit" name="mpt_munkahelyvaros" type="text" size="20" maxlength="40"
-                                   value="{$partner.mpt_munkahelyvaros}" placeholder="{at('város')}">
-                            <input id="MPTMunkahelyUtcaEdit" name="mpt_munkahelyutca" type="text" size="40" maxlength="60" value="{$partner.mpt_munkahelyutca}"
-                                   placeholder="{at('utca')}">
-                            <input id="MPTMunkahelyHazszamEdit" name="mpt_munkahelyhazszam" type="text" size="20" maxlength="40"
-                                   value="{$partner.mpt_munkahelyhazszam}" placeholder="{at('házszám')}">
+                            <div class="mattkarb-mezogomb">
+                                <input id="MPTMunkahelyIrszamEdit" name="mpt_munkahelyirszam" type="text" size="6" maxlength="10"
+                                       value="{$partner.mpt_munkahelyirszam}" placeholder="{at('ir.szám')}">
+                                <input id="MPTMunkahelyVarosEdit" name="mpt_munkahelyvaros" type="text" size="20" maxlength="40"
+                                       value="{$partner.mpt_munkahelyvaros}" placeholder="{at('város')}">
+                                <input id="MPTMunkahelyUtcaEdit" name="mpt_munkahelyutca" type="text" size="40" maxlength="60" value="{$partner.mpt_munkahelyutca}"
+                                       placeholder="{at('utca')}">
+                                <input id="MPTMunkahelyHazszamEdit" name="mpt_munkahelyhazszam" type="text" size="20" maxlength="40"
+                                       value="{$partner.mpt_munkahelyhazszam}" placeholder="{at('házszám')}">
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td><label for="MPTLakcimIrszamEdit">{at('Lakcím')}:</label></td>
                         <td colspan="3">
-                            <input id="MPTLakcimIrszamEdit" name="mpt_lakcimirszam" type="text" size="6" maxlength="10" value="{$partner.mpt_lakcimirszam}"
-                                   placeholder="{at('ir.szám')}" required="required">
-                            <input id="MPTLakcimVarosEdit" name="mpt_lakcimvaros" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimvaros}"
-                                   placeholder="{at('város')}" required="required">
-                            <input id="MPTLakcimUtcaEdit" name="mpt_lakcimutca" type="text" size="40" maxlength="60" value="{$partner.mpt_lakcimutca}"
-                                   placeholder="{at('utca')}" required="required">
-                            <input id="MPTLakcimHazszamEdit" name="mpt_lakcimhazszam" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimhazszam}"
-                                   placeholder="{at('házszám')}">
+                            <div class="mattkarb-mezogomb">
+                                <input id="MPTLakcimIrszamEdit" name="mpt_lakcimirszam" type="text" size="6" maxlength="10" value="{$partner.mpt_lakcimirszam}"
+                                       placeholder="{at('ir.szám')}" required="required">
+                                <input id="MPTLakcimVarosEdit" name="mpt_lakcimvaros" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimvaros}"
+                                       placeholder="{at('város')}" required="required">
+                                <input id="MPTLakcimUtcaEdit" name="mpt_lakcimutca" type="text" size="40" maxlength="60" value="{$partner.mpt_lakcimutca}"
+                                       placeholder="{at('utca')}" required="required">
+                                <input id="MPTLakcimHazszamEdit" name="mpt_lakcimhazszam" type="text" size="20" maxlength="40" value="{$partner.mpt_lakcimhazszam}"
+                                       placeholder="{at('házszám')}">
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -474,7 +488,7 @@
         {/if}
         {if ($setup.mptngy)}
             <div id="MPTNGYTab" class="mattkarb-page" data-visible="visible">
-                <table class="mattkarb-racs">
+                <table class="mattkarb-racs mattkarb-racs-kitolt">
                     <tbody>
                     <tr>
                         <td><label for="mptngyszlanevedit">{at('Számlázási név')}:</label></td>
@@ -580,7 +594,7 @@
         {/if}
         <div id="ElerhetosegTab" class="mattkarb-page" data-visible="visible">
             <div class="mattkarb-szakaszcim">{at('Elérhetőségek')}</div>
-            <table class="mattkarb-racs">
+            <table class="mattkarb-racs mattkarb-racs-kitolt">
                 <tbody>
                 {if ($maintheme === 'mkwcansas' && $partner.telefon && (!$partner.telkorzet || !$partner.telszam))}
                     <tr>
@@ -591,13 +605,16 @@
                 <tr>
                     <td><label for="TelefonEdit">{at('Telefon')}:</label></td>
                     {if ($maintheme === 'mkwcansas')}
-                        <td><select id="TelkorzetEdit" name="telkorzet" required="required" data-errormsg="{t('Hibás telefonszám')}">
-                                <option value="">{t('válasszon')}</option>
-                                {foreach $telkorzetlist as $tk}
-                                    <option value="{$tk.id}" data-hossz="{$tk.hossz}"{if ($tk.selected)} selected="selected"{/if}>{$tk.id}</option>
-                                {/foreach}
-                            </select>
-                            <input id="TelszamEdit" type="text" name="telszam" value="{$partner.telszam}" required="required">
+                        <td>
+                            <div class="mattkarb-mezogomb">
+                                <select id="TelkorzetEdit" name="telkorzet" required="required" data-errormsg="{t('Hibás telefonszám')}">
+                                    <option value="">{t('válasszon')}</option>
+                                    {foreach $telkorzetlist as $tk}
+                                        <option value="{$tk.id}" data-hossz="{$tk.hossz}"{if ($tk.selected)} selected="selected"{/if}>{$tk.id}</option>
+                                    {/foreach}
+                                </select>
+                                <input id="TelszamEdit" type="text" name="telszam" value="{$partner.telszam}" required="required">
+                            </div>
                         </td>
                     {else}
                         <td><input id="TelefonEdit" name="telefon" type="text" size="40" maxlength="40"
@@ -623,7 +640,7 @@
                 </tbody>
             </table>
             <div class="mattkarb-szakaszcim">{at('Szállítási cím')}</div>
-            <table class="mattkarb-racs">
+            <table class="mattkarb-racs mattkarb-racs-kitolt">
                 <tbody>
                 <tr>
                     <td><label for="SzallNevEdit">{at('Szállítási név')}:</label></td>
@@ -632,14 +649,16 @@
                 <tr>
                     <td><label for="SzallIrszamEdit">{at('Cím')}:</label></td>
                     <td colspan="3">
-                        <input id="SzallIrszamEdit" name="szallirszam" type="text" size="6" maxlength="10" value="{$partner.szallirszam}"
-                               placeholder="{at('ir.szám')}">
-                        <input id="SzallVarosEdit" name="szallvaros" type="text" size="20" maxlength="40" value="{$partner.szallvaros}"
-                               placeholder="{at('város')}">
-                        <input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{at('utca')}"
-                               autocomplete="off">
-                        <input id="SzallHazszamEdit" name="szallhazszam" type="text" size="20" maxlength="40" value="{$partner.szallhazszam}"
-                               placeholder="{at('házszám')}" autocomplete="off">
+                        <div class="mattkarb-mezogomb">
+                            <input id="SzallIrszamEdit" name="szallirszam" type="text" size="6" maxlength="10" value="{$partner.szallirszam}"
+                                   placeholder="{at('ir.szám')}">
+                            <input id="SzallVarosEdit" name="szallvaros" type="text" size="20" maxlength="40" value="{$partner.szallvaros}"
+                                   placeholder="{at('város')}">
+                            <input id="SzallUtcaEdit" name="szallutca" type="text" size="40" maxlength="60" value="{$partner.szallutca}" placeholder="{at('utca')}"
+                                   autocomplete="off">
+                            <input id="SzallHazszamEdit" name="szallhazszam" type="text" size="20" maxlength="40" value="{$partner.szallhazszam}"
+                                   placeholder="{at('házszám')}" autocomplete="off">
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -697,7 +716,7 @@
             {include 'partnerarlistakarb.tpl'}
         {/if}
         <div id="LoginTab" class="mattkarb-page" data-visible="visible">
-            <table class="mattkarb-racs">
+            <table class="mattkarb-racs mattkarb-racs-kitolt">
                 <tbody>
                 <tr>
                     <td><label>{at('Email')}:</label></td>
@@ -714,7 +733,7 @@
         </div>
         {if (!$setup.mptngy && !$setup.mpt)}
             <div id="BankTab" class="mattkarb-page" data-visible="visible">
-                <table class="mattkarb-racs">
+                <table class="mattkarb-racs mattkarb-racs-kitolt">
                     <tbody>
                     <tr>
                         <td><label for="BanknevEdit">{at('Bank neve')}:</label></td>
@@ -736,7 +755,7 @@
                 </table>
             </div>
             <div id="EgyebAzonositoTab" class="mattkarb-page" data-visible="visible">
-                <table class="mattkarb-racs">
+                <table class="mattkarb-racs mattkarb-racs-kitolt">
                     <tbody>
                     <tr>
                         <td><label for="NemEdit">{at('Neme')}</label></td>
