@@ -8,16 +8,14 @@
     </div>
     <div class="row szinracs">
         {foreach $termek.valtozatok as $_valt}
-            {if ($_valt.keszlet > 0 || $_valt.bejon)}
-                <div class="col-md-4">
-                    <div class="szindoboz">
-                        <a href="{$_valt.link}">
-                            <img src="{$imagepath}{$_valt.kepurlmedium}" class="szinkep">
-                            <div class="szinszoveg">{$_valt.caption}</div>
-                        </a>
-                    </div>
+            <div class="col-md-4">
+                <div class="szindoboz">
+                    <a href="{$_valt.link}">
+                        <img src="{$imagepath}{$_valt.kepurlmedium}" class="szinkep">
+                        <div class="szinszoveg">{$_valt.caption}</div>
+                    </a>
                 </div>
-            {/if}
+            </div>
         {/foreach}
     </div>
 {/block}
