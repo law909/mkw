@@ -991,6 +991,11 @@ class termekfaController extends \mkwhelpers\MattableController
                     : [];
                 $termeklista = [];
                 foreach ($termekek as $te) {
+                    $db = $valtozatdbk[$te->getId()] ?? null;
+                    if ($db && !$db['valtozatdb']) {
+                        // every variant hidden: the product page would offer the bare product without a variant
+                        continue;
+                    }
                     $tete = $te->toMenu();
                     $tete['kiemelt'] = false;
                     $tete['valtozatdb'] = $valtozatdbk[$te->getId()]['valtozatdb'] ?? 0;

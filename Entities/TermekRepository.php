@@ -1110,7 +1110,8 @@ class TermekRepository extends \mkwhelpers\Repository
     /**
      * @param int[] $ids
      *
-     * @return array<int,array{valtozatdb:int,szindb:int,meretdb:int}> the visible, available variants of the products by id
+     * @return array<int,array{osszdb:int,valtozatdb:int,szindb:int,meretdb:int}> all variants (osszdb) and the visible,
+     *         available ones of the products by id
      */
     public function getValtozatDbByTermekIds(array $ids)
     {
@@ -1119,15 +1120,20 @@ class TermekRepository extends \mkwhelpers\Repository
         }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('termek_id', 'termek_id');
+        $rsm->addScalarResult('osszdb', 'osszdb');
         $rsm->addScalarResult('valtozatdb', 'valtozatdb');
         $rsm->addScalarResult('szindb', 'szindb');
         $rsm->addScalarResult('meretdb', 'meretdb');
-        $q = $this->_em->createNativeQuery(
-            'SELECT v.termek_id, COUNT(*) AS valtozatdb, COUNT(DISTINCT v.szin_id) AS szindb, COUNT(DISTINCT v.meret_id) AS meretdb'
-            . ' FROM termekvaltozat v'
-            . ' WHERE v.termek_id IN (:ids) AND v.inaktiv=0'
+        $lathato = 'v.inaktiv=0'
             . ' AND ' . \mkw\store::getWebshopFieldName('v.lathato') . '=1'
-            . ' AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1'
+            . ' AND ' . \mkw\store::getWebshopFieldName('v.elerheto') . '=1';
+        $q = $this->_em->createNativeQuery(
+            'SELECT v.termek_id, COUNT(*) AS osszdb,'
+            . ' SUM(CASE WHEN ' . $lathato . ' THEN 1 ELSE 0 END) AS valtozatdb,'
+            . ' COUNT(DISTINCT CASE WHEN ' . $lathato . ' THEN v.szin_id END) AS szindb,'
+            . ' COUNT(DISTINCT CASE WHEN ' . $lathato . ' THEN v.meret_id END) AS meretdb'
+            . ' FROM termekvaltozat v'
+            . ' WHERE v.termek_id IN (:ids)'
             . ' GROUP BY v.termek_id',
             $rsm
         );
@@ -1135,6 +1141,7 @@ class TermekRepository extends \mkwhelpers\Repository
         $ret = [];
         foreach ($q->getScalarResult() as $sor) {
             $ret[(int)$sor['termek_id']] = [
+                'osszdb' => (int)$sor['osszdb'],
                 'valtozatdb' => (int)$sor['valtozatdb'],
                 'szindb' => (int)$sor['szindb'],
                 'meretdb' => (int)$sor['meretdb'],
