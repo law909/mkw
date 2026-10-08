@@ -60,17 +60,49 @@ $(document).ready(function () {
         return ret;
     }
 
+    // the hidden id is not "required"-checked by the browser, so an unselected partner is caught here
+    function checkPartner() {
+        const $kereso = $('.js-partnerautocomplete');
+        if (!$kereso.length || $('input[name="partner"]').val()) {
+            return true;
+        }
+        $('#dialogcenter').html('Válasszon partnert a listából.').dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: {
+                'OK': function () {
+                    $(this).dialog('close');
+                    $kereso.focus();
+                }
+            }
+        });
+        return false;
+    }
+
     const penztarbizonylat = new MattkarbConfig({
         entityName: 'penztarbizonylatfej',
         beforeSerialize: function (form, opt) {
-            if (!checkPenztar()) {
-                return false;
-            }
-            return true;
+            return checkPartner() && checkPenztar();
         },
         beforeShow: function () {
             var dialogcenter = $('#dialogcenter');
             mkwcomp.datumEdit.init('#KeltEdit');
+
+            $('.js-partnerautocomplete')
+                .autocomplete({
+                    minLength: 4,
+                    autoFocus: true,
+                    source: '/admin/bizonylatfej/getpartnerlist',
+                    select: function (event, ui) {
+                        $('input[name="partner"]').val(ui.item ? ui.item.id : '');
+                    }
+                })
+                .autocompleteRenderer(partnerAutocompleteRenderer)
+                // typing over the chosen name drops the old partner until a new one is picked
+                .on('input', function () {
+                    $('input[name="partner"]').val('');
+                });
 
             $('.js-tetelnewbutton,.js-teteldelbutton,.js-hivatkozottbizonylatbutton').button();
 
@@ -161,7 +193,7 @@ $(document).ready(function () {
                         type: 'POST',
                         url: '/admin/partner/getkiegyenlitetlenbiz',
                         data: {
-                            partner: $('select[name="partner"]').val(),
+                            partner: $('[name="partner"]').val(),
                             irany: irany
                         },
                         success: function (d) {

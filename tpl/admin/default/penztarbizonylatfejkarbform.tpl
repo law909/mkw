@@ -61,12 +61,18 @@
             <tr>
                 <td class="mattable-important"><label for="PartnerEdit">{at('Partner')}:</label></td>
                 <td colspan="3">
-                    <select id="PartnerEdit" name="partner" class="mattable-important" required="required">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $partnerlist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                        {/foreach}
-                    </select>
+                    {if ($setup.partnerautocomplete)}
+                        <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
+                               value="{$egyed.partnernev}" size=90 autocomplete="off">
+                        <input class="js-partnerid" name="partner" type="hidden" value="{if ($partnerid)}{$partnerid}{/if}">
+                    {else}
+                        <select id="PartnerEdit" name="partner" class="mattable-important" required="required">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $partnerlist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/if}
                 </td>
             </tr>
             {if ($showerbizonylatszam)}

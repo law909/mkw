@@ -412,6 +412,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         $kiegy = $record ? null : $this->kiegyenlitendo();
         if ($kiegy) {
             $partnerid = $kiegy['partnerid'];
+            $egyed['partnernev'] = $kiegy['partnernev'];
             $egyed['irany'] = $kiegy['irany'];
             $egyed['keltstr'] = $kiegy['keltstr'];
             $egyed['tetelek'] = [$this->kiegyenlitesTetel($kiegy)];
@@ -421,8 +422,11 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
         $bt = $this->getRepo('Entities\Bizonylattipus')->find('penztar');
         $bt->setTemplateVars($view);
 
-        $partner = new partnerController();
-        $view->setVar('partnerlist', $partner->getSelectList($partnerid));
+        $view->setVar('partnerid', $partnerid);
+        if (!\mkw\store::getSetupValue('partnerautocomplete')) {
+            $partner = new partnerController();
+            $view->setVar('partnerlist', $partner->getSelectList($partnerid));
+        }
 
         $valutanem = new valutanemController();
         if (!$record || !$record->getValutanemId()) {
