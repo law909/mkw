@@ -1206,6 +1206,36 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     grid-column: 2 / -1;
 }
 
+/* több mező vagy mező + gomb egy cellában (cím, adószám + NAV): együtt töltik ki a helyet, nem törnek egymás alá */
+.mattkarb-mezogomb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mattkarb-mezogomb > input,
+.mattkarb-mezogomb > select {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* {mezo ujsor=true}: a pár nem csúszik fel az előző sor második felére */
+.mezo-ujsor > .mezo-cimke {
+    grid-column: 1;
+}
+
+/* a mező kitölti az oszlopát; a saját flex-elrendezésű rácsok (változat, bizonylattétel) kimaradnak */
+:where(.mezok > .mezo > .mezo-ertek:not(.valtozat-mezok *, .valtozattermekke-mezok *, .tetel-mezok *)) > :where(input:not([type="checkbox"], [type="radio"], [type="hidden"]), select, textarea) {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+    .mezok {
+        grid-template-columns: var(--mkw-cimkeoszlop, 13em) minmax(0, var(--mkw-mezooszlop, 26em));
+    }
+}
+
 /* Bizonylat lista sora (bizonylatfejlista_tbody_tr.tpl): szám és műveletek, partner, felirat–érték párok */
 /* a fejlécszövegek törhetnek, különben 1366 px-en a táblázat szélesebb a panelnél */
 .bizlista-tabla th.mattable-thcolumn {

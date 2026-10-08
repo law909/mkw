@@ -943,19 +943,6 @@ body.modernui {
     box-sizing: border-box;
 }
 
-/* mező + gomb egy cellában (pl. adószám + NAV): a gomb a mező mellett marad, nem csúszik alá */
-.modernui .mattkarb-mezogomb {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.modernui .mattkarb-mezogomb > input,
-.modernui .mattkarb-mezogomb > select {
-    flex: 1 1 auto;
-    min-width: 0;
-}
-
 /* négy mezőpáros változat (bizonylat karbantartó): keskenyebb oszlopok, a colspan a sor végéig tarthat */
 .modernui table.mattkarb-racs-4 {
     --mkw-cimkeoszlop: 9.5em;

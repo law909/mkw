@@ -12,7 +12,7 @@
                     <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
                 {/mezo}
                 {mezo cimke="ÁFA kulcs" for="ErtekEdit"}
-                    <input id="ErtekEdit" name="ertek" type="number" step="any" value="{$egyed.ertek}" required="required"> %
+                    <div class="mattkarb-mezogomb"><input id="ErtekEdit" name="ertek" type="number" step="any" value="{$egyed.ertek}" required="required"> %</div>
                 {/mezo}
                 {mezo cimke="NAV case" for="NavcaseEdit"}
                     <select id="NavcaseEdit" name="navcase">
