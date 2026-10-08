@@ -188,31 +188,6 @@ class orarendhelyettesitesController extends \mkwhelpers\MattableController
         echo json_encode($this->loadDataToView($egyedek, 'orarendhelyettesiteslista', $view));
     }
 
-    public function getselectlist($selid)
-    {
-        $rec = $this->getRepo()->getAllForSelectList([], ['nev' => 'ASC']);
-        $res = [];
-        foreach ($rec as $sor) {
-            $res[] = [
-                'id' => $sor['id'],
-                'caption' => $sor['nev'],
-                'selected' => ($sor['id'] == $selid)
-            ];
-        }
-        return $res;
-    }
-
-    public function htmllist()
-    {
-        $rec = $this->getRepo()->getAllForSelectList([], ['nev' => 'asc']);
-        $ret = '<select>';
-        foreach ($rec as $sor) {
-            $ret .= '<option value="' . $sor['id'] . '">' . $sor['nev'] . '</option>';
-        }
-        $ret .= '</select>';
-        echo $ret;
-    }
-
     public function viewlist()
     {
         $view = $this->createView('orarendhelyettesiteslista.tpl');

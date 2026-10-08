@@ -1965,7 +1965,6 @@ if (\mkw\store::isDarshan()) {
     $router->map('GET', '/admin/orarend/getlistforhelyettesites', 'orarendController#getListForHelyettesites', 'adminorarendgetlistforhelyettesites');
 
     $router->map('GET', '/admin/orarendhelyettesites/viewlist', 'orarendhelyettesitesController#viewlist', 'adminorarendhelyettesitesviewlist');
-    $router->map('GET', '/admin/orarendhelyettesites/htmllist', 'orarendhelyettesitesController#htmllist', 'adminorarendhelyettesiteshtmllist');
     $router->map('GET', '/admin/orarendhelyettesites/getlistbody', 'orarendhelyettesitesController#getlistbody', 'adminorarendhelyettesitesgetlistbody');
     $router->map('GET', '/admin/orarendhelyettesites/getkarb', 'orarendhelyettesitesController#getkarb', 'adminorarendhelyettesitesgetkarb');
     $router->map('GET', '/admin/orarendhelyettesites/viewkarb', 'orarendhelyettesitesController#viewkarb', 'adminorarendhelyettesitesviewkarb');
