@@ -1,6 +1,6 @@
 <div class="matt-hseparator"></div>
 <div class="js-posvaltozatsor bizonylatpos-valtozatsor" data-termekid="{$termekid}">
-    <div class="bizonylatpos-valtozattermeknev">{$termekcikkszam|escape} {$termeknev|escape}</div>
+    <div class="bizonylatpos-valtozattermeknev">{$termekcikkszam} {$termeknev}</div>
     <div class="matt-hseparator"></div>
     <label>{at('Változat')}:</label>
     <select class="js-posvaltozatvalaszto">

@@ -249,7 +249,7 @@
                         <div class="setuprow">
                             <span class="setuplabel"><label for="DefaultpartnerEdit">{at('Partner')}:</label></span>
                             <input id="DefaultpartnerEdit" type="text" class="js-setuppartnerselect" data-target="defaultpartner"
-                                   value="{$defaultpartnernev|escape}" size="60" autocomplete="off">
+                                   value="{$defaultpartnernev}" size="60" autocomplete="off">
                             <input name="defaultpartner" type="hidden" value="{$defaultpartnerid}">
                         </div>
                         <div class="setuprow">
@@ -965,7 +965,7 @@
                             <select id="DefaultVtszEdit" name="defaultvtsz">
                                 <option value="">{at('nincs')}</option>
                                 {foreach $defaultvtszlist as $_vtsz}
-                                    <option value="{$_vtsz.id}"{if ($_vtsz.selected)} selected="selected"{/if}>{$_vtsz.caption|escape}</option>
+                                    <option value="{$_vtsz.id}"{if ($_vtsz.selected)} selected="selected"{/if}>{$_vtsz.caption}</option>
                                 {/foreach}
                             </select>
                             <span>{at('új termék felvitelekor ez kerül a VTSZ mezőbe')}</span>

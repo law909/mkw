@@ -48,7 +48,7 @@
                     {if ($setup.partnerautocomplete)}
                         <td colspan="7">
                             <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
-                                   value="{$egyed.partnernev|escape}" size=90>
+                                   value="{$egyed.partnernev}" size=90>
                             <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
                         </td>
                     {else}

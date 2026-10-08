@@ -155,7 +155,7 @@
                             <label for="TermekMenuFaFilterEdit">{at('Menü')}</label>
                             <select id="TermekMenuFaFilterEdit" class="js-termekmenufafilter">
                                 {foreach $termekmenufalist as $_fa}
-                                    <option value="{$_fa.id}">{$_fa.caption|escape}</option>
+                                    <option value="{$_fa.id}">{$_fa.caption}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -248,7 +248,7 @@
                 <label>{at('Menü')}: </label>
                 <select class="js-termekmenusetfa">
                     {foreach $termekmenufalist as $_fa}
-                        <option value="{$_fa.id}">{$_fa.caption|escape}</option>
+                        <option value="{$_fa.id}">{$_fa.caption}</option>
                     {/foreach}
                 </select>
             </p>

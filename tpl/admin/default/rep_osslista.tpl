@@ -43,7 +43,7 @@
         <tbody>
         {foreach $osszesito as $_s}
             <tr>
-                <td class="cell">{$_s.iso3166} {$_s.orszagnev|escape}</td>
+                <td class="cell">{$_s.iso3166} {$_s.orszagnev}</td>
                 <td class="cell textalignright">{bizformat($_s.afakulcs, 1)} %</td>
                 <td class="cell textalignright nowrap">{bizformat($_s.nettoeur, 2)}</td>
                 <td class="cell textalignright nowrap">{bizformat($_s.afaeur, 2)}</td>
@@ -77,7 +77,7 @@
             {foreach $korrekciok as $_k}
                 <tr>
                     <td class="cell">{$_k.negyedev}</td>
-                    <td class="cell">{$_k.iso3166} {$_k.orszagnev|escape}</td>
+                    <td class="cell">{$_k.iso3166} {$_k.orszagnev}</td>
                     <td class="cell textalignright">{bizformat($_k.afakulcs, 1)} %</td>
                     <td class="cell textalignright nowrap">{bizformat($_k.nettoeur, 2)}</td>
                     <td class="cell textalignright nowrap">{bizformat($_k.afaeur, 2)}</td>
@@ -105,7 +105,7 @@
                 <tr>
                     <td class="cell nowrap">{$_e.id}</td>
                     <td class="cell nowrap">{$_e.teljesites}</td>
-                    <td class="cell">{$_e.partnernev|escape}</td>
+                    <td class="cell">{$_e.partnernev}</td>
                     <td class="cell">{$_e.iso3166}</td>
                     <td class="cell textalignright">{bizformat($_e.afakulcs, 1)} %</td>
                     <td class="cell textalignright nowrap">{bizformat($_e.netto, 2)} {$_e.valutanemnev}</td>
@@ -135,7 +135,7 @@
             <tr>
                 <td class="cell nowrap">{$_t.id}{if ($_t.negyedev != $negyedev)} ({$_t.negyedev}){/if}</td>
                 <td class="cell nowrap">{$_t.teljesites}</td>
-                <td class="cell">{$_t.partnernev|escape}</td>
+                <td class="cell">{$_t.partnernev}</td>
                 <td class="cell">{$_t.iso3166}</td>
                 <td class="cell textalignright">{bizformat($_t.afakulcs, 1)} %</td>
                 <td class="cell textalignright nowrap">{bizformat($_t.netto, 2)} {$_t.valutanemnev}</td>

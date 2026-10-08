@@ -40,7 +40,7 @@
                     <tr>
                         <td>{at('Órás hívásszám')}:</td>
                         <td>
-                            {foreach $ratelimit as $_vegpont => $_db}{$_vegpont|escape}: {$_db|escape}{if !$_db@last} | {/if}{/foreach}
+                            {foreach $ratelimit as $_vegpont => $_db}{$_vegpont}: {$_db}{if !$_db@last} | {/if}{/foreach}
                             <span>({at('egy tételes + több tételes hívások, külön korláttal')})</span>
                         </td>
                     </tr>

@@ -52,6 +52,11 @@ Two files drive behavior, both `parse_ini_file`'d in `bootstrap.php` and stored 
     - `mainpagecachepath` — the storefront's page cache folder when the admin runs from another install than the
       storefront (mkwcansas: admin on a subdomain, e.g. `../www/storage/pagecache`); the admin "Pagecache törlés"
       empties that one. Relative to the app root, trailing `/` optional. Empty = the own `path.storage`/pagecache.
+    - `smarty.adminescapehtml` — auto-escape of every `{$...}` in admin views (`createView`/`createFallbackView`), on by
+      default; `0` is the emergency switch-off (admin output is then unescaped). It is a Smarty variable filter with
+      `double_encode = false`, not `escape_html`: the `HtmlPurifierSanitizer` stores input already encoded (`&amp;`),
+      which must not be encoded again. Print raw HTML only with `nofilter` (`{$x|escape|nl2br nofilter}`); a manual
+      `|escape` is not needed in admin templates.
     - `path.dokumentum` — target folder of the "Azonnali feltöltés" button on the product/partner document tabs (`Services\DokumentumUploadService`),
       resolved **inside** the media root (`path.mediatar`, else `path.ckfinder`). Default `dokumentum`; the folder is created on first upload.
 - **`setup.ini`** — feature toggles per deployment (`b2b`, `multilang`, `multivaluta`, `bankpenztar`, `arsavok`, `kisszamlazo`, `pdf`, `pdfmode`, `barion`,

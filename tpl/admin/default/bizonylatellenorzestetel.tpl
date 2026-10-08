@@ -15,10 +15,10 @@
     {foreach $tetelek as $tetel}
         <tr class="js-ellsor" data-termekid="{$tetel.termekid}" data-valtozatid="{$tetel.valtozatid}"
             data-elvart="{$tetel.mennyiseg}">
-            <td class="datacell">{$tetel.cikkszam|escape}</td>
-            <td class="datacell">{$tetel.nev|escape}</td>
-            <td class="datacell">{$tetel.valtozatnev|escape}</td>
-            <td class="datacell">{$tetel.vonalkod|escape}</td>
+            <td class="datacell">{$tetel.cikkszam}</td>
+            <td class="datacell">{$tetel.nev}</td>
+            <td class="datacell">{$tetel.valtozatnev}</td>
+            <td class="datacell">{$tetel.vonalkod}</td>
             <td class="datacell textalignright">{$tetel.mennyiseg|string_format:"%g"}</td>
             <td class="datacell textalignright"><input class="js-ellszamolt" type="number" step="any" value="0" size="6"></td>
             <td class="datacell textalignright js-ellelteres"></td>

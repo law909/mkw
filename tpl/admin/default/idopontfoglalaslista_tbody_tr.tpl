@@ -19,7 +19,7 @@
         {if ($_egyed.kerdoivvalaszok)}
             <div class="matt-hseparator"></div>
             {foreach $_egyed.kerdoivvalaszok as $_v}
-                <div class="mattable-note">{$_v.kerdes|escape}: <b>{$_v.valasz|escape}</b></div>
+                <div class="mattable-note">{$_v.kerdes}: <b>{$_v.valasz}</b></div>
             {/foreach}
         {/if}
     </td>

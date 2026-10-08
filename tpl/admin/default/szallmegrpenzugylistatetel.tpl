@@ -22,7 +22,7 @@
             <td class="datacell">
                 {if ($sor.listaurl)}<a href="{$sor.listaurl}" target="_blank" title="{at('Ugrás a bizonylathoz')}">{$sor.id}</a>{else}{$sor.id}{/if}
             </td>
-            <td class="datacell">{$sor.partnernev|escape}</td>
+            <td class="datacell">{$sor.partnernev}</td>
             <td class="datacell">{$sor.keltstr}</td>
             <td class="datacell textalignright">{bizformat($sor.brutto)} {$sor.valutanemnev}</td>
             <td class="datacell">

@@ -44,20 +44,20 @@
                 {if ($setup.mptngy)}
                     <tr>
                         <td><label for="NevelotagEdit">{at('Név előtag')}:</label></td>
-                        <td colspan="3"><input id="NevelotagEdit" name="nevelotag" type="text" size="10" maxlength="20" value="{$partner.nevelotag|escape}">
+                        <td colspan="3"><input id="NevelotagEdit" name="nevelotag" type="text" size="10" maxlength="20" value="{$partner.nevelotag}">
                         </td>
                     </tr>
                 {/if}
                 <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev|escape}" required="required"
+                    <td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev}" required="required"
                                            autofocus></td>
                 </tr>
                 <tr>
                     <td><label for="VezeteknevEdit">{at('Vezetéknév')}:</label></td>
-                    <td><input id="VezeteknevEdit" name="vezeteknev" type="text" size="20" maxlength="255" value="{$partner.vezeteknev|escape}">
+                    <td><input id="VezeteknevEdit" name="vezeteknev" type="text" size="20" maxlength="255" value="{$partner.vezeteknev}">
                     <td><label for="KeresztnevEdit">{at('Keresztnév')}:</label></td>
-                    <td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev|escape}">
+                    <td><input id="KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev}">
                 </tr>
                 <tr>
                     <td><label for="SzallitoEdit">{at('Beszállító')}:</label></td>
@@ -310,15 +310,15 @@
                     </tr>
                     <tr>
                         <td><label for="mpt_NevEdit">{at('Név')}:</label></td>
-                        <td colspan="3"><input id="mpt_NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev|escape}"
+                        <td colspan="3"><input id="mpt_NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$partner.nev}"
                                                required="required"
                                                autofocus></td>
                     </tr>
                     <tr>
                         <td><label for="mpt_VezeteknevEdit">{at('Vezetéknév')}:</label></td>
-                        <td><input id="mpt_VezeteknevEdit" name="vezeteknev" type="text" size="20" maxlength="255" value="{$partner.vezeteknev|escape}">
+                        <td><input id="mpt_VezeteknevEdit" name="vezeteknev" type="text" size="20" maxlength="255" value="{$partner.vezeteknev}">
                         <td><label for="mpt_KeresztnevEdit">{at('Keresztnév')}:</label></td>
-                        <td><input id="mpt_KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev|escape}">
+                        <td><input id="mpt_KeresztnevEdit" name="keresztnev" type="text" size="20" maxlength="255" value="{$partner.keresztnev}">
                     </tr>
                     <tr>
                         <td><label for="mpt_EmailEdit">{at('Email')}:</label></td>

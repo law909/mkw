@@ -24,7 +24,7 @@
                     {if ($setup.partnerautocomplete)}
                         <td colspan="7">
                             {if ($oper === 'add')}
-                                <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" value="{$egyed.partnernev|escape}" size=90 required="required">
+                                <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" value="{$egyed.partnernev}" size=90 required="required">
                             {else}
                                 {$egyed.partnernev}
                             {/if}

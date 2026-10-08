@@ -18,7 +18,7 @@
             <label for="TermekMenuFaEdit">{at('Menü')}:</label>
             <select id="TermekMenuFaEdit">
                 {foreach $termekmenufalist as $_fa}
-                    <option value="{$_fa.id}"{if ($_fa.selected)} selected="selected"{/if}>{$_fa.caption|escape}</option>
+                    <option value="{$_fa.id}"{if ($_fa.selected)} selected="selected"{/if}>{$_fa.caption}</option>
                 {/foreach}
             </select>
             <a href="#" class="js-termekmenufanew">{at('Új menü')}</a>

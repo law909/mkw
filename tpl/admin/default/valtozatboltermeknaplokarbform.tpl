@@ -31,13 +31,13 @@
             {/mezocsoport}
         </div>
         <div id="TermekTab" class="mattkarb-page" data-visible="visible">
-            <pre class="naplo-json">{$egyed.termekjson|escape}</pre>
+            <pre class="naplo-json">{$egyed.termekjson}</pre>
         </div>
         <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
-            <pre class="naplo-json">{$egyed.valtozatjson|escape}</pre>
+            <pre class="naplo-json">{$egyed.valtozatjson}</pre>
         </div>
         <div id="UjtermekTab" class="mattkarb-page" data-visible="visible">
-            <pre class="naplo-json">{$egyed.ujtermekjson|escape}</pre>
+            <pre class="naplo-json">{$egyed.ujtermekjson}</pre>
         </div>
     </div>
     <div class="mattkarb-footer">

@@ -21,7 +21,7 @@
                 {if ($setup.partnerautocomplete)}
                 <td colspan="7">
                     <input id="PartnerEdit{$tetel.id}" type="text" name="partnerautocomlete_{$tetel.id}" class="js-partnerautocomplete mattable-important"
-                           value="{$tetel.partnernev|escape}"
+                           value="{$tetel.partnernev}"
                            size=90 autofocus
                            data-tetelid="{$tetel.id}"
                            {if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}

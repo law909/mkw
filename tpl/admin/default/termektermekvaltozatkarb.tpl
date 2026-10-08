@@ -94,7 +94,7 @@
                 {/mezo}
             {/if}
             {mezo cimke="Videó link" for="VideolinkEdit_{$valtozat.id}"}
-                <input id="VideolinkEdit_{$valtozat.id}" name="valtozatvideolink_{$valtozat.id}" type="url" maxlength="255" value="{$valtozat.videolink|escape}">
+                <input id="VideolinkEdit_{$valtozat.id}" name="valtozatvideolink_{$valtozat.id}" type="url" maxlength="255" value="{$valtozat.videolink}">
             {/mezo}
         {/mezocsoport}
         {mezocsoport cim="Elérhetőség, készlet"}

@@ -11,7 +11,7 @@
                 <tbody>
                 <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev|escape}" required="required" autofocus></td>
+                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required" autofocus></td>
                 </tr>
                 <tr>
                     <td><label for="InaktivEdit">{at('Inaktív')}:</label></td>

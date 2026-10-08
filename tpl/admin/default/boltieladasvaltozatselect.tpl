@@ -1,6 +1,6 @@
 <div class="matt-hseparator"></div>
 <div class="js-boltieladas-valtozatsor boltieladas-valtozatsor" data-termekid="{$termekid}">
-    <div class="boltieladas-valtozattermeknev">{$termekcikkszam|escape} {$termeknev|escape}</div>
+    <div class="boltieladas-valtozattermeknev">{$termekcikkszam} {$termeknev}</div>
     <div class="matt-hseparator"></div>
     <label>{t('Változat')}:</label>
     <select class="js-be-valtozatvalaszto">

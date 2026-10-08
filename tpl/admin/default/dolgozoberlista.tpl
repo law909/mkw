@@ -37,7 +37,7 @@
                         <select id="berjogcimfilter" name="berjogcimfilter">
                             <option value="">{at('válasszon')}</option>
                             {foreach $berjogcimlist as $_jc}
-                                <option value="{$_jc.id}">{$_jc.caption|escape}</option>
+                                <option value="{$_jc.id}">{$_jc.caption}</option>
                             {/foreach}
                         </select>
                     </td>

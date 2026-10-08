@@ -11,9 +11,9 @@
 <div class="dtt foglalaseredmeny">
     <div class="foglalasfejlec">
         {if ($varolista)}
-            <div class="foglalascim">Felvettünk a várólistára, {$partnernev|escape}!</div>
+            <div class="foglalascim">Felvettünk a várólistára, {$partnernev}!</div>
         {else}
-            <div class="foglalascim">Köszönjük a foglalást, {$partnernev|escape}!</div>
+            <div class="foglalascim">Köszönjük a foglalást, {$partnernev}!</div>
         {/if}
         <div>{$temanev}</div>
         <div>{$napnev} - {$datum} {$idotartam}</div>
@@ -26,7 +26,7 @@
             <div>Ha felszabadul hely, emailben értesítünk.</div>
         {/if}
         {if ($emailkiment)}
-            <div class="foglalasemail">A visszaigazolást elküldtük a(z) {$email|escape} címre.</div>
+            <div class="foglalasemail">A visszaigazolást elküldtük a(z) {$email} címre.</div>
         {/if}
     </div>
     <div class="foglalasmegjegyzes">A számlát a nálunk tárolt adataid alapján állítjuk ki. Ez az űrlap a már megadott

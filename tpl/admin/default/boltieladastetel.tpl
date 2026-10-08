@@ -1,5 +1,5 @@
 <tr class="js-boltieladas-tetel boltieladas-tetel" data-afakulcs="{$afakulcs}" data-enetto="{$enettoegysar}">
-    <td class="js-be-cikkszam">{$cikkszam|escape}</td>
+    <td class="js-be-cikkszam">{$cikkszam}</td>
     <td class="js-be-nev">
         <input type="hidden" class="js-be-termekid" value="{$termekid}">
         <input type="hidden" class="js-be-valtozatid" value="{$valtozatid}">
@@ -7,7 +7,7 @@
         {* A nettó értékeket rejtve tartjuk: a mentés és az összesítés szerverhívása is használja őket, csak az UI-ról vettük le az oszlopot. *}
         <input type="hidden" class="js-be-nettoegysar" value="{$nettoegysar}">
         <span class="js-be-netto" style="display:none">{number_format($nettoegysar,2,'.',' ')}</span>
-        {$nev|escape}
+        {$nev}
     </td>
     <td class="js-be-raktaron boltieladas-raktaron {if $raktaron}greentext{else}redtext{/if}">{if $raktaron}{t('Van')}{else}{t('Nincs')}{/if} ({$keszlet|string_format:"%g"})</td>
     <td><input type="number" step="any" class="js-be-mennyiseg boltieladas-num" value="1"></td>

@@ -2,7 +2,7 @@
     <td class="cell"><input class="js-egyedcheckbox" type="checkbox" autocomplete="off"></td>
     <td class="cell bizlista-fo">
         <div class="bizlista-fej">
-            <a class="mattable-editlink bizlista-nev" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{if ($_egyed.rontott)}{at('Megtekint')}{else}{at('Szerkeszt')}{/if}">{$_egyed.dolgozonev|escape}</a>
+            <a class="mattable-editlink bizlista-nev" href="#" data-egyedid="{$_egyed.id}" data-oper="edit" title="{if ($_egyed.rontott)}{at('Megtekint')}{else}{at('Szerkeszt')}{/if}">{$_egyed.dolgozonev}</a>
             {if ($_egyed.rontott)}
                 <span class="bizlista-jelveny">{at('Rontott')}</span>
             {/if}
@@ -15,9 +15,9 @@
         {* az üres értékű sor rejtve (style.css): a dd-nek üresnek kell maradnia, ezért strip *}
         {strip}
         <dl class="bizlista-adatok bizlista-meta">
-            <div class="bizlista-sor"><dt>{at('Rögzítette')}:</dt><dd>{$_egyed.createdby|escape} {$_egyed.createdstr}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Rögzítette')}:</dt><dd>{$_egyed.createdby} {$_egyed.createdstr}</dd></div>
             {if ($_egyed.rontott)}
-                <div class="bizlista-sor"><dt>{at('Rontotta')}:</dt><dd>{$_egyed.rontottby|escape} {$_egyed.rontottonstr}</dd></div>
+                <div class="bizlista-sor"><dt>{at('Rontotta')}:</dt><dd>{$_egyed.rontottby} {$_egyed.rontottonstr}</dd></div>
             {/if}
         </dl>
         {/strip}
@@ -26,8 +26,8 @@
         {strip}
         <dl class="bizlista-adatok">
             <div class="bizlista-sor"><dt>{at('Dátum')}:</dt><dd>{$_egyed.datumstr}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Jogcím')}:</dt><dd>{$_egyed.berjogcimnev|escape}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Megjegyzés')}:</dt><dd>{$_egyed.megjegyzes|escape}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Jogcím')}:</dt><dd>{$_egyed.berjogcimnev}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Megjegyzés')}:</dt><dd>{$_egyed.megjegyzes}</dd></div>
         </dl>
         {/strip}
     </td>

@@ -13,7 +13,7 @@
             {/if}
             {if ($mappahiba)}
                 <div class="matt-messagecenter ui-widget ui-state-error">
-                    {at('A config.ini mainpagecachepath beállításában megadott mappa nem létezik')}: {$mappa|escape}
+                    {at('A config.ini mainpagecachepath beállításában megadott mappa nem létezik')}: {$mappa}
                 </div>
             {/if}
             {if (!$bekapcsolva)}
@@ -22,7 +22,7 @@
                 </div>
             {/if}
             <p>{at('A webshop gyorsítótárazott oldalait törli: a következő látogatás mindegyiket újra előállítja. Tartalom (termék, kategória, statikus lap) módosítása után akkor kell, ha a változásnak a lejárati idő előtt látszania kell.')}</p>
-            <p><strong>{at('Mappa')}:</strong> {$mappa|escape}</p>
+            <p><strong>{at('Mappa')}:</strong> {$mappa}</p>
             <p><strong>{at('Tárolt oldalak')}:</strong> {$fajldb}</p>
             <form method="post" action="/admin/pagecache/clear">
                 <div class="admin-form-footer">

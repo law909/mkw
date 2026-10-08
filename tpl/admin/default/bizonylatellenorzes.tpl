@@ -20,7 +20,7 @@
                     {else}
                         {$egyed.tipusnev} {$egyed.id}
                     {/if}
-                    &nbsp;{$egyed.partnernev|escape}&nbsp;{at('kelt')}: {$egyed.keltstr}
+                    &nbsp;{$egyed.partnernev}&nbsp;{at('kelt')}: {$egyed.keltstr}
                 </div>
                 <div class="matt-hseparator"></div>
                 <div>

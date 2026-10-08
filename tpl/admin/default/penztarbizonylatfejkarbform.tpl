@@ -63,7 +63,7 @@
                 <td colspan="3">
                     {if ($setup.partnerautocomplete)}
                         <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
-                               value="{$egyed.partnernev|escape}" size=90 autocomplete="off">
+                               value="{$egyed.partnernev}" size=90 autocomplete="off">
                         <input class="js-partnerid" name="partner" type="hidden" value="{if ($partnerid)}{$partnerid}{/if}">
                     {else}
                         <select id="PartnerEdit" name="partner" class="mattable-important" required="required">

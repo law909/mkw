@@ -62,14 +62,14 @@
 <htmlpagefooter name="lablec">
     <table width="100%" class="lablec">
         <tr>
-            <td>Csomagolási lista / Packing list · {$egyed.id|escape}</td>
+            <td>Csomagolási lista / Packing list · {$egyed.id}</td>
             <td align="right">{literal}{PAGENO} / {nbpg}{/literal}</td>
         </tr>
     </table>
 </htmlpagefooter>
 
 <h1>Csomagolási lista / Packing list</h1>
-<div class="fej">{$egyed.id|escape} &nbsp; {$egyed.partnernev|escape} &nbsp; {$egyed.keltstr}</div>
+<div class="fej">{$egyed.id} &nbsp; {$egyed.partnernev} &nbsp; {$egyed.keltstr}</div>
 {if ($hianyzik > 0)}
     <div class="figyelmeztetes">Figyelem: {$hianyzik} darab nincs dobozba téve.</div>
 {/if}
@@ -142,10 +142,10 @@
         {foreach $_doboz.sorok as $_sor}
             <tr>
                 <td>{$_doboz.dobozszam}</td>
-                <td>{$_sor.cikkszam|escape}</td>
-                <td>{$_sor.nev|escape}</td>
-                <td>{$_sor.szin|escape}</td>
-                <td>{$_sor.meret|escape}</td>
+                <td>{$_sor.cikkszam}</td>
+                <td>{$_sor.nev}</td>
+                <td>{$_sor.szin}</td>
+                <td>{$_sor.meret}</td>
                 <td class="jobb">{$_sor.mennyiseg*1}</td>
             </tr>
         {/foreach}

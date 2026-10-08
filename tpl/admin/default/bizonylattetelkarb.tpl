@@ -25,7 +25,7 @@
                         {$tetel.termeknev}
                     {else}
                         <input id="TermekSelect{$tetel.id}" type="text" name="teteltermeknev_{$tetel.id}"
-                               class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev|escape}" required="required">
+                               class="js-termekselect termekselect mattable-important" value="{$tetel.termeknev}" required="required">
                     {/if}
                     <input class="js-termekid" name="teteltermek_{$tetel.id}" type="hidden" value="{$tetel.termek}">
                     {include 'bizonylatteteltermekgombok.tpl'}
@@ -37,7 +37,7 @@
                         <select class="js-termekselectreal js-termekid" name="teteltermek_{$tetel.id}">
                             <option value="">{t('válasszon')}</option>
                             {foreach $tetel.termeklist as $_termekadat}
-                                <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption|escape}</option>
+                                <option value="{$_termekadat.id}"{if ($_termekadat.id == $tetel.termek)} selected="selected"{/if}>{$_termekadat.caption}</option>
                             {/foreach}
                         </select>
                     {/if}
@@ -65,10 +65,10 @@
         {if ($showgarancialisadatok)}
             {mezocsoport cim="Garanciális adatok"}
                 {mezo cimke="Termék leírás" for="MegjegyzesEdit{$tetel.id}" szeles=true}
-                    <input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes|escape}">
+                    <input id="MegjegyzesEdit{$tetel.id}" type="text" name="tetelmegjegyzes_{$tetel.id}" value="{$tetel.megjegyzes}">
                 {/mezo}
                 {mezo cimke="Hiba leírás" for="Megjegyzes2Edit{$tetel.id}" szeles=true}
-                    <input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2|escape}">
+                    <input id="Megjegyzes2Edit{$tetel.id}" type="text" name="tetelmegjegyzes2_{$tetel.id}" value="{$tetel.megjegyzes2}">
                 {/mezo}
                 {mezo cimke="Vásárlás dátuma" for="VasarlasdatumEdit{$tetel.id}"}
                     <input id="VasarlasdatumEdit{$tetel.id}" type="text" name="tetelvasarlasdatum_{$tetel.id}" value="{$tetel.vasarlasdatum}">
@@ -77,23 +77,23 @@
         {/if}
         {mezocsoport cim="Azonosítás"}
             {mezo cimke="Név" for="NevEdit{$tetel.id}" szeles=true}
-                <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev|escape}"
+                <input id="NevEdit{$tetel.id}" name="tetelnev_{$tetel.id}" type="text" size="103" maxlength="255" value="{$tetel.termeknev}"
                        required="required">
             {/mezo}
             {* nem írható: a termékből jön, a rejtett mezőt a JS tölti termékváltáskor, a mentés onnan olvassa *}
             {mezo cimke="Cikkszám"}
-                <span class="tetel-cikkszam js-cikkszamszoveg_{$tetel.id}">{$tetel.cikkszam|escape}</span>
-                <input name="tetelcikkszam_{$tetel.id}" type="hidden" value="{$tetel.cikkszam|escape}">
+                <span class="tetel-cikkszam js-cikkszamszoveg_{$tetel.id}">{$tetel.cikkszam}</span>
+                <input name="tetelcikkszam_{$tetel.id}" type="hidden" value="{$tetel.cikkszam}">
             {/mezo}
             {* a változat cikkszámát a JS írja változatváltáskor; üresen az egész pár rejtve (style.css) *}
             {mezo cimke="Változat"}
-                <span class="tetel-cikkszam tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}">{$tetel.valtozatcikkszam|default|escape}</span>
+                <span class="tetel-cikkszam tetel-valtozatcikkszam js-valtozatcikkszam_{$tetel.id}">{$tetel.valtozatcikkszam|default}</span>
             {/mezo}
             {* csak a termék beállítása dönt (kellegyediazonosito a termékből jön); egy már beírt azonosító rejtve is mentődik *}
             {$_egyedirejtve = !($tetel.kellegyediazonosito|default:false)}
             {mezo cimke="Egyedi azonosító" for="TermekegyediazonositoEdit{$tetel.id}" class="mezo-fontos js-egyediazonositorow_{$tetel.id}" szeles=true rejtve=$_egyedirejtve}
                 <input id="TermekegyediazonositoEdit{$tetel.id}" name="teteltermekegyediazonosito_{$tetel.id}" type="text" size="103" maxlength="255"
-                       value="{$tetel.termekegyediazonosito|default|escape}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
+                       value="{$tetel.termekegyediazonosito|default}" class="js-egyediazonositoinput mattable-important"{if ($tetel.kellegyediazonosito|default)} required="required"{/if}>
                 <input class="js-egyediazonositokell" name="tetelkellegyediazonosito_{$tetel.id}" type="hidden"
                        value="{if ($tetel.kellegyediazonosito|default)}1{else}0{/if}">
             {/mezo}

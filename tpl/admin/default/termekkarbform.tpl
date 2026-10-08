@@ -70,12 +70,12 @@
                 <tbody>
                 {foreach $egyed.termekmenuk as $_menu}
                 <tr>
-                    <td><label>{$_menu.fanev|escape}:</label></td>
+                    <td><label>{$_menu.fanev}:</label></td>
                     <td>
                         <span class="js-termekmenubutton" data-text="{at('válasszon')}"
                               data-name="termekmenu[{$_menu.fa}]" data-url="/admin/termekmenu/jsonlist?fa={$_menu.fa}"
-                              data-value="{$_menu.id}">{if ($_menu.nev)}{$_menu.nev|escape}{else}{at('válasszon')}{/if}</span>
-                        <span>{$_menu.path|escape}</span>
+                              data-value="{$_menu.id}">{if ($_menu.nev)}{$_menu.nev}{else}{at('válasszon')}{/if}</span>
+                        <span>{$_menu.path}</span>
                     </td>
                 </tr>
                 {/foreach}

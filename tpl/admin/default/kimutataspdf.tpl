@@ -99,22 +99,22 @@
 <htmlpagefooter name="lablec">
     <table width="100%" class="lablec">
         <tr>
-            <td>{$title|escape} · {$generated}</td>
+            <td>{$title} · {$generated}</td>
             <td align="right">{literal}{PAGENO} / {nbpg}{/literal}</td>
         </tr>
     </table>
 </htmlpagefooter>
-<h1>{$title|escape}</h1>
+<h1>{$title}</h1>
 <table class="szurok">
     {foreach $szurok as $_szuro}
         <tr>
-            <td class="cimke">{$_szuro[0]|escape}:</td>
-            <td>{$_szuro[1]|escape}</td>
+            <td class="cimke">{$_szuro[0]}:</td>
+            <td>{$_szuro[1]}</td>
         </tr>
     {/foreach}
 </table>
 {if ($chartnote)}
-    <div class="chartnote">{$chartnote|escape}</div>
+    <div class="chartnote">{$chartnote}</div>
 {/if}
 {if ($chart)}
     <div class="chart"><img src="{$chart}" style="width: {if ($landscape)}240mm{else}185mm{/if};"></div>

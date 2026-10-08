@@ -32,51 +32,51 @@
         <form id="idopontfoglalasform" method="post" action="/idopont/foglalas/ment">
             <div class="form-group">
                 <label class="form-label" for="nevedit">Teljes név *</label>
-                <input class="form-control" id="nevedit" type="text" name="nev" maxlength="255" value="{$egyed.nev|escape}" required>
+                <input class="form-control" id="nevedit" type="text" name="nev" maxlength="255" value="{$egyed.nev}" required>
                 <div class="form-hint">Vezeték- és keresztnév.</div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="emailedit">Email *</label>
-                <input class="form-control" id="emailedit" type="email" name="email" maxlength="255" value="{$egyed.email|escape}" required>
+                <input class="form-control" id="emailedit" type="email" name="email" maxlength="255" value="{$egyed.email}" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="telefonedit">Telefonszám *</label>
-                <input class="form-control" id="telefonedit" type="text" name="telefon" maxlength="50" value="{$egyed.telefon|escape}" required>
+                <input class="form-control" id="telefonedit" type="text" name="telefon" maxlength="50" value="{$egyed.telefon}" required>
             </div>
             <p class="form-hint js-cimszoveg">Ha először jössz, add meg a címed a számlához. A már megadott adataidat nem írjuk felül.</p>
             <div class="js-cimblokk">
                 <div class="form-group">
                     <label class="form-label" for="irszamedit">Irányítószám</label>
-                    <input class="form-control" id="irszamedit" type="text" name="irszam" maxlength="10" value="{$egyed.irszam|escape}">
+                    <input class="form-control" id="irszamedit" type="text" name="irszam" maxlength="10" value="{$egyed.irszam}">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="varosedit">Város</label>
-                    <input class="form-control" id="varosedit" type="text" name="varos" maxlength="255" value="{$egyed.varos|escape}">
+                    <input class="form-control" id="varosedit" type="text" name="varos" maxlength="255" value="{$egyed.varos}">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="utcaedit">Utca, házszám</label>
-                    <input class="form-control" id="utcaedit" type="text" name="utca" maxlength="255" value="{$egyed.utca|escape}">
+                    <input class="form-control" id="utcaedit" type="text" name="utca" maxlength="255" value="{$egyed.utca}">
                 </div>
             </div>
             {if ($kerdoiv.kerdesek)}
                 <div class="kerdoiv">
-                    {if ($kerdoiv.cim)}<div class="kerdoivcim">{$kerdoiv.cim|escape}</div>{/if}
+                    {if ($kerdoiv.cim)}<div class="kerdoivcim">{$kerdoiv.cim}</div>{/if}
                     {if ($kerdoiv.leiras)}<div class="kerdoivleiras">{$kerdoiv.leiras|escape|nl2br nofilter}</div>{/if}
                     {foreach $kerdoiv.kerdesek as $_i => $_k}
                         <div class="form-group kerdoivkerdes">
-                            <span class="form-label">{$_i + 1}. {$_k.szoveg|escape}{if ($_k.kotelezo)} *{/if}</span>
+                            <span class="form-label">{$_i + 1}. {$_k.szoveg}{if ($_k.kotelezo)} *{/if}</span>
                             {if ($_k.tipus == 'tobb')}
                                 <div class="kerdoivhint">Több válasz is megjelölhető.</div>
                             {/if}
                             {if ($_k.tipus == 'szoveg')}
-                                <textarea class="form-control kerdoivszoveg" name="kerdes_{$_i}" rows="3" maxlength="2000"{if ($_k.kotelezo)} required{/if}>{$_k.ertek|escape}</textarea>
+                                <textarea class="form-control kerdoivszoveg" name="kerdes_{$_i}" rows="3" maxlength="2000"{if ($_k.kotelezo)} required{/if}>{$_k.ertek}</textarea>
                             {else}
                                 {foreach $_k.opciok as $_o}
                                     <label class="kerdoivvalasz">
                                         <input type="{if ($_k.tipus == 'tobb')}checkbox{else}radio{/if}"
-                                               name="kerdes_{$_i}{if ($_k.tipus == 'tobb')}[]{/if}" value="{$_o.szoveg|escape}"
+                                               name="kerdes_{$_i}{if ($_k.tipus == 'tobb')}[]{/if}" value="{$_o.szoveg}"
                                                {if ($_o.checked)} checked{/if}{if ($_k.kotelezo && $_k.tipus == 'egy')} required{/if}>
-                                        {$_o.szoveg|escape}
+                                        {$_o.szoveg}
                                     </label>
                                 {/foreach}
                             {/if}

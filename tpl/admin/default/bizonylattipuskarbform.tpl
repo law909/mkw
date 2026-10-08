@@ -16,7 +16,7 @@
                     <td><input id="IdEdit" name="id" type="text" size="30" maxlength="30" value="{$egyed.id}"
                                required="required"{if ($oper !== 'add')} readonly="readonly"{/if}></td>
                     <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="40" maxlength="100" value="{$egyed.nev|escape}" required="required"></td>
+                    <td><input id="NevEdit" name="nev" type="text" size="40" maxlength="100" value="{$egyed.nev}" required="required"></td>
                 </tr>
                 <tr>
                     <td><label for="AzonositoEdit">{at('Rövid azonosító')}:</label></td>
@@ -50,7 +50,7 @@
                 </tr>
                 <tr>
                     <td><label for="Tplcaption2Edit">{at('2. nyomtatás gomb felirata')}:</label></td>
-                    <td colspan="3"><input id="Tplcaption2Edit" name="tplcaption2" type="text" size="60" maxlength="255" value="{$egyed.tplcaption2|escape}"></td>
+                    <td colspan="3"><input id="Tplcaption2Edit" name="tplcaption2" type="text" size="60" maxlength="255" value="{$egyed.tplcaption2}"></td>
                 </tr>
                     <tr>
                         <td><label for="NyomtatniEdit">Nyomtatni kell:</label></td>

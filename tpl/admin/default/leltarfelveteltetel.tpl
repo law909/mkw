@@ -1,7 +1,7 @@
 {* Egy sor a leltár felvételi listáján. A mentés soronként, azonnal történik – nincs form. *}
 <tr class="js-leltartetel leltarfelvetel-tetel" data-tetelid="{$tetelid}">
-    <td>{$cikkszam|escape}</td>
-    <td>{$nev|escape}</td>
+    <td>{$cikkszam}</td>
+    <td>{$nev}</td>
     <td class="leltarfelvetel-num">{$gepimennyiseg|string_format:"%g"}</td>
     <td>
         <input class="js-leltartenymennyiseg leltarfelvetel-num" type="number" step="any" value="{$tenymennyiseg|string_format:"%g"}">

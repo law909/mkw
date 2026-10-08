@@ -40,7 +40,7 @@
                         <div>
                             <label for="Gyarto{$_gyarto.marka}Edit">{$_gyarto.marka} gyártó:</label>
                             <input id="Gyarto{$_gyarto.marka}Edit" type="text" class="js-gyartoautocomplete" size="50"
-                                   value="{$_gyarto.partnernev|escape}">
+                                   value="{$_gyarto.partnernev}">
                             <input class="js-gyartoid" name="{$_gyarto.param}" type="hidden" value="{$_gyarto.partnerid}">
                         </div>
                     {/foreach}

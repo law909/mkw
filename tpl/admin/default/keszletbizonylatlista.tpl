@@ -15,7 +15,7 @@
             <tr>
                 <td>{if ($sor.url)}<a href="{$sor.url}" target="_blank">{$sor.id}</a>{else}{$sor.id}{/if}</td>
                 <td>{$sor.kelt}</td>
-                <td>{$sor.partnernev|escape}</td>
+                <td>{$sor.partnernev}</td>
                 <td class="textalignright">{$sor.mennyiseg}</td>
             </tr>
         {/foreach}

@@ -2,7 +2,7 @@
    ezért a mentés a gyorsrögzítő ágán megy át fordítás nélkül. *}
 <tr class="js-postetel bizonylatpos-tetel" data-tetelid="{$tetelid}" data-teteloper="{$teteloper}" data-afakulcs="{$afakulcs}"
     data-enetto="{$enettoegysar}" data-ebrutto="{$ebruttoegysar}">
-    <td class="js-pos-cikkszam">{$cikkszam|escape}</td>
+    <td class="js-pos-cikkszam">{$cikkszam}</td>
     <td>
         <input name="tetelid[]" type="hidden" value="{$tetelid}">
         <input name="teteloper_{$tetelid}" type="hidden" value="{$teteloper}">
@@ -14,7 +14,7 @@
         <input class="js-posenettoegysar" name="tetelenettoegysar_{$tetelid}" type="hidden" value="{$enettoegysar}">
         <input class="js-posebruttoegysar" name="tetelebruttoegysar_{$tetelid}" type="hidden" value="{$ebruttoegysar}">
         <input class="js-posnettoegysar" name="tetelnettoegysar_{$tetelid}" type="hidden" value="{$nettoegysar}">
-        {$nev|escape}
+        {$nev}
     </td>
     {if ($mozgat)}
         <td class="bizonylatpos-raktaron {if $raktaron}greentext{else}redtext{/if}">

@@ -3,7 +3,7 @@
     <thead>
     <tr>
         {if ($rowlevel)}<th class="headercell">{$rowlevel.caption}</th>{/if}
-        <th class="headercell textalignright">{$valueheader|escape}</th>
+        <th class="headercell textalignright">{$valueheader}</th>
         {if ($rowlevel)}<th class="headercell textalignright">{at('Arány')}</th>{/if}
     </tr>
     </thead>
@@ -12,17 +12,17 @@
     {foreach $items as $item}
         {if ($item.type == 'header')}
             <tr class="arbevetel-header arbevetel-header-{$item.level}">
-                <td class="datacell arbevetel-level-{$item.level}" colspan="{$colspan}">{$item.label|escape}</td>
+                <td class="datacell arbevetel-level-{$item.level}" colspan="{$colspan}">{$item.label}</td>
             </tr>
         {elseif ($item.type == 'subtotal')}
             <tr class="arbevetel-subtotal">
-                <td class="datacell arbevetel-level-{$item.level}">{$item.label|escape} {at('összesen')}</td>
+                <td class="datacell arbevetel-level-{$item.level}">{$item.label} {at('összesen')}</td>
                 <td class="datacell textalignright">{bizformat($item.ertek, $decimals)}</td>
                 <td class="datacell textalignright">{if (isset($item.share))}{bizformat($item.share, 1)} %{/if}</td>
             </tr>
         {else}
             <tr class="arbevetel-row">
-                <td class="datacell arbevetel-level-{$item.level}">{$item.row[$rowlevel.label]|escape}</td>
+                <td class="datacell arbevetel-level-{$item.level}">{$item.row[$rowlevel.label]}</td>
                 <td class="datacell textalignright">{bizformat($item.ertek, $decimals)}</td>
                 <td class="datacell textalignright">{if (isset($item.share))}{bizformat($item.share, 1)} %{/if}</td>
             </tr>

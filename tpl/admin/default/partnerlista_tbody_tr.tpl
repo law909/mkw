@@ -12,7 +12,7 @@
                 <a class="js-anonym" href="#" data-partnerid="{$_partner.id}" data-oper="edit" title="{at('Anonymizál')}">{at('Anonym')}</a>
             {/if}
             {if (!$_partner.vendeg && $_partner.email!=='')}
-                <a class="js-sendjelszo" href="#" data-partnerid="{$_partner.id}" data-email="{$_partner.email|escape}"
+                <a class="js-sendjelszo" href="#" data-partnerid="{$_partner.id}" data-email="{$_partner.email}"
                    title="{at('Új jelszó generálása és kiküldése emailben')}">{at('Új jelszó')}</a>
             {/if}
             <a class="mattable-dellink" href="#" data-partnerid="{$_partner.id}" data-oper="del" title="{at('Töröl')}"><span

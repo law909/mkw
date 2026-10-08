@@ -16,7 +16,7 @@
                         <td style="padding:2px 5px;">{$_sor.dolgozonev}</td>
                         <td style="padding:2px 5px;">
                             {if ($_sor.partnerlink)}
-                                <a href="{$_sor.partnerlink|escape}" target="_blank"
+                                <a href="{$_sor.partnerlink}" target="_blank"
                                    title="{at('Ugrás a partnerhez')}">{$_sor.partnernev}</a>
                             {else}
                                 {$_sor.partnernev}

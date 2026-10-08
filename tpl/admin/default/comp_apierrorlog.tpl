@@ -15,7 +15,7 @@
                         <td style="padding:2px 5px;">{$_hiba.objectid}</td>
                         <td style="padding:2px 5px;white-space:nowrap;">
                             {if ($_hiba.bizonylatlink)}
-                                <a href="{$_hiba.bizonylatlink|escape}" target="_blank"
+                                <a href="{$_hiba.bizonylatlink}" target="_blank"
                                    title="{at('Ugrás a bizonylathoz')}">{$_hiba.bizonylatszam}</a>
                             {else}
                                 {$_hiba.bizonylatszam}

@@ -48,7 +48,7 @@
                                 {if ($setup.termekautocomplete)}
                                     <td>
                                         <input id="MunkalapTermekEdit" type="text" name="munkalaptermeknev" size="60" autocomplete="off"
-                                               class="js-munkalaptermekselect termekselect mattable-important" value="{$egyed.munkalaptermeknev|escape}">
+                                               class="js-munkalaptermekselect termekselect mattable-important" value="{$egyed.munkalaptermeknev}">
                                         <input class="js-munkalaptermekid" name="munkalaptermek" type="hidden" value="{$egyed.munkalaptermek}">
                                     </td>
                                 {else}
@@ -56,7 +56,7 @@
                                         <select id="MunkalapTermekEdit" name="munkalaptermek" class="js-munkalaptermekid js-munkalaptermekselectreal mattable-important">
                                             <option value="">{at('válasszon')}</option>
                                             {foreach $egyed.munkalaptermeklist as $_mt}
-                                                <option value="{$_mt.id}"{if ($_mt.selected)} selected="selected"{/if}>{$_mt.caption|escape}</option>
+                                                <option value="{$_mt.id}"{if ($_mt.selected)} selected="selected"{/if}>{$_mt.caption}</option>
                                             {/foreach}
                                         </select>
                                     </td>
@@ -65,14 +65,14 @@
                                 <td><select id="MunkalapValtozatEdit" name="munkalaptermekvaltozat" class="js-munkalapvaltozat">
                                         <option value="">{at('válasszon')}</option>
                                         {foreach $egyed.munkalapvaltozatlist as $_mv}
-                                            <option value="{$_mv.id}"{if ($_mv.selected)} selected="selected"{/if}>{$_mv.caption|escape}</option>
+                                            <option value="{$_mv.id}"{if ($_mv.selected)} selected="selected"{/if}>{$_mv.caption}</option>
                                         {/foreach}
                                     </select></td>
                             </tr>
                             <tr>
                                 <td><label for="MunkalapEgyediazonositoEdit">{at('Egyedi azonosító')}:</label></td>
                                 <td colspan="3"><input id="MunkalapEgyediazonositoEdit" name="munkalapegyediazonosito" type="text" size="30" maxlength="255"
-                                                       value="{$egyed.munkalapegyediazonosito|escape}" class="js-munkalapazonosito" autocomplete="off"
+                                                       value="{$egyed.munkalapegyediazonosito}" class="js-munkalapazonosito" autocomplete="off"
                                                        data-kulso="{if ($egyed.munkalapazonositokulso)}1{else}0{/if}">
                                     <span class="js-munkalapazonositouzenet"></span></td>
                             </tr>
@@ -89,7 +89,7 @@
                             </tr>
                             <tr>
                                 <td><label for="MunkalapHibaleirasEdit">{at('Hiba leírása')}:</label></td>
-                                <td colspan="3"><textarea id="MunkalapHibaleirasEdit" name="munkalaphibaleiras" rows="3" cols="100">{$egyed.munkalaphibaleiras|escape}</textarea></td>
+                                <td colspan="3"><textarea id="MunkalapHibaleirasEdit" name="munkalaphibaleiras" rows="3" cols="100">{$egyed.munkalaphibaleiras}</textarea></td>
                             </tr>
                             </tbody>
                         </table>
@@ -153,7 +153,7 @@
                         {if ($setup.partnerautocomplete)}
                             <td colspan="7">
                                 <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important"
-                                       value="{$egyed.partnernev|escape}" size=90
+                                       value="{$egyed.partnernev}" size=90
                                        {if (!$showmunkalapadatok)}autofocus{/if}{if ($egyed.partnerafa)} data-afa="{$egyed.partnerafa}" data-afakulcs="{$egyed.partnerafakulcs}"{/if}>
                                 <input class="js-partnerid" name="partner" type="hidden" value="{$egyed.partner}">
                                 <input class="js-ujpartnercb" type="checkbox">Új</input>
@@ -164,7 +164,7 @@
                                     <option value="">{at('válasszon')}</option>
                                     <option value="-1">{at('Új felvitel')}</option>
                                     {foreach $partnerlist as $_mk}
-                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
+                                        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                     {/foreach}
                                 </select>
                             </td>
@@ -173,24 +173,24 @@
                     <tr>
                         <td><label>{at('Név')}:</label></td>
                         <td>
-                            <input id="NevEdit" name="partnernev" value="{$egyed.partnernev|escape}">
+                            <input id="NevEdit" name="partnernev" value="{$egyed.partnernev}">
                         </td>
                         <td><label>{at('Vezetéknév')}:</td>
                         <td>
-                            <input name="partnervezeteknev" value="{$egyed.partnervezeteknev|escape}">
+                            <input name="partnervezeteknev" value="{$egyed.partnervezeteknev}">
                         </td>
                         <td><label>{at('Keresztnév')}:</td>
                         <td colspan="3">
-                            <input name="partnerkeresztnev" value="{$egyed.partnerkeresztnev|escape}">
+                            <input name="partnerkeresztnev" value="{$egyed.partnerkeresztnev}">
                         </td>
                     </tr>
                     <tr>
                         <td>{at('Számlázási cím')}:</td>
                         <td colspan="7">
-                            <input id="IrszamEdit" name="partnerirszam" value="{$egyed.partnerirszam|escape}" size="6" maxlength="10">
-                            <input id="VarosEdit" name="partnervaros" value="{$egyed.partnervaros|escape}" size="20" maxlength="40">
-                            <input id="UtcaEdit" name="partnerutca" value="{$egyed.partnerutca|escape}" size="40" maxlength="60">
-                            <input id="HazszamEdit" name="partnerhazszam" value="{$egyed.partnerhazszam|escape}" size="40" maxlength="40">
+                            <input id="IrszamEdit" name="partnerirszam" value="{$egyed.partnerirszam}" size="6" maxlength="10">
+                            <input id="VarosEdit" name="partnervaros" value="{$egyed.partnervaros}" size="20" maxlength="40">
+                            <input id="UtcaEdit" name="partnerutca" value="{$egyed.partnerutca}" size="40" maxlength="60">
+                            <input id="HazszamEdit" name="partnerhazszam" value="{$egyed.partnerhazszam}" size="40" maxlength="40">
                         </td>
                     </tr>
                     <tr>
@@ -222,27 +222,27 @@
                         <td><label for="AdoszamEdit" class="mattable-important">{at('Adószám')}:</label></td>
                         <td>
                             <div class="mattkarb-mezogomb">
-                                <input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam|escape}">
+                                <input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam}">
                                 <button class="js-querytaxpayer" style="display: none;">NAV</button>
                             </div>
                         </td>
                         <td><label for="EUAdoszamEdit">{at('EU adószám')}:</label></td>
                         <td>
-                            <input id="EUAdoszamEdit" name="partnereuadoszam" value="{$egyed.partnereuadoszam|escape}">
+                            <input id="EUAdoszamEdit" name="partnereuadoszam" value="{$egyed.partnereuadoszam}">
                         </td>
                         <td><label for="ThirdAdoszamEdit">{at('Harmadik ország adószáma')}:</label></td>
                         <td>
-                            <input id="ThirdAdoszamEdit" name="partnerthirdadoszam" value="{$egyed.partnerthirdadoszam|escape}">
+                            <input id="ThirdAdoszamEdit" name="partnerthirdadoszam" value="{$egyed.partnerthirdadoszam}">
                         </td>
                     </tr>
                     <tr>
                         <td><label for="TelefonEdit">{at('Telefon')}:</label></td>
                         <td>
-                            <input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon|escape}">
+                            <input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon}">
                         </td>
                         <td><label for="EmailEdit">{at('Email')}:</label></td>
                         <td colspan="5">
-                            <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail|escape}">
+                            <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail}">
                             <span class="mattkarb-megjegyzes">{at('Létező partner emailjét nem írja felül, csak ha nála üres.')}</span>
                         </td>
                     </tr>
@@ -251,10 +251,10 @@
                         <td colspan="7"><select id="TelephelyEdit" name="telephely">
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $telephelylist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-szallnev="{$_mk.szallnev|escape}" data-irszam="{$_mk.irszam|escape}" data-varos="{$_mk.varos|escape}" data-utca="{$_mk.utca|escape}" data-orszag="{$_mk.orszag}">{$_mk.caption|escape}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-szallnev="{$_mk.szallnev}" data-irszam="{$_mk.irszam}" data-varos="{$_mk.varos}" data-utca="{$_mk.utca}" data-orszag="{$_mk.orszag}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
-                            {if ($egyed.telephelynev && !$egyed.telephely)}<span class="mattable-important">{at('Mentett telephely')}: {$egyed.telephelynev|escape}</span>{/if}
+                            {if ($egyed.telephelynev && !$egyed.telephely)}<span class="mattable-important">{at('Mentett telephely')}: {$egyed.telephelynev}</span>{/if}
                         </td>
                     </tr>
                     <tr class="mattkarb-szakaszsor">
@@ -264,16 +264,16 @@
                         <tr>
                             <td><label for="SzallnevEdit">{at('Szállítási név')}:</label></td>
                             <td colspan="7">
-                                <input id="SzallnevEdit" name="szallnev" value="{$egyed.szallnev|escape}">
+                                <input id="SzallnevEdit" name="szallnev" value="{$egyed.szallnev}">
                             </td>
                         </tr>
                         <tr>
                             <td><label for="SzallirszamEdit">{at('Szállítási cím')}:</label></td>
                             <td colspan="7">
-                                <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam|escape}" size="6" maxlength="10">
-                                <input name="szallvaros" value="{$egyed.szallvaros|escape}" size="20" maxlength="40">
-                                <input name="szallutca" value="{$egyed.szallutca|escape}" size="40" maxlength="60">
-                                <input name="szallhazszam" value="{$egyed.szallhazszam|escape}" size="40" maxlength="40">
+                                <input id="SzallirszamEdit" name="szallirszam" value="{$egyed.szallirszam}" size="6" maxlength="10">
+                                <input name="szallvaros" value="{$egyed.szallvaros}" size="20" maxlength="40">
+                                <input name="szallutca" value="{$egyed.szallutca}" size="40" maxlength="60">
+                                <input name="szallhazszam" value="{$egyed.szallhazszam}" size="40" maxlength="40">
                             </td>
                         </tr>
                         <tr>
@@ -312,7 +312,7 @@
                                 {/foreach}
                             </select>
                             {if ($egyed.unasfizetesstatusz)}
-                                <span class="{if ($egyed.unasfizetve)}greentext{else}redtext{/if}">UNAS: {$egyed.unasfizetesstatusznev|escape:'html':'UTF-8':false}</span>
+                                <span class="{if ($egyed.unasfizetve)}greentext{else}redtext{/if}">UNAS: {$egyed.unasfizetesstatusznev}</span>
                             {/if}
                         </td>
                         <td class="mattable-important"><label for="SzallitasimodEdit">{at('Szállítási mód')}:</label></td>
@@ -320,24 +320,24 @@
                                     class="mattable-important"{if ($maintheme=='mkwcansas' || $maintheme=='superzoneb2b')} required="required"{/if}>
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $szallitasimodlist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-terminaltipus="{$_mk.terminaltipus|escape}">{$_mk.caption}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if} data-terminaltipus="{$_mk.terminaltipus}">{$_mk.caption}</option>
                                 {/foreach}
                             </select>
                         </td>
                     </tr>
-                    <tr class="js-csomagpontrow" data-terminaltipus="{$csomagpontterminaltipus|escape}"{if ($csomagpontterminaltipus == '')} style="display: none;"{/if}>
+                    <tr class="js-csomagpontrow" data-terminaltipus="{$csomagpontterminaltipus}"{if ($csomagpontterminaltipus == '')} style="display: none;"{/if}>
                         <td><label for="CsomagTerminalCsoportEdit">{at('Csomagpont')}:</label></td>
                         <td colspan="7">
                             <select id="CsomagTerminalCsoportEdit">
                                 <option value="">{at('város')}</option>
                                 {foreach $csomagterminalcsoportlist as $_mk}
-                                    <option value="{$_mk.id|escape}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                 {/foreach}
                             </select>
                             <select id="CsomagTerminalEdit" name="csomagterminal">
                                 <option value="">{at('válasszon')}</option>
                                 {foreach $csomagterminallist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption|escape}</option>
+                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
                                 {/foreach}
                             </select>
                         </td>
@@ -385,11 +385,11 @@
                                 </select>
                             </td>
                             <td><label for="SZEPKartyaSzamEdit">{at('Kártya száma')}:</label></td>
-                            <td><input id="SZEPKartyaSzamEdit" name="szepkartyaszam" type="text" value="{$egyed.szepkartyaszam|escape}"></td>
+                            <td><input id="SZEPKartyaSzamEdit" name="szepkartyaszam" type="text" value="{$egyed.szepkartyaszam}"></td>
                         </tr>
                         <tr class="szepkartya">
                             <td><label for="SZEPKartyaNevEdit">{at('Kártyára írt név')}:</label></td>
-                            <td><input id="SZEPKartyaNevEdit" name="szepkartyanev" type="text" value="{$egyed.szepkartyanev|escape}"></td>
+                            <td><input id="SZEPKartyaNevEdit" name="szepkartyanev" type="text" value="{$egyed.szepkartyanev}"></td>
                             <td><label for="SZEPKartyaErvenyessegEdit">{at('Kártya érvényessége')}:</label></td>
                             <td><input id="SZEPKartyaErvenyessegEdit" name="szepkartyaervenyesseg" type="text" size="12"
                                        data-datum="{$egyed.szepkartyaervenyessegstr}"></td>
@@ -510,19 +510,19 @@
                     {if ($showerbizonylatszam)}
                         <tr>
                             <td><label for="ErbizonylatszamEdit">{at('Eredeti biz.szám')}:</label></td>
-                            <td><input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam|escape}"></td>
+                            <td><input id="ErbizonylatszamEdit" name="erbizonylatszam" type="text" value="{$egyed.erbizonylatszam}"></td>
                         </tr>
                     {/if}
                     {if ($showkupon)}
                         <tr>
                             <td><label for="KuponEdit">{at('Kupon')}:</label></td>
-                            <td><input id="KuponEdit" name="kupon" type="text" value="{$egyed.kupon|escape}"></td>
+                            <td><input id="KuponEdit" name="kupon" type="text" value="{$egyed.kupon}"></td>
                         </tr>
                     {/if}
                     {if ($showfuvarlevelszam)}
                         <tr>
                             <td><label for="FuvarlevelszamEdit">{at('Fuvarlevélszám')}:</label></td>
-                            <td colspan="7"><textarea id="FuvarlevelszamEdit" name="fuvarlevelszam" rows="1" cols="100">{$egyed.fuvarlevelszam|escape}</textarea></td>
+                            <td colspan="7"><textarea id="FuvarlevelszamEdit" name="fuvarlevelszam" rows="1" cols="100">{$egyed.fuvarlevelszam}</textarea></td>
                         </tr>
                     {/if}
                     <tr>
@@ -535,20 +535,20 @@
                     </tr>
                     <tr>
                         <td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
-                        <td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes|escape}</textarea></td>
+                        <td colspan="7"><textarea id="MegjegyzesEdit" name="megjegyzes" rows="1" cols="100">{$egyed.megjegyzes}</textarea></td>
                     </tr>
                     <tr>
                         <td><label for="BelsomegjegyzesEdit">{at('Belső megjegyzés')}:</label></td>
-                        <td colspan="7"><textarea id="BelsomegjegyzesEdit" name="belsomegjegyzes" rows="1" cols="100">{$egyed.belsomegjegyzes|escape}</textarea></td>
+                        <td colspan="7"><textarea id="BelsomegjegyzesEdit" name="belsomegjegyzes" rows="1" cols="100">{$egyed.belsomegjegyzes}</textarea></td>
                     </tr>
                     {if ($showuzenet)}
                         <tr>
                             <td><label for="WebshopmessageEdit">{at('Üzenet a webáruháznak')}:</label></td>
-                            <td colspan="7"><textarea id="WebshopmessageEdit" name="webshopmessage" rows="1" cols="100">{$egyed.webshopmessage|escape}</textarea></td>
+                            <td colspan="7"><textarea id="WebshopmessageEdit" name="webshopmessage" rows="1" cols="100">{$egyed.webshopmessage}</textarea></td>
                         </tr>
                         <tr>
                             <td><label for="CouriermessageEdit">{at('Üzenet a futárnak')}:</label></td>
-                            <td colspan="7"><textarea id="CouriermessageEdit" name="couriermessage" rows="1" cols="100">{$egyed.couriermessage|escape}</textarea></td>
+                            <td colspan="7"><textarea id="CouriermessageEdit" name="couriermessage" rows="1" cols="100">{$egyed.couriermessage}</textarea></td>
                         </tr>
                     {/if}
                     </tbody>

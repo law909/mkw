@@ -17,9 +17,9 @@
 <body class="mediatar">
 
 <div id="mediatar"
-     data-type="{$mtype|escape}"
-     data-path="{$mpath|escape}"
-     data-sel="{$msel|escape}"
+     data-type="{$mtype}"
+     data-path="{$mpath}"
+     data-sel="{$msel}"
      data-cb="{$mcb|default:0}"
      data-funcnum="{$mfuncnum|default:0}"
      data-manage="{$mmanage|default:0}"
@@ -30,7 +30,7 @@
     {if $mimgpostwarnings}
         <div class="mt-warn">
             {foreach $mimgpostwarnings as $w}
-                <div>{$w|escape}</div>
+                <div>{$w}</div>
             {/foreach}
         </div>
     {/if}
@@ -59,7 +59,7 @@
 
     <div class="mt-foot">
         <div class="mt-info" id="mtInfo">
-            {at('Engedélyezett')}: {$mextensions|escape} &middot; {at('max')}. {$mmaxsizetext|escape}
+            {at('Engedélyezett')}: {$mextensions} &middot; {at('max')}. {$mmaxsizetext}
         </div>
         <div class="mt-foottools">
             {if $mwritable}

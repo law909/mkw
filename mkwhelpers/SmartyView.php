@@ -16,8 +16,11 @@ class SmartyView extends View
     public function __construct($compiledtplpath, $tplpath, $tplfilename, $configdir = '', $cachedir = '', $escapeHtml = false)
     {
         $this->tplengine = new \Smarty();
-        // a kézi |escape erre még egyszer rákódol, bekapcsolt nézetben csak nofilter-rel szabad nyers HTML-t kiírni
-        $this->tplengine->setEscapeHtml($escapeHtml);
+        if ($escapeHtml) {
+            // nyers HTML-t csak nofilter-rel szabad kiírni; a szűrő a fordított kódba kerül, ezért saját compile_id
+            $this->tplengine->registerFilter('variable', [self::class, 'escapeVariable']);
+            $this->tplengine->setCompileId('esc');
+        }
         $this->registerPlugins();
         $this->registerOutputFilters();
         $this->tplengine->setTemplateDir($tplpath);
@@ -25,6 +28,14 @@ class SmartyView extends View
         $this->tplengine->setConfigDir($configdir);
         $this->tplengine->setCacheDir($cachedir);
         $this->tplfile = $tplfilename;
+    }
+
+    /**
+     * Nem az escape_html: a HtmlPurifierSanitizer a bemenetet kódolva menti (&amp;), azt nem szabad újrakódolni.
+     */
+    public static function escapeVariable($value, $template)
+    {
+        return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8', false);
     }
 
     public function setVar($variable, $data)

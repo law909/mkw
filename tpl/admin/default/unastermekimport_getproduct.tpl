@@ -3,7 +3,7 @@
 
 <div style="margin:5px 0;">
     <strong>{at('Kérés')}:</strong>
-    {foreach $keres as $kulcs => $ertek}{$kulcs|escape}={$ertek|escape}{if !$ertek@last}, {/if}{/foreach}
+    {foreach $keres as $kulcs => $ertek}{$kulcs}={$ertek}{if !$ertek@last}, {/if}{/foreach}
     &mdash; {at('getProduct hívások ebben az órában')}:
     {at('egy termékes')} {$keret.egy}/{$keret.limitegy},
     {at('több termékes')} {$keret.tobb}/{$keret.limittobb}
@@ -26,24 +26,24 @@
         <tbody>
         <tr>
             <td style="padding:2px 5px;width:12em;">{at('UNAS azonosító')}</td>
-            <td style="padding:2px 5px;"><strong>{$t.id|escape}</strong></td>
+            <td style="padding:2px 5px;"><strong>{$t.id}</strong></td>
             <td style="padding:2px 5px;width:12em;">{at('Cikkszám')}</td>
-            <td style="padding:2px 5px;"><strong>{$t.cikkszam|escape}</strong></td>
+            <td style="padding:2px 5px;"><strong>{$t.cikkszam}</strong></td>
         </tr>
         <tr>
             <td style="padding:2px 5px;">{at('Név')}</td>
-            <td style="padding:2px 5px;" colspan="3">{$t.nev|escape}</td>
+            <td style="padding:2px 5px;" colspan="3">{$t.nev}</td>
         </tr>
         <tr>
             <td style="padding:2px 5px;">{at('Alap státusz')}</td>
-            <td style="padding:2px 5px;">{$t.statusz|escape}</td>
+            <td style="padding:2px 5px;">{$t.statusz}</td>
             <td style="padding:2px 5px;">{at('Mennyiségi egység')}</td>
-            <td style="padding:2px 5px;">{$t.me|escape}</td>
+            <td style="padding:2px 5px;">{$t.me}</td>
         </tr>
         {if ($t.modositas)}
             <tr>
                 <td style="padding:2px 5px;">{at('Utolsó módosítás')}</td>
-                <td style="padding:2px 5px;" colspan="3">{$t.modositas|escape}</td>
+                <td style="padding:2px 5px;" colspan="3">{$t.modositas}</td>
             </tr>
         {/if}
         </tbody>
@@ -57,9 +57,9 @@
             <ul style="margin:2px 0 2px 20px;">
                 {foreach $t.valtozatok as $v}
                     <li>
-                        <strong>{$v.nev|escape}</strong>:
+                        <strong>{$v.nev}</strong>:
                         {foreach $v.ertekek as $e}
-                            {$e.nev|escape}{if ($e.arkulonbozet)} ({$e.arkulonbozet|escape}){/if}{if !$e@last} | {/if}
+                            {$e.nev}{if ($e.arkulonbozet)} ({$e.arkulonbozet}){/if}{if !$e@last} | {/if}
                         {/foreach}
                     </li>
                 {/foreach}
@@ -75,8 +75,8 @@
             <ul style="margin:2px 0 2px 20px;">
                 {foreach $t.keszletek as $k}
                     <li>
-                        {if ($k.kombinacio)}{$k.kombinacio|escape}: {/if}{$k.mennyiseg|escape}
-                        {if ($k.raktar)} ({at('raktár')}: {$k.raktar|escape}){/if}
+                        {if ($k.kombinacio)}{$k.kombinacio}: {/if}{$k.mennyiseg}
+                        {if ($k.raktar)} ({at('raktár')}: {$k.raktar}){/if}
                     </li>
                 {/foreach}
             </ul>
@@ -88,7 +88,7 @@
         {if ($t.kepek)}
             <ul style="margin:2px 0 2px 20px;">
                 {foreach $t.kepek as $kep}
-                    <li>{if ($kep.fokep)}<strong>{at('főkép')}</strong>: {/if}{$kep.url|escape}{if ($kep.alt)} &mdash; {$kep.alt|escape}{/if}</li>
+                    <li>{if ($kep.fokep)}<strong>{at('főkép')}</strong>: {/if}{$kep.url}{if ($kep.alt)} &mdash; {$kep.alt}{/if}</li>
                 {/foreach}
             </ul>
         {/if}
@@ -98,7 +98,7 @@
 
 <div style="margin:5px 0;">
     <strong>{at('Nyers válasz')}</strong>
-    {if ($dumpfajl)}<span>({$dumpfajl|escape})</span>{/if}
+    {if ($dumpfajl)}<span>({$dumpfajl})</span>{/if}
     {if (!$nyersteljes)}<span class="ui-state-error-text">&mdash; {at('a válasz csonkolva, a teljes XML a storage/logs mappában van')}</span>{/if}
-    <pre style="max-height:400px;overflow:auto;background:var(--mkw-surface-2, #f5f5f5);padding:5px;border:1px solid var(--mkw-border, #ddd);white-space:pre-wrap;word-break:break-all;">{$nyers|escape}</pre>
+    <pre style="max-height:400px;overflow:auto;background:var(--mkw-surface-2, #f5f5f5);padding:5px;border:1px solid var(--mkw-border, #ddd);white-space:pre-wrap;word-break:break-all;">{$nyers}</pre>
 </div>

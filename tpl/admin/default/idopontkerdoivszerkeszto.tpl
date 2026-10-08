@@ -1,7 +1,7 @@
 {* A kérdőív szerkesztője (időpont és időpont téma karbantartó Kérdőív füle). A blokkokat a
    mkwcomp.kerdoivSzerkeszto építi a rejtett kerdoiv mező JSON-jából, és minden módosításkor vissza is
    írja oda – a form a JSON-t küldi el. Várt változók: kerdoivjson, kerdoivhint, kerdoivforraslist (opcionális). *}
-<input class="js-kerdoivjson" name="kerdoiv" type="hidden" value="{$kerdoivjson|escape}">
+<input class="js-kerdoivjson" name="kerdoiv" type="hidden" value="{$kerdoivjson}">
 <p class="mattkarb-hint">{$kerdoivhint}</p>
 <table>
     <tbody>
@@ -19,7 +19,7 @@
             <td><select id="KerdoivForrasSelect" class="js-kerdoivforras">
                     <option value="">{at('válasszon')}</option>
                     {foreach $kerdoivforraslist as $_f}
-                        <option value="{$_f.id}">{$_f.caption|escape}</option>
+                        <option value="{$_f.id}">{$_f.caption}</option>
                     {/foreach}
                 </select>
                 <span class="mattkarb-hint">{at('A mostani kérdéseket lecseréli, csak a mentéssel véglegesül.')}</span></td>

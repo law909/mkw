@@ -32,7 +32,7 @@
                     <option value="">{at('válasszon')}</option>
                     {foreach $jogahelyszinlist as $_d}
                         <option
-                            value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption|escape}</option>
+                            value="{$_d.id}"{if ($_d.selected)} selected="selected"{/if}>{$_d.caption}</option>
                     {/foreach}
                 </select>
             </div>

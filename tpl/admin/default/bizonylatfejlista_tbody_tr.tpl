@@ -19,8 +19,8 @@
     {if ($showmunkalapadatok)}
         <td class="cell">
             <div class="bizlista-munkalap">
-                <div class="mattable-important">{$_egyed.munkalapegyediazonosito|escape}</div>
-                <div>{$_egyed.munkalaptermeknev|escape}{if ($_egyed.munkalaptermekvaltozatnev)} ({$_egyed.munkalaptermekvaltozatnev|escape}){/if}</div>
+                <div class="mattable-important">{$_egyed.munkalapegyediazonosito}</div>
+                <div>{$_egyed.munkalaptermeknev}{if ($_egyed.munkalaptermekvaltozatnev)} ({$_egyed.munkalaptermekvaltozatnev}){/if}</div>
                 <dl class="bizlista-adatok">
                     <div class="bizlista-sor"><dt>{at('Km óra')}:</dt><dd>{$_egyed.munkalapkmoraallas}</dd></div>
                     <div class="bizlista-sor"><dt>{at('Köv. szerviz')}:</dt><dd>{$_egyed.munkalapkovetkezoszervizstr} {if ($_egyed.munkalapkovetkezoszervizkm)}/ {$_egyed.munkalapkovetkezoszervizkm} km{/if}</dd></div>
@@ -235,7 +235,7 @@
         {strip}
         <dl class="bizlista-adatok">
             <div class="bizlista-sor"><dt>{at('Raktár')}:</dt><dd>{$_egyed.raktarnev}</dd></div>
-            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}{if ($_egyed.isstripe)} <span class="barionstatus">({$_egyed.stripepaymentintentid})</span>{/if}{if ($_egyed.unasfizetesstatusz)} <span class="{if ($_egyed.unasfizetve)}greentext{else}redtext{/if}">(UNAS: {$_egyed.unasfizetesstatusznev|escape:'html':'UTF-8':false})</span>{/if}</dd></div>
+            <div class="bizlista-sor"><dt>{at('Fizetési mód')}:</dt><dd>{$_egyed.fizmodnev}{if ($_egyed.isbarion)} <span class="barionstatus">({$_egyed.barionpaymentstatus})</span>{/if}{if ($_egyed.isstripe)} <span class="barionstatus">({$_egyed.stripepaymentintentid})</span>{/if}{if ($_egyed.unasfizetesstatusz)} <span class="{if ($_egyed.unasfizetve)}greentext{else}redtext{/if}">(UNAS: {$_egyed.unasfizetesstatusznev})</span>{/if}</dd></div>
             {if ($_egyed.penztmozgatkapcsolo|default)}
                 <div class="bizlista-sor bizlista-sor-teljes"><dd class="bizlista-kapcsolocsoport"><a href="#" data-id="{$_egyed.id}" class="js-penztmozgatkapcsolo bizlista-kapcsolo{if ($_egyed.penztmozgat)} ui-state-hover{/if}">{at('Kintlévőséget/tartozást képez')}</a></dd></div>
             {else}
@@ -334,7 +334,7 @@
                 {assign var="_rejtettdb" value=$_egyed.szarmazobizonylatcount-$szarmazobizonylatlimit}
                 {foreach $_egyed.szarmazobizonylatok as $_sb}
                     {* a "..." gomb a data-bizonylat alapján kapcsolja a rejtett tételeket, nem a DOM-szerkezet alapján *}
-                    <div class="bizlista-kapcs-tetel{if ($_sb@index >= $szarmazobizonylatlimit)} js-szarmazotobbi{/if}"{if ($_sb@index >= $szarmazobizonylatlimit)} data-bizonylat="{$_egyed.id|escape}" style="display:none"{/if}>
+                    <div class="bizlista-kapcs-tetel{if ($_sb@index >= $szarmazobizonylatlimit)} js-szarmazotobbi{/if}"{if ($_sb@index >= $szarmazobizonylatlimit)} data-bizonylat="{$_egyed.id}" style="display:none"{/if}>
                         {if ($_sb.listaurl)}
                             <a href="{$_sb.listaurl}" target="_blank" title="{at('Ugrás a bizonylathoz')}">{$_sb.id}</a>
                         {else}
@@ -345,7 +345,7 @@
                     </div>
                 {/foreach}
                 {if ($_rejtettdb > 0)}
-                    <a class="js-szarmazotobbigomb" href="#" data-bizonylat="{$_egyed.id|escape}" title="{at('További')} {$_rejtettdb} {at('bizonylat')}">...</a>
+                    <a class="js-szarmazotobbigomb" href="#" data-bizonylat="{$_egyed.id}" title="{at('További')} {$_rejtettdb} {at('bizonylat')}">...</a>
                 {/if}
             {/if}
         </div>

@@ -489,8 +489,8 @@
                         {if (!$ora['elmarad'] && $ora['bejelentkezeskell'] && $ora['megvanhely'])}
                             <div>
                                 <a href="#" class="dttonlinelink dttorarendbutton margin-bottom-5 js-bejelentkezes" data-id="{$ora['id']}"
-                                   data-datum="{$ora['datum']}" data-oranev="{$ora['oranev']|escape}"
-                                   data-idopont="{$nap['napnev']|escape} {$nap['napdatum']|escape} {$ora['kezdet']|escape}">
+                                   data-datum="{$ora['datum']}" data-oranev="{$ora['oranev']}"
+                                   data-idopont="{$nap['napnev']} {$nap['napdatum']} {$ora['kezdet']}">
                                     {if ($ora['onlineurl'])}1. {/if}Bejelentkezek
                                 </a>
                             </div>

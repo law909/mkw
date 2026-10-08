@@ -41,7 +41,7 @@ class TemplateFactory
         }
         $this->templateenginename = $ini['tplengine'];
         // az admin nézetek automatikus HTML-escape-je; a config.ini smarty.adminescapehtml = 0 vészkapcsoló
-        $this->admin_escape_html = (bool)($ini['smarty.adminescapehtml'] ?? 0);
+        $this->admin_escape_html = (bool)($ini['smarty.adminescapehtml'] ?? 1);
     }
 
     public function getTemplate()

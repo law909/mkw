@@ -8,7 +8,7 @@
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             {if ($readonly)}
-                <p class="rontott">{at('Rontott sor, nem módosítható.')} {at('Rontotta')}: {$egyed.rontottby|escape} {$egyed.rontottonstr}</p>
+                <p class="rontott">{at('Rontott sor, nem módosítható.')} {at('Rontotta')}: {$egyed.rontottby} {$egyed.rontottonstr}</p>
             {/if}
             <fieldset{if ($readonly)} disabled="disabled"{/if}>
             <table>
@@ -32,7 +32,7 @@
                     <td><select id="BerjogcimEdit" name="berjogcim" required>
                             <option value="">{at('válasszon')}</option>
                             {foreach $berjogcimlist as $_jc}
-                                <option value="{$_jc.id}"{if ($_jc.selected)} selected="selected"{/if}>{$_jc.caption|escape}</option>
+                                <option value="{$_jc.id}"{if ($_jc.selected)} selected="selected"{/if}>{$_jc.caption}</option>
                             {/foreach}
                         </select>
                     </td>
@@ -43,16 +43,16 @@
                 </tr>
                 <tr>
                     <td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
-                    <td><input id="MegjegyzesEdit" name="megjegyzes" type="text" size="60" maxlength="255" value="{$egyed.megjegyzes|escape}"></td>
+                    <td><input id="MegjegyzesEdit" name="megjegyzes" type="text" size="60" maxlength="255" value="{$egyed.megjegyzes}"></td>
                 </tr>
                 {if ($egyed.id)}
                 <tr>
                     <td>{at('Rögzítette')}:</td>
-                    <td>{$egyed.createdby|escape} {$egyed.createdstr}</td>
+                    <td>{$egyed.createdby} {$egyed.createdstr}</td>
                 </tr>
                 <tr>
                     <td>{at('Módosította')}:</td>
-                    <td>{$egyed.updatedby|escape} {$egyed.lastmodstr}</td>
+                    <td>{$egyed.updatedby} {$egyed.lastmodstr}</td>
                 </tr>
                 {/if}
                 </tbody>

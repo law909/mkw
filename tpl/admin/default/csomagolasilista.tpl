@@ -21,7 +21,7 @@
                     {else}
                         {$egyed.tipusnev} {$egyed.id}
                     {/if}
-                    &nbsp;{$egyed.partnernev|escape}&nbsp;{at('kelt')}: {$egyed.keltstr}
+                    &nbsp;{$egyed.partnernev}&nbsp;{at('kelt')}: {$egyed.keltstr}
                 </div>
 
                 <fieldset class="mattkarb-doboz">
@@ -42,10 +42,10 @@
                         <tbody>
                         {foreach $tetelek as $_tetel}
                             <tr class="js-csomagtetel" data-id="{$_tetel.id}" data-suly="{$_tetel.suly}" data-mennyiseg="{$_tetel.mennyiseg}">
-                                <td>{$_tetel.cikkszam|escape}</td>
-                                <td>{$_tetel.nev|escape}</td>
-                                <td>{$_tetel.szin|escape}</td>
-                                <td>{$_tetel.meret|escape}</td>
+                                <td>{$_tetel.cikkszam}</td>
+                                <td>{$_tetel.nev}</td>
+                                <td>{$_tetel.szin}</td>
+                                <td>{$_tetel.meret}</td>
                                 <td class="textalignright">{$_tetel.mennyiseg*1}</td>
                                 <td>
                                     <div class="csomagolas-parok">

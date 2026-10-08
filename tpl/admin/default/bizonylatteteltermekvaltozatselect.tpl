@@ -3,11 +3,11 @@
 	<option value="">{at('Válasszon')}</option>
     {if ($maintheme == 'mkwcansas')}
         {foreach $tetel.valtozatlist as $_v}
-            <option value="{$_v.id}" data-cikkszam="{$_v.cikkszam|escape}"{if ($_v.selected)} selected{/if}{if (!$_v.elerheto)} class="nemelerhetovaltozat"{/if}>{$_v.caption}</option>
+            <option value="{$_v.id}" data-cikkszam="{$_v.cikkszam}"{if ($_v.selected)} selected{/if}{if (!$_v.elerheto)} class="nemelerhetovaltozat"{/if}>{$_v.caption}</option>
         {/foreach}
     {else}
         {foreach $tetel.valtozatlist as $_v}
-            <option value="{$_v.id}" data-cikkszam="{$_v.cikkszam|escape}"{if ($_v.selected)} selected{/if}{if (!$_v.elerheto || ($_v.mozgat && $_v.keszlet <= 0))} class="nemelerhetovaltozat"{/if}>{$_v.caption}{if ($_v.mozgat)} ({$_v.keszlet}){/if}</option>
+            <option value="{$_v.id}" data-cikkszam="{$_v.cikkszam}"{if ($_v.selected)} selected{/if}{if (!$_v.elerheto || ($_v.mozgat && $_v.keszlet <= 0))} class="nemelerhetovaltozat"{/if}>{$_v.caption}{if ($_v.mozgat)} ({$_v.keszlet}){/if}</option>
         {/foreach}
     {/if}
 </select>

@@ -15,19 +15,19 @@
         {if (!$riport.szarazfutas)}
             <tr><td>{at('Letöltött kép')}:</td><td>{$riport.kep_letoltve}</td></tr>
         {/if}
-        <tr><td>{at('Nyers válasz')}:</td><td>{$riport.dumpfajl|default:'-'|escape}</td></tr>
+        <tr><td>{at('Nyers válasz')}:</td><td>{$riport.dumpfajl|default:'-'}</td></tr>
         </tbody>
     </table>
     {if ($riport.masszulo)}
         <div class="ui-state-error-text">{at('Az MKW-ban más szülő alatt vannak, nem helyeztük át')}:</div>
-        <div>{foreach $riport.masszulo as $_sor}{$_sor|escape}{if (!$_sor@last)}, {/if}{/foreach}</div>
+        <div>{foreach $riport.masszulo as $_sor}{$_sor}{if (!$_sor@last)}, {/if}{/foreach}</div>
     {/if}
     {if ($riport.kep_hibak)}
         <div class="ui-state-error-text">{at('Kép letöltési hibák')}:</div>
-        <div>{foreach $riport.kep_hibak as $_sor}{$_sor|escape}{if (!$_sor@last)}<br>{/if}{/foreach}</div>
+        <div>{foreach $riport.kep_hibak as $_sor}{$_sor}{if (!$_sor@last)}<br>{/if}{/foreach}</div>
     {/if}
     {if ($riport.hibas)}
         <div class="ui-state-error-text">{at('Azonosító vagy név nélküli UNAS kategória, kimaradt')}:</div>
-        <div>{foreach $riport.hibas as $_sor}{$_sor|escape}{if (!$_sor@last)}, {/if}{/foreach}</div>
+        <div>{foreach $riport.hibas as $_sor}{$_sor}{if (!$_sor@last)}, {/if}{/foreach}</div>
     {/if}
 </div>
