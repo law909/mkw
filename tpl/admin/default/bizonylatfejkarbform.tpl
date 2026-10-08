@@ -236,6 +236,16 @@
                         </td>
                     </tr>
                     <tr>
+                        <td><label for="TelefonEdit">{at('Telefon')}:</label></td>
+                        <td>
+                            <input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon|escape}">
+                        </td>
+                        <td><label for="EmailEdit">{at('Email')}:</label></td>
+                        <td colspan="5">
+                            <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail|escape}">
+                        </td>
+                    </tr>
+                    <tr>
                         <td><label for="TelephelyEdit">{at('Telephely')}:</label></td>
                         <td colspan="7"><select id="TelephelyEdit" name="telephely">
                                 <option value="">{at('válasszon')}</option>
@@ -276,16 +286,6 @@
                             </td>
                         </tr>
                     {/if}
-                    <tr>
-                        <td><label for="TelefonEdit">{at('Telefon')}:</label></td>
-                        <td>
-                            <input id="TelefonEdit" name="partnertelefon" value="{$egyed.partnertelefon|escape}">
-                        </td>
-                        <td><label for="EmailEdit">{at('Email')}:</label></td>
-                        <td colspan="5">
-                            <input id="EmailEdit" name="partneremail" value="{$egyed.partneremail|escape}">
-                        </td>
-                    </tr>
                     <tr>
                         <td><label for="RaktarEdit">{at('Raktár')}:</label></td>
                         <td colspan="7"><select id="RaktarEdit" name="raktar" required="required">
