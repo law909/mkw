@@ -77,12 +77,12 @@ trait PartnerDataProvider
                 $ret[] = $x;
             }
         }
-        echo json_encode(self::decodeForJson($ret));
+        echo json_encode(self::decodeForJson($ret), JSON_HEX_TAG | JSON_HEX_AMP);
     }
 
     /**
      * A HtmlPurifierSanitizer kódolva menti a bemenetet (&amp;); a JSON-t a JS szövegként (.val(), .text()) írja ki,
-     * ezért itt vissza kell kódolni, különben „K&amp;H” látszik.
+     * ezért itt vissza kell kódolni, különben „K&amp;H” látszik. A hívó JSON_HEX_TAG-gel írja ki: a válasz text/html.
      */
     private static function decodeForJson(array $data): array
     {
@@ -174,7 +174,7 @@ trait PartnerDataProvider
                 $ret['afakulcs'] = $afaoverride->getErtek();
             }
         }
-        echo json_encode(self::decodeForJson($ret));
+        echo json_encode(self::decodeForJson($ret), JSON_HEX_TAG | JSON_HEX_AMP);
     }
 
     public function getAFAOverride()
