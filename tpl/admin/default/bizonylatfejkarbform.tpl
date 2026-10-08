@@ -221,8 +221,10 @@
                     <tr>
                         <td><label for="AdoszamEdit" class="mattable-important">{at('Adószám')}:</label></td>
                         <td>
-                            <input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam|escape}">
-                            <button class="js-querytaxpayer" style="display: none;">NAV</button>
+                            <div class="mattkarb-mezogomb">
+                                <input id="AdoszamEdit" name="partneradoszam" value="{$egyed.partneradoszam|escape}">
+                                <button class="js-querytaxpayer" style="display: none;">NAV</button>
+                            </div>
                         </td>
                         <td><label for="EUAdoszamEdit">{at('EU adószám')}:</label></td>
                         <td>
