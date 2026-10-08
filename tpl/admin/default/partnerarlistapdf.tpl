@@ -76,7 +76,7 @@
     </htmlpageheader>
 {/if}
 {if ($fejszoveg)}
-    <div class="szoveg fej">{$fejszoveg|escape|nl2br}</div>
+    <div class="szoveg fej">{$fejszoveg|escape|nl2br nofilter}</div>
 {/if}
 {if ($csoportok)}
     {foreach $csoportok as $_csoport}
@@ -112,7 +112,7 @@
     <p>{$feliratok.ures}</p>
 {/if}
 {if ($labszoveg)}
-    <div class="szoveg" style="margin-top: 3mm">{$labszoveg|escape|nl2br}</div>
+    <div class="szoveg" style="margin-top: 3mm">{$labszoveg|escape|nl2br nofilter}</div>
 {/if}
 </body>
 </html>

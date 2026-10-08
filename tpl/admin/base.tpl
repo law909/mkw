@@ -33,7 +33,7 @@
         <script type="text/javascript" src="/ckfinder/ckfinder.js"></script>
     {/if}
     <script type="text/javascript">window.mattableMindigNyitva = {$mindignyitva|default:0};
-        window.mattableAlapszuro = '{$alapszuro|default:''|escape:'javascript'}';</script>
+        window.mattableAlapszuro = '{$alapszuro|default:''|escape:'javascript' nofilter}';</script>
     {block "inhead"}
     {/block}
     <script type="text/javascript" src="/js/admin/default/appinit.js"></script>

@@ -61,7 +61,7 @@
             {if ($kerdoiv.kerdesek)}
                 <div class="kerdoiv">
                     {if ($kerdoiv.cim)}<div class="kerdoivcim">{$kerdoiv.cim|escape}</div>{/if}
-                    {if ($kerdoiv.leiras)}<div class="kerdoivleiras">{$kerdoiv.leiras|escape|nl2br}</div>{/if}
+                    {if ($kerdoiv.leiras)}<div class="kerdoivleiras">{$kerdoiv.leiras|escape|nl2br nofilter}</div>{/if}
                     {foreach $kerdoiv.kerdesek as $_i => $_k}
                         <div class="form-group kerdoivkerdes">
                             <span class="form-label">{$_i + 1}. {$_k.szoveg|escape}{if ($_k.kotelezo)} *{/if}</span>

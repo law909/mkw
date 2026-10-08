@@ -11,6 +11,6 @@
     <td class="cell">{$_egyed.szallito}</td>
     <td class="cell">{$_egyed.statusz}</td>
     <td class="cell">{$_egyed.bizonylatszam}</td>
-    <td class="cell">{$_egyed.fejhiba|nl2br}</td>
-    <td class="cell">{$_egyed.tetelhiba|nl2br}</td>
+    <td class="cell">{$_egyed.fejhiba|escape|nl2br nofilter}</td>
+    <td class="cell">{$_egyed.tetelhiba|escape|nl2br nofilter}</td>
 </tr>

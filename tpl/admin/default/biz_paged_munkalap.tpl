@@ -51,7 +51,7 @@
         </div>
     {/if}
     {if ($egyed.munkalaphibaleiras)}
-        <div style="padding: 0 5px;">Hiba leírása: {$egyed.munkalaphibaleiras|escape|nl2br}</div>
+        <div style="padding: 0 5px;">Hiba leírása: {$egyed.munkalaphibaleiras|escape|nl2br nofilter}</div>
     {/if}
     <div class="topline topbottommargin"></div>
 {/block}

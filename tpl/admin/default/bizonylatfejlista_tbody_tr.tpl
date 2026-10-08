@@ -26,7 +26,7 @@
                     <div class="bizlista-sor"><dt>{at('Köv. szerviz')}:</dt><dd>{$_egyed.munkalapkovetkezoszervizstr} {if ($_egyed.munkalapkovetkezoszervizkm)}/ {$_egyed.munkalapkovetkezoszervizkm} km{/if}</dd></div>
                 </dl>
                 {if ($_egyed.munkalaphibaleiras)}
-                    <div class="bizlista-megjegyzes">{$_egyed.munkalaphibaleiras|escape|nl2br}</div>
+                    <div class="bizlista-megjegyzes">{$_egyed.munkalaphibaleiras|escape|nl2br nofilter}</div>
                 {/if}
                 {if ($_egyed.munkalapkiszamlazva)}
                     <span class="bizlista-jelveny">{at('Kiszámlázva')}</span>

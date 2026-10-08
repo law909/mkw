@@ -17,6 +17,7 @@ class TemplateFactory
     private $pubadmin_path_template_default;
     private $templateenginename;
     private $path_template_default;
+    private $admin_escape_html;
 
     public function __construct($ini)
     {
@@ -39,6 +40,8 @@ class TemplateFactory
             $this->pubadmin_path_template_default = '';
         }
         $this->templateenginename = $ini['tplengine'];
+        // az admin nézetek automatikus HTML-escape-je; a config.ini smarty.adminescapehtml = 0 vészkapcsoló
+        $this->admin_escape_html = (bool)($ini['smarty.adminescapehtml'] ?? 0);
     }
 
     public function getTemplate()
@@ -106,7 +109,8 @@ class TemplateFactory
                     $this->getTemplate(),
                     $tplfilename,
                     $this->getSmartyConfig(),
-                    $this->getSmartyCache()
+                    $this->getSmartyCache(),
+                    $this->admin_escape_html
                 );
             } else {
                 $view = new SmartyView(
@@ -114,7 +118,8 @@ class TemplateFactory
                     $this->getTemplateDefault(),
                     $tplfilename,
                     $this->getSmartyConfig(),
-                    $this->getSmartyCache()
+                    $this->getSmartyCache(),
+                    $this->admin_escape_html
                 );
             }
         }
@@ -135,7 +140,8 @@ class TemplateFactory
                 [$this->getTemplate(), $this->getTemplateDefault()],
                 $tplfilename,
                 $this->getSmartyConfig(),
-                $this->getSmartyCache()
+                $this->getSmartyCache(),
+                $this->admin_escape_html
             );
         }
         return $view;

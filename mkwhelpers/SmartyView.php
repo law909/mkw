@@ -13,9 +13,11 @@ class SmartyView extends View
     // a képeket kiszolgáló külön hoszt előtagja (config.ini main.imagepath), ha van
     private static $imagePrefix = null;
 
-    public function __construct($compiledtplpath, $tplpath, $tplfilename, $configdir = '', $cachedir = '')
+    public function __construct($compiledtplpath, $tplpath, $tplfilename, $configdir = '', $cachedir = '', $escapeHtml = false)
     {
         $this->tplengine = new \Smarty();
+        // a kézi |escape erre még egyszer rákódol, bekapcsolt nézetben csak nofilter-rel szabad nyers HTML-t kiírni
+        $this->tplengine->setEscapeHtml($escapeHtml);
         $this->registerPlugins();
         $this->registerOutputFilters();
         $this->tplengine->setTemplateDir($tplpath);
