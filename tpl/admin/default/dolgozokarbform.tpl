@@ -8,157 +8,135 @@
             <li><a href="#MegjelenesTab">{at('Megjelenés')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="InaktivEdit">{at('Inaktív')}:</label></td>
-                    <td><input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked{/if}></td>
-                </tr>
-                <tr>
-                    <td><label for="oraelmaradaskonyvelonekEdit">{at('Óra elmaradásról értesítés a könyvelőnek')}:</label></td>
-                    <td><input id="oraelmaradaskonyvelonekEdit" name="oraelmaradaskonyvelonek"
-                               type="checkbox"{if ($egyed.oraelmaradaskonyvelonek)} checked{/if}></td>
-                </tr>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td colspan="3"><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required autofocus></td>
-                </tr>
-                <tr>
-                    <td><label for="SzulidoEdit">{at('Születési idő')}:</label></td>
-                    <td><input id="SzulidoEdit" name="szulido" type="text" size="12" data-datum="{$egyed.szulidostr}"></td>
-                    <td><label for="SzulhelyEdit">{at('Születési hely')}:</label></td>
-                    <td><input id="SzulhelyEdit" name="szulhely" type="text" size="40" maxlength="60" value="{$egyed.szulhely}"></td>
-                </tr>
-                <tr>
-                    <td><label for="IrszamEdit">{at('Cím')}:</label></td>
-                    <td colspan="3"><input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$egyed.irszam}">
+            {mezocsoport}
+                {mezo cimke="Inaktív" for="InaktivEdit"}
+                    <input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked{/if}>
+                {/mezo}
+                {mezo cimke="Óra elmaradásról értesítés a könyvelőnek" for="oraelmaradaskonyvelonekEdit"}
+                    <input id="oraelmaradaskonyvelonekEdit" name="oraelmaradaskonyvelonek"
+                        type="checkbox"{if ($egyed.oraelmaradaskonyvelonek)} checked{/if}>
+                {/mezo}
+                {mezo cimke="Név" for="NevEdit" szeles=true}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required autofocus>
+                {/mezo}
+                {mezo cimke="Születési idő" for="SzulidoEdit" ujsor=true}
+                    <input id="SzulidoEdit" name="szulido" type="text" size="12" data-datum="{$egyed.szulidostr}">
+                {/mezo}
+                {mezo cimke="Születési hely" for="SzulhelyEdit"}
+                    <input id="SzulhelyEdit" name="szulhely" type="text" size="40" maxlength="60" value="{$egyed.szulhely}">
+                {/mezo}
+                {mezo cimke="Cím" for="IrszamEdit" szeles=true}
+                    <div class="mattkarb-mezogomb">
+                        <input id="IrszamEdit" name="irszam" type="text" size="6" maxlength="10" value="{$egyed.irszam}">
                         <input id="VarosEdit" name="varos" type="text" size="20" maxlength="40" value="{$egyed.varos}">
-                        <input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$egyed.utca}"></td>
-                </tr>
-                <tr>
-                    <td><label for="TelefonEdit">{at('Telefon')}:</label></td>
-                    <td><input id="TelefonEdit" name="telefon" type="text" size="20" maxlength="40" value="{$egyed.telefon}"></td>
-                </tr>
-                <tr>
-                    <td><label for="EmailEdit">{at('Email')}:</label></td>
-                    <td><input id="EmailEdit" name="email" type="email" size="40" maxlength="100" value="{$egyed.email}" required></td>
-                </tr>
-                <tr>
-                    <td><label for="UrlEdit">{at('URL')}:</label></td>
-                    <td><input id="UrlEdit" name="url" type="text" size="40" maxlength="255" value="{$egyed.url}"></td>
-                </tr>
+                        <input id="UtcaEdit" name="utca" type="text" size="40" maxlength="60" value="{$egyed.utca}">
+                    </div>
+                {/mezo}
+                {mezo cimke="Telefon" for="TelefonEdit"}
+                    <input id="TelefonEdit" name="telefon" type="text" size="20" maxlength="40" value="{$egyed.telefon}">
+                {/mezo}
+                {mezo cimke="Email" for="EmailEdit"}
+                    <input id="EmailEdit" name="email" type="email" size="40" maxlength="100" value="{$egyed.email}" required>
+                {/mezo}
+                {mezo cimke="URL" for="UrlEdit"}
+                    <input id="UrlEdit" name="url" type="text" size="40" maxlength="255" value="{$egyed.url}">
+                {/mezo}
                 {if (($egyed.id == $loggedinuser.id) || $loggedinuser.admin)}
-                    <tr>
-                        <td><label for="Pass1Edit">{at('Jelszó 1')}:</label></td>
-                        <td><input id="Pass1Edit" name="jelszo1" type="password" size="40"{if ($oper == 'add')} required{/if}></td>
-                        <td><label for="Pass2Edit">{at('Jelszó 2')}:</label></td>
-                        <td><input id="Pass2Edit" name="jelszo2" type="password" size="40"{if ($oper == 'add')} required{/if}></td>
-                    </tr>
-                    <tr>
-                        <td><label for="JelszoTextEdit">{at('Jelszó szöveg')}:</label></td>
-                        <td><input id="JelszoTextEdit" name="jelszotext" type="text" size="40" value="{$egyed.jelszotext}"></td>
-                    </tr>
+                    {mezo cimke="Jelszó 1" for="Pass1Edit" ujsor=true}
+                        <input id="Pass1Edit" name="jelszo1" type="password" size="40"{if ($oper == 'add')} required{/if}>
+                    {/mezo}
+                    {mezo cimke="Jelszó 2" for="Pass2Edit"}
+                        <input id="Pass2Edit" name="jelszo2" type="password" size="40"{if ($oper == 'add')} required{/if}>
+                    {/mezo}
+                    {mezo cimke="Jelszó szöveg" for="JelszoTextEdit"}
+                        <input id="JelszoTextEdit" name="jelszotext" type="text" size="40" value="{$egyed.jelszotext}">
+                    {/mezo}
                 {/if}
                 {if ($loggedinuser.admin)}
-                    <tr>
-                        <td><label for="MunkakorEdit">{at('Munkakör')}:</label></td>
-                        <td><select id="MunkakorEdit" name="munkakor">
-                                <option value="">{at('válasszon')}</option>
-                                {foreach $munkakorlist as $_mk}
-                                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                                {/foreach}
-                            </select>
-                        </td>
-                        <td><label for="MunkaviszonykezdeteEdit">{at('Munkaviszony kezdete')}:</label></td>
-                        <td><input id="MunkaviszonykezdeteEdit" name="munkaviszonykezdete" type="text" size="12" data-datum="{$egyed.munkaviszonykezdetestr}"
-                                   required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="MunkakezdesEdit">{at('Munkaidő')}:</label></td>
-                        <td colspan="3"><input id="MunkakezdesEdit" name="munkakezdes" type="time" value="{$egyed.munkakezdesstr}">
-                            -
+                    {mezo cimke="Munkakör" for="MunkakorEdit" ujsor=true}
+                        <select id="MunkakorEdit" name="munkakor">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $munkakorlist as $_mk}
+                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/mezo}
+                    {mezo cimke="Munkaviszony kezdete" for="MunkaviszonykezdeteEdit"}
+                        <input id="MunkaviszonykezdeteEdit" name="munkaviszonykezdete" type="text" size="12" data-datum="{$egyed.munkaviszonykezdetestr}"
+                            required>
+                    {/mezo}
+                    {mezo cimke="Munkaidő" for="MunkakezdesEdit"}
+                        <div class="mattkarb-mezogomb">
+                            <input id="MunkakezdesEdit" name="munkakezdes" type="time" value="{$egyed.munkakezdesstr}">
+                                -
                             <input id="MunkavegeEdit" name="munkavege" type="time" value="{$egyed.munkavegestr}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label>{at('Munkanapok')}:</label></td>
-                        <td colspan="3">
-                            {foreach $egyed.munkanapok as $_nap}
-                                <input id="Munkanap{$_nap.id}Edit" name="munkanap{$_nap.id}" type="checkbox"{if ($_nap.checked)} checked{/if}>
-                                <label for="Munkanap{$_nap.id}Edit">{$_nap.nev}</label>
-                            {/foreach}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="NemjelenletiivEdit">{at('Nem szerepel a jelenléti íven')}:</label></td>
-                        <td colspan="3"><input id="NemjelenletiivEdit" name="nemjelenletiiv" type="checkbox"{if ($egyed.nemjelenletiiv)} checked{/if}></td>
-                    </tr>
-                    <tr>
-                        <td><label for="EvesmaxszabiEdit">{at('Éves max. szabadság')}:</label></td>
-                        <td colspan="3"><input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5"
-                                               value="{$egyed.evesmaxszabi}"> {at('nap')}</td>
-                    </tr>
+                        </div>
+                    {/mezo}
+                    {mezo cimke="Munkanapok" szeles=true}
+                        {foreach $egyed.munkanapok as $_nap}
+                            <input id="Munkanap{$_nap.id}Edit" name="munkanap{$_nap.id}" type="checkbox"{if ($_nap.checked)} checked{/if}>
+                            <label for="Munkanap{$_nap.id}Edit">{$_nap.nev}</label>
+                        {/foreach}
+                    {/mezo}
+                    {mezo cimke="Nem szerepel a jelenléti íven" for="NemjelenletiivEdit"}
+                        <input id="NemjelenletiivEdit" name="nemjelenletiiv" type="checkbox"{if ($egyed.nemjelenletiiv)} checked{/if}>
+                    {/mezo}
+                    {mezo cimke="Éves max. szabadság" for="EvesmaxszabiEdit"}
+                        <div class="mattkarb-mezogomb">
+                            <input id="EvesmaxszabiEdit" name="evesmaxszabi" type="number" size="5" maxlength="5"
+                                value="{$egyed.evesmaxszabi}"> {at('nap')}
+                        </div>
+                    {/mezo}
                 {/if}
-                <tr>
-                    <td><label for="HavilevonasEdit">{at('Havi levonás')}</label></td>
-                    <td><input id="HavilevonasEdit" name="havilevonas" type="number" step="any" value="{$egyed.havilevonas}"></td>
-                    <td><label for="NapilevonasEdit">{at('Napi levonás')}</label></td>
-                    <td><input id="NapilevonasEdit" name="napilevonas" type="number" step="any" value="{$egyed.napilevonas}"></td>
-                    <td><label for="SzamlatadEdit">{at('Számlát ad')}</label></td>
-                    <td><input id="SzamlatadEdit" name="szamlatad" type="checkbox"{if ($egyed.szamlatad)} checked="checked"{/if}></td>
-                </tr>
-                <tr>
-                    <td><label for="FizmodEdit">{at('Fizetési mód')}:</label></td>
-                    <td><select id="FizmodEdit" name="fizmod">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $fizmodlist as $_fizmod}
-                                <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="AlapertelmezettRaktarEdit">{at('Alapértelmezett raktár')}:</label></td>
-                    <td><select id="AlapertelmezettRaktarEdit" name="alapertelmezettraktar">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $raktarlist as $_raktar}
-                                <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="AutoSzamlaEdit">{at('Bérlet eladáskor automatikusan készüljön számla')}</label></td>
-                    <td><input id="AutoSzamlaEdit" name="autoszamla" type="checkbox"{if ($egyed.autoszamla)} checked="checked"{/if}></td>
-                </tr>
+                {mezo cimke="Havi levonás" for="HavilevonasEdit"}
+                    <input id="HavilevonasEdit" name="havilevonas" type="number" step="any" value="{$egyed.havilevonas}">
+                {/mezo}
+                {mezo cimke="Napi levonás" for="NapilevonasEdit"}
+                    <input id="NapilevonasEdit" name="napilevonas" type="number" step="any" value="{$egyed.napilevonas}">
+                {/mezo}
+                {mezo cimke="Számlát ad" for="SzamlatadEdit"}
+                    <input id="SzamlatadEdit" name="szamlatad" type="checkbox"{if ($egyed.szamlatad)} checked="checked"{/if}>
+                {/mezo}
+                {mezo cimke="Fizetési mód" for="FizmodEdit"}
+                    <select id="FizmodEdit" name="fizmod">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $fizmodlist as $_fizmod}
+                            <option value="{$_fizmod.id}"{if ($_fizmod.selected)} selected="selected"{/if}>{$_fizmod.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Alapértelmezett raktár" for="AlapertelmezettRaktarEdit"}
+                    <select id="AlapertelmezettRaktarEdit" name="alapertelmezettraktar">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $raktarlist as $_raktar}
+                            <option value="{$_raktar.id}"{if ($_raktar.selected)} selected="selected"{/if}>{$_raktar.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Bérlet eladáskor automatikusan készüljön számla" for="AutoSzamlaEdit"}
+                    <input id="AutoSzamlaEdit" name="autoszamla" type="checkbox"{if ($egyed.autoszamla)} checked="checked"{/if}>
+                {/mezo}
                 {if ($setup.mptngy)}
-                    <tr>
-                        <td><label for="MPTNGYMaxvallaltdbEdit">{at('Maximum vállalt absztrakt')}:</label></td>
-                        <td><input id="MPTNGYMaxvallaltdbEdit" name="mptngymaxdb" type="number" step="any" value="{$egyed.mptngymaxdb}"></td>
-                    </tr>
+                    {mezo cimke="Maximum vállalt absztrakt" for="MPTNGYMaxvallaltdbEdit"}
+                        <input id="MPTNGYMaxvallaltdbEdit" name="mptngymaxdb" type="number" step="any" value="{$egyed.mptngymaxdb}">
+                    {/mezo}
                 {/if}
-                </tbody>
-            </table>
+            {/mezocsoport}
         </div>
         <div id="MegjelenesTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="UithemeEdit">{at('Téma')}:</label></td>
-                    <td><select id="UithemeEdit" name="uitheme">
-                            {foreach $uithemes as $_uitheme}
-                                <option value="{$_uitheme}"{if ($_uitheme == $egyed.uitheme)} selected="selected"{/if}>{$_uitheme}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label>{at('Kiemelő szín')}:</label></td>
-                    <td>{include "../partials/uiaccentpicker.tpl" accentname="uiaccent" accentvalue=$egyed.uiaccent}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td class="mattkarb-megjegyzes">{at('A kiemelő szín a modern és a modern-dark témában látszik. Bármilyen szín keverhető: a túl világos vagy túl sötét színből a téma olvasható árnyalatot számol.')}</td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Téma" for="UithemeEdit"}
+                    <select id="UithemeEdit" name="uitheme">
+                        {foreach $uithemes as $_uitheme}
+                            <option value="{$_uitheme}"{if ($_uitheme == $egyed.uitheme)} selected="selected"{/if}>{$_uitheme}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Kiemelő szín"}
+                    {include "../partials/uiaccentpicker.tpl" accentname="uiaccent" accentvalue=$egyed.uiaccent}
+                    <div class="mattkarb-megjegyzes">{at('A kiemelő szín a modern és a modern-dark témában látszik. Bármilyen szín keverhető: a túl világos vagy túl sötét színből a téma olvasható árnyalatot számol.')}</div>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">
