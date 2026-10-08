@@ -2117,6 +2117,15 @@ let bizonylathelper = function ($) {
                         })
                     }
                 }).button();
+                $('.js-elonezet').on('click', function (e) {
+                    e.preventDefault();
+                    // a karbantartó aktuális adatai új ablakba, ahol a szerver mentés nélkül nyomtatási képet ad
+                    const kuld = $('<form method="post" action="/admin/bizonylatfej/elonezet" target="_blank"></form>');
+                    $('#mattkarb-form').serializeArray()
+                        .concat([{name: 'biztipus', value: $(this).data('biztipus')}])
+                        .forEach(({name, value}) => kuld.append($('<input type="hidden">').attr('name', name).val(value)));
+                    kuld.appendTo('body').trigger('submit').remove();
+                }).button();
                 $('.js-ujpartnercb').on('change', function () {
                     if ($(this).prop('checked')) {
                         $('input[name="partner"]').val(-1);

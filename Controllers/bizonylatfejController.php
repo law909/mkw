@@ -1721,6 +1721,60 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         return new \Services\BizonylatPrintService();
     }
 
+    /**
+     * Mentés előtti nyomtatási kép a karbantartó beküldött adataiból. A mentés útját járja végig (a
+     * listenerek számolják az összegeket), de tranzakcióban, amit a végén visszagörgetünk.
+     */
+    public function preview()
+    {
+        $biztipus = $this->params->getStringRequestParam('biztipus');
+        $class = '\\Controllers\\' . $biztipus . 'fejController';
+        if (!preg_match('/^[a-z0-9]+$/', $biztipus) || !class_exists($class) || !is_subclass_of($class, self::class)) {
+            echo htmlspecialchars(t('Ismeretlen bizonylattípus.'));
+            return;
+        }
+        (new $class())->renderPreview();
+    }
+
+    protected function renderPreview()
+    {
+        $parancs = $this->params->getStringRequestParam($this->operationName);
+        if (!in_array($parancs, [$this->addOperation, $this->addreopenOperation, $this->inheritOperation, $this->stornoOperation, $this->editOperation], true)) {
+            echo htmlspecialchars(t('Az előnézet nem készíthető el') . ': ' . t('hiányzó űrlapadatok.'));
+            return;
+        }
+        $em = $this->getEm();
+        $conn = $em->getConnection();
+        $conn->beginTransaction();
+        try {
+            if ($parancs === $this->editOperation) {
+                $obj = $this->getRepo()->find($this->params->getStringRequestParam($this->idName));
+                if (!$obj) {
+                    throw new \mkwhelpers\Exceptions\UserMessageException(t('A rekord nem található.'));
+                }
+            } else {
+                $obj = new Bizonylatfej();
+                // ideiglenes azonosító: így a generateId() nem képez sorszámot
+                $obj->setId('ELONEZET' . bin2hex(random_bytes(8)));
+            }
+            $filled = $this->setFields($obj, $parancs);
+            $obj = is_object($filled) ? $filled : $obj;
+            $em->persist($obj);
+            $em->flush();
+            $r = $this->getPrintService()->renderBizonylat($obj, null, true);
+        } catch (\Throwable $ex) {
+            $error = \mkwhelpers\ErrorMessage::toUserMessage($ex);
+            echo htmlspecialchars(t('Az előnézet nem készíthető el') . ': ' . $error['message']);
+            return;
+        } finally {
+            if ($conn->isTransactionActive()) {
+                $conn->rollBack();
+            }
+            $em->clear();
+        }
+        $this->getPrintService()->outputResult($r, 'elonezet');
+    }
+
     public function doPrint()
     {
         $this->getPrintService()->output($this->params->getStringRequestParam('id'));
@@ -1910,6 +1964,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $view->setVar('pagetitle', $this->getPageTitle());
         $view->setVar('controllerscript', $this->biztipusid . 'fej.js');
         $view->setVar('formaction', '/admin/' . $this->biztipusid . 'fej/save');
+        $view->setVar('biztipusid', $this->biztipusid);
         $view->setVar('oper', $oper);
         $view->setVar('quick', $quick);
         $view->setVar('pos', $pos);

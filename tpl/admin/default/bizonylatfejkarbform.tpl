@@ -640,6 +640,9 @@
                 <input id="mattkarb-okbutton" type="submit" value="{at('OK')}">
             {/if}
             <a id="mattkarb-cancelbutton" href="#">{at('Mégsem')}</a>
+            {if (!$quick && !($readonly|default))}
+                <a class="js-elonezet" href="#" data-biztipus="{$biztipusid}" title="{at('Előnézet')}">{at('Előnézet')}</a>
+            {/if}
             {if ($oper == 'edit' && $egyed.id && $egyed.nemrossz)}
                 <a class="js-tetelellenorzes" href="/admin/bizonylatellenorzes/view?id={$egyed.id|escape:'url'}" target="_blank"
                    title="{at('Tételek ellenőrzése')}">{at('Tételek ellenőrzése')}</a>

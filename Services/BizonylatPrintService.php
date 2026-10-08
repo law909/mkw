@@ -116,9 +116,11 @@ class BizonylatPrintService
     }
 
     /**
+     * Az előnézetnek ($elonezet) nincs bizonylatszáma, és a bizonylat neve helyett ELŐNÉZET áll rajta.
+     *
      * @return array{html: string, paged: bool}
      */
-    public function renderBizonylat(Bizonylatfej $o, $tplname = null)
+    public function renderBizonylat(Bizonylatfej $o, $tplname = null, bool $elonezet = false)
     {
         $tplname = $tplname ?: $this->resolveTemplate($o);
         $paged = $this->findPagedTemplate($tplname);
@@ -130,7 +132,13 @@ class BizonylatPrintService
         // a képes sablonok ezzel hivatkoznak a fájlrendszerre: az mPDF a $mainurl-lel HTTP-n
         // toltene le a sajat szerveretol minden tetelkepet
         $view->setVar('webroot', getcwd());
-        $view->setVar('egyed', $o->toLista());
+        $egyed = $o->toLista();
+        if ($elonezet) {
+            $egyed['id'] = '';
+            $egyed['bizonylatnev'] = 'ELŐNÉZET';
+        }
+        $view->setVar('egyed', $egyed);
+        $view->setVar('elonezet', $elonezet);
         $view->setVar('showvtsz', (bool)\mkw\store::getParameter(\mkw\consts::BizonylatVtsz, 1));
         $view->setVar('afaosszesito', $this->getRepo()->getAFAOsszesito($o));
         // empty on every document without an offset, so the template output is unchanged

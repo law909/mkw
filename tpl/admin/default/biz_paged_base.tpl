@@ -69,7 +69,7 @@
     <table class="fullwidth" cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td>
-                <span class="biznev">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}{block "title"}{/block}</span>
+                <span class="biznev">{if $teszt}<span style="color:red">TESZT MÓD</span> {/if}{if $elonezet|default}ELŐNÉZET{else}{block "title"}{/block}{/if}</span>
             </td>
             <td class="textalignright">
                 {block "copymark"}{/block}{literal}{PAGENO}/{nbpg}{/literal} oldal
