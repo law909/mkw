@@ -7,16 +7,14 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table><tbody>
-                <tr>
-                    <td><label for="EmailEdit">{at('Email/IP cím')}:</label></td>
-                    <td><input id="EmailEdit" name="email" type="text" size="80" maxlength="255" value="{$egyed.email}"></td>
-                </tr>
-                <tr>
-                    <td><label for="OkEdit">{at('OK')}:</label></td>
-                    <td><textarea id="OkEdit" name="ok">{$egyed.ok}</textarea></td>
-                </tr>
-                </tbody></table>
+            {mezocsoport}
+                {mezo cimke="Email/IP cím" for="EmailEdit"}
+                    <input id="EmailEdit" name="email" type="text" size="80" maxlength="255" value="{$egyed.email}">
+                {/mezo}
+                {mezo cimke="OK" for="OkEdit"}
+                    <textarea id="OkEdit" name="ok">{$egyed.ok}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

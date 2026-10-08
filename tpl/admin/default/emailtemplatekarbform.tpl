@@ -9,20 +9,17 @@
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
 			<input id="AszfCheck" name="aszfcsatolaskell" type="checkbox"
 				   {if ($egyed.aszfcsatolaskell)}checked="checked"{/if}>{at('ÁSZF csatolás kell')}
-			<table><tbody>
-			<tr>
-				<td><label for="NevEdit">{at('Azonosító')}:</label></td>
-				<td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
-			</tr>
-			<tr>
-				<td><label for="TargyEdit">{at('Tárgy')}:</label></td>
-				<td><input id="TargyEdit" name="targy" type="text" size="80" maxlength="255" value="{$egyed.targy}"></td>
-			</tr>
-			<tr>
-				<td><label for="LeirasEdit">{at('Szöveg')}:</label></td>
-				<td><textarea id="LeirasEdit" name="szoveg" class="emailtemplateleiras">{$egyed.szoveg}</textarea></td>
-			</tr>
-			</tbody></table>
+			{mezocsoport}
+				{mezo cimke="Azonosító" for="NevEdit"}
+					<input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}">
+				{/mezo}
+				{mezo cimke="Tárgy" for="TargyEdit"}
+					<input id="TargyEdit" name="targy" type="text" size="80" maxlength="255" value="{$egyed.targy}">
+				{/mezo}
+				{mezo cimke="Szöveg" for="LeirasEdit"}
+					<textarea id="LeirasEdit" name="szoveg" class="emailtemplateleiras">{$egyed.szoveg}</textarea>
+				{/mezo}
+			{/mezocsoport}
 		</div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">

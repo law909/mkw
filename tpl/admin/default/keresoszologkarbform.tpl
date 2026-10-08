@@ -8,12 +8,11 @@
 			<li><a href="#WebTab">{at('Webes adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-			<tr>
-				<td><label for="NevEdit">{at('Név')}:</label></td>
-				<td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
-			</tr>
-			</tbody></table>
+			{mezocsoport}
+				{mezo cimke="Név" for="NevEdit"}
+					<input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}">
+				{/mezo}
+			{/mezocsoport}
 		</div>
 		<div id="WebTab" class="mattkarb-page">
 

@@ -7,18 +7,14 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="100" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="LathatoEdit">{at('Látható')}:</label></td>
-                    <td><input id="LathatoEdit" name="lathato" type="checkbox"{if ($egyed.lathato)} checked="checked"{/if}></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="100" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="Látható" for="LathatoEdit"}
+                    <input id="LathatoEdit" name="lathato" type="checkbox"{if ($egyed.lathato)} checked="checked"{/if}>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

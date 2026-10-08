@@ -11,28 +11,21 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td colspan="3"><input id="NevEdit" name="nev" type="text" size="83" maxlength="255"
-                                           value="{$egyed.nev}" required autofocus></td>
-                </tr>
-                <tr>
-                    <td><label for="CharkodEdit">{at('Charkód')}:</label></td>
-                    <td colspan="3"><input id="CharkodEdit" name="charkod" type="text" size="20" maxlength="50"
-                                           value="{$egyed.charkod}"></td>
-                </tr>
-                <tr>
-                    <td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
-                    <td colspan="3"><input id="SorrendEdit" name="sorrend" type="number" size="6" maxlength="6" step="any"
-                                           value="{$egyed.sorrend}"></td>
-                </tr>
-                <tr>
-                    {include 'termekimagekarb.tpl'}
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit" szeles=true}
+                    <input id="NevEdit" name="nev" type="text" size="83" maxlength="255"
+                           value="{$egyed.nev}" required autofocus>
+                {/mezo}
+                {mezo cimke="Charkód" for="CharkodEdit"}
+                    <input id="CharkodEdit" name="charkod" type="text" size="20" maxlength="50"
+                           value="{$egyed.charkod}">
+                {/mezo}
+                {mezo cimke="Sorrend" for="SorrendEdit"}
+                    <input id="SorrendEdit" name="sorrend" type="number" size="6" maxlength="6" step="any"
+                           value="{$egyed.sorrend}">
+                {/mezo}
+            {/mezocsoport}
+            {include 'termekimagekarb.tpl'}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

@@ -11,52 +11,43 @@
                 <p class="rontott">{at('Rontott sor, nem módosítható.')} {at('Rontotta')}: {$egyed.rontottby} {$egyed.rontottonstr}</p>
             {/if}
             <fieldset{if ($readonly)} disabled="disabled"{/if}>
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="DolgozoEdit">{at('Dolgozó')}:</label></td>
-                    <td><select id="DolgozoEdit" name="dolgozo" required autofocus>
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $dolgozolist as $_mk}
-                                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="DatumEdit">{at('Dátum')}:</label></td>
-                    <td><input id="DatumEdit" name="datum" type="text" size="12" data-datum="{$egyed.datumstr}" required></td>
-                </tr>
-                <tr>
-                    <td><label for="BerjogcimEdit">{at('Jogcím')}:</label></td>
-                    <td><select id="BerjogcimEdit" name="berjogcim" required>
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $berjogcimlist as $_jc}
-                                <option value="{$_jc.id}"{if ($_jc.selected)} selected="selected"{/if}>{$_jc.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="OsszegEdit">{at('Összeg')}:</label></td>
-                    <td><input id="OsszegEdit" name="osszeg" type="number" step="any" value="{$egyed.osszeg}" required> Ft</td>
-                </tr>
-                <tr>
-                    <td><label for="MegjegyzesEdit">{at('Megjegyzés')}:</label></td>
-                    <td><input id="MegjegyzesEdit" name="megjegyzes" type="text" size="60" maxlength="255" value="{$egyed.megjegyzes}"></td>
-                </tr>
+            {mezocsoport}
+                {mezo cimke="Dolgozó" for="DolgozoEdit"}
+                    <select id="DolgozoEdit" name="dolgozo" required autofocus>
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $dolgozolist as $_mk}
+                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Dátum" for="DatumEdit"}
+                    <input id="DatumEdit" name="datum" type="text" size="12" data-datum="{$egyed.datumstr}" required>
+                {/mezo}
+                {mezo cimke="Jogcím" for="BerjogcimEdit"}
+                    <select id="BerjogcimEdit" name="berjogcim" required>
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $berjogcimlist as $_jc}
+                            <option value="{$_jc.id}"{if ($_jc.selected)} selected="selected"{/if}>{$_jc.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Összeg" for="OsszegEdit"}
+                    <div class="mattkarb-mezogomb">
+                        <input id="OsszegEdit" name="osszeg" type="number" step="any" value="{$egyed.osszeg}" required> Ft
+                    </div>
+                {/mezo}
+                {mezo cimke="Megjegyzés" for="MegjegyzesEdit"}
+                    <input id="MegjegyzesEdit" name="megjegyzes" type="text" size="60" maxlength="255" value="{$egyed.megjegyzes}">
+                {/mezo}
                 {if ($egyed.id)}
-                <tr>
-                    <td>{at('Rögzítette')}:</td>
-                    <td>{$egyed.createdby} {$egyed.createdstr}</td>
-                </tr>
-                <tr>
-                    <td>{at('Módosította')}:</td>
-                    <td>{$egyed.updatedby} {$egyed.lastmodstr}</td>
-                </tr>
+                    {mezo cimke="Rögzítette"}
+                        {$egyed.createdby} {$egyed.createdstr}
+                    {/mezo}
+                    {mezo cimke="Módosította"}
+                        {$egyed.updatedby} {$egyed.lastmodstr}
+                    {/mezo}
                 {/if}
-                </tbody>
-            </table>
+            {/mezocsoport}
             </fieldset>
         </div>
     </div>

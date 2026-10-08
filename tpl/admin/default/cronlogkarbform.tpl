@@ -7,38 +7,29 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label>{at('Feladat')}:</label></td>
-                    <td>{$egyed.feladat}</td>
-                </tr>
-                <tr>
-                    <td><label>{at('Állapot')}:</label></td>
-                    <td>{$egyed.allapot}</td>
-                </tr>
-                <tr>
-                    <td><label>{at('Kezdet')}:</label></td>
-                    <td>{$egyed.kezdet}</td>
-                </tr>
-                <tr>
-                    <td><label>{at('Vég')}:</label></td>
-                    <td>{$egyed.veg}</td>
-                </tr>
-                <tr>
-                    <td><label>{at('Időtartam')}:</label></td>
-                    <td>{$egyed.idotartam}</td>
-                </tr>
-                <tr>
-                    <td><label>{at('Gép')}:</label></td>
-                    <td>{$egyed.host} (pid {$egyed.pid})</td>
-                </tr>
-                <tr>
-                    <td><label for="UzenetEdit">{at('Üzenet')}:</label></td>
-                    <td><textarea id="UzenetEdit" rows="8" cols="80" readonly="readonly">{$egyed.uzenet}</textarea></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Feladat"}
+                    {$egyed.feladat}
+                {/mezo}
+                {mezo cimke="Állapot"}
+                    {$egyed.allapot}
+                {/mezo}
+                {mezo cimke="Kezdet"}
+                    {$egyed.kezdet}
+                {/mezo}
+                {mezo cimke="Vég"}
+                    {$egyed.veg}
+                {/mezo}
+                {mezo cimke="Időtartam"}
+                    {$egyed.idotartam}
+                {/mezo}
+                {mezo cimke="Gép"}
+                    {$egyed.host} (pid {$egyed.pid})
+                {/mezo}
+                {mezo cimke="Üzenet" for="UzenetEdit"}
+                    <textarea id="UzenetEdit" rows="8" cols="80" readonly="readonly">{$egyed.uzenet}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <div class="mattkarb-footer">

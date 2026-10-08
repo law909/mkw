@@ -7,14 +7,11 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="DatumEdit">{at('Dátum')}:</label></td>
-                    <td><input id="DatumEdit" name="datum" type="text" size="12" data-datum="{$egyed.datumstr}" required="required"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Dátum" for="DatumEdit"}
+                    <input id="DatumEdit" name="datum" type="text" size="12" data-datum="{$egyed.datumstr}" required="required">
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

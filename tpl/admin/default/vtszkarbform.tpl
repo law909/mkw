@@ -7,50 +7,37 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="SzamEdit">{at('Szám')}:</label></td>
-                    <td><input id="SzamEdit" name="szam" type="text" size="80" maxlength="255" value="{$egyed.szam}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
-                </tr>
-                <tr>
-                    <td><label for="AfaEdit">{at('ÁFA kulcs')}:</label></td>
-                    <td>
-                        <select id="AfaEdit" name="afa" required="required">
-                            {foreach $egyed.afalist as $_o}
-                                <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="CskEdit">{at('CSK szám')}:</label></td>
-                    <td>
-                        <select id="CskEdit" name="csk">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $egyed.csklist as $_o}
-                                <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="KtEdit">{at('KT kód')}:</label></td>
-                    <td>
-                        <select id="KtEdit" name="kt">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $egyed.ktlist as $_o}
-                                <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Szám" for="SzamEdit"}
+                    <input id="SzamEdit" name="szam" type="text" size="80" maxlength="255" value="{$egyed.szam}" required="required">
+                {/mezo}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}">
+                {/mezo}
+                {mezo cimke="ÁFA kulcs" for="AfaEdit"}
+                    <select id="AfaEdit" name="afa" required="required">
+                        {foreach $egyed.afalist as $_o}
+                            <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="CSK szám" for="CskEdit"}
+                    <select id="CskEdit" name="csk">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $egyed.csklist as $_o}
+                            <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="KT kód" for="KtEdit"}
+                    <select id="KtEdit" name="kt">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $egyed.ktlist as $_o}
+                            <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

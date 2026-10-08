@@ -7,18 +7,14 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="FromurlEdit">{at('Forrás URL')}:</label></td>
-                    <td><textarea id="FromurlEdit" name="fromurl" rows="3" cols="70" required="required">{$egyed.fromurl}</textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="TourlEdit">{at('Cél URL')}:</label></td>
-                    <td><textarea id="TourlEdit" name="tourl" rows="3" cols="70" required="required">{$egyed.tourl}</textarea></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Forrás URL" for="FromurlEdit"}
+                    <textarea id="FromurlEdit" name="fromurl" rows="3" cols="70" required="required">{$egyed.fromurl}</textarea>
+                {/mezo}
+                {mezo cimke="Cél URL" for="TourlEdit"}
+                    <textarea id="TourlEdit" name="tourl" rows="3" cols="70" required="required">{$egyed.tourl}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

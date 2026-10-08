@@ -7,18 +7,14 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="NavtipusEdit">{at('NAV típus')}:</label></td>
-                    <td><select id="NavtipusEdit" name="navtipus">{foreach $egyed.navtipuslist as $_nt}<option value="{$_nt.id}"{if ($_nt.selected)} selected="selected"{/if}>{$_nt.caption}</option>{/foreach}</select></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="NAV típus" for="NavtipusEdit"}
+                    <select id="NavtipusEdit" name="navtipus">{foreach $egyed.navtipuslist as $_nt}<option value="{$_nt.id}"{if ($_nt.selected)} selected="selected"{/if}>{$_nt.caption}</option>{/foreach}</select>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

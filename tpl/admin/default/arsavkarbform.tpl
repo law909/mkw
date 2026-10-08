@@ -7,19 +7,15 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="KerekitesEdit">{at('Kerekítés képlettel')}:</label></td>
-                    <td><input id="KerekitesEdit" name="kerekites" type="number" step="any" size="10" value="{$egyed.kerekites}"
-                               title="{at('A képlettel számolt ár bruttóját ennek a többszörösére kerekíti (pl. 100). Üresen nincs kerekítés.')}"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="Kerekítés képlettel" for="KerekitesEdit"}
+                    <input id="KerekitesEdit" name="kerekites" type="number" step="any" size="10" value="{$egyed.kerekites}"
+                        title="{at('A képlettel számolt ár bruttóját ennek a többszörösére kerekíti (pl. 100). Üresen nincs kerekítés.')}">
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

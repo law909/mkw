@@ -7,33 +7,25 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="FelhasznalonevEdit">{at('Felhasználónév')}:</label></td>
-                    <td>{if ($oper == 'add')}<input id="FelhasznalonevEdit" name="felhasznalonev" type="text" size="80" maxlength="16" value="{$egyed.felhasznalonev}" required="required">{else}<input id="FelhasznalonevEdit" type="text" size="80" value="{$egyed.felhasznalonev}" readonly="readonly"><input name="felhasznalonev" type="hidden" value="{$egyed.felhasznalonev}">{/if}</td>
-                </tr>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="JelszoEdit">{at('Jelszó')}:</label></td>
-                    <td><input id="JelszoEdit" name="jelszo" type="password" size="20" maxlength="16" value="{$egyed.jelszo}"></td>
-                </tr>
-                <tr>
-                    <td><label for="UzletkotoEdit">{at('Üzletkötő')}:</label></td>
-                    <td>
-                        <select id="UzletkotoEdit" name="uzletkoto">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $egyed.uzletkotolist as $_o}
-                                <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Felhasználónév" for="FelhasznalonevEdit"}
+                    {if ($oper == 'add')}<input id="FelhasznalonevEdit" name="felhasznalonev" type="text" size="80" maxlength="16" value="{$egyed.felhasznalonev}" required="required">{else}<input id="FelhasznalonevEdit" type="text" size="80" value="{$egyed.felhasznalonev}" readonly="readonly"><input name="felhasznalonev" type="hidden" value="{$egyed.felhasznalonev}">{/if}
+                {/mezo}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="Jelszó" for="JelszoEdit"}
+                    <input id="JelszoEdit" name="jelszo" type="password" size="20" maxlength="16" value="{$egyed.jelszo}">
+                {/mezo}
+                {mezo cimke="Üzletkötő" for="UzletkotoEdit"}
+                    <select id="UzletkotoEdit" name="uzletkoto">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $egyed.uzletkotolist as $_o}
+                            <option value="{$_o.id}"{if ($_o.selected)} selected="selected"{/if}>{$_o.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

@@ -7,12 +7,11 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-			<tr>
-				<td><label for="LeirasEdit">{at('Szöveg')}:</label></td>
-				<td><textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea></td>
-			</tr>
-			</tbody></table>
+			{mezocsoport}
+				{mezo cimke="Szöveg" for="LeirasEdit"}
+					<textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea>
+				{/mezo}
+			{/mezocsoport}
 		</div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">

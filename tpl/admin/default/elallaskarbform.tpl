@@ -8,24 +8,20 @@
             <li><a href="#NaploTab">{at('Napló')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table><tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
-                </tr>
-                <tr>
-                    <td><label for="EmailEdit">{at('Email')}:</label></td>
-                    <td><input id="EmailEdit" name="email" type="text" size="80" maxlength="255" value="{$egyed.email}"></td>
-                </tr>
-                <tr>
-                    <td><label for="BizonylatEdit">{at('Bizonylat')}:</label></td>
-                    <td><input id="BizonylatEdit" name="bizonylat" type="text" size="30" maxlength="30" value="{$egyed.bizonylat}"></td>
-                </tr>
-                <tr>
-                    <td><label for="SzovegEdit">{at('Szöveg')}:</label></td>
-                    <td><textarea id="SzovegEdit" name="szoveg" rows="6" cols="80">{$egyed.szoveg}</textarea></td>
-                </tr>
-            </tbody></table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}">
+                {/mezo}
+                {mezo cimke="Email" for="EmailEdit"}
+                    <input id="EmailEdit" name="email" type="text" size="80" maxlength="255" value="{$egyed.email}">
+                {/mezo}
+                {mezo cimke="Bizonylat" for="BizonylatEdit"}
+                    <input id="BizonylatEdit" name="bizonylat" type="text" size="30" maxlength="30" value="{$egyed.bizonylat}">
+                {/mezo}
+                {mezo cimke="Szöveg" for="SzovegEdit"}
+                    <textarea id="SzovegEdit" name="szoveg" rows="6" cols="80">{$egyed.szoveg}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
         <div id="NaploTab" class="mattkarb-page" data-visible="visible">
             {foreach $naplok as $naplo}

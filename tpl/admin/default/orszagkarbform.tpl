@@ -8,44 +8,33 @@
             <li><a href="#LathatosagTab">{at('Láthatóság')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="Iso3166Edit">{at('ISO 3166')}:</label></td>
-                    <td><input id="Iso3166Edit" name="iso3166" type="text" size="5" maxlength="5" value="{$egyed.iso3166}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="ValutanemEdit">{at('Valutanem')}:</label></td>
-                    <td>
-                        <select id="ValutanemEdit" name="valutanem">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $egyed.valutanemlist as $_valuta}
-                                <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="AfaEdit">{at('Áfakulcs')}:</label></td>
-                    <td>
-                        <select id="AfaEdit" name="afa">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $egyed.afalist as $_afa}
-                                <option value="{$_afa.id}"{if ($_afa.selected)} selected="selected"{/if}>{$_afa.caption}</option>
-                            {/foreach}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="EuEdit">{at('EU-n belüli')}:</label></td>
-                    <td><input id="EuEdit" name="eu" type="checkbox"{if ($egyed.eu)} checked="checked"{/if}></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="ISO 3166" for="Iso3166Edit"}
+                    <input id="Iso3166Edit" name="iso3166" type="text" size="5" maxlength="5" value="{$egyed.iso3166}" required="required">
+                {/mezo}
+                {mezo cimke="Valutanem" for="ValutanemEdit"}
+                    <select id="ValutanemEdit" name="valutanem">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $egyed.valutanemlist as $_valuta}
+                            <option value="{$_valuta.id}"{if ($_valuta.selected)} selected="selected"{/if}>{$_valuta.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Áfakulcs" for="AfaEdit"}
+                    <select id="AfaEdit" name="afa">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $egyed.afalist as $_afa}
+                            <option value="{$_afa.id}"{if ($_afa.selected)} selected="selected"{/if}>{$_afa.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="EU-n belüli" for="EuEdit"}
+                    <input id="EuEdit" name="eu" type="checkbox"{if ($egyed.eu)} checked="checked"{/if}>
+                {/mezo}
+            {/mezocsoport}
         </div>
         <div id="LathatosagTab" class="mattkarb-page" data-visible="visible">
             <div>

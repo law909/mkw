@@ -7,18 +7,14 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="MitEdit">{at('Mit')}:</label></td>
-                    <td>{if ($oper == 'add')}<input id="MitEdit" name="mit" type="text" size="80" maxlength="255" value="{$egyed.mit}" required="required">{else}<input id="MitEdit" type="text" size="80" value="{$egyed.mit}" readonly="readonly"><input name="mit" type="hidden" value="{$egyed.mit}">{/if}</td>
-                </tr>
-                <tr>
-                    <td><label for="MireEdit">{at('Mire')}:</label></td>
-                    <td><input id="MireEdit" name="mire" type="text" size="80" maxlength="255" value="{$egyed.mire}"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Mit" for="MitEdit"}
+                    {if ($oper == 'add')}<input id="MitEdit" name="mit" type="text" size="80" maxlength="255" value="{$egyed.mit}" required="required">{else}<input id="MitEdit" type="text" size="80" value="{$egyed.mit}" readonly="readonly"><input name="mit" type="hidden" value="{$egyed.mit}">{/if}
+                {/mezo}
+                {mezo cimke="Mire" for="MireEdit"}
+                    <input id="MireEdit" name="mire" type="text" size="80" maxlength="255" value="{$egyed.mire}">
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

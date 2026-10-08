@@ -10,18 +10,14 @@
             {/if}
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required"></td>
-                </tr>
-                <tr>
-                    <td><label for="JogEdit">{at('Jog')}:</label></td>
-                    <td><input id="JogEdit" name="jog" type="number" step="1" value="{$egyed.jog}" required="required"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required="required">
+                {/mezo}
+                {mezo cimke="Jog" for="JogEdit"}
+                    <input id="JogEdit" name="jog" type="number" step="1" value="{$egyed.jog}" required="required">
+                {/mezo}
+            {/mezocsoport}
         </div>
         {if (isset($egyed.menucsoportok))}
             <div id="MenuTab" class="mattkarb-page" data-visible="visible">
