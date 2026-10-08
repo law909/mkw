@@ -52,7 +52,7 @@
                             </td>
                             {if ($showkeszlet)}
                                 <td class="textalignright {if ($_valt.keszlet > 0)}keszletvan{else}keszletnincs{/if}">
-                                    {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} pcs
+                                    {if ($_valt.keszlet <= 0)}0{else}{$_valt.keszlet}{/if} {t('db')}
                                 </td>
                             {else}
                                 <td class="valtozatkeszlet textaligncenter">
