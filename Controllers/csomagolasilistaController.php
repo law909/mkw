@@ -148,11 +148,13 @@ class csomagolasilistaController extends \mkwhelpers\Controller
             $osszesen['nettosuly'] += (float)$doboz->getNettosuly();
             $osszesen['bruttosuly'] += (float)$doboz->getBruttosuly();
             $osszesen['terfogat'] += $doboz->getTerfogat();
+            $sorok = [];
+            $dobozdarab = 0;
             /** @var Csomagolasitetel $ct */
             foreach ($doboz->getTetelek() as $ct) {
                 $tetel = $ct->getBizonylattetel();
-                $becsomagolt += (float)$ct->getMennyiseg();
-                $tartalom[] = [
+                $dobozdarab += (float)$ct->getMennyiseg();
+                $sorok[] = [
                     'dobozszam' => $doboz->getDobozszam(),
                     'cikkszam' => $tetel->getDisplayCikkszam(),
                     'nev' => $tetel->getTermeknev(),
@@ -161,6 +163,10 @@ class csomagolasilistaController extends \mkwhelpers\Controller
                     'mennyiseg' => (float)$ct->getMennyiseg(),
                 ];
             }
+            if ($sorok) {
+                $tartalom[] = ['dobozszam' => $doboz->getDobozszam(), 'sorok' => $sorok, 'darab' => $dobozdarab];
+            }
+            $becsomagolt += $dobozdarab;
         }
         ksort($meretek, SORT_NATURAL);
 
@@ -180,6 +186,7 @@ class csomagolasilistaController extends \mkwhelpers\Controller
         $view->setVar('dobozlista', $dobozlista);
         $view->setVar('osszesen', $osszesen);
         $view->setVar('tartalom', $tartalom);
+        $view->setVar('becsomagolt', $becsomagolt);
         $view->setVar('hianyzik', round($hianyzik, 4));
         $pdf = new \mkw\mkwmpdf($view->getTemplateResult());
         $pdf->getEngine()->SetTitle(t('Csomagolási lista') . ' ' . $bizonylat->getId());

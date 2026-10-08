@@ -47,6 +47,12 @@
             border-top: 0.6mm double #8a7f6a;
             border-bottom: none;
         }
+        table.lista tr.dobozosszesito td {
+            font-weight: bold;
+            border-top: 0.4mm solid #8a7f6a;
+            border-bottom: none;
+            padding-bottom: 2.5mm;
+        }
         table.lista .jobb {
             text-align: right;
         }
@@ -132,17 +138,29 @@
     </tr>
     </thead>
     <tbody>
-    {foreach $tartalom as $_sor}
-        <tr>
-            <td>{$_sor.dobozszam}</td>
-            <td>{$_sor.cikkszam|escape}</td>
-            <td>{$_sor.nev|escape}</td>
-            <td>{$_sor.szin|escape}</td>
-            <td>{$_sor.meret|escape}</td>
-            <td class="jobb">{$_sor.mennyiseg*1}</td>
+    {foreach $tartalom as $_doboz}
+        {foreach $_doboz.sorok as $_sor}
+            <tr>
+                <td>{$_doboz.dobozszam}</td>
+                <td>{$_sor.cikkszam|escape}</td>
+                <td>{$_sor.nev|escape}</td>
+                <td>{$_sor.szin|escape}</td>
+                <td>{$_sor.meret|escape}</td>
+                <td class="jobb">{$_sor.mennyiseg*1}</td>
+            </tr>
+        {/foreach}
+        <tr class="dobozosszesito">
+            <td colspan="5">{$_doboz.dobozszam}. doboz összesen / Box {$_doboz.dobozszam} total</td>
+            <td class="jobb">{$_doboz.darab*1}</td>
         </tr>
     {/foreach}
     </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5">Összesen / Total: {count($dobozlista)} doboz / boxes</td>
+        <td class="jobb">{$becsomagolt*1}</td>
+    </tr>
+    </tfoot>
 </table>
 </body>
 </html>
