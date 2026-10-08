@@ -166,16 +166,16 @@
             </div>
             <div id="cimkefiltercontainer">
                 <div id="cimkefiltercontainerhead"><a id="cimkefiltercollapse" href="#"
-                                                      data-visible="visible">{at('Kinyit/becsuk')}</a></div>
+                                                      data-visible="hidden">{at('Kinyit/becsuk')}</a></div>
                 {foreach $cimkekat as $_cimkekat}
                     <div class="mattedit-titlebar ui-widget-header ui-helper-clearfix js-cimkefiltercloseupbutton"
                          data-refcontrol="#{$_cimkekat.sanitizedcaption}">
                         <a href="#" class="mattedit-titlebar-close">
-                            <span class="ui-icon ui-icon-circle-triangle-n"></span>
+                            <span class="ui-icon ui-icon-circle-triangle-s"></span>
                         </a>
                         <span>{$_cimkekat.caption}</span>
                     </div>
-                    <div id="{$_cimkekat.sanitizedcaption}" class="accordpage cimkelista" data-visible="visible">
+                    <div id="{$_cimkekat.sanitizedcaption}" class="accordpage cimkelista" data-visible="hidden">
                         {foreach $_cimkekat.cimkek as $_cimke}
                             <a class="js-cimkefilter" href="#" data-id="{$_cimke.id}">{$_cimke.caption}</a>
                             &nbsp;&nbsp;
