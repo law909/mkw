@@ -1172,6 +1172,13 @@ select.tetelszamhiba,
     font-weight: bold;
 }
 
+/* egyforma hosszú mezők a két oszlopban (a modern téma rácsában a modern.css teszi az oszlop szélességére) */
+table.mattkarb-racs-kitolt td:not([colspan]) > input:not([type="checkbox"]):not([type="radio"]),
+table.mattkarb-racs-kitolt td:not([colspan]) > select {
+    width: 18em;
+    box-sizing: border-box;
+}
+
 /* Karbantartó mezőelrendezés táblázat helyett ({mezocsoport}/{mezo}, SmartyView). A .mezo display:contents,
    így a címkék és a mezők közvetlenül a csoport rácsába kerülnek, és soronként egymás alá igazodnak. */
 .mezok {

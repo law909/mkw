@@ -54,7 +54,7 @@
                 </tbody>
             </table>
             <div class="mattkarb-szakaszcim">{at('Alapadatok')}</div>
-            <table class="mattkarb-racs">
+            <table class="mattkarb-racs mattkarb-racs-kitolt">
                 <tbody>
                 <tr>
                     <td><label for="NevEdit">{at('Név')}:</label></td>

@@ -931,6 +931,17 @@ body.modernui {
     max-width: 100%;
 }
 
+/* kitöltő változat (termék karbantartó): minden mező a saját oszlopa szélességét kapja, a magában álló mező sem nyúlik át a második oszlopba */
+.modernui table.mattkarb-racs-kitolt > tbody > tr > td:nth-child(2):last-child:not([colspan]) {
+    grid-column: auto;
+}
+
+.modernui table.mattkarb-racs-kitolt > tbody > tr > td > input:not([type="checkbox"]):not([type="radio"]),
+.modernui table.mattkarb-racs-kitolt > tbody > tr > td > select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 /* mező + gomb egy cellában (pl. adószám + NAV): a gomb a mező mellett marad, nem csúszik alá */
 .modernui .mattkarb-mezogomb {
     display: flex;
