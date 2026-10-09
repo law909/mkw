@@ -9,6 +9,7 @@
         {if ($_egyed.nemrossz)}
             <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
         {/if}
+        <a class="js-naplobizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Bizonylat napló')}"><span class="ui-icon ui-icon-clipboard"></span></a>
         <table>
             <tbody>
                 {if ($showerbizonylatszam)}

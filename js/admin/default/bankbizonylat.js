@@ -203,7 +203,7 @@ $(document).ready(function () {
             tablebody: {
                 url: '/admin/bankbizonylatfej/getlistbody',
                 onStyle: function () {
-                    $('.js-rontbizonylat').button();
+                    $('.js-rontbizonylat,.js-naplobizonylat').button();
                 }
             },
             karb: bankbizonylat
@@ -211,6 +211,24 @@ $(document).ready(function () {
 
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
+        });
+        $('#mattable-body').on('click', '.js-naplobizonylat', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/bankbizonylatfej/getnaplo',
+                data: {id: $(this).data('egyedid')},
+                success: (data) => {
+                    const $dialog = $('#dialogcenter');
+                    $dialog.html(data).dialog({
+                        title: 'Bizonylat napló',
+                        width: 600,
+                        modal: true,
+                        buttons: {
+                            'OK': () => $dialog.dialog('close')
+                        }
+                    });
+                }
+            });
         });
         $('#mattable-body').on('click', '.js-rontbizonylat', function (e) {
             e.preventDefault();

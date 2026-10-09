@@ -67,10 +67,10 @@ class Bizonylatnaplo extends \Entities\Bizonylatnaplo implements \Doctrine\ORM\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozonev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemeny', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemenynev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'mezo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'regiertek', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'ujertek'];
+            return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozonev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemeny', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemenynev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'mezo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'regiertek', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'ujertek'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozonev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemeny', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemenynev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'mezo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'regiertek', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'ujertek'];
+        return ['__isInitialized__', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'id', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'created', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'bizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'bankbizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'penztarbizonylatfej', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'dolgozonev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemeny', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'esemenynev', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'mezo', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'regiertek', '' . "\0" . 'Entities\\Bizonylatnaplo' . "\0" . 'ujertek'];
     }
 
     /**
@@ -256,6 +256,61 @@ class Bizonylatnaplo extends \Entities\Bizonylatnaplo implements \Doctrine\ORM\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBizonylatfej', [$bizonylatfej]);
 
         return parent::setBizonylatfej($bizonylatfej);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBankbizonylatfej()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getBankbizonylatfej', []);
+
+        return parent::getBankbizonylatfej();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setBankbizonylatfej($bankbizonylatfej)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBankbizonylatfej', [$bankbizonylatfej]);
+
+        return parent::setBankbizonylatfej($bankbizonylatfej);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPenztarbizonylatfej()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPenztarbizonylatfej', []);
+
+        return parent::getPenztarbizonylatfej();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPenztarbizonylatfej($penztarbizonylatfej)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPenztarbizonylatfej', [$penztarbizonylatfej]);
+
+        return parent::setPenztarbizonylatfej($penztarbizonylatfej);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPenzmozgas($fej)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPenzmozgas', [$fej]);
+
+        return parent::setPenzmozgas($fej);
     }
 
     /**

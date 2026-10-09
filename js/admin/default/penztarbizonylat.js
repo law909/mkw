@@ -257,7 +257,7 @@ $(document).ready(function () {
                 onStyle: function () {
                     // a nyomtatás link href-je szerver oldalon készen jön, itt csak a
                     // jQuery UI gomb-megjelenést kapja meg
-                    $('.js-rontbizonylat,.js-printbizonylat').button();
+                    $('.js-rontbizonylat,.js-printbizonylat,.js-naplobizonylat').button();
                 }
             },
             karb: penztarbizonylat
@@ -274,6 +274,24 @@ $(document).ready(function () {
 
         $('.js-maincheckbox').change(function () {
             $('.js-egyedcheckbox').prop('checked', $(this).prop('checked'));
+        });
+        $('#mattable-body').on('click', '.js-naplobizonylat', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/admin/penztarbizonylatfej/getnaplo',
+                data: {id: $(this).data('egyedid')},
+                success: (data) => {
+                    const $dialog = $('#dialogcenter');
+                    $dialog.html(data).dialog({
+                        title: 'Bizonylat napló',
+                        width: 600,
+                        modal: true,
+                        buttons: {
+                            'OK': () => $dialog.dialog('close')
+                        }
+                    });
+                }
+            });
         });
         $('#mattable-body').on('click', '.js-rontbizonylat', function (e) {
             e.preventDefault();

@@ -31,4 +31,31 @@ class BizonylatnaploRepository extends \mkwhelpers\Repository
         return $q->getResult();
     }
 
+    /**
+     * @return \Entities\Bizonylatnaplo[]
+     */
+    public function getByBankbizonylatfej($bizonylatfejid)
+    {
+        return $this->getByRelation('bankbizonylatfej', $bizonylatfejid);
+    }
+
+    /**
+     * @return \Entities\Bizonylatnaplo[]
+     */
+    public function getByPenztarbizonylatfej($bizonylatfejid)
+    {
+        return $this->getByRelation('penztarbizonylatfej', $bizonylatfejid);
+    }
+
+    private function getByRelation(string $relation, $bizonylatfejid)
+    {
+        $q = $this->_em->createQuery(
+            'SELECT _xx FROM Entities\Bizonylatnaplo _xx'
+            . ' WHERE _xx.' . $relation . ' = :bizfej'
+            . ' ORDER BY _xx.created ASC, _xx.id ASC'
+        );
+        $q->setParameter('bizfej', $bizonylatfejid);
+        return $q->getResult();
+    }
+
 }

@@ -530,6 +530,7 @@ if (\mkw\store::isBankpenztar()) {
         $router->map('POST', '/admin/bankbizonylattetel/save', 'bankbizonylattetelController#save', 'adminbankbizonylattetelsave');
     }
     $router->map('GET', '/admin/bankbizonylatfej/print', 'bankbizonylatfejController#doPrint', 'adminbankbizonylatfejprint');
+    $router->map('GET', '/admin/bankbizonylatfej/getnaplo', 'bankbizonylatfejController#getNaplo', 'adminbankbizonylatfejgetnaplo');
     $router->map('GET', '/admin/bankbizonylattetel/getemptyrow', 'bankbizonylattetelController#getemptyrow', 'adminbankbizonylattetelgetemptyrow');
     $router->map('GET', '/admin/bankbizonylattetel/viewlist', 'bankbizonylattetelController#viewlist', 'adminbankbizonylattetelviewlist');
     $router->map('GET', '/admin/bankbizonylattetel/viewselect', 'bankbizonylattetelController#viewselect', 'adminbankbizonylattetelviewselect');
@@ -545,6 +546,7 @@ if (\mkw\store::isBankpenztar()) {
         $router->map('POST', '/admin/penztarbizonylattetel/save', 'penztarbizonylattetelController#save', 'adminpenztarbizonylattetelsave');
     }
     $router->map('GET', '/admin/penztarbizonylatfej/print', 'penztarbizonylatfejController#doPrint', 'adminpenztarbizonylatfejprint');
+    $router->map('GET', '/admin/penztarbizonylatfej/getnaplo', 'penztarbizonylatfejController#getNaplo', 'adminpenztarbizonylatfejgetnaplo');
     $router->map('GET', '/admin/penztarbizonylatfej/checkdatum', 'penztarbizonylatfejController#checkZartIdoszak', 'adminpenztarbizonylatfejcheckzartidoszak');
     $router->map('GET', '/admin/penztarbizonylattetel/getemptyrow', 'penztarbizonylattetelController#getemptyrow', 'adminpenztarbizonylattetelgetemptyrow');
     $router->map('GET', '/admin/penztarbizonylattetel/viewlist', 'penztarbizonylattetelController#viewlist', 'adminpenztarbizonylattetelviewlist');

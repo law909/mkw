@@ -279,6 +279,8 @@ class PenztarbizonylatfejListener
         $this->bizonylattetelmd = $this->em->getClassMetadata(Penztarbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
 
+        (new PenzmozgasNaplo($this->em, Penztarbizonylatfej::class, Penztarbizonylattetel::class))->log();
+
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
             $this->uow->getScheduledEntityUpdates()

@@ -16,9 +16,16 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * Ez váltja ki a korábbi Bizonylatstatusznaplo + Bizonylatvaltozasnaplo párost.
  *
+ * A bank- és a pénztárbizonylat is ide naplóz: soronként a három bizonylat-kapcsolat közül
+ * pontosan egy kitöltött.
+ *
  * @ORM\Entity(repositoryClass="Entities\BizonylatnaploRepository")
  * @ORM\Table(name="bizonylatnaplo",options={"collate"="utf8_hungarian_ci", "charset"="utf8", "engine"="InnoDB"},
- *  indexes={@ORM\Index(name="bizonylatnaplo_bizonylat_idx",columns={"bizonylatfej_id","created"})})
+ *  indexes={
+ *      @ORM\Index(name="bizonylatnaplo_bizonylat_idx",columns={"bizonylatfej_id","created"}),
+ *      @ORM\Index(name="bizonylatnaplo_bankbizonylat_idx",columns={"bankbizonylatfej_id","created"}),
+ *      @ORM\Index(name="bizonylatnaplo_penztarbizonylat_idx",columns={"penztarbizonylatfej_id","created"})
+ *  })
  */
 class Bizonylatnaplo
 {
@@ -51,6 +58,18 @@ class Bizonylatnaplo
      * @ORM\JoinColumn(name="bizonylatfej_id",referencedColumnName="id",nullable=true,onDelete="cascade")
      */
     private $bizonylatfej;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bankbizonylatfej")
+     * @ORM\JoinColumn(name="bankbizonylatfej_id",referencedColumnName="id",nullable=true,onDelete="cascade")
+     */
+    private $bankbizonylatfej;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Penztarbizonylatfej")
+     * @ORM\JoinColumn(name="penztarbizonylatfej_id",referencedColumnName="id",nullable=true,onDelete="cascade")
+     */
+    private $penztarbizonylatfej;
 
     /**
      * Ki csinálta (bejelentkezett dolgozó, automatikus eseménynél null).
@@ -135,6 +154,46 @@ class Bizonylatnaplo
     public function setBizonylatfej($bizonylatfej)
     {
         $this->bizonylatfej = $bizonylatfej;
+    }
+
+    /**
+     * @return \Entities\Bankbizonylatfej
+     */
+    public function getBankbizonylatfej()
+    {
+        return $this->bankbizonylatfej;
+    }
+
+    public function setBankbizonylatfej($bankbizonylatfej)
+    {
+        $this->bankbizonylatfej = $bankbizonylatfej;
+    }
+
+    /**
+     * @return \Entities\Penztarbizonylatfej
+     */
+    public function getPenztarbizonylatfej()
+    {
+        return $this->penztarbizonylatfej;
+    }
+
+    public function setPenztarbizonylatfej($penztarbizonylatfej)
+    {
+        $this->penztarbizonylatfej = $penztarbizonylatfej;
+    }
+
+    /**
+     * A bank- vagy pénztárbizonylat, a típusa szerint a megfelelő kapcsolatba.
+     *
+     * @param \Entities\Bankbizonylatfej|\Entities\Penztarbizonylatfej $fej
+     */
+    public function setPenzmozgas($fej)
+    {
+        if ($fej instanceof Bankbizonylatfej) {
+            $this->bankbizonylatfej = $fej;
+        } else {
+            $this->penztarbizonylatfej = $fej;
+        }
     }
 
     /**

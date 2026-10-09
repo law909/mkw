@@ -9,6 +9,7 @@ class penztarbizonylatfejController extends \mkwhelpers\MattableController
 {
 
     use \Traits\Kiegyenlites;
+    use \Traits\PenzmozgasNaplozas;
 
     public function __construct()
     {

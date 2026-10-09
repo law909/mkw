@@ -254,6 +254,8 @@ class BankbizonylatfejListener
         $this->bizonylattetelmd = $this->em->getClassMetadata(Bankbizonylattetel::class);
         $this->folyoszamlamd = $this->em->getClassMetadata(Folyoszamla::class);
 
+        (new PenzmozgasNaplo($this->em, Bankbizonylatfej::class, Bankbizonylattetel::class))->log();
+
         $entities = array_merge(
             $this->uow->getScheduledEntityInsertions(),
             $this->uow->getScheduledEntityUpdates()
