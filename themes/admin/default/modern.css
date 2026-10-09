@@ -1179,6 +1179,11 @@ body.modernui {
     font-size: 1.05em;
 }
 
+/* rontott, stornó, stornózott sor: a bruttó is a sor szürkéjét vegye fel, mint a többi összeg */
+.modernui .rontott .bizlista-osszegek .mattable-important td {
+    color: inherit;
+}
+
 /* A bizonylat-, termék- és partnerlista közös elemei: a szerkezet a style.css-ben, itt a megjelenés */
 .modernui .bizlista-nev.mattable-editlink.ui-button {
     padding: .25em .7em;
