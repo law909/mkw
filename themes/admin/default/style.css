@@ -1193,6 +1193,11 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     display: contents;
 }
 
+/* a JS hidden osztállyal rejt; a .mezo display: contents-e különben felülírná */
+.mezo.hidden {
+    display: none;
+}
+
 /* a fül mezőcsoportja után álló doboz vagy táblázat ne tapadjon a mezőkhöz */
 .mattkarb-page > .mezocsoport + :not(.mezocsoport) {
     margin-top: 1.5em;
