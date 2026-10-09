@@ -1,6 +1,6 @@
 {if ($mezo|default:false)}
     {mezo cimke="Bizonylattípus" szeles=true}
-        <div class="mattkarb-pipak">
+        <div class="mattkarb-pipak mattkarb-pipaoszlopok">
             {foreach $bizonylattipuslist as $bt}
                 <span class="mattkarb-pipacimke">
                     <input id="bizonylattipuscb{$bt.id}" type="checkbox" name="bizonylattipus[]" value="{$bt.id}"{if (!empty($bizonylattipuschecked[$bt.id]))} checked="checked"{/if}>

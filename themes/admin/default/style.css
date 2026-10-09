@@ -1217,6 +1217,13 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     gap: 4px 18px;
 }
 
+/* sok pipa (pl. bizonylattípusok) egyforma szélességű oszlopokban */
+.mattkarb-pipak.mattkarb-pipaoszlopok {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12em, 1fr));
+    gap: 4px 18px;
+}
+
 .mattkarb-pipak > label {
     display: inline-flex;
     align-items: center;
