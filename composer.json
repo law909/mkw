@@ -25,7 +25,6 @@
             "mkwhelpers\\": "mkwhelpers",
             "Entities\\": "Entities",
             "Controllers\\": "Controllers",
-            "Proxies\\": "Proxies",
             "Traits\\": "Traits",
             "Services\\": "Services"
         }
