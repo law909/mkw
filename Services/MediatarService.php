@@ -190,7 +190,7 @@ class MediatarService
         $this->typedef = $types[$type];
 
         $base = self::getBaseUrl();
-        $this->rooturl = $base . ($this->typedef['dir'] ? $this->typedef['dir'] . '/' : '');
+        $this->rooturl = self::getContentBaseUrl() . ($this->typedef['dir'] ? $this->typedef['dir'] . '/' : '');
 
         $basereal = realpath(self::getDocRoot() . $base);
         if ($basereal === false) {
@@ -222,6 +222,28 @@ class MediatarService
             $root = \mkw\store::getConfigValue('path.ckfinder', '/kepek/');
         }
         return '/' . trim(str_replace('\\', '/', $root), '/') . '/';
+    }
+
+    /**
+     * The root's URL as written into the content. Differs from getBaseUrl() only when the files
+     * live in another install (mkwcansas: admin on a subdomain, path.mediatar = ../www/kepek/).
+     */
+    public static function getContentBaseUrl()
+    {
+        $url = \mkw\store::getConfigValue('path.mediatar.url');
+        if (!$url) {
+            return self::getBaseUrl();
+        }
+        return '/' . trim(str_replace('\\', '/', $url), '/') . '/';
+    }
+
+    /**
+     * Host prefix for showing the files in the admin when this host does not serve them
+     * (e.g. https://www.mindentkapni.hu); empty = the admin's own host.
+     */
+    public static function getPreviewHost()
+    {
+        return rtrim((string)\mkw\store::getConfigValue('path.mediatar.host', ''), '/');
     }
 
     /**
@@ -929,11 +951,11 @@ class MediatarService
         foreach (['250', '150'] as $size) {
             $cand = $base . '_' . $size . '.' . $ext;
             if (is_file($absfolder . DIRECTORY_SEPARATOR . $cand)) {
-                return $this->rooturl . ltrim($path, '/') . $cand;
+                return self::getPreviewHost() . $this->rooturl . ltrim($path, '/') . $cand;
             }
         }
         if (@filesize($absfolder . DIRECTORY_SEPARATOR . $name) < 204800) {
-            return $this->rooturl . ltrim($path, '/') . $name;
+            return self::getPreviewHost() . $this->rooturl . ltrim($path, '/') . $name;
         }
         return '/admin/mediatar/thumb?type=' . rawurlencode($this->type)
             . '&path=' . rawurlencode($path)

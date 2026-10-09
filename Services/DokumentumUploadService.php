@@ -32,7 +32,7 @@ class DokumentumUploadService
     /** A cél mappa teljes URL-je, a felületen megjelenítendő magyarázathoz. */
     public static function getUrl(): string
     {
-        return rtrim(MediatarService::getBaseUrl(), '/') . self::getPath();
+        return rtrim(MediatarService::getContentBaseUrl(), '/') . self::getPath();
     }
 
     /**
