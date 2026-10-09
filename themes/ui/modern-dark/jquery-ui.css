@@ -17,6 +17,8 @@
 	--mkw-card-bg: #232328;
 	/* a világos téma fehérjét felül kell írni: a modern-dark a modern után töltődik be, és örökölné */
 	--mkw-card-input-bg: var(--mkw-input-bg);
+	--mkw-card-button-bg: var(--mkw-button-bg);
+	--mkw-card-button-hover: var(--mkw-button-hover);
 	--mkw-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%230b0b0f' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 	--mkw-border: #2e2e33;
 	--mkw-border-strong: #3f3f46;

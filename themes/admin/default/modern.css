@@ -152,6 +152,16 @@ body.modernui {
     background: var(--mkw-button-hover);
 }
 
+/* a sablonba fixen írt ui-state-default gombot (pl. a tétel „Új” / „Adatlap” gombja) a jQuery UI
+   .ui-widget-content .ui-state-default szabálya a felület színére festené */
+.modernui .ui-widget-content :where(.ui-button.ui-state-default:not(.ui-state-hover, .ui-state-active, .ui-state-focus, .ui-state-disabled)) {
+    background: var(--mkw-button-bg);
+}
+
+.modernui .ui-widget-content :where(.ui-button.ui-state-default:not(.ui-state-hover, .ui-state-active, .ui-state-focus, .ui-state-disabled)):is(:hover, :focus) {
+    background: var(--mkw-button-hover);
+}
+
 /* Felső sáv
 ----------------------------------*/
 .modernui {
@@ -1073,6 +1083,15 @@ body.modernui {
     border-radius: var(--mkw-radius);
     background: var(--mkw-card-bg, var(--mkw-row-alt));
     box-shadow: var(--mkw-shadow-sm);
+}
+
+/* a kártyán belüli sima gomb a kártya hátterétől is elváljon (világos témában sötétebb szürke) */
+.modernui .mattable-repeatable :where(.ui-button:not(.ui-state-hover, .ui-state-active, .ui-state-focus, .ui-state-disabled)) {
+    background: var(--mkw-card-button-bg, var(--mkw-button-bg));
+}
+
+.modernui .mattable-repeatable :where(.ui-button:not(.ui-state-hover, .ui-state-active, .ui-state-focus, .ui-state-disabled)):is(:hover, :focus) {
+    background: var(--mkw-card-button-hover, var(--mkw-button-hover));
 }
 
 /* a kártyán belül a mező a kártya hátterétől is elváljon (világos témában fehér a szürkén) */
