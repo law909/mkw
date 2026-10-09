@@ -231,7 +231,14 @@
      * A `pending` a betöltés után kijelölendő fájl neve. Betöltésenként adjuk át, nem
      * állapotként: mappaváltáskor nem szivároghat át az előző mappa kijelölési szándéka.
      */
+    // the scroll position of each folder left, restored when going back up to it ("..", breadcrumb)
+    const views = {};
+
     function load(path, pending) {
+        const prevPath = state.path;
+        if (prevPath && $grid.find('.mt-tile').length) {
+            views[prevPath] = {from: state.from, to: state.to, top: $grid.scrollTop(), filter: state.filter};
+        }
         state.path = path || '/';
         state.pending = pending ? String(pending) : '';
         state.selection = [];
@@ -255,7 +262,13 @@
                 state.folders = d.folders || [];
                 state.files = d.files || [];
                 renderCrumbs();
-                render(anchorIndex());
+                const view = views[d.path];
+                if (view && !state.pending && view.filter === state.filter
+                    && d.path !== prevPath && prevPath.indexOf(d.path) === 0) {
+                    restoreView(view);
+                } else {
+                    render(anchorIndex());
+                }
             },
             error: function () {
                 message('A szerver nem válaszolt. Lehet, hogy lejárt a bejelentkezés – frissítsd az admin felületet.');
@@ -370,6 +383,14 @@
         }
         $grid.scrollTop(0);
         afterRender();
+    }
+
+    function restoreView(view) {
+        render(view.from);
+        while (state.to < view.to && state.to < filtered().length) {
+            renderNext();
+        }
+        $grid.scrollTop(view.top);
     }
 
     function renderNext() {
