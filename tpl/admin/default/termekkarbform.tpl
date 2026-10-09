@@ -262,27 +262,22 @@
             </div>
         {/if}
         <div id="TranslationTab" class="mattkarb-page" data-visible="visible">
-            <div>
-                <label for="NevL1Edit">{at('Név')}:</label>
-                <input id="NevL1Edit" name="nev_l1" type="text" size="83" maxlength="255" value="{$egyed.nev_l1}">
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="RovidleirasL1Edit">{at('Rövid leírás')}:</label>
-                <textarea id="RovidleirasL1Edit" name="rovidleiras_l1" cols="70"
-                          rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras_l1}</textarea>
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="OldalCimL1Edit">{at('Lap címe')}:</label>
-                <input id="OldalCimL1Edit" name="oldalcim_l1" type="text" size="100" maxlength="255"
-                       value="{$egyed.oldalcim_l1}">
-            </div>
-            <div class="matt-hseparator"></div>
-            <div>
-                <label for="LeirasL1Edit">{at('Leírás')}:</label>
-                <textarea id="LeirasL1Edit" name="leiras_l1" class="js-ckeditor">{$egyed.leiras_l1}</textarea>
-            </div>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevL1Edit"}
+                    <input id="NevL1Edit" name="nev_l1" type="text" size="83" maxlength="255" value="{$egyed.nev_l1}">
+                {/mezo}
+                {mezo cimke="Rövid leírás" for="RovidleirasL1Edit" szeles=true}
+                    <textarea id="RovidleirasL1Edit" name="rovidleiras_l1" cols="70"
+                        rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras_l1}</textarea>
+                {/mezo}
+                {mezo cimke="Lap címe" for="OldalCimL1Edit"}
+                    <input id="OldalCimL1Edit" name="oldalcim_l1" type="text" size="100" maxlength="255"
+                        value="{$egyed.oldalcim_l1}">
+                {/mezo}
+                {mezo cimke="Leírás" for="LeirasL1Edit" szeles=true}
+                    <textarea id="LeirasL1Edit" name="leiras_l1" class="js-ckeditor">{$egyed.leiras_l1}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
         <div id="CimkeTab" class="mattkarb-page" data-visible="visible">
             <div id="cimkekarbcontainer">

@@ -108,40 +108,33 @@
                 </tbody>
             </table>
             {if (!$setup.arsavok)}
-                <table>
-                    <tbody>
-                    <tr>
-                        <td></td>
-                        <td>HUF</td>
-                    </tr>
-                    <tr>
-                        <td><label for="NettoEdit">{at('Nettó')}:</label></td>
-                        <td><input id="NettoEdit" name="netto" type="number" step="any" value="{$egyed.netto}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="BruttoEdit">{at('Bruttó')}:</label></td>
-                        <td><input id="BruttoEdit" name="brutto" type="number" step="any" value="{$egyed.brutto}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="AkcioStartEdit">{at('Akció kezdete')}:</label></td>
-                        <td><input id="AkcioStartEdit" name="akciostart" type="text" size="12"
-                                   data-datum="{$egyed.akciostartstr}"></td>
-                        <td><label for="AkcioStopEdit">{at('Akció vége')}:</label></td>
-                        <td><input id="AkcioStopEdit" name="akciostop" type="text" size="12"
-                                   data-datum="{$egyed.akciostopstr}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="AkciosNettoEdit">{at('Akciós nettó')}:</label></td>
-                        <td><input id="AkciosNettoEdit" name="akciosnetto" type="number" step="any"
-                                   value="{$egyed.akciosnetto}"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="AkciosBruttoEdit">{at('Akciós bruttó')}:</label></td>
-                        <td><input id="AkciosBruttoEdit" name="akciosbrutto" type="number" step="any"
-                                   value="{$egyed.akciosbrutto}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                {mezocsoport}
+                    {mezo szeles=true}
+                        HUF
+                    {/mezo}
+                    {mezo cimke="Nettó" for="NettoEdit"}
+                        <input id="NettoEdit" name="netto" type="number" step="any" value="{$egyed.netto}">
+                    {/mezo}
+                    {mezo cimke="Bruttó" for="BruttoEdit"}
+                        <input id="BruttoEdit" name="brutto" type="number" step="any" value="{$egyed.brutto}">
+                    {/mezo}
+                    {mezo cimke="Akció kezdete" for="AkcioStartEdit" ujsor=true}
+                        <input id="AkcioStartEdit" name="akciostart" type="text" size="12"
+                            data-datum="{$egyed.akciostartstr}">
+                    {/mezo}
+                    {mezo cimke="Akció vége" for="AkcioStopEdit"}
+                        <input id="AkcioStopEdit" name="akciostop" type="text" size="12"
+                            data-datum="{$egyed.akciostopstr}">
+                    {/mezo}
+                    {mezo cimke="Akciós nettó" for="AkciosNettoEdit"}
+                        <input id="AkciosNettoEdit" name="akciosnetto" type="number" step="any"
+                            value="{$egyed.akciosnetto}">
+                    {/mezo}
+                    {mezo cimke="Akciós bruttó" for="AkciosBruttoEdit"}
+                        <input id="AkciosBruttoEdit" name="akciosbrutto" type="number" step="any"
+                            value="{$egyed.akciosbrutto}">
+                    {/mezo}
+                {/mezocsoport}
             {/if}
         </div>
         <div id="JogaTab" class="mattkarb-page" data-visible="visible">
@@ -200,16 +193,17 @@
         </div>
         {if ($setup.termekvaltozat)}
             <div id="ValtozatTab" class="mattkarb-page" data-visible="visible">
-                <div>
-                    <label for="ValtozatAdattipusEdit">{at('Látható tulajdonság')}:</label>
-                    <select id="ValtozatAdattipusEdit" name="valtozatadattipus">
-                        <option value="">{at('válasszon')}</option>
-                        {foreach $valtozatadattipuslist as $_valtozat}
-                            <option
-                                value="{$_valtozat.id}"{if ($_valtozat.selected)} selected="selected"{/if}>{$_valtozat.caption}</option>
-                        {/foreach}
-                    </select>
-                </div>
+                {mezocsoport}
+                    {mezo cimke="Látható tulajdonság" for="ValtozatAdattipusEdit"}
+                        <select id="ValtozatAdattipusEdit" name="valtozatadattipus">
+                            <option value="">{at('válasszon')}</option>
+                            {foreach $valtozatadattipuslist as $_valtozat}
+                                <option
+                                    value="{$_valtozat.id}"{if ($_valtozat.selected)} selected="selected"{/if}>{$_valtozat.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/mezo}
+                {/mezocsoport}
                 <a class="js-valtozatdelallbutton" href="#" title="{at('Mind törlése')}"
                    data-termekid="{$egyed.id}"><span class="ui-button-text">{at('Mind törlése')}</span></a>
                 <table id="valtozatgenerator" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
@@ -374,10 +368,11 @@
             </table>
         </div>
         <div id="KepTab" class="mattkarb-page" data-visible="visible">
-            <div>
-                <label for="RegikepurlEdit">{at('Régi kép url')}:</label>
-                <input id="RegikepurlEdit" type="text" name="regikepurl" size=70 value="{$egyed.regikepurl}">
-            </div>
+            {mezocsoport}
+                {mezo cimke="Régi kép url" for="RegikepurlEdit"}
+                    <input id="RegikepurlEdit" type="text" name="regikepurl" size=70 value="{$egyed.regikepurl}">
+                {/mezo}
+            {/mezocsoport}
             {include '../default/termekimagekarb.tpl'}
             {foreach $egyed.kepek as $kep}
                 {include '../default/termektermekkepkarb.tpl'}
