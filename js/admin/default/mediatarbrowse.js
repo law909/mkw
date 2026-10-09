@@ -231,7 +231,7 @@
      * A `pending` a betöltés után kijelölendő fájl neve. Betöltésenként adjuk át, nem
      * állapotként: mappaváltáskor nem szivároghat át az előző mappa kijelölési szándéka.
      */
-    // the scroll position of each folder left, restored when going back up to it ("..", breadcrumb)
+    // the scroll position of each folder left, restored on a refresh and when going back up to it ("..", breadcrumb)
     const views = {};
 
     function load(path, pending) {
@@ -263,8 +263,7 @@
                 state.files = d.files || [];
                 renderCrumbs();
                 const view = views[d.path];
-                if (view && !state.pending && view.filter === state.filter
-                    && d.path !== prevPath && prevPath.indexOf(d.path) === 0) {
+                if (view && !state.pending && view.filter === state.filter && prevPath.indexOf(d.path) === 0) {
                     restoreView(view);
                 } else {
                     render(anchorIndex());
