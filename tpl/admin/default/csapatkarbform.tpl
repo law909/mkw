@@ -9,80 +9,70 @@
             <li><a href="#KepTab">{at('Képek')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$csapat.nev}" required autofocus></td>
-                </tr>
-                <tr>
-                    <td><label for="LogoUrlEdit">{at('Logo')}:</label></td>
-                    <td>
-                        <table id="LogoImageEdit" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                            <tbody>
-                            <tr class="imageupload">
-                                <td>{if ($csapat.logourl)}<a class="js-toflyout" href="{$mainurl}{$csapat.logourl}" target="_blank"><img
-                                            src="{$mainurl}{$csapat.logourlsmall}" alt="{$csapat.logoleiras}" title="{$csapat.logoleiras}"/></a>{/if}</td>
-                                <td>
-                                    <table>
-                                        <tbody>
-                                        <tr>
-                                            <td><label for="LogoUrlEdit">{at('Logo')}:</label></td>
-                                            <td><input id="LogoUrlEdit" name="logourl" type="text" size="70" maxlength="255" value="{$csapat.logourl}"></td>
-                                            <td><a id="LogoKepBrowseButton" href="#" data-id="{$csapat.id}"
-                                                   title="{at('Browse')}">{at('...')}</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="LogoLeirasEdit">{at('Logo leírása')}:</label></td>
-                                            <td><input id="LogoLeirasEdit" name="logoleiras" type="text" size="70" value="{$csapat.logoleiras}"></td>
-                                            <td><a id="LogoKepDelButton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
-                                                        class="ui-icon ui-icon-circle-minus"></span></a></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="KepUrlEdit">{at('Kép')}:</label></td>
-                    <td>
-                        <table id="FoImageEdit" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
-                            <tbody>
-                            <tr class="imageupload">
-                                <td>{if ($csapat.kepurl)}<a class="js-toflyout" href="{$mainurl}{$csapat.kepurl}" target="_blank"><img
-                                            src="{$mainurl}{$csapat.kepurlsmall}" alt="{$csapat.kepleiras}" title="{$csapat.kepleiras}"/></a>{/if}</td>
-                                <td>
-                                    <table>
-                                        <tbody>
-                                        <tr>
-                                            <td><label for="KepUrlEdit">{at('Kép')}:</label></td>
-                                            <td><input id="KepUrlEdit" name="kepurl" type="text" size="70" maxlength="255" value="{$csapat.kepurl}"></td>
-                                            <td><a id="FoKepBrowseButton" href="#" data-id="{$csapat.id}"
-                                                   title="{at('Browse')}">{at('...')}</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label for="KepLeirasEdit">{at('Kép leírása')}:</label></td>
-                                            <td><input id="KepLeirasEdit" name="kepleiras" type="text" size="70" value="{$csapat.kepleiras}"></td>
-                                            <td><a id="FoKepDelButton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
-                                                        class="ui-icon ui-icon-circle-minus"></span></a></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
-                    <td><textarea id="LeirasEdit" name="leiras">{$csapat.leiras}</textarea></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$csapat.nev}" required autofocus>
+                {/mezo}
+                {mezo cimke="Logo" for="LogoUrlEdit" szeles=true}
+                    <table id="LogoImageEdit" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <tbody>
+                        <tr class="imageupload">
+                            <td>{if ($csapat.logourl)}<a class="js-toflyout" href="{$mainurl}{$csapat.logourl}" target="_blank"><img
+                                        src="{$mainurl}{$csapat.logourlsmall}" alt="{$csapat.logoleiras}" title="{$csapat.logoleiras}"/></a>{/if}</td>
+                            <td>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td><label for="LogoUrlEdit">{at('Logo')}:</label></td>
+                                        <td><input id="LogoUrlEdit" name="logourl" type="text" size="70" maxlength="255" value="{$csapat.logourl}"></td>
+                                        <td><a id="LogoKepBrowseButton" href="#" data-id="{$csapat.id}"
+                                               title="{at('Browse')}">{at('...')}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="LogoLeirasEdit">{at('Logo leírása')}:</label></td>
+                                        <td><input id="LogoLeirasEdit" name="logoleiras" type="text" size="70" value="{$csapat.logoleiras}"></td>
+                                        <td><a id="LogoKepDelButton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
+                                                    class="ui-icon ui-icon-circle-minus"></span></a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {/mezo}
+                {mezo cimke="Kép" for="KepUrlEdit" szeles=true}
+                    <table id="FoImageEdit" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
+                        <tbody>
+                        <tr class="imageupload">
+                            <td>{if ($csapat.kepurl)}<a class="js-toflyout" href="{$mainurl}{$csapat.kepurl}" target="_blank"><img
+                                        src="{$mainurl}{$csapat.kepurlsmall}" alt="{$csapat.kepleiras}" title="{$csapat.kepleiras}"/></a>{/if}</td>
+                            <td>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td><label for="KepUrlEdit">{at('Kép')}:</label></td>
+                                        <td><input id="KepUrlEdit" name="kepurl" type="text" size="70" maxlength="255" value="{$csapat.kepurl}"></td>
+                                        <td><a id="FoKepBrowseButton" href="#" data-id="{$csapat.id}"
+                                               title="{at('Browse')}">{at('...')}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="KepLeirasEdit">{at('Kép leírása')}:</label></td>
+                                        <td><input id="KepLeirasEdit" name="kepleiras" type="text" size="70" value="{$csapat.kepleiras}"></td>
+                                        <td><a id="FoKepDelButton" href="#" data-id="{$csapat.id}" title="{at('Töröl')}"><span
+                                                    class="ui-icon ui-icon-circle-minus"></span></a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {/mezo}
+                {mezo cimke="Leírás" for="LeirasEdit" szeles=true}
+                    <textarea id="LeirasEdit" name="leiras">{$csapat.leiras}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
         <div id="KepTab" class="mattkarb-page" data-visible="visible">
             {foreach $csapat.kepek as $kep}
