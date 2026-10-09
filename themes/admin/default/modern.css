@@ -102,6 +102,42 @@ body.modernui {
     accent-color: var(--mkw-accent);
 }
 
+/* saját rajzú jelölőnégyzet: a natív bepipálatlan doboz főleg sötét témában alig válik el a felülettől */
+.modernui input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--mkw-checkbox-border, var(--mkw-border-strong));
+    border-radius: 4px;
+    background: var(--mkw-input-bg, var(--mkw-surface)) center / 12px 12px no-repeat;
+    vertical-align: -3px;
+    cursor: pointer;
+    transition: background-color .12s, border-color .12s;
+}
+
+.modernui input[type="checkbox"]:hover {
+    border-color: var(--mkw-accent);
+}
+
+.modernui input[type="checkbox"]:checked {
+    border-color: var(--mkw-accent);
+    background-color: var(--mkw-accent);
+    background-image: var(--mkw-check-icon);
+}
+
+.modernui input[type="checkbox"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--mkw-focus);
+}
+
+.modernui input[type="checkbox"]:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
 .modernui .ui-button {
     padding: .35em .9em;
 }
