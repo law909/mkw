@@ -14,53 +14,40 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="LathatoCheck" name="lathato" type="checkbox"
                    {if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="MegjelenesDatumEdit">{at('Megjelenés dátuma')}:</label></td>
-                    <td><input id="MegjelenesDatumEdit" name="megjelenesdatum" type="text" size="12"
-                               data-datum="{$egyed.megjelenesdatumstr}"></td>
-                </tr>
-                <tr>
-                    <td><label>{at('Kategóriák')}:</label></td>
-                    <td><span id="TermekKategoria1" class="js-termekfabutton" data-text="{at('válasszon')}"
-                              data-name="termekfa1"
-                              data-value="{$egyed.termekfa1}">{if ($egyed.termekfa1nev)}{$egyed.termekfa1nev}{else}{at('válasszon')}{/if}</span>
-                    </td>
-                    <td><span id="TermekKategoria2" class="js-termekfabutton" data-text="{at('válasszon')}"
-                              data-name="termekfa2"
-                              data-value="{$egyed.termekfa2}">{if ($egyed.termekfa2nev)}{$egyed.termekfa2nev}{else}{at('válasszon')}{/if}</span>
-                    </td>
-                    <td><span id="TermekKategoria3" class="js-termekfabutton" data-text="{at('válasszon')}"
-                              data-name="termekfa3"
-                              data-value="{$egyed.termekfa3}">{if ($egyed.termekfa3nev)}{$egyed.termekfa3nev}{else}{at('válasszon')}{/if}</span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Cím')}:</label></td>
-                    <td colspan="3"><input id="NevEdit" name="cim" type="text" size="83" maxlength="255"
-                                           value="{$egyed.cim}" required autofocus></td>
-                </tr>
-                <tr>
-                    <td><label for="RovidLeirasEdit">{at('Kivonat')}:</label></td>
-                    <td><input id="RovidLeirasEdit" name="kivonat" type="text" size="100" maxlength="255"
-                               value="{$egyed.kivonat}"></td>
-                </tr>
-                <tr>
-                    <td><label for="LeirasEdit">{at('Szöveg')}:</label></td>
-                    <td><textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="SeoDescriptionEdit">{at('META leírás')}:</label></td>
-                    <td><textarea id="SeoDescriptionEdit" name="seodescription"
-                              cols="70">{$egyed.seodescription}</textarea></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Megjelenés dátuma" for="MegjelenesDatumEdit"}
+                    <input id="MegjelenesDatumEdit" name="megjelenesdatum" type="text" size="12"
+                        data-datum="{$egyed.megjelenesdatumstr}">
+                {/mezo}
+                {mezo cimke="Kategóriák"}
+                    <span id="TermekKategoria1" class="js-termekfabutton" data-text="{at('válasszon')}"
+                        data-name="termekfa1"
+                        data-value="{$egyed.termekfa1}">{if ($egyed.termekfa1nev)}{$egyed.termekfa1nev}{else}{at('válasszon')}{/if}</span>
+                    <span id="TermekKategoria2" class="js-termekfabutton" data-text="{at('válasszon')}"
+                        data-name="termekfa2"
+                        data-value="{$egyed.termekfa2}">{if ($egyed.termekfa2nev)}{$egyed.termekfa2nev}{else}{at('válasszon')}{/if}</span>
+                    <span id="TermekKategoria3" class="js-termekfabutton" data-text="{at('válasszon')}"
+                        data-name="termekfa3"
+                        data-value="{$egyed.termekfa3}">{if ($egyed.termekfa3nev)}{$egyed.termekfa3nev}{else}{at('válasszon')}{/if}</span>
+                {/mezo}
+            {/mezocsoport}
+            {mezocsoport}
+                {mezo cimke="Cím" for="NevEdit" szeles=true}
+                    <input id="NevEdit" name="cim" type="text" size="83" maxlength="255"
+                        value="{$egyed.cim}" required autofocus>
+                {/mezo}
+                {mezo cimke="Kivonat" for="RovidLeirasEdit"}
+                    <input id="RovidLeirasEdit" name="kivonat" type="text" size="100" maxlength="255"
+                        value="{$egyed.kivonat}">
+                {/mezo}
+                {mezo cimke="Szöveg" for="LeirasEdit" szeles=true}
+                    <textarea id="LeirasEdit" name="szoveg">{$egyed.szoveg}</textarea>
+                {/mezo}
+                {mezo cimke="META leírás" for="SeoDescriptionEdit" szeles=true}
+                    <textarea id="SeoDescriptionEdit" name="seodescription"
+                        cols="70">{$egyed.seodescription}</textarea>
+                {/mezo}
+            {/mezocsoport}
             <div>
                 {include 'termekimagekarb.tpl'}
             </div>

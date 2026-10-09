@@ -13,72 +13,56 @@
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
             <input id="InaktivCheck" name="inaktiv" type="checkbox"
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" value="{$egyed.nev}" title="csak belső azonosításra, nem jelenik meg"></td>
-                </tr>
-                <tr>
-                    <td><label for="DisplayTimeEdit">{at('Megjelenés késleltetése (mp)')}:</label></td>
-                    <td><input id="DisplayTimeEdit" name="displaytime" type="number" value="{$egyed.displaytime}">
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" value="{$egyed.nev}" title="csak belső azonosításra, nem jelenik meg">
+                {/mezo}
+                {mezo cimke="Megjelenés késleltetése (mp)" for="DisplayTimeEdit"}
+                    <div class="mattkarb-mezogomb">
+                        <input id="DisplayTimeEdit" name="displaytime" type="number" value="{$egyed.displaytime}">
                         <input id="trCheck"
-                               name="triggerafterprevious"
-                               type="checkbox"
-                               {if ($egyed.triggerafterprevious)}checked="checked"{/if}>{at('Az előző popup bezárása után')}
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="overlaybackgroundcolorEdit">{at('Overlay háttérszín')}:</label></td>
-                    <td><input id="overlaybackgroundcolorEdit" name="overlaybackgroundcolor" type="text" value="{$egyed.overlaybackgroundcolor}"
-                               title="#rrggbb"></td>
-                </tr>
-                <tr>
-                    <td><label for="overlayopacityEdit">{at('Overlay átlátszóság')}:</label></td>
-                    <td><input id="overlayopacityEdit" name="overlayopacity" type="number" step="any" value="{$egyed.overlayopacity}"></td>
-                </tr>
-                <tr>
-                    <td><label for="headertextEdit">{at('Cím')}:</label></td>
-                    <td><input id="headertextEdit" name="headertext" type="text" value="{$egyed.headertext}"></td>
-                </tr>
-                <tr>
-                    <td><label for="bodytextEdit">{at('Szöveg')}:</label></td>
-                    <td><textarea id="bodytextEdit" name="bodytext" type="text">{$egyed.bodytext}</textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="closebuttontextEdit">{at('"Bezár" gomb felirat')}:</label></td>
-                    <td><input id="closebuttontextEdit" name="closebuttontext" type="text" value="{$egyed.closebuttontext}"></td>
-                </tr>
-                <tr>
-                    <td><label for="closebuttoncolorEdit">{at('"Bezár" gomb betűszín')}:</label></td>
-                    <td><input id="closebuttoncolorEdit" name="closebuttoncolor" type="text" value="{$egyed.closebuttoncolor}" title="#rrggbb"></td>
-                </tr>
-                <tr>
-                    <td><label for="closebuttonbackgroundcolorEdit">{at('"Bezár" gomb háttérszín')}:</label></td>
-                    <td><input id="closebuttonbackgroundcolorEdit" name="closebuttonbackgroundcolor" type="text" value="{$egyed.closebuttonbackgroundcolor}"
-                               title="#rrggbb">
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="contentwidthEdit">{at('Tartalom szélessége')}:</label></td>
-                    <td><input id="contentwidthEdit" name="contentwidth" type="text" value="{$egyed.contentwidth}" title="% vagy px vagy más CSS mértékegység">
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="contentheightEdit">{at('Tartalom magassága')}:</label></td>
-                    <td><input id="contentheightEdit" name="contentheight" type="text" value="{$egyed.contentheight}"
-                               title="% vagy px vagy más CSS mértékegység"></td>
-                </tr>
-                <tr>
-                    <td><label for="contenttopEdit">{at('Tartalom teteje')}:</label></td>
-                    <td><input id="contenttopEdit" name="contenttop" type="text" value="{$egyed.contenttop}" title="% vagy px vagy más CSS mértékegység"></td>
-                </tr>
-                <tr>
-                    <td><label for="popuporderEdit">{at('Sorrend')}:</label></td>
-                    <td><input id="popuporderEdit" name="popuporder" type="number" value="{$egyed.popuporder}"></td>
-                </tr>
-                </tbody>
-            </table>
+                            name="triggerafterprevious"
+                            type="checkbox"
+                        {if ($egyed.triggerafterprevious)}checked="checked"{/if}>{at('Az előző popup bezárása után')}
+                    </div>
+                {/mezo}
+                {mezo cimke="Overlay háttérszín" for="overlaybackgroundcolorEdit"}
+                    <input id="overlaybackgroundcolorEdit" name="overlaybackgroundcolor" type="text" value="{$egyed.overlaybackgroundcolor}"
+                        title="#rrggbb">
+                {/mezo}
+                {mezo cimke="Overlay átlátszóság" for="overlayopacityEdit"}
+                    <input id="overlayopacityEdit" name="overlayopacity" type="number" step="any" value="{$egyed.overlayopacity}">
+                {/mezo}
+                {mezo cimke="Cím" for="headertextEdit"}
+                    <input id="headertextEdit" name="headertext" type="text" value="{$egyed.headertext}">
+                {/mezo}
+                {mezo cimke="Szöveg" for="bodytextEdit" szeles=true}
+                    <textarea id="bodytextEdit" name="bodytext" type="text">{$egyed.bodytext}</textarea>
+                {/mezo}
+                {mezo cimke='"Bezár" gomb felirat' for="closebuttontextEdit"}
+                    <input id="closebuttontextEdit" name="closebuttontext" type="text" value="{$egyed.closebuttontext}">
+                {/mezo}
+                {mezo cimke='"Bezár" gomb betűszín' for="closebuttoncolorEdit"}
+                    <input id="closebuttoncolorEdit" name="closebuttoncolor" type="text" value="{$egyed.closebuttoncolor}" title="#rrggbb">
+                {/mezo}
+                {mezo cimke='"Bezár" gomb háttérszín' for="closebuttonbackgroundcolorEdit"}
+                    <input id="closebuttonbackgroundcolorEdit" name="closebuttonbackgroundcolor" type="text" value="{$egyed.closebuttonbackgroundcolor}"
+                        title="#rrggbb">
+                {/mezo}
+                {mezo cimke="Tartalom szélessége" for="contentwidthEdit"}
+                    <input id="contentwidthEdit" name="contentwidth" type="text" value="{$egyed.contentwidth}" title="% vagy px vagy más CSS mértékegység">
+                {/mezo}
+                {mezo cimke="Tartalom magassága" for="contentheightEdit"}
+                    <input id="contentheightEdit" name="contentheight" type="text" value="{$egyed.contentheight}"
+                        title="% vagy px vagy más CSS mértékegység">
+                {/mezo}
+                {mezo cimke="Tartalom teteje" for="contenttopEdit"}
+                    <input id="contenttopEdit" name="contenttop" type="text" value="{$egyed.contenttop}" title="% vagy px vagy más CSS mértékegység">
+                {/mezo}
+                {mezo cimke="Sorrend" for="popuporderEdit"}
+                    <input id="popuporderEdit" name="popuporder" type="number" value="{$egyed.popuporder}">
+                {/mezo}
+            {/mezocsoport}
             <div>
                 <table id="FoImageEdit" class="ui-widget ui-widget-content ui-corner-all mattable-repeatable">
                     <tbody>

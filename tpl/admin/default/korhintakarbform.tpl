@@ -7,30 +7,24 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-			<tr>
-				<td><input id="LathatoCheck" name="lathato" type="checkbox"{if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}</input></td>
-			</tr>
-			<tr>
-				<td><label for="SorrendEdit">{at('Sorrend')}:</label></td>
-				<td><input id="SorrendEdit" name="sorrend" type="text" value="{$egyed.sorrend}"></td>
-			</tr>
-			<tr>
-				<td><label for="NevEdit">{at('Cím')}:</label></td>
-				<td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}"></td>
-			</tr>
-			<tr>
-				<td><label for="SzovegEdit">{at('Szöveg')}:</label></td>
-				<td><textarea id="SzovegEdit" name="szoveg">{$egyed.szoveg}</textarea></td>
-			</tr>
-			<tr>
-				<td><label for="UrlEdit">{at('URL')}:</label></td>
-				<td><input id="UrlEdit" name="url" type="text" size="80" maxlength="255" value="{$egyed.url}"></td>
-			</tr>
-			<tr>
+			{mezocsoport}
+				{mezo szeles=true}
+					<input id="LathatoCheck" name="lathato" type="checkbox"{if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}</input>
+				{/mezo}
+				{mezo cimke="Sorrend" for="SorrendEdit"}
+					<input id="SorrendEdit" name="sorrend" type="text" value="{$egyed.sorrend}">
+				{/mezo}
+				{mezo cimke="Cím" for="NevEdit"}
+					<input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}">
+				{/mezo}
+				{mezo cimke="Szöveg" for="SzovegEdit" szeles=true}
+					<textarea id="SzovegEdit" name="szoveg">{$egyed.szoveg}</textarea>
+				{/mezo}
+				{mezo cimke="URL" for="UrlEdit"}
+					<input id="UrlEdit" name="url" type="text" size="80" maxlength="255" value="{$egyed.url}">
+				{/mezo}
+			{/mezocsoport}
 			{include 'korhintaimagekarb.tpl'}
-			</tr>
-			</tbody></table>
 		</div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">
