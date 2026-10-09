@@ -1471,12 +1471,15 @@ class bizonylatfejController extends \mkwhelpers\MattableController
                     $this->getEm()->flush();
                     // A pénzügyi teljesítés stornózása csak a stornózott jelölő beállítása UTÁN
                     // mehet: az eredeti bizonylat folyószámla sorai ekkor képződnek újra.
+                    $stornoPenzmozgasDb = null;
                     if ($this->params->getBoolRequestParam('stornopenzmozgas')) {
                         $penzmozgasSvc = new PenzmozgasService();
-                        if ($penzmozgasSvc->createStornoPenzmozgas($parent, $o)) {
+                        $stornoPenzmozgasDb = $penzmozgasSvc->createStornoPenzmozgas($parent, $o);
+                        if ($stornoPenzmozgasDb) {
                             $this->getEm()->flush();
                         }
                     }
+                    $this->logStorno($parent, $o, $stornoPenzmozgasDb);
                 }
             }
         }
@@ -1504,15 +1507,52 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         if (!$o || !$o->getId() || ($parancs !== $this->editOperation)) {
             return;
         }
+        $this->persistNaplo($o, Bizonylatnaplo::ESEMENY_MENTES, t('Mentés'));
+        $this->getEm()->flush();
+    }
+
+    /**
+     * The storno and the payment question asked on saving it, on both the stornoed and the storno document.
+     *
+     * @param int|null $stornoPenzmozgasDb createStornoPenzmozgas() result, null when it did not run
+     */
+    private function logStorno($parent, $storno, $stornoPenzmozgasDb)
+    {
+        $kerdes = match ($this->params->getStringRequestParam('stornopenzmozgaskerdes')) {
+            'feltette' => t('A kérdés feltéve'),
+            'nincs' => t('Nem volt kérdés: nincs élő pénzmozgás'),
+            'hiba' => t('Nem volt kérdés: a pénzmozgások lekérdezése nem sikerült'),
+            default => t('Nem volt kérdés'),
+        };
+        if ($stornoPenzmozgasDb === null) {
+            $valasz = $this->params->getStringRequestParam('stornopenzmozgaskerdes') === 'feltette'
+                ? t('Maradjon: a pénzmozgás érintetlen')
+                : '';
+        } elseif ($stornoPenzmozgasDb) {
+            $valasz = t('Stornózza') . ': ' . $stornoPenzmozgasDb . ' ' . t('stornó pénzmozgás');
+        } else {
+            $valasz = t('Stornózza, de stornó pénzmozgás nem képződött (pl. zárt pénztáridőszak)');
+        }
+        $this->persistNaplo($parent, Bizonylatnaplo::ESEMENY_STORNO, t('Stornózás'), '', t('Stornó bizonylat') . ': ' . $storno->getId());
+        $this->persistNaplo($storno, Bizonylatnaplo::ESEMENY_STORNO, t('Stornózás'), '', t('Stornózott bizonylat') . ': ' . $parent->getId());
+        foreach ([$parent, $storno] as $biz) {
+            $this->persistNaplo($biz, Bizonylatnaplo::ESEMENY_STORNOPENZMOZGAS, t('Stornó pénzmozgás kérdés'), $kerdes, $valasz);
+        }
+        $this->getEm()->flush();
+    }
+
+    private function persistNaplo($biz, $esemeny, $esemenynev, $regiertek = null, $ujertek = null)
+    {
         $naplo = new Bizonylatnaplo();
-        $naplo->setBizonylatfej($o);
+        $naplo->setBizonylatfej($biz);
         $naplo->setCreated(new \DateTime());
         $naplo->setDolgozo(\mkw\store::getLoggedInDolgozo());
         $naplo->setDolgozonev(\mkw\store::getLoggedInDolgozoNev());
-        $naplo->setEsemeny(Bizonylatnaplo::ESEMENY_MENTES);
-        $naplo->setEsemenynev(t('Mentés'));
+        $naplo->setEsemeny($esemeny);
+        $naplo->setEsemenynev($esemenynev);
+        $naplo->setRegiertek($regiertek);
+        $naplo->setUjertek($ujertek);
         $this->getEm()->persist($naplo);
-        $this->getEm()->flush();
     }
 
     /**

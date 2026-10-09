@@ -1155,9 +1155,10 @@ let bizonylathelper = function ($) {
      * @param kerdes a PENZMOZGASKERDESEK egyik eleme
      * @param fn a válasz megvan (true = a kérdésben szereplő művelet). Mégsem esetén nem hívjuk.
      */
+    // fn(valasz, allapot): az allapot 'feltette', 'nincs' (nincs élő pénzmozgás) vagy 'hiba' – a stornó naplózza
     function kerdezPenzmozgasrol(bizszam, kerdes, fn) {
         if (!bizszam) {
-            fn(false);
+            fn(false, 'nincs');
             return;
         }
         $.ajax({
@@ -1168,7 +1169,7 @@ let bizonylathelper = function ($) {
                 const lista = (d && d.lista) || [];
                 if (!lista.length) {
                     // nincs mihez nyúlni, ne kérdezzünk feleslegesen
-                    fn(false);
+                    fn(false, 'nincs');
                     return;
                 }
                 const $doboz = $('<div></div>').append($('<div></div>').text(kerdes.bevezeto));
@@ -1181,11 +1182,11 @@ let bizonylathelper = function ($) {
                 const gombok = {};
                 gombok[kerdes.igen] = function () {
                     $(this).dialog('close');
-                    fn(true);
+                    fn(true, 'feltette');
                 };
                 gombok[kerdes.nem] = function () {
                     $(this).dialog('close');
-                    fn(false);
+                    fn(false, 'feltette');
                 };
                 gombok['Mégsem'] = function () {
                     $(this).dialog('close');
@@ -1200,7 +1201,7 @@ let bizonylathelper = function ($) {
             },
             error: function () {
                 // ha nem tudjuk megkérdezni, ne nyúljunk magunktól a pénzmozgáshoz
-                fn(false);
+                fn(false, 'hiba');
             }
         });
     }
@@ -1216,8 +1217,11 @@ let bizonylathelper = function ($) {
             $('#mattkarb-form').submit();
             return;
         }
-        kerdezPenzmozgasrol(kerdesek[i].bizszam, kerdesek[i].kerdes, function (valasz) {
+        kerdezPenzmozgasrol(kerdesek[i].bizszam, kerdesek[i].kerdes, function (valasz, allapot) {
             $(kerdesek[i].mezo).val(valasz ? '1' : '0');
+            if (kerdesek[i].allapotmezo) {
+                $(kerdesek[i].allapotmezo).val(allapot);
+            }
             futtatPenzmozgasKerdesek(kerdesek, i + 1);
         });
     }
@@ -2664,7 +2668,8 @@ let bizonylathelper = function ($) {
                         kerdesek.push({
                             bizszam: parentid,
                             kerdes: PENZMOZGASKERDESEK.storno,
-                            mezo: '#StornopenzmozgasEdit'
+                            mezo: '#StornopenzmozgasEdit',
+                            allapotmezo: '#StornopenzmozgaskerdesEdit'
                         });
                     } else if (bizszam) {
                         // új bizonylatnál nincs mit rontani vagy igazítani

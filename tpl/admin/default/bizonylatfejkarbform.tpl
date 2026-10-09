@@ -371,7 +371,8 @@
                         <td><input id="PenztmozgatEdit" type="checkbox" name="penztmozgat"{if ($egyed.penztmozgat)} checked{/if}>
                             <input id="RontkapcsolodopenzmozgasEdit" type="hidden" name="rontkapcsolodopenzmozgas" value="0">
                             <input id="IgazitpenzmozgasosszegetEdit" type="hidden" name="igazitpenzmozgasosszeget" value="0">
-                            <input id="StornopenzmozgasEdit" type="hidden" name="stornopenzmozgas" value="0"></td>
+                            <input id="StornopenzmozgasEdit" type="hidden" name="stornopenzmozgas" value="0">
+                            <input id="StornopenzmozgaskerdesEdit" type="hidden" name="stornopenzmozgaskerdes" value=""></td>
                     </tr>
                     {if isset($tarsbizonylatlist)}
                         <tr>

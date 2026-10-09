@@ -28,6 +28,10 @@ class Bizonylatnaplo
     public const ESEMENY_MENTES = 'mentes';
     /** valamelyik naplózott mező megváltozott – ilyenkor a mezo/regiertek/ujertek is kitöltött */
     public const ESEMENY_MEZOVALTOZAS = 'mezovaltozas';
+    /** a bizonylatot stornózták, illetve ez a stornója */
+    public const ESEMENY_STORNO = 'storno';
+    /** stornókor feltett pénzmozgás-kérdés és a rá adott válasz */
+    public const ESEMENY_STORNOPENZMOZGAS = 'stornopenzmozgas';
 
     /**
      * @ORM\Id @ORM\Column(type="integer")
