@@ -1225,6 +1225,11 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     min-width: 0;
 }
 
+/* {mezocsoport egyoszlop=true}: minden pár egymás alatt */
+.mezocsoport-egyoszlop > .mezok {
+    grid-template-columns: fit-content(var(--mkw-cimkeoszlop, 10em)) minmax(0, var(--mkw-mezooszlop, 26em));
+}
+
 /* {mezo ujsor=true}: a pár nem csúszik fel az előző sor második felére */
 .mezo-ujsor > .mezo-cimke {
     grid-column: 1;

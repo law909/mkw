@@ -122,7 +122,8 @@ class SmartyView extends View
     /**
      * Karbantartó mezőcsoport: `{mezocsoport cim="Alapadatok"}…{/mezocsoport}`. A benne lévő
      * `{mezo}`-k rácsba rendeződnek (soronként két címke–mező pár, keskeny képernyőn egy).
-     * A `cim` elhagyható; az at()-tal fordítódik, mint a sablonok többi felirata. `class` = további osztály a csoportra.
+     * A `cim` elhagyható; az at()-tal fordítódik, mint a sablonok többi felirata. `class` = további osztály a csoportra,
+     * `egyoszlop` = minden pár egymás alatt, egyetlen címke–mező oszlopban.
      */
     public static function mezocsoportBlock(array $params, $content, $template, &$repeat)
     {
@@ -132,7 +133,8 @@ class SmartyView extends View
         $cim = isset($params['cim']) && $params['cim'] !== ''
             ? '<div class="mattkarb-szakaszcim">' . htmlspecialchars(\at($params['cim'])) . '</div>'
             : '';
-        $class = 'mezocsoport' . (!empty($params['class']) ? ' ' . htmlspecialchars($params['class']) : '');
+        $class = 'mezocsoport' . (!empty($params['egyoszlop']) ? ' mezocsoport-egyoszlop' : '')
+            . (!empty($params['class']) ? ' ' . htmlspecialchars($params['class']) : '');
         return '<div class="' . $class . '">' . $cim . '<div class="mezok">' . $content . '</div></div>';
     }
 
