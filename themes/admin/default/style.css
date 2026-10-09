@@ -1183,7 +1183,8 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
    így a címkék és a mezők közvetlenül a csoport rácsába kerülnek, és soronként egymás alá igazodnak. */
 .mezok {
     display: grid;
-    grid-template-columns: repeat(2, var(--mkw-cimkeoszlop, 13em) minmax(0, var(--mkw-mezooszlop, 26em)));
+    /* a címkeoszlop a csoport leghosszabb címkéjéhez igazodik, a korlátnál hosszabb címke tördel */
+    grid-template-columns: repeat(2, fit-content(var(--mkw-cimkeoszlop, 10em)) minmax(0, var(--mkw-mezooszlop, 26em)));
     column-gap: 14px;
     row-gap: 4px;
     align-items: center;
@@ -1233,12 +1234,6 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
 :where(.mezok > .mezo > .mezo-ertek:not(.valtozat-mezok *, .valtozattermekke-mezok *, .tetel-mezok *)) > :where(input:not([type="checkbox"], [type="radio"], [type="hidden"]), select, textarea) {
     width: 100%;
     box-sizing: border-box;
-}
-
-@media (max-width: 1200px) {
-    .mezok {
-        grid-template-columns: var(--mkw-cimkeoszlop, 13em) minmax(0, var(--mkw-mezooszlop, 26em));
-    }
 }
 
 /* Bizonylat lista sora (bizonylatfejlista_tbody_tr.tpl): szám és műveletek, partner, felirat–érték párok */
@@ -1751,7 +1746,7 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
 
 @media (max-width: 1200px) {
     .mezok {
-        grid-template-columns: var(--mkw-cimkeoszlop, 13em) minmax(0, var(--mkw-mezooszlop, 26em));
+        grid-template-columns: fit-content(var(--mkw-cimkeoszlop, 10em)) minmax(0, var(--mkw-mezooszlop, 26em));
     }
 }
 
