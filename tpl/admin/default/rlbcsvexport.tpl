@@ -17,33 +17,34 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="rlbcsvexport" action="" target="_blank">
-                    <label>{at('Utolsó feladott számla')}:</label>
-                    <input name="utolsoszamla" value="{$utolsoszamla}">
-                    <div class="matt-hseparator"></div>
-                    <label>{at('Elválasztó')}:</label>
-                    <select name="elvalaszto">
-                        <option value="1" selected="selected">Pontosvessző</option>
-                        <option value="2">Vessző</option>
-                        <option value="3">Tab</option>
-                    </select>
-                    <div class="matt-hseparator"></div>
-                    <label>{at('Mező körbe')}:</label>
-                    <select name="szovegkorul">
-                        <option value="1" selected="selected">Nincs</option>
-                        <option value="2">Idézőjel a szövegek körül</option>
-                        <option value="3">Idézőjel minden mező körül</option>
-                    </select>
-                    <div class="matt-hseparator"></div>
-                    <label>{at('Dátum')}:</label>
-                    <select name="datum">
-                        <option value="1" selected="selected">Ponttal elválasztva</option>
-                        <option value="2">Kötőjellel elválasztva</option>
-                        <option value="3">Perrel elválasztva</option>
-                        <option value="4">Nincs elválasztva</option>
-                    </select>
-                    <div class="matt-hseparator"></div>
-
-                    <div>
+                    {mezocsoport cim="Export beállítások" egyoszlop=true}
+                        {mezo cimke="Utolsó feladott számla" for="UtolsoszamlaEdit"}
+                            <input id="UtolsoszamlaEdit" name="utolsoszamla" value="{$utolsoszamla}">
+                        {/mezo}
+                        {mezo cimke="Elválasztó" for="ElvalasztoEdit"}
+                            <select id="ElvalasztoEdit" name="elvalaszto">
+                                <option value="1" selected="selected">Pontosvessző</option>
+                                <option value="2">Vessző</option>
+                                <option value="3">Tab</option>
+                            </select>
+                        {/mezo}
+                        {mezo cimke="Mező körbe" for="SzovegkorulEdit"}
+                            <select id="SzovegkorulEdit" name="szovegkorul">
+                                <option value="1" selected="selected">Nincs</option>
+                                <option value="2">Idézőjel a szövegek körül</option>
+                                <option value="3">Idézőjel minden mező körül</option>
+                            </select>
+                        {/mezo}
+                        {mezo cimke="Dátum" for="DatumformaEdit"}
+                            <select id="DatumformaEdit" name="datum">
+                                <option value="1" selected="selected">Ponttal elválasztva</option>
+                                <option value="2">Kötőjellel elválasztva</option>
+                                <option value="3">Perrel elválasztva</option>
+                                <option value="4">Nincs elválasztva</option>
+                            </select>
+                        {/mezo}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/rlbcsvexport/export" class="js-exportbutton">{at('Export')}</a>
                     </div>
                 </form>

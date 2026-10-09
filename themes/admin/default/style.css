@@ -1240,18 +1240,18 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
 }
 
 /* a fülön álló csoport a rácsa szélességéig ér, így a címek alatti vonal pont a mezők végéig tart */
-.mattkarb-page > .mezocsoport {
+:is(.mattkarb-page, .mattkarb-page > form) > .mezocsoport {
     width: max-content;
     max-width: 100%;
 }
 
-.mattkarb-page > .mezocsoport > .mattkarb-szakaszcim,
-.mattkarb-page > .mezocsoport > .mezok > .mattkarb-szakaszcim {
+:is(.mattkarb-page, .mattkarb-page > form) > .mezocsoport > .mattkarb-szakaszcim,
+:is(.mattkarb-page, .mattkarb-page > form) > .mezocsoport > .mezok > .mattkarb-szakaszcim {
     max-width: none;
 }
 
 @media (max-width: 860px) {
-    .mattkarb-page > .mezocsoport {
+    :is(.mattkarb-page, .mattkarb-page > form) > .mezocsoport {
         width: auto;
     }
 }

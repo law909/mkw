@@ -17,10 +17,10 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="keresoszo" action="" target="_blank">
-                    {include "comp_idoszak.tpl" comptype="datum"}
-                    <div class="matt-hseparator"></div>
-
-                    <div>
+                    {mezocsoport cim="Időszak"}
+                        {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/keresoszolista/get" class="js-okbutton">OK</a>
                     </div>
                 </form>

@@ -16,23 +16,26 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="jelenletiivgen" action="" target="_blank">
-                    {include "comp_idoszak.tpl" comptype="datum"}
-                    <div class="matt-hseparator"></div>
-                    <div>{at('Munkakörök')}:</div>
-                    <div class="js-munkakorok">
-                        {foreach $munkakorlist as $_mk}
-                            <div>
-                                <input id="Munkakor{$_mk.id}Edit" type="checkbox" name="munkakor[]" value="{$_mk.id}">
-                                <label for="Munkakor{$_mk.id}Edit">{$_mk.caption}</label>
+                    {mezocsoport cim="Időszak"}
+                        {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                        <div class="mattkarb-szakaszcim">{at('Szűrők')}</div>
+                        {mezo cimke="Munkakörök" szeles=true}
+                            <div class="mattkarb-pipak js-munkakorok">
+                                {foreach $munkakorlist as $_mk}
+                                    <span class="mattkarb-pipacimke">
+                                        <input id="Munkakor{$_mk.id}Edit" type="checkbox" name="munkakor[]" value="{$_mk.id}">
+                                        <label for="Munkakor{$_mk.id}Edit">{$_mk.caption}</label>
+                                    </span>
+                                {/foreach}
                             </div>
-                        {/foreach}
-                    </div>
-                    <span>{at('Ha nincs munkakör kipipálva, minden munkakör dolgozója látszik.')}</span>
-                    <div class="matt-hseparator"></div>
-                    {include "comp_dolgozoselect.tpl"}
-                    <span>{at('Dolgozó nélkül a kiválasztott munkakörök minden aktív dolgozójának nyilvántartása elkészül.')}</span>
-                    <div class="matt-hseparator"></div>
-                    <div>
+                            <div class="mattkarb-megjegyzes">{at('Ha nincs munkakör kipipálva, minden munkakör dolgozója látszik.')}</div>
+                        {/mezo}
+                        {include "comp_dolgozoselect.tpl" mezo=true ujsor=true}
+                        {mezo szeles=true}
+                            <span class="mattkarb-megjegyzes">{at('Dolgozó nélkül a kiválasztott munkakörök minden aktív dolgozójának nyilvántartása elkészül.')}</span>
+                        {/mezo}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/jelenletiivgen/get" class="js-okbutton">{at('OK')}</a>
                         <a href="/admin/jelenletiivgen/matrix" class="js-okbutton">{at('Mátrix')}</a>
                         <a href="/admin/jelenletiivgen/export" class="js-exportbutton">{at('Export')}</a>

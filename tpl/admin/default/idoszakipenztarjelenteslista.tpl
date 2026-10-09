@@ -17,12 +17,12 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="idoszakipenztarjelentes" action="" target="_blank">
-                    {include "comp_idoszak.tpl" comptype="datum"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_penztarselect.tpl"}
-                    <div class="matt-hseparator"></div>
-
-                    <div>
+                    {mezocsoport cim="Időszak"}
+                        {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                        <div class="mattkarb-szakaszcim">{at('Szűrők')}</div>
+                        {include "comp_penztarselect.tpl" mezo=true ujsor=true}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/idoszakipenztarjelenteslista/get" class="js-okbutton">{at('OK')}</a>
                         <a href="/admin/idoszakipenztarjelenteslista/export" class="js-exportbutton">{at('Export')}</a>
                     </div>

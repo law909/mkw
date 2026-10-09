@@ -18,13 +18,12 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="arlista" action="" target="_blank">
-                    {include "comp_partnerselect.tpl"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_partnercimkefilter.tpl"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_termekfa.tpl"}
-
-                    <div>
+                    {mezocsoport cim="Szűrők"}
+                        {include "comp_partnerselect.tpl" mezo=true}
+                        {include "comp_partnercimkefilter.tpl" mezo=true}
+                        {include "comp_termekfa.tpl" mezo=true}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/arlista/export" class="js-exportbutton">{at('Export')}</a>
                     </div>
                 </form>

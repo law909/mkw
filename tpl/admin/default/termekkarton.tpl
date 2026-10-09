@@ -14,72 +14,65 @@
         </div>
         <form id="mattkarb-form" action="" method="post">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                {if ($termekvalaszto)}
-                    <div>
-                        <label for="TermekEdit">{at('Termék')}:</label>
-                        <input id="TermekEdit" class="js-termekselect" type="text" size="60" autocomplete="off">
-                    </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <label for="EgyediazonositoKeresoEdit">{at('Egyedi azonosító alapján')}:</label>
-                        <input id="EgyediazonositoKeresoEdit" class="js-egyediazonositokereso" type="text" size="30"
-                               autocomplete="off">
-                        <a href="#" class="js-egyediazonositokeres">{at('Keres')}</a>
-                        <span class="js-egyediazonositouzenet"></span>
-                    </div>
-                    <div class="matt-hseparator"></div>
-                {/if}
-                <div>
-                    <label for="ValtozatEdit">{at('Változat')}:</label>
-                    <select id="ValtozatEdit" name="valtozat">
-                        <option value="0">{at('válasszon')}</option>
-                        {foreach $valtozatlista as $valtozat}
-                            <option value="{$valtozat.id}">{$valtozat.caption}</option>
-                        {/foreach}
-                    </select>
-                </div>
-                {if ($kellegyediazonosito)}
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <label for="EgyediazonositoEdit">{at('Egyedi azonosító')}:</label>
-                        <input id="EgyediazonositoEdit" class="js-egyediazonositoszuro" name="egyediazonosito" type="text"
-                               autocomplete="off">
-                    </div>
-                {/if}
-                <div class="matt-hseparator"></div>
-                {include "comp_idoszak.tpl" comptype="szamla"}
-                <div class="matt-hseparator"></div>
-                {include "comp_partnerselect.tpl"}
-                <div class="matt-hseparator"></div>
-                <div>
-                    <label for="RaktarEdit">{at('Raktár')}:</label>
-                    <select id="RaktarEdit" name="raktar">
-                        <option value="0">{at('válasszon')}</option>
-                        {foreach $raktarlista as $raktar}
-                            <option value="{$raktar.id}">{$raktar.caption}</option>
-                        {/foreach}
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <select name="mozgat">
-                        <option value="0">{at('minden')}</option>
-                        <option value="1"{if ($keszletetmozgat)} selected="selected"{/if}>{at('csak ami mozgat')}</option>
-                        <option value="2"{if (!$keszletetmozgat)} selected="selected"{/if}>{at('csak ami NEM mozgat')}</option>
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                <div>
-                    <select name="rontott">
-                        <option value="1">{at('rontottak látszanak')}</option>
-                        <option value="2" selected="selected">{at('rontottak NEM látszanak')}</option>
-                    </select>
-                </div>
-                <div class="matt-hseparator"></div>
-                {include "comp_partnercimkefilter.tpl"}
-                <div class="matt-hseparator"></div>
-                <a href="#" class="js-refresh">{at('Frissít')}</a>
+                {mezocsoport cim="Termék"}
+                    {if ($termekvalaszto)}
+                        {mezo cimke="Termék" for="TermekEdit" szeles=true}
+                            <input id="TermekEdit" class="js-termekselect" type="text" size="60" autocomplete="off">
+                        {/mezo}
+                        {mezo cimke="Egyedi azonosító alapján" for="EgyediazonositoKeresoEdit" szeles=true}
+                            <div class="mattkarb-mezogomb">
+                                <input id="EgyediazonositoKeresoEdit" class="js-egyediazonositokereso" type="text" size="30"
+                                       autocomplete="off">
+                                <a href="#" class="js-egyediazonositokeres">{at('Keres')}</a>
+                                <span class="js-egyediazonositouzenet"></span>
+                            </div>
+                        {/mezo}
+                    {/if}
+                    {mezo cimke="Változat" for="ValtozatEdit" ujsor=true}
+                        <select id="ValtozatEdit" name="valtozat">
+                            <option value="0">{at('válasszon')}</option>
+                            {foreach $valtozatlista as $valtozat}
+                                <option value="{$valtozat.id}">{$valtozat.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/mezo}
+                    {if ($kellegyediazonosito)}
+                        {mezo cimke="Egyedi azonosító" for="EgyediazonositoEdit"}
+                            <input id="EgyediazonositoEdit" class="js-egyediazonositoszuro" name="egyediazonosito" type="text"
+                                   autocomplete="off">
+                        {/mezo}
+                    {/if}
+                    <div class="mattkarb-szakaszcim">{at('Időszak')}</div>
+                    {include "comp_idoszak.tpl" comptype="szamla" mezo=true}
+                    <div class="mattkarb-szakaszcim">{at('Szűrők')}</div>
+                    {include "comp_partnerselect.tpl" mezo=true}
+                    {mezo cimke="Raktár" for="RaktarEdit" ujsor=true}
+                        <select id="RaktarEdit" name="raktar">
+                            <option value="0">{at('válasszon')}</option>
+                            {foreach $raktarlista as $raktar}
+                                <option value="{$raktar.id}">{$raktar.caption}</option>
+                            {/foreach}
+                        </select>
+                    {/mezo}
+                    {mezo cimke="Készletmozgás" for="MozgatEdit"}
+                        <select id="MozgatEdit" name="mozgat">
+                            <option value="0">{at('minden')}</option>
+                            <option value="1"{if ($keszletetmozgat)} selected="selected"{/if}>{at('csak ami mozgat')}</option>
+                            <option value="2"{if (!$keszletetmozgat)} selected="selected"{/if}>{at('csak ami NEM mozgat')}</option>
+                        </select>
+                    {/mezo}
+                    {mezo cimke="Rontottak" for="RontottEdit" ujsor=true}
+                        <select id="RontottEdit" name="rontott">
+                            <option value="1">{at('rontottak látszanak')}</option>
+                            <option value="2" selected="selected">{at('rontottak NEM látszanak')}</option>
+                        </select>
+                    {/mezo}
+                    {include "comp_partnercimkefilter.tpl" mezo=true}
+                {/mezocsoport}
                 <input name="termekid" type="hidden" value="{$termekid}">
+                <div class="arsav-gombok">
+                    <a href="#" class="js-refresh">{at('Frissít')}</a>
+                </div>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>

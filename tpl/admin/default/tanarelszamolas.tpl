@@ -14,10 +14,12 @@
         </div>
         <form id="tanarelszamolas" action="" target="_blank">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                <div class="matt-hseparator"></div>
-                {include "comp_idoszak.tpl" comptype="datum"}
-                <div class="matt-hseparator clearboth"></div>
-                <a href="#" class="js-refresh">{at('Frissít')}</a>
+                {mezocsoport cim="Időszak"}
+                    {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                {/mezocsoport}
+                <div class="arsav-gombok">
+                    <a href="#" class="js-refresh">{at('Frissít')}</a>
+                </div>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>

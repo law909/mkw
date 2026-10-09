@@ -18,16 +18,14 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="penzbe" action="" target="_blank">
-                    {include "comp_idoszak.tpl" comptype="datum"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_bankszamlaselect.tpl"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_partnerselect.tpl"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_partnercimkefilter.tpl"}
-                    <div class="matt-hseparator"></div>
-
-                    <div>
+                    {mezocsoport cim="Időszak"}
+                        {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                        <div class="mattkarb-szakaszcim">{at('Szűrők')}</div>
+                        {include "comp_bankszamlaselect.tpl" mezo=true ujsor=true}
+                        {include "comp_partnerselect.tpl" mezo=true}
+                        {include "comp_partnercimkefilter.tpl" mezo=true}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/penzbelista/get" class="js-okbutton">{at('OK')}</a>
                     </div>
                 </form>

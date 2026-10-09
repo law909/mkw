@@ -17,12 +17,11 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="penztarzaras" action="" target="_blank">
-                    {include "comp_datum.tpl"}
-                    <div class="matt-hseparator"></div>
-                    {include "comp_penztarselect.tpl"}
-                    <div class="matt-hseparator"></div>
-
-                    <div>
+                    {mezocsoport cim="Zárás"}
+                        {include "comp_datum.tpl" mezo=true ujsor=true}
+                        {include "comp_penztarselect.tpl" mezo=true}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="#" class="js-okbutton">{at('Zár')}</a>
                     </div>
                 </form>

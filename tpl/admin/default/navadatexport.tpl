@@ -17,16 +17,17 @@
             </ul>
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
                 <form id="navadatexport" action="" target="_blank">
-                    {include "comp_idoszak.tpl" comptype="datum"}
-                    <div class="matt-hseparator"></div>
-                    <div>
-                        <label for="SzamlaszamTolEdit">{at('Számlaszám')}:</label>
-                        <input id="SzamlaszamTolEdit" name="szamlaszamtol" type="text">
-                        <input id="SzamlaszamIgEdit" name="szamlaszamig" type="text">
-                    </div>
-                    <div class="matt-hseparator"></div>
-
-                    <div>
+                    {mezocsoport cim="Időszak"}
+                        {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                        {mezo cimke="Számlaszám" for="SzamlaszamTolEdit" szeles=true}
+                            <div class="mattkarb-mezogomb kimutatas-idoszak">
+                                <input id="SzamlaszamTolEdit" name="szamlaszamtol" type="text">
+                                <span>–</span>
+                                <input id="SzamlaszamIgEdit" name="szamlaszamig" type="text">
+                            </div>
+                        {/mezo}
+                    {/mezocsoport}
+                    <div class="arsav-gombok">
                         <a href="/admin/navadatexport/get" class="js-okbutton">{at('OK')}</a>
                     </div>
                 </form>

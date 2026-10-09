@@ -19,36 +19,44 @@
                 <form id="pdfszamlaexport" action="" target="_blank">
                     {* a két doboz külön szűr: melyiknek a gombját nyomták, azt a szerver ebből tudja meg *}
                     <input name="szures" type="hidden" value="">
-                    <div>
-                        <input id="TipusSzamlaEdit" class="js-tipus" name="tipus" type="radio" value="szamla" checked="checked">
-                        <label for="TipusSzamlaEdit">{at('Számlák')}</label>
-                        <input id="TipusElolegszamlaEdit" class="js-tipus" name="tipus" type="radio" value="elolegszamla">
-                        <label for="TipusElolegszamlaEdit">{at('Előlegszámlák')}</label>
-                    </div>
+                    {mezocsoport cim="Bizonylat"}
+                        {mezo cimke="Típus" szeles=true}
+                            <div class="mattkarb-pipak">
+                                <span class="mattkarb-pipacimke">
+                                    <input id="TipusSzamlaEdit" class="js-tipus" name="tipus" type="radio" value="szamla" checked="checked">
+                                    <label for="TipusSzamlaEdit">{at('Számlák')}</label>
+                                </span>
+                                <span class="mattkarb-pipacimke">
+                                    <input id="TipusElolegszamlaEdit" class="js-tipus" name="tipus" type="radio" value="elolegszamla">
+                                    <label for="TipusElolegszamlaEdit">{at('Előlegszámlák')}</label>
+                                </span>
+                            </div>
+                        {/mezo}
+                    {/mezocsoport}
                     <fieldset class="mattkarb-doboz">
                         <legend>{at('Teljesítés szerinti időszak')}</legend>
-                        {include "comp_idoszak.tpl" comptype="datum"}
-                        <div>
+                        {mezocsoport egyoszlop=true}
+                            {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                        {/mezocsoport}
+                        <div class="arsav-gombok">
                             <a href="/admin/pdfszamlaexport/download" class="js-downloadbutton" data-szures="teljesites">{at('Letölt')}</a>
                             <a href="/admin/pdfszamlaexport/sendemail" class="js-emailbutton" data-szures="teljesites">{at('Küld')}</a>
                         </div>
                     </fieldset>
-                    <div class="matt-hseparator"></div>
                     <fieldset class="mattkarb-doboz">
                         <legend>{at('Utolsó feladott bizonylatszám')}</legend>
-                        <div class="js-tipus-szamla">
-                            <label for="utolsoszamlainput">{at('Utolsó feladott számla')}:</label>
-                            <input id="utolsoszamlainput" name="utolsoszamla" value="{$utolsoszamla}">
-                        </div>
-                        <div class="js-tipus-szamla">
-                            <label for="utolsoesetiszamlainput">{at('Utolsó feladott eseti számla')}:</label>
-                            <input id="utolsoesetiszamlainput" name="utolsoesetiszamla" value="{$utolsoesetiszamla}">
-                        </div>
-                        <div class="js-tipus-elolegszamla" style="display:none">
-                            <label for="utolsoelolegszamlainput">{at('Utolsó feladott előlegszámla')}:</label>
-                            <input id="utolsoelolegszamlainput" name="utolsoelolegszamla" value="{$utolsoelolegszamla}">
-                        </div>
-                        <div>
+                        {mezocsoport egyoszlop=true}
+                            {mezo cimke="Utolsó feladott számla" for="utolsoszamlainput" class="js-tipus-szamla"}
+                                <input id="utolsoszamlainput" name="utolsoszamla" value="{$utolsoszamla}">
+                            {/mezo}
+                            {mezo cimke="Utolsó feladott eseti számla" for="utolsoesetiszamlainput" class="js-tipus-szamla"}
+                                <input id="utolsoesetiszamlainput" name="utolsoesetiszamla" value="{$utolsoesetiszamla}">
+                            {/mezo}
+                            {mezo cimke="Utolsó feladott előlegszámla" for="utolsoelolegszamlainput" class="js-tipus-elolegszamla" rejtve=true}
+                                <input id="utolsoelolegszamlainput" name="utolsoelolegszamla" value="{$utolsoelolegszamla}">
+                            {/mezo}
+                        {/mezocsoport}
+                        <div class="arsav-gombok">
                             <a href="/admin/pdfszamlaexport/download" class="js-downloadbutton" data-szures="szam">{at('Letölt')}</a>
                             <a href="/admin/pdfszamlaexport/sendemail" class="js-emailbutton" data-szures="szam">{at('Küld')}</a>
                         </div>

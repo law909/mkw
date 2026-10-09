@@ -17,79 +17,83 @@
                 <div class="szuropanel">
                     <fieldset class="mattkarb-doboz szurodoboz szurodoboz-fo">
                         <legend>{at('Időszak és bizonylat')}</legend>
-                        {include "comp_idoszak.tpl" comptype="hataridos"}
-                        {include "comp_bizonylatstatusz.tpl"}
-                        {include "comp_bizonylatstatuszcsoport.tpl"}
-                        {include "comp_fizmodselect.tpl"}
-                        <div>
-                            <label for="RaktarEdit">{at('Raktár')}:</label>
-                            <select id="RaktarEdit" name="raktar">
-                                <option value="0">{at('válasszon')}</option>
-                                {foreach $raktarlista as $raktar}
-                                    <option value="{$raktar.id}">{$raktar.caption}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        {include "comp_webshopfilter.tpl"}
-                        <div class="szurodoboz-alcim">{at('Bizonylattípus')} ({at('ha egy sincs bejelölve: mind')}):</div>
-                        {include "comp_bizonylattipus.tpl"}
+                        {mezocsoport egyoszlop=true}
+                            {include "comp_idoszak.tpl" comptype="hataridos" mezo=true}
+                            {include "comp_bizonylatstatusz.tpl" mezo=true}
+                            {include "comp_bizonylatstatuszcsoport.tpl" mezo=true}
+                            {include "comp_fizmodselect.tpl" mezo=true}
+                            {mezo cimke="Raktár" for="RaktarEdit"}
+                                <select id="RaktarEdit" name="raktar">
+                                    <option value="0">{at('válasszon')}</option>
+                                    {foreach $raktarlista as $raktar}
+                                        <option value="{$raktar.id}">{$raktar.caption}</option>
+                                    {/foreach}
+                                </select>
+                            {/mezo}
+                            {include "comp_webshopfilter.tpl" mezo=true}
+                            {mezo cimke="Bizonylattípus" szeles=true}
+                                {include "comp_bizonylattipus.tpl"}
+                                <div class="mattkarb-megjegyzes">{at('Ha egy sincs bejelölve: mind.')}</div>
+                            {/mezo}
+                        {/mezocsoport}
                     </fieldset>
                     <fieldset class="mattkarb-doboz szurodoboz">
                         <legend>{at('Partner')}</legend>
-                        {include "comp_partnerselect.tpl"}
-                        {include "comp_partnertipusselect.tpl"}
-                        {include "comp_uzletkotoselect.tpl"}
+                        {mezocsoport egyoszlop=true}
+                            {include "comp_partnerselect.tpl" mezo=true}
+                            {include "comp_partnertipusselect.tpl" mezo=true}
+                            {include "comp_uzletkotoselect.tpl" mezo=true}
+                        {/mezocsoport}
                     </fieldset>
                     <fieldset class="mattkarb-doboz szurodoboz">
                         <legend>{at('Termék')}</legend>
-                        <div>
-                            <label for="NevEdit">{at('Termék')}:</label>
-                            <input id="NevEdit" type="text" name="nevfilter">
-                        </div>
-                        {include "comp_gyartoselect.tpl"}
-                        {if ($setup.multilang)}
-                            {include "comp_nyelvselect.tpl"}
-                        {/if}
-                        <div>
-                            <label for="KeszletkellEdit">{at('Készlet kell')}:</label>
-                            <input id="KeszletkellEdit" type="checkbox" name="keszletkell">
-                        </div>
-                        <div>
-                            <label for="CsakfoglalasEdit">{at('Csak foglalás')}:</label>
-                            <input id="CsakfoglalasEdit" type="checkbox" name="csakfoglalas">
-                        </div>
+                        {mezocsoport egyoszlop=true}
+                            {mezo cimke="Termék" for="NevEdit"}
+                                <input id="NevEdit" type="text" name="nevfilter">
+                            {/mezo}
+                            {include "comp_gyartoselect.tpl" mezo=true}
+                            {if ($setup.multilang)}
+                                {include "comp_nyelvselect.tpl" mezo=true}
+                            {/if}
+                            {mezo cimke="Készlet kell" for="KeszletkellEdit"}
+                                <input id="KeszletkellEdit" type="checkbox" name="keszletkell">
+                            {/mezo}
+                            {mezo cimke="Csak foglalás" for="CsakfoglalasEdit"}
+                                <input id="CsakfoglalasEdit" type="checkbox" name="csakfoglalas">
+                            {/mezo}
+                        {/mezocsoport}
                     </fieldset>
                     <fieldset class="mattkarb-doboz szurodoboz">
                         <legend>{at('Megjelenítés')}</legend>
-                        <div>
-                            <label for="CsoportositasEdit">{at('Csoportosítás')}:</label>
-                            <select id="CsoportositasEdit" name="csoportositas">
-                                <option value="1">{at('termékenként')}</option>
-                                <option value="2">{at('partnerenként/termékenként')}</option>
-                                <option value="3">{at('üzletkötőnként/partnerenként')}</option>
-                                <option value="4">{at('bizonylatonként')}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="ErtekEdit">{at('Érték')}:</label>
-                            <select id="ErtekEdit" name="ertektipus">
-                                <option value="0">{at('nincs')}</option>
-                                <option value="1">{at('bizonylaton szereplő nettó')}</option>
-                                <option value="2">{at('bizonylaton szereplő bruttó')}</option>
-                                <option value="3">{at('bizonylaton szereplő nettó HUF')}</option>
-                                <option value="4">{at('bizonylaton szereplő bruttó HUF')}</option>
-                                {if ($setup.arsavok)}
-                                    <option value="5">{at('választott ársáv nettó')}</option>
-                                    <option value="6">{at('választott ársáv bruttó')}</option>
-                                {else}
-                                    <option value="7">{at('eladási ár nettó')}</option>
-                                    <option value="8">{at('eladási ár bruttó')}</option>
-                                {/if}
-                            </select>
-                        </div>
-                        {if ($setup.arsavok)}
-                            {include "comp_arsavselect.tpl"}
-                        {/if}
+                        {mezocsoport egyoszlop=true}
+                            {mezo cimke="Csoportosítás" for="CsoportositasEdit"}
+                                <select id="CsoportositasEdit" name="csoportositas">
+                                    <option value="1">{at('termékenként')}</option>
+                                    <option value="2">{at('partnerenként/termékenként')}</option>
+                                    <option value="3">{at('üzletkötőnként/partnerenként')}</option>
+                                    <option value="4">{at('bizonylatonként')}</option>
+                                </select>
+                            {/mezo}
+                            {mezo cimke="Érték" for="ErtekEdit"}
+                                <select id="ErtekEdit" name="ertektipus">
+                                    <option value="0">{at('nincs')}</option>
+                                    <option value="1">{at('bizonylaton szereplő nettó')}</option>
+                                    <option value="2">{at('bizonylaton szereplő bruttó')}</option>
+                                    <option value="3">{at('bizonylaton szereplő nettó HUF')}</option>
+                                    <option value="4">{at('bizonylaton szereplő bruttó HUF')}</option>
+                                    {if ($setup.arsavok)}
+                                        <option value="5">{at('választott ársáv nettó')}</option>
+                                        <option value="6">{at('választott ársáv bruttó')}</option>
+                                    {else}
+                                        <option value="7">{at('eladási ár nettó')}</option>
+                                        <option value="8">{at('eladási ár bruttó')}</option>
+                                    {/if}
+                                </select>
+                            {/mezo}
+                            {if ($setup.arsavok)}
+                                {include "comp_arsavselect.tpl" mezo=true}
+                            {/if}
+                        {/mezocsoport}
                     </fieldset>
                     {if ($cimkekat|default)}
                         <fieldset class="mattkarb-doboz szurodoboz szurodoboz-szeles">
@@ -102,10 +106,11 @@
                         {include "comp_termekfa.tpl"}
                     </fieldset>
                 </div>
-                <div class="matt-hseparator"></div>
-                <a href="#" class="js-refresh">{at('Frissít')}</a>
-                <a href="/admin/bizonylattetellista/export" class="js-exportbutton">{at('Export')}</a>
-                <a href="/admin/bizonylattetellista/print" class="js-print">{at('Nyomtat')}</a>
+                <div class="arsav-gombok">
+                    <a href="#" class="js-refresh">{at('Frissít')}</a>
+                    <a href="/admin/bizonylattetellista/export" class="js-exportbutton">{at('Export')}</a>
+                    <a href="/admin/bizonylattetellista/print" class="js-print">{at('Nyomtat')}</a>
+                </div>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>

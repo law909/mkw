@@ -12,13 +12,18 @@
         </div>
         <form id="mattkarb-form" action="" method="post">
             <div id="DefaTab" class="mattkarb-page" data-visible="visible">
-                <div class="matt-hseparator"></div>
-                {include "comp_idoszak.tpl" comptype="datum"}<span>Az időszak a szállítói megrendelésre vonatkozik. Minden hozzá kapcsolt bevételezés a listán lesz a teljesítésétől függetlenül.</span>
-                <div class="matt-hseparator"></div>
-                {include "comp_partnerselect.tpl"}
-                <div class="matt-hseparator"></div>
-                <a href="#" class="js-refresh">{at('Frissít')}</a>
-                <a href="/admin/rendbevlista/export" class="js-exportbutton">{at('Export')}</a>
+                {mezocsoport cim="Időszak"}
+                    {include "comp_idoszak.tpl" comptype="datum" mezo=true}
+                    {mezo szeles=true}
+                        <span class="mattkarb-megjegyzes">Az időszak a szállítói megrendelésre vonatkozik. Minden hozzá kapcsolt bevételezés a listán lesz a teljesítésétől függetlenül.</span>
+                    {/mezo}
+                    <div class="mattkarb-szakaszcim">{at('Szűrők')}</div>
+                    {include "comp_partnerselect.tpl" mezo=true}
+                {/mezocsoport}
+                <div class="arsav-gombok">
+                    <a href="#" class="js-refresh">{at('Frissít')}</a>
+                    <a href="/admin/rendbevlista/export" class="js-exportbutton">{at('Export')}</a>
+                </div>
                 <div class="matt-hseparator"></div>
                 <div id="eredmeny"></div>
             </div>
