@@ -879,6 +879,9 @@ body .ui-tooltip {
 	--mkw-input-border: #c4c4cc;
 	/* jelölőnégyzet: erősebb keret, a pipa színe az --mkw-accent-texté */
 	--mkw-checkbox-border: #a1a1aa;
+	/* ismétlődő kártya (mattable-repeatable): szürke doboz, benne fehér mezők */
+	--mkw-card-bg: #f0f0f2;
+	--mkw-card-input-bg: #ffffff;
 	--mkw-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 	--mkw-border: #e4e4e7;
 	--mkw-border-strong: #d4d4d8;

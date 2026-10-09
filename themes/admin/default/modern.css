@@ -1065,12 +1065,20 @@ body.modernui {
 
 /* Kapcsolódó tételek a karbantartón (ársávok, változatok, …): mindegyik külön kártya */
 .modernui .mattable-repeatable {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     padding: 1em;
     border: 1px solid var(--mkw-border-strong);
+    /* a bal oldali sáv jelzi, hol kezdődik a következő tétel, ha sok kártya áll egymás alatt */
+    border-left: 3px solid var(--mkw-accent-border);
     border-radius: var(--mkw-radius);
-    background: var(--mkw-row-alt);
+    background: var(--mkw-card-bg, var(--mkw-row-alt));
     box-shadow: var(--mkw-shadow-sm);
+}
+
+/* a kártyán belül a mező a kártya hátterétől is elváljon (világos témában fehér a szürkén) */
+.modernui .mattable-repeatable :is(input:not([type="checkbox"], [type="radio"], [type="hidden"], [type="button"], [type="submit"], [type="file"], [readonly], :disabled), select:not(:disabled), textarea:not(:disabled)),
+.modernui .mattable-repeatable input[type="checkbox"]:not(:checked) {
+    background-color: var(--mkw-card-input-bg, var(--mkw-input-bg));
 }
 
 /* a bizonylattétel doboza levegősebb, mint a többi ismétlődő blokk (mobilon visszaáll 1em-re) */
