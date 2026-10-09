@@ -1225,6 +1225,15 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     min-width: 0;
 }
 
+/* pipa a felirata előtt, a mező mellett (pl. partner + „Új”): egyben marad, nem törik */
+.mattkarb-pipacimke {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
 /* szakaszcím a csoporton belül: a szakaszok közös címke- és mezőoszlopon osztoznak */
 .mezok > .mattkarb-szakaszcim {
     grid-column: 1 / -1;
