@@ -7,7 +7,7 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            {mezocsoport}
+            {mezocsoport egyoszlop=true}
                 {mezo cimke="Bank neve" for="BanknevEdit"}
                     <input id="BanknevEdit" name="banknev" type="text" size="80" maxlength="50" value="{$egyed.banknev}">
                 {/mezo}
