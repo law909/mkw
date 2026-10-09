@@ -1,3 +1,4 @@
+{capture "comppartnercimkefilter"}
 <div id="cimkefiltercontainer">
     {foreach $cimkekat as $_cimkekat}
         <div class="mattedit-titlebar ui-widget-header ui-helper-clearfix js-cimkefiltercloseupbutton" data-refcontrol="#{$_cimkekat.sanitizedcaption}">
@@ -13,3 +14,11 @@
         </div>
     {/foreach}
 </div>
+{/capture}
+{if ($mezo|default:false)}
+    {if (!empty($cimkekat))}
+        {mezo cimke="Partnercímkék" szeles=true}{$smarty.capture.comppartnercimkefilter nofilter}{/mezo}
+    {/if}
+{else}
+{$smarty.capture.comppartnercimkefilter nofilter}
+{/if}

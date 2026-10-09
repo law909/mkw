@@ -1,3 +1,23 @@
+{if ($mezo|default:false)}
+    {if (($comptype|default:'') == 'datum')}{$_idoszakfor = 'TolEdit'}{else}{$_idoszakfor = 'DatumTipusEdit'}{/if}
+    {mezo cimke="Időszak" for=$_idoszakfor szeles=true}
+        <div class="mattkarb-mezogomb kimutatas-idoszak">
+            {if ((($comptype|default:'') == '') || ($comptype == 'szamla') || ($comptype == 'hataridos'))}
+                <select id="DatumTipusEdit" name="datumtipus">
+                    <option value="kelt" {if ($datumtipus == 'kelt')}selected="selected"{/if}>{at('kelt')}</option>
+                    <option value="teljesites" {if ($datumtipus == 'teljesites')}selected="selected"{/if}>{at('teljesítés')}</option>
+                    <option value="esedekesseg" {if ($datumtipus == 'esedekesseg')}selected="selected"{/if}>{at('esedékesség')}</option>
+                    {if ($comptype == 'hataridos')}
+                        <option value="hatarido" {if ($datumtipus == 'hatarido')}selected="selected"{/if}>{at('határidő')}</option>
+                    {/if}
+                </select>
+            {/if}
+            <input id="TolEdit" name="tol" data-datum="{$toldatum}">
+            <span>–</span>
+            <input id="IgEdit" name="ig" data-datum="{$igdatum}">
+        </div>
+    {/mezo}
+{else}
 {if ((!$comptype) || ($comptype=='szamla'))}
     <div>
         <label for="DatumTipusEdit">{at('Időszak')}:</label>
@@ -27,4 +47,5 @@
         <input id="TolEdit" name="tol" data-datum="{$toldatum}">
         <input id="IgEdit" name="ig" data-datum="{$igdatum}">
     </div>
+{/if}
 {/if}

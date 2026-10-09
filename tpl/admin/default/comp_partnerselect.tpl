@@ -1,5 +1,4 @@
-<div>
-    <label for="PartnerEdit">{at('Partner')}:</label>
+{capture "comppartnerselect"}
     {if ($setup.partnerautocomplete)}
         <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" size=90>
         <input class="js-partnerid" name="partner" type="hidden">
@@ -11,4 +10,12 @@
             {/foreach}
         </select>
     {/if}
+{/capture}
+{if ($mezo|default:false)}
+    {mezo cimke="Partner" for="PartnerEdit" szeles=true}{$smarty.capture.comppartnerselect nofilter}{/mezo}
+{else}
+<div>
+    <label for="PartnerEdit">{at('Partner')}:</label>
+{$smarty.capture.comppartnerselect nofilter}
 </div>
+{/if}

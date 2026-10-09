@@ -1,18 +1,7 @@
 {* Az árbevétel és a forgalmi kimutatás közös szűrői (arbevetellista.js); a mezők nevei a JS-é, ne változzanak.
    Paraméterek: baseurl, bizonylattipushint, pivotertek (a forgalmi kimutatás kereszttáblájának cellatartalma) *}
 {mezocsoport cim="Időszak és érték"}
-    {mezo cimke="Időszak" for="DatumTipusEdit" szeles=true}
-        <div class="mattkarb-mezogomb kimutatas-idoszak">
-            <select id="DatumTipusEdit" name="datumtipus">
-                <option value="kelt" {if ($datumtipus == 'kelt')}selected="selected"{/if}>{at('kelt')}</option>
-                <option value="teljesites" {if ($datumtipus == 'teljesites')}selected="selected"{/if}>{at('teljesítés')}</option>
-                <option value="esedekesseg" {if ($datumtipus == 'esedekesseg')}selected="selected"{/if}>{at('esedékesség')}</option>
-            </select>
-            <input id="TolEdit" name="tol" data-datum="{$toldatum}">
-            <span>–</span>
-            <input id="IgEdit" name="ig" data-datum="{$igdatum}">
-        </div>
-    {/mezo}
+    {include "comp_idoszak.tpl" comptype="szamla" mezo=true}
     {mezo cimke="Érték" for="ErtekEdit" ujsor=true}
         <select id="ErtekEdit" name="ertektipus">
             <option value="netto">{at('nettó')}</option>
@@ -32,71 +21,19 @@
     {/mezo}
 
     <div class="mattkarb-szakaszcim">{at('Szűrők')}</div>
-    {mezo cimke="Partner" for="PartnerEdit" szeles=true}
-        {if ($setup.partnerautocomplete)}
-            <input id="PartnerEdit" type="text" name="partnerautocomlete" class="js-partnerautocomplete mattable-important" size=90>
-            <input class="js-partnerid" name="partner" type="hidden">
-        {else}
-            <select id="PartnerEdit" name="partner" class="js-partnerid mattable-important">
-                <option value="">{at('válasszon')}</option>
-                {foreach $partnerlist as $_mk}
-                    <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                {/foreach}
-            </select>
-        {/if}
-    {/mezo}
-    {mezo cimke="Partnertípus" for="PartnertipusEdit" ujsor=true}
-        <select id="PartnertipusEdit" name="partnertipus">
-            <option value="">{at('válasszon')}</option>
-            {foreach $partnertipuslist as $_mk}
-                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-            {/foreach}
-        </select>
-    {/mezo}
-    {mezo cimke="Üzletkötő" for="UzletkotoEdit"}
-        <select id="UzletkotoEdit" name="uzletkoto" class="mattable-important">
-            <option value="">{at('válasszon')}</option>
-            {foreach $uklist as $_mk}
-                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-            {/foreach}
-        </select>
-    {/mezo}
-    {mezo cimke="Gyártó" for="GyartoEdit" ujsor=true}
-        <select id="GyartoEdit" name="gyarto">
-            <option value="">{at('válasszon')}</option>
-            {foreach $gyartolist as $_mk}
-                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-            {/foreach}
-        </select>
-    {/mezo}
+    {include "comp_partnerselect.tpl" mezo=true}
+    {include "comp_partnertipusselect.tpl" mezo=true ujsor=true}
+    {include "comp_uzletkotoselect.tpl" mezo=true}
+    {include "comp_gyartoselect.tpl" mezo=true ujsor=true}
     {mezo cimke="Termék" for="NevEdit" sugo="Termék névben és cikkszámban keres"}
         <input id="NevEdit" name="nev" type="text" size="30" placeholder="{at('név vagy cikkszám')}" title="{at('Termék névben és cikkszámban keres')}">
     {/mezo}
-    {mezo cimke="Webshop" for="WebshopnumEdit" ujsor=true}
-        <select id="WebshopnumEdit" name="webshopnum">
-            {foreach $webshopfilterlist as $_mk}
-                <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-            {/foreach}
-        </select>
-    {/mezo}
+    {include "comp_webshopfilter.tpl" mezo=true ujsor=true}
     {if ($bizonylattipusfilter)}
-        {mezo cimke="Bizonylattípus" szeles=true}
-            <div class="mattkarb-pipak">
-                {foreach $bizonylattipuslist as $bt}
-                    <label><input id="bizonylattipuscb{$bt.id}" type="checkbox" name="bizonylattipus[]" value="{$bt.id}"{if (!empty($bizonylattipuschecked[$bt.id]))} checked="checked"{/if}>{$bt.caption}</label>
-                {/foreach}
-            </div>
-            <div class="mattkarb-megjegyzes">{$bizonylattipushint}</div>
-        {/mezo}
+        {include "comp_bizonylattipus.tpl" mezo=true hint=$bizonylattipushint}
     {/if}
-    {if (!empty($cimkekat))}
-        {mezo cimke="Partnercímkék" szeles=true}
-            {include "comp_partnercimkefilter.tpl"}
-        {/mezo}
-    {/if}
-    {mezo cimke="Termékkategória" szeles=true}
-        {include "comp_termekfa.tpl"}
-    {/mezo}
+    {include "comp_partnercimkefilter.tpl" mezo=true}
+    {include "comp_termekfa.tpl" mezo=true}
 
     <div class="mattkarb-szakaszcim">{at('Megjelenítés')}</div>
     {mezo cimke="Csoportosítás" for="Szint1Edit" szeles=true}
