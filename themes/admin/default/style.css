@@ -1311,6 +1311,14 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     font-variant-numeric: tabular-nums;
 }
 
+/* Árbevétel / forgalmi kimutatás (kimutatasszurok.tpl): a csoportosítás szintjei egy tördelődő sorban */
+.kimutatas-szintek {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
 /* Ársávok a termék karbantartón: táblázatszerű sorok közös fejléccel; a sor saját címkéi csak mobilon látszanak */
 .arsav-lista {
     max-width: 64em;
