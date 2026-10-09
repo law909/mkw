@@ -56,9 +56,9 @@ body.modernui {
 .modernui textarea {
     box-sizing: border-box;
     padding: 6px 8px;
-    border: 1px solid var(--mkw-border-strong);
+    border: 1px solid var(--mkw-input-border, var(--mkw-border-strong));
     border-radius: var(--mkw-radius-sm);
-    background-color: var(--mkw-surface);
+    background-color: var(--mkw-input-bg, var(--mkw-surface));
     color: var(--mkw-text);
     font: inherit;
     line-height: 1.35;

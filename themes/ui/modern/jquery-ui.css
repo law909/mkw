@@ -874,6 +874,9 @@ body .ui-tooltip {
 	/* a sima gomb háttere: elválik a form fehér felületétől */
 	--mkw-button-bg: #ececef;
 	--mkw-button-hover: #e1e1e5;
+	/* a beviteli mező háttere és kerete: elválik a form fehér felületétől */
+	--mkw-input-bg: #f5f5f7;
+	--mkw-input-border: #c4c4cc;
 	--mkw-border: #e4e4e7;
 	--mkw-border-strong: #d4d4d8;
 	--mkw-text: #18181b;

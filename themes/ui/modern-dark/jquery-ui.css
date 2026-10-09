@@ -8,6 +8,9 @@
 	/* a sima gomb háttere: elválik a form felületétől */
 	--mkw-button-bg: #2c2c31;
 	--mkw-button-hover: #38383e;
+	/* a beviteli mező mélyebb a felületnél, a gomb világosabb: így a kettő is elválik */
+	--mkw-input-bg: #0e0e11;
+	--mkw-input-border: #46464e;
 	--mkw-border: #2e2e33;
 	--mkw-border-strong: #3f3f46;
 	--mkw-text: #f4f4f5;
