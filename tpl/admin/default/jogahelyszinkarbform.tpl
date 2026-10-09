@@ -8,42 +8,32 @@
             <li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
         </ul>
         <div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td><input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required autofocus></td>
-                </tr>
-                <tr>
-                    <td><label for="IrszamEdit">{at('Irányítószám')}:</label></td>
-                    <td><input id="IrszamEdit" name="irszam" type="text" size="10" maxlength="10" value="{$egyed.irszam}"></td>
-                </tr>
-                <tr>
-                    <td><label for="VarosEdit">{at('Város')}:</label></td>
-                    <td><input id="VarosEdit" name="varos" type="text" size="40" maxlength="255" value="{$egyed.varos}"></td>
-                </tr>
-                <tr>
-                    <td><label for="UtcaEdit">{at('Utca')}:</label></td>
-                    <td><input id="UtcaEdit" name="utca" type="text" size="40" maxlength="255" value="{$egyed.utca}"></td>
-                </tr>
-                <tr>
-                    <td><label for="HazszamEdit">{at('Házszám')}:</label></td>
-                    <td><input id="HazszamEdit" name="hazszam" type="text" size="15" maxlength="50" value="{$egyed.hazszam}"></td>
-                </tr>
-                <tr>
-                    <td><label for="UrlEdit">{at('Webcím')}:</label></td>
-                    <td><input id="UrlEdit" name="url" type="text" size="80" maxlength="255" value="{$egyed.url}"></td>
-                </tr>
-                <tr>
-                    <td><label for="InaktivEdit">{at('Inaktív')}:</label></td>
-                    <td><input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked="checked"{/if}></td>
-                </tr>
-                <tr>
-                    <td><label for="LeirasEdit">{at('Helyszín szövege a levelekben')}:</label></td>
-                    <td><textarea id="LeirasEdit" name="emailsablon" class="emailtemplateleiras">{$egyed.emailsablon}</textarea></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Név" for="NevEdit"}
+                    <input id="NevEdit" name="nev" type="text" size="80" maxlength="255" value="{$egyed.nev}" required autofocus>
+                {/mezo}
+                {mezo cimke="Irányítószám" for="IrszamEdit"}
+                    <input id="IrszamEdit" name="irszam" type="text" size="10" maxlength="10" value="{$egyed.irszam}">
+                {/mezo}
+                {mezo cimke="Város" for="VarosEdit"}
+                    <input id="VarosEdit" name="varos" type="text" size="40" maxlength="255" value="{$egyed.varos}">
+                {/mezo}
+                {mezo cimke="Utca" for="UtcaEdit"}
+                    <input id="UtcaEdit" name="utca" type="text" size="40" maxlength="255" value="{$egyed.utca}">
+                {/mezo}
+                {mezo cimke="Házszám" for="HazszamEdit"}
+                    <input id="HazszamEdit" name="hazszam" type="text" size="15" maxlength="50" value="{$egyed.hazszam}">
+                {/mezo}
+                {mezo cimke="Webcím" for="UrlEdit"}
+                    <input id="UrlEdit" name="url" type="text" size="80" maxlength="255" value="{$egyed.url}">
+                {/mezo}
+                {mezo cimke="Inaktív" for="InaktivEdit"}
+                    <input id="InaktivEdit" name="inaktiv" type="checkbox"{if ($egyed.inaktiv)} checked="checked"{/if}>
+                {/mezo}
+                {mezo cimke="Helyszín szövege a levelekben" for="LeirasEdit" szeles=true}
+                    <textarea id="LeirasEdit" name="emailsablon" class="emailtemplateleiras">{$egyed.emailsablon}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

@@ -20,82 +20,70 @@
                    {if ($egyed.lemondhato)}checked="checked"{/if}>{at('Lemondható')}
             <input id="OrarendbennincsCheck" name="orarendbennincs" type="checkbox"
                    {if ($egyed.orarendbennincs)}checked="checked"{/if}>{at('Órarendben NEM látszik')}
-            <table>
-                <tbody>
-                <tr>
-                    <td><label for="NapEdit">{at('Nap')}:</label></td>
-                    <td><select id="NapEdit" name="nap" required="required">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $naplist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="KezdetEdit">{at('Kezdet')}:</label></td>
-                    <td><input id="KezdetEdit" name="kezdet" type="text" value="{$egyed.kezdet}" required></td>
-                    <td><label for="VegEdit">{at('Vég')}:</label></td>
-                    <td><input id="VegEdit" name="veg" type="text" value="{$egyed.veg}" required></td>
-                </tr>
-                <tr>
-                    <td><label for="JogahelyszinEdit">{at('Helyszín')}:</label></td>
-                    <td><select id="JogahelyszinEdit" name="jogahelyszin">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $jogahelyszinlist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="JogaoratipusEdit">{at('Óratípus')}:</label></td>
-                    <td><select id="JogaoratipusEdit" name="jogaoratipus" required="required">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $jogaoratipuslist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="OktatoEdit">{at('Oktató')}:</label></td>
-                    <td><select id="OktatoEdit" name="dolgozo" required="required">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $dolgozolist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                <tr>
-                    <td><label for="NevEdit">{at('Név')}:</label></td>
-                    <td colspan="3"><input id="NevEdit" name="nev" type="text" size="83" maxlength="255"
-                                           value="{$egyed.nev}" required autofocus></td>
-                </tr>
-                <tr>
-                    <td><label for="MaxferohelyEdit">{at('Max. férőhely')}:</label></td>
-                    <td><input id="MaxferohelyEdit" name="maxferohely" type="number" size="5" maxlength="5" step="any"
-                               value="{$egyed.maxferohely}"></td>
-                </tr>
-                <tr>
-                    <td><label for="AtlagresztvevoszamEdit">{at('Átlagos résztvevőszám')}:</label></td>
-                    <td><input id="AtlagresztvevoszamEdit" name="atlagresztvevoszam" type="number" size="5" maxlength="5" step="any"
-                               value="{$egyed.atlagresztvevoszam}"></td>
-                </tr>
-                <tr>
-                    <td><label for="MinbejelentkezesEdit">{at('Minimum bejelentkezés')}:</label></td>
-                    <td><input id="MinbejelentkezesEdit" name="minbejelentkezes" type="number" size="5" maxlength="5" step="any"
-                               value="{$egyed.minbejelentkezes}"></td>
-                </tr>
-                <tr>
-                    <td><label for="JutalekSzazalekEdit">{at('Jutalék %')}:</label></td>
-                    <td><input id="JutalekSzazalekEdit" name="jutalekszazalek" type="number" size="5" maxlength="5" step="any"
-                               value="{$egyed.jutalekszazalek}" placeholder="{at('alapértelmezett')}"></td>
-                </tr>
-                <tr>
-                    <td><label for="OnlineUrlEdit">{at('Online óra link')}:</label></td>
-                    <td colspan="3"><input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
-                                           value="{$egyed.onlineurl}"></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport}
+                {mezo cimke="Nap" for="NapEdit"}
+                    <select id="NapEdit" name="nap" required="required">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $naplist as $_tcs}
+                            <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Kezdet" for="KezdetEdit" ujsor=true}
+                    <input id="KezdetEdit" name="kezdet" type="text" value="{$egyed.kezdet}" required>
+                {/mezo}
+                {mezo cimke="Vég" for="VegEdit"}
+                    <input id="VegEdit" name="veg" type="text" value="{$egyed.veg}" required>
+                {/mezo}
+                {mezo cimke="Helyszín" for="JogahelyszinEdit"}
+                    <select id="JogahelyszinEdit" name="jogahelyszin">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $jogahelyszinlist as $_tcs}
+                            <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Óratípus" for="JogaoratipusEdit"}
+                    <select id="JogaoratipusEdit" name="jogaoratipus" required="required">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $jogaoratipuslist as $_tcs}
+                            <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Oktató" for="OktatoEdit"}
+                    <select id="OktatoEdit" name="dolgozo" required="required">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $dolgozolist as $_tcs}
+                            <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+                {mezo cimke="Név" for="NevEdit" szeles=true}
+                    <input id="NevEdit" name="nev" type="text" size="83" maxlength="255"
+                        value="{$egyed.nev}" required autofocus>
+                {/mezo}
+                {mezo cimke="Max. férőhely" for="MaxferohelyEdit"}
+                    <input id="MaxferohelyEdit" name="maxferohely" type="number" size="5" maxlength="5" step="any"
+                        value="{$egyed.maxferohely}">
+                {/mezo}
+                {mezo cimke="Átlagos résztvevőszám" for="AtlagresztvevoszamEdit"}
+                    <input id="AtlagresztvevoszamEdit" name="atlagresztvevoszam" type="number" size="5" maxlength="5" step="any"
+                        value="{$egyed.atlagresztvevoszam}">
+                {/mezo}
+                {mezo cimke="Minimum bejelentkezés" for="MinbejelentkezesEdit"}
+                    <input id="MinbejelentkezesEdit" name="minbejelentkezes" type="number" size="5" maxlength="5" step="any"
+                        value="{$egyed.minbejelentkezes}">
+                {/mezo}
+                {mezo cimke="Jutalék %" for="JutalekSzazalekEdit"}
+                    <input id="JutalekSzazalekEdit" name="jutalekszazalek" type="number" size="5" maxlength="5" step="any"
+                        value="{$egyed.jutalekszazalek}" placeholder="{at('alapértelmezett')}">
+                {/mezo}
+                {mezo cimke="Online óra link" for="OnlineUrlEdit" szeles=true}
+                    <input id="OnlineUrlEdit" name="onlineurl" type="text" size="83" maxlength="255"
+                        value="{$egyed.onlineurl}">
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">

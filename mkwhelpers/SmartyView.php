@@ -141,7 +141,7 @@ class SmartyView extends View
      * `for` nélkül a címke nem kattintható (pl. több mezős sor), `szeles` = a mező a sor végéig ér,
      * `nyers` = a címke már kész szöveg (pl. webshop neve), nem fordítandó, `class` = további osztály a
      * párra (pl. a JS által ki-be kapcsolt sor jelölője), `rejtve` = kezdetben nem látszik (a JS .show()-ja hozza elő),
-     * `ujsor` = új sorban kezdődik, nem csúszik fel az előző pár mellé.
+     * `ujsor` = új sorban kezdődik, nem csúszik fel az előző pár mellé, `sugo` = a címke title-je (at()-tal fordítva).
      */
     public static function mezoBlock(array $params, $content, $template, &$repeat)
     {
@@ -153,9 +153,10 @@ class SmartyView extends View
             $cimke = \at($cimke);
         }
         $cimke = htmlspecialchars($cimke) . ($cimke !== '' ? ':' : '');
+        $title = !empty($params['sugo']) ? ' title="' . htmlspecialchars(\at($params['sugo'])) . '"' : '';
         $label = !empty($params['for'])
-            ? '<label class="mezo-cimke" for="' . htmlspecialchars($params['for']) . '">' . $cimke . '</label>'
-            : '<span class="mezo-cimke">' . $cimke . '</span>';
+            ? '<label class="mezo-cimke" for="' . htmlspecialchars($params['for']) . '"' . $title . '>' . $cimke . '</label>'
+            : '<span class="mezo-cimke"' . $title . '>' . $cimke . '</span>';
         $class = 'mezo' . (!empty($params['szeles']) ? ' mezo-szeles' : '')
             . (!empty($params['ujsor']) ? ' mezo-ujsor' : '')
             . (!empty($params['class']) ? ' ' . htmlspecialchars($params['class']) : '');

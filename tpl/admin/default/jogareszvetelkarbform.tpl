@@ -7,82 +7,67 @@
 			<li><a href="#AltalanosTab">{at('Általános adatok')}</a></li>
 		</ul>
 		<div id="AltalanosTab" class="mattkarb-page" data-visible="visible">
-			<table><tbody>
-			<tr>
-                <td class="mattable-important"><label for="UresTeremEdit" class="mattable-important">{at('Üres terem')}:</label></td>
-                <td><input id="UresTeremEdit" name="uresterem" type="checkbox"></td>
-			</tr>
-            <tr>
-                <td class="mattable-important"><label for="PartnerEdit">{at('Résztvevő')}:</label></td>
-                <td colspan="3">
-                    <select id="PartnerEdit" name="partner" class="js-partneredit mattable-important">
-                        <option value="">{at('válassz')}</option>
-                        <option value="-1">{at('Új felvitel')}</option>
-                        {foreach $egyed.partnerlist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="PartnervezeteknevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Vezetéknév')}:</td>
-                <td><input id="PartnervezeteknevEdit" name="partnervezeteknev"></td>
-                <td><label for="PartnerkeresztnevEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Keresztnév')}:</td>
-                <td><input id="PartnerkeresztnevEdit" name="partnerkeresztnev"></td>
-            </tr>
-            <tr>
-                <td><label title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Cím')}:</label></td>
-                <td colspan="7">
-                    <input id="PartnerirszamEdit" name="partnerirszam" size="6" maxlength="10">
-                    <input id="PartnervarosEdit" name="partnervaros" size="20" maxlength="40">
-                    <input id="PartnerutcaEdit" name="partnerutca" size="40" maxlength="60">
-                </td>
-            </tr>
-            <tr>
-                <td class="mattable-important"><label for="PartneremailEdit" class="mattable-important" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Email')}:</label></td>
-                <td><input id="PartneremailEdit" name="partneremail"></td>
-                <td><label for="PartnertelefonEdit" title="{at('Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain')}">{at('Telefon')}:</label></td>
-                <td><input id="PartnertelefonEdit" name="partnertelefon"></td>
-            </tr>
-            <tr>
-                <td><label for="BerletEdit">{at('Bérlet')}:</label></td>
-                <td>
-                    <select id="BerletEdit" name="jogaberlet" class="js-berletedit mattable-important" data-id="{$egyed.id}">
-                        <option value="">{at('válassz')}</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="TermekEdit" class="mattable-important" title="{at('Milyen bérlettel, órajeggyel vett részt?')}">{at('Bérlet, órajegy')}:</label></td>
-                <td>
-                    <select id="TermekEdit" name="termek" class="js-termekedit mattable-important" data-id="{$egyed.id}">
-                        <option value="">{at('válassz')}</option>
-                        {foreach $egyed.termeklist as $_mk}
-                            <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="ArEdit" class="mattable-important">{at('Ár')}:</label></td>
-                <td><input id="ArEdit" name="ar" type="number" step="any" class="mattable-important" value="{$egyed.bruttoegysar}"></td>
-            </tr>
-            <tr>
-                <td><label for="JRFizmodEdit_{$egyed.id}" class="mattable-important" title="{at('Hogyan fizetett?')}">{at('Fizetési mód')}:</label></td>
-                <td>
-                    <select id="JRFizmodEdit_{$egyed.id}" name="fizmod" class="mattable-important">
-                        <option value="">{at('válassz')}</option>
-                        {foreach $egyed.fizmodlist as $_mk}
-                            <option value="{$_mk.id}"
-                                    data-tipus="{if ($_mk.bank)}B{else}P{/if}"
-                                    data-szepkartya="{$_mk.szepkartya}"
-                                    data-sportkartya="{$_mk.sportkartya}"
-                                    data-aycm="{$_mk.aycm}">{$_mk.caption}</option>
-                        {/foreach}
-                    </select>
-                </td>
-            </tr>
-			</tbody></table>
+			{mezocsoport}
+				{mezo cimke="Üres terem" for="UresTeremEdit" class="mezo-fontos"}
+					<input id="UresTeremEdit" name="uresterem" type="checkbox">
+				{/mezo}
+				{mezo cimke="Résztvevő" for="PartnerEdit" szeles=true class="mezo-fontos"}
+					<select id="PartnerEdit" name="partner" class="js-partneredit mattable-important">
+					    <option value="">{at('válassz')}</option>
+					    <option value="-1">{at('Új felvitel')}</option>
+					    {foreach $egyed.partnerlist as $_mk}
+					        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.nev} ({$_mk.email})</option>
+					    {/foreach}
+					</select>
+				{/mezo}
+				{mezo cimke="Vezetéknév" for="PartnervezeteknevEdit" sugo="Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain" ujsor=true}
+					<input id="PartnervezeteknevEdit" name="partnervezeteknev">
+				{/mezo}
+				{mezo cimke="Keresztnév" for="PartnerkeresztnevEdit" sugo="Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain"}
+					<input id="PartnerkeresztnevEdit" name="partnerkeresztnev">
+				{/mezo}
+				{mezo cimke="Cím" sugo="Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain" szeles=true}
+					<div class="mattkarb-mezogomb">
+						<input id="PartnerirszamEdit" name="partnerirszam" size="6" maxlength="10">
+						<input id="PartnervarosEdit" name="partnervaros" size="20" maxlength="40">
+						<input id="PartnerutcaEdit" name="partnerutca" size="40" maxlength="60">
+					</div>
+				{/mezo}
+				{mezo cimke="Email" for="PartneremailEdit" sugo="Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain" ujsor=true class="mezo-fontos"}
+					<input id="PartneremailEdit" name="partneremail">
+				{/mezo}
+				{mezo cimke="Telefon" for="PartnertelefonEdit" sugo="Akkor töltsd ki, ha új partnert viszel fel vagy változtatnál a partner adatain"}
+					<input id="PartnertelefonEdit" name="partnertelefon">
+				{/mezo}
+				{mezo cimke="Bérlet" for="BerletEdit"}
+					<select id="BerletEdit" name="jogaberlet" class="js-berletedit mattable-important" data-id="{$egyed.id}">
+					    <option value="">{at('válassz')}</option>
+					</select>
+				{/mezo}
+				{mezo cimke="Bérlet, órajegy" for="TermekEdit" sugo="Milyen bérlettel, órajeggyel vett részt?" class="mezo-fontos"}
+					<select id="TermekEdit" name="termek" class="js-termekedit mattable-important" data-id="{$egyed.id}">
+					    <option value="">{at('válassz')}</option>
+					    {foreach $egyed.termeklist as $_mk}
+					        <option value="{$_mk.id}"{if ($_mk.selected)} selected="selected"{/if}>{$_mk.caption}</option>
+					    {/foreach}
+					</select>
+				{/mezo}
+				{mezo cimke="Ár" for="ArEdit" class="mezo-fontos"}
+					<input id="ArEdit" name="ar" type="number" step="any" class="mattable-important" value="{$egyed.bruttoegysar}">
+				{/mezo}
+				{mezo cimke="Fizetési mód" for="JRFizmodEdit_{$egyed.id}" sugo="Hogyan fizetett?" class="mezo-fontos"}
+					<select id="JRFizmodEdit_{$egyed.id}" name="fizmod" class="mattable-important">
+					    <option value="">{at('válassz')}</option>
+					    {foreach $egyed.fizmodlist as $_mk}
+					        <option value="{$_mk.id}"
+					                data-tipus="{if ($_mk.bank)}B{else}P{/if}"
+					                data-szepkartya="{$_mk.szepkartya}"
+					                data-sportkartya="{$_mk.sportkartya}"
+					                data-aycm="{$_mk.aycm}">{$_mk.caption}</option>
+					    {/foreach}
+					</select>
+				{/mezo}
+			{/mezocsoport}
 		</div>
 	</div>
 	<input name="oper" type="hidden" value="{$oper}">

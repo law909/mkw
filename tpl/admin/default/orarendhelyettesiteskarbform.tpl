@@ -12,42 +12,39 @@
                    {if ($egyed.inaktiv)}checked="checked"{/if}>{at('Inaktív')}
             <input id="ElmaradCheck" name="elmarad" type="checkbox"
                    {if ($egyed.elmarad)}checked="checked"{/if}>{at('Elmarad')}
-            <table>
-                <tbody>
-                <tr>
-                    {if ($oper !== 'edit')}
-                    <td><label for="DatumEdit">{at('Dátum')}:</label></td>
-                    <td><input id="DatumEdit" name="datum" type="text" required></td>
-                    {else}
-                        <td>{at('Dátum')}:</td>
-                        <td>{$egyed.datum}</td>
-                    {/if}
-                </tr>
-                <tr>
-                    {if ($oper !== 'edit')}
-                    <td><label for="OrarendEdit">{at('Óra')}:</label></td>
-                    <td><select id="OrarendEdit" name="orarend" required="required">
+            {mezocsoport}
+                {if ($oper !== 'edit')}
+                    {mezo cimke="Dátum" for="DatumEdit" ujsor=true}
+                        <input id="DatumEdit" name="datum" type="text" required>
+                    {/mezo}
+                {else}
+                    {mezo cimke="Dátum"}
+                        {$egyed.datum}
+                    {/mezo}
+                {/if}
+                {if ($oper !== 'edit')}
+                    {mezo cimke="Óra" for="OrarendEdit" ujsor=true}
+                        <select id="OrarendEdit" name="orarend" required="required">
                             <option value="">{at('válasszon')}</option>
                             {foreach $orarendlist as $_tcs}
                                 <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
                             {/foreach}
-                        </select></td>
-                    {else}
-                        <td>{at('Óra')}:</td>
-                        <td>{$egyed.oranev}</td>
-                    {/if}
-                </tr>
-                <tr>
-                    <td><label for="HelyettesitoEdit">{at('Helyettesítő')}:</label></td>
-                    <td><select id="HelyettesitoEdit" name="helyettesito">
-                            <option value="">{at('válasszon')}</option>
-                            {foreach $helyettesitolist as $_tcs}
-                                <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
-                            {/foreach}
-                        </select></td>
-                </tr>
-                </tbody>
-            </table>
+                        </select>
+                    {/mezo}
+                {else}
+                    {mezo cimke="Óra"}
+                        {$egyed.oranev}
+                    {/mezo}
+                {/if}
+                {mezo cimke="Helyettesítő" for="HelyettesitoEdit"}
+                    <select id="HelyettesitoEdit" name="helyettesito">
+                        <option value="">{at('válasszon')}</option>
+                        {foreach $helyettesitolist as $_tcs}
+                            <option value="{$_tcs.id}"{if ($_tcs.selected)} selected="selected"{/if}>{$_tcs.caption}</option>
+                        {/foreach}
+                    </select>
+                {/mezo}
+            {/mezocsoport}
         </div>
     </div>
     <input name="oper" type="hidden" value="{$oper}">
