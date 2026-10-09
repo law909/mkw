@@ -1085,6 +1085,19 @@ class BizonylatfejListener
                     $dolgozo
                 );
             }
+            // created against its type's default (unticked by hand, an earlier document already moved the money, …)
+            $tipuspenztmozgat = (bool)$entity->getBizonylattipus()?->getPenztmozgat();
+            if ((bool)$entity->getPenztmozgat() !== $tipuspenztmozgat) {
+                $this->createNaplo(
+                    $entity,
+                    Bizonylatnaplo::ESEMENY_MEZOVALTOZAS,
+                    self::NAPLOZOTTMEZOK['penztmozgat'],
+                    'penztmozgat',
+                    $this->naploErtek($tipuspenztmozgat),
+                    $this->naploErtek((bool)$entity->getPenztmozgat()),
+                    $dolgozo
+                );
+            }
         }
 
         foreach ($updatedentities as $entity) {
