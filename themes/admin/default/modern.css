@@ -76,7 +76,25 @@ body.modernui {
     box-shadow: 0 0 0 3px var(--mkw-focus);
 }
 
-.modernui input[readonly],
+/* a böngésző a mentett jelszóval előtöltött mezőt (:-webkit-autofill) saját, világos háttérrel festi, amit a
+   background-color nem ír felül; a belső árnyék a téma mezőszínére fedi, a fókuszgyűrű megmarad */
+.modernui input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--mkw-autofill-bg, var(--mkw-input-bg, var(--mkw-surface))) inset;
+    -webkit-text-fill-color: var(--mkw-text);
+    caret-color: var(--mkw-text);
+}
+
+.modernui input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--mkw-autofill-bg, var(--mkw-input-bg, var(--mkw-surface))) inset, 0 0 0 3px var(--mkw-focus);
+}
+
+.modernui .mattable-repeatable input:-webkit-autofill {
+    --mkw-autofill-bg: var(--mkw-card-input-bg, var(--mkw-input-bg));
+}
+
+/* a jelszó mezőt a partner.js az automatikus kitöltés ellen readonly-val tölti be, és csak fókuszkor
+   oldja fel; attól még szerkeszthető mező, ne kapja a csak olvasható kinézetet */
+.modernui input[readonly]:not([type="password"]),
 .modernui input:disabled,
 .modernui select:disabled,
 .modernui textarea:disabled {
