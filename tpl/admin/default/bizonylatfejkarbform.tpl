@@ -372,7 +372,8 @@
                             <input id="RontkapcsolodopenzmozgasEdit" type="hidden" name="rontkapcsolodopenzmozgas" value="0">
                             <input id="IgazitpenzmozgasosszegetEdit" type="hidden" name="igazitpenzmozgasosszeget" value="0">
                             <input id="StornopenzmozgasEdit" type="hidden" name="stornopenzmozgas" value="0">
-                            <input id="StornopenzmozgaskerdesEdit" type="hidden" name="stornopenzmozgaskerdes" value=""></td>
+                            <input id="StornopenzmozgaskerdesEdit" type="hidden" name="stornopenzmozgaskerdes" value="">
+                            <input type="hidden" name="penztmozgatajanlott" value="{if ($egyed.penztmozgat)}1{else}0{/if}"></td>
                     </tr>
                     {if isset($tarsbizonylatlist)}
                         <tr>

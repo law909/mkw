@@ -970,6 +970,10 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $obj->setRendszeres($this->params->getBoolRequestParam('rendszeres'));
 
         $obj->setPenztmozgat($this->params->getBoolRequestParam('penztmozgat'));
+        if ($this->params->existsRequestParam('penztmozgatajanlott')) {
+            $obj->penztmozgatAjanlott = $this->params->getBoolRequestParam('penztmozgatajanlott');
+            $obj->penztmozgatBekuldott = $this->params->getBoolRequestParam('penztmozgat');
+        }
 
         if ($partnerkod > 0) {
             if ($partnerobj) {

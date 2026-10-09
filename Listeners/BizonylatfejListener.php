@@ -1085,15 +1085,13 @@ class BizonylatfejListener
                     $dolgozo
                 );
             }
-            // created against its type's default (unticked by hand, an earlier document already moved the money, …)
-            $tipuspenztmozgat = (bool)$entity->getBizonylattipus()?->getPenztmozgat();
-            if ((bool)$entity->getPenztmozgat() !== $tipuspenztmozgat) {
+            if ($this->isPenztmozgatKezzel($entity)) {
                 $this->createNaplo(
                     $entity,
                     Bizonylatnaplo::ESEMENY_MEZOVALTOZAS,
                     self::NAPLOZOTTMEZOK['penztmozgat'],
                     'penztmozgat',
-                    $this->naploErtek($tipuspenztmozgat),
+                    $this->naploErtek($entity->penztmozgatAjanlott),
                     $this->naploErtek((bool)$entity->getPenztmozgat()),
                     $dolgozo
                 );
@@ -1149,6 +1147,19 @@ class BizonylatfejListener
                 );
             }
         }
+    }
+
+    /**
+     * The user changed the money flag the form offered on creating the document. Not when the program
+     * set it: the "no money" payment mode, an earlier document that moved the money, an import.
+     */
+    private function isPenztmozgatKezzel($entity): bool
+    {
+        if ($entity->penztmozgatAjanlott === null || $entity->getFizmod()?->getNincspenzmozgas()) {
+            return false;
+        }
+        return $entity->penztmozgatBekuldott !== $entity->penztmozgatAjanlott
+            && (bool)$entity->getPenztmozgat() === $entity->penztmozgatBekuldott;
     }
 
     /**

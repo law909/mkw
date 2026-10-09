@@ -41,6 +41,10 @@ class Bizonylatfej
      */
     public $unasSkipWriteback = false;
 
+    /** not persisted: the money flag the form offered and the one the user sent; null outside the form */
+    public $penztmozgatAjanlott = null;
+    public $penztmozgatBekuldott = null;
+
     private $duplication;
     private $kellszallitasikoltsegetszamolni = true;
     private $szallitasikoltsegbrutto;
