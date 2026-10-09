@@ -613,6 +613,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         // fizetési módról váltanak vissza (a mentett érték olyankor szükségszerűen hamis)
         $x['tipuspenztmozgat'] = (bool)$t->getBizonylattipus()?->getPenztmozgat();
         if ($this->biztipusid && $t->getBizonylattipusId() !== $this->biztipusid) {
+            $x['tipuspenztmozgat'] = (bool)$this->biztipus?->getPenztmozgat();
             $x['penztmozgat'] = $this->biztipus?->getPenztmozgat();
             // Más típusú bizonylatot képezve: ha az előd bizonylatok bármelyike már
             // mozgatott pénzt, akkor a képzett bizonylat nem mozgathat, különben a
