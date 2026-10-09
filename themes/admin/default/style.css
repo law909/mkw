@@ -1225,6 +1225,28 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
     min-width: 0;
 }
 
+/* szakaszcím a csoporton belül: a szakaszok közös címke- és mezőoszlopon osztoznak */
+.mezok > .mattkarb-szakaszcim {
+    grid-column: 1 / -1;
+}
+
+/* a fülön álló csoport a rácsa szélességéig ér, így a címek alatti vonal pont a mezők végéig tart */
+.mattkarb-page > .mezocsoport {
+    width: max-content;
+    max-width: 100%;
+}
+
+.mattkarb-page > .mezocsoport > .mattkarb-szakaszcim,
+.mattkarb-page > .mezocsoport > .mezok > .mattkarb-szakaszcim {
+    max-width: none;
+}
+
+@media (max-width: 860px) {
+    .mattkarb-page > .mezocsoport {
+        width: auto;
+    }
+}
+
 /* {mezocsoport egyoszlop=true}: minden pár egymás alatt */
 .mezocsoport-egyoszlop > .mezok {
     grid-template-columns: fit-content(var(--mkw-cimkeoszlop, 10em)) minmax(0, var(--mkw-mezooszlop, 26em));
@@ -1239,6 +1261,157 @@ table.mattkarb-racs-kitolt td:not([colspan]) > select {
 :where(.mezok > .mezo > .mezo-ertek:not(.valtozat-mezok *, .valtozattermekke-mezok *, .tetel-mezok *)) > :where(input:not([type="checkbox"], [type="radio"], [type="hidden"]), select, textarea) {
     width: 100%;
     box-sizing: border-box;
+}
+
+/* Pipák egy sorban, kattintható felirattal (termék webes adatai) */
+.mattkarb-pipak {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+}
+
+.mattkarb-pipak > label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+/* Kis, csak olvasható vagy pipálós adattáblázat a karbantartó fülén (FIFO készletérték, kapcsolódó költségek) */
+.mattkarb-adattabla {
+    border-collapse: collapse;
+}
+
+.mattkarb-adattabla th,
+.mattkarb-adattabla td {
+    padding: 4px 10px;
+    border-bottom: 1px solid var(--mkw-border, #ddd);
+    text-align: left;
+}
+
+.mattkarb-adattabla th {
+    color: var(--mkw-muted, #666);
+    font-size: .85em;
+    font-weight: 600;
+}
+
+.mattkarb-adattabla .mattable-rightaligned,
+.mattkarb-adattabla .keszletoszlop {
+    width: auto;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Ársávok a termék karbantartón: táblázatszerű sorok közös fejléccel; a sor saját címkéi csak mobilon látszanak */
+.arsav-lista {
+    max-width: 64em;
+}
+
+.arsav-fej,
+.arsav-sor {
+    display: grid;
+    /* fix oszlopok: minden sor külön rács, így igazodnak egymáshoz és a fejléchez */
+    grid-template-columns: 14em 8em 9em 9em 12em 2.5em;
+    column-gap: 10px;
+    align-items: center;
+}
+
+.arsav-fej {
+    padding: 0 10px 4px;
+    color: var(--mkw-muted, #666);
+    font-weight: 600;
+}
+
+/* a betűméret a cellákon: a rácson az em-ben megadott oszlopokat is összehúzná */
+.arsav-fej > span {
+    font-size: .85em;
+}
+
+.arsav-sor {
+    row-gap: 6px;
+    padding: 8px 10px;
+    border-top: 1px solid var(--mkw-border, #ddd);
+}
+
+.arsav-sor:last-child {
+    border-bottom: 1px solid var(--mkw-border, #ddd);
+}
+
+.arsav-cella > select,
+.arsav-cella > input:not([type="checkbox"]) {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.arsav-cimke {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.arsav-kepletes {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.arsav-keplet {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    padding-left: 1.5em;
+}
+
+.arsav-keplet > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.arsav-keplet input[type="number"] {
+    width: 8em;
+}
+
+.arsav-gombok {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+@media (max-width: 860px) {
+    .mattkarb-adattabla th,
+    .mattkarb-adattabla td {
+        padding: 4px 5px;
+    }
+
+    .arsav-fej {
+        display: none;
+    }
+
+    .arsav-sor {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .arsav-cimke {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip: auto;
+        display: block;
+    }
+
+    .arsav-keplet {
+        padding-left: 0;
+    }
 }
 
 /* Bizonylat lista sora (bizonylatfejlista_tbody_tr.tpl): szám és műveletek, partner, felirat–érték párok */

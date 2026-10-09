@@ -683,7 +683,6 @@ $(document).ready(function () {
                 syncArPar($(this), $(this).hasClass('js-arnetto'));
             });
             artab.on('click', '.js-arnewbutton', function (e) {
-                var $this = $(this);
                 e.preventDefault();
                 $.ajax({
                     url: '/admin/termekar/getemptyrow',
@@ -691,10 +690,8 @@ $(document).ready(function () {
                     // a képlet költségválasztéka a termékhez rendeltekre szűkül
                     data: {termekid: $('#mattkarb-form input[name="id"]').val()},
                     success: function (data) {
-                        var tbody = $('#ArsavTab');
-                        tbody.append(data);
-                        $('.js-arnewbutton,.js-ardelbutton,.js-arrecalcbutton').button();
-                        $this.remove();
+                        $('.js-arlista').append(data);
+                        $('.js-ardelbutton').button();
                     }
                 });
             })

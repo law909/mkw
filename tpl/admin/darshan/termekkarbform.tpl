@@ -161,12 +161,8 @@
         </div>
         {if ($setup.arsavok)}
             <div id="ArsavTab" class="mattkarb-page" data-visible="visible">
-                {foreach $egyed.arak as $ar}
-                    {include '../default/termektermekarkarb.tpl'}
-                {/foreach}
-                <a class="js-arnewbutton" href="#" title="{at('Új')}">
-                    <span class="ui-icon ui-icon-circle-plus"></span>
-                </a>
+                <div class="mattkarb-szakaszcim">{at('Ársávok')}</div>
+                {include '../default/termekarsavlista.tpl'}
             </div>
         {/if}
         <div id="CimkeTab" class="mattkarb-page" data-visible="visible">
@@ -328,44 +324,47 @@
             </div>
         {/if}
         <div id="WebTab" class="mattkarb-page">
-            <input id="LathatoCheck" name="lathato" type="checkbox"
-                   {if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}
-            <input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"
-                   {if ($egyed.nemkaphato)}checked="checked"{/if}>{at('Nem kapható')}
-            <input id="FuggobenCheck" name="fuggoben" type="checkbox"
-                   {if ($egyed.fuggoben)}checked="checked"{/if}>{at('Függőben')}
-            <input id="KifutoCheck" name="kifuto" type="checkbox"
-                   {if ($egyed.kifuto)}checked="checked"{/if}>{at('Kifutó')}
-            <input id="AjanlottCheck" name="ajanlott" type="checkbox"
-                   {if ($egyed.ajanlott)}checked="checked"{/if}>{at('Ajánlott')}
-            <input id="KiemeltCheck" name="kiemelt" type="checkbox"
-                   {if ($egyed.kiemelt)}checked="checked"{/if}>{at('Kiemelt')}
-            <input id="HozzaszolasCheck" name="hozzaszolas" type="checkbox"
-                   {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}
-            <input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
-                   {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}
-            <table class="mattkarb-racs">
-                <tbody>
-                <tr>
-                    <td><label for="OldalCimEdit">{at('Lap címe')}:</label></td>
-                    <td><input id="OldalCimEdit" name="oldalcim" type="text" size="100" maxlength="255"
-                               value="{$egyed.oldalcim}"></td>
-                </tr>
-                <tr>
-                    <td><label for="RovidLeirasEdit">{at('Rövid leírás')}:</label></td>
-                    <td><textarea id="RovidLeirasEdit" name="rovidleiras" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras}</textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="LeirasEdit">{at('Leírás')}:</label></td>
-                    <td><textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="SeoDescriptionEdit">{at('META leírás')}:</label></td>
-                    <td><textarea id="SeoDescriptionEdit" name="seodescription"
-                                  cols="70">{$egyed.seodescription}</textarea></td>
-                </tr>
-                </tbody>
-            </table>
+            {mezocsoport cim="Megjelenés a weboldalon"}
+                {mezo cimke="Jelölések" szeles=true}
+                    <div class="mattkarb-pipak">
+                        <label><input id="LathatoCheck" name="lathato" type="checkbox"
+                                      {if ($egyed.lathato)}checked="checked"{/if}>{at('Weboldalon látható')}</label>
+                        <label><input id="NemkaphatoCheck" name="nemkaphato" type="checkbox"
+                                      {if ($egyed.nemkaphato)}checked="checked"{/if}>{at('Nem kapható')}</label>
+                        <label><input id="FuggobenCheck" name="fuggoben" type="checkbox"
+                                      {if ($egyed.fuggoben)}checked="checked"{/if}>{at('Függőben')}</label>
+                        <label><input id="KifutoCheck" name="kifuto" type="checkbox"
+                                      {if ($egyed.kifuto)}checked="checked"{/if}>{at('Kifutó')}</label>
+                        <label><input id="AjanlottCheck" name="ajanlott" type="checkbox"
+                                      {if ($egyed.ajanlott)}checked="checked"{/if}>{at('Ajánlott')}</label>
+                        <label><input id="KiemeltCheck" name="kiemelt" type="checkbox"
+                                      {if ($egyed.kiemelt)}checked="checked"{/if}>{at('Kiemelt')}</label>
+                    </div>
+                {/mezo}
+                {mezo cimke="Egyéb" szeles=true}
+                    <div class="mattkarb-pipak">
+                        <label><input id="HozzaszolasCheck" name="hozzaszolas" type="checkbox"
+                                      {if ($egyed.hozzaszolas)}checked="checked"{/if}>{at('Hozzá lehet szólni')}</label>
+                        <label><input id="TermekExportbanSzerepel" name="termekexportbanszerepel" type="checkbox"
+                                      {if ($egyed.termekexportbanszerepel)}checked="checked"{/if}>{at('Termékexportokban szerepel')}</label>
+                    </div>
+                {/mezo}
+                <div class="mattkarb-szakaszcim">{at('Tartalom')}</div>
+                {mezo cimke="Lap címe" for="OldalCimEdit" szeles=true}
+                    <input id="OldalCimEdit" name="oldalcim" type="text" size="100" maxlength="255"
+                           value="{$egyed.oldalcim}">
+                {/mezo}
+                {mezo cimke="Rövid leírás" for="RovidLeirasEdit" szeles=true}
+                    <textarea id="RovidLeirasEdit" name="rovidleiras" cols="70" rows="3"{if ($setup.unas)} class="js-ckeditor"{/if}>{$egyed.rovidleiras}</textarea>
+                {/mezo}
+                {mezo cimke="Leírás" for="LeirasEdit" szeles=true}
+                    <textarea id="LeirasEdit" name="leiras">{$egyed.leiras}</textarea>
+                {/mezo}
+                {mezo cimke="META leírás" for="SeoDescriptionEdit" szeles=true}
+                    <textarea id="SeoDescriptionEdit" name="seodescription"
+                              cols="70">{$egyed.seodescription}</textarea>
+                {/mezo}
+            {/mezocsoport}
         </div>
         <div id="KepTab" class="mattkarb-page" data-visible="visible">
             {mezocsoport}

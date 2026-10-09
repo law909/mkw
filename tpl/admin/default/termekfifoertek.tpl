@@ -1,12 +1,8 @@
 {* A termék FIFO készletértéke raktáranként, csak olvasható – a termék karbantartó árak fülén.
    A számot az éjszakai cron frissíti; a gomb egyetlen termékre kéri az azonnali újraszámolást. *}
-<div class="matt-hseparator"></div>
+<div class="mattkarb-szakaszcim">{at('FIFO készletérték')}</div>
 <div>
-    <h4>{at('FIFO készletérték')}</h4>
-    <a class="js-fiforecalcbutton" href="/admin/keszletertek/recalctermek"
-       data-termekid="{$egyed.id}">{at('Készletérték újraszámolása')}</a>
-    <span class="js-fifouzenet"></span>
-    <table id="fifoertektabla">
+    <table id="fifoertektabla" class="mattkarb-adattabla">
         <thead>
         <tr>
             <th>{at('Raktár')}</th>
@@ -32,4 +28,9 @@
         {/foreach}
         </tbody>
     </table>
+    <div class="arsav-gombok">
+        <a class="js-fiforecalcbutton" href="/admin/keszletertek/recalctermek"
+           data-termekid="{$egyed.id}">{at('Készletérték újraszámolása')}</a>
+        <span class="js-fifouzenet"></span>
+    </div>
 </div>
