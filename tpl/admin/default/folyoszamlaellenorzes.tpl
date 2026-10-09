@@ -1,6 +1,7 @@
 {extends "../base.tpl"}
 
 {block "inhead"}
+    {include "../partials/form.scripts.tpl"}
     <script type="text/javascript" src="/js/admin/default/jquery.jstree.js"></script>
     <script type="text/javascript" src="/js/admin/default/folyoszamlaellenorzes.js"></script>
 {/block}
@@ -26,8 +27,7 @@
                         </ul>
                         <p>{at('Ellenőrzésenként legfeljebb')} {$rowlimit} {at('sort mutat, a talált darabszám ettől függetlenül a teljes szám.')}</p>
                     </div>
-                    <div class="matt-hseparator"></div>
-                    <div>
+                    <div class="arsav-gombok">
                         <a href="/admin/folyoszamlaellenorzes/get" class="js-okbutton">{at('OK')}</a>
                         <a href="/admin/folyoszamlaellenorzes/export" class="js-exportbutton">{at('Export')}</a>
                         <a href="/admin/folyoszamlaellenorzes/regenerate" class="js-regeneratebutton">{at('Elavult sorok újraképzése')}</a>
