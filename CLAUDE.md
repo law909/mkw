@@ -109,6 +109,8 @@ Two base classes in `mkwhelpers/`:
 
 ## Templates and assets
 
+- Admin edit forms lay out their fields with the `{mezocsoport}` / `{mezo}` blocks of `SmartyView`, never a layout
+  `<table>` (the termék / partner / bizonylat forms are the exception, see the `admin-crud-screen` skill).
 - Smarty 4 templates live in `tpl/admin/{theme}/` and `tpl/main/{theme}/`. `tpl/admin/default/` is the fallback admin theme. Compiled templates go to
   `tpl/template_c/` and caches to `tpl/admin/cache/` (both must be writable).
 - Frontend JS/CSS is bundled by `Gruntfile.js`: `concat` builds per-theme `*bootstrap.js`/`*app.js` and combined CSS; `less` and `sass` compile theme
