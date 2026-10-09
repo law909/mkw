@@ -77,9 +77,16 @@
 }
 
 .mattable-pager-mind {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     margin-right: 6px;
     white-space: nowrap;
     cursor: pointer;
+}
+
+.mattable-pager-mind > input {
+    margin: 0;
 }
 
 .mattable-order {
