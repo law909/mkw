@@ -5,6 +5,9 @@
 	--mkw-surface: #18181b;
 	--mkw-surface-2: #1f1f23;
 	--mkw-hover: #27272a;
+	/* a sima gomb háttere: elválik a form felületétől */
+	--mkw-button-bg: #2c2c31;
+	--mkw-button-hover: #38383e;
 	--mkw-border: #2e2e33;
 	--mkw-border-strong: #3f3f46;
 	--mkw-text: #f4f4f5;

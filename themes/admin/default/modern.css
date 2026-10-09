@@ -106,6 +106,16 @@ body.modernui {
     padding: .35em .9em;
 }
 
+/* a sima (nem színes, nem bekapcsolt) gomb saját hátteret kap, különben beleolvad a form felületébe;
+   :where, hogy a színes gombok, a menüpontok és az állapotok szabályai erősebbek maradjanak */
+.modernui :where(.ui-button:not(.ui-state-hover, .ui-state-active, .ui-state-focus, .ui-state-disabled)) {
+    background: var(--mkw-button-bg);
+}
+
+.modernui :where(.ui-button:not(.ui-state-hover, .ui-state-active, .ui-state-focus, .ui-state-disabled)):is(:hover, :focus) {
+    background: var(--mkw-button-hover);
+}
+
 /* Felső sáv
 ----------------------------------*/
 .modernui {

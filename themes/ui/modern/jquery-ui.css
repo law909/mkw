@@ -871,6 +871,9 @@ body .ui-tooltip {
 	--mkw-surface: #ffffff;
 	--mkw-surface-2: #fafafa;
 	--mkw-hover: #f4f4f5;
+	/* a sima gomb háttere: elválik a form fehér felületétől */
+	--mkw-button-bg: #ececef;
+	--mkw-button-hover: #e1e1e5;
 	--mkw-border: #e4e4e7;
 	--mkw-border-strong: #d4d4d8;
 	--mkw-text: #18181b;
