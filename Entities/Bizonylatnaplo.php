@@ -39,6 +39,8 @@ class Bizonylatnaplo
     public const ESEMENY_STORNO = 'storno';
     /** stornókor feltett pénzmozgás-kérdés és a rá adott válasz */
     public const ESEMENY_STORNOPENZMOZGAS = 'stornopenzmozgas';
+    /** hiteles eladás: az előleg stornója és a befizetés átvezetése a hitelező számlájára */
+    public const ESEMENY_HITELESELADAS = 'hiteleseladas';
 
     /**
      * @ORM\Id @ORM\Column(type="integer")

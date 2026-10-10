@@ -33,6 +33,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Services\BizonylatCalculatorService;
 use Services\BizonylatSliceService;
+use Services\HitelesEladasService;
 use Services\PenzmozgasService;
 use Services\KeszletService;
 
@@ -706,6 +707,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $x['ujpenztarbizonylaturl'] = $this->kiegyenlitesUrl($t, $x['egyenleg'], 'P');
             $x['ujbankbizonylaturl'] = $this->kiegyenlitesUrl($t, $x['egyenleg'], 'B');
             $x['penztmozgatkapcsolo'] = $this->canTogglePenztmozgat($t);
+            $x['hiteleseladas'] = HitelesEladasService::canStart($t);
             if (\mkw\store::isOsztottFizmod()) {
                 $ma = new \DateTime(\mkw\store::convDate(date(\mkw\store::$DateFormat)));
                 $egyenlegek = [];
@@ -2306,6 +2308,56 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $bf->setPenztmozgat($this->params->getBoolRequestParam('kibe'));
         $this->getEm()->persist($bf);
         $this->getEm()->flush();
+    }
+
+    public function hitelesEladas()
+    {
+        /** @var Bizonylatfej $eloleg */
+        $eloleg = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        $szamlaid = trim($this->params->getStringRequestParam('szamla'));
+        $szamla = $szamlaid === '' ? null : $this->getRepo()->find($szamlaid);
+        if (!$eloleg) {
+            $this->jsonError(t('Nincs ilyen bizonylat.'), 404);
+            return;
+        }
+        try {
+            $r = (new HitelesEladasService())->run($eloleg, $szamla, $this->params->getIntRequestParam('stornotip'));
+        } catch (\mkwhelpers\Exceptions\UserMessageException $e) {
+            $this->jsonError($e->getMessage(), 409);
+            return;
+        } catch (\Throwable $e) {
+            $this->jsonError(t('A hiteles eladás nem sikerült') . ': ' . $e->getMessage(), 500);
+            return;
+        }
+        $penzmozgas = sprintf(
+            t('Rontott pénzmozgás: %s; átvezetve: %s bankbizonylat, %s a(z) %s számlára'),
+            implode(', ', $r['rontott']),
+            $r['bank']->getId(),
+            $r['osszeg'],
+            $szamla->getId()
+        );
+        $this->persistNaplo($eloleg, Bizonylatnaplo::ESEMENY_STORNO, t('Stornózás'), '', t('Stornó bizonylat') . ': ' . $r['storno']->getId());
+        $this->persistNaplo($r['storno'], Bizonylatnaplo::ESEMENY_STORNO, t('Stornózás'), '', t('Stornózott bizonylat') . ': ' . $eloleg->getId());
+        foreach ([$eloleg, $r['storno']] as $biz) {
+            $this->persistNaplo($biz, Bizonylatnaplo::ESEMENY_HITELESELADAS, t('Hiteles eladás'), '', $penzmozgas);
+        }
+        $this->persistNaplo($szamla, Bizonylatnaplo::ESEMENY_HITELESELADAS, t('Hiteles eladás'), '', sprintf(
+            t('A(z) %s előleg befizetése átvezetve: %s bankbizonylat, %s'),
+            $eloleg->getId(),
+            $r['bank']->getId(),
+            $r['osszeg']
+        ));
+        $this->getEm()->flush();
+        echo json_encode([
+            'ok' => true,
+            'msg' => sprintf(
+                t('Stornó: %s. Rontott pénzmozgás: %s. Új bankbizonylat: %s (%s).'),
+                $r['storno']->getId(),
+                implode(', ', $r['rontott']),
+                $r['bank']->getId(),
+                $r['osszeg']
+            ),
+        ]);
     }
 
     public function setNyomtatva()

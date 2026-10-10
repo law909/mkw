@@ -205,6 +205,9 @@
                 {mezo cimke="Előleg beszámítás" for="ShowelolegbeszamitasEdit"}
                     <input id="ShowelolegbeszamitasEdit" name="showelolegbeszamitas" type="checkbox"{if ($egyed.showelolegbeszamitas)} checked="checked"{/if}>
                 {/mezo}
+                {mezo cimke="Hiteles eladás" for="ShowhiteleseladasbuttonEdit"}
+                    <input id="ShowhiteleseladasbuttonEdit" name="showhiteleseladasbutton" type="checkbox"{if ($egyed.showhiteleseladasbutton)} checked="checked"{/if}>
+                {/mezo}
                 {mezo cimke="Stornó" for="ShowstornoEdit" ujsor=true}
                     <input id="ShowstornoEdit" name="showstorno" type="checkbox"{if ($egyed.showstorno)} checked="checked"{/if}>
                 {/mezo}

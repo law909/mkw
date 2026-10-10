@@ -170,6 +170,10 @@
                     {elseif (!($showmunkalapadatok && $_egyed.munkalapkiszamlazva))}
                         <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                     {/if}
+                    {if ($_egyed.hiteleseladas|default)}
+                        <a class="js-hiteleseladas" href="#" data-egyedid="{$_egyed.id}"
+                           title="{at('Hiteles eladás')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a>
+                    {/if}
                 {/if}
             {/if}
         </div>

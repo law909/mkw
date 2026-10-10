@@ -2780,7 +2780,7 @@ let bizonylathelper = function ($) {
                         $('.js-printbizonylat, .js-printbizonylat2, .js-rontbizonylat, .js-stornobizonylat1, .js-stornobizonylat2, .js-tetelellenorzes, .js-csomagolasilista, ' +
                             '.js-inheritbizonylat, .js-printelolegbekero, .js-backorder, .js-slicemanufacturer, .js-statusznaplobtn, ' +
                             '.js-feketelista, .js-vissza, .js-nav, .js-navstat, .js-pdf, .js-emailpdf, .js-email, ' +
-                            '.js-kiegyenlit, .js-mirexport, .js-cimkenyomtatas, .js-recheck').button();
+                            '.js-kiegyenlit, .js-mirexport, .js-cimkenyomtatas, .js-recheck, .js-hiteleseladas').button();
                     },
                     onDoEditLink: function () {
                         $('.js-inheritbizonylat').each(function () {
@@ -3232,6 +3232,54 @@ let bizonylathelper = function ($) {
                                 kerdezPenzmozgasrol(bizszam, PENZMOZGASKERDESEK.ront, ront);
                             },
                             'Nem': function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+                })
+                .on('click', '.js-hiteleseladas', function (e) {
+                    e.preventDefault();
+                    const bizszam = $(this).data('egyedid'),
+                        $doboz = $(`<div>
+                            <p>Az előlegszámla stornózva lesz, a hozzá tartozó bank- és pénztárbizonylatok rontva,
+                                a befizetett összeg pedig bankbizonylattal a hitelező számlájára kerül.</p>
+                            <p><label>A hitelezőnek kiállított számla száma:<br><input type="text" class="js-hitelesszamla" size="30"></label></p>
+                            <p><label>Stornó típusa:<br><select class="js-hitelesstornotip">
+                                <option value="2">Érvénytelenítő számla</option>
+                                <option value="1">Számlával egy tekintet alá eső okirat</option>
+                            </select></label></p>
+                        </div>`);
+                    dialogcenter.empty().append($doboz).dialog({
+                        title: `Hiteles eladás: ${bizszam}`,
+                        resizable: false,
+                        width: 520,
+                        modal: true,
+                        buttons: {
+                            'Végrehajt': function () {
+                                const $dia = $(this),
+                                    szamla = $('.js-hitelesszamla', $doboz).val().trim();
+                                if (!szamla) {
+                                    $('.js-hitelesszamla', $doboz).focus();
+                                    return;
+                                }
+                                $dia.dialog('close');
+                                $.ajax({
+                                    url: '/admin/bizonylatfej/hiteleseladas',
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    data: {
+                                        id: bizszam,
+                                        szamla: szamla,
+                                        stornotip: $('.js-hitelesstornotip', $doboz).val()
+                                    },
+                                    success: (d) => {
+                                        mkwUzenet(d.msg);
+                                        $('.mattable-tablerefresh').click();
+                                    },
+                                    error: (xhr) => mkwUzenet(xhr.responseJSON?.error || 'A hiteles eladás nem sikerült.')
+                                });
+                            },
+                            'Mégsem': function () {
                                 $(this).dialog('close');
                             }
                         }

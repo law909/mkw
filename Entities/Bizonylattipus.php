@@ -78,6 +78,9 @@ class Bizonylattipus
     /** Számlán: az "Előleg beszámítása" választó a tételek fölött. */
     /** @ORM\Column(type="boolean",nullable=false) */
     private $showelolegbeszamitas = false;
+    /** Előlegszámlán: hiteles eladás – az előleg stornója, a befizetése átvezetve a hitelező számlájára. */
+    /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
+    private $showhiteleseladasbutton = false;
     /** @ORM\Column(type="boolean",nullable=false) */
     private $sendemail = false;
     /** @ORM\Column(type="boolean",nullable=false) */
@@ -243,6 +246,7 @@ class Bizonylattipus
             'showwebshopmegrendelesbutton' => $this->getShowwebshopmegrendelesbutton(),
             'showelolegbutton' => $this->getShowelolegbutton(),
             'showelolegbeszamitas' => $this->getShowelolegbeszamitas(),
+            'showhiteleseladasbutton' => $this->getShowhiteleseladasbutton(),
             'nyomtatni' => $this->getNyomtatni(),
             'tipuseditprinted' => $this->getEditprinted(),
             'sendemail' => $this->getSendemail(),
@@ -859,6 +863,16 @@ class Bizonylattipus
     public function setMegjegyzesnyomtatasban($val)
     {
         $this->megjegyzesnyomtatasban = (bool)$val;
+    }
+
+    public function getShowhiteleseladasbutton()
+    {
+        return $this->showhiteleseladasbutton;
+    }
+
+    public function setShowhiteleseladasbutton($val)
+    {
+        $this->showhiteleseladasbutton = (bool)$val;
     }
 
     /**

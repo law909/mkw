@@ -156,6 +156,11 @@ class ElolegService
         return $ret;
     }
 
+    public static function isOffset(Bizonylatfej $eloleg): bool
+    {
+        return (bool)self::getOffsetSums($eloleg);
+    }
+
     /**
      * Amounts already offset against this advance, per VAT rate (negative). Only lines of documents
      * that are neither voided, nor a reversal, nor reversed count - so reversing the final invoice

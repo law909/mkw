@@ -695,6 +695,7 @@ $router->map('GET', '/admin/bizonylatfej/egyediazonositokeszlet', 'bizonylatfejC
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatfej/setstatusz', 'bizonylatfejController#setStatusz', 'adminbizonylatfejsetstatusz');
     $router->map('POST', '/admin/bizonylatfej/setpenztmozgat', 'bizonylatfejController#setPenztmozgat', 'adminbizonylatfejsetpenztmozgat');
+    $router->map('POST', '/admin/bizonylatfej/hiteleseladas', 'bizonylatfejController#hitelesEladas', 'adminbizonylatfejhiteleseladas');
     $router->map('POST', '/admin/bizonylatfej/elonezet', 'bizonylatfejController#preview', 'adminbizonylatfejelonezet');
     $router->map('POST', '/admin/bizonylatfej/recheck', 'bizonylatfejController#recheck', 'adminbizonylatfejrecheck');
     $router->map('POST', '/admin/bizonylatfej/setnyomtatva', 'bizonylatfejController#setNyomtatva', 'adminbizonylatfejsetnyomtatva');
