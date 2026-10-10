@@ -130,6 +130,9 @@ class HitelesEladasService
         if ($szamla->getRontott() || $szamla->getStorno() || $szamla->getStornozott()) {
             $this->fail(t('A számla rontott vagy stornózott') . ': ' . $szamla->getId());
         }
+        if (!$szamla->getPartner()?->getHitelintezet()) {
+            $this->fail(t('A számla partnere nem hitelintézet') . ': ' . $szamla->getId());
+        }
         if (!$szamla->getPenztmozgat()) {
             $this->fail(t('A számla nem képez kintlévőséget') . ': ' . $szamla->getId());
         }

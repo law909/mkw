@@ -320,6 +320,10 @@ class Partner
      */
     private $ezuzletkoto = false;
 
+    /** Hitelintézet (pl. Merkantil): a hiteles eladás az ő számláira vezeti át az előleget. */
+    /** @ORM\Column(type="boolean",nullable=false,options={"default":0}) */
+    private $hitelintezet = false;
+
     /** @ORM\Column(type="integer", nullable=true) */
     private $migrid;
 
@@ -1663,6 +1667,16 @@ class Partner
     public function setEzuzletkoto($ezuzletkoto)
     {
         $this->ezuzletkoto = $ezuzletkoto;
+    }
+
+    public function getHitelintezet()
+    {
+        return $this->hitelintezet;
+    }
+
+    public function setHitelintezet($val)
+    {
+        $this->hitelintezet = (bool)$val;
     }
 
     /**

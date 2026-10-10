@@ -2310,6 +2310,53 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $this->getEm()->flush();
     }
 
+    /** The hire-purchase dialog's invoice autocomplete: open invoices of credit institution partners. */
+    public function hitelesSzamlaList()
+    {
+        $term = trim($this->params->getStringRequestParam('term'));
+        /** @var Bizonylatfej|null $eloleg */
+        $eloleg = $this->getRepo()->find($this->params->getStringRequestParam('eloleg'));
+        if ($term === '' || !$eloleg) {
+            echo json_encode([]);
+            return;
+        }
+        $szamlak = $this->getEm()->createQuery(
+            'SELECT bf FROM Entities\Bizonylatfej bf JOIN bf.partner p'
+            . ' WHERE p.hitelintezet = true AND bf.bizonylattipus IN (:tipusok) AND bf.id LIKE :term'
+            . ' AND bf.rontott = false AND bf.storno = false AND bf.stornozott = false AND bf.penztmozgat = true'
+            . ' AND bf.valutanem = :valutanem'
+            . ' ORDER BY bf.kelt DESC, bf.id DESC'
+        )
+            ->setParameter('tipusok', Bizonylattipus::SZAMLATIPUSOK)
+            ->setParameter('term', '%' . addcslashes($term, '%_') . '%')
+            ->setParameter('valutanem', $eloleg->getValutanemId())
+            ->setMaxResults(50)
+            ->getResult();
+        $ret = [];
+        /** @var Bizonylatfej $szamla */
+        foreach ($szamlak as $szamla) {
+            $nyitott = $szamla->getEgyenleg() * -1 * $szamla->getIrany();
+            if ($nyitott < 0.005) {
+                continue;
+            }
+            $ret[] = [
+                'value' => $szamla->getId(),
+                'label' => sprintf(
+                    '%s – %s – %s – %s: %s',
+                    $szamla->getId(),
+                    html_entity_decode((string)$szamla->getPartnernev(), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                    $szamla->getKeltStr(),
+                    t('nyitott'),
+                    number_format($nyitott, 0, ',', ' ')
+                ),
+            ];
+            if (count($ret) >= 20) {
+                break;
+            }
+        }
+        echo json_encode($ret, JSON_HEX_TAG | JSON_HEX_AMP);
+    }
+
     public function hitelesEladas()
     {
         /** @var Bizonylatfej $eloleg */

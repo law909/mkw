@@ -691,6 +691,7 @@ if (!\mkw\store::isClosed()) {
 $router->map('GET', '/admin/bizonylatfej/checkkelt', 'bizonylatfejController#checkKelt', 'adminbizonylatfejcheckkelt');
 $router->map('GET', '/admin/bizonylatfej/calcesedekesseg', 'bizonylatfejController#calcesedekesseg', 'adminbizonylatfejcalcesedekesseg');
 $router->map('POST', '/admin/bizonylatfej/calcosszesen', 'bizonylatfejController#calcosszesen', 'adminbizonylatfejcalcosszesen');
+$router->map('GET', '/admin/bizonylatfej/hitelesszamlalist', 'bizonylatfejController#hitelesSzamlaList', 'adminbizonylatfejhitelesszamlalist');
 $router->map('GET', '/admin/bizonylatfej/egyediazonositokeszlet', 'bizonylatfejController#egyediAzonositoKeszlet', 'adminbizonylatfejegyediazonositokeszlet');
 if (!\mkw\store::isClosed()) {
     $router->map('POST', '/admin/bizonylatfej/setstatusz', 'bizonylatfejController#setStatusz', 'adminbizonylatfejsetstatusz');

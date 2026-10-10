@@ -3242,8 +3242,8 @@ let bizonylathelper = function ($) {
                     const bizszam = $(this).data('egyedid'),
                         $doboz = $(`<div>
                             <p>Az előlegszámla stornózva lesz, a hozzá tartozó bank- és pénztárbizonylatok rontva,
-                                a befizetett összeg pedig bankbizonylattal a hitelező számlájára kerül.</p>
-                            <p><label>A hitelezőnek kiállított számla száma:<br><input type="text" class="js-hitelesszamla" size="30"></label></p>
+                                a befizetett összeg pedig bankbizonylattal a hitelintézet számlájára kerül.</p>
+                            <p><label>A hitelintézetnek kiállított számla (bizonylatszám részlete):<br><input type="text" class="js-hitelesszamla" size="30"></label></p>
                             <p><label>Stornó típusa:<br><select class="js-hitelesstornotip">
                                 <option value="2">Érvénytelenítő számla</option>
                                 <option value="1">Számlával egy tekintet alá eső okirat</option>
@@ -3254,6 +3254,8 @@ let bizonylathelper = function ($) {
                         resizable: false,
                         width: 520,
                         modal: true,
+                        // the menu lives outside $doboz, empty() would leave it behind
+                        close: () => $('.js-hitelesszamla', $doboz).autocomplete('destroy'),
                         buttons: {
                             'Végrehajt': function () {
                                 const $dia = $(this),
@@ -3282,6 +3284,19 @@ let bizonylathelper = function ($) {
                             'Mégsem': function () {
                                 $(this).dialog('close');
                             }
+                        }
+                    });
+                    // after opening: the menu then goes into the dialog's ui-front, above the modal overlay
+                    $('.js-hitelesszamla', $doboz).autocomplete({
+                        minLength: 2,
+                        source: (request, response) => {
+                            $.ajax({
+                                url: '/admin/bizonylatfej/hitelesszamlalist',
+                                dataType: 'json',
+                                data: {term: request.term, eloleg: bizszam},
+                                success: response,
+                                error: () => response([])
+                            });
                         }
                     });
                 })
