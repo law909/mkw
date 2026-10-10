@@ -108,7 +108,7 @@ class HitelesEladasService
             $this->em->persist($eloleg);
             $this->em->flush();
 
-            $bank = $this->createBankbizonylat($eloleg, $szamla, $osszeg, $bankszamla, $jogcim);
+            $bank = $this->createBankbizonylat($eloleg, $szamla, $tetelek, $bankszamla, $jogcim);
             $this->em->flush();
             $conn->commit();
         } catch (\Throwable $e) {
@@ -132,6 +132,10 @@ class HitelesEladasService
         }
         if (!$szamla->getPenztmozgat()) {
             $this->fail(t('A számla nem képez kintlévőséget') . ': ' . $szamla->getId());
+        }
+        // the payments' direction is copied onto the new bank lines
+        if ($szamla->getIrany() != $eloleg->getIrany()) {
+            $this->fail(t('A számla iránya eltér az előlegszámláétól.'));
         }
         if ($szamla->getValutanemId() != $eloleg->getValutanemId()) {
             $this->fail(t('A számla valutaneme eltér az előlegszámláétól.'));
@@ -244,31 +248,41 @@ class HitelesEladasService
         return $storno;
     }
 
-    private function createBankbizonylat(Bizonylatfej $eloleg, Bizonylatfej $szamla, float $osszeg, $bankszamla, Jogcim $jogcim): Bankbizonylatfej
+    /** One line per original payment, on its own date: the money arrived then, not on the day of the transfer. */
+    private function createBankbizonylat(Bizonylatfej $eloleg, Bizonylatfej $szamla, array $penzmozgasok, $bankszamla, Jogcim $jogcim): Bankbizonylatfej
     {
-        $ma = date(\mkw\store::$DateFormat);
         $bank = new Bankbizonylatfej();
         $bank->setBizonylattipus($this->em->getRepository(Bizonylattipus::class)->find('bank'));
         $bank->setBankszamla($bankszamla);
-        $bank->setKelt($ma);
+        $bank->setKelt(max(array_map(fn($p) => $this->getBefizetesDatum($p), $penzmozgasok)));
         // setPartner() puts the partner's currency on the header, the invoice's goes back after it
         $bank->setPartner($szamla->getPartner());
         $bank->setValutanem($szamla->getValutanem());
         $bank->setMegjegyzes(sprintf('%s előleg befizetése a(z) %s számlára (hiteles eladás).', $eloleg->getId(), $szamla->getId()));
 
-        $tetel = new Bankbizonylattetel();
-        $tetel->setBizonylatfej($bank);
-        $tetel->setIrany($szamla->getIrany() * -1);
-        $tetel->setPartner($szamla->getPartner());
-        $tetel->setDatum($ma);
-        $tetel->setJogcim($jogcim);
-        $tetel->setValutanem($szamla->getValutanem());
-        $tetel->setHivatkozottbizonylat($szamla->getId());
-        $tetel->setHivatkozottdatum($szamla->getEsedekessegStr() ?: $szamla->getKeltStr());
-        $tetel->setBrutto($osszeg);
-        $this->em->persist($tetel);
+        foreach ($penzmozgasok as $penzmozgas) {
+            $irany = $penzmozgas instanceof Bankbizonylattetel ? $penzmozgas->getIrany() : $penzmozgas->getBizonylatfej()->getIrany();
+            $tetel = new Bankbizonylattetel();
+            $tetel->setBizonylatfej($bank);
+            $tetel->setIrany($irany);
+            $tetel->setPartner($szamla->getPartner());
+            $tetel->setDatum($this->getBefizetesDatum($penzmozgas));
+            $tetel->setJogcim($jogcim);
+            $tetel->setValutanem($szamla->getValutanem());
+            $tetel->setHivatkozottbizonylat($szamla->getId());
+            $tetel->setHivatkozottdatum($szamla->getEsedekessegStr() ?: $szamla->getKeltStr());
+            $tetel->setBrutto($penzmozgas->getBrutto());
+            $this->em->persist($tetel);
+        }
         $this->em->persist($bank);
         return $bank;
+    }
+
+    /** A cash document has its date on the header only. */
+    private function getBefizetesDatum($penzmozgas): \DateTime
+    {
+        $datum = $penzmozgas instanceof Bankbizonylattetel ? $penzmozgas->getDatum() : $penzmozgas->getBizonylatfej()->getKelt();
+        return clone $datum;
     }
 
     /** The original bank payment's account, else the invoice's, else the currency's. */
