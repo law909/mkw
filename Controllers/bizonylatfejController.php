@@ -2376,10 +2376,11 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $this->jsonError(t('A hiteles eladás nem sikerült') . ': ' . $e->getMessage(), 500);
             return;
         }
+        $ujak = implode(', ', array_map(fn($uj) => $uj->getId(), $r['uj']));
         $penzmozgas = sprintf(
-            t('Rontott pénzmozgás: %s; átvezetve: %s bankbizonylat, %s a(z) %s számlára'),
+            t('Rontott pénzmozgás: %s; átvezetve: %s, összesen %s a(z) %s számlára'),
             implode(', ', $r['rontott']),
-            $r['bank']->getId(),
+            $ujak,
             $r['osszeg'],
             $szamla->getId()
         );
@@ -2389,19 +2390,19 @@ class bizonylatfejController extends \mkwhelpers\MattableController
             $this->persistNaplo($biz, Bizonylatnaplo::ESEMENY_HITELESELADAS, t('Hiteles eladás'), '', $penzmozgas);
         }
         $this->persistNaplo($szamla, Bizonylatnaplo::ESEMENY_HITELESELADAS, t('Hiteles eladás'), '', sprintf(
-            t('A(z) %s előleg befizetése átvezetve: %s bankbizonylat, %s'),
+            t('A(z) %s előleg befizetése átvezetve: %s, összesen %s'),
             $eloleg->getId(),
-            $r['bank']->getId(),
+            $ujak,
             $r['osszeg']
         ));
         $this->getEm()->flush();
         echo json_encode([
             'ok' => true,
             'msg' => sprintf(
-                t('Stornó: %s. Rontott pénzmozgás: %s. Új bankbizonylat: %s (%s).'),
+                t('Stornó: %s. Rontott pénzmozgás: %s. Új pénzmozgás: %s (összesen %s).'),
                 $r['storno']->getId(),
                 implode(', ', $r['rontott']),
-                $r['bank']->getId(),
+                $ujak,
                 $r['osszeg']
             ),
         ]);

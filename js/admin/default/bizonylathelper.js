@@ -3242,7 +3242,7 @@ let bizonylathelper = function ($) {
                     const bizszam = $(this).data('egyedid'),
                         $doboz = $(`<div>
                             <p>Az előlegszámla stornózva lesz, a hozzá tartozó bank- és pénztárbizonylatok rontva,
-                                a befizetett összeg pedig bankbizonylattal a hitelintézet számlájára kerül.</p>
+                                a befizetések pedig ugyanúgy (bank bankba, pénztár pénztárba) újra rögzítve a hitelintézet számlájára kerülnek.</p>
                             <p><label>A hitelintézetnek kiállított számla (bizonylatszám részlete):<br><input type="text" class="js-hitelesszamla" size="30"></label></p>
                             <p><label>Stornó típusa:<br><select class="js-hitelesstornotip">
                                 <option value="2">Érvénytelenítő számla</option>
