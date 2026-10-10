@@ -160,6 +160,10 @@
                         <a class="js-csomagolasilista" href="/admin/csomagolasilista/view?id={$_egyed.id|escape:'url'}" target="_blank"
                            title="{at('Csomagolási lista')}"><span class="ui-icon ui-icon-suitcase"></span></a>
                     {/if}
+                    {if ($_egyed.hiteleseladas|default)}
+                        <a class="js-hiteleseladas" href="#" data-egyedid="{$_egyed.id}"
+                           title="{at('Hiteles eladás')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a>
+                    {/if}
                     {if ($showstorno)}
                         {if ($_egyed.naveredmeny=='DONE' || $_egyed.naveredmeny=='TESZT')}
                             <a class="js-stornobizonylat1" href="#" data-egyedid="{$_egyed.id}" data-egyednev="{$_egyed.bizonylattipusid}fej" data-oper="storno"
@@ -169,10 +173,6 @@
                         {/if}
                     {elseif (!($showmunkalapadatok && $_egyed.munkalapkiszamlazva))}
                         <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
-                    {/if}
-                    {if ($_egyed.hiteleseladas|default)}
-                        <a class="js-hiteleseladas" href="#" data-egyedid="{$_egyed.id}"
-                           title="{at('Hiteles eladás')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a>
                     {/if}
                 {/if}
             {/if}
