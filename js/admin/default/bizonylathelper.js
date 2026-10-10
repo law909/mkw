@@ -3287,8 +3287,9 @@ let bizonylathelper = function ($) {
                         }
                     });
                     // after opening: the menu then goes into the dialog's ui-front, above the modal overlay
+                    // minLength 0: the down arrow opens the full list on the empty field too
                     $('.js-hitelesszamla', $doboz).autocomplete({
-                        minLength: 2,
+                        minLength: 0,
                         source: (request, response) => {
                             $.ajax({
                                 url: '/admin/bizonylatfej/hitelesszamlalist',

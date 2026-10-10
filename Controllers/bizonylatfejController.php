@@ -2316,7 +2316,7 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         $term = trim($this->params->getStringRequestParam('term'));
         /** @var Bizonylatfej|null $eloleg */
         $eloleg = $this->getRepo()->find($this->params->getStringRequestParam('eloleg'));
-        if ($term === '' || !$eloleg) {
+        if (!$eloleg) {
             echo json_encode([]);
             return;
         }
