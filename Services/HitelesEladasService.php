@@ -41,15 +41,56 @@ class HitelesEladasService
         $this->em = \mkw\store::getEm();
     }
 
-    /** The cheap part of the checks, for showing the button on the list. */
+    /** Whether the list shows the button; why it cannot run is told on clicking it (checkEloleg()). */
     public static function canStart(Bizonylatfej $eloleg): bool
     {
-        return $eloleg->getBizonylattipus()?->getShowhiteleseladasbutton()
-            && !$eloleg->getRontott()
-            && !$eloleg->getStorno()
-            && !$eloleg->getStornozott()
-            // the same condition as the storno buttons: NAV must have accepted the original
-            && (!$eloleg->isNavbekuldendo() || in_array($eloleg->getNaveredmeny(), ['DONE', 'TESZT'], true));
+        return $eloleg->getBizonylattipus()?->getShowhiteleseladasbutton() && !$eloleg->getRontott();
+    }
+
+    /**
+     * Everything that depends on the advance only: checked before the dialog opens, and again on running.
+     *
+     * @return string[] the reasons it cannot run, empty when it can
+     */
+    public function checkEloleg(Bizonylatfej $eloleg): array
+    {
+        $tipus = $eloleg->getBizonylattipus();
+        if (!self::canStart($eloleg)) {
+            return [t('Ezen a bizonylaton hiteles eladás nem indítható.')];
+        }
+        $hibak = [];
+        if ($eloleg->getStorno()) {
+            $hibak[] = t('Az előlegszámla stornó bizonylat.');
+        }
+        if ($eloleg->getStornozott()) {
+            $hibak[] = t('Az előlegszámla már stornózva van.');
+        }
+        if ($tipus->getNyomtatni() && !$eloleg->getNyomtatva()) {
+            $hibak[] = t('Az előlegszámla nincs kinyomtatva.');
+        }
+        // the same condition as the storno buttons: NAV must have accepted the original
+        if ($tipus->getNavbekuldendo() && !in_array($eloleg->getNaveredmeny(), ['DONE', 'TESZT'], true)) {
+            $hibak[] = t('Az előlegszámla nincs beküldve a NAV-hoz, vagy a NAV még nem fogadta be.');
+        }
+        if ($hibak) {
+            return $hibak;
+        }
+        if (ElolegService::isOffset($eloleg)) {
+            $hibak[] = t('Az előleget már beszámították egy számlán, előbb azt kell rendezni.');
+        }
+        $tetelek = $this->getPenzmozgasTetelek($eloleg);
+        if (!$tetelek) {
+            $hibak[] = t('Az előlegszámlához nem tartozik élő bank- vagy pénztárbizonylat.');
+        } elseif (abs($eloleg->getEgyenleg() * 1) >= 0.005) {
+            $hibak[] = t('Az előlegszámla nincs teljesen kiegyenlítve.');
+        }
+        foreach ($tetelek as $tetel) {
+            $fej = $tetel->getBizonylatfej();
+            if ($fej instanceof Penztarbizonylatfej && $this->penztarZarolt($fej)) {
+                $hibak[] = t('A pénztárbizonylat a pénztár lezárt időszakába esik') . ': ' . $fej->getId();
+            }
+        }
+        return array_values(array_unique($hibak));
     }
 
     /**
@@ -62,27 +103,15 @@ class HitelesEladasService
         if (!array_key_exists($stornotipus, self::STORNOTIPUSOK)) {
             $this->fail(t('Ismeretlen stornó típus.'));
         }
-        if (!self::canStart($eloleg)) {
-            $this->fail(t('Ezen a bizonylaton hiteles eladás nem indítható.'));
-        }
-        if (ElolegService::isOffset($eloleg)) {
-            $this->fail(t('Az előleget már beszámították egy számlán, előbb azt kell rendezni.'));
+        $hibak = $this->checkEloleg($eloleg);
+        if ($hibak) {
+            $this->fail(implode(' ', $hibak));
         }
         $this->checkSzamla($eloleg, $szamla);
 
         $tetelek = $this->getPenzmozgasTetelek($eloleg);
-        if (!$tetelek) {
-            $this->fail(t('Az előlegszámlához nem tartozik élő bank- vagy pénztárbizonylat.'));
-        }
-        if (abs($eloleg->getEgyenleg() * 1) >= 0.005) {
-            $this->fail(t('Az előlegszámla nincs teljesen kiegyenlítve.'));
-        }
         $osszeg = 0;
         foreach ($tetelek as $tetel) {
-            $fej = $tetel->getBizonylatfej();
-            if ($fej instanceof Penztarbizonylatfej && $this->penztarZarolt($fej)) {
-                $this->fail(t('A pénztárbizonylat a pénztár lezárt időszakába esik') . ': ' . $fej->getId());
-            }
             $irany = $tetel instanceof Bankbizonylattetel ? $tetel->getIrany() : $tetel->getBizonylatfej()->getIrany();
             $osszeg += $tetel->getBrutto() * $irany;
         }

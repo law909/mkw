@@ -1313,6 +1313,70 @@ let bizonylathelper = function ($) {
         };
     }
 
+    /** The hire-purchase dialog: the finance company's invoice and the storno type, then the run. */
+    function openHitelesEladas(bizszam) {
+        const dialogcenter = $('#dialogcenter'),
+            $doboz = $(`<div>
+                <p>Az előlegszámla stornózva lesz, a hozzá tartozó bank- és pénztárbizonylatok rontva,
+                    a befizetések pedig ugyanúgy (bank bankba, pénztár pénztárba) újra rögzítve a hitelintézet számlájára kerülnek.</p>
+                <p><label>A hitelintézetnek kiállított számla (bizonylatszám részlete):<br><input type="text" class="js-hitelesszamla" size="30"></label></p>
+                <p><label>Stornó típusa:<br><select class="js-hitelesstornotip">
+                    <option value="2">Érvénytelenítő számla</option>
+                    <option value="1">Számlával egy tekintet alá eső okirat</option>
+                </select></label></p>
+            </div>`);
+        dialogcenter.empty().append($doboz).dialog({
+            title: `Hiteles eladás: ${bizszam}`,
+            resizable: false,
+            width: 520,
+            modal: true,
+            // the menu lives outside $doboz, empty() would leave it behind
+            close: () => $('.js-hitelesszamla', $doboz).autocomplete('destroy'),
+            buttons: {
+                'Végrehajt': function () {
+                    const szamla = $('.js-hitelesszamla', $doboz).val().trim();
+                    if (!szamla) {
+                        $('.js-hitelesszamla', $doboz).focus();
+                        return;
+                    }
+                    $(this).dialog('close');
+                    // a refusal is shown by the global ajaxError handler
+                    $.ajax({
+                        url: '/admin/bizonylatfej/hiteleseladas',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            id: bizszam,
+                            szamla: szamla,
+                            stornotip: $('.js-hitelesstornotip', $doboz).val()
+                        },
+                        success: (d) => {
+                            mkwUzenet(d.msg);
+                            $('.mattable-tablerefresh').click();
+                        }
+                    });
+                },
+                'Mégsem': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+        // after opening: the menu then goes into the dialog's ui-front, above the modal overlay;
+        // minLength 0: the down arrow opens the full list on the empty field too
+        $('.js-hitelesszamla', $doboz).autocomplete({
+            minLength: 0,
+            source: (request, response) => {
+                $.ajax({
+                    url: '/admin/bizonylatfej/hitelesszamlalist',
+                    dataType: 'json',
+                    data: {term: request.term, eloleg: bizszam},
+                    success: response,
+                    error: () => response([])
+                });
+            }
+        });
+    }
+
     // Advance offset: for the advance picked in the selector the SERVER renders the negative lines
     // (one per VAT rate); the client only inserts them and recalculates.
     function elolegBeszamitas(bizonylattipus, dialogcenter) {
@@ -3239,66 +3303,13 @@ let bizonylathelper = function ($) {
                 })
                 .on('click', '.js-hiteleseladas', function (e) {
                     e.preventDefault();
-                    const bizszam = $(this).data('egyedid'),
-                        $doboz = $(`<div>
-                            <p>Az előlegszámla stornózva lesz, a hozzá tartozó bank- és pénztárbizonylatok rontva,
-                                a befizetések pedig ugyanúgy (bank bankba, pénztár pénztárba) újra rögzítve a hitelintézet számlájára kerülnek.</p>
-                            <p><label>A hitelintézetnek kiállított számla (bizonylatszám részlete):<br><input type="text" class="js-hitelesszamla" size="30"></label></p>
-                            <p><label>Stornó típusa:<br><select class="js-hitelesstornotip">
-                                <option value="2">Érvénytelenítő számla</option>
-                                <option value="1">Számlával egy tekintet alá eső okirat</option>
-                            </select></label></p>
-                        </div>`);
-                    dialogcenter.empty().append($doboz).dialog({
-                        title: `Hiteles eladás: ${bizszam}`,
-                        resizable: false,
-                        width: 520,
-                        modal: true,
-                        // the menu lives outside $doboz, empty() would leave it behind
-                        close: () => $('.js-hitelesszamla', $doboz).autocomplete('destroy'),
-                        buttons: {
-                            'Végrehajt': function () {
-                                const $dia = $(this),
-                                    szamla = $('.js-hitelesszamla', $doboz).val().trim();
-                                if (!szamla) {
-                                    $('.js-hitelesszamla', $doboz).focus();
-                                    return;
-                                }
-                                $dia.dialog('close');
-                                $.ajax({
-                                    url: '/admin/bizonylatfej/hiteleseladas',
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: {
-                                        id: bizszam,
-                                        szamla: szamla,
-                                        stornotip: $('.js-hitelesstornotip', $doboz).val()
-                                    },
-                                    success: (d) => {
-                                        mkwUzenet(d.msg);
-                                        $('.mattable-tablerefresh').click();
-                                    },
-                                    error: (xhr) => mkwUzenet(xhr.responseJSON?.error || 'A hiteles eladás nem sikerült.')
-                                });
-                            },
-                            'Mégsem': function () {
-                                $(this).dialog('close');
-                            }
-                        }
-                    });
-                    // after opening: the menu then goes into the dialog's ui-front, above the modal overlay
-                    // minLength 0: the down arrow opens the full list on the empty field too
-                    $('.js-hitelesszamla', $doboz).autocomplete({
-                        minLength: 0,
-                        source: (request, response) => {
-                            $.ajax({
-                                url: '/admin/bizonylatfej/hitelesszamlalist',
-                                dataType: 'json',
-                                data: {term: request.term, eloleg: bizszam},
-                                success: response,
-                                error: () => response([])
-                            });
-                        }
+                    const bizszam = $(this).data('egyedid');
+                    // the advance-side checks first: on failure the global ajaxError handler shows why
+                    $.ajax({
+                        url: '/admin/bizonylatfej/hiteleseladascheck',
+                        dataType: 'json',
+                        data: {id: bizszam},
+                        success: () => openHitelesEladas(bizszam)
                     });
                 })
                 .on('click', '.js-recheck', function (e) {

@@ -174,6 +174,10 @@
                     {elseif (!($showmunkalapadatok && $_egyed.munkalapkiszamlazva))}
                         <a class="js-rontbizonylat" href="#" data-egyedid="{$_egyed.id}" title="{at('Ront')}"><span class="ui-icon ui-icon-circle-minus"></span></a>
                     {/if}
+                {elseif ($_egyed.hiteleseladas|default)}
+                    {* on a storno / stornoed advance too: the click tells why it cannot run *}
+                    <a class="js-hiteleseladas" href="#" data-egyedid="{$_egyed.id}"
+                       title="{at('Hiteles eladás')}"><span class="ui-icon ui-icon-transferthick-e-w"></span></a>
                 {/if}
             {/if}
         </div>

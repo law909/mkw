@@ -2357,6 +2357,21 @@ class bizonylatfejController extends \mkwhelpers\MattableController
         echo json_encode($ret, JSON_HEX_TAG | JSON_HEX_AMP);
     }
 
+    public function hitelesEladasCheck()
+    {
+        $eloleg = $this->getRepo()->find($this->params->getStringRequestParam('id'));
+        if (!$eloleg) {
+            $this->jsonError(t('Nincs ilyen bizonylat.'), 404);
+            return;
+        }
+        $hibak = (new HitelesEladasService())->checkEloleg($eloleg);
+        if ($hibak) {
+            $this->jsonError(implode(' ', $hibak), 409);
+            return;
+        }
+        echo json_encode(['ok' => true]);
+    }
+
     public function hitelesEladas()
     {
         /** @var Bizonylatfej $eloleg */
